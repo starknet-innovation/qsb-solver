@@ -25,8 +25,11 @@ ELF string table; the comparison verifies all other bytes and rejects difference
 inside any PT_LOAD segment. Exact release pin replay and memory checks remain
 separate from diagnostic derivative checks. Neither ran to completion here.
 
-Cleanup verification is pending; do not allocate another resource until the
-recorded instance, volume and temporary infrastructure are confirmed removed.
+Independent cleanup checks at18:33:11UTC confirmed the instance terminated, its
+recorded root volume deleted and zero remaining test security groups, schedules,
+Lambda functions, IAM roles or instance profiles. The fix and all four failure
+receipt hashes also passed independent review. A timeout before child return
+can still leave aggregate status running; it cannot produce a false success.
 The fresh-proof USD200 authorization is separate from the USD100 mainnet BTC
 pilot. Its durable cost admission controls are not implemented yet; no fresh
 sm86 search has started. No mainnet activation or transaction broadcast occurred.

@@ -19,7 +19,22 @@
     "bundle.json": "e7023a79d3762c5f99403791cf464eee819dc893443289b0149d70c13291fb8e",
     "results/result.json": "3dd22b418eadb00da284345a4f3abed2d3b3d1ceae3829fd98d4c46d3aab2ed8",
     "results/gate.log": "53457d40cba37560141a378f08ecd2cc0243454ec81011613338c8d9ebf48596",
-    "tmpfs-regression.json": "cee1e845b4277ab40d6ac46a60ea8081ae6f1c7a2e1cef154f6d4692fe33ea12"
+    "tmpfs-regression.json": "cee1e845b4277ab40d6ac46a60ea8081ae6f1c7a2e1cef154f6d4692fe33ea12",
+    "cleanup-postcheck.json": "6aea310085eb74aa74b103effc1a7293feb09c22656bbeee06e2b669b7548d9a"
   },
-  "cleanup": "termination requested; independent resource deletion verification pending"
+  "cleanup": {
+    "verifiedAt": "2026-09-25T18:33:11.975987+00:00",
+    "instanceId": "i-0b10b7bf422322cb9",
+    "instanceState": "terminated",
+    "volumeIds": [
+      "vol-0c2518ad81b4addf1"
+    ],
+    "volumesRemaining": 0,
+    "securityGroupsRemaining": 0,
+    "schedulesRemaining": 0,
+    "functionsRemaining": 0,
+    "rolesRemaining": 0,
+    "instanceProfilesRemaining": 0
+  },
+  "independentReview": "Fix and evidence reviewed: no blocker; timeout before child return can leave running status but cannot report success"
 }
