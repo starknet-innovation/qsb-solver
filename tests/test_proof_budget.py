@@ -90,5 +90,7 @@ class ProofBudget(unittest.TestCase):
 
     def test_each_transaction_rechecks_authorization(self):
         import sqlite3
-        with sqlite3.connect(self.path) as db:db.execute('UPDATE campaign SET maximum=400000000')
+        from contextlib import closing
+        with closing(sqlite3.connect(self.path)) as db:
+            db.execute('UPDATE campaign SET maximum=400000000');db.commit()
         with self.assertRaises(ValueError):self.reserve()

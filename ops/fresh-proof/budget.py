@@ -66,6 +66,8 @@ class Budget:
               CREATE TABLE intents(id TEXT PRIMARY KEY, request TEXT NOT NULL, amount INTEGER NOT NULL CHECK(amount>0),
                 state TEXT NOT NULL CHECK(state IN ('reserved','attached','settled')),
                 resource TEXT, evidence TEXT);
+              CREATE TABLE scopes(intent TEXT PRIMARY KEY, binding TEXT NOT NULL);
+              CREATE TABLE operations(intent TEXT NOT NULL, mode TEXT NOT NULL, PRIMARY KEY(intent,mode));
               CREATE UNIQUE INDEX one_unsettled ON intents((1)) WHERE state != 'settled';
             ''')
             db.execute('INSERT INTO campaign VALUES(?,?,?)', (canonical(campaign), MAXIMUM, HEADROOM))
@@ -149,6 +151,70 @@ class Budget:
                 raise ValueError('cleanup receipt digest required')
             db.execute("UPDATE intents SET state='settled',evidence=? WHERE id=?", (canonical(evidence), intent))
             # Entire allowance remains charged. No optimistic estimate refunds.
+
+    def get(self, intent):
+        with self.transaction() as db:
+            row = db.execute('SELECT request,amount,state,resource,evidence FROM intents WHERE id=?', (intent,)).fetchone()
+            if not row:
+                raise ValueError('unknown budget intent')
+            return dict(request=json.loads(row[0]), amount=row[1], state=row[2],
+                        resource=json.loads(row[3]) if row[3] else None,
+                        scope=json.loads((db.execute('SELECT binding FROM scopes WHERE intent=?', (intent,)).fetchone() or ['{}'])[0]),
+                        evidence=json.loads(row[4]) if row[4] else None)
+
+    def bind_scope(self, intent, fields):
+        with self.transaction() as db:
+            state=db.execute('SELECT state FROM intents WHERE id=?', (intent,)).fetchone()
+            if not state or state[0]=='settled':raise ValueError('scope requires unresolved intent')
+            old=json.loads((db.execute('SELECT binding FROM scopes WHERE intent=?', (intent,)).fetchone() or ['{}'])[0])
+            if any(k in old and old[k]!=v for k,v in fields.items()):
+                raise ValueError('infrastructure binding changed')
+            old.update(fields)
+            db.execute('INSERT OR REPLACE INTO scopes VALUES(?,?)', (intent, canonical(old)))
+
+    def claim_operation(self, intent, mode):
+        if mode not in ('prepare', 'arm', 'launch'):
+            raise ValueError('unsupported paid operation')
+        with self.transaction() as db:
+            row = db.execute('SELECT state FROM intents WHERE id=?', (intent,)).fetchone()
+            if row != ('reserved',):
+                raise ValueError('unreserved or already attached intent')
+            previous = [r[0] for r in db.execute('SELECT mode FROM operations WHERE intent=?', (intent,))]
+            expected = {'prepare': set(), 'arm': {'prepare'}, 'launch': {'prepare', 'arm'}}[mode]
+            if set(previous) != expected:
+                raise ValueError('operation already attempted or out of order; reconcile')
+            db.execute('INSERT INTO operations VALUES(?,?)', (intent, mode))
+
+    def record_capacity_rejection(self, intent, receipt):
+        if receipt.get('code') != 'InsufficientInstanceCapacity' or receipt.get('clientToken') != intent:
+            raise ValueError('explicit matching capacity rejection required')
+        with self.transaction() as db:
+            row = db.execute('SELECT state,evidence FROM intents WHERE id=?', (intent,)).fetchone()
+            launched = db.execute("SELECT 1 FROM operations WHERE intent=? AND mode='launch'", (intent,)).fetchone()
+            if row != ('reserved', None) or not launched:
+                raise ValueError('unexpected rejection or duplicate evidence')
+            db.execute('UPDATE intents SET evidence=? WHERE id=?', (canonical(receipt), intent))
+
+    def settle_rejected(self, intent, evidence):
+        with self.transaction() as db:
+            row = db.execute('SELECT state,resource,evidence FROM intents WHERE id=?', (intent,)).fetchone()
+            if not row or row[0] != 'reserved' or row[1] is not None or not row[2]:
+                raise ValueError('unknown submission cannot settle on absence alone')
+            rejection = json.loads(row[2])
+            if rejection.get('code') != 'InsufficientInstanceCapacity' or rejection.get('clientToken') != intent:
+                raise ValueError('missing explicit provider rejection')
+            expected = {'clientToken', 'instancesByToken', 'instancesByTag', 'volumesRemaining',
+                        'securityGroupsRemaining','schedulesRemaining','functionsRemaining',
+                        'rolesRemaining','instanceProfilesRemaining','receiptSha256'}
+            if set(evidence) != expected or evidence['clientToken'] != intent:
+                raise ValueError('incomplete rejection cleanup evidence')
+            if any(type(evidence[k]) is not int or evidence[k] != 0 for k in expected - {'clientToken','receiptSha256'}):
+                raise ValueError('resources remain')
+            digest = evidence['receiptSha256']
+            if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+                raise ValueError('receipt hash required')
+            db.execute("UPDATE intents SET state='settled',evidence=? WHERE id=?",
+                       (canonical(dict(rejection=rejection, cleanup=evidence)), intent))
 
     def snapshot(self):
         with self.transaction() as db:

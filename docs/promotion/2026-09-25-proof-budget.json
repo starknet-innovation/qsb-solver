@@ -1,0 +1,42 @@
+{
+  "status": "implemented; live fresh-proof execution pending",
+  "maximumMicroUsd": 200000000,
+  "headroomMicroUsd": 20000000,
+  "sessionDebitMicroUsd": 2000000,
+  "tests": {
+    "run": 102,
+    "passed": 101,
+    "skipped": 1,
+    "budgetAndController": 28
+  },
+  "independentReview": {
+    "reviewer": "promotion_review subagent",
+    "findingsClosed": [
+      "replaced ledger with stale handle",
+      "mutable cleanup resource name",
+      "settlement without checking reserved lifetime"
+    ],
+    "remainingBlockingSourceFindings": []
+  },
+  "liveReadOnlyPriceCheck": {
+    "observedAt": 1790362190,
+    "rates": {
+      "compute": "1.1230000000",
+      "storage": "0.0880000000",
+      "ipv4": "0.0050000000"
+    },
+    "receiptSha256": "3c1ddb4d6869e2b5c587a111e780c8fcb3d52c8cf4e1aa3e274cc6465c93f293"
+  },
+  "sourceHashes": {
+    "ops/fresh-proof/budget.py": "48f6a3e71181595dc1df68dd7b3d88de3d83beb3cde961dd97bb3050b878f6d8",
+    "ops/fresh-proof/control.py": "864844a78ba21593b3f0fc9864991b2b4008311c08364a0054bf9ee931cfdf8c",
+    "ops/aws-gpu-execution/control.py": "5c0cdf0f10ced823a89100820f0cc339e3a95994827fb7cfc78e6ba5679f4ceb"
+  },
+  "limitations": [
+    "provider mocked for launch/cleanup tests",
+    "operator must retain single authoritative ledger; lock does not fence separate AWS credentials",
+    "fixed conservative allowance consumed without refunds",
+    "not an AWS invoice ceiling",
+    "fresh full-predicate proof and remaining native gates incomplete"
+  ]
+}
