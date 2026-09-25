@@ -1,0 +1,32 @@
+{
+  "status": "HOLD",
+  "preparationCommit": "c06bb3c",
+  "candidateSource": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "imageDigest": "e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "preparation": {
+    "funded": false,
+    "mainnetAuthorized": false,
+    "network": "regtest",
+    "privateMaterialUploaded": false,
+    "requestId": "ea06c087-b04c-496a-9325-0c801cda08ae",
+    "requestSha256": "f5e0c077f443172885b2869f0eab3b963fa4b6a55a2e2a9358b17a0b06c59be9",
+    "sourceHashes": {
+      "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+      "bridge.py": "ba02b56d763533ca144f9ea17cfab6f01dd87d9658a17c4af8744c75803455e2",
+      "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+      "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece"
+    },
+    "wallet": "new disposable local wallet"
+  },
+  "publicValidation": {
+    "requestId": "ea06c087-b04c-496a-9325-0c801cda08ae",
+    "fixtureChain": "regtest",
+    "validated": true,
+    "requestCanonicalSha256": "0b764855f54444bd096cfdab5403b63d5a7a4fa5afce5c4948de369acf32b5e2",
+    "helperType": "p2sh",
+    "scriptBytes": 9923
+  },
+  "privatePermissionsVerified": true,
+  "fundingPrepared": false,
+  "searchStarted": false
+}
