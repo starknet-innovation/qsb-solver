@@ -121,3 +121,21 @@ ledger before a launch. No historical wallet, commitments or coverage are reused
 Host results are retained in `public-result.b64`, with byte count and SHA256
 emitted as a compact receipt. A collector must retrieve chunks and verify that
 receipt before accepting the results; SSM stdout alone is not the result archive.
+
+### Result collection validation
+
+`results.py` validates ordered chunks against the host archive byte count and
+SHA256, bounds decompression, rejects duplicate JSON keys and unexpected filenames,
+and checks the submitted batch bytes, frozen binary binding and contiguous range
+identities. A clean outcome must agree with the host exit code and candidate state.
+Interrupted or uncertain outcomes remain reconciliation-required. The archive's
+self-reported binding is consistency evidence; host/image attestation must still
+be established independently before accepting an execution.
+
+`persist_collection` validates first, then exclusively creates a new evidence
+directory. It fsyncs the archive, submitted batch and extracted public files,
+writes a hash inventory/receipt last, and fsyncs the directory. Existing or partial
+directories are never overwritten. These routines do not invoke AWS, submit work,
+terminate instances, verify cryptographic candidates or mutate coverage. The SSM
+transport, cross-host reconciliation and authoritative CPU verification/coverage
+integration remain pending. Local archive tests do not certify remote retrieval.
