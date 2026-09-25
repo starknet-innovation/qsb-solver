@@ -28,6 +28,8 @@ def main():
     # A retained file is a one-shot intent, including failed/uncertain runs.
     with output.open('x') as stream:json.dump(dict(status='running',binding=binding,gpu=gpu),stream)
     fixtures=json.loads(Path(__file__).with_name('fixtures.json').read_text())
+    if len(fixtures['replay'])!=2 or len(fixtures['benchmark'])!=4:
+        raise ValueError('Incomplete fixture inventory')
     result=dict(status='running',binding=binding,gpu=gpu,replays=[],ranges=[],freshWithdrawal=False)
     deadline=time.monotonic()+600
     for fixture in fixtures['replay']:

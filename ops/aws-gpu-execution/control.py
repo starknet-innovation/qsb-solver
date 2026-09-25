@@ -18,7 +18,7 @@ from launch import boot_script
 ACCOUNT='905846953990'
 REGION='eu-west-1'
 AMI='ami-0c530031fa871c4fa'
-SUBNET='subnet-031df8f2f14d67553'
+SUBNET='subnet-0610508a7e3d5eb90'  # eu-west-1b; 1a explicitly refused capacity
 VPC='vpc-0255d113ce6e93f90'
 
 
