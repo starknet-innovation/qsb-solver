@@ -1,0 +1,19 @@
+{
+  "status": "passed-bounded-native-gate",
+  "controllerCommit": "bbed7531a4e416584605a01230bd49c251aed223",
+  "candidateSource": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "gpu": "NVIDIA A10G",
+  "driver": "595.91.07",
+  "replays": 2,
+  "sampledRanges": 16,
+  "exitCode": 0,
+  "resultSha256": "958d8b9dcbe432444590f7770f789a35d479af3f543b26a3ee708840f9413be5",
+  "freshWithdrawal": false,
+  "remaining": [
+    "independent CPU differential",
+    "pinning validation",
+    "broader coverage and matched performance",
+    "fresh final-image withdrawal and external miner inclusion"
+  ]
+}

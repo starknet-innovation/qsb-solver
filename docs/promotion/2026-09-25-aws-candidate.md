@@ -1,4 +1,4 @@
-# Optimized AWS candidate: provenance verified, native gate capacity-blocked
+# Optimized AWS candidate: bounded A10G gate passed
 
 Status: HOLD. No app enrollment or mainnet activation.
 
@@ -34,3 +34,16 @@ complete broader correctness and final-image proof before reviewed enrollment.
 Do not reuse failed launch intents or attribute the previous sm89 proof checkpoint
 to this image. The USD100 Xverse pilot still has no funded mainnet vault or approved
 exact transaction.
+
+## Authorized retry: actual A10G gate passed
+
+The committed readiness wait resolved the earlier SSM/cloud-init race. Controller
+`bbed7531a4e416584605a01230bd49c251aed223` ran the exact frozen candidate above on
+one On-Demand g5.xlarge in Ireland. Both historical subset replays and all sixteen
+sampled ranges passed, with exit code zero and the expected source/architecture/
+binary binding. Public result identity is in `2026-09-25-a10g-result.json`.
+
+This closes only the bounded native execution gate. The status remains HOLD for
+independent CPU differential, pinning correctness, broader coverage and matched
+performance, and fresh final-image withdrawal/miner evidence. No app enrollment,
+mainnet activation or transaction broadcast occurred.
