@@ -18,8 +18,6 @@
     "candidates/subset/GPUHash.h": "d29adbbdb331b164aa16f19611c9f95d412105febaef9417de185ba486a72692",
     "candidates/subset/GPUMath.h": "b93fa266439d2b71d56f7ac85cea06460b92d8d9f5ec5281008d755bbd090b9c",
     "candidates/subset/TREE_INVERSE.md": "4457a27fbbd4af653045efe5f1d3507871b698eaf9e28d5a4de21fcb3bde318a",
-    "candidates/subset/__pycache__/audit_integrated.cpython-312.pyc": "d3d13d4e9ccd8e5698694efde588df7807d550d482775822c63306e7af0e18c6",
-    "candidates/subset/__pycache__/check_deferred_source.cpython-312.pyc": "dac72750316d26c09b136fbb49238a948b01895dd8197c56d61b1c1fd53af9a5",
     "candidates/subset/square32.cuh": "a973d1dd58bf760ce5cbff79e69cbe8cd725d8ad1a642741e936fb2d948be771",
     "candidates/subset/subset.cu": "e2bead6006809470d21f6beb8de58a5efe7af483ffcf74f31596a9da108446ef",
     "candidates/subset/tests/gpu_epochs/dirdig_audit.cu": "5c0290f674063a2b793a26cafa0072b40bb9185ed3494af79d5c4ea6d30fe6a8",
@@ -29,5 +27,6 @@
     "candidates/subset/tests/gpu_epochs/tree_inverse.cuh": "afa07a330119b2bd55c01de275b1a78766e9d2026113acb8f658be7c9311d1a6",
     "candidates/subset/tests/gpu_epochs/window_schedule_shared.cuh": "94aab78aa0ce08788b0c6cd2593e31be689d6b0363934f18085bae3779c97d0a",
     "candidates/subset/tests/gpu_epochs/zinv32.cuh": "8249034e5bff1526de31ebd64efd923d0b0c18683d71f7f6c7ed4fe70ca31807"
-  }
+  },
+  "excludedArchiveEntries": "Generated Python bytecode (__pycache__/*.pyc); not reviewed source."
 }
