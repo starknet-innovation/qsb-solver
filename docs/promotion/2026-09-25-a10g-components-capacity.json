@@ -1,0 +1,29 @@
+{
+  "status": "HOLD",
+  "outcome": "explicit InsufficientInstanceCapacity; no instance allocated",
+  "controllerCommit": "c0c9579d267600cafc016bef760069e116a00c1a",
+  "candidateSource": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "bundle": {
+    "controllerCommit": "c0c9579d267600cafc016bef760069e116a00c1a",
+    "sha256": "4c5121b4609b3cbed7e77d47b9eaf5dc2265cc435278bccf26dec4d9d03a8a80",
+    "manifestSha256": "92a74d18a5657e8e97ef2ce24582f412ce8d326c8c4c34ec6d6ebef17f3598a6",
+    "url": "https://github.com/starknet-innovation/qsb-solver/releases/download/candidate-sm86-20260925-1/validation-sm86-components-c0c9579.tar.gz"
+  },
+  "cleanup": {
+    "verifiedAt": "2026-09-25T18:37:24.656776+00:00",
+    "instanceId": null,
+    "instanceState": "never-allocated",
+    "volumeIds": [],
+    "volumesRemaining": 0,
+    "securityGroupsRemaining": 0,
+    "schedulesRemaining": 0,
+    "functionsRemaining": 0,
+    "rolesRemaining": 0,
+    "instanceProfilesRemaining": 0
+  },
+  "receipts": {
+    "capacity-rejection.json": "e4beacc89f89f2349fc97b4fa8d4e8fd1a0756a50a40501fece474f9be1ce679",
+    "cleanup-postcheck.json": "a56f784888c804d89b292499cf1d86565da2ab34725b0e23cedc2bf408aa5b74"
+  },
+  "nativeGatesPassed": []
+}

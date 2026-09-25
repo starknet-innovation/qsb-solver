@@ -33,3 +33,14 @@ can still leave aggregate status running; it cannot produce a false success.
 The fresh-proof USD200 authorization is separate from the USD100 mainnet BTC
 pilot. Its durable cost admission controls are not implemented yet; no fresh
 sm86 search has started. No mainnet activation or transaction broadcast occurred.
+
+
+## Corrected attempt: capacity rejected
+
+Controller `c0c9579d267600cafc016bef760069e116a00c1a` prepared a fresh, hash-verified
+bundle containing the reviewed mount correction. AWS explicitly rejected the one
+On-Demand g5.xlarge launch in eu-west-1c with InsufficientInstanceCapacity. Reads by
+both client token and campaign tag found no allocated instance. Independent
+cleanup at18:37:24UTC confirmed no remaining temporary resources. No native gate
+ran, and no automatic replacement was issued. The original failed experiment and
+all its receipts remain preserved. See `2026-09-25-a10g-components-capacity.json`.
