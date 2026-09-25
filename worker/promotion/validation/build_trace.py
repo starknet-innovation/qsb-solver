@@ -7,6 +7,19 @@ import subprocess
 import difflib
 
 
+def checked_flags(lock, build, lock_sha):
+    architecture = build.get('architecture')
+    if architecture not in ('sm_86', 'sm_89'):
+        raise ValueError('unsupported trace architecture')
+    flags = lock['flags']
+    if flags.count('-arch=sm_89') != 1:
+        raise ValueError('unexpected locked architecture')
+    expected = [f'-arch={architecture}' if f == '-arch=sm_89' else f for f in flags]
+    if build.get('flags') != expected or build.get('sourceLockSha256') != lock_sha:
+        raise ValueError('trace build differs from unmodified build flags/source lock')
+    return expected
+
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -19,6 +32,8 @@ def main():
     actual = {str(p.relative_to(source)): sha(p) for p in (source/'subset').rglob('*') if p.is_file()}
     if actual != lock['files']:
         raise ValueError('trace source differs from candidate source lock')
+    build = json.loads(Path('/opt/qsb-validation/build-receipt.json').read_text())
+    flags = checked_flags(lock, build, sha(lockfile))
     traced = Path('/tmp/qsb-trace')
     shutil.copytree(source, traced)
     tree = traced/'subset/tests/gpu_epochs/tree.cu'
@@ -33,9 +48,8 @@ def main():
     patch = output/'trace.diff'
     patch.write_text(''.join(difflib.unified_diff(original.splitlines(True),changed.splitlines(True),fromfile='locked/tree.cu',tofile='diagnostic/tree.cu')))
     executable = output/'trace-subset'
-    subprocess.run(['nvcc', *lock['flags'], '-o', str(executable),str(traced/'subset/subset.cu'),'-lcrypto','-lm'],check=True)
-    build = json.loads(Path('/opt/qsb-validation/build-receipt.json').read_text())
-    receipt = dict(sourceLockSha256=sha(lockfile),sourceFiles=actual,flags=lock['flags'],
+    subprocess.run(['nvcc', *flags, '-o', str(executable),str(traced/'subset/subset.cu'),'-lcrypto','-lm'],check=True)
+    receipt = dict(sourceLockSha256=sha(lockfile),sourceFiles=actual,flags=flags,architecture=build['architecture'],
                    compiler=subprocess.check_output(['nvcc','--version'],text=True),
                    unmodifiedBinarySha256=build['binarySha256'],
                    files={p.name:sha(p) for p in [executable,patch]},
