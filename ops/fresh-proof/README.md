@@ -89,3 +89,35 @@ mutable cleanup names and frozen scope changes. The actual controller guard is
 tested to reject an unreserved preparation before its first cloud mutation.
 Provider responses are mocked in these tests; they do not certify a live funded
 search or the complete wallet/Core proof.
+
+## Prepared sm86 session runner (not yet executed)
+
+`worker/promotion/validation/run_fresh_sm86.py` is separate from the historical
+sm89 runner. It checks the installed sm86 source/binary binding, validates the
+public request with the installed handler, and exclusively creates a retained
+result intent. Each active attempt is atomically persisted and fsynced before
+invocation. Failed, interrupted or malformed results keep the active attempt
+unresolved; the runner never retries it. Candidates stop the batch for independent
+CPU verification. Neither a candidate nor a completed worker result directly
+credits authoritative coverage.
+
+`ops/aws-gpu-execution/host-a10g-fresh.sh` preserves the fixed image and container
+isolation. After setup it requires at least 1,020 seconds before shutdown, gives
+the container a 960-second outer limit, and forcibly removes it afterwards. The
+runner admits a call only with 860 seconds of its 900-second session remaining,
+covering the installed handler's 840-second timeout and termination grace.
+The reserve is rechecked after checkpoint fsync, immediately before execution;
+a late write produces a never-started bounded stop. Normal
+short calls can yield multiple results; longer calls leave no room for another.
+This does not shorten the range or change any cryptographic predicate.
+
+Local tests use mocked solver calls. Native component and matched performance
+gates, fresh wallet/fixture generation, host handoff/result collection, CPU-bound
+coverage accounting, and full fresh Core proof remain pending. Do not allocate
+fresh-proof infrastructure merely because these runner tests pass. Public batch
+files and authoritative local intents must bind the same fresh campaign and budget
+ledger before a launch. No historical wallet, commitments or coverage are reused.
+
+Host results are retained in `public-result.b64`, with byte count and SHA256
+emitted as a compact receipt. A collector must retrieve chunks and verify that
+receipt before accepting the results; SSM stdout alone is not the result archive.
