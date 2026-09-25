@@ -23,3 +23,13 @@ full domain enumeration, independent CPU differential, live Batch certification,
 pinning validation or a fresh withdrawal. Preserve earlier candidate2 evidence.
 All resource config/state and receipts remain outside the Git checkout. No secrets
 or user wallet files are accepted by this gate.
+
+## Readiness before staging
+
+SSM Online may precede cloud-init completion. Run the committed `ready.sh DEADLINE`
+through SSM before creating the gate directory or issuing the one-shot compute
+command. It waits at most three minutes for the boot marker and both systemd
+services, while requiring 18 minutes remaining for image setup plus the gate.
+A readiness failure terminates the experiment without starting the solver. Do not
+reset the fixed deadline. The 17:13 UTC attempt failed ten seconds before the boot
+marker existed; no bundle was staged or solver executed, and no rerun was issued.
