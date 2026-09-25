@@ -29,8 +29,8 @@ The test controller uses an absolute 25-minute deadline, an external cleanup
 invocation in the following full minute, and guest shutdown. Control-plane latency
 is not a guaranteed hard billing ceiling.
 
-Next: obtain A10G capacity for the frozen candidate, run the bounded gate, then
-complete broader correctness and final-image proof before reviewed enrollment.
+The initial capacity wait was resolved by the authorized retry below. Continue
+remaining correctness and final-image proof before reviewed enrollment.
 Do not reuse failed launch intents or attribute the previous sm89 proof checkpoint
 to this image. The USD100 Xverse pilot still has no funded mainnet vault or approved
 exact transaction.
@@ -47,3 +47,7 @@ This closes only the bounded native execution gate. The status remains HOLD for
 independent CPU differential, pinning correctness, broader coverage and matched
 performance, and fresh final-image withdrawal/miner evidence. No app enrollment,
 mainnet activation or transaction broadcast occurred.
+
+The subsequent [sampled A10G differential](2026-09-25-a10g-differential.md) passed
+20 cases / 3,116 candidates / 6,232 CPU-checked hashes. This supersedes the pending
+sampled subset differential gate above, not full-domain or pinning validation.
