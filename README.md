@@ -27,7 +27,7 @@ GPU differential tests and a fresh end-to-end proof are still separate from sour
 
 ## Release
 
-A `v*` Git tag builds the historical worker for Linux amd64/sm_89, pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes the descriptor template and exact range vectors. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
+A `v*` Git tag builds the historical worker for Linux amd64/sm_89, pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes a schema-v3 descriptor and exact range vectors. `searchContract` is the SHA-256 of UTF-8 canonical JSON (recursive sorted keys, compact separators, array order preserved) for `contracts/ranked-v2.json`. The descriptor generator checks every valid and invalid vector against the worker before hashing. Consumers must require the same hash as their independently tested contract. Earlier schema-v2 releases remain immutable; they do not gain this binding retroactively, and a new tagged release plus explicit consumer enrollment is required. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
 
 Tagging triggers publication of compiled binaries. The user confirmed redistribution approval on 2026-09-25. That records the supplied approval, not an independent legal opinion. All upstream license and source notices remain in the tree and image. See [LICENSES.md](LICENSES.md).
 
@@ -43,3 +43,8 @@ reviewed. Normal version tags still build the historical baseline.
 The [fresh local-wallet regtest proof](docs/promotion/2026-09-25-fresh-search.md)
 is in progress. Its bounded search checkpoints do not yet establish a completed
 withdrawal or promotion approval.
+### Attested AWS release
+
+An `aws-v*` tag uses the same publication, provenance attestation and descriptor steps above, selecting the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). Ordinary `v*` tags retain the Runpod/sm_89 target. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.
+
+After CI succeeds, verify the generated descriptor's GHCR digest and source commit with `gh attestation verify`. To mirror it into a private registry, use a digest-preserving registry copy (for example `crane copy GHCR_IMAGE@sha256:DIGEST ECR_REPOSITORY:RELEASE_TAG`) and verify the destination manifest digest equals the attested digest before registering a Batch job definition. Keep the public descriptor's canonical GHCR identity; operator registry/account configuration belongs outside this repository. Never substitute a digest from a `docker load`/`push` round trip or treat the mirror's name as provenance. Consumer enrollment and deployment remain separate steps requiring that exact digest and fresh runtime verification.

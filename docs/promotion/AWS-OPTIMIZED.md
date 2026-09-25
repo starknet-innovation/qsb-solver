@@ -38,3 +38,16 @@ coverage provenance/reconciliation or a separately identified fresh proof.
 No old spent fixture, regtest private key, or recovery state may become the mainnet
 wallet. Mainnet funds remain untouched; exact Xverse funding/fee approval follows
 verified deployment and a new mainnet public request.
+
+## AWS transport integration
+
+The promotion branch now includes main's AWS transport and license packaging.
+Combined candidates use explicit `aws` and `runpod` Docker targets. The AWS target
+starts `aws_entrypoint.py`, uses the same combined handler and release binding,
+and keeps the public-only S3 input digest and immutable output protocol. CI runs
+an offline fake-S3 transport test through the actual container handler for all
+three stages, requiring no-GPU failures to remain failures. It also checks input
+tampering produces no output. This is transport integration, not live AWS or GPU
+certification. Candidate `candidate-sm86-*` tags now select the AWS transport.
+The registry digest binds the complete image including the transport; the pipeline
+inventory separately binds the numerical kernels and handler files.

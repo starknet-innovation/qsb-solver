@@ -21,8 +21,20 @@ ENV SOLVER_COMMIT=${SOLVER_COMMIT}
 COPY --from=optimized /opt/qsb-validation/candidate/subset /opt/qsb/subset
 COPY --from=optimized /opt/qsb-validation/build-receipt.json /opt/qsb/optimized-build-receipt.json
 COPY --from=optimized /opt/qsb-validation/candidate/source /opt/qsb/optimized-source
+COPY --from=optimized /opt/qsb-validation/licenses /opt/qsb/optimized-licenses
+COPY --from=optimized /opt/qsb-validation/source-build /opt/qsb/optimized-source-build
+COPY worker/promotion/prepare_pinning.py worker/promotion/pinning_output.h worker/promotion/Dockerfile /opt/qsb/source/promotion-build/
 COPY worker/handler.py /opt/qsb/historical_handler.py
 COPY worker/promotion/handler.py worker/promotion/bind.py /opt/qsb/
 RUN CUDA_ARCH=${CUDA_ARCH} python3 /opt/qsb/bind.py && rm /opt/qsb/bind.py
 ENV PYTHONDONTWRITEBYTECODE=1
+CMD ["python3", "handler.py"]
+
+# Select the matching historical base transport in the build command. Both targets
+# retain the same repaired pinning and optimized subset from the candidate stage.
+FROM candidate AS aws
+RUN python3 -c 'import boto3, aws_entrypoint'
+CMD ["python3", "aws_entrypoint.py"]
+FROM candidate AS runpod
+RUN python3 -c 'import runpod'
 CMD ["python3", "handler.py"]

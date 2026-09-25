@@ -7,3 +7,10 @@
 !worker/optimized/**
 **/__pycache__
 **/*.pyc
+
+!LICENSES.md
+!vendor/
+!vendor/challenge/
+!vendor/challenge/candidates/
+!vendor/challenge/candidates/subset/
+!vendor/challenge/candidates/subset/COPYING
