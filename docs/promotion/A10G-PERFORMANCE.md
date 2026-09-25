@@ -81,3 +81,23 @@ and exact sequence/locktime bounds; preserve full logs and account for a full
 19,913,600,000-candidate ranked-v2 range. Do not launch the earlier subset-only
 bundle as if it completed the combined performance gate. Each paid session needs
 its own complete reviewed collection and cleanup plan.
+
+### Pinning runner prepared
+
+`run_a10g_pinning_performance.py` now defines a separate twelve-sample session:
+three alternating pairs for two synthetic public layouts, each requesting one
+sequence and 256,000,000 locktimes. It pins the released and candidate hashes,
+verifies identical parameter bytes, preserves diagnostics on failure, and rejects
+hits, timeouts, errors, duplicate/missing completion and wrong effective bounds.
+A 40-second per-sample cap bounds twelve runs to 480 seconds within the 600-second
+internal deadline. Slowest-sample startup-inclusive projection must be below the
+840-second worker limit for a full ranked-v2 pinning range.
+
+The frozen pinning executable reports integer millions, not an exact counter.
+The runner verifies the requested arguments, printed effective scope and rounded
+256M completion. This is timing evidence for a source-bound bounded invocation,
+not independent exact enumeration or whole-range credit. Native correctness
+coverage remains the separate component gate. Four local tests exercise result
+acceptance and rejection; no native performance result is claimed. Synthetic
+fixture export, released-binary extraction, bundle review and host collection
+preparation remain required before launch.
