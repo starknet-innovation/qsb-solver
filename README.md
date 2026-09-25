@@ -39,3 +39,7 @@ Development validation scripts under `worker/validation` consume an explicitly s
 pinning and the optimized subset under one `ranked-v2` worker identity. Candidate
 prereleases remain HOLD until fresh GPU, performance and end-to-end evidence is
 reviewed. Normal version tags still build the historical baseline.
+
+The [fresh local-wallet regtest proof](docs/promotion/2026-09-25-fresh-search.md)
+is in progress. Its bounded search checkpoints do not yet establish a completed
+withdrawal or promotion approval.

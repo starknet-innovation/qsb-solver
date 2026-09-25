@@ -28,8 +28,19 @@ manifest/source/range identities, and preserved the next attempt as 18.
 The pod was deleted and a provider read confirmed zero pods before the next
 batch. GPU execution total was 508.425 seconds; at $0.74/hour this is approximately
 $0.105 of execution time, excluding startup, idle time and storage. It is not an
-invoice or a whole-proof cost estimate. A second bounded batch starts at attempt
-18; its outcome is not included in the first-batch evidence.
+invoice or a whole-proof cost estimate.
+
+## Second bounded batch
+
+At 10:41 UTC, attempts 18–35 also completed without hits. Terminal status was
+`bounded-stop`, with no active attempt. The result SHA256 matched the worker log:
+`a52c24d8fd981d7621fb3dcf745327ea55a06a470c4658f4094ad78e1f066e57`.
+Local reconciliation passed with the shared membership checker. The second pod
+was deleted and zero pods confirmed; both historical endpoints still had
+minimum/maximum workers zero. Cumulative complete ranges: **36**. The preserved
+next attempt is **36**, with the same fixture, manifest and public parameters.
+No pin has been found, no helper transaction signed, and the fresh fixture
+remains unspent. These are search checkpoints, not a completed proof.
 
 ## Candidate and completion handling
 
