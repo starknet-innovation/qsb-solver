@@ -61,29 +61,32 @@ already published releases remain unchanged.
 
 ## Consumer dependency
 
-The current default qsb-app branch cannot enroll arbitrary external descriptors.
-[App PR #47](https://github.com/starknet-innovation/qsb-app/pull/47), checked at
-`922c6c1d68ab992aa1fd2028b7cf3cc49a12af83`, contains the strict schema 3 consumer.
-The candidate2 proposal passed that actual consumer's schema, registry and paid
-search-contract checks locally. This is compatibility evidence only; the PR is
-open and no descriptor was copied into its registry. The contract fingerprint is
+[App PR #47](https://github.com/starknet-innovation/qsb-app/pull/47) merged on
+25 September at 10:25 UTC as `8c7049064d28be75f3a0537cb4542fe9e8407597` and adds
+the strict schema 3 consumer. The candidate2 proposal previously passed that
+consumer's schema, registry and paid search-contract checks locally at
+`922c6c1d68ab992aa1fd2028b7cf3cc49a12af83`. This is compatibility evidence only;
+the optimized descriptor has not been enrolled. The contract fingerprint is
 `c570e14089e62de5185d9c8ba9f8f85d1b22c788edc524cd98a9ecaac5c26f7a`.
 
 ## Required completion sequence
 
 1. Complete a fresh wallet-backed full-predicate withdrawal using this exact image,
    fresh commitments and a new fixture. Bind all stage/range/provider identities,
-   CPU-verified solutions, the exact locally approved Xverse signature and
-   unmodified Core acceptance to the request. Historical fixture replays do not
-   satisfy this gate. Only public request/result data leaves the user's device.
+   CPU-verified solutions, the exact authorized wallet signature and unmodified
+   Core acceptance to the request. The user authorized a new locally generated
+   disposable wallet for this regtest proof. Its result must be labelled as local
+   signing, not Xverse compatibility evidence. Historical fixture replays do not
+   satisfy this gate. Only public search parameters leave the local machine;
+   private key and recovery state must never reach the GPU or this repository.
 2. Obtain final independent review of the source, image identities, accumulated
    validation evidence and fresh proof. A JSON status flag is not review approval.
 3. Review and commit the final publication record and descriptor. Publish the
    descriptor against the existing immutable digest through a separately reviewed
    promotion operation, without triggering the historical rebuild workflow.
    Preserve candidate provenance and state the tested source commit explicitly.
-4. Once the app's external consumer is merged, submit the descriptor and generated
-   registry as a separate app change. Verify the strict parser, duplicate guards,
+4. Submit the descriptor and generated registry as a separate app change against
+   the merged external consumer. Verify the strict parser, duplicate guards,
    contract fingerprint and release freezing. Do not change historical descriptors
    or the default release implicitly.
 5. Before any selected-release paid execution, deploy only committed/pushed source
