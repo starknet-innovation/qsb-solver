@@ -75,6 +75,9 @@ def main():
     # repeating the already tested identical prefix.
     if synthetic_calls[:len(calls)]!=calls:
         raise ValueError('synthetic path changed baseline call prefix')
+    suffix=synthetic_calls[len(calls):]
+    if [call for _,call in suffix] != ['cudaMemcpy(hits, d_hit_idx, nh*4, cudaMemcpyDeviceToHost)']:
+        raise ValueError('synthetic path did not reach exactly the expected hit-index read')
     synthetic_failures=[]
     for ordinal,_ in synthetic_calls[len(calls):]:
         result=run(artifacts/'pinning-audit',params,extra,
