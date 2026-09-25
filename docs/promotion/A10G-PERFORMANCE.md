@@ -36,3 +36,22 @@ All receipt file hashes matched, and all13 adapted source files were independent
 reproduced from the committed historical preparation inputs. Compiler receipt is
 CUDA12.8.93. This verifies build inputs/artifact consistency; native execution,
 effective binary architecture inspection and measured performance remain pending.
+
+## Prepared runner, not yet executed on GPU
+
+`run_a10g_performance.py` pins both binary hashes and the externally frozen fixture
+hash. It requires one A10G and the installed candidate binding, then runs 24 samples:
+three alternating pairs for both rounds and both layouts. Each sample requests
+exactly2^31 ranks and must report that exact exhausted count with zero hits in its
+summary, one completion marker and a successful process exit. Missing, shortened,
+nonfinite, duplicate or reordered samples reject. Wall timing includes startup.
+The full logs, summaries and partial-progress samples are persisted; any failed
+sample leaves a failed result instead of a partial speedup claim.
+
+The host wrapper retains the immutable candidate image, fixed shutdown deadline,
+minimum13minutes before compute,12minute outer timeout and10minute internal budget.
+The baseline is a hash-verified executable in the public read-only bundle. This
+preparation does not launch infrastructure. Nine local tests cover acceptance and
+negative accounting, including dummy subprocess success, hit preservation and timeout output capture; they
+are not native solver/performance evidence. Operator bundle publication, complete
+collection/cleanup preparation and one reviewed bounded launch are still required.
