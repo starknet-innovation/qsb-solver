@@ -1,0 +1,9 @@
+{
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:9e62d3c4eae05b4c5164a78679ad7f383aeefa0f9bfc30121fadab2ca9db623e",
+  "binarySha256": {
+    "pinning": "f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0",
+    "subset": "672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d"
+  },
+  "method": "docker pull immutable manifest; copy from never-started container; remove container",
+  "gpuExecution": false
+}
