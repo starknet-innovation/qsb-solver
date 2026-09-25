@@ -18,7 +18,8 @@ SANITIZER = '/opt/compute-sanitizer/compute-sanitizer'
 
 def validate_result(code, expected, log):
     summaries = re.findall(r'^========= ERROR SUMMARY: (\d+) errors?$', log, re.M)
-    if code != expected or not summaries or any(int(n) for n in summaries):
+    tool_failure = re.search(r'^=========.*(?:ERROR:|FATAL|failed|Failed|unsupported|Unsupported|Unable|No attachable)', log, re.M)
+    if code != expected or not summaries or any(int(n) for n in summaries) or tool_failure:
         raise ValueError('memcheck failed or missing zero-error summary')
 
 
@@ -65,6 +66,15 @@ def main():
                 raise
             validate_result(proc.returncode, expected, stderr)
             hits = {p.name: p.read_text() for p in (work / 'results').glob('*hit*.txt')}
+            if name.startswith('capacity-'):
+                count = int(name.split('-')[1])
+                if f'DEVICE_COUNT {count} CANARIES_OK' not in stdout:
+                    raise ValueError('capacity kernel path not reached')
+                if expected == 2 and 'QSB_RANGE_INCOMPLETE: hit count exceeds host capacity' not in stderr:
+                    raise ValueError('wrong overflow failure')
+            if name in ['forced-exception', 'detected-exception']:
+                if len(re.findall(r'^EXACT ', stderr, re.M)) != 7:
+                    raise ValueError('exception resolver path not reached')
             if name == 'pinning-known-hit' and hits != {'pinning_hit_0.txt': pin['expected']}:
                 raise ValueError('pin replay mismatch')
             if expected == 2 and (hits or 'Done enum:' in stdout):

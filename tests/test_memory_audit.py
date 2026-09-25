@@ -13,6 +13,7 @@ class MemoryAuditTests(unittest.TestCase):
         m.validate_result(0, 0, good)
         m.validate_result(2, 2, good)
         for code, text in [(0, ''), (99, good), (0, '========= ERROR SUMMARY: 1 error\n'),
-                           (0, good + '========= ERROR SUMMARY: 2 errors\n')]:
+                           (0, good + '========= ERROR SUMMARY: 2 errors\n'),
+                           (0, good + '========= ERROR: failed to attach\n')]:
             with self.assertRaises(ValueError):
                 m.validate_result(code, 0, text)
