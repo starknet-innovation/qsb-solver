@@ -66,6 +66,7 @@ def main():
             record=dict(exit=proc.returncode,stdout=proc.stdout,stderr=proc.stderr)
             if (work/(phase+'.json')).exists(): record['result']=json.loads((work/(phase+'.json')).read_text())
             results['phases'][phase]=record
+            if proc.returncode: results['status']='native-audit-failed'
             args.output.write_text(json.dumps(results,indent=2)+'\n')
             print('PHASE',phase,'EXIT',proc.returncode,flush=True)
             if proc.returncode: raise RuntimeError('audit phase failed: '+phase)

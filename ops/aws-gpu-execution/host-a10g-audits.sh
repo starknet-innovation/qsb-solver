@@ -22,7 +22,7 @@ nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader > "$result
 set +e
 timeout --signal=TERM --kill-after=10s 720 docker run --name qsb-a10g-gate --rm --gpus all \
   --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
-  --tmpfs /tmp:rw,nosuid,nodev,size=256m \
+  --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m \
   --mount "type=bind,src=$bundle,dst=/gate,readonly" \
   --mount "type=bind,src=$results,dst=/results" \
   --entrypoint python3 "$image" /gate/run_a10g_audits.py /gate /results/result.json "$manifest_sha" > "$results/gate.log" 2>&1
