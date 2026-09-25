@@ -11,7 +11,7 @@ class FreshBatchTests(unittest.TestCase):
         self.snapshots=[]
     def ranges(self,stage,attempt):return {'start':str(attempt*10),'count':10}
     def result(self,event):
-        d=event['input'];return {**d,'status':'completed','checkpoint':'range-complete','workRange':self.ranges(d['stage'],d['attempt']),'candidates':[]}
+        d=event['input'];return {**d,'status':'completed','checkpoint':'range-complete','workRange':self.ranges(d['stage'],d['attempt']),'candidates':[],'verified':False}
     def publish(self,s):self.snapshots.append(copy.deepcopy(s))
     def test_progress_published_before_and_after_each_attempt(self):
         final=m.run_batch(self.batch,self.result,self.ranges,self.publish)
@@ -42,3 +42,10 @@ class FreshBatchTests(unittest.TestCase):
         values=iter([0,600])
         result=m.run_batch(self.batch,self.result,self.ranges,self.publish,clock=lambda:next(values))
         self.assertEqual(result['results'],[]);self.assertEqual(result['status'],'bounded-stop')
+
+    def test_malformed_completed_result_is_not_credited(self):
+        for value in [None, 'public-hit']:
+            def malformed(e):
+                result=self.result(e);result['candidates']=value;return result
+            with self.assertRaises(ValueError):m.run_batch(self.batch,malformed,self.ranges,self.publish)
+            self.assertEqual(self.snapshots[-1]['results'],[])

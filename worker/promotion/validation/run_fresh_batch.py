@@ -51,6 +51,9 @@ def run_batch(batch, invoke, work_range, publish, clock=time.monotonic):
         result=invoke({'input':data})
         if any(result.get(k)!=data[k] for k in ['stage','manifestHash','attempt','kernelCommit']):
             raise ValueError('Returned identity mismatch')
+        if (result.get('verified') is not False or not isinstance(result.get('candidates'),list)
+                or any(not isinstance(c,str) or len(c)>=16384 for c in result['candidates'])):
+            raise ValueError('Malformed worker result')
         if result.get('workRange')!=expected:
             raise ValueError('Returned range mismatch')
         state['results'].append(result);state['activeAttempt']=None;publish(state)
@@ -68,14 +71,15 @@ def main():
     import handler
     from search_ranges import work_range
     # Never repeat paid work on a container restart. The operator reconciles it.
+    batch=json.loads(os.environ['QSB_PUBLIC_BATCH'])
+    validate_batch(batch)
     marker=Path('/tmp/qsb-fresh-batch-started')
     try:
-        with marker.open('x') as record:record.write('started\n')
+        with marker.open('x') as record:record.write(batch['batchId']+'\n')
     except FileExistsError:
         print('QSB_FRESH_BATCH restart-refused',flush=True)
         time.sleep(1600)
         return
-    batch=json.loads(os.environ['QSB_PUBLIC_BATCH'])
     request=validate_batch(batch)
     binding=handler.release_binding()
     if binding['solverCommit']!=COMMIT or binding['files']['pinning']!=PIN or binding['files']['subset']!=SUB:
