@@ -11,6 +11,27 @@ provenance and source commit.
 
 ## Prepared descriptor path
 
+The automated read-only preparation command performs strict GitHub verification
+of source commit, candidate tag, candidate workflow and GitHub-hosted builder,
+then pulls the immutable digest and checks/extracts its installed binding in an
+offline read-only container. It does not allocate GPUs or publish anything:
+
+```sh
+python3 scripts/prepare_combined_release.py \
+  --candidate-tag candidate-20260925-2 \
+  --source-commit bef76bf9aec123d95fdff53fb839a0c44f378927 \
+  --image-digest sha256:9e86d94a66d7893e31d8e8d6bec7ddbc9b59f47f09e2f7a6015679fd95ab8b52 \
+  --output-directory /path/to/new/preparation-directory
+```
+
+Failed verification stops before Docker execution. Outputs retain the verified
+attestation, extracted files and HOLD proposal; the directory must not already
+exist. Requirements: GitHub CLI with attestation support, Docker capable of
+running Linux/amd64, and the exact public source commit available locally.
+
+The lower-level command below is available when provenance and extraction have
+already been verified independently.
+
 After independently verifying the candidate image's GitHub provenance, extract
 `/opt/qsb/pipeline.json` and `/opt/qsb/optimized-build-receipt.json` from that exact
 image in an offline read-only container. Run:
