@@ -33,3 +33,23 @@ services, while requiring 18 minutes remaining for image setup plus the gate.
 A readiness failure terminates the experiment without starting the solver. Do not
 reset the fixed deadline. The 17:13 UTC attempt failed ten seconds before the boot
 marker existed; no bundle was staged or solver executed, and no rerun was issued.
+
+## External operator scope
+
+Set `QSB_AWS_OPERATOR_CONFIG` to an absolute JSON file outside every Git checkout.
+The file contains exactly `account`, `profile`, `region`, `ami`, `subnet`, and
+`vpc`; do not put credentials in it. For example, use your approved values in:
+
+```json
+{"account":"123456789012","profile":"operator","region":"eu-west-1","ami":"ami-00000000","subnet":"subnet-00000000","vpc":"vpc-00000000"}
+```
+
+These are placeholders, not launch configuration. The controller verifies STS
+against the configured account and restricts the region to Ireland. New external
+execution receipts freeze the configuration; resume rejects changes or legacy
+state without that binding. Never mutate an old receipt to bypass that check:
+reconcile prior resources using their original committed controller and scope.
+No prior experiment is authorized to relaunch by this configuration change.
+Keep original private operational receipts outside Git; public evidence uses
+hashes and cleanup counts. Earlier branch history remains unchanged and must be
+considered separately before any requested history rewrite.

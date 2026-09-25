@@ -15,15 +15,16 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'ops/aws-gpu-benchmark'))
 from launch import boot_script
-ACCOUNT='905846953990'
-REGION='eu-west-1'
-AMI='ami-0c530031fa871c4fa'
-SUBNET='subnet-012eb7e783b453008'  # eu-west-1c; 1a and 1b explicitly refused capacity
-VPC='vpc-0255d113ce6e93f90'
+sys.path.append(str(Path(__file__).resolve().parent))
+from operator_config import load_config, expected_account
+_ACTIVE_CONFIG = None
 
 
 def aws(service, operation, **request):
-    result=subprocess.run(['aws','--profile','snf','--region',REGION,'--output','json',
+    config=load_config()
+    if _ACTIVE_CONFIG is not None and config != _ACTIVE_CONFIG:
+        raise ValueError('Operator configuration changed during execution')
+    result=subprocess.run(['aws','--profile',config['profile'],'--region',config['region'],'--output','json',
         '--no-cli-pager',service,operation,'--cli-input-json',json.dumps(request)],
         capture_output=True,text=True,env={**os.environ,'AWS_MAX_ATTEMPTS':'1'},timeout=90)
     if result.returncode:
@@ -49,10 +50,14 @@ def role(name,principal,document):
 
 
 def main(proof=None):
+    global _ACTIVE_CONFIG
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['prepare','arm','launch','cleanup'])
     parser.add_argument('--state',type=Path,required=True)
     args=parser.parse_args();path=args.state
+    config=load_config()
+    _ACTIVE_CONFIG=dict(config)
+    ACCOUNT,REGION,AMI,SUBNET,VPC=(config[k] for k in ('account','region','ami','subnet','vpc'))
     if aws('sts','get-caller-identity')['Account']!=ACCOUNT: raise ValueError('Wrong account')
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT): raise ValueError('Dirty checkout')
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
@@ -61,7 +66,7 @@ def main(proof=None):
     if args.mode=='prepare':
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
         token=proof.token if proof else str(uuid.uuid4());name='qsb-bench-'+token[:8]
-        s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing'}
+        s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config}
         if proof: s['proofBudget']=proof.binding
         path.parent.mkdir(parents=True,exist_ok=True);save(path,s)
         if proof: proof.check(path,s,args.mode)
@@ -82,6 +87,8 @@ def main(proof=None):
         s.update(phase='prepared',functionArn=function_arn);save(path,s)
     else:
         s=json.loads(path.read_text());name=s['name']
+        if s.get('operatorConfig') != config:
+            raise ValueError('Operator scope changed or legacy state: reconcile explicitly')
         if s.get('proofBudget') and proof is None and args.mode!='cleanup':
             raise ValueError('Fresh proof requires budgeted controller')
         if proof: proof.check(path,s,args.mode)
@@ -96,7 +103,7 @@ def main(proof=None):
             s.update(deadline=int(deadline.timestamp()),phase='arming');save(path,s)
             archive=path.parent/'cleanup.zip'
             with zipfile.ZipFile(archive,'w') as z: z.write(Path(__file__).with_name('cleanup.py'),'cleanup.py')
-            result=subprocess.run(['aws','--profile','snf','--region',REGION,'lambda','create-function',
+            result=subprocess.run(['aws','--profile',config['profile'],'--region',config['region'],'lambda','create-function',
                 '--function-name',name,'--runtime','python3.12','--role',f'arn:aws:iam::{ACCOUNT}:role/{name}-cleanup',
                 '--handler','cleanup.handler','--timeout','60','--zip-file','fileb://'+str(archive),
                 '--environment',json.dumps({'Variables':{'RUN_TOKEN':s['token'],'DEADLINE':str(s['deadline'])}}),
@@ -104,7 +111,7 @@ def main(proof=None):
             if result.returncode: raise RuntimeError(result.stderr)
             actual=json.loads(result.stdout)
             if actual['CodeSha256']!=base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode(): raise ValueError('Lambda source mismatch')
-            subprocess.run(['aws','--profile','snf','--region',REGION,'lambda','wait','function-active-v2','--function-name',name],check=True,timeout=120)
+            subprocess.run(['aws','--profile',config['profile'],'--region',REGION,'lambda','wait','function-active-v2','--function-name',name],check=True,timeout=120)
             expected={'Name':name,'GroupName':'default','ScheduleExpression':f'at({(deadline+timedelta(minutes=1)).replace(second=0,microsecond=0):%Y-%m-%dT%H:%M:%S})',
                 'ScheduleExpressionTimezone':'UTC','FlexibleTimeWindow':{'Mode':'OFF'},'State':'ENABLED','ActionAfterCompletion':'DELETE',
                 'Target':{'Arn':s['functionArn'],'RoleArn':f'arn:aws:iam::{ACCOUNT}:role/{name}-schedule','Input':'{}',

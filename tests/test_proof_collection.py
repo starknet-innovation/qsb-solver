@@ -115,7 +115,9 @@ class CollectionTests(unittest.TestCase):
 
     def test_cli_transport_has_no_hidden_retries(self):
         with patch.object(c.subprocess,'check_output',return_value='{}') as call:
-            c.aws_cli(['ssm','send-command'])
+
+            with patch.object(c, 'load_config', return_value={'profile':'test','region':'eu-west-1'}):
+                c.aws_cli(['ssm','send-command'])
         self.assertEqual(call.call_args.kwargs['env']['AWS_MAX_ATTEMPTS'],'1')
         self.assertEqual(call.call_args.kwargs['timeout'],60)
         self.assertIn('--cli-read-timeout',call.call_args.args[0])
@@ -145,3 +147,14 @@ class CollectionTests(unittest.TestCase):
             poll_pending[0]=False
             self.assertFalse(self.run_collect(d,transport)['grantsRangeCredit'])
             self.assertEqual(len(reads),(len(self.data)+c.CHUNK-1)//c.CHUNK)
+
+    def test_scoped_cli_rejects_drift_between_identity_and_command(self):
+        scope={'account':'123456789012','profile':'test','region':'eu-west-1'}
+        with patch.object(c,'load_config',return_value=scope) as config, patch.object(c.subprocess,'check_output',return_value='{}') as call:
+            aws=c.scoped_cli(scope)
+            aws(['sts','get-caller-identity'])
+            config.return_value=dict(scope,account='999999999999')
+            for operation in ('send-command','get-command-invocation'):
+                with self.assertRaisesRegex(ValueError,'operator scope changed'):
+                    aws(['ssm',operation])
+            self.assertEqual(call.call_count,1)

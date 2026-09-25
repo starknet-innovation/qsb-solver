@@ -30,7 +30,7 @@ def digest(value):
 
 
 def pricing(service, filters):
-    return json.loads(subprocess.check_output(['aws','--profile','snf','--region','us-east-1',
+    return json.loads(subprocess.check_output(['aws','--profile',AWS.load_config()['profile'],'--region','us-east-1',
         'pricing','get-products','--service-code',service,'--filters',canonical([
         dict(Type='TERM_MATCH',Field=k,Value=v) for k,v in filters.items()]),'--output','json'], text=True, timeout=60))
 
@@ -88,6 +88,8 @@ class Guard:
             state.get('proofBudget')!=self.binding or record['state']=='settled' or
             record['request']['statePath']!=str(self.state)):
             raise ValueError('budget/state binding mismatch')
+        if not isinstance(record['request'].get('operatorConfig'),dict) or state.get('operatorConfig') != record['request']['operatorConfig']:
+            raise ValueError('operator scope differs from reserved intent')
         expected_name='qsb-bench-'+self.token[:8]
         if state.get('name')!=expected_name:
             raise ValueError('infrastructure name must match reserved token')
@@ -123,7 +125,7 @@ def execute(mode, state, ledger, campaign, fetch_prices=price_quote, controller=
                 raise ValueError('invalid or stale quote')
             token=str(uuid.uuid4())
             request=dict(statePath=str(state), controllerCommit=commit, quote=quote,
-                         region='eu-west-1',instanceType='g5.xlarge',maxCount=1)
+                         region='eu-west-1',instanceType='g5.xlarge',maxCount=1,operatorConfig=controller.load_config())
             ledger.reserve(token,request,ALLOWANCE)
         else:
             s=json.loads(state.read_text());token=s['token']
@@ -164,12 +166,20 @@ def reconcile(state, ledger, campaign, controller=AWS):
     with owner_lock(ledger.path):
         s=json.loads(state.read_text());token=s['token']
         Guard(ledger,token,state,campaign).check(state,s,'cleanup')
-        if controller.aws('sts','get-caller-identity')['Account']!='905846953990':
+        scope=ledger.get(token)['request'].get('operatorConfig')
+        if scope is None or s.get('operatorConfig') != scope or controller.load_config() != scope:
+            raise ValueError('operator scope differs from durable original')
+        def scoped_aws(*args, **kwargs):
+            if controller.load_config() != scope:raise ValueError('operator scope changed during reconciliation')
+            result=controller.aws(*args, **kwargs)
+            if controller.load_config() != scope:raise ValueError('operator scope changed during reconciliation')
+            return result
+        if scoped_aws('sts','get-caller-identity')['Account'] != scope['account']:
             raise ValueError('wrong cleanup account')
         observations={}
         lifetime=None
         for key in ['client-token','tag:QsbBenchmarkToken']:
-            observations[key]=[i for r in controller.aws('ec2','describe-instances',Filters=[dict(Name=key,Values=[token])])['Reservations'] for i in r['Instances']]
+            observations[key]=[i for r in scoped_aws('ec2','describe-instances',Filters=[dict(Name=key,Values=[token])])['Reservations'] for i in r['Instances']]
         ids=[{i['InstanceId'] for i in observations[key]} for key in observations]
         if ids[0]!=ids[1] or len(ids[0])>1:
             raise ValueError('provider identity discrepancy; cleanup-only reconciliation required')
@@ -194,14 +204,14 @@ def reconcile(state, ledger, campaign, controller=AWS):
             raise ValueError('unknown outcome remains reserved')
         volumes=record['resource']['volumeIds'] if record['resource'] else []
         remaining=[]
-        if volumes:remaining=controller.aws('ec2','describe-volumes',Filters=[dict(Name='volume-id',Values=volumes)])['Volumes']
-        if ids[0]:remaining+=controller.aws('ec2','describe-volumes',Filters=[dict(Name='attachment.instance-id',Values=sorted(ids[0]))])['Volumes']
+        if volumes:remaining=scoped_aws('ec2','describe-volumes',Filters=[dict(Name='volume-id',Values=volumes)])['Volumes']
+        if ids[0]:remaining+=scoped_aws('ec2','describe-volumes',Filters=[dict(Name='attachment.instance-id',Values=sorted(ids[0]))])['Volumes']
         name='qsb-bench-'+token[:8]
-        groups=controller.aws('ec2','describe-security-groups',Filters=[dict(Name='group-name',Values=[name])])['SecurityGroups']
-        schedules=controller.aws('scheduler','list-schedules',NamePrefix=name)['Schedules']
-        functions=[x for x in controller.aws('lambda','list-functions')['Functions'] if x['FunctionName']==name]
-        roles=[x for x in controller.aws('iam','list-roles')['Roles'] if x['RoleName'].startswith(name)]
-        profiles=[x for x in controller.aws('iam','list-instance-profiles')['InstanceProfiles'] if x['InstanceProfileName']==name]
+        groups=scoped_aws('ec2','describe-security-groups',Filters=[dict(Name='group-name',Values=[name])])['SecurityGroups']
+        schedules=scoped_aws('scheduler','list-schedules',NamePrefix=name)['Schedules']
+        functions=[x for x in scoped_aws('lambda','list-functions')['Functions'] if x['FunctionName']==name]
+        roles=[x for x in scoped_aws('iam','list-roles')['Roles'] if x['RoleName'].startswith(name)]
+        profiles=[x for x in scoped_aws('iam','list-instance-profiles')['InstanceProfiles'] if x['InstanceProfileName']==name]
         counts=dict(volumesRemaining=len(remaining),securityGroupsRemaining=len(groups),schedulesRemaining=len(schedules),
                     functionsRemaining=len(functions),rolesRemaining=len(roles),instanceProfilesRemaining=len(profiles))
         if any(counts.values()):raise ValueError('temporary resources remain')

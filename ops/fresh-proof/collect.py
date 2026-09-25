@@ -116,12 +116,24 @@ def collect_once(root, instance, command, batch_raw, aws, validate_batch, valida
         return persist_collection(root/'evidence',encoded,meta,batch_raw,validate_batch,validate_binding,work_range)
 
 
-def aws_cli(parts):
+sys.path.append(str(Path(__file__).resolve().parents[1]/'aws-gpu-execution'))
+from operator_config import load_config, expected_account
+
+def aws_cli(parts, *, scope=None):
     # send-command has no client token: SDK retries would violate our one-shot intent.
+    config=load_config()
+    if scope is not None and scope != config:raise ValueError('operator scope changed')
     env = dict(os.environ, AWS_MAX_ATTEMPTS='1', AWS_RETRY_MODE='standard')
-    return json.loads(subprocess.check_output(['aws','--profile','snf','--region','eu-west-1',
+    return json.loads(subprocess.check_output(['aws','--profile',config['profile'],'--region',config['region'],
         '--output','json','--cli-connect-timeout','10','--cli-read-timeout','40']+parts,
         text=True,timeout=60,env=env))
+
+
+def scoped_cli(scope):
+    if not isinstance(scope, dict) or load_config() != scope:
+        raise ValueError('operator scope differs from durable original')
+    frozen=dict(scope)
+    return lambda parts: aws_cli(parts, scope=frozen)
 
 
 def main():
@@ -131,8 +143,9 @@ def main():
     parser.add_argument('--batch',type=Path,required=True)
     parser.add_argument('--collection',type=Path,required=True)
     args=parser.parse_args()
-    aws = aws_cli
-    if aws(['sts','get-caller-identity'])['Account'] != '905846953990':
+    state=load(args.execution)
+    aws = scoped_cli(state.get('operatorConfig'))
+    if aws(['sts','get-caller-identity'])['Account'] != state['operatorConfig']['account']:
         raise ValueError('Wrong AWS account')
     repo=Path(__file__).resolve().parents[2]
     spec=importlib.util.spec_from_file_location('fresh_sm86',repo/'worker/promotion/validation/run_fresh_sm86.py')

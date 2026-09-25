@@ -18,13 +18,13 @@ class SubmissionTests(unittest.TestCase):
         self.b=m.Budget.create(self.root/'budget.sqlite',self.campaign);self.j=m.Journal(self.b)
         self.j.initialize('b'*64,'c'*64,self.campaign['campaignId'])
         self.token=str(uuid.uuid4());self.path=self.root/'state.json';self.receipt=self.root/'command.json'
-        self.request=dict(statePath=str(self.path.resolve()),controllerCommit='test',region='eu-west-1',instanceType='g5.xlarge')
+        self.request=dict(operatorConfig={'account':'123456789012'},statePath=str(self.path.resolve()),controllerCommit='test',region='eu-west-1',instanceType='g5.xlarge')
         self.b.reserve(self.token,self.request,2_000_000)
         batch=dict(batchId=str(uuid.uuid4()),request=dict(stage='pinning',attempt=0,manifestHash='c'*64),maxAttempts=1)
         self.j.register(self.token,json.dumps(batch).encode(),lambda b:b['request'])
         resource=dict(instanceId='i-12345678901234567',volumeIds=['vol-test'],clientToken=self.token)
         self.b.attach(self.token,self.request,resource)
-        self.state=dict(token=self.token,name='qsb-bench-'+self.token[:8],controllerCommit='test',phase='launched',instanceId=resource['instanceId'],deadline=1790400000)
+        self.state=dict(operatorConfig=self.request['operatorConfig'],token=self.token,name='qsb-bench-'+self.token[:8],controllerCommit='test',phase='launched',instanceId=resource['instanceId'],deadline=1790400000)
         self.state['proofBudget']=m.Guard(self.b,self.token,self.path,self.campaign).binding
         self.b.bind_scope(self.token,dict(deadline=self.state['deadline'],controllerCommit='test'))
         self.path.write_text(json.dumps(self.state));self.calls=[];self.command=str(uuid.uuid4())

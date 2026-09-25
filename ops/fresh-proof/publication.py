@@ -6,7 +6,7 @@ must have been reviewed and frozen before submission; this module never sends it
 import hashlib
 import json
 from pathlib import Path
-from collect import invocation, load, aws_cli
+from collect import scoped_cli, expected_account, invocation, load, aws_cli
 from verify import verify_collection
 
 
@@ -67,15 +67,16 @@ def main():
     campaign=load(args.campaign)
     if campaign.get('candidateSource')!=SOURCE or campaign.get('imageDigest')!=IMAGE:
         raise ValueError('wrong frozen campaign candidate')
-    if aws_cli(['sts','get-caller-identity'])['Account']!='905846953990':
-        raise ValueError('wrong AWS account')
     budget=Budget(args.ledger,campaign)
     sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'worker'))
     from search_ranges import work_range
     with owner_lock(budget.path):
+        scope=budget.get(args.token)['request'].get('operatorConfig')
+        aws=scoped_cli(scope)
+        if aws(['sts','get-caller-identity'])['Account']!=scope['account']:raise ValueError('wrong AWS account')
         journal=Journal(budget)
         fixture_hash=journal.snapshot()['binding']['fixtureSha256']
-        verifier=EvidenceVerifier(args.collection,args.fixture,fixture_hash,args.reference,aws_cli)
+        verifier=EvidenceVerifier(args.collection,args.fixture,fixture_hash,args.reference,aws)
         result=journal.publish(args.token,args.command,verifier,work_range)
     print(json.dumps(result,sort_keys=True))
 

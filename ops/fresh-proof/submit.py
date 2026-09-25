@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 import subprocess
 import time
-from collect import aws_cli,load,save_new
+from collect import scoped_cli, expected_account, aws_cli,load,save_new
 from control import ROOT,Guard,owner_lock,source_identity,SOURCE,IMAGE
 from journal import Journal
 from budget import Budget
@@ -89,10 +89,13 @@ def main():
         parser.add_argument('--'+name,type=Path,required=True)
     args=parser.parse_args();campaign=load(args.campaign)
     if campaign.get('candidateSource')!=SOURCE or campaign.get('imageDigest')!=IMAGE:raise ValueError('wrong candidate')
-    if aws_cli(['sts','get-caller-identity'])['Account']!='905846953990':raise ValueError('wrong AWS account')
     budget=Budget(args.ledger,campaign)
     with owner_lock(budget.path):
         commit=source_identity();state=load(args.execution)
+        scope=budget.get(state['token'])['request'].get('operatorConfig')
+        if state.get('operatorConfig') != scope:raise ValueError('execution operator scope changed')
+        aws=scoped_cli(scope)
+        if aws(['sts','get-caller-identity'])['Account']!=scope['account']:raise ValueError('wrong AWS account')
         if state['controllerCommit']!=commit:raise ValueError('controller changed since reservation')
         with budget.transaction() as db:
             row=db.execute('SELECT batch,state FROM proof_sessions WHERE token=?',(state['token'],)).fetchone()
@@ -102,7 +105,7 @@ def main():
         scripts={name:committed(path) for name,path in PUBLIC_SCRIPTS.items()}
         ready=committed('ops/aws-gpu-execution/ready.sh')
         command=build_command(batch_raw,scripts,ready,state['deadline'])
-        result=submit_once(budget,args.execution,campaign,command,args.receipt)
+        result=submit_once(budget,args.execution,campaign,command,args.receipt,aws=aws)
     print(json.dumps(result,sort_keys=True))
 
 

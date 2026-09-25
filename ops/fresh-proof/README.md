@@ -158,7 +158,7 @@ python3 ops/fresh-proof/collect.py --execution /absolute/session/execution.json 
   --collection /absolute/session/collection
 ```
 
-The CLI uses only profile `snf`, account `905846953990`, region `eu-west-1`.
+The CLI uses only the external `QSB_AWS_OPERATOR_CONFIG` profile/account, constrained to `eu-west-1`.
 Run it again to poll a returned pending command ID, using the same inputs. An
 already-created evidence directory is not overwritten, including after a partial
 local write. Inspect its collection receipt or reconcile the failure. Do not

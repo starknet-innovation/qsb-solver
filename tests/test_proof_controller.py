@@ -13,12 +13,16 @@ sys.path.insert(0,str(ROOT/'ops/fresh-proof'))
 spec=importlib.util.spec_from_file_location('proof_control',ROOT/'ops/fresh-proof/control.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
+CONFIG=dict(account='123456789012',profile='test',region='eu-west-1',ami='ami-00000000',subnet='subnet-00000000',vpc='vpc-00000000')
+
 class Backend:
+    def load_config(self): return dict(CONFIG)
+    def expected_account(self): return "123456789012"
     def __init__(self):self.paid=[];self.error=None;self.instances=[];self.remaining=False
     def main(self,proof):
         mode=sys.argv[1];path=Path(sys.argv[3])
         if mode=='prepare':
-            s=dict(token=proof.token,name='qsb-bench-'+proof.token[:8],controllerCommit=proof.ledger.get(proof.token)['request']['controllerCommit'],proofBudget=proof.binding,phase='preparing',securityGroup='sg-original',functionArn='arn:fixture')
+            s=dict(token=proof.token,name='qsb-bench-'+proof.token[:8],controllerCommit=proof.ledger.get(proof.token)['request']['controllerCommit'],proofBudget=proof.binding,phase='preparing',operatorConfig=CONFIG,securityGroup='sg-original',functionArn='arn:fixture')
             self.save(path,s)
         else:s=json.loads(path.read_text())
         proof.check(path,s,mode)
@@ -31,7 +35,7 @@ class Backend:
             self.instances=[dict(InstanceId='i-test',ClientToken=proof.token,LaunchTime=datetime.now(timezone.utc).isoformat(),State=dict(Name='running'),BlockDeviceMappings=[dict(Ebs=dict(VolumeId='vol-test'))])]
     def save(self,path,s):path.write_text(json.dumps(s))
     def aws(self,service,operation,**kwargs):
-        if service=='sts':return dict(Account='905846953990')
+        if service=='sts':return dict(Account='123456789012')
         if operation=='describe-instances':return dict(Reservations=[dict(Instances=self.instances)] if self.instances else [])
         key={'describe-volumes':'Volumes','describe-security-groups':'SecurityGroups','list-schedules':'Schedules','list-functions':'Functions','list-roles':'Roles','list-instance-profiles':'InstanceProfiles'}[operation]
         return {key:([{}] if self.remaining and key=='Volumes' else [])}
@@ -43,6 +47,7 @@ class ControllerTests(unittest.TestCase):
         self.campaign=dict(campaignId=str(uuid.uuid4()),requestHash='a'*64,candidateSource=m.SOURCE,imageDigest=m.IMAGE)
         self.ledger=m.Budget.create(self.path.with_name('budget.sqlite'),self.campaign)
         self.backend=Backend()
+        config_patch=patch.object(m.AWS,'load_config',return_value=CONFIG);config_patch.start();self.addCleanup(config_patch.stop)
         patched=patch.object(m,'source_identity',return_value='test-controller');patched.start();self.addCleanup(patched.stop)
     def quote(self):return dict(observedAt=int(time.time()),allowanceMicroUsd=m.ALLOWANCE)
     def execute(self,mode):return m.execute(mode,self.path,self.ledger,self.campaign,self.quote,self.backend)
@@ -92,7 +97,7 @@ class ControllerTests(unittest.TestCase):
     def test_controller_cannot_bypass_guard_for_proof_state(self):
         self.execute('prepare')
         def aws(service,operation,**kw):
-            self.assertEqual((service,operation),('sts','get-caller-identity'));return dict(Account='905846953990')
+            self.assertEqual((service,operation),('sts','get-caller-identity'));return dict(Account='123456789012')
         def git(cmd,**kw):return b'' if 'status' in cmd else 'fixed\n'
         with patch.object(m.AWS,'aws',aws),patch.object(m.AWS.subprocess,'check_output',git),patch.object(sys,'argv',['control','arm','--state',str(self.path)]):
             with self.assertRaisesRegex(ValueError,'budgeted controller'):m.AWS.main()
@@ -123,7 +128,7 @@ class ControllerTests(unittest.TestCase):
     def test_actual_controller_rejects_unreserved_before_first_mutation(self):
         guard=m.Guard(self.ledger,str(uuid.uuid4()),self.path,self.campaign);calls=[]
         def aws(service,operation,**kw):
-            calls.append((service,operation));return dict(Account='905846953990')
+            calls.append((service,operation));return dict(Account='123456789012')
         def git(cmd,**kw):return b'' if 'status' in cmd else 'fixed\n'
         with patch.object(m.AWS,'aws',aws),patch.object(m.AWS.subprocess,'check_output',git),patch.object(sys,'argv',['control','prepare','--state',str(self.path)]):
             with self.assertRaisesRegex(ValueError,'unknown budget intent'):m.AWS.main(proof=guard)
@@ -146,3 +151,25 @@ class PriceTests(unittest.TestCase):
             if 'instanceType' in filters:item['terms']['OnDemand']['x']['priceDimensions']['x']['pricePerUnit']['USD']='2.0'
             p['PriceList']=[json.dumps(item)];return p
         with self.assertRaises(ValueError):m.price_quote(expensive)
+
+class ScopeReconciliationTests(ControllerTests):
+    def test_changed_operator_account_cannot_settle(self):
+        self.execute('prepare');self.execute('arm')
+        self.backend.error='An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation'
+        with self.assertRaises(RuntimeError):self.execute('launch')
+        with patch.object(self.backend,'load_config',return_value=dict(CONFIG,account='999999999999')):
+            with self.assertRaisesRegex(ValueError,'operator scope'):
+                m.reconcile(self.path,self.ledger,self.campaign,self.backend)
+        self.assertTrue(self.ledger.snapshot()['unresolved'])
+
+    def test_config_change_after_reservation_blocks_first_mutation(self):
+        original_main=self.backend.main
+        def changed_main(proof):
+            # Simulate the base controller loading a different scope after reserve.
+            with patch.dict(CONFIG,account='999999999999'):
+                return original_main(proof)
+        with patch.object(self.backend,'main',changed_main):
+            with self.assertRaisesRegex(ValueError,'operator scope'):
+                self.execute('prepare')
+        self.assertEqual(self.backend.paid,[])
+        self.assertTrue(self.ledger.snapshot()['unresolved'])
