@@ -1,7 +1,7 @@
-name: Publish attested historical solver
+name: Publish attested solver
 on:
   push:
-    tags: ['v*']
+    tags: ['v*', 'aws-v*']
 permissions:
   contents: read
 jobs:
@@ -30,6 +30,8 @@ jobs:
         with:
           context: .
           file: worker/Dockerfile
+          target: ${{ startsWith(github.ref_name, 'aws-v') && 'aws' || 'runpod' }}
+          build-args: CUDA_ARCH=${{ startsWith(github.ref_name, 'aws-v') && '86' || '89' }}
           platforms: linux/amd64
           push: true
           tags: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}

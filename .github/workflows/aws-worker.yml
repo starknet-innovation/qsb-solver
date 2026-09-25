@@ -16,8 +16,7 @@ jobs:
       - run: python3 -m unittest discover -s tests -v
       - name: Build full pinning and subset worker for A10G
         run: |
-          docker build --platform linux/amd64 --target runtime --build-arg CUDA_ARCH=86 -f worker/Dockerfile -t qsb-solver-runtime:sm86 .
-          docker build --platform linux/amd64 -f worker/aws/Dockerfile -t qsb-solver-aws:sm86 .
+          docker build --platform linux/amd64 --target aws --build-arg CUDA_ARCH=86 -f worker/Dockerfile -t qsb-solver-aws:sm86 .
           docker run --rm --network none --read-only --entrypoint python3 qsb-solver-aws:sm86 -c 'import handler,aws_entrypoint,boto3; from pathlib import Path; assert Path("/opt/qsb/pinning").is_file(); assert Path("/opt/qsb/subset").is_file()'
       - name: Export immutable artifact
         shell: bash
