@@ -1,0 +1,246 @@
+{
+  "status": "PASS_SCOPED_FINAL_IMAGE_REGRESSION",
+  "promotion": "HOLD",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:9e86d94a66d7893e31d8e8d6bec7ddbc9b59f47f09e2f7a6015679fd95ab8b52",
+  "binding": {
+    "files": {
+      "handler.py": "3b637075f4834e0b01838e8d59e96d54819432349ed34e6ea57aa44db161edc8",
+      "historical_handler.py": "04746430c32a4970759c99a49e1ae499e1ba84b3ac9075ae1357c28714223850",
+      "pinning": "4602c9845d7db1336b5ad00d67348063dce2c164bed3005ba18624f8c3dc6fa7",
+      "search_ranges.py": "07b0c2639e2a61b6a0306bed06a8f261f9f8c71ea1ee5d68806e3044a93c27df",
+      "subset": "1c7d6b5906e95c12f07faf08f93cfe5ca920974c9cb936909548b81b82dade3a"
+    },
+    "format": "qsb-combined-candidate-v1",
+    "pinningUpstreamCommit": "2791ed0588f5014ccd688d48ba5502df2879f2f1",
+    "searchVersion": "ranked-v2",
+    "solverCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+    "status": "HOLD",
+    "subsetSourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3",
+    "subsetUpstreamCommit": "1650caf53a32b0ea16aae9e490ebbf5a8686d632"
+  },
+  "provenance": {
+    "source": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+    "workflow": "https://github.com/starknet-innovation/qsb-solver/.github/workflows/candidate.yml@refs/tags/candidate-20260925-2",
+    "run": "https://github.com/starknet-innovation/qsb-solver/actions/runs/36119510144/attempts/1"
+  },
+  "runnerCommit": "6b70704",
+  "gpuResultSha256": "b1215f6f927c90516dda1b11d258cdd975d6749bdba589f90e4a6bbe93e1a0e4",
+  "cpuVerifierSha256": "450f02da46c04b67e454f01e131ca1e11b492a01f912c46dee5e77fa79cc7c1f",
+  "cpuReferenceSources": {
+    "handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+    "verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba",
+    "gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+    "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+    "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c"
+  },
+  "cpuComparison": {
+    "cases": 20,
+    "candidates": 3116,
+    "hashes": 6232,
+    "rows": [
+      {
+        "name": "wpkh-r1-0",
+        "candidates": 1,
+        "hashes": 2,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r1-7",
+        "candidates": 7,
+        "hashes": 14,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r1-255",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r1-1099511627899",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r1-82947113348843",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r2-0",
+        "candidates": 1,
+        "hashes": 2,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r2-7",
+        "candidates": 7,
+        "hashes": 14,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r2-255",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r2-1099511627899",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "wpkh-r2-82947113348843",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r1-0",
+        "candidates": 1,
+        "hashes": 2,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r1-7",
+        "candidates": 7,
+        "hashes": 14,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r1-255",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r1-1099511627899",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r1-82947113348843",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r2-0",
+        "candidates": 1,
+        "hashes": 2,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r2-7",
+        "candidates": 7,
+        "hashes": 14,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r2-255",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r2-1099511627899",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      },
+      {
+        "name": "taproot-r2-82947113348843",
+        "candidates": 257,
+        "hashes": 514,
+        "exactEnumeration": true,
+        "fullTransactionReferenceMatched": true
+      }
+    ],
+    "scope": "Source-locked trace derivative CPU/full-tx match plus exact installed binary range execution; not fresh full withdrawal"
+  },
+  "worker": [
+    {
+      "status": "completed",
+      "stage": "pinning",
+      "manifestHash": "e45f4f3cfe30dc9f7903de618e602eda81bda0e2b0d79912698bdd1b85c3bfa4",
+      "attempt": 0,
+      "elapsedSeconds": 27.315397289115936,
+      "candidates": [],
+      "verified": false,
+      "kernelCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+      "workRange": {
+        "version": "ranked-v2",
+        "start": "0",
+        "count": 19913600000,
+        "sequence": 2147483648,
+        "sequenceCount": 16,
+        "locktime": 500000000
+      },
+      "checkpoint": "range-complete"
+    },
+    {
+      "status": "completed",
+      "stage": "round1",
+      "manifestHash": "e45f4f3cfe30dc9f7903de618e602eda81bda0e2b0d79912698bdd1b85c3bfa4",
+      "attempt": 4828,
+      "elapsedSeconds": 21.409945413004607,
+      "candidates": [],
+      "verified": false,
+      "kernelCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+      "workRange": {
+        "version": "ranked-v2",
+        "start": "82944408420352",
+        "count": 2704928748
+      },
+      "checkpoint": "range-complete"
+    },
+    {
+      "status": "completed",
+      "stage": "round2",
+      "manifestHash": "e45f4f3cfe30dc9f7903de618e602eda81bda0e2b0d79912698bdd1b85c3bfa4",
+      "attempt": 4828,
+      "elapsedSeconds": 12.788933534175158,
+      "candidates": [],
+      "verified": false,
+      "kernelCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+      "workRange": {
+        "version": "ranked-v2",
+        "start": "82944408420352",
+        "count": 2704928748
+      },
+      "checkpoint": "range-complete"
+    }
+  ],
+  "replayNames": [
+    "round1",
+    "round2"
+  ],
+  "traceBinarySha256": "ccbbd69c45ad3b9734ae7e18828027aaf6daaa62303ec623b6d25c34e08377d5",
+  "traceUnmodifiedBinarySha256": "1c7d6b5906e95c12f07faf08f93cfe5ca920974c9cb936909548b81b82dade3a",
+  "zeroPodsConfirmed": true,
+  "scope": "Actual OCI image worker/binary execution; source-locked diagnostic transaction traces independently CPU checked; no fresh funded search or withdrawal"
+}
