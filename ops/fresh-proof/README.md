@@ -219,3 +219,31 @@ writing coverage or advancing the stage. The fixture digest must come from the
 previously frozen campaign, not be recomputed as a workaround for changed inputs.
 Mocked tests and an actual pinning-parameter export confirm the local verification
 path; they are not a fresh GPU search or solved proof.
+
+### Atomic proof journal (local API; live coordinator wiring pending)
+
+`journal.py` adds proof state, frozen batches, command intents and coverage to the
+**same** existing budget database. Initialize once before any reservation; never
+reset a campaign to retry. Registration binds the current stage, exact next attempt,
+frozen manifest and verified pin before launch. Budget launch admission now requires
+that registration whenever a proof journal exists. The command send intent commits
+before the single host submission; an uncertain send cannot be claimed again.
+
+Publication takes a trusted verification callback which must re-read the frozen
+collection, run the pinned CPU verifier and independently bind host/image/command
+provenance. This callback is still an integration responsibility, not permission
+to trust a provider-supplied JSON verdict. The journal requires the allocated budget
+session to be settled after independently verified cleanup. It atomically records
+empty-range coverage and advances a verified solution to the next stage. Hits
+never earn whole-range credit; DER-only results block for explicit reconciliation.
+All three solutions stop further budget reservation. Unknown host outcomes block
+new work even after infrastructure cleanup. An explicit capacity rejection can
+close a registered batch only after the existing budget reconciliation confirms
+no allocation and cleanup; it neither credits a range nor refunds the allowance.
+
+Local regression tests cover lost sends, reopen/duplicate publication, wrong
+fixture/command/pin context, pre-cleanup rejection, atomic rollback, all three
+stage transitions, solved-budget refusal and capacity rejection without skipped
+coverage. Verifier/provider observations are mocked. No live proof ledger was
+initialized or mutated by these tests, and no GPU was allocated. The executable
+end-to-end coordinator and fresh proof remain pending.

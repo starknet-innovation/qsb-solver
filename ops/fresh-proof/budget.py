@@ -110,6 +110,11 @@ class Budget:
                 raise ValueError('intent exists; reconcile instead of resubmitting')
             if db.execute("SELECT 1 FROM intents WHERE state!='settled'").fetchone():
                 raise ValueError('unsettled intent blocks replacement')
+            if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='proof_sessions'").fetchone():
+                if db.execute("SELECT 1 FROM proof_sessions WHERE state!='published'").fetchone():
+                    raise ValueError('unresolved proof evidence blocks replacement')
+                if db.execute("SELECT stage FROM proof_state").fetchone()==('solved',):
+                    raise ValueError('proof is solved; no more paid search')
             used = db.execute('SELECT COALESCE(SUM(amount),0) FROM intents').fetchone()[0]
             if used + allowance + HEADROOM > MAXIMUM:
                 raise ValueError('budget admission limit exceeded')
@@ -183,6 +188,9 @@ class Budget:
             expected = {'prepare': set(), 'arm': {'prepare'}, 'launch': {'prepare', 'arm'}}[mode]
             if set(previous) != expected:
                 raise ValueError('operation already attempted or out of order; reconcile')
+            if mode=='launch' and db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='proof_state'").fetchone():
+                if db.execute('SELECT state FROM proof_sessions WHERE token=?',(intent,)).fetchone()!=('registered',):
+                    raise ValueError('registered proof batch required before launch')
             db.execute('INSERT INTO operations VALUES(?,?)', (intent, mode))
 
     def record_capacity_rejection(self, intent, receipt):

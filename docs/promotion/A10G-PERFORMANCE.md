@@ -24,3 +24,15 @@ ignored hit that would shorten a sample. Preserve startup-inclusive timing and
 avoid extrapolating subset throughput into whole-withdrawal cost or pricing.
 All existing one-instance, live-price, fixed-deadline, result-collection and verified
 cleanup rules apply. A build does not authorize an unprepared GPU launch.
+
+## Baseline build receipt
+
+Workflow run36182244943 succeeded at source
+`f2fcc9a02ed2dca82a1370c671688c34df8f8ac3`. Downloaded artifact digest:
+`sha256:7204e4bfe97fdbb4150d32b2366a90d127b8c9f912d14f5ffd4d4763fd6b8f19`.
+The sm86 baseline binary SHA256 is
+`672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d`.
+All receipt file hashes matched, and all13 adapted source files were independently
+reproduced from the committed historical preparation inputs. Compiler receipt is
+CUDA12.8.93. This verifies build inputs/artifact consistency; native execution,
+effective binary architecture inspection and measured performance remain pending.
