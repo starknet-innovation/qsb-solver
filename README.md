@@ -37,12 +37,15 @@ Development validation scripts under `worker/validation` consume an explicitly s
 
 [Combined candidate integration](worker/promotion/README.md) joins historical
 pinning and the optimized subset under one `ranked-v2` worker identity. Candidate
-prereleases remain HOLD until fresh GPU, performance and end-to-end evidence is
-reviewed. Normal version tags still build the historical baseline.
+prereleases remain HOLD until native correctness, matched A10G performance for
+pinning and both subset rounds, and final evidence review pass. Normal version
+tags still build the historical baseline.
 
-The [fresh local-wallet regtest proof](docs/promotion/2026-09-25-fresh-search.md)
-is in progress. Its bounded search checkpoints do not yet establish a completed
-withdrawal or promotion approval.
+The user removed the fresh wallet-backed regtest search from this release's gates
+on 25 September. Preserve prior evidence; do not start a fresh search for PR #2.
+The first separately authorized mainnet pilot will be the end-to-end test of this
+release. Publication and app enrollment each require explicit user approval.
+
 ### Attested AWS release
 
 An `aws-v*` tag uses the same publication, provenance attestation and descriptor steps above, selecting the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). Ordinary `v*` tags retain the Runpod/sm_89 target. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.

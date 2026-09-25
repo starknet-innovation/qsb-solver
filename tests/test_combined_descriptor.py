@@ -26,6 +26,8 @@ class CombinedDescriptorTests(unittest.TestCase):
         result = self.build()
         self.assertEqual(result['solver']['kernelCommit'], 'a'*40)
         self.assertEqual(result['status'], 'HOLD')
+        self.assertNotIn('fresh-final-image-wallet-proof', result['remainingApproval'])
+        self.assertIn('native-sm86-correctness-and-matched-a10g-performance', result['remainingApproval'])
         self.assertEqual(result['solver']['schemaVersion'], 3)
         self.assertRegex(result['solver']['searchContract'], '^[0-9a-f]{64}$')
         self.assertNotEqual(descriptor('a'*40, 'sha256:'+'f'*64)['kernelCommit'], 'a'*40)

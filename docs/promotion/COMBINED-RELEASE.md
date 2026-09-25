@@ -71,21 +71,21 @@ the optimized descriptor has not been enrolled. The contract fingerprint is
 
 ## Required completion sequence
 
-1. Complete a fresh wallet-backed full-predicate withdrawal using this exact image,
-   fresh commitments and a new fixture. Bind all stage/range/provider identities,
-   CPU-verified solutions, the exact authorized wallet signature and unmodified
-   Core acceptance to the request. The user authorized a new locally generated
-   disposable wallet for this regtest proof. Its result must be labelled as local
-   signing, not Xverse compatibility evidence. Historical fixture replays do not
-   satisfy this gate. Only public search parameters leave the local machine;
-   private key and recovery state must never reach the GPU or this repository.
-2. Obtain final independent review of the source, image identities, accumulated
-   validation evidence and fresh proof. A JSON status flag is not review approval.
+1. Complete native sm86 pinning, exceptional recovery, curve and memory checks,
+   plus matched A10G performance against `aws-v0.1.0` for pinning and both subset
+   rounds. Publish exact binary/image/tooling bindings and reviewable evidence.
+2. Obtain final independent source and evidence review. On 25 September the user
+   explicitly removed the fresh wallet-backed regtest search from this release's
+   gates. Do not start that search for this PR. The first separately authorized
+   mainnet pilot will provide the new release's end-to-end withdrawal evidence;
+   component checks and historical replays do not establish that evidence.
 3. Review and commit the final publication record and descriptor. Publish the
    descriptor against the existing immutable digest through a separately reviewed
    promotion operation, without triggering the historical rebuild workflow.
    Preserve candidate provenance and state the tested source commit explicitly.
-4. Submit the descriptor and generated registry as a separate app change against
+   Release publication requires the user's explicit approval. Never delete or
+   move the candidate tag: it preserves the attested source after a squash merge.
+4. With separate explicit user approval, submit the descriptor and generated registry as a separate app change against
    the merged external consumer. Verify the strict parser, duplicate guards,
    contract fingerprint and release freezing. Do not change historical descriptors
    or the default release implicitly.
@@ -123,3 +123,12 @@ verified in the AWS candidate preparation. They checked exact source/image and
 paid-search contract acceptance, and rejected changed contract, duplicate ID and
 mutable image data. No registry file, deployed configuration or default changed.
 This closes consumer compatibility for that proposal, not enrollment or promotion.
+
+## Deterministic pinning failures
+
+Treat `QSB_RANGE_INCOMPLETE`, hit-capacity overflow and repeatable publication or
+CUDA failures as a stopped work unit. Preserve the exact range, image and logs;
+do not blindly resume or retry. The current app may describe exit-2 results as
+resumable incomplete ranges, but that is not evidence that retrying will help.
+Diagnose and correct the cause before authorizing another paid attempt. No
+failed or truncated range receives completion credit.

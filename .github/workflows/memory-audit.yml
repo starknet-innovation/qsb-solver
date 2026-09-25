@@ -1,10 +1,6 @@
 name: Build frozen candidate memory audit image
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/memory-audit.yml
-      - worker/promotion/validation/Memory.Dockerfile
 permissions:
   contents: read
 jobs:

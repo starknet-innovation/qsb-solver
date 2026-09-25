@@ -60,7 +60,7 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
                         'buildReceiptSha256': hashlib.sha256(receipt_bytes).hexdigest(),
                         'files': files,
                         'subsetSourceLockSha256': pipeline['subsetSourceLockSha256']},
-            'remainingApproval': ['independent-final-review', 'fresh-final-image-wallet-proof',
+            'remainingApproval': ['independent-final-review', 'native-sm86-correctness-and-matched-a10g-performance',
                                   'reviewed-publication-and-app-enrollment']}
 
 

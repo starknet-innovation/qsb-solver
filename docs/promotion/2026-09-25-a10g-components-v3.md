@@ -13,6 +13,6 @@ Diagnostics are distinct executables, built with source and architecture binding
 
 The public archive was collected without rerunning compute, checked by length and SHA256, decoded with bounded inventory validation, and persisted before termination. CPU reference, context and expected-branch hashes were checked before CPU verification. See the adjacent public summary and cleanup receipt for identities and final infrastructure state.
 
-Remaining: matched performance, durable fresh-proof coordination, a fresh full-predicate final-image withdrawal accepted by unchanged Core, final release review and separate application enrollment. External miner inclusion remains separate. Mainnet stays disabled. No private recovery material was transferred.
+Remaining release gates: matched A10G performance for pinning and both subset rounds, complete public evidence bindings and final release review. The user removed the fresh wallet-backed proof from this release gate on 25 September. Publication and separate application enrollment each require explicit approval. External miner inclusion remains separate. Mainnet stays disabled. No private recovery material was transferred.
 
 Independent AWS postchecks at 19:49:25 UTC confirmed instance termination, root-volume deletion and removal of all temporary security group, schedule, function, roles and instance profile.

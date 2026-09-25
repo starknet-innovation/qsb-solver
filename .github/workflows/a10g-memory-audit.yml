@@ -1,10 +1,6 @@
 name: Build frozen A10G candidate memory audit image
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/a10g-memory-audit.yml
-      - worker/promotion/validation/MemoryA10g.Dockerfile
 permissions:
   contents: read
 jobs:
