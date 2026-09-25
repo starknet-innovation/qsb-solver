@@ -17,3 +17,14 @@ class CurveVectors(unittest.TestCase):
         self.assertEqual(struct.unpack('<I',raw[:4])[0], len(values))
         self.assertEqual(len(raw), 4 + 144*len(values))
         self.assertEqual([int.from_bytes(raw[4+144*i:36+144*i], 'little') for i in range(len(values))], values)
+
+class AuditVerdict(unittest.TestCase):
+    def test_partial_or_error_cannot_pass(self):
+        spec = importlib.util.spec_from_file_location('runner', Path(vectors.__file__).with_name('run_curve.py'))
+        runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(runner)
+        good = 'Point GPU audit PASS: chunks=15 input_cases=10 point_cases=20 infinity_cases=4 table_checks=504 errors=0'
+        self.assertEqual(runner.validate_output(good,10)['pointCases'],20)
+        for bad in [good.replace('errors=0','errors=1'),good.replace('point_cases=20','point_cases=18'),good+good,'']:
+            with self.assertRaises(ValueError):
+                runner.validate_output(bad,10)
