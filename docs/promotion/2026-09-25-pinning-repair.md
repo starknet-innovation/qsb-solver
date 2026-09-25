@@ -46,3 +46,27 @@ also exercises the extra hit-index read guard and directory/disk-full publicatio
 failures. This record is not a discovered hit or cryptographic proof. Baseline
 normal execution still requires zero real hits; any unexpected hit blocks this
 audit for separate CPU verification.
+
+## Native execution result
+
+Corrected diagnostic build `4eeefb5` and runner `bef76bf` passed on one secure
+RTX 4090. The normal repaired executable SHA256 is
+`4602c9845d7db1336b5ad00d67348063dce2c164bed3005ba18624f8c3dc6fa7`.
+Compiler: CUDA 12.8.93, sm89. The synthetic 256-locktime baseline completed with
+zero hit files. All 34 guarded host calls reached by that run were individually
+faulted and stopped with exit 2, no hit publication, no completion marker and no
+later guarded call. The artificial single-hit path added one actual guarded
+hit-index read, which also failed closed under injection. Directory-open failure,
+`/dev/full` buffered output failure and injected count 65 each rejected completion.
+The artificial record itself matched the expected host serialization exactly.
+
+[Public receipt](2026-09-25-pinning-audit.json) records identities and tested call
+labels. This tests synthetic errors at 35 reached calls, not every static site or
+actual driver failure. The count is injected after device readback; this is not a
+naturally produced overflow or real cryptographic hit. The final combined image
+has not yet been executed with this repaired binary. Fresh full-predicate proof
+and broader correctness gates remain outstanding.
+
+Pod deletion and zero remaining pods were verified before the 30-minute deadline;
+the watchdog was then terminated. Announced compute rate was $0.74/hour plus
+storage. No historical endpoint, fixture, transaction or production default changed.
