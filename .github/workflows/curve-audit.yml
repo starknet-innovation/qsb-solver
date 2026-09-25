@@ -1,6 +1,12 @@
 name: Build locked native curve audit
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/curve-audit.yml
+      - worker/promotion/validation/build_curve.py
+      - worker/promotion/validation/curve_vectors.py
+      - worker/promotion/validation/Curve.Dockerfile
 permissions:
   contents: read
 jobs:
