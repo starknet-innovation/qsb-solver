@@ -64,7 +64,11 @@ def main():
                 os.killpg(proc.pid, signal.SIGKILL)
                 proc.communicate()
                 raise
-            validate_result(proc.returncode, expected, stderr)
+            try:
+                validate_result(proc.returncode, expected, stdout + '\n' + stderr)
+            except ValueError:
+                print(json.dumps(dict(case=name, exit=proc.returncode, stdout=stdout, stderr=stderr)), flush=True)
+                raise
             hits = {p.name: p.read_text() for p in (work / 'results').glob('*hit*.txt')}
             if name.startswith('capacity-'):
                 count = int(name.split('-')[1])
