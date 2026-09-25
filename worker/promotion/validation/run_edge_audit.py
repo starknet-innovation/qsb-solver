@@ -19,8 +19,10 @@ def run(binary,params,args,deadline,env=None):
     with tempfile.TemporaryDirectory() as tmp:
         root=Path(tmp);(root/'params.bin').write_bytes(base64.b64decode(params,validate=True))
         clean={k:v for k,v in os.environ.items() if not k.startswith('QSB_AUDIT_')};clean.update(env or {})
-        p=subprocess.Popen([str(binary),'params.bin',*args],cwd=root,env=clean,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True)
-        try:log,_=p.communicate(timeout=max(.1,min(90,deadline-time.monotonic())))
+        p=subprocess.Popen([str(binary),'params.bin',*args],cwd=root,env=clean,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
+        try:
+            stdout,stderr=p.communicate(timeout=max(.1,min(90,deadline-time.monotonic())))
+            log=stdout+'\n'+stderr
         except subprocess.TimeoutExpired:
             os.killpg(p.pid,signal.SIGKILL);p.communicate();raise
         hits={p.name:p.read_text() for p in (root/'results').glob('*hit*.txt')}
