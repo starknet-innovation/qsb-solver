@@ -1,18 +1,46 @@
-# A10G component gates passed
+# A10G component gate: harness failure
 
-Promotion remains HOLD. The frozen candidate source `43c77084648aa0f4cbcb1589abfcc792c9cc0d9d` was tested on one NVIDIA A10G using controller `29847cdcafb9688065b69c92e5630f0c59c5d9ab`. Numerical candidate binaries were unchanged; the pinned derivative image adds memory tooling.
+Status: HOLD. The bounded component audit stopped before the first diagnostic
+solver process started. No native component gate passed in this run.
 
-- Curve diagnostic: 5,628 scalar inputs, 11,256 points, four infinity cases and 504 table checks; zero errors.
-- Exceptional recovery: 156 branches matched the independently hash-bound CPU expectations. Synthetic injection is not naturally discovered preimage coverage.
-- Seven capacity cases (0, 1, 63, 64, 65, 1024, 1025) passed; overflow fails closed.
-- Seven memory checks passed, including the frozen pinning known-hit replay and subset boundary case.
-- All 34 reached pinning host calls were individually fault-injected and rejected; overflow/publication checks passed.
-- The historical single-pin replay was independently CPU verified. It is not a fresh search or withdrawal.
+Controller `a0deef59e3ed29219e12861fadb9e3e70291cf4d` launched the attested
+memory-tooling derivative, preserving the exact frozen sm86 solver executables.
+Installed release identity checks passed. Docker mounted `/tmp` with `noexec`,
+so the hash-verified diagnostic copy failed to start with `PermissionError`.
+The result was collected before immediate termination was requested.
 
-Diagnostics are distinct executables, built with source and architecture bindings. The pinning rebuild differs from the frozen binary only in one non-allocated symbol-table byte, validated narrowly; exact historical replay and memory testing used the frozen pinning binary. This does not prove exhaustive arithmetic correctness.
+Fix `d7e7f92` explicitly permits execution on that temporary diagnostic mount,
+while retaining network isolation, read-only root, dropped capabilities,
+`nosuid`/`nodev`, a bounded tmpfs and the absolute cleanup deadline. It also
+records a failed phase as failed instead of leaving its aggregate status running.
+A local Linux/amd64 Docker test reproduced exit126 with the old mount and exit0
+with the corrected mount using a copied system executable. This is a harness
+regression check under emulation, not GPU certification. All74 local tests pass
+with one skipped. Frozen solver source and numerical binaries are unchanged.
 
-The public archive was collected without rerunning compute, checked by length and SHA256, decoded with bounded inventory validation, and persisted before termination. CPU reference, context and expected-branch hashes were checked before CPU verification. See the adjacent public summary and cleanup receipt for identities and final infrastructure state.
+The three diagnostic artifacts were built at
+`963147b0969f74e5d638d3fafef2c3c7f7d3e6e6`. The pinning rebuild differs from the
+frozen executable only in one byte of an nvcc temporary filename in a nonloaded
+ELF string table; the comparison verifies all other bytes and rejects differences
+inside any PT_LOAD segment. Exact release pin replay and memory checks remain
+separate from diagnostic derivative checks. Neither ran to completion here.
 
-Remaining: matched performance, durable fresh-proof coordination, a fresh full-predicate final-image withdrawal accepted by unchanged Core, final release review and separate application enrollment. External miner inclusion remains separate. Mainnet stays disabled. No private recovery material was transferred.
+Independent cleanup checks at18:33:11UTC confirmed the instance terminated, its
+recorded root volume deleted and zero remaining test security groups, schedules,
+Lambda functions, IAM roles or instance profiles. The fix and all four failure
+receipt hashes also passed independent review. A timeout before child return
+can still leave aggregate status running; it cannot produce a false success.
+The fresh-proof USD200 authorization is separate from the USD100 mainnet BTC
+pilot. Its durable cost admission controls are not implemented yet; no fresh
+sm86 search has started. No mainnet activation or transaction broadcast occurred.
 
-Independent AWS postchecks at 19:49:25 UTC confirmed instance termination, root-volume deletion and removal of all temporary security group, schedule, function, roles and instance profile.
+
+## Corrected attempt: capacity rejected
+
+Controller `c0c9579d267600cafc016bef760069e116a00c1a` prepared a fresh, hash-verified
+bundle containing the reviewed mount correction. AWS explicitly rejected the one
+On-Demand g5.xlarge launch in eu-west-1c with InsufficientInstanceCapacity. Reads by
+both client token and campaign tag found no allocated instance. Independent
+cleanup at18:37:24UTC confirmed no remaining temporary resources. No native gate
+ran, and no automatic replacement was issued. The original failed experiment and
+all its receipts remain preserved. See `2026-09-25-a10g-components-capacity.json`.

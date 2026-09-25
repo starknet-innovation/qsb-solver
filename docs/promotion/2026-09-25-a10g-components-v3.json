@@ -1,0 +1,45 @@
+{
+  "status": "component-gates-passed-promotion-HOLD",
+  "controllerCommit": "29847cdcafb9688065b69c92e5630f0c59c5d9ab",
+  "candidateCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "resultSha256": "360983ba8a5ec5c71f8e31729a7310e7beefd4f9320c58822043b1b4804acd07",
+  "gpu": "NVIDIA A10G, GPU-cc07fc00-b790-edad-b750-654c3619bb84, 595.91.07",
+  "cpu": {
+    "exceptionBranchesMatched": 156,
+    "pinningCpuVerdict": {
+      "valid": true,
+      "sequence": 2147507508,
+      "locktime": 1497688167
+    },
+    "capacityCases": 7,
+    "resultSha256": "360983ba8a5ec5c71f8e31729a7310e7beefd4f9320c58822043b1b4804acd07",
+    "scope": "Real historical single-pin replay and diagnostic synthetic exception/hit-capacity cases, not fresh withdrawal"
+  },
+  "pinningHostInjectedCalls": 34,
+  "curveInputCases": 5628,
+  "curvePointCases": 11256,
+  "curveInfinityCases": 4,
+  "curveTableChecks": 504,
+  "memoryCases": 7,
+  "limits": [
+    "Diagnostic derivatives are distinct from release binaries",
+    "Historical single-pin replay is not fresh search",
+    "Matched performance and fresh full final-image proof remain pending",
+    "No external miner certification or mainnet activation"
+  ],
+  "cleanup": {
+    "verifiedAt": "2026-09-25T19:49:25.805935+00:00",
+    "instanceId": "i-04ee82bee6764c728",
+    "instanceState": "terminated",
+    "volumeIds": [
+      "vol-0d493c3e02129fda2"
+    ],
+    "volumesRemaining": 0,
+    "securityGroupsRemaining": 0,
+    "schedulesRemaining": 0,
+    "functionsRemaining": 0,
+    "rolesRemaining": 0,
+    "instanceProfilesRemaining": 0
+  }
+}
