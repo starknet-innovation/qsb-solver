@@ -6,6 +6,17 @@ import struct
 def normalized_file_symbols(data):
     if data[:6] != b'\x7fELF\x02\x01' or len(data)<64:
         raise ValueError('expected ELF64 little endian')
+    phoff=struct.unpack_from('<Q',data,32)[0]
+    phsize,phcount=struct.unpack_from('<HH',data,54)
+    if phsize!=56 or phcount==0 or phoff+phsize*phcount>len(data):
+        raise ValueError('invalid program header inventory')
+    loaded=[]
+    for i in range(phcount):
+        h=struct.unpack_from('<IIQQQQQQ',data,phoff+i*phsize)
+        if h[0]==1:
+            if h[2]+h[5]>len(data): raise ValueError('invalid load segment bounds')
+            loaded.append((h[2],h[2]+h[5]))
+    if not loaded: raise ValueError('missing load segments')
     offset=struct.unpack_from('<Q',data,40)[0]
     size,count,names_index=struct.unpack_from('<HHH',data,58)
     if size!=64 or not 0<names_index<count or offset+size*count>len(data):
@@ -24,7 +35,10 @@ def normalized_file_symbols(data):
         pattern=rb'(?<=\x00)tmpxft_([0-9a-f]{8})_00000000-6_pinning\.cudafe1\.cpp(?=\x00)'
         matches=list(re.finditer(pattern,strings))
         if len(matches)!=1:raise ValueError('unexpected nvcc filename inventory')
-        m=matches[0];start=s[4]+m.start(1);out[start:start+8]=b'00000000'
+        m=matches[0];start=s[4]+m.start(1)
+        if any(start<end and start+8>begin for begin,end in loaded):
+            raise ValueError('nvcc filename overlaps a load segment')
+        out[start:start+8]=b'00000000'
     if found!=1:raise ValueError('missing/duplicate string table')
     return bytes(out)
 
