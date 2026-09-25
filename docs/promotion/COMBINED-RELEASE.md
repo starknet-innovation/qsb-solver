@@ -94,3 +94,19 @@ open and no descriptor was copied into its registry. The contract fingerprint is
 No step enables mainnet. External miner inclusion and any exact mainnet transaction
 remain separate gates. The old completed proof endpoints and spent fixtures stay
 untouched. This document is a completion plan, not evidence that steps 1–5 ran.
+
+## Executed preparation check
+
+The real command at `bbaf782874e83b26a5c8bbca241613787e4ccf89` verified candidate2
+through GitHub, pulled its immutable digest and executed the installed binding
+check in a local Linux/amd64 container without network access or GPU. The extracted
+proposal exactly matched the source-bound proposal accepted by the pending app
+consumer. A real wrong-candidate-tag attempt failed attestation before extraction.
+A post-check showed no extraction containers remaining. The
+[preparation receipt](2026-09-25-preparation.json) records artifact hashes.
+
+The initial command combined two mutually exclusive GitHub CLI flags and failed
+before Docker. The executed correction uses exact certificate identity, source
+ref/digest and signer digest; no claim relies on the failed attempt. Unit tests
+cover verification failure, immutable identity rejection, HOLD extraction and
+container removal after timeout. These tests do not grant promotion approval.
