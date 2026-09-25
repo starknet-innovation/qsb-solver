@@ -32,3 +32,9 @@ A `v*` Git tag builds the historical worker for Linux amd64/sm_89, pushes `ghcr.
 Tagging triggers publication of compiled binaries. The user confirmed redistribution approval on 2026-09-25. That records the supplied approval, not an independent legal opinion. All upstream license and source notices remain in the tree and image. See [LICENSES.md](LICENSES.md).
 
 Development validation scripts under `worker/validation` consume an explicitly supplied `QSB_CPU_REFERENCE_ROOT` pointing to qsb-app's independent `worker/cpu` checkout. They do not bundle or publish that reference inside the solver. Historical ranked-v1 tooling is retained only under `research/archived-validation` and must not be run as a current release gate.
+
+### Attested AWS release
+
+An `aws-v*` tag uses the same publication, provenance attestation and descriptor steps above, selecting the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). Ordinary `v*` tags retain the Runpod/sm_89 target. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.
+
+After CI succeeds, verify the generated descriptor's GHCR digest and source commit with `gh attestation verify`. To mirror it into a private registry, use a digest-preserving registry copy (for example `crane copy GHCR_IMAGE@sha256:DIGEST ECR_REPOSITORY:RELEASE_TAG`) and verify the destination manifest digest equals the attested digest before registering a Batch job definition. Keep the public descriptor's canonical GHCR identity; operator registry/account configuration belongs outside this repository. Never substitute a digest from a `docker load`/`push` round trip or treat the mirror's name as provenance. Consumer enrollment and deployment remain separate steps requiring that exact digest and fresh runtime verification.
