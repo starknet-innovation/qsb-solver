@@ -1,0 +1,32 @@
+{
+  "repository": "https://github.com/Layr-Labs/quantum-safe-bitcoin-challenge",
+  "commit": "2791ed0588f5014ccd688d48ba5502df2879f2f1",
+  "files": {
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "candidates/README.md": "41387fff83ccc4af03cd04016512b02ba37de1ce66fa8bef97bacc4c83bac3e2",
+    "candidates/pinning/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "candidates/pinning/GPUHash.h": "8cf9b303b6f5a09051e433a8bc21e2f3a66631e3bd22b2b1a10e71fe0b21b2bc",
+    "candidates/pinning/GPUMath.h": "e35303a35f8a93ea93543396ebc9e571869494c41e3004eff0d1d0e0e2aebc13",
+    "candidates/pinning/LeafRecovery.cuh": "0d52eee855ded9ab51772d978a6da9eccb6f778c49ef45138eed1c902fc71f2c",
+    "candidates/pinning/PackedRecovery.cuh": "dc884771614339f5c2ba9732824252a514344605bf099ce6f4c759dae7674240",
+    "candidates/pinning/RESEARCH.md": "e7a32a084d2f8eafb1cbe7774a9826b36506bf37059d5b2573a6fe38d61db2a8",
+    "candidates/pinning/RecoveryConstant.h": "6f6c0347ab0bb4abca13b2cdbb9294a997c9b3c6a076fd7ed7493e531ac0e369",
+    "candidates/pinning/SOURCE-MANIFEST.json": "9ad8ae159e6dd05c6c52c55bd1311f1346068176c41211f548e848afe8da6aac",
+    "candidates/pinning/cofactor_checkpoint.h": "81115ad8e6f535eb4a496ba31fbbfba3c5fa528d2562b9295af45057ba36256a",
+    "candidates/pinning/pinning.cu": "d60ac2ff0c675cc115731897dc3c2480a17d98e92c8152ed5af80cf7c98c7640",
+    "candidates/subset/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "candidates/subset/GPUHash.h": "d29adbbdb331b164aa16f19611c9f95d412105febaef9417de185ba486a72692",
+    "candidates/subset/GPUMath.h": "b93fa266439d2b71d56f7ac85cea06460b92d8d9f5ec5281008d755bbd090b9c",
+    "candidates/subset/TREE_INVERSE.md": "4457a27fbbd4af653045efe5f1d3507871b698eaf9e28d5a4de21fcb3bde318a",
+    "candidates/subset/square32.cuh": "a973d1dd58bf760ce5cbff79e69cbe8cd725d8ad1a642741e936fb2d948be771",
+    "candidates/subset/subset.cu": "e2bead6006809470d21f6beb8de58a5efe7af483ffcf74f31596a9da108446ef",
+    "candidates/subset/tests/gpu_epochs/dirdig_audit.cu": "5c0290f674063a2b793a26cafa0072b40bb9185ed3494af79d5c4ea6d30fe6a8",
+    "candidates/subset/tests/gpu_epochs/prefix_cache.cuh": "2b289341d3ed1136c4ea157d2d68c2924da2b5a6538cf4ea49e8c720712977b5",
+    "candidates/subset/tests/gpu_epochs/tree.cu": "608e7d04180c7e0140c7403cc5256408ec2f5bda2ef0e9799cb7373f80f9abf6",
+    "candidates/subset/tests/gpu_epochs/tree_audit.cu": "25ec22761b2724f62896c1a621516ca00ba5fe52d50f03239167ea7ea45034d4",
+    "candidates/subset/tests/gpu_epochs/tree_inverse.cuh": "afa07a330119b2bd55c01de275b1a78766e9d2026113acb8f658be7c9311d1a6",
+    "candidates/subset/tests/gpu_epochs/window_schedule_shared.cuh": "94aab78aa0ce08788b0c6cd2593e31be689d6b0363934f18085bae3779c97d0a",
+    "candidates/subset/tests/gpu_epochs/zinv32.cuh": "8249034e5bff1526de31ebd64efd923d0b0c18683d71f7f6c7ed4fe70ca31807"
+  },
+  "excludedArchiveEntries": "Generated Python bytecode (__pycache__/*.pyc); not reviewed source."
+}

@@ -1,0 +1,23 @@
+name: Solver source and contract
+on: [pull_request, push]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+  historical-image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: docker build --platform linux/amd64 -f worker/Dockerfile -t qsb-solver:ci .
+      - name: Validate image contents without GPU or network
+        run: |
+          docker run --rm --network none --read-only --entrypoint python3 qsb-solver:ci -c "import handler; from pathlib import Path; assert Path('/opt/qsb/pinning').is_file(); assert Path('/opt/qsb/subset').is_file(); assert Path('/opt/qsb/source/pinning/COPYING').is_file(); assert not Path('/opt/qsb/cpu').exists()"
