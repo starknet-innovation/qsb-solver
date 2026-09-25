@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "check": "frozen CPU subprocess export equals previously frozen parameters",
+  "parameterSha256": "0b80d4ac82839428275a51d4d02cbf02042c254986628624fc2eb0f3ae54c55a",
+  "freshGpuExecution": false
+}

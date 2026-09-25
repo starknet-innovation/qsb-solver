@@ -193,3 +193,29 @@ The mainnet-formatted nested SegWit address is a compatibility detail of that
 regtest-only schema: **never fund it on mainnet**. This command does not fund,
 search, assemble, sign or broadcast. Keep any partial preparation for inspection;
 do not rerun into it, print its contents or substitute an older wallet/commitment.
+
+### Independent CPU evidence check
+
+`verify.py` revalidates the collection archive/inventory and externally frozen
+public fixture hash. It re-exports the exact stage parameters, including the
+subset pin context, and compares both bytes and hash to the submitted request.
+Candidate membership is checked before independent CPU puzzle verification.
+The six CPU reference sources are fixed by hash and copied into a fresh temporary
+directory; each call runs in a new isolated Python interpreter, avoiding shared
+cwd/module state and existing bytecode caches.
+
+```sh
+python3 ops/fresh-proof/verify.py --collection /absolute/session/collection/evidence \
+  --fixture /absolute/campaign/public-fixture.json --fixture-sha256 FROZEN_SHA256 \
+  --reference /absolute/campaign/cpu-reference --output /absolute/session/cpu-verified.json
+```
+
+An uncertain execution cannot be published through this command. Unexpected CPU
+rejection stops for diagnosis. A verified hit or DER-only hit is never eligible
+for whole-range credit; no next attempt is inferred across it. All receipts still
+say `grantsRangeCredit=false`: the durable coordinator must separately verify
+admission, attested execution identity, provider termination and context before
+writing coverage or advancing the stage. The fixture digest must come from the
+previously frozen campaign, not be recomputed as a workaround for changed inputs.
+Mocked tests and an actual pinning-parameter export confirm the local verification
+path; they are not a fresh GPU search or solved proof.
