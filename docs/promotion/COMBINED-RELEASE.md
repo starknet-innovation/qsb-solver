@@ -113,3 +113,13 @@ before Docker. The executed correction uses exact certificate identity, source
 ref/digest and signer digest; no claim relies on the failed attempt. Unit tests
 cover verification failure, immutable identity rejection, HOLD extraction and
 container removal after timeout. These tests do not grant promotion approval.
+
+## Merged app consumer check for sm86
+
+App PR47 merged at `8c704906`; the current checked app commit
+`476a47c` includes its strict schema3 consumer. In an isolated checkout, two actual
+consumer tests passed for the source-bound sm86 proposal already extracted and
+verified in the AWS candidate preparation. They checked exact source/image and
+paid-search contract acceptance, and rejected changed contract, duplicate ID and
+mutable image data. No registry file, deployed configuration or default changed.
+This closes consumer compatibility for that proposal, not enrollment or promotion.

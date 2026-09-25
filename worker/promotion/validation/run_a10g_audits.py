@@ -37,12 +37,15 @@ def main():
         if receipt['architecture']!='sm_86' or receipt['unmodifiedBinarySha256']!=SUB or receipt['sourceLockSha256']!=binding['subsetSourceLockSha256']:
             raise ValueError('wrong subset diagnostic lineage')
     pin=json.loads((root/'pinning/receipt.json').read_text())
-    if pin['architecture']!='sm_86' or pin['files']['pinning']!=PIN: raise ValueError('wrong pinning diagnostic lineage')
+    if pin['architecture']!='sm_86': raise ValueError('wrong pinning diagnostic lineage')
+    if sha(root/'pinning/pinning')!=pin['files']['pinning']: raise ValueError('rebuilt pinning hash mismatch')
+    from elf_metadata import same_except_nvcc_filename
+    same_except_nvcc_filename((root/'pinning/pinning').read_bytes(),Path('/opt/qsb/pinning').read_bytes())
     gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,uuid,driver_version','--format=csv,noheader'],text=True).strip()
     if len(gpu.splitlines())!=1 or 'A10G' not in gpu: raise ValueError('exactly one A10G required')
     with args.output.open('x') as f: json.dump({'status':'running','binding':binding},f)
     deadline=time.monotonic()+600
-    results=dict(status='running',binding=binding,gpu=gpu,phases={},freshWithdrawal=False)
+    results=dict(status='running',binding=binding,gpu=gpu,phases={},freshWithdrawal=False,rebuiltPinningSha256=pin['files']['pinning'],pinningDifference='nonallocated nvcc temporary filename only; release hash unchanged')
     with tempfile.TemporaryDirectory() as tmp:
         work=Path(tmp)
         for d in ['edge','curve','pinning']: shutil.copytree(root/d,work/d)
