@@ -38,3 +38,15 @@ existing candidate prerelease; it is not an enrolled solver.
 Next: native sm86 pinning/exception/memory assessment, matched performance, and a
 fresh final-image wallet-backed proof with unmodified Core. External miner
 inclusion remains a separate gate. No app enrollment or mainnet activation.
+
+## Review and cleanup
+
+An independent review subagent inspected commit `ba3cbb3`, checked artifact/result
+identities and all 40 completion logs, and found no blocker or overclaim. Its three
+targeted tests passed. It did not rerun CPU cryptography or independently query
+cloud cleanup; this is gate review, not approval for promotion.
+
+At 18:03:27 UTC, independent AWS reads confirmed the test instance terminated,
+its recorded root volume deleted, and no remaining temporary security group,
+Scheduler schedule, Lambda, IAM roles or instance profile. The watcher remains
+paused. No paid GPU remains from this experiment.
