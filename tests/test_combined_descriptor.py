@@ -56,3 +56,12 @@ class CombinedDescriptorTests(unittest.TestCase):
         right = proposal(p+b'\n', r, 'a'*40, 'sha256:'+'f'*64, self.contract)
         self.assertEqual(left['solver'], right['solver'])
         self.assertNotEqual(left['binding']['pipelineSha256'], right['binding']['pipelineSha256'])
+
+
+    def test_architecture_binding(self):
+        for arch in ('sm_86','sm_89'):
+            p=dict(self.pipeline,architecture=arch)
+            r=dict(self.receipt,architecture=arch,flags=['-O3','-arch='+arch])
+            self.assertEqual(self.build(pipeline=p,receipt=r)['status'],'HOLD')
+            for broken in (dict(r,architecture='sm_80'),dict(r,flags=[]),dict(r,flags=['-arch='+arch]*2)):
+                with self.assertRaises(ValueError):self.build(pipeline=p,receipt=broken)

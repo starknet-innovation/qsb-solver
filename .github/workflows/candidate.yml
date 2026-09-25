@@ -23,13 +23,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Select explicit candidate architecture
+        run: |
+          case "$GITHUB_REF_NAME" in
+            candidate-sm86-*) echo "CUDA_ARCH=86" >> "$GITHUB_ENV" ;;
+            *) echo "CUDA_ARCH=89" >> "$GITHUB_ENV" ;;
+          esac
       - name: Compile and bind both stages
         env:
           IMAGE: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
         run: |
           docker build -f worker/Dockerfile -t qsb-historical:build .
-          docker build -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:build .
+          docker build -f worker/optimized/Dockerfile --target runtime --build-arg CUDA_ARCH="$CUDA_ARCH" -t qsb-optimized:build .
           docker build -f worker/promotion/Dockerfile \
+            --build-arg CUDA_ARCH="$CUDA_ARCH" \
             --build-arg HISTORICAL_IMAGE=qsb-historical:build \
             --build-arg OPTIMIZED_IMAGE=qsb-optimized:build \
             --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t "$IMAGE" .

@@ -21,7 +21,7 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
     """Inputs must be extracted from the separately provenance-verified image."""
     pipeline = json.loads(pipeline_bytes)
     receipt = json.loads(receipt_bytes)
-    if (not isinstance(pipeline, dict) or set(pipeline) != PIPELINE_KEYS
+    if (not isinstance(pipeline, dict) or set(pipeline) not in (PIPELINE_KEYS, PIPELINE_KEYS | {'architecture'})
             or pipeline['format'] != 'qsb-combined-candidate-v1'
             or pipeline['status'] != 'HOLD' or pipeline['searchVersion'] != 'ranked-v2'
             or pipeline['solverCommit'] != source_commit
@@ -39,6 +39,10 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
             or receipt.get('binarySha256') != files['subset']
             or receipt.get('sourceLockSha256') != pipeline['subsetSourceLockSha256']):
         raise ValueError('Build receipt differs from installed pipeline')
+    if 'architecture' in pipeline:
+        arch=pipeline['architecture']
+        if arch not in ('sm_86','sm_89') or receipt.get('architecture')!=arch or receipt.get('flags',[]).count('-arch='+arch)!=1:
+            raise ValueError('Build architecture mismatch')
     value = descriptor(source_commit, image_digest)
     # The combined worker echoes its own source commit, not an upstream lineage.
     value['kernelCommit'] = source_commit
