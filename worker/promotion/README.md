@@ -1,8 +1,9 @@
 # Combined worker promotion
 
-This candidate joins the unchanged historical pinning executable to the optimized
-subset build for round1/round2. CUDA source and compiler flags are unchanged by
-this integration. Both stages use the public `ranked-v2` request/result contract;
+This candidate joins host-repaired historical pinning to the optimized
+subset build for round1/round2. The pinning repair checks CUDA host operations,
+hit capacity and output publication while preserving its device code and
+SLOTPIPE=0 configuration. Both stages use the public `ranked-v2` request/result contract;
 `kernelCommit` identifies the combined repository commit rather than falsely
 claiming either upstream commit describes the whole pipeline.
 
@@ -30,8 +31,8 @@ Before promoting a combined candidate:
 - Publish a new normal release and enroll its descriptor only after reviewing that
   evidence. No automatic application deployment or default change is performed.
 
-The historical pinning implementation remains historical, including its known
-output-capacity limitations. This integration does not certify it as lossless or
-claim to publish the fastest Yukon leaderboard submission. The optimized subset
+The pinning device algorithm remains historical. Both stages fail closed when
+the supported host hit capacity is exceeded; this is not unlimited output support.
+The integration does not claim to publish the fastest Yukon leaderboard submission. The optimized subset
 has fail-closed capacity/exception handling; deterministic failures must not be
 credited or blindly retried.
