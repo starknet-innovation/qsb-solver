@@ -139,3 +139,37 @@ directories are never overwritten. These routines do not invoke AWS, submit work
 terminate instances, verify cryptographic candidates or mutate coverage. The SSM
 transport, cross-host reconciliation and authoritative CPU verification/coverage
 integration remain pending. Local archive tests do not certify remote retrieval.
+
+### Resuming public SSM result reads
+
+`collect.py` consumes saved execution and original host-command receipts; it never
+starts a solver. It reads the original invocation first and waits if that command
+is still pending. Terminal commands must contain exactly one archive hash/length
+receipt. A collection context freezes the instance, original command and submitted
+batch hash. Each bounded read has a durable intent before `send-command`; an
+uncertain submission without a saved command ID requires manual reconciliation.
+A saved read command is polled on subsequent runs, never replaced automatically.
+
+```sh
+python3 ops/fresh-proof/collect.py --execution /absolute/session/execution.json \
+  --command /absolute/session/host-command.json --batch /absolute/session/batch.json \
+  --collection /absolute/session/collection
+```
+
+The CLI uses only profile `snf`, account `905846953990`, region `eu-west-1`.
+Run it again to poll a returned pending command ID, using the same inputs. An
+already-created evidence directory is not overwritten, including after a partial
+local write. Inspect its collection receipt or reconcile the failure. Do not
+interpret an observation timeout as a stopped original execution. Cleanup remains
+mandatory through the execution controller and independent deadline; this collector
+does not terminate instances or settle the budget. Local tests include executing
+the exact generated read command against public bytes, but AWS transport remains
+mocked until a future authorized session. No fresh-proof launch is enabled by this
+collector alone.
+
+The CLI explicitly sets `AWS_MAX_ATTEMPTS=1`, with bounded connection, response
+and process timeouts; an underlying CLI retry must not duplicate `send-command`.
+The original terminal invocation is retained alongside metadata for provenance.
+Tests cover multiple chunks with distinct IDs and a pending middle read, not only
+single-chunk archives. These safeguards concern collection commands only; they do
+not attest the solver or permit replay of an uncertain paid session.
