@@ -1,0 +1,52 @@
+{
+  "scope": "Synthetic unfunded outpoints and fixed public output scripts; reused public commitments only; no historical funded outpoint used for compute",
+  "fixtureSha256": "00fc8766c0637981d1100b57be5713e04f33da3e139c61bb62064ae8172c0173",
+  "referenceFiles": {
+    "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+    "handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+    "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+    "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba"
+  },
+  "contexts": [
+    {
+      "name": "wpkh-pinning",
+      "manifest": {
+        "funding": {
+          "txid": "05dba025fb480effc82b5338b7055e4340acfe517c94022d439a2009af58d95b",
+          "vout": 0,
+          "value": "100000"
+        },
+        "helper": {
+          "txid": "c48bf0f4caa9788cf49cf2a807ad5e5760194a1baa0239cb61bfdcbe89ebe8e0",
+          "vout": 0,
+          "value": "10000"
+        },
+        "outputScript": "00144242424242424242424242424242424242424242",
+        "outputValue": "90000",
+        "fee": "20000"
+      },
+      "parameterSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2"
+    },
+    {
+      "name": "taproot-pinning",
+      "manifest": {
+        "funding": {
+          "txid": "05dba025fb480effc82b5338b7055e4340acfe517c94022d439a2009af58d95b",
+          "vout": 0,
+          "value": "100000"
+        },
+        "helper": {
+          "txid": "c48bf0f4caa9788cf49cf2a807ad5e5760194a1baa0239cb61bfdcbe89ebe8e0",
+          "vout": 0,
+          "value": "10000"
+        },
+        "outputScript": "51204242424242424242424242424242424242424242424242424242424242424242",
+        "outputValue": "90000",
+        "fee": "20000"
+      },
+      "parameterSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b"
+    }
+  ]
+}

@@ -23,3 +23,16 @@ class PinningPerformanceTests(unittest.TestCase):
         bad=copy.deepcopy(self.result)
         for row in bad['samples']:row['seconds']=20
         with self.assertRaisesRegex(ValueError,'worker timeout'):m.summarize(bad)
+
+    def test_real_process_capture_and_rejected_hit(self):
+        import base64,tempfile,time
+        with tempfile.TemporaryDirectory() as tmp:
+            binary=Path(tmp)/'dummy'
+            fixture=dict(params=base64.b64encode(b'public-dummy').decode())
+            binary.write_text('#!/usr/bin/env python3\nprint('+repr(self.row['log'])+')\n')
+            binary.chmod(0o700)
+            row=m.execute(binary,fixture,time.monotonic()+5)
+            self.assertEqual(row['exit'],0);self.assertIn('256M',row['log'])
+            binary.write_text('#!/usr/bin/env python3\nfrom pathlib import Path\nPath("results").mkdir()\nPath("results/pinning_hit_0.txt").write_text("public-dummy-hit")\nprint('+repr(self.row['log'])+')\n')
+            with self.assertRaises(m.SampleFailure) as caught:m.execute(binary,fixture,time.monotonic()+5)
+            self.assertEqual(caught.exception.row['hitFiles'],{'pinning_hit_0.txt':'public-dummy-hit'})

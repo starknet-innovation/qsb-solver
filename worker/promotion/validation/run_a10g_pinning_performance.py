@@ -13,7 +13,7 @@ import sys
 import tempfile
 import time
 from run_a10g import validate_binding
-from run_a10g_performance import save, SampleFailure
+from run_a10g_performance import save, SampleFailure, sync_directory
 
 BASELINE='f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0'
 CANDIDATE='cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62'
@@ -96,6 +96,7 @@ def main():
     result=dict(status='running',baselineSha256=BASELINE,candidateSha256=CANDIDATE,binding=binding,gpu=gpu,
                 fixtureSha256=expected,samples=[],grantsRangeCredit=False,freshWithdrawal=False)
     with output.open('x') as f:json.dump(result,f);f.flush();os.fsync(f.fileno())
+    sync_directory(output.parent)
     deadline=time.monotonic()+600
     try:
         for fixture in sorted(fixtures,key=lambda f:f['name']):

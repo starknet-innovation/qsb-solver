@@ -1,0 +1,10 @@
+[
+  {
+    "name": "wpkh-pinning",
+    "params": "rDmskDDuVOXd87Bt3a3ApnZwVhGkz4YPY/BgOOvjalNLAAAAegJHAnoCSAJ6AkkCegJKAnoCSwJ6AkwCegJNAnpargAAAIABkF8BAAAAAAAWABRCQkJCQkJCQkJCQkJCQkJCQkJCQgBlzR0BAAAACycAAB8AAABDAAAAzQRQb1I69RoRcmisH/4AaBfZ6yqw8W023wAzpiGKmK6RmyBvlIkTY+0urs708xhvPQ2JRmpWThuArw2tp63/ai7kWmRmW+d3okmiTIZJfqvVHT39KeplyahOt6Y7meZ/"
+  },
+  {
+    "name": "taproot-pinning",
+    "params": "rDmskDDuVOXd87Bt3a3ApnZwVhGkz4YPY/BgOOvjalNXAAAAegJHAnoCSAJ6AkkCegJKAnoCSwJ6AkwCegJNAnpargAAAIABkF8BAAAAAAAiUSBCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQgBlzR0BAAAAFycAAB8AAABPAAAAzQRQb1I69RoRcmisH/4AaBfZ6yqw8W023wAzpiGKmK6RmyBvlIkTY+0urs708xhvPQ2JRmpWThuArw2tp63/ai7kWmRmW+d3okmiTIZJfqvVHT39KeplyahOt6Y7meZ/"
+  }
+]
