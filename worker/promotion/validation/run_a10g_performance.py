@@ -15,7 +15,8 @@ import time
 from run_a10g import validate_binding, SUB
 
 BASELINE = '672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d'
-COUNT = 1 << 31
+COUNT = 1 << 29
+FULL_RANGE = 1 << 34
 NAMES = {'wpkh-round1','wpkh-round2','taproot-round1','taproot-round2'}
 
 
@@ -92,7 +93,12 @@ def summarize(result):
         times={label:[r['seconds'] for r in result['samples'] if r['name']==name and r['binary']==label]
                for label in ('baseline','candidate')}
         b,c=(statistics.median(times[label]) for label in ('baseline','candidate'))
-        output[name]=dict(seconds=times,throughputGainPercent=100*(b/c-1),wallTimeReductionPercent=100*(1-c/b))
+        projections={label:max(values)*(FULL_RANGE/COUNT) for label,values in times.items()}
+        output[name]=dict(seconds=times,throughputGainPercent=100*(b/c-1),wallTimeReductionPercent=100*(1-c/b),
+                          projectedFullRangeSeconds=projections,projectionMethod='maximum startup-inclusive sample scaled linearly',
+                          candidateWithin840SecondWorkerLimit=projections['candidate']<840)
+        if projections['candidate']>=840:
+            raise ValueError('candidate projected full range exceeds worker limit')
     return output
 
 

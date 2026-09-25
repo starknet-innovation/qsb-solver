@@ -42,7 +42,7 @@ effective binary architecture inspection and measured performance remain pending
 `run_a10g_performance.py` pins both binary hashes and the externally frozen fixture
 hash. It requires one A10G and the installed candidate binding, then runs 24 samples:
 three alternating pairs for both rounds and both layouts. Each sample requests
-exactly2^31 ranks and must report that exact exhausted count with zero hits in its
+exactly2^29 ranks and must report that exact exhausted count with zero hits in its
 summary, one completion marker and a successful process exit. Missing, shortened,
 nonfinite, duplicate or reordered samples reject. Wall timing includes startup.
 The full logs, summaries and partial-progress samples are persisted; any failed
@@ -55,3 +55,29 @@ preparation does not launch infrastructure. Nine local tests cover acceptance an
 negative accounting, including dummy subprocess success, hit preservation and timeout output capture; they
 are not native solver/performance evidence. Operator bundle publication, complete
 collection/cleanup preparation and one reviewed bounded launch are still required.
+
+## Revised sizing and remaining pinning session
+
+The original 2^31 plan is superseded before execution. Recorded exact-candidate
+A10G samples of 2^26 ranks took 2.101/2.119 seconds in round1 and 1.430/1.438
+seconds in round2, including approximately 0.62 seconds of startup. The
+[sizing receipt](2026-09-25-a10g-performance-sizing.json) uses those measured
+startup/slope pairs to size 2^29 samples, with a planning allowance of twice the
+candidate time for each unmeasured baseline run. This allowance is not a measured
+baseline speedup. The resulting 24-run estimate fits the 600-second internal
+budget; actual timeout/failure still invalidates the entire comparison.
+
+Report a conservative linear full 2^34-rank projection from the slowest sample,
+including repeated startup cost. A candidate projection at or above the 840-second
+worker limit rejects the gate. This is a projection, not a measured full range.
+
+Pinning is a separate required bounded comparison, not covered by this subset
+runner. Extract and verify the released pinning binary hash
+`f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0`
+from `aws-v0.1.0` digest
+`sha256:9e62d3c4eae05b4c5164a78679ad7f383aeefa0f9bfc30121fadab2ca9db623e`.
+Alternate it with frozen candidate pinning on identical synthetic public inputs
+and exact sequence/locktime bounds; preserve full logs and account for a full
+19,913,600,000-candidate ranked-v2 range. Do not launch the earlier subset-only
+bundle as if it completed the combined performance gate. Each paid session needs
+its own complete reviewed collection and cleanup plan.

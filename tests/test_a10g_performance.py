@@ -58,3 +58,15 @@ class PerformanceTests(unittest.TestCase):
             with self.assertRaises(m.SampleFailure) as caught:m.execute(executable,dict(params=base64.b64encode(b'public-test').decode(),sequence=1,locktime=2),time.monotonic()+0.5)
             self.assertTrue(caught.exception.row['timedOut'])
             self.assertIn('before timeout',caught.exception.row['log'])
+
+    def test_full_range_projection_rejects_worker_timeout(self):
+        result=copy.deepcopy(self.result)
+        for row in result['samples']:
+            if row['binary']=='candidate':row['seconds']=30
+        with self.assertRaisesRegex(ValueError,'worker limit'):m.summarize(result)
+    def test_projection_uses_slowest_sample_and_includes_startup(self):
+        result=copy.deepcopy(self.result)
+        result['samples'][1]['seconds']=6
+        summary=m.summarize(result)
+        first=sorted(m.NAMES)[0]
+        self.assertEqual(summary[first]['projectedFullRangeSeconds']['candidate'],6*32)
