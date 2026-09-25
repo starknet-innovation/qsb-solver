@@ -14,6 +14,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - architecture: 89
+            artifact: native-pinning-audit
+          - architecture: 86
+            artifact: native-pinning-audit-sm86
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -22,7 +29,7 @@ jobs:
       - run: python3 -m unittest discover -s tests -v
       - name: Build normal and diagnostic repaired pinning
         run: |
-          docker build -f worker/promotion/Dockerfile --target repaired-pinning --build-arg HISTORICAL_IMAGE=scratch --build-arg OPTIMIZED_IMAGE=scratch -t qsb-pinning-build:audit .
+          docker build --build-arg CUDA_ARCH=${{ matrix.architecture }} -f worker/promotion/Dockerfile --target repaired-pinning --build-arg HISTORICAL_IMAGE=scratch --build-arg OPTIMIZED_IMAGE=scratch -t qsb-pinning-build:audit .
           docker build -f worker/promotion/validation/PinningAudit.Dockerfile -t qsb-pinning-audit:build .
           container=$(docker create qsb-pinning-audit:build)
           mkdir audit-output
@@ -31,6 +38,6 @@ jobs:
           printf '%s\n' "$GITHUB_SHA" > audit-output/source-commit.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: native-pinning-audit
+          name: ${{ matrix.artifact }}
           path: audit-output/
           retention-days: 14

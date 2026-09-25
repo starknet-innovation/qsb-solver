@@ -36,11 +36,13 @@ def main():
     output = Path('/opt/qsb-pinning-audit'); output.mkdir()
     diagnostic = source.with_name('pinning-audit.cu')
     diagnostic.write_text(instrument(source.read_text()))
-    flags = ['-O3','-arch=sm_89','-DQSB_SLOTPIPE=0']
+    architecture = source.with_name('cuda-architecture').read_text().strip()
+    if architecture not in ('86','89'): raise ValueError('unexpected repaired pinning architecture')
+    flags = ['-O3','-arch=sm_'+architecture,'-DQSB_SLOTPIPE=0']
     subprocess.run(['nvcc',*flags,'-o',str(output/'pinning-audit'),str(diagnostic),'-lcrypto','-lm'],check=True)
     import shutil
     shutil.copyfile('/pinning',output/'pinning')
-    receipt = dict(flags=flags, sourceSha256=sha(source), diagnosticSourceSha256=sha(diagnostic),
+    receipt = dict(flags=flags, architecture='sm_'+architecture, sourceSha256=sha(source), diagnosticSourceSha256=sha(diagnostic),
         files={p.name:sha(p) for p in output.iterdir() if p.is_file()},
         compiler=subprocess.check_output(['nvcc','--version'],text=True),
         scope='Host-call error and counter injection only; derivative is never a release solver',status='UNEXECUTED')

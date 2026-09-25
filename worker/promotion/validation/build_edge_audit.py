@@ -58,6 +58,9 @@ def main():
     root=Path('/src');source=root/'research/optimized-subset';lockfile=root/'worker/optimized/source-lock.json';lock=json.loads(lockfile.read_text())
     actual={str(p.relative_to(source)):sha(p) for p in (source/'subset').rglob('*') if p.is_file()}
     if actual!=lock['files']:raise ValueError('source lock mismatch')
+    from build_trace import checked_flags
+    build=json.loads(Path('/opt/qsb-validation/build-receipt.json').read_text())
+    flags=checked_flags(lock,build,sha(lockfile))
     out=Path('/opt/qsb-edge-audit');out.mkdir()
     patches={}
     for mode in ['capacity','forced-exception','detected-exception']:
@@ -68,9 +71,8 @@ def main():
             a,b=exception_source(original,orig_resolve,mode=='forced-exception');tree.write_text(a);resolve.write_text(b)
         patch=''.join(difflib.unified_diff(original.splitlines(True),tree.read_text().splitlines(True),fromfile='locked/tree.cu',tofile=mode+'/tree.cu'))+''.join(difflib.unified_diff(orig_resolve.splitlines(True),resolve.read_text().splitlines(True),fromfile='locked/exact_resolve.cuh',tofile=mode+'/exact_resolve.cuh'))
         (out/(mode+'.diff')).write_text(patch)
-        subprocess.run(['nvcc',*lock['flags'],'-o',str(out/mode),str(target/'subset/subset.cu'),'-lcrypto','-lm'],check=True)
-    build=json.loads(Path('/opt/qsb-validation/build-receipt.json').read_text())
-    receipt=dict(sourceLockSha256=sha(lockfile),sourceFiles=actual,flags=lock['flags'],unmodifiedBinarySha256=build['binarySha256'],files={p.name:sha(p) for p in out.iterdir()},compiler=subprocess.check_output(['nvcc','--version'],text=True),scope='Diagnostic synthetic scalar/point and hit injection only; normal solver unchanged',status='UNEXECUTED')
+        subprocess.run(['nvcc',*flags,'-o',str(out/mode),str(target/'subset/subset.cu'),'-lcrypto','-lm'],check=True)
+    receipt=dict(sourceLockSha256=sha(lockfile),sourceFiles=actual,flags=flags,architecture=build['architecture'],unmodifiedBinarySha256=build['binarySha256'],files={p.name:sha(p) for p in out.iterdir()},compiler=subprocess.check_output(['nvcc','--version'],text=True),scope='Diagnostic synthetic scalar/point and hit injection only; normal solver unchanged',status='UNEXECUTED')
     (out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
 
 if __name__=='__main__':main()

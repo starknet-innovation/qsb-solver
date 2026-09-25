@@ -18,15 +18,18 @@ def main():
     actual = {str(p.relative_to(source)): sha(p) for p in (source/'subset').rglob('*') if p.is_file()}
     if actual != lock['files']:
         raise ValueError('audit source differs from candidate source lock')
+    from build_trace import checked_flags
+    build = json.loads(Path('/opt/qsb-validation/build-receipt.json').read_text())
+    flags = checked_flags(lock,build,sha(lockfile))
     output = Path('/opt/qsb-curve-audit')
     output.mkdir()
     vectors = output/'vectors.bin'
     vectors.write_bytes(encode(scalars()))
     executable = output/'point-audit'
-    command = ['nvcc', *lock['flags'], '-o', str(executable),
+    command = ['nvcc', *flags, '-o', str(executable),
                str(source/'subset/tests/gpu_epochs/point_audit.cu'), '-lcrypto', '-lm']
     subprocess.run(command, check=True)
-    receipt = dict(sourceLockSha256=sha(lockfile), sourceFiles=actual, flags=lock['flags'],
+    receipt = dict(sourceLockSha256=sha(lockfile), sourceFiles=actual, flags=flags, architecture=build['architecture'], unmodifiedBinarySha256=build['binarySha256'],
                    compiler=subprocess.check_output(['nvcc', '--version'], text=True),
                    files={p.name:sha(p) for p in [vectors, executable]}, scalarCount=len(scalars()),
                    scope='Diagnostic compiled from candidate source and flags; not the shipped solver binary',
