@@ -247,3 +247,32 @@ stage transitions, solved-budget refusal and capacity rejection without skipped
 coverage. Verifier/provider observations are mocked. No live proof ledger was
 initialized or mutated by these tests, and no GPU was allocated. The executable
 end-to-end coordinator and fresh proof remain pending.
+
+### Bound publication CLI
+
+The journal now freezes the exact reviewed host command text in its command intent
+before submission. `publication.py` supplies the concrete verifier callback: it
+checks the durable batch against collected bytes/context, reads SSM's original
+command and invocation, requires the exact frozen command/instance and successful
+execution, and compares the provider archive receipt with both local collection
+receipts. It then revalidates the whole archive and independently runs the pinned
+CPU reference through `verify_collection`. No previously saved CPU verdict is
+accepted as a substitute. Journal cleanup/settlement and atomic transition guards
+still apply. The command only reads AWS; it cannot submit or restart GPU work.
+
+```sh
+python3 ops/fresh-proof/publication.py --ledger /absolute/budget.sqlite \
+  --campaign /absolute/campaign.json --token ORIGINAL_BUDGET_TOKEN \
+  --command ORIGINAL_SSM_COMMAND_ID --collection /absolute/session/collection \
+  --fixture /absolute/campaign/public-fixture.json --reference /absolute/campaign/cpu-reference
+```
+
+The exact host command must be generated/reviewed from the committed immutable-image
+handoff before its intent is claimed. SSM evidence confirms provider execution and
+byte bindings; it is not hardware attestation. An expired/missing provider record
+blocks publication rather than allowing a local receipt to replace that evidence.
+The journal schema remains unreleased and no live campaign journal has been
+initialized; never recreate a live ledger to migrate it. Tests mock provider and
+CPU responses where appropriate. A read-only query of a previous completed native
+gate confirmed the SSM command/parameter schema, but no fresh proof was published.
+Live submission orchestration, matched timing and the full new Core proof remain.

@@ -92,6 +92,39 @@ class CpuReference:
             return json.loads(result.stdout)
 
 
+def verify_collection(collection, fixture, fixture_sha256, reference):
+    import importlib.util
+    from pathlib import Path
+    from results import decode_archive,unique_object
+    collection,fixture=Path(collection),Path(fixture)
+    raw=fixture.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=fixture_sha256:raise ValueError('Fixture binding changed')
+    fixture=json.loads(raw,object_pairs_hook=unique_object)
+    receipt=json.loads((collection/'collection-receipt.json').read_text(),object_pairs_hook=unique_object)
+    # Receipt keys cannot choose arbitrary filesystem paths.
+    expected={'public-result.b64','batch.json','deadline.txt','gpu.txt','gate.log','exit-code.txt','result.json'}
+    if set(receipt['files'])!=expected:raise ValueError('Invalid collection inventory')
+    for name,expected_hash in receipt['files'].items():
+        path=collection/name
+        if path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected_hash:
+            raise ValueError('Collected evidence changed')
+    files=decode_archive((collection/'public-result.b64').read_bytes(),receipt['archive'])
+    for name,value in files.items():
+        if (collection/name).read_bytes()!=value.encode():raise ValueError('Extracted archive mismatch')
+    root=Path(__file__).resolve().parents[2]
+    def module(name,path):
+        spec=importlib.util.spec_from_file_location(name,root/path)
+        result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result);return result
+    runner=module('fresh_sm86','worker/promotion/validation/run_fresh_sm86.py')
+    ranges=module('fresh_ranges','worker/search_ranges.py')
+    membership=module('fresh_membership','worker/promotion/validation/candidate_range.py')
+    result=verify(files,(collection/'batch.json').read_bytes(),fixture,CpuReference(reference),
+                  runner.validate_batch,runner.validate_binding,ranges.work_range,membership.validate_candidates_in_range)
+    result.update(fixtureSha256=fixture_sha256,referenceHashes=REFERENCE,
+                  collectionReceiptSha256=hashlib.sha256((collection/'collection-receipt.json').read_bytes()).hexdigest())
+    return result
+
+
 def main():
     import argparse
     import importlib.util
@@ -105,31 +138,7 @@ def main():
     parser.add_argument('--reference',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    raw=args.fixture.read_bytes()
-    if hashlib.sha256(raw).hexdigest()!=args.fixture_sha256:raise ValueError('Fixture binding changed')
-    fixture=json.loads(raw,object_pairs_hook=unique_object)
-    receipt=json.loads((args.collection/'collection-receipt.json').read_text(),object_pairs_hook=unique_object)
-    # Receipt keys cannot choose arbitrary filesystem paths.
-    expected={'public-result.b64','batch.json','deadline.txt','gpu.txt','gate.log','exit-code.txt','result.json'}
-    if set(receipt['files'])!=expected:raise ValueError('Invalid collection inventory')
-    for name,expected_hash in receipt['files'].items():
-        path=args.collection/name
-        if path.is_symlink() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected_hash:
-            raise ValueError('Collected evidence changed')
-    files=decode_archive((args.collection/'public-result.b64').read_bytes(),receipt['archive'])
-    for name,value in files.items():
-        if (args.collection/name).read_bytes()!=value.encode():raise ValueError('Extracted archive mismatch')
-    root=Path(__file__).resolve().parents[2]
-    def module(name,path):
-        spec=importlib.util.spec_from_file_location(name,root/path)
-        result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result);return result
-    runner=module('fresh_sm86','worker/promotion/validation/run_fresh_sm86.py')
-    ranges=module('fresh_ranges','worker/search_ranges.py')
-    membership=module('fresh_membership','worker/promotion/validation/candidate_range.py')
-    result=verify(files,(args.collection/'batch.json').read_bytes(),fixture,CpuReference(args.reference),
-                  runner.validate_batch,runner.validate_binding,ranges.work_range,membership.validate_candidates_in_range)
-    result.update(fixtureSha256=args.fixture_sha256,referenceHashes=REFERENCE,
-                  collectionReceiptSha256=hashlib.sha256((args.collection/'collection-receipt.json').read_bytes()).hexdigest())
+    result=verify_collection(args.collection,args.fixture,args.fixture_sha256,args.reference)
     save_new(args.output,result)
     print(json.dumps(dict(batchId=result['batchId'],rows=len(result['rows']),
                          hasCpuVerifiedSolution=result['verifiedSolution'] is not None,grantsRangeCredit=False)))

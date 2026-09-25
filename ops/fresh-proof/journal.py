@@ -28,7 +28,7 @@ class Journal:
                 raise ValueError('initialize proof before any budget reservations')
             # Deliberately no IF NOT EXISTS: initialization is never reset/resume.
             db.execute('CREATE TABLE proof_state(singleton INTEGER PRIMARY KEY CHECK(singleton=1), binding TEXT NOT NULL, stage TEXT NOT NULL, next_attempt INTEGER NOT NULL, solutions TEXT NOT NULL)')
-            db.execute('CREATE TABLE proof_sessions(token TEXT PRIMARY KEY, batch_id TEXT UNIQUE NOT NULL, batch TEXT NOT NULL, state TEXT NOT NULL, command_id TEXT, receipt TEXT)')
+            db.execute('CREATE TABLE proof_sessions(token TEXT PRIMARY KEY, batch_id TEXT UNIQUE NOT NULL, batch TEXT NOT NULL, state TEXT NOT NULL, command_id TEXT, command_text TEXT, receipt TEXT)')
             db.execute('CREATE TABLE proof_coverage(stage TEXT NOT NULL, context TEXT NOT NULL, attempt INTEGER NOT NULL, work_range TEXT NOT NULL, token TEXT NOT NULL, PRIMARY KEY(stage,context,attempt))')
             db.execute('INSERT INTO proof_state VALUES(1,?,\'pinning\',0,\'{}\')',
                        (canonical(dict(fixtureSha256=fixture_hash,manifestHash=manifest_hash,requestId=request_id)),))
@@ -51,7 +51,7 @@ class Journal:
                 raise ValueError('wrong manifest')
             if stage!='pinning' and any(request.get(k)!=solutions['pinning'][k] for k in ('sequence','locktime')):
                 raise ValueError('wrong verified pin context')
-            db.execute('INSERT INTO proof_sessions VALUES(?,?,?,\'registered\',NULL,NULL)',
+            db.execute('INSERT INTO proof_sessions VALUES(?,?,?,\'registered\',NULL,NULL,NULL)',
                        (token,batch['batchId'],batch_raw.decode()))
 
     def close_capacity_rejection(self, token):
@@ -66,12 +66,14 @@ class Journal:
                 raise ValueError('explicit capacity rejection required')
             db.execute("UPDATE proof_sessions SET state='published',receipt=? WHERE token=?",(canonical(evidence),token))
 
-    def claim_command(self, token):
+    def claim_command(self, token, command_text):
         """Commit before exactly one host send-command; an unknown send blocks."""
+        if not isinstance(command_text,str) or not command_text.strip() or len(command_text.encode())>200_000:
+            raise ValueError('exact bounded host command required')
         with self.budget.transaction() as db:
             if db.execute('SELECT state FROM intents WHERE id=?',(token,)).fetchone()!=('attached',):
                 raise ValueError('allocated resource required')
-            changed=db.execute("UPDATE proof_sessions SET state='command-intent' WHERE token=? AND state='registered'",(token,)).rowcount
+            changed=db.execute("UPDATE proof_sessions SET state='command-intent',command_text=? WHERE token=? AND state='registered'",(command_text,token)).rowcount
             if changed!=1:raise ValueError('command already attempted or missing session')
 
     def attach_command(self, token, command_id):
@@ -87,8 +89,8 @@ class Journal:
         verification. Never pass an unvalidated user/provider verdict callback.
         """
         with self.budget.transaction() as db:
-            session=db.execute('SELECT batch,state,command_id FROM proof_sessions WHERE token=?',(token,)).fetchone()
-            if not session or session[1:]!=('command-attached',command_id):
+            session=db.execute('SELECT batch,state,command_id,command_text FROM proof_sessions WHERE token=?',(token,)).fetchone()
+            if not session or session[1:3]!=('command-attached',command_id):
                 raise ValueError('unresolved or already published command')
             resource=db.execute('SELECT state,resource,evidence FROM intents WHERE id=?',(token,)).fetchone()
             if not resource or resource[0]!='settled' or resource[1] is None:
@@ -97,7 +99,7 @@ class Journal:
             binding,stage,next_attempt,solutions=db.execute('SELECT binding,stage,next_attempt,solutions FROM proof_state').fetchone()
             binding=json.loads(binding);solutions=json.loads(solutions)
             if request['stage']!=stage or request['attempt']!=next_attempt:raise ValueError('stale publication')
-            verdict=verify_evidence(session[0].encode(),json.loads(resource[1]),command_id)
+            verdict=verify_evidence(session[0].encode(),json.loads(resource[1]),command_id,session[3])
             if any(verdict.get(k)!=v for k,v in binding.items()) or verdict.get('batchId')!=batch['batchId'] or verdict.get('stage')!=stage or verdict.get('parameterSha256')!=request['parameterSha256']:
                 raise ValueError('unbound CPU evidence')
             if verdict.get('grantsRangeCredit') is not False:raise ValueError('invalid verification authority')

@@ -21,14 +21,14 @@ class JournalTests(unittest.TestCase):
     def register(self):
         token=self.reserve();self.j.register(token,json.dumps(self.batch).encode(),lambda b:b['request']);return token
     def ready(self):
-        token=self.register();e=self.evidence(token);self.j.claim_command(token)
+        token=self.register();e=self.evidence(token);self.j.claim_command(token,"approved public host command")
         command=str(uuid.uuid4());self.j.attach_command(token,command);self.b.settle(token,e)
         return token,command
     def verdict(self,hit=None):
         row=dict(attempt=0,workRange=ranges.work_range('pinning',0),wholeRangeEligible=hit is None,cpuVerdict=hit)
         return dict(batchId=self.batch['batchId'],fixtureSha256='e'*64,manifestHash='f'*64,requestId=self.campaign['campaignId'],stage='pinning',parameterSha256='a'*64,rows=[row],verifiedSolution=hit,grantsRangeCredit=False)
     def publish(self,token,command,v):
-        return self.j.publish(token,command,lambda raw,resource,cid:v,ranges.work_range)
+        return self.j.publish(token,command,lambda raw,resource,cid,command:v,ranges.work_range)
     def test_credit_once_and_reopen(self):
         token,command=self.ready();v=self.verdict()
         self.assertEqual(self.publish(token,command,v),dict(stage='pinning',nextAttempt=1,coverageAdded=1))
@@ -36,8 +36,8 @@ class JournalTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.publish(token,command,v)
         self.assertEqual(self.j.snapshot()['completedRanges'],1)
     def test_unknown_command_survives_reopen(self):
-        token=self.register();e=self.evidence(token);self.j.claim_command(token)
-        with self.assertRaises(ValueError):Journal(self.b).claim_command(token)
+        token=self.register();e=self.evidence(token);self.j.claim_command(token,"approved public host command")
+        with self.assertRaises(ValueError):Journal(self.b).claim_command(token,"approved public host command")
         self.b.settle(token,e)
         with self.assertRaisesRegex(ValueError,'proof evidence'):self.reserve()
         with self.assertRaises(ValueError):self.publish(token,str(uuid.uuid4()),self.verdict())
@@ -52,7 +52,7 @@ class JournalTests(unittest.TestCase):
         self.batch['request'].update(stage='round1',sequence=2147483664,locktime=500000000)
         with self.assertRaisesRegex(ValueError,'pin context'):self.register()
     def test_cleanup_required_before_verifier(self):
-        token=self.register();self.evidence(token);self.j.claim_command(token);command=str(uuid.uuid4());self.j.attach_command(token,command)
+        token=self.register();self.evidence(token);self.j.claim_command(token,"approved public host command");command=str(uuid.uuid4());self.j.attach_command(token,command)
         def unexpected(*args):self.fail('verifier should not run')
         with self.assertRaisesRegex(ValueError,'cleaned'):self.j.publish(token,command,unexpected,ranges.work_range)
     def test_bad_later_row_rolls_back_all_coverage(self):
@@ -116,3 +116,10 @@ class JournalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'invalid pin'):self.publish(token,command,v)
         self.assertEqual(self.j.snapshot()['completedRanges'],0)
         self.assertEqual(self.j.snapshot()['stage'],'pinning')
+    def test_command_text_frozen_before_send_and_supplied_to_verifier(self):
+        token,command=self.ready();seen=[]
+        with self.assertRaises(ValueError):self.j.claim_command(token,'replacement command')
+        def verifier(raw,resource,cid,text):
+            seen.append(text);return self.verdict()
+        self.j.publish(token,command,verifier,ranges.work_range)
+        self.assertEqual(seen,['approved public host command'])
