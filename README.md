@@ -32,3 +32,10 @@ A `v*` Git tag builds the historical worker for Linux amd64/sm_89, pushes `ghcr.
 Tagging triggers publication of compiled binaries. The user confirmed redistribution approval on 2026-09-25. That records the supplied approval, not an independent legal opinion. All upstream license and source notices remain in the tree and image. See [LICENSES.md](LICENSES.md).
 
 Development validation scripts under `worker/validation` consume an explicitly supplied `QSB_CPU_REFERENCE_ROOT` pointing to qsb-app's independent `worker/cpu` checkout. They do not bundle or publish that reference inside the solver. Historical ranked-v1 tooling is retained only under `research/archived-validation` and must not be run as a current release gate.
+
+## Optimized promotion work
+
+[Combined candidate integration](worker/promotion/README.md) joins historical
+pinning and the optimized subset under one `ranked-v2` worker identity. Candidate
+prereleases remain HOLD until fresh GPU, performance and end-to-end evidence is
+reviewed. Normal version tags still build the historical baseline.

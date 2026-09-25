@@ -1,0 +1,60 @@
+name: Publish combined validation candidate
+on:
+  push:
+    tags: ['candidate-*']
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compile and bind both stages
+        env:
+          IMAGE: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
+        run: |
+          docker build -f worker/Dockerfile -t qsb-historical:build .
+          docker build -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:build .
+          docker build -f worker/promotion/Dockerfile \
+            --build-arg HISTORICAL_IMAGE=qsb-historical:build \
+            --build-arg OPTIMIZED_IMAGE=qsb-optimized:build \
+            --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t "$IMAGE" .
+          python3 worker/promotion/test_image.py "$IMAGE"
+      - name: Publish candidate and extract actual binding
+        id: publish
+        env:
+          IMAGE: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
+        run: |
+          docker push "$IMAGE"
+          REF=$(docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE")
+          echo "digest=${REF#*@}" >> "$GITHUB_OUTPUT"
+          mkdir candidate-output
+          docker run --rm --network none --read-only --entrypoint cat "$IMAGE" /opt/qsb/pipeline.json > candidate-output/pipeline.json
+          docker run --rm --network none --read-only --entrypoint cat "$IMAGE" /opt/qsb/optimized-build-receipt.json > candidate-output/optimized-build-receipt.json
+          printf '%s\n' "$REF" > candidate-output/image.txt
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-name: ghcr.io/starknet-innovation/qsb-solver
+          subject-digest: ${{ steps.publish.outputs.digest }}
+          push-to-registry: true
+      - name: Publish validation artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" candidate-output/* contracts/ranked-v2.json \
+            --verify-tag --prerelease --title "$GITHUB_REF_NAME" \
+            --notes 'HOLD: combined historical pinning and optimized subset candidate. Build and offline checks only; GPU, independent CPU differential and fresh withdrawal evidence are required before promotion. No app enrollment or mainnet activation.'

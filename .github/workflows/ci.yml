@@ -21,3 +21,22 @@ jobs:
       - name: Validate image contents without GPU or network
         run: |
           docker run --rm --network none --read-only --entrypoint python3 qsb-solver:ci -c "import handler; from pathlib import Path; assert Path('/opt/qsb/pinning').is_file(); assert Path('/opt/qsb/subset').is_file(); assert Path('/opt/qsb/source/pinning/COPYING').is_file(); assert not Path('/opt/qsb/cpu').exists()"
+  combined-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Compile historical pinning and optimized subset
+        run: |
+          docker build --platform linux/amd64 -f worker/Dockerfile -t qsb-historical:ci .
+          docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:ci .
+      - name: Build combined candidate bound to this source
+        run: |
+          docker build --platform linux/amd64 -f worker/promotion/Dockerfile \
+            --build-arg HISTORICAL_IMAGE=qsb-historical:ci \
+            --build-arg OPTIMIZED_IMAGE=qsb-optimized:ci \
+            --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t qsb-combined:ci .
+      - name: Offline identity and failure-credit checks
+        run: python3 worker/promotion/test_image.py qsb-combined:ci
