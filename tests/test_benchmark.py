@@ -31,3 +31,14 @@ class BenchmarkTests(unittest.TestCase):
             executable.chmod(0o700)
             with self.assertRaises(RuntimeError):
                 b.execute(executable, dict(params='', sequence=0, locktime=0), 1, 0, time.monotonic()+10)
+
+class ReceiptTests(unittest.TestCase):
+    def test_incomplete_receipt_rejected(self):
+        import sys
+        sys.modules['benchmark'] = b
+        spec = importlib.util.spec_from_file_location('summary', Path(b.__file__).with_name('summarize.py'))
+        summary = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(summary)
+        with self.assertRaises(ValueError):
+            summary.summarize(dict(candidateSha256=b.CANDIDATE_SHA, baselineSha256=b.BASELINE_SHA,
+                                   replay=[], samples=[]), dict(replay=[], benchmark=[dict(name='round1')]))
