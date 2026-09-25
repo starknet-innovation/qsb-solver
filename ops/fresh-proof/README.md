@@ -276,3 +276,32 @@ initialized; never recreate a live ledger to migrate it. Tests mock provider and
 CPU responses where appropriate. A read-only query of a previous completed native
 gate confirmed the SSM command/parameter schema, but no fresh proof was published.
 Live submission orchestration, matched timing and the full new Core proof remain.
+
+### One-shot host submission
+
+`submit.py` reads the already registered public batch and selects only two exact
+committed public scripts. It embeds them as hashed compressed data in the host
+command, preserving the original readiness/deadline and immutable-image wrapper.
+There is no arbitrary upload directory, URL or executable argument. Command size
+is bounded before SSM submission. Clean pushed source must equal the reserved
+controller commit; the allocated budget/state/instance bindings are checked.
+
+The journal commits exact command intent before one non-retrying `send-command`.
+The time reserve is checked again after that commit. The raw provider response is
+fsynced before command-ID attachment; if either step is uncertain, the saved intent
+blocks another send. Poll/reconcile that original ID instead. Time consumed after
+intent creation leaves a no-send reconciliation case; elapsed time never permits
+an automatic retry. The command allocates no infrastructure and performs no cleanup.
+
+```sh
+python3 ops/fresh-proof/submit.py --ledger /absolute/budget.sqlite \
+  --campaign /absolute/campaign.json --execution /absolute/session/execution.json \
+  --receipt /absolute/session/host-command.json
+```
+
+Tests cover intent-before-send, lost responses, wrong resources, changed deadlines,
+time consumed during intent persistence, mismatched saved responses, and encoded
+payload inventory. A command generated from the fresh public pinning parameters
+passed `bash -n` without being executed or submitted. Independent review found no
+concrete blocker in this scoped path. Batch generation/registration, complete live
+orchestration and fresh proof remain pending; no GPU was allocated by these tests.
