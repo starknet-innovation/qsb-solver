@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import uuid
 from combined_descriptor import hex_value, proposal
 
 REPO = 'starknet-innovation/qsb-solver'
@@ -30,17 +31,27 @@ def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.r
     ref = 'refs/tags/' + candidate_tag
     verify = ['gh', 'attestation', 'verify', 'oci://' + image, '--repo', REPO,
               '--source-digest', source_commit, '--source-ref', ref,
-              '--signer-workflow', REPO + '/.github/workflows/candidate.yml',
               '--signer-digest', source_commit, '--deny-self-hosted-runners',
               '--cert-identity', 'https://github.com/' + REPO + '/.github/workflows/candidate.yml@' + ref,
               '--format', 'json']
-    checked = run(verify, check=True, capture_output=True, text=True, timeout=120)
+    try:
+        checked = run(verify, check=True, capture_output=True, text=True, timeout=120)
+    except subprocess.CalledProcessError as exc:
+        (output / 'attestation-error.txt').write_text(exc.stderr or '')
+        raise
     (output / 'attestation.json').write_text(checked.stdout)
     run(['docker', 'pull', '--platform', 'linux/amd64', image], check=True, timeout=600)
-    extracted = run(['docker', 'run', '--rm', '--platform', 'linux/amd64', '--network', 'none',
-                     '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
-                     '--entrypoint', 'python3', image, '-c', EXTRACT],
-                    check=True, capture_output=True, text=True, timeout=90)
+    container_name = 'qsb-release-extract-' + uuid.uuid4().hex
+    try:
+        extracted = run(['docker', 'run', '--rm', '--name', container_name,
+                         '--platform', 'linux/amd64', '--network', 'none',
+                         '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
+                         '--entrypoint', 'python3', image, '-c', EXTRACT],
+                        check=True, capture_output=True, text=True, timeout=90)
+    finally:
+        # Terminating a Docker client does not necessarily terminate its container.
+        run(['docker', 'rm', '--force', container_name], check=False,
+            capture_output=True, timeout=30)
     raw = json.loads(extracted.stdout)
     if set(raw) != {'pipeline.json', 'optimized-build-receipt.json'}:
         raise ValueError('Unexpected extracted inventory')
