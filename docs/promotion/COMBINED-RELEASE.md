@@ -18,9 +18,10 @@ offline read-only container. It does not allocate GPUs or publish anything:
 
 ```sh
 python3 scripts/prepare_combined_release.py \
-  --candidate-tag candidate-20260925-2 \
-  --source-commit bef76bf9aec123d95fdff53fb839a0c44f378927 \
-  --image-digest sha256:9e86d94a66d7893e31d8e8d6bec7ddbc9b59f47f09e2f7a6015679fd95ab8b52 \
+  --target aws \
+  --candidate-tag candidate-sm86-20260925-1 \
+  --source-commit 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d \
+  --image-digest sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d \
   --output-directory /path/to/new/preparation-directory
 ```
 
@@ -34,14 +35,19 @@ already been verified independently.
 
 After independently verifying the candidate image's GitHub provenance, extract
 `/opt/qsb/pipeline.json` and `/opt/qsb/optimized-build-receipt.json` from that exact
-image in an offline read-only container. Run:
+image in an offline read-only container. Save `docker image inspect --format
+'{{json .Config}}' IMAGE@sha256:DIGEST` as `image-config.json` from that same
+provenance-verified digest. AWS preparation requires sm_86, `/opt/qsb` as the
+working directory and the exact AWS command without an entrypoint override. Run:
 
 ```sh
 python3 scripts/combined_descriptor.py \
+  --target aws \
+  --image-config /path/to/extracted/image-config.json \
   --pipeline /path/to/extracted/pipeline.json \
   --build-receipt /path/to/extracted/optimized-build-receipt.json \
-  --source-commit bef76bf9aec123d95fdff53fb839a0c44f378927 \
-  --image-digest sha256:9e86d94a66d7893e31d8e8d6bec7ddbc9b59f47f09e2f7a6015679fd95ab8b52 \
+  --source-commit 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d \
+  --image-digest sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d \
   --output /path/to/new/descriptor-proposal.json
 ```
 

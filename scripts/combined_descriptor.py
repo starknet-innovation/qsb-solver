@@ -17,7 +17,7 @@ def hex_value(value, length):
     return isinstance(value, str) and re.fullmatch('[0-9a-f]{%d}' % length, value) is not None
 
 
-def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contract_bytes):
+def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contract_bytes, *, target="generic", image_config=None):
     """Inputs must be extracted from the separately provenance-verified image."""
     pipeline = json.loads(pipeline_bytes)
     receipt = json.loads(receipt_bytes)
@@ -43,6 +43,16 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
         arch=pipeline['architecture']
         if arch not in ('sm_86','sm_89') or receipt.get('architecture')!=arch or receipt.get('flags',[]).count('-arch='+arch)!=1:
             raise ValueError('Build architecture mismatch')
+    if target not in ('generic', 'aws'):
+        raise ValueError('Unknown release target')
+    if target == 'aws':
+        if pipeline.get('architecture') != 'sm_86':
+            raise ValueError('AWS requires an explicit sm_86 binding')
+        if (not isinstance(image_config, dict)
+                or image_config.get('Cmd') != ['python3', 'aws_entrypoint.py']
+                or image_config.get('Entrypoint') not in (None, [])
+                or image_config.get('WorkingDir') != '/opt/qsb'):
+            raise ValueError('AWS runtime command/config mismatch')
     value = descriptor(source_commit, image_digest)
     # The combined worker echoes its own source commit, not an upstream lineage.
     value['kernelCommit'] = source_commit
@@ -54,7 +64,9 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
     value['searchContract'] = hashlib.sha256(canonical).hexdigest()
     return {'format': 'qsb-combined-descriptor-proposal-v1', 'status': 'HOLD',
             'solver': value,
-            'binding': {'contractSourceCommit': source_commit,
+            'binding': {'target': target,
+                        'imageConfigSha256': hashlib.sha256(json.dumps(image_config, sort_keys=True, separators=(',', ':')).encode()).hexdigest() if image_config is not None else None,
+                        'contractSourceCommit': source_commit,
                         'contractFileSha256': hashlib.sha256(contract_bytes).hexdigest(),
                         'pipelineSha256': hashlib.sha256(pipeline_bytes).hexdigest(),
                         'buildReceiptSha256': hashlib.sha256(receipt_bytes).hexdigest(),
@@ -70,6 +82,8 @@ def main():
     parser.add_argument('--build-receipt', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--image-digest', required=True)
+    parser.add_argument('--target', choices=['generic', 'aws'], required=True)
+    parser.add_argument('--image-config', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if not hex_value(args.source_commit, 40):
@@ -78,7 +92,8 @@ def main():
     contract = subprocess.check_output(['git', '-C', str(repo), 'show',
                                         args.source_commit + ':contracts/ranked-v2.json'])
     value = proposal(args.pipeline.read_bytes(), args.build_receipt.read_bytes(),
-                     args.source_commit, args.image_digest, contract)
+                     args.source_commit, args.image_digest, contract, target=args.target,
+                     image_config=json.loads(args.image_config.read_text()) if args.image_config else None)
     # Never overwrite prior approval/evidence or emit an enrolled solver.json.
     with args.output.open('x') as output:
         output.write(json.dumps(value, indent=2) + '\n')

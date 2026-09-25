@@ -67,3 +67,17 @@ class CombinedDescriptorTests(unittest.TestCase):
             self.assertEqual(self.build(pipeline=p,receipt=r)['status'],'HOLD')
             for broken in (dict(r,architecture='sm_80'),dict(r,flags=[]),dict(r,flags=['-arch='+arch]*2)):
                 with self.assertRaises(ValueError):self.build(pipeline=p,receipt=broken)
+
+    def test_aws_requires_architecture_and_runtime(self):
+        p=dict(self.pipeline, architecture='sm_86')
+        r=dict(self.receipt, architecture='sm_86', flags=['-arch=sm_86'])
+        config=dict(Cmd=['python3','aws_entrypoint.py'], Entrypoint=None, WorkingDir='/opt/qsb')
+        def aws(pipeline=p, cfg=config):
+            return proposal(json.dumps(pipeline).encode(), json.dumps(r).encode(),
+                            'a'*40, 'sha256:'+'f'*64, self.contract, target='aws', image_config=cfg)
+        self.assertEqual(aws()['binding']['target'], 'aws')
+        for bad in (self.pipeline, dict(p,architecture='sm_89')):
+            with self.assertRaises(ValueError): aws(pipeline=bad)
+        for bad in (None, {}, dict(config,Cmd=['python3','handler.py']),
+                    dict(config,Entrypoint=['sh']), dict(config,WorkingDir='/tmp')):
+            with self.assertRaises(ValueError): aws(cfg=bad)

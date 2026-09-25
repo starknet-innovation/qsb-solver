@@ -20,7 +20,7 @@ print(json.dumps({n:base64.b64encode((root/n).read_bytes()).decode() for n in ['
 '''
 
 
-def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.run):
+def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.run, *, target="generic"):
     if (not re.fullmatch(r'sha256:[a-f0-9]{64}', image_digest)
             or not hex_value(source_commit, 40)
             or not re.fullmatch(r'candidate-[a-zA-Z0-9][a-zA-Z0-9._-]*', candidate_tag)):
@@ -41,6 +41,12 @@ def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.r
         raise
     (output / 'attestation.json').write_text(checked.stdout)
     run(['docker', 'pull', '--platform', 'linux/amd64', image], check=True, timeout=600)
+    config = None
+    if target == 'aws':
+        inspected = run(['docker', 'image', 'inspect', '--format', '{{json .Config}}', image],
+                        check=True, capture_output=True, text=True, timeout=30)
+        config = json.loads(inspected.stdout)
+        (output / 'image-config.json').write_text(inspected.stdout)
     container_name = 'qsb-release-extract-' + uuid.uuid4().hex
     try:
         extracted = run(['docker', 'run', '--rm', '--name', container_name,
@@ -60,7 +66,7 @@ def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.r
     contract = run(['git', '-C', str(repo), 'show', source_commit + ':contracts/ranked-v2.json'],
                    check=True, capture_output=True, timeout=30).stdout
     result = proposal(contents['pipeline.json'], contents['optimized-build-receipt.json'],
-                      source_commit, image_digest, contract)
+                      source_commit, image_digest, contract, target=target, image_config=config)
     for name, data in contents.items():
         (output / name).write_bytes(data)
     (output / 'descriptor-proposal.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -73,12 +79,13 @@ def prepare(image_digest, source_commit, candidate_tag, output, run=subprocess.r
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--target', choices=['generic', 'aws'], required=True)
     parser.add_argument('--image-digest', required=True)
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--candidate-tag', required=True)
     parser.add_argument('--output-directory', type=Path, required=True)
     args = parser.parse_args()
-    prepare(args.image_digest, args.source_commit, args.candidate_tag, args.output_directory)
+    prepare(args.image_digest, args.source_commit, args.candidate_tag, args.output_directory, target=args.target)
 
 
 if __name__ == '__main__':
