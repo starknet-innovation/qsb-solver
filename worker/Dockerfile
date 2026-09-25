@@ -15,6 +15,11 @@ COPY --from=build /pinning /subset ./
 COPY --from=build /src/worker/build /opt/qsb/source
 COPY worker/handler.py worker/search_ranges.py ./
 COPY vendor/challenge/LICENSE /opt/qsb/licenses/challenge-LICENSE
+COPY vendor/challenge/candidates/pinning/COPYING /opt/qsb/licenses/pinning-COPYING
+COPY vendor/challenge/candidates/subset/COPYING /opt/qsb/licenses/subset-COPYING
+COPY LICENSES.md /opt/qsb/licenses/LICENSES.md
+# Keep adaptation/build inputs alongside the adapted source and embedded notices.
+COPY worker/prepare_kernels.py worker/Dockerfile /opt/qsb/source/build/
 COPY vendor/challenge/provenance.json /opt/qsb/source/provenance.json
 ENV PYTHONUNBUFFERED=1
 CMD ["python3", "handler.py"]
