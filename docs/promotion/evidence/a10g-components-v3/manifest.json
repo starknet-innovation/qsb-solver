@@ -1,0 +1,15 @@
+{
+  "format": "qsb-public-evidence-redaction-v1",
+  "originalResultSha256": "360983ba8a5ec5c71f8e31729a7310e7beefd4f9320c58822043b1b4804acd07",
+  "redaction": {
+    "pattern": "GPU-[a-f0-9-]+",
+    "replacement": "GPU-REDACTED",
+    "occurrences": 18,
+    "scope": "Only device UUID strings; numerical results and binary identities unchanged"
+  },
+  "files": {
+    "cpu-results.json": "6ff29ce335e218151f1412302f189329cbd53f73fe9d4b12cb33e9994a0e87d8",
+    "cpu-reference-binding.json": "d0e9d7baf12ad125956c8b955f82a5be7b727d5ad1dcece9a9eb927b0155988b",
+    "result.redacted.json": "865484144fa76771c57eeb7d3f9f5782e6d0db13ca5bb0a99331abff120dd7d4"
+  }
+}

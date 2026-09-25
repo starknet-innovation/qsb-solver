@@ -4,7 +4,7 @@
   "candidateCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
   "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
   "resultSha256": "360983ba8a5ec5c71f8e31729a7310e7beefd4f9320c58822043b1b4804acd07",
-  "gpu": "NVIDIA A10G, GPU-cc07fc00-b790-edad-b750-654c3619bb84, 595.91.07",
+  "gpu": "NVIDIA A10G, driver 595.91.07",
   "cpu": {
     "exceptionBranchesMatched": 156,
     "pinningCpuVerdict": {
@@ -25,21 +25,34 @@
   "limits": [
     "Diagnostic derivatives are distinct from release binaries",
     "Historical single-pin replay is not fresh search",
-    "Matched performance and fresh full final-image proof remain pending",
+    "Matched A10G performance and final review remain pending; fresh wallet proof explicitly skipped",
     "No external miner certification or mainnet activation"
   ],
   "cleanup": {
     "verifiedAt": "2026-09-25T19:49:25.805935+00:00",
-    "instanceId": "i-04ee82bee6764c728",
     "instanceState": "terminated",
-    "volumeIds": [
-      "vol-0d493c3e02129fda2"
-    ],
     "volumesRemaining": 0,
     "securityGroupsRemaining": 0,
     "schedulesRemaining": 0,
     "functionsRemaining": 0,
     "rolesRemaining": 0,
     "instanceProfilesRemaining": 0
+  },
+  "binarySha256": {
+    "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+    "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+  },
+  "memoryToolingImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:c05d39a303971baaca6908b19427158d0428963f16b57c5e823432b50ddf307b",
+  "auditBundle": {
+    "controllerCommit": "c0c9579d267600cafc016bef760069e116a00c1a",
+    "sha256": "4c5121b4609b3cbed7e77d47b9eaf5dc2265cc435278bccf26dec4d9d03a8a80",
+    "manifestSha256": "92a74d18a5657e8e97ef2ce24582f412ce8d326c8c4c34ec6d6ebef17f3598a6",
+    "url": "https://github.com/starknet-innovation/qsb-solver/releases/download/candidate-sm86-20260925-1/validation-sm86-components-c0c9579.tar.gz"
+  },
+  "publicEvidence": {
+    "directory": "evidence/a10g-components-v3",
+    "manifestSha256": "118b453843183d749206eab5283e208e0fb7b3ebb45206819280b85ef19a313b",
+    "resultSha256": "865484144fa76771c57eeb7d3f9f5782e6d0db13ca5bb0a99331abff120dd7d4",
+    "redacted": true
   }
 }

@@ -11,7 +11,17 @@ Promotion remains HOLD. The frozen candidate source `43c77084648aa0f4cbcb1589abf
 
 Diagnostics are distinct executables, built with source and architecture bindings. The pinning rebuild differs from the frozen binary only in one non-allocated symbol-table byte, validated narrowly; exact historical replay and memory testing used the frozen pinning binary. This does not prove exhaustive arithmetic correctness.
 
-The public archive was collected without rerunning compute, checked by length and SHA256, decoded with bounded inventory validation, and persisted before termination. CPU reference, context and expected-branch hashes were checked before CPU verification. See the adjacent public summary and cleanup receipt for identities and final infrastructure state.
+The public archive was collected without rerunning compute, checked by length and SHA256, decoded with bounded inventory validation, and persisted before termination. CPU reference, context and expected-branch hashes were checked before CPU verification. The [public summary](2026-09-25-a10g-components-v3.json) binds the numerical
+binaries, memory-tooling image and published audit bundle/manifest. The complete
+[result record](evidence/a10g-components-v3/result.redacted.json),
+[CPU verdict](evidence/a10g-components-v3/cpu-results.json) and
+[reference binding](evidence/a10g-components-v3/cpu-reference-binding.json) are
+committed for inspection. The [redaction manifest](evidence/a10g-components-v3/manifest.json)
+records both the original result hash and new public-file hashes. Only 18 device
+UUID occurrences were replaced; this public copy is not byte-identical to the
+original result. Infrastructure IDs remain in local operational receipts. The
+published input bundle `validation-sm86-components-c0c9579.tar.gz` was also used
+by this successful run; its earlier use does not make it a different bundle.
 
 Remaining release gates: matched A10G performance for pinning and both subset rounds, complete public evidence bindings and final release review. The user removed the fresh wallet-backed proof from this release gate on 25 September. Publication and separate application enrollment each require explicit approval. External miner inclusion remains separate. Mainnet stays disabled. No private recovery material was transferred.
 
