@@ -1,7 +1,9 @@
 # Fresh sm86 proof cost admission
 
-Status: implemented and locally tested; **no fresh sm86 launch or search yet**.
-Native component/performance and proof-execution preparation gates remain pending.
+Status: retained development tooling, **not an active PR #2 release gate**.
+The user explicitly skipped the fresh wallet-backed proof on 25 September.
+Do not start this campaign for PR #2. No fresh sm86 launch or search occurred.
+Any future wallet-tooling use requires separate scope and security review.
 This wrapper is not promotion approval or a mainnet activation path.
 
 The user authorized at most USD200 for fresh-proof compute and associated
@@ -175,6 +177,11 @@ single-chunk archives. These safeguards concern collection commands only; they d
 not attest the solver or permit replay of an uncertain paid session.
 
 ### Fresh local regtest wallet preparation
+
+`prepare_wallet.py` rejects destinations inside this or any other Git checkout,
+including symlink aliases, before key generation. Ignore patterns are defense in
+depth, not permission to store recovery files in the repository. This path is
+retained but inactive and has not received a key-handling security approval.
 
 `prepare_wallet.py` creates a new disposable wallet and new QSB commitments from
 four hash-pinned public app reference files. This is the user-authorized local

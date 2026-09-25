@@ -26,3 +26,26 @@ class WalletPreparationTests(unittest.TestCase):
             for name in m.SOURCE_HASHES:(source/name).write_text('untrusted')
             with self.assertRaises(ValueError):m.prepare(source,out)
             self.assertFalse(out.exists())
+
+    def test_checkout_destination_rejected_before_source_access(self):
+        with self.assertRaisesRegex(ValueError, 'outside the source checkout'):
+            m.prepare('/does-not-exist', ROOT/'new-wallet-must-not-exist')
+        self.assertFalse((ROOT/'new-wallet-must-not-exist').exists())
+
+    def test_other_checkout_and_worktree_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            (root/'.git').write_text('gitdir: /dummy/public/test')
+            with self.assertRaisesRegex(ValueError, 'every Git checkout'):
+                m.validate_destination(root/'nested'/'wallet')
+
+    def test_symlink_into_checkout_rejected(self):
+        with tempfile.TemporaryDirectory() as d:
+            link=Path(d)/'alias';link.symlink_to(ROOT, target_is_directory=True)
+            with self.assertRaises(ValueError):m.validate_destination(link/'new-wallet')
+
+    def test_external_destination_allowed_without_writes(self):
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'new-wallet'
+            self.assertEqual(m.validate_destination(path), path.resolve())
+            self.assertFalse(path.exists())

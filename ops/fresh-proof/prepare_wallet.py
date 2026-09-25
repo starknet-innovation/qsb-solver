@@ -50,8 +50,21 @@ def verify_sources(source):
             raise ValueError('Public reference source mismatch: '+name)
 
 
+def validate_destination(destination):
+    # Resolve existing symlink ancestors before any reference import/key generation.
+    destination = Path(destination).resolve()
+    root = Path(__file__).resolve().parents[2]
+    if destination == root or root in destination.parents:
+        raise ValueError('Wallet destination must be outside the source checkout')
+    for parent in (destination, *destination.parents):
+        if (parent / '.git').exists():
+            raise ValueError('Wallet destination must be outside every Git checkout')
+    return destination
+
+
 def prepare(source, destination):
-    source=Path(source).resolve();destination=Path(destination).absolute()
+    destination=validate_destination(destination)
+    source=Path(source).resolve()
     verify_sources(source)
     # A failed preparation must be inspected; never overwrite it or reuse its identity.
     destination.mkdir(mode=0o700)
