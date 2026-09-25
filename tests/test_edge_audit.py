@@ -12,7 +12,10 @@ class EdgeAudit(unittest.TestCase):
     def test_capacity_keeps_fail_closed_host_guard(self):
         result=edge.capacity_source(self.tree)
         self.assertIn('if (h_hit > 64)',result)
-        self.assertLess(result.index('DEVICE_COUNT'),result.index('if (h_hit > 64)'))
+        capture=result.index('DEVICE_COUNT')
+        marker=result.index('// Never claim complete coverage after truncating candidate records.')
+        self.assertLess(capture,marker)
+        self.assertIn('if (h_hit > 64)',result[marker:marker+250])
         self.assertIn('if(p<1024)',result)
         self.assertIn('CANARY_CORRUPT',result)
     def test_forced_and_detector_paths_are_distinct(self):

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - .github/workflows/edge-audit.yml
+      - tests/test_edge_audit.py
       - worker/promotion/validation/build_edge_audit.py
       - worker/promotion/validation/EdgeAudit.Dockerfile
 permissions:
