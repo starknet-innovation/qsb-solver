@@ -11,10 +11,19 @@ def instrument(source):
     macro = r'''static unsigned qsb_audit_call = 0;
 #define QSB_PIN_CUDA_REQUIRE(call) do { unsigned ordinal=++qsb_audit_call; fprintf(stderr,"QSB_AUDIT_CALL %u %s\n",ordinal,#call); const char *fault=getenv("QSB_AUDIT_FAIL"); cudaError_t qsb_error=(fault && strtoul(fault,0,10)==ordinal)?cudaErrorUnknown:(call); if(qsb_error!=cudaSuccess){fprintf(stderr,"QSB_RANGE_INCOMPLETE: %s: %s\n",#call,cudaGetErrorString(qsb_error));return 2;} } while(0)'''
     result = source[:start]+macro+source[end:]
-    marker = 'if (h_hit > 64) { fprintf(stderr,"QSB_RANGE_INCOMPLETE: hit capacity exceeded'
-    if result.count(marker) != 2:
-        raise ValueError('capacity guards changed')
-    result = result.replace(marker, 'if (getenv("QSB_AUDIT_OVERFLOW")) h_hit=65;\n                '+marker)
+    # Counter overrides must precede the positive-hit branch. The synthetic
+    # record tests host publication only and never represents a real GPU hit.
+    anchors = [
+        ('h_hit = hit_report[0];', 'hit_report[1]=0;'),
+        ('QSB_PIN_CUDA_REQUIRE(cudaMemcpy(&h_hit, d_hit_cnt, 4, cudaMemcpyDeviceToHost));',
+         'if(cudaMemset(d_hit_idx,0,4)!=cudaSuccess) return 2;'),
+    ]
+    for anchor, initialize in anchors:
+        if result.count(anchor) != 1:
+            raise ValueError('counter readback anchor changed')
+        result = result.replace(anchor, anchor + '\n' +
+            'if(getenv("QSB_AUDIT_HIT")) { '+initialize+' h_hit=1; }\n' +
+            'if(getenv("QSB_AUDIT_OVERFLOW")) h_hit=65;')
     return result
 
 

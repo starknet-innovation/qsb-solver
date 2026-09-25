@@ -18,7 +18,10 @@ class Audit(unittest.TestCase):
         diagnostic=load('build_pinning_audit').instrument(repaired)
         self.assertTrue(diagnostic.startswith(original[:original.index('int main(')]))
         self.assertNotIn('QSB_AUDIT_FAIL',repaired)
-        self.assertEqual(diagnostic.count('if (getenv("QSB_AUDIT_OVERFLOW")) h_hit=65;'),2)
+        self.assertEqual(diagnostic.count('if(getenv("QSB_AUDIT_OVERFLOW")) h_hit=65;'),2)
+        for anchor in ['h_hit = hit_report[0];','QSB_PIN_CUDA_REQUIRE(cudaMemcpy(&h_hit, d_hit_cnt, 4, cudaMemcpyDeviceToHost));']:
+            tail=diagnostic[diagnostic.index(anchor):]
+            self.assertLess(tail.index('QSB_AUDIT_OVERFLOW'),tail.index('if (h_hit > 0)'))
 
     def test_failure_rejects_false_completion_and_later_calls(self):
         validate=load('run_pinning_audit').validate_failure

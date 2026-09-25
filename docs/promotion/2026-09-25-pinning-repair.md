@@ -38,3 +38,11 @@ Local harness/source/header tests pass; the Linux disk-full header test runs in 
 Native diagnostic execution and exact new-binary regression remain pending.
 Independent final approval and a fresh wallet-backed final-build proof are still
 required. Mainnet and production defaults remain unchanged.
+
+The reviewer caught an unreachable overflow injection in the first diagnostic
+harness before GPU allocation. The corrected diagnostic injects after counter
+readback and before the positive-hit branch. An explicitly synthetic device record
+also exercises the extra hit-index read guard and directory/disk-full publication
+failures. This record is not a discovered hit or cryptographic proof. Baseline
+normal execution still requires zero real hits; any unexpected hit blocks this
+audit for separate CPU verification.

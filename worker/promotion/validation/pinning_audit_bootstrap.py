@@ -44,7 +44,7 @@ def main():
             print('QSB_PINNING_RESULT',base64.b64encode(zlib.compress(result)).decode(),flush=True)
             print('QSB_PINNING_RESULT_SHA256',hashlib.sha256(result).hexdigest(),flush=True)
         print('QSB_PINNING_EXIT',proc.returncode,flush=True)
-        time.sleep(600)
+        time.sleep(120)
 
 
 if __name__=='__main__':
