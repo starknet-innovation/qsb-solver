@@ -1,0 +1,36 @@
+name: Build repaired pinning host audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/pinning-audit.yml
+      - worker/promotion/validation/build_pinning_audit.py
+      - worker/promotion/prepare_pinning.py
+      - worker/promotion/pinning_output.h
+      - worker/promotion/Dockerfile
+      - worker/promotion/validation/PinningAudit.Dockerfile
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - name: Build normal and diagnostic repaired pinning
+        run: |
+          docker build -f worker/promotion/Dockerfile --target repaired-pinning --build-arg HISTORICAL_IMAGE=scratch --build-arg OPTIMIZED_IMAGE=scratch -t qsb-pinning-build:audit .
+          docker build -f worker/promotion/validation/PinningAudit.Dockerfile -t qsb-pinning-audit:build .
+          container=$(docker create qsb-pinning-audit:build)
+          mkdir audit-output
+          docker cp "$container:/opt/qsb-pinning-audit/." audit-output/
+          docker rm "$container"
+          printf '%s\n' "$GITHUB_SHA" > audit-output/source-commit.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pinning-audit
+          path: audit-output/
+          retention-days: 14
