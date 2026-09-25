@@ -173,3 +173,23 @@ The original terminal invocation is retained alongside metadata for provenance.
 Tests cover multiple chunks with distinct IDs and a pending middle read, not only
 single-chunk archives. These safeguards concern collection commands only; they do
 not attest the solver or permit replay of an uncertain paid session.
+
+### Fresh local regtest wallet preparation
+
+`prepare_wallet.py` creates a new disposable wallet and new QSB commitments from
+four hash-pinned public app reference files. This is the user-authorized local
+wallet proof, not an Xverse signature demonstration. It rejects existing output
+directories and changed reference sources. Private key and recovery JSON remain
+mode0600 under a mode0700 `private/` directory; stdout contains only a public
+preparation receipt. Never upload that directory or its parent as a bundle.
+
+```sh
+python3 ops/fresh-proof/prepare_wallet.py --source /absolute/app/public/qsb \
+  --destination /absolute/new-local-regtest-wallet
+```
+
+Only `public/public-request.json` may be passed to the offline fixture preparer.
+The mainnet-formatted nested SegWit address is a compatibility detail of that
+regtest-only schema: **never fund it on mainnet**. This command does not fund,
+search, assemble, sign or broadcast. Keep any partial preparation for inspection;
+do not rerun into it, print its contents or substitute an older wallet/commitment.
