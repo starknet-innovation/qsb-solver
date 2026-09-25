@@ -1,0 +1,33 @@
+name: Build locked native trace audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/trace-audit.yml
+      - worker/promotion/validation/build_trace.py
+      - worker/promotion/validation/Trace.Dockerfile
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - name: Build candidate and diagnostic with the same source lock
+        run: |
+          docker build -f worker/optimized/Dockerfile --target build -t qsb-optimized-build:audit .
+          docker build -f worker/promotion/validation/Trace.Dockerfile -t qsb-trace-audit:build .
+          container=$(docker create qsb-trace-audit:build)
+          mkdir audit-output
+          docker cp "$container:/opt/qsb-trace-audit/." audit-output/
+          docker rm "$container"
+          printf '%s\n' "$GITHUB_SHA" > audit-output/source-commit.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-trace-audit
+          path: audit-output/
+          retention-days: 14
