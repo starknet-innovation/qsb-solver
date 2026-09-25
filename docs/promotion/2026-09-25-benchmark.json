@@ -1,0 +1,139 @@
+{
+  "status": "HOLD",
+  "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:db52cc5ded9cef013fef3a481090a2274e1c40a5785943c35a653aa250814c61",
+  "harnessCommit": "ace6c49d4244bf8e9fc0a7b88dae226a4063e2a5",
+  "baselineImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:badfcac297db6c242cf0e91e78fe294fa900d3c59f363258ec6d0d502162c755",
+  "candidateBinarySha256": "1c7d6b5906e95c12f07faf08f93cfe5ca920974c9cb936909548b81b82dade3a",
+  "baselineBinarySha256": "c7cdd7afa8ff8495be90f9ae148e5ca68b9ad0f3521800cc8a77297a10cc366e",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpuCount": 1,
+  "driver": "580.159.04",
+  "samplesPerBinaryPerLayoutAndRound": 3,
+  "ranksPerSample": 2147483648,
+  "rankStart": 0,
+  "measure": "monotonic wall time including startup; throughput gain = median baseline / median candidate - 1",
+  "results": {
+    "wpkh-round1": {
+      "baselineSeconds": [
+        32.42059230059385,
+        32.434189124032855,
+        31.833454877138138
+      ],
+      "candidateSeconds": [
+        17.94332775194198,
+        17.860304676927626,
+        17.986326418817043
+      ],
+      "medianBaselineSeconds": 32.42059230059385,
+      "medianCandidateSeconds": 17.94332775194198,
+      "throughputGainPercent": 80.68327541464555,
+      "wallTimeReductionPercent": 44.65453442189794
+    },
+    "wpkh-round2": {
+      "baselineSeconds": [
+        11.4377023531124,
+        11.503244415856898,
+        11.532641528174281
+      ],
+      "candidateSeconds": [
+        11.069694085977972,
+        11.102793039754033,
+        11.128967645578086
+      ],
+      "medianBaselineSeconds": 11.503244415856898,
+      "medianCandidateSeconds": 11.102793039754033,
+      "throughputGainPercent": 3.6067625026336314,
+      "wallTimeReductionPercent": 3.481203751098727
+    },
+    "taproot-round1": {
+      "baselineSeconds": [
+        31.988318352028728,
+        31.988717553205788,
+        31.965283643454313
+      ],
+      "candidateSeconds": [
+        18.204005227424204,
+        18.094601820223033,
+        18.22069520317018
+      ],
+      "medianBaselineSeconds": 31.988318352028728,
+      "medianCandidateSeconds": 18.204005227424204,
+      "throughputGainPercent": 75.72132040392164,
+      "wallTimeReductionPercent": 43.09170920743419
+    },
+    "taproot-round2": {
+      "baselineSeconds": [
+        11.571928657591343,
+        11.569115586578846,
+        11.546295007690787
+      ],
+      "candidateSeconds": [
+        11.189645239152014,
+        11.202234202064574,
+        11.17746187839657
+      ],
+      "medianBaselineSeconds": 11.569115586578846,
+      "medianCandidateSeconds": 11.189645239152014,
+      "throughputGainPercent": 3.3912634343319814,
+      "wallTimeReductionPercent": 3.2800290098843
+    }
+  },
+  "knownHitReplays": [
+    {
+      "name": "round1",
+      "seconds": 0.7731529967859387,
+      "count": 1,
+      "rank": 8700774299005,
+      "expectedSemanticHitMatched": true
+    },
+    {
+      "name": "round2",
+      "seconds": 0.6668016100302339,
+      "count": 1,
+      "rank": 55555477601721,
+      "expectedSemanticHitMatched": true
+    }
+  ],
+  "parameterVerification": {
+    "appCommit": "287534178cdfac06f7dbe49c5201e29b817ab83e",
+    "referenceFiles": {
+      "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+      "gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+      "handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+      "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+      "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+      "verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba"
+    },
+    "fixtures": [
+      {
+        "name": "wpkh-round1",
+        "sha256": "365d8aaf5cfbedccf1ab7692db9e769438732b8ff7dffacdf717228f070b0887"
+      },
+      {
+        "name": "wpkh-round2",
+        "sha256": "57c21da5263556719a15badbc6ce15561f8f5da3121c682d6a6a43204414387c"
+      },
+      {
+        "name": "taproot-round1",
+        "sha256": "ecc9d13fa0ac5ec8f3346212599eb10af77a4c29b4c60f942347dd406b1a34e2"
+      },
+      {
+        "name": "taproot-round2",
+        "sha256": "252dd7b8b901c87781f59fd9a1200b28ba29df78272f6b84fa247af55ec37cba"
+      }
+    ],
+    "scope": "Independent CPU parameter export, not exhaustive GPU verification"
+  },
+  "cleanup": {
+    "allTestPodsDeleted": true,
+    "remainingPods": 0
+  },
+  "limits": [
+    "Known-solution replay, not fresh search or withdrawal",
+    "Not exhaustive GPU coverage or new independent hit verification",
+    "Single GPU; three pairs per layout/round; no confidence interval or broad hardware study",
+    "No pinning speedup measured; no whole-withdrawal price claim",
+    "Candidate remains HOLD; no default release change"
+  ],
+  "firstAttempt": "Harness rejected Done enum completion text after solver found expected round1 hit; pod deleted, parser corrected and committed before second allocation. Solver binary unchanged."
+}

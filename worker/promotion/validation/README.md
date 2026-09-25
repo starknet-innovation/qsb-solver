@@ -10,10 +10,12 @@ Fixtures contain only public GPU parameters. Benchmark fixtures were exported by
 the separate qsb-app CPU reference with synthetic nonexistent 00/11 outpoints,
 SegWit/Taproot output layouts, and both subset stages. Each runs three alternating
 baseline/candidate samples of 2^31 ranks on the same GPU. Wall times include process
-startup. The batch permits 20 minutes, with 120 seconds per process and process-group
+startup. Results must pass `summarize.py`; incomplete, duplicate, wrong-range or
+wrong-binary measurements are rejected, and any new benchmark hit requires separate
+CPU verification before the summary is accepted. The batch permits 20 minutes, with 120 seconds per process and process-group
 termination on timeout. An external 30-minute resource deletion watchdog is required.
 
-Two historical one-candidate replays require exact expected hit records. They test
+Two historical one-candidate replays require the expected indices, recovery ID and hash choice. They test
 the new binary's hit path; they are not a fresh search, independent CPU verification
 of new hits, a withdrawal, or permission to reuse the original spent fixture.
 
