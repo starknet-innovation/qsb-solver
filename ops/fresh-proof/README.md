@@ -305,3 +305,42 @@ payload inventory. A command generated from the fresh public pinning parameters
 passed `bash -n` without being executed or submitted. Independent review found no
 concrete blocker in this scoped path. Batch generation/registration, complete live
 orchestration and fresh proof remain pending; no GPU was allocated by these tests.
+
+### Batch generation and registration
+
+`batches.py` completes the local preparation CLI. It never allocates resources.
+`init` creates proof tables exactly once in the existing budget ledger, before any
+reservation. Supply the previously frozen fixture digest and original **public**
+request. The campaign's request hash is the exact file hash; the fixture's request
+hash is canonical JSON. Both are verified against that same public request, along
+with request ID and regtest chain. Never reset an initialized journal.
+
+```sh
+python3 ops/fresh-proof/batches.py init --ledger /absolute/budget.sqlite \
+  --campaign /absolute/campaign.json --fixture /absolute/public-fixture.json \
+  --public-request /absolute/public-request.json --fixture-sha256 FROZEN_FIXTURE_SHA256
+python3 ops/fresh-proof/batches.py plan --ledger /absolute/budget.sqlite \
+  --campaign /absolute/campaign.json --fixture /absolute/public-fixture.json \
+  --public-request /absolute/public-request.json --reference /absolute/cpu-reference \
+  --batch /absolute/session/batch.json --max-attempts 8
+# After separately budgeted preparation, register before arm/launch:
+python3 ops/fresh-proof/batches.py register --ledger /absolute/budget.sqlite \
+  --campaign /absolute/campaign.json --fixture /absolute/public-fixture.json \
+  --public-request /absolute/public-request.json --reference /absolute/cpu-reference \
+  --batch /absolute/session/batch.json --execution /absolute/session/execution.json
+```
+
+Planning derives the stage, next range and verified pin from journal state. It
+exports parameters through the hash-pinned CPU subprocess, validates the parameter
+hash, clips a final batch to the domain boundary, and rejects exhaustion before
+paid admission. Registration re-exports the parameters and compares every field
+against the same byte buffer subsequently persisted; it never validates a second
+read while registering older bytes. No full fixture, recovery file or wallet key
+is included in the GPU batch. Exhaustion currently stops for explicit reconciliation;
+there is no automatic new-pin restart.
+
+An actual local run against the prepared fresh public regtest fixture reproduced
+its previously frozen pinning parameter hash. This was parameter preparation only:
+no journal initialized, budget modified, GPU submitted, or new candidate found.
+Provider orchestration must still satisfy native/performance gates and independently
+verify host cleanup; these local CLI tests do not complete the fresh withdrawal.
