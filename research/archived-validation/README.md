@@ -1,0 +1,1 @@
+Historical ranked-v1 native experiment retained for research provenance only. Its geometry and paths are obsolete; do not run it as a ranked-v2 release gate. Current worker contract is contracts/ranked-v2.json.

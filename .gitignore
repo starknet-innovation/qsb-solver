@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+worker/build/
+*.tar
+*.tar.gz
+.env*
+release-output/
