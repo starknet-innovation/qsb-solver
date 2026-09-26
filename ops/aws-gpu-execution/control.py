@@ -49,7 +49,7 @@ def role(name,principal,document):
     aws('iam','put-role-policy',RoleName=name,PolicyName='benchmark-only',PolicyDocument=document)
 
 
-def main(proof=None):
+def main():
     global _ACTIVE_CONFIG
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['prepare','arm','launch','cleanup'])
@@ -65,11 +65,9 @@ def main(proof=None):
     if commit!=remote: raise ValueError('Source not pushed')
     if args.mode=='prepare':
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
-        token=proof.token if proof else str(uuid.uuid4());name='qsb-bench-'+token[:8]
+        token=str(uuid.uuid4());name='qsb-bench-'+token[:8]
         s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config}
-        if proof: s['proofBudget']=proof.binding
         path.parent.mkdir(parents=True,exist_ok=True);save(path,s)
-        if proof: proof.check(path,s,args.mode)
         role(name+'-host','ec2.amazonaws.com',(ROOT/'ops/aws-gpu-benchmark/instance-policy.json').read_text())
         aws('iam','create-instance-profile',InstanceProfileName=name)
         aws('iam','add-role-to-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
@@ -89,9 +87,6 @@ def main(proof=None):
         s=json.loads(path.read_text());name=s['name']
         if s.get('operatorConfig') != config:
             raise ValueError('Operator scope changed or legacy state: reconcile explicitly')
-        if s.get('proofBudget') and proof is None and args.mode!='cleanup':
-            raise ValueError('Fresh proof requires budgeted controller')
-        if proof: proof.check(path,s,args.mode)
         if s['controllerCommit']!=commit:
             if args.mode!='cleanup': raise ValueError('Controller commit changed: reconcile first')
             subprocess.run(['git','merge-base','--is-ancestor',s['controllerCommit'],commit],cwd=ROOT,check=True)
