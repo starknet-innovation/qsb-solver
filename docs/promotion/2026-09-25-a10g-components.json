@@ -24,11 +24,7 @@
   },
   "cleanup": {
     "verifiedAt": "2026-09-25T18:33:11.975987+00:00",
-    "instanceId": "i-0b10b7bf422322cb9",
     "instanceState": "terminated",
-    "volumeIds": [
-      "vol-0c2518ad81b4addf1"
-    ],
     "volumesRemaining": 0,
     "securityGroupsRemaining": 0,
     "schedulesRemaining": 0,
@@ -36,5 +32,7 @@
     "rolesRemaining": 0,
     "instanceProfilesRemaining": 0
   },
-  "independentReview": "Fix and evidence reviewed: no blocker; timeout before child return can leave running status but cannot report success"
+  "independentReview": "Fix and evidence reviewed: no blocker; timeout before child return can leave running status but cannot report success",
+  "redactionNote": "Instance/volume identifiers removed from public summary; original operational receipt hashes retained.",
+  "originalPublicSummarySha256": "c9b3b70f32dfe7a65468881cbf04543fc429afe50064051bab3ea1c1ceeaaabd"
 }

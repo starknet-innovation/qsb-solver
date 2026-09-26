@@ -5,6 +5,12 @@ bundle=$1
 results=$2
 deadline=$3
 fixture_sha=$4
+stage=${5:-subset}
+case "$stage" in
+  subset) runner=run_a10g_performance.py ;;
+  pinning) runner=run_a10g_pinning_performance.py ;;
+  *) exit 2 ;;
+esac
 [[ "$fixture_sha" =~ ^[0-9a-f]{64}$ ]]
 [[ "$bundle" = /opt/qsb-a10g-gate && "$results" = /var/tmp/qsb-a10g-results ]]
 [[ "$deadline" =~ ^[0-9]{10}$ ]]
@@ -12,21 +18,21 @@ fixture_sha=$4
 systemctl is-active --quiet qsb-benchmark-expire.timer
 cd "$bundle"
 sha256sum -c SHA256SUMS
-[ -x "$bundle/baseline/subset" ]
+[ -x "$bundle/baseline/$stage" ]
 mkdir "$results"
 # Persist before image setup; never repeat this host operation after uncertainty.
 printf '%s\n' "$deadline" > "$results/deadline.txt"
 image=ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image"
 [ "$((deadline-$(date -u +%s)))" -ge 780 ]
-nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader > "$results/gpu.txt"
+nvidia-smi --query-gpu=name,driver_version --format=csv,noheader > "$results/gpu.txt"
 set +e
 timeout --signal=TERM --kill-after=10s 720 docker run --name qsb-a10g-gate --rm --gpus all \
   --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
   --tmpfs /tmp:rw,nosuid,nodev,size=256m \
   --mount "type=bind,src=$bundle,dst=/gate,readonly" \
   --mount "type=bind,src=$results,dst=/results" \
-  --entrypoint python3 "$image" /gate/run_a10g_performance.py /gate /results/result.json "$fixture_sha" > "$results/gate.log" 2>&1
+  --entrypoint python3 "$image" "/gate/$runner" /gate /results/result.json "$fixture_sha" > "$results/gate.log" 2>&1
 status=$?
 set -e
 # Killing the Docker client does not reliably stop its container.
