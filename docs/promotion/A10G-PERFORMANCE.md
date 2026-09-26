@@ -1,6 +1,6 @@
 # Matched A10G performance gate
 
-Status: preparation; no A10G speedup claim yet.
+Status: **executed and passed on 26 September 2026**. See [the results](2026-09-26-a10g-performance.md): subset round 1 about +31–32%, round 2 about +1.6–1.7%, pinning unchanged, all candidate full-range projections under 840 s. The preparation notes below are kept as the method record.
 
 The frozen optimized candidate remains source43c77084648aa0f4cbcb1589abfcc792c9cc0d9d,
 image sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d.

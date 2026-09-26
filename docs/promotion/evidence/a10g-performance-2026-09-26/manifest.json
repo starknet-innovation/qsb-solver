@@ -1,0 +1,80 @@
+{
+  "format": "qsb-a10g-performance-evidence-v1",
+  "date": "2026-09-26",
+  "sourceCommit": "a510ac573e260e7b95f7472c5458fe2fdc9791de",
+  "bundleSha256": "882a189090b032d2599ca784b0062be04bbc04683f1c8e61fcfe5a98f9978079",
+  "bundleFiles": {
+    "benchmark.py": "718c3a28f0c0a0dcbcd9b393c264d562ce05406b76ebc92d1fd72d28ae2130a6",
+    "run_a10g.py": "845d18b8a3af3da8c07b490cb43c81583107b32514e302381502aa2840b49896",
+    "run_a10g_performance.py": "9cb564d6326355f83c14857cc4a963c285045ececb3d680ce8f0178963d9d95a",
+    "run_a10g_pinning_performance.py": "6930d14544f9a6d5ef6cf291ab56fb3fe036bd111b09855cddf909379cfc8219",
+    "fixtures.json": "e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9",
+    "pinning-fixtures.json": "00fc8766c0637981d1100b57be5713e04f33da3e139c61bb62064ae8172c0173",
+    "host-a10g-performance.sh": "9af886f752153a32a34385faab1bc0606396ea554b64985d1657ebc33b5b63a5",
+    "baseline/subset": "672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d",
+    "baseline/pinning": "f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0",
+    "source-commit.txt": "e6fb23b5888661f21d652e2225636dcebf56143de954b1299176b8c8e9ae2d99"
+  },
+  "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "baselineImage": "aws-v0.1.0 ghcr.io/starknet-innovation/qsb-solver@sha256:9e62d3c4eae05b4c5164a78679ad7f383aeefa0f9bfc30121fadab2ca9db623e (linux/amd64 layer COPY /pinning /subset, blob digest verified)",
+  "host": {
+    "instanceType": "g5.xlarge",
+    "region": "eu-west-1",
+    "ami": "Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 22.04) 20260922",
+    "controller": "ops/aws-gpu-execution/control.py at the source commit (prepare, arm with a 25-minute deadline, launch, cleanup)"
+  },
+  "redaction": "none: the runners record only GPU name and driver; no device UUID or infrastructure identifier is present",
+  "stages": {
+    "subset": {
+      "status": "completed",
+      "exitCode": 0,
+      "gpu": "NVIDIA A10G, 595.91.07",
+      "fixtureSha256": "e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9",
+      "baselineSha256": "672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d",
+      "candidateSha256": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15",
+      "samples": 24,
+      "hostPublicResult": {
+        "bytes": 4272,
+        "sha256": "310d19770147a144aaea5a91fd749cb7a485a484816e4515d4d98dce7bd1556b"
+      },
+      "resultSha256": "228a482b886263fdf17c94f92052f64dac14ffcf9d8d4ad0a1428b77b99334c9"
+    },
+    "pinning": {
+      "status": "completed",
+      "exitCode": 0,
+      "gpu": "NVIDIA A10G, 595.91.07",
+      "fixtureSha256": "00fc8766c0637981d1100b57be5713e04f33da3e139c61bb62064ae8172c0173",
+      "baselineSha256": "f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0",
+      "candidateSha256": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+      "samples": 12,
+      "hostPublicResult": {
+        "bytes": 2796,
+        "sha256": "ec0e8bd27446ca0c1bba73ae81b529b5bc0a8ef161db307d3a5a6a936927c68b"
+      },
+      "resultSha256": "c95969edad4b8f3166e21dfe279e9c6a2feaa20c2d5fc3cc0b84aeab770c92d9"
+    }
+  },
+  "files": {
+    "pinning/exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "pinning/gate.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pinning/gpu.txt": "9cdbcff9f13526026ce7f6c753193a564f97ded34ebe9ec68380793b1c969dd5",
+    "pinning/result.json": "c95969edad4b8f3166e21dfe279e9c6a2feaa20c2d5fc3cc0b84aeab770c92d9",
+    "subset/exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "subset/gate.log": "289f72d378c80b3ee2f8eb4e030a5e0c6c00aaa7f15fcc1402d30e65de1e4d40",
+    "subset/gpu.txt": "9cdbcff9f13526026ce7f6c753193a564f97ded34ebe9ec68380793b1c969dd5",
+    "subset/result.json": "228a482b886263fdf17c94f92052f64dac14ffcf9d8d4ad0a1428b77b99334c9"
+  },
+  "attempts": {
+    "note": "Sessions that stopped before any GPU computation; each was cleaned up and verified, with no instance, volume, role, security group, Lambda, schedule or bucket left.",
+    "stoppedBeforeCompute": [
+      "subset: arm failed on IAM propagation (Lambda could not yet assume the new cleanup role); no instance launched",
+      "subset: Session Manager plugin closed the session when its stdin reached end-of-input",
+      "subset: AWS-StartNonInteractiveCommand executes its command without a shell; command wrapped in bash -c",
+      "pinning: the host script's docker pull got \"connection reset by peer\" while racing the pre-pull; docker run never started"
+    ],
+    "completed": [
+      "subset",
+      "pinning"
+    ]
+  }
+}

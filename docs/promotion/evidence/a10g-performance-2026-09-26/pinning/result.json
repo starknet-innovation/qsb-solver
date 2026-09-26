@@ -1,0 +1,328 @@
+{
+  "status": "completed",
+  "baselineSha256": "f97d6a95a57841a619f1b842e3007320af1c0ff17f60366bb1b8b80912fe40e0",
+  "candidateSha256": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+  "binding": {
+    "architecture": "sm_86",
+    "files": {
+      "handler.py": "3b637075f4834e0b01838e8d59e96d54819432349ed34e6ea57aa44db161edc8",
+      "historical_handler.py": "04746430c32a4970759c99a49e1ae499e1ba84b3ac9075ae1357c28714223850",
+      "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+      "search_ranges.py": "07b0c2639e2a61b6a0306bed06a8f261f9f8c71ea1ee5d68806e3044a93c27df",
+      "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+    },
+    "format": "qsb-combined-candidate-v1",
+    "pinningUpstreamCommit": "2791ed0588f5014ccd688d48ba5502df2879f2f1",
+    "searchVersion": "ranked-v2",
+    "solverCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+    "status": "HOLD",
+    "subsetSourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3",
+    "subsetUpstreamCommit": "1650caf53a32b0ea16aae9e490ebbf5a8686d632"
+  },
+  "gpu": "NVIDIA A10G, 595.91.07",
+  "fixtureSha256": "00fc8766c0637981d1100b57be5713e04f33da3e139c61bb62064ae8172c0173",
+  "samples": [
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 2.5497543930000006,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (254.8M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 0,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.4762543090000122,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (254.1M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 0,
+      "binary": "candidate"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.4806317219999983,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (253.0M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 1,
+      "binary": "candidate"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.4808947919999866,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (252.8M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 1,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.476682478000015,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (253.1M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 2,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.47953239200001,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "774843f70b685fe168bfb444aae3f93591d0573ae333e21dadcd9fb16fc1b40b",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=10007, suffix=87, seq@31, lt@79\n  GTable built on GPU in 0.18s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 87 bytes, seq@31, lt@79\n  Mode: REAL\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (252.2M/s), found=0\n",
+      "hitFiles": {},
+      "name": "taproot-pinning",
+      "sample": 2,
+      "binary": "candidate"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.347096740000012,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.7M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 0,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.3466978430000154,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.9M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 0,
+      "binary": "candidate"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.3463059949999945,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.8M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 1,
+      "binary": "candidate"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.3672860249999985,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.5M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 1,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.345952498999992,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.8M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 2,
+      "binary": "baseline"
+    },
+    {
+      "arguments": [
+        "0",
+        "1",
+        "0",
+        "single_hash",
+        "seq_start=2147483648",
+        "seq_count=1",
+        "lt_start=500000000",
+        "lt_count=256000000"
+      ],
+      "count": 256000000,
+      "seconds": 1.3536270049999928,
+      "exit": 0,
+      "timedOut": false,
+      "paramsSha256": "8d278fd2e3e8100b78a706e4afceb73b1ce0c6953bed3daea39f03fc5883f3d2",
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (256000000), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 256M in 1s (290.1M/s), found=0\n",
+      "hitFiles": {},
+      "name": "wpkh-pinning",
+      "sample": 2,
+      "binary": "candidate"
+    }
+  ],
+  "grantsRangeCredit": false,
+  "freshWithdrawal": false,
+  "summary": {
+    "taproot-pinning": {
+      "seconds": {
+        "baseline": [
+          2.5497543930000006,
+          1.4808947919999866,
+          1.476682478000015
+        ],
+        "candidate": [
+          1.4762543090000122,
+          1.4806317219999983,
+          1.47953239200001
+        ]
+      },
+      "throughputGainPercent": 0.09208314784747706,
+      "projectedCandidateFullRangeSeconds": 115.17464007507486,
+      "projectionMethod": "slowest startup-inclusive sample scaled linearly; not full-range measurement"
+    },
+    "wpkh-pinning": {
+      "seconds": {
+        "baseline": [
+          1.347096740000012,
+          1.3672860249999985,
+          1.345952498999992
+        ],
+        "candidate": [
+          1.3466978430000154,
+          1.3463059949999945,
+          1.3536270049999928
+        ]
+      },
+      "throughputGainPercent": 0.029620378622419175,
+      "projectedCandidateFullRangeSeconds": 105.29526065143693,
+      "projectionMethod": "slowest startup-inclusive sample scaled linearly; not full-range measurement"
+    }
+  }
+}
