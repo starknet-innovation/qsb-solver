@@ -19,7 +19,9 @@ Recorded on the merged qsb-solver#2 (`2e7e1e0`, a squash merge):
 
 ## Release tag
 
-The release is published as the GitHub release `combined-aws-sm86-v0.2.0` on the commit that merges this record. That tag name deliberately matches none of the workflow triggers: `release.yml` fires on `v*` and `aws-v*`, and would rebuild the historical solver; `candidate.yml` fires on `candidate-*`, and would build a new image. The release only carries this descriptor. No image is built or pushed.
+The release is published as the GitHub release `combined-aws-sm86-v0.2.0` on the commit that merges this record. The tag name deliberately avoids both **publishing** workflows: `release.yml` fires on `v*` and `aws-v*`, and would rebuild the historical solver; `candidate.yml` fires on `candidate-*`, and would build and push a new image.
+
+Pushing the tag still triggers `ci.yml`, which runs on every push, and the audit workflows filtered only by path, because GitHub ignores path filters on tag pushes. Those are read-only builds that push no image and publish nothing. The release itself only carries this descriptor as `solver.json`. No image is built for it, and no registry is written to.
 
 ## Not part of this record
 

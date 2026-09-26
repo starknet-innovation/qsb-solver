@@ -1,7 +1,7 @@
 {
   "format": "qsb-combined-publication-preparation-v1",
   "date": "2026-09-26",
-  "command": "scripts/prepare_combined_release.py --target aws --candidate-tag candidate-sm86-20260925-1 --source-commit 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d --image-digest sha256:e22afc72...",
+  "command": "python3 scripts/prepare_combined_release.py --target aws --candidate-tag candidate-sm86-20260925-1 --source-commit 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d --image-digest sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d --output-directory <new private directory outside Git>",
   "status": "prepared; publication approved by @adrienlacombe on 2026-09-26",
   "candidateTag": "candidate-sm86-20260925-1",
   "sourceCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
@@ -29,5 +29,7 @@
     "optimized-build-receipt.json": "e373b67b76fa659f4153df63f6829f18ed81b11e317aac1ce62750874b5f6cf4",
     "pipeline.json": "9fa41618268a26b924b5f67101d6d564c1c243e6d96a50221d59320d9cbdc2eb",
     "preparation.json": "deb64cf409590148da6915770a6c320e3333688ed6cc695ae79034c141c43de6"
-  }
+  },
+  "toolingCommit": "2e7e1e0c829c0ef94eca8c5fc2110b505d1bc356",
+  "toolingNote": "scripts/prepare_combined_release.py and scripts/combined_descriptor.py as of that main commit (the qsb-solver#2 squash merge) were used; the attested image source remains 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d."
 }
