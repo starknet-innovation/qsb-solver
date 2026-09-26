@@ -1,0 +1,33 @@
+{
+  "format": "qsb-combined-publication-preparation-v1",
+  "date": "2026-09-26",
+  "command": "scripts/prepare_combined_release.py --target aws --candidate-tag candidate-sm86-20260925-1 --source-commit 43c77084648aa0f4cbcb1589abfcc792c9cc0d9d --image-digest sha256:e22afc72...",
+  "status": "prepared; publication approved by @adrienlacombe on 2026-09-26",
+  "candidateTag": "candidate-sm86-20260925-1",
+  "sourceCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "binding": {
+    "target": "aws",
+    "imageConfigSha256": "d4402a910bbad1e7b766aee18936dbf4e667395e931595a4f50aee3c33356983",
+    "contractSourceCommit": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+    "contractFileSha256": "1bf7fb177e684c7b9c520b2dcb3c6e840f346e6d9c2c37089b35ee6fae010076",
+    "pipelineSha256": "9fa41618268a26b924b5f67101d6d564c1c243e6d96a50221d59320d9cbdc2eb",
+    "buildReceiptSha256": "e373b67b76fa659f4153df63f6829f18ed81b11e317aac1ce62750874b5f6cf4",
+    "files": {
+      "handler.py": "3b637075f4834e0b01838e8d59e96d54819432349ed34e6ea57aa44db161edc8",
+      "historical_handler.py": "04746430c32a4970759c99a49e1ae499e1ba84b3ac9075ae1357c28714223850",
+      "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+      "search_ranges.py": "07b0c2639e2a61b6a0306bed06a8f261f9f8c71ea1ee5d68806e3044a93c27df",
+      "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+    },
+    "subsetSourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3"
+  },
+  "artifactSha256": {
+    "attestation.json": "451233e7e8358fe7a8d10ad190dfa6f349f3eac39a807b05199374d2d7e39e77",
+    "descriptor-proposal.json": "a6926e3e30dc59ae9473fb2af40d786c50f091a75ff7081f3b2d14db3873105c",
+    "image-config.json": "ff65f505925fbd0d4c01ce9dc2b8b214975e68220c6fc6651a46fda6353b5c58",
+    "optimized-build-receipt.json": "e373b67b76fa659f4153df63f6829f18ed81b11e317aac1ce62750874b5f6cf4",
+    "pipeline.json": "9fa41618268a26b924b5f67101d6d564c1c243e6d96a50221d59320d9cbdc2eb",
+    "preparation.json": "deb64cf409590148da6915770a6c320e3333688ed6cc695ae79034c141c43de6"
+  }
+}
