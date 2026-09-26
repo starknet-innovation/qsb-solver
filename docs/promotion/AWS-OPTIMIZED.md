@@ -28,7 +28,8 @@ Next: verify the sm86 native build, compose the merged AWS public-only transport
 with the combined candidate (not the historical AWS binary), then validate actual
 A10G execution, independent CPU differentials, boundaries, failures and matched
 performance for the new artifacts. Preserve source/licensing inputs from merged
-main when composing. Finish a coherent fresh proof and obtain final review before
+main when composing. The fresh proof is not required for this release (user decision,
+25 September); obtain the matched A10G performance evidence and final review before
 enrollment. Native checks on candidate2 do not certify new binary bytes.
 
 The existing regtest request retains36completed pinning ranges and nextAttempt36,

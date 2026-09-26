@@ -127,7 +127,8 @@ def main():
     if len(fixtures)!=4 or {f['name'] for f in fixtures}!=NAMES:raise ValueError('fixture inventory mismatch')
     sys.path.insert(0,'/opt/qsb');import handler
     binding=handler.release_binding();validate_binding(binding)
-    gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,uuid,driver_version','--format=csv,noheader'],text=True).strip()
+    # Name and driver only: the UUID identifies the physical GPU and stays out of public evidence.
+    gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,driver_version','--format=csv,noheader'],text=True).strip()
     if len(gpu.splitlines())!=1 or 'A10G' not in gpu:raise ValueError('one A10G required')
     result=dict(status='running',baselineSha256=BASELINE,candidateSha256=SUB,binding=binding,gpu=gpu,
                 fixtureSha256=fixture_hash,samples=[],freshWithdrawal=False,grantsRangeCredit=False)

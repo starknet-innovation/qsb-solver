@@ -25,9 +25,10 @@ Before promoting a combined candidate:
   qsb-app's separate CPU reference, including boundary and exceptional cases.
 - Compare matched fixtures against the historical image on the same GPU; historical
   tail-cache speedups do not certify this freshly compiled binary.
-- Complete a fresh full-predicate withdrawal proof with the final image; distinguish
-  bounded smokes and historical replays from that proof. Any real mainnet spend
-  still requires concrete user transaction authorization.
+- The fresh full-predicate withdrawal proof is not a gate for this release (user decision,
+  25 September). The first separately authorized mainnet withdrawal (qsb-app#22) is the
+  end-to-end proof, and qsb-app re-checks every hit on CPU before any credit. Any real
+  mainnet spend still requires concrete user transaction authorization.
 - Publish a new normal release and enroll its descriptor only after reviewing that
   evidence. No automatic application deployment or default change is performed.
 

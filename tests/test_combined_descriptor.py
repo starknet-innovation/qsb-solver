@@ -76,8 +76,12 @@ class CombinedDescriptorTests(unittest.TestCase):
             return proposal(json.dumps(pipeline).encode(), json.dumps(r).encode(),
                             'a'*40, 'sha256:'+'f'*64, self.contract, target='aws', image_config=cfg)
         self.assertEqual(aws()['binding']['target'], 'aws')
+        # The real images inherit the CUDA base entrypoint; it must be accepted, nothing else.
+        nvidia=dict(config,Entrypoint=['/opt/nvidia/nvidia_entrypoint.sh'])
+        self.assertEqual(aws(cfg=nvidia)['binding']['target'], 'aws')
         for bad in (self.pipeline, dict(p,architecture='sm_89')):
             with self.assertRaises(ValueError): aws(pipeline=bad)
         for bad in (None, {}, dict(config,Cmd=['python3','handler.py']),
-                    dict(config,Entrypoint=['sh']), dict(config,WorkingDir='/tmp')):
+                    dict(config,Entrypoint=['sh']), dict(config,Entrypoint=['/opt/nvidia/nvidia_entrypoint.sh','sh']),
+                    dict(config,Entrypoint=['/bin/sh','-c']), dict(config,WorkingDir='/tmp')):
             with self.assertRaises(ValueError): aws(cfg=bad)

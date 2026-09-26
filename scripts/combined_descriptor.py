@@ -13,6 +13,8 @@ PIPELINE_KEYS = {'format', 'status', 'solverCommit', 'searchVersion',
                  'subsetSourceLockSha256', 'files'}
 
 
+NVIDIA_ENTRYPOINT = ['/opt/nvidia/nvidia_entrypoint.sh']
+
 def hex_value(value, length):
     return isinstance(value, str) and re.fullmatch('[0-9a-f]{%d}' % length, value) is not None
 
@@ -45,12 +47,15 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
             raise ValueError('Build architecture mismatch')
     if target not in ('generic', 'aws'):
         raise ValueError('Unknown release target')
+    # The CUDA base image's entrypoint only prints a banner and execs its arguments, so the
+    # Batch command still reaches aws_entrypoint.py. Both aws-v0.1.0 and the tested candidate
+    # inherit it; any other entrypoint could intercept the command and stays refused.
     if target == 'aws':
         if pipeline.get('architecture') != 'sm_86':
             raise ValueError('AWS requires an explicit sm_86 binding')
         if (not isinstance(image_config, dict)
                 or image_config.get('Cmd') != ['python3', 'aws_entrypoint.py']
-                or image_config.get('Entrypoint') not in (None, [])
+                or image_config.get('Entrypoint') not in (None, [], NVIDIA_ENTRYPOINT)
                 or image_config.get('WorkingDir') != '/opt/qsb'):
             raise ValueError('AWS runtime command/config mismatch')
     value = descriptor(source_commit, image_digest)
