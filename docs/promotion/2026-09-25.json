@@ -1,0 +1,71 @@
+{
+  "status": "HOLD",
+  "sourceCommit": "6fa5f6a0c2ebff526d4e37ec0a08cc488ba29597",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:db52cc5ded9cef013fef3a481090a2274e1c40a5785943c35a653aa250814c61",
+  "binarySha256": {
+    "pinning": "149fe74e9d5b642f5d2bc6ca7812bba6a8e9346fb3af221a2bcbab31cce208fc",
+    "subset": "1c7d6b5906e95c12f07faf08f93cfe5ca920974c9cb936909548b81b82dade3a"
+  },
+  "provenanceVerified": true,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "sameExecutionWorker": true,
+  "results": [
+    {
+      "stage": "pinning",
+      "workRange": {
+        "count": 19913600000,
+        "locktime": 500000000,
+        "sequence": 2147483648,
+        "sequenceCount": 16,
+        "start": "0",
+        "version": "ranked-v2"
+      },
+      "elapsedSeconds": 27.231102441903204,
+      "candidateFiles": 0,
+      "cpuVerdicts": [],
+      "rangeBindingVerified": true,
+      "parameterBindingVerified": true
+    },
+    {
+      "stage": "round1",
+      "workRange": {
+        "count": 2704928748,
+        "start": "82944408420352",
+        "version": "ranked-v2"
+      },
+      "elapsedSeconds": 21.366586772026494,
+      "candidateFiles": 0,
+      "cpuVerdicts": [],
+      "rangeBindingVerified": true,
+      "parameterBindingVerified": true
+    },
+    {
+      "stage": "round2",
+      "workRange": {
+        "count": 2704928748,
+        "start": "82944408420352",
+        "version": "ranked-v2"
+      },
+      "elapsedSeconds": 12.788129166932777,
+      "candidateFiles": 0,
+      "cpuVerdicts": [],
+      "rangeBindingVerified": true,
+      "parameterBindingVerified": true
+    }
+  ],
+  "freshWithdrawal": false,
+  "fundedInputs": false,
+  "mainnetBroadcast": false,
+  "matchedBaselineBenchmark": false,
+  "cleanup": {
+    "endpointDeleted": true,
+    "standalonePods": 0,
+    "historicalEndpointsDisabled": true
+  },
+  "capacityObservation": {
+    "configuredMaximum": 1,
+    "reportedRunning": 1,
+    "reportedInitializing": 2,
+    "action": "Deleted endpoint after collecting terminal results; no further paid work"
+  }
+}

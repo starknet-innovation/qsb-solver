@@ -1,0 +1,40 @@
+{
+  "status": "sizing-only-not-performance-result",
+  "sourceResultSha256": "958d8b9dcbe432444590f7770f789a35d479af3f543b26a3ee708840f9413be5",
+  "rows": [
+    {
+      "name": "wpkh-round1",
+      "measuredCount": 67108864,
+      "measuredSeconds": 2.100598039000033,
+      "startupSeconds": 0.6164298990000248,
+      "estimatedCandidateSampleSeconds": 12.489775173810894
+    },
+    {
+      "name": "wpkh-round2",
+      "measuredCount": 67108864,
+      "measuredSeconds": 1.429948405999994,
+      "startupSeconds": 0.6227668159999666,
+      "estimatedCandidateSampleSeconds": 7.0802196201957885
+    },
+    {
+      "name": "taproot-round1",
+      "measuredCount": 67108864,
+      "measuredSeconds": 2.1193046869999534,
+      "startupSeconds": 0.6234685100000092,
+      "estimatedCandidateSampleSeconds": 12.590158082027436
+    },
+    {
+      "name": "taproot-round2",
+      "measuredCount": 67108864,
+      "measuredSeconds": 1.437575019999997,
+      "startupSeconds": 0.624458121000032,
+      "estimatedCandidateSampleSeconds": 7.1293933978144555
+    }
+  ],
+  "sampleCount": 24,
+  "rankCount": 536870912,
+  "baselineSlowdownAllowance": 2.0,
+  "estimatedTotalSeconds": 353.6059164646372,
+  "internalLimitSeconds": 600,
+  "scope": "Baseline factor is planning allowance, not measured A10G baseline throughput. Pinning comparison requires a separate bounded session; no paid execution yet."
+}

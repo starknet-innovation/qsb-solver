@@ -1,0 +1,38 @@
+{
+  "status": "HOLD",
+  "outcome": "harness failure before solver process start",
+  "controllerCommit": "a0deef59e3ed29219e12861fadb9e3e70291cf4d",
+  "fixCommit": "d7e7f92",
+  "candidateSource": "43c77084648aa0f4cbcb1589abfcc792c9cc0d9d",
+  "candidateImage": "sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d",
+  "toolingImage": "sha256:c05d39a303971baaca6908b19427158d0428963f16b57c5e823432b50ddf307b",
+  "instanceType": "g5.xlarge",
+  "region": "eu-west-1",
+  "nativeGatesPassed": [],
+  "reason": "Docker tmpfs default noexec prevented copied diagnostic executable from starting",
+  "localRegression": {
+    "defaultTmpfsExit": 126,
+    "explicitExecTmpfsExit": 0,
+    "gpu": false
+  },
+  "receipts": {
+    "bundle.json": "e7023a79d3762c5f99403791cf464eee819dc893443289b0149d70c13291fb8e",
+    "results/result.json": "3dd22b418eadb00da284345a4f3abed2d3b3d1ceae3829fd98d4c46d3aab2ed8",
+    "results/gate.log": "53457d40cba37560141a378f08ecd2cc0243454ec81011613338c8d9ebf48596",
+    "tmpfs-regression.json": "cee1e845b4277ab40d6ac46a60ea8081ae6f1c7a2e1cef154f6d4692fe33ea12",
+    "cleanup-postcheck.json": "6aea310085eb74aa74b103effc1a7293feb09c22656bbeee06e2b669b7548d9a"
+  },
+  "cleanup": {
+    "verifiedAt": "2026-09-25T18:33:11.975987+00:00",
+    "instanceState": "terminated",
+    "volumesRemaining": 0,
+    "securityGroupsRemaining": 0,
+    "schedulesRemaining": 0,
+    "functionsRemaining": 0,
+    "rolesRemaining": 0,
+    "instanceProfilesRemaining": 0
+  },
+  "independentReview": "Fix and evidence reviewed: no blocker; timeout before child return can leave running status but cannot report success",
+  "redactionNote": "Instance/volume identifiers removed from public summary; original operational receipt hashes retained.",
+  "originalPublicSummarySha256": "c9b3b70f32dfe7a65468881cbf04543fc429afe50064051bab3ea1c1ceeaaabd"
+}

@@ -1,0 +1,80 @@
+{
+  "status": "PASS_SCOPED_NATIVE_AUDIT",
+  "promotion": "HOLD",
+  "buildCommit": "4eeefb52a29477576a6e760d385255c0df6514a9",
+  "runnerCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+  "buildReceipt": {
+    "flags": [
+      "-O3",
+      "-arch=sm_89",
+      "-DQSB_SLOTPIPE=0"
+    ],
+    "sourceSha256": "07e12e58531167e157cb0663d0547c9ad2df853ab0849bf6e0c477c02276d22d",
+    "diagnosticSourceSha256": "d05f8f55760b8805c9acca575769457956315f19ca81fe38b84e363510d943be",
+    "files": {
+      "pinning-audit": "9ca1d9ba6cf901f9edc4fdfb56e18bfaa0403b9ba787a26a6c6524a32bbca160",
+      "pinning": "4602c9845d7db1336b5ad00d67348063dce2c164bed3005ba18624f8c3dc6fa7"
+    },
+    "compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+    "scope": "Host-call error and counter injection only; derivative is never a release solver",
+    "status": "UNEXECUTED"
+  },
+  "resultSha256": "0b5d4bb4d91f89d910bc0f8df7d195fe800f25349398523903130fe444d80bc0",
+  "paramsSha256": "623d396e70085e6a723c6b3d01d1e5921b99622fa73696cc98cc10581433e5ee",
+  "arguments": [
+    "seq_start=2147483648",
+    "seq_count=1",
+    "lt_start=500000000",
+    "lt_count=256"
+  ],
+  "reachedFaults": 34,
+  "additionalHitReadFaults": 1,
+  "publicationFailures": [
+    "blocked directory",
+    "dev/full"
+  ],
+  "overflowCount": 65,
+  "normalZeroHitCompleted": true,
+  "syntheticRecordIsCryptographicHit": false,
+  "guardedCalls": [
+    "cudaSetDevice(gpu_index)",
+    "cudaGetDeviceProperties(&prop, gpu_index)",
+    "cudaMalloc(&d_gt,gt_sz)",
+    "cudaMalloc(&dL,lb)",
+    "cudaMalloc(&dH,hb)",
+    "cudaMemcpy(dL,hL,lb,cudaMemcpyHostToDevice)",
+    "cudaMemcpy(dH,hH,hb,cudaMemcpyHostToDevice)",
+    "cudaDeviceSynchronize()",
+    "cudaMemcpy(chk_table,d_gt,gt_sz,cudaMemcpyDeviceToHost)",
+    "cudaMalloc(&d_mid, 32)",
+    "cudaMemcpy(d_mid, pp.midstate, 32, cudaMemcpyHostToDevice)",
+    "cudaMalloc(&d_suffix, 256)",
+    "cudaMemcpy(d_suffix, suffix_template, 256, cudaMemcpyHostToDevice)",
+    "cudaMalloc(&d_nri,32)",
+    "cudaMalloc(&d_u2rx,32)",
+    "cudaMalloc(&d_u2ry,32)",
+    "cudaMalloc(&d_neg2u2rx,32)",
+    "cudaMalloc(&d_neg2u2ry,32)",
+    "cudaMemcpy(d_nri, pp.neg_r_inv, 32, cudaMemcpyHostToDevice)",
+    "cudaMemcpy(d_u2rx, pp.u2r_x, 32, cudaMemcpyHostToDevice)",
+    "cudaMemcpy(d_u2ry, pp.u2r_y, 32, cudaMemcpyHostToDevice)",
+    "cudaMemcpyToSymbol(pin_u2rx_words, pp.u2r_x, sizeof(pp.u2r_x))",
+    "cudaMemcpyToSymbol(pin_u2ry_words, pp.u2r_y, sizeof(pp.u2r_y))",
+    "cudaMemcpy(d_neg2u2rx,n2x,32,cudaMemcpyHostToDevice)",
+    "cudaMemcpy(d_neg2u2ry,n2y,32,cudaMemcpyHostToDevice)",
+    "cudaDeviceSetLimit(cudaLimitStackSize, 32768)",
+    "cudaDeviceGetAttribute(&max_persist, cudaDevAttrMaxPersistingL2CacheSize, gpu_index)",
+    "cudaDeviceGetAttribute(&max_window, cudaDevAttrMaxAccessPolicyWindowSize, gpu_index)",
+    "cudaDeviceSetLimit(cudaLimitPersistingL2CacheSize, want)",
+    "cudaMalloc(&d_hit_cnt, 4)",
+    "cudaMalloc(&d_hit_idx, 1024*4)",
+    "cudaGetDeviceCount(&num_gpus)",
+    "cudaMemset(d_hit_cnt, 0, 4)",
+    "cudaMemcpy(&h_hit, d_hit_cnt, 4, cudaMemcpyDeviceToHost)",
+    "cudaMemcpy(hits, d_hit_idx, nh*4, cudaMemcpyDeviceToHost)"
+  ],
+  "podDeleted": true,
+  "zeroPodsConfirmed": true,
+  "rateUsdPerHour": 0.74,
+  "scope": "Synthetic reached-host-error handling and bounded no-hit native regression; not all source sites, natural overflow, final combined image or fresh withdrawal"
+}

@@ -1,0 +1,22 @@
+{
+  "status": "HOLD",
+  "preparationCommit": "bbaf782874e83b26a5c8bbca241613787e4ccf89",
+  "sourceCommit": "bef76bf9aec123d95fdff53fb839a0c44f378927",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:9e86d94a66d7893e31d8e8d6bec7ddbc9b59f47f09e2f7a6015679fd95ab8b52",
+  "checks": {
+    "strictCandidateAttestation": true,
+    "offlineInstalledBinding": true,
+    "proposalMatchesPreviousConsumerCheckedProposal": true,
+    "wrongCandidateTagRejected": true,
+    "remainingExtractionContainers": 0
+  },
+  "hashes": {
+    "attestation.json": "401e0e43ef1e50ab6b26b0aaffdd4ab42f440dfd38f3826acdc136937be6fc4b",
+    "pipeline.json": "755643340ad02a7586587cba77058bc4a9d3b21c13ebebc8ff2b3d62b4a60743",
+    "optimized-build-receipt.json": "65d444330e02d75d38f2592d05823cd95b185d37a2f32dedb30a04ba8a80c257",
+    "descriptor-proposal.json": "e77b3d7753e4df2f97652222c9fdb1035c60ff698fe199f6b02abf7842329e00"
+  },
+  "published": false,
+  "enrolled": false,
+  "gpuAllocated": false
+}

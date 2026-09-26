@@ -33,6 +33,19 @@ Tagging triggers publication of compiled binaries. The user confirmed redistribu
 
 Development validation scripts under `worker/validation` consume an explicitly supplied `QSB_CPU_REFERENCE_ROOT` pointing to qsb-app's independent `worker/cpu` checkout. They do not bundle or publish that reference inside the solver. Historical ranked-v1 tooling is retained only under `research/archived-validation` and must not be run as a current release gate.
 
+## Optimized promotion work
+
+[Combined candidate integration](worker/promotion/README.md) joins historical
+pinning and the optimized subset under one `ranked-v2` worker identity. Candidate
+prereleases remain HOLD until native correctness, matched A10G performance for
+pinning and both subset rounds, and final evidence review pass. Normal version
+tags still build the historical baseline.
+
+The user removed the fresh wallet-backed regtest search from this release's gates
+on 25 September. Preserve prior evidence; do not start a fresh search for PR #2.
+The first separately authorized mainnet pilot will be the end-to-end test of this
+release. Publication and app enrollment each require explicit user approval.
+
 ### Attested AWS release
 
 An `aws-v*` tag uses the same publication, provenance attestation and descriptor steps above, selecting the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). Ordinary `v*` tags retain the Runpod/sm_89 target. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.

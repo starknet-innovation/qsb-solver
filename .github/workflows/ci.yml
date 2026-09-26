@@ -44,3 +44,35 @@ jobs:
       - run: docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:ci .
       - name: Verify optimized image license texts and retained source notices
         run: python3 tests/test_license_packaging.py --image qsb-optimized:ci --profile optimized
+
+  combined-candidate:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - cuda_arch: 86
+            transport: aws
+          - cuda_arch: 89
+            transport: runpod
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Compile historical pinning and optimized subset
+        run: |
+          docker build --platform linux/amd64 --target ${{ matrix.transport }} --build-arg CUDA_ARCH=${{ matrix.cuda_arch }} -f worker/Dockerfile -t qsb-historical:ci .
+          docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime --build-arg CUDA_ARCH=${{ matrix.cuda_arch }} -t qsb-optimized:ci .
+      - name: Build combined candidate bound to this source
+        run: |
+          docker build --platform linux/amd64 -f worker/promotion/Dockerfile --target ${{ matrix.transport }} \
+            --build-arg CUDA_ARCH=${{ matrix.cuda_arch }} \
+            --build-arg HISTORICAL_IMAGE=qsb-historical:ci \
+            --build-arg OPTIMIZED_IMAGE=qsb-optimized:ci \
+            --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t qsb-combined:ci .
+      - name: Offline identity and failure-credit checks
+        run: python3 worker/promotion/test_image.py qsb-combined:ci
+      - name: Offline AWS transport checks
+        if: matrix.transport == 'aws'
+        run: python3 worker/promotion/test_aws_image.py qsb-combined:ci

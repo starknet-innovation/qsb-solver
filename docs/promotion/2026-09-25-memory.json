@@ -1,0 +1,60 @@
+{
+  "status": "HOLD",
+  "scope": "Sampled native memcheck, not exhaustive correctness or fresh withdrawal",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:43131753b3de0afe6a048bc38c6e26bebbfa8f008ae661c138c8aac06eb8e2a9",
+  "imageSourceCommit": "70d6f47bb89ca82eb4e01ef3ad239f52283ab011",
+  "runnerCommit": "0225a48bf1290c37fc8450ca050cd0e054c3aada",
+  "runnerSha256": "bdd941fac162b7eef6457f40f738f117e28ba2f52021264abbc9cb739ac95a2d",
+  "resultSha256": "6976400e2f166fa71ac3c777285bac91bbead8845cdfa20c0ef8a8e3f576cc99",
+  "pinningSha256": "4602c9845d7db1336b5ad00d67348063dce2c164bed3005ba18624f8c3dc6fa7",
+  "subsetSha256": "1c7d6b5906e95c12f07faf08f93cfe5ca920974c9cb936909548b81b82dade3a",
+  "cases": [
+    {
+      "name": "pinning-known-hit",
+      "exit": 0,
+      "memoryErrors": 0
+    },
+    {
+      "name": "subset-boundary",
+      "exit": 0,
+      "memoryErrors": 0
+    },
+    {
+      "name": "capacity-64",
+      "exit": 0,
+      "memoryErrors": 0
+    },
+    {
+      "name": "capacity-65",
+      "exit": 2,
+      "memoryErrors": 0
+    },
+    {
+      "name": "capacity-1025",
+      "exit": 2,
+      "memoryErrors": 0
+    },
+    {
+      "name": "forced-exception",
+      "exit": 0,
+      "memoryErrors": 0
+    },
+    {
+      "name": "detected-exception",
+      "exit": 0,
+      "memoryErrors": 0
+    }
+  ],
+  "firstAttemptCredited": false,
+  "cleanup": {
+    "deletedPods": [
+      "i1bo9l3k4enku1",
+      "9d2leeqc47ua6m"
+    ],
+    "remainingPods": 0,
+    "terminatedWatchdogs": [
+      351,
+      359
+    ]
+  }
+}

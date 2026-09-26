@@ -1,0 +1,46 @@
+name: Build frozen candidate memory audit image
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish validation-only image
+        id: image
+        env:
+          IMAGE: ghcr.io/starknet-innovation/qsb-solver:validation-memory-${{ github.sha }}
+        run: |
+          docker build -f worker/promotion/validation/Memory.Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+          REF=$(docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE")
+          echo "digest=${REF#*@}" >> "$GITHUB_OUTPUT"
+          mkdir memory-output
+          printf '%s\n' "$REF" > memory-output/image.txt
+          printf '%s\n' "$GITHUB_SHA" > memory-output/source-commit.txt
+      - uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-name: ghcr.io/starknet-innovation/qsb-solver
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-image
+          path: memory-output/
+          retention-days: 14

@@ -5,3 +5,8 @@ worker/build/
 *.tar.gz
 .env*
 release-output/
+
+# Defense in depth for local recovery artifacts; never intentionally store here.
+**/private/
+**/wallet.json
+**/recovery.json

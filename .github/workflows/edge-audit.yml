@@ -1,0 +1,42 @@
+name: Build locked native exception and capacity audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - worker/promotion/validation/build_trace.py
+      - .github/workflows/edge-audit.yml
+      - tests/test_edge_audit.py
+      - worker/promotion/validation/build_edge_audit.py
+      - worker/promotion/validation/EdgeAudit.Dockerfile
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - architecture: 89
+            artifact: native-edge-audit
+          - architecture: 86
+            artifact: native-edge-audit-sm86
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - name: Build candidate and diagnostic with the same source lock
+        run: |
+          docker build --build-arg CUDA_ARCH=${{ matrix.architecture }} -f worker/optimized/Dockerfile --target build -t qsb-optimized-build:audit .
+          docker build -f worker/promotion/validation/EdgeAudit.Dockerfile -t qsb-edge-audit:build .
+          container=$(docker create qsb-edge-audit:build)
+          mkdir audit-output
+          docker cp "$container:/opt/qsb-edge-audit/." audit-output/
+          docker rm "$container"
+          printf '%s\n' "$GITHUB_SHA" > audit-output/source-commit.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ matrix.artifact }}
+          path: audit-output/
+          retention-days: 14
