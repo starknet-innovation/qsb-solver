@@ -1,6 +1,6 @@
 # Publishing the tested combined image
 
-Status: **prepared, not approved or enrolled**. The current candidate remains HOLD.
+Status: **publication approved on 26 September 2026**; see [the publication record](2026-09-26-publication.md). App enrollment is a separate change.
 
 A normal version tag currently triggers `release.yml`, which compiles the historical
 solver. It must not be used to claim publication of the optimized candidate.
