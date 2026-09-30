@@ -29,7 +29,7 @@ int main(int argc,char**argv){
     // Test-only modes have no arbitrary scalar input and preserve baseline rejection.
     const char* modes[]={"--reject-baseline-zero","--reject-batch-zero","--reject-baseline-order","--reject-batch-order"};
     for(unsigned i=0;i<4;++i)if(!strcmp(argv[1],modes[i])){uint8_t s[32];fixture(5+i/2,s);if(i%2)batch_ladders(C.data(),D.data(),s);else gt_build_ladders(L.data(),H.data(),s);return 3;}
-    FILE* f=fopen(argv[1],"wx");if(!f)return 1;
+    FILE* f=fopen(argv[1],"wx");if(!f){perror("report");return 1;}
     fprintf(f,"{\"schema\":1,\"scope\":\"public-point-ladder-only\",\"openssl\":\"%s\",\"records_per_fixture\":19200,\"populated_per_fixture\":12002,\"padding_per_fixture\":7198,\"samples_per_fixture\":90,\"fixtures\":[",OpenSSL_version(OPENSSL_VERSION));
     for(unsigned i=0;i<5;++i){uint8_t s[32];fixture(i,s);
         auto a=std::chrono::steady_clock::now();gt_build_ladders(L.data(),H.data(),s);auto b=std::chrono::steady_clock::now();batch_ladders(C.data(),D.data(),s);auto d=std::chrono::steady_clock::now();

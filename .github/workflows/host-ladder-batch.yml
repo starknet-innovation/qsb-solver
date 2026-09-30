@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           mkdir run-results
           trap 'timeout --kill-after=2s 10s docker rm -f qsb-host-ladder-check >/dev/null 2>&1 || true' EXIT
-          timeout --kill-after=10s 180s docker run --rm --name qsb-host-ladder-check --network none --read-only \
+          timeout --kill-after=10s 180s docker run --rm --name qsb-host-ladder-check --user "$(id -u):$(id -g)" --network none --read-only \
             --cap-drop ALL --security-opt no-new-privileges --tmpfs /tmp:rw,noexec,nosuid,size=64m \
             -v "$PWD/run-results:/out:rw" qsb-host-ladder \
             /out/result.json 2>&1 | tee run-results/run.log
@@ -47,7 +47,7 @@ jobs:
               log="run-results/reject-${implementation}-${input}.log"
               rc=0
               timeout --kill-after=10s 60s docker run --rm --name qsb-host-ladder-negative \
-                --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+                --user "$(id -u):$(id -g)" --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
                 --tmpfs /tmp:rw,noexec,nosuid,size=64m qsb-host-ladder "$mode" >"$log" 2>&1 || rc=$?
               printf '%s\n' "$rc" >"${log}.exit"
               test "$rc" -eq 2
