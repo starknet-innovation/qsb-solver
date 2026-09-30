@@ -1,0 +1,179 @@
+"""Probe Core's shared ten-signature FindAndDelete on disposable fixture pushes.
+
+This is an isolated bare CHECKMULTISIG lock, not a full QSB spend. It places
+the fixture's 151 possible signature pushes in a nonexecuted branch, so Core
+must delete the ten reached signatures from one shared legacy scriptCode.
+Both SINGLE and ALL checks use in-range, transaction-dependent sighashes.
+"""
+
+import argparse
+import hashlib
+import json
+import random
+import subprocess
+import sys
+from pathlib import Path
+
+
+def parse_sig(sig: bytes) -> tuple[int, int]:
+    r_len = sig[3]
+    r = int.from_bytes(sig[4:4 + r_len], "big")
+    assert sig[4 + r_len] == 2
+    s_len = sig[5 + r_len]
+    s = int.from_bytes(sig[6 + r_len:6 + r_len + s_len], "big")
+    assert 6 + r_len + s_len == len(sig) - 1
+    return r, s
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--app-root", type=Path, required=True)
+    parser.add_argument("--native-root", type=Path, required=True)
+    parser.add_argument("--image", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    app = args.app_root.resolve()
+    native = args.native_root.resolve()
+    sys.path.insert(0, str(app / "worker/cpu"))
+    import bitcoin_tx as bt
+    import secp256k1 as ec
+
+    inventory = json.loads((root / "evidence/source-inventory.json").read_text())
+    layout = json.loads((root / "evidence/byte-layout-map.json").read_text())
+    pinned_core = json.loads((root / "evidence/find-and-delete-boundary.json").read_text())
+    builder_hash = hashlib.sha256((app / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
+    ec_hash = hashlib.sha256((app / "worker/cpu/secp256k1.py").read_bytes()).hexdigest()
+    assert builder_hash == inventory["app"]["files"]["worker/cpu/bitcoin_tx.py"]
+    assert ec_hash == inventory["app"]["files"]["worker/cpu/secp256k1.py"]
+    assert builder_hash == layout["builder_sha256"]
+    wrapper_hash = hashlib.sha256((native / "qsb-consensus").read_bytes()).hexdigest()
+    library_hash = hashlib.sha256((native / "libbitcoinconsensus.so.0").read_bytes()).hexdigest()
+    assert wrapper_hash == pinned_core["native_executable_sha256"]
+    assert library_hash == pinned_core["native_library_sha256"]
+    assert args.image == pinned_core["image"]
+
+    builder = bt.QSBScriptBuilder(150, 8, 1, 7, 2, hash_mode="sha256")
+    rng = random.Random("QSB security analysis: PUBLIC DISPOSABLE TEST MATERIAL")
+    old_random = bt.os.urandom
+    try:
+        bt.os.urandom = rng.randbytes
+        builder.generate_keys()
+    finally:
+        bt.os.urandom = old_random
+
+    def nonce_sig(label: bytes) -> bytes:
+        k = int.from_bytes(hashlib.sha256(label + b"_nonce").digest(), "big") % ec.N
+        r = ec.point_mul(k, ec.G)[0] % ec.N
+        s = max(1, int.from_bytes(hashlib.sha256(label + b"_s").digest()[:16],
+                                  "big") % (ec.N // 2))
+        return ec.encode_der_sig(r, s, sighash=1)
+
+    pin, first_nonce, final_nonce = (nonce_sig(x) for x in
+                                     (b"qsb_pin", b"qsb_r0", b"qsb_r1"))
+    fixture_lock = builder.build_full_script(pin, first_nonce, final_nonce)
+    assert hashlib.sha256(fixture_lock).hexdigest() == layout["script_sha256"]
+
+    all_sigs = builder.dummy_sigs[1] + [final_nonce]
+    chosen_ids = [0, 1, 17, 23, 41, 77, 96, 111, 149]
+    chosen = [all_sigs[i] for i in chosen_ids] + [final_nonce]
+    assert len(set(chosen)) == 10
+    assert all(sig[-1] == 3 for sig in chosen[:-1])
+    assert chosen[-1][-1] == 1
+
+    # Push opcodes in a false branch are parsed and participate in
+    # FindAndDelete, but their stack effects are skipped.
+    lock = b"\x00\x63" + b"".join(bt.push_data(sig) for sig in all_sigs) + b"\x68\xae"
+    code = lock
+    for sig in reversed(chosen):  # Core scans from the top stack item.
+        code = bt.find_and_delete(code, sig)
+    selected = set(chosen)
+    expected = b"\x00\x63" + b"".join(
+        bt.push_data(sig) for sig in all_sigs if sig not in selected) + b"\x68\xae"
+    assert code == expected
+    assert len(lock) <= 10000
+
+    tx = bt.Transaction(version=1, locktime=0)
+    tx.add_input(bt.TxIn(b"\x44" * 32, 0, b"", 0xFFFFFFFE))
+    tx.add_input(bt.TxIn(b"\x55" * 32, 0, b"", 0xFFFFFFFE))
+    tx.add_output(bt.TxOut(90000, b"\x51"))
+    tx.add_output(bt.TxOut(90000, b"\x51"))
+
+    def recovered_key(sig: bytes, script_code: bytes) -> bytes:
+        r, s = parse_sig(sig)
+        z = tx.sighash(1, script_code, sig[-1])
+        for recovery_flag in (0, 1):
+            point = ec.ecdsa_recover(r, s, z, recovery_flag)
+            if point is not None and ec.ecdsa_verify(point, z, r, s):
+                return ec.compress_pubkey(point)
+        raise AssertionError("No recovery point for disposable signature")
+
+    keys = [recovered_key(sig, code) for sig in chosen]
+    wrong_all = recovered_key(final_nonce, lock)
+    wrong_single = recovered_key(chosen[0], lock)
+    assert wrong_all != keys[-1]
+    assert wrong_single != keys[0]
+
+    def check(label: str, key_list: list[bytes]) -> dict:
+        script_sig = (b"\x00" + b"".join(bt.push_data(sig) for sig in chosen) +
+                      bt.push_number(10) +
+                      b"".join(bt.push_data(key) for key in key_list) +
+                      bt.push_number(10))
+        tx.inputs[1].script_sig = script_sig
+        raw = tx.serialize()
+        payload = f"{raw.hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
+        run = subprocess.run([
+            "docker", "run", "--rm", "--network", "none", "--read-only",
+            "--cap-drop=ALL", "--security-opt=no-new-privileges",
+            "--platform=linux/arm64", "-i", "-v", f"{native}:/native:ro",
+            args.image, "/native/qsb-consensus"],
+            input=payload, text=True, capture_output=True, timeout=60)
+        if run.returncode not in (0, 1):
+            raise RuntimeError(f"{label}: Core adapter error: {run.stderr}")
+        accepted = (run.returncode == 0 and
+                    run.stdout.strip() == "core-27.2-api2-all-inputs-valid")
+        return {"case": label, "accepted": accepted,
+                "transaction_sha256": hashlib.sha256(raw).hexdigest()}
+
+    wrong_all_keys = keys.copy()
+    wrong_all_keys[-1] = wrong_all
+    wrong_single_keys = keys.copy()
+    wrong_single_keys[0] = wrong_single
+    cases = [check("shared_code", keys),
+             check("wrong_all_key", wrong_all_keys),
+             check("wrong_in_range_single_key", wrong_single_keys)]
+    for omitted in range(10):
+        missing_one_code = lock
+        for index in reversed(range(10)):
+            if index != omitted:
+                missing_one_code = bt.find_and_delete(missing_one_code, chosen[index])
+        assert missing_one_code != code
+        missing_one_keys = [recovered_key(sig, missing_one_code) for sig in chosen]
+        assert missing_one_keys != keys
+        cases.append(check(f"retain_selected_push_{omitted}", missing_one_keys))
+    assert [case["accepted"] for case in cases] == [True] + [False] * 12, cases
+
+    report = {
+        "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, not full QSB acceptance",
+        "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+        "source_revision": subprocess.check_output(
+            ["git", "-C", str(app), "rev-parse", "HEAD"], text=True).strip(),
+        "builder_sha256": builder_hash,
+        "secp256k1_sha256": ec_hash,
+        "fixture_script_sha256": hashlib.sha256(fixture_lock).hexdigest(),
+        "image": args.image,
+        "native_executable_sha256": wrapper_hash,
+        "native_library_sha256": library_hash,
+        "selected_dummy_ids": chosen_ids,
+        "lock_bytes": len(lock),
+        "lock_sha256": hashlib.sha256(lock).hexdigest(),
+        "shared_script_code_sha256": hashlib.sha256(code).hexdigest(),
+        "both_sighash_types_in_range": True,
+        "cases": cases,
+    }
+    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    print(json.dumps({"lock_bytes": len(lock), "cases": cases}, indent=2))
+
+
+if __name__ == "__main__":
+    main()

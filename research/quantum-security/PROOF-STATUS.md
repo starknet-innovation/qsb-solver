@@ -181,6 +181,15 @@ a signature-push pattern embedded within another push and a noncanonical
 not a complete FindAndDelete equivalence or the QSB final scriptCode. The
 exact refinement contract is in `CORE-FINAL-MATCH.md`.
 
+`ten-signature-find-and-delete.json` checks one isolated 10-of-10 bare
+multisignature lock containing all 151 final fixture signature pushes in a
+nonexecuted branch. With two outputs, both SINGLE and ALL sighashes depend on
+the transaction and shared scriptCode. The pinned Core adapter accepts the
+keys recovered after deleting all ten selected pushes, rejects a wrong SINGLE
+key and a wrong ALL key, and rejects ten full-key controls that retain one
+selected push each. These 13 outcomes corroborate the simultaneous deletion
+model; the test lock is 1,560 bytes and does not execute the full QSB lock.
+
 `literal-find-and-delete.json` regenerates the disposable Config A lock and
 checks its 9,923-byte script SHA-256 against the byte-layout fixture. At its
 880 opcode boundaries, each of the 150 final dummy signatures and the fixed

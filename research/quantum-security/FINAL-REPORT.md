@@ -286,6 +286,13 @@ signature pushes, an embedded byte pattern, and noncanonical `PUSHDATA1`.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.
+An additional isolated 10-of-10 multisignature experiment places all 151
+fixture signature pushes in a nonexecuted branch. Core accepts keys recovered
+against the shared scriptCode after ten selected deletions, and rejects 12
+wrong-code controls, including one that retains each selected push in turn.
+The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
+`SIGHASH_ALL`. This is native evidence for the shared deletion behavior, not
+full-lock acceptance or a proof of arbitrary-witness refinement.
 An independent conservative count now avoids that exact-count premise for the
 Lean predicate: among all `256^20` twenty-byte strings, at most
 `12·256^14` can satisfy the required header, R-length, S-tag, and S-length

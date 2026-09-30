@@ -93,6 +93,17 @@ scriptCode is rejected. The embedded and noncanonical pushes remain in the
 correct scriptCode; canonical boundary pushes are removed. These eight native
 outcomes test selected paths, not the whole generated QSB lock.
 
+`analysis/check_ten_signature_findanddelete.py` adds an isolated 10-of-10
+bare multisignature case. It places all 151 final signature pushes from the
+disposable fixture inside a nonexecuted branch, then supplies nine selected
+dummy signatures and the fixed nonce with keys recovered for the one shared
+scriptCode after all ten deletions. The transaction has two outputs, making
+the nine `SIGHASH_SINGLE` checks in range. Core accepts the predicted shared
+code case, rejects separate wrong-key controls for a SINGLE and the ALL
+signature, and rejects ten controls whose keys were recovered after retaining
+one selected push. This is 13 native outcomes on a 1,560-byte isolated lock;
+it does not execute the full 9,923-byte QSB lock or prove Core/Lean equivalence.
+
 `analysis/check_literal_findanddelete.py` regenerates the exact disposable
 lock, checks its script SHA-256 against `ByteLayout` evidence, and inventories
 all 880 opcode boundaries. Each of the 150 final dummy signatures and the
