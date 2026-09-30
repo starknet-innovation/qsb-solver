@@ -4,11 +4,13 @@ on:
     paths:
       - experiments/exact-table-batch/**
       - tests/test_exact_table_batch.py
+      - tests/test_table*.py
       - .github/workflows/exact-table-batch.yml
   pull_request:
     paths:
       - experiments/exact-table-batch/**
       - tests/test_exact_table_batch.py
+      - tests/test_table*.py
       - .github/workflows/exact-table-batch.yml
 permissions:
   contents: read
@@ -21,7 +23,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Test isolated source and gate guards
-        run: python3 -m unittest discover -s tests -p 'test_exact_table_batch.py'
+        run: |
+          python3 -m unittest discover -s tests -p 'test_exact_table_batch.py'
+          python3 -m unittest discover -s tests -p 'test_table*.py'
       - name: Compile isolated native table comparison without GPU execution
         run: |
           docker build -f experiments/exact-table-batch/Dockerfile -t qsb-table-gate .

@@ -37,6 +37,8 @@ QSB_ENVELOPE
 }
 trap finish EXIT
 sha256sum -c SHA256SUMS > "$results/staging.log" 2>&1
+sha256sum table-gate > "$results/binary.sha256"
+printf '%s\n' "$image" > "$results/runtime.txt"
 [ "$((deadline-$(date -u +%s)))" -ge 1080 ]
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image" > "$results/pull.log" 2>&1
 [ "$((deadline-$(date -u +%s)))" -ge 780 ]

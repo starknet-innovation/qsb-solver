@@ -112,3 +112,21 @@ identity failures. Container removal has a separate bounded timeout. Packaging
 failure emits a collection-error marker with the original gate status, and a
 successful gate with failed packaging returns failure. EC2 and volume cleanup
 remain the independent controller's responsibility.
+
+## Collected evidence acceptance
+
+After the committed collector verifies the envelope size/hash and writes its
+files, run `verify_results.py RESULTS OUTPUT --binary-sha256 EXPECTED_SHA
+--image EXPECTED_DIGEST --command-exit OBSERVED_SSM_EXIT`. Supply the independently
+observed terminal command exit, not a value inferred from report text. The output
+file must not already exist. Expected binary/image identities come from the
+prelaunch plan. This validator does not establish cloud cleanup or source provenance.
+
+Acceptance requires all four complete mixed15 reports, clean tool-specific
+sanitizer summaries, identical ordered table hashes, one A10G, and all seven
+alternating timing pairs. Duplicate JSON keys, nonfinite values, incomplete
+receipts, mismatched runtime/binary identities and ambiguous sanitizer summaries
+fail closed. Zero measured kernel duration is inconclusive for ratios and is
+also rejected. The summary retains every paired time ratio plus median/range;
+it explicitly grants neither solver speedup nor range credit. All input files
+are hashed in the receipt, while raw GPU UUIDs remain private operational data.
