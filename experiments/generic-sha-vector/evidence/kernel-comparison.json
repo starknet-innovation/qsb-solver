@@ -1,0 +1,46 @@
+{
+  "baseline": {
+    "instructions": 36739,
+    "loadInstructions": {
+      "LD.E": 8,
+      "LDC.64": 13,
+      "LDC.U16": 1,
+      "LDC.U8": 3,
+      "LDG.E": 20,
+      "LDG.E.128": 32,
+      "LDG.E.128.CONSTANT": 32,
+      "LDG.E.64": 3,
+      "LDG.E.CONSTANT": 13,
+      "LDG.E.U8.CONSTANT": 25,
+      "LDL": 15,
+      "LDL.128": 24,
+      "LDL.LU": 7,
+      "LDL.S8": 2,
+      "LDL.U8": 31,
+      "LDS.64": 32
+    },
+    "sassSha256": "1e13e1493970f7e9d66f1d81cd3e787d8772715a3e5ab270b617d425ebbf164d"
+  },
+  "candidate": {
+    "instructions": 36732,
+    "loadInstructions": {
+      "LD.E.128": 2,
+      "LDC.64": 13,
+      "LDC.U16": 1,
+      "LDC.U8": 3,
+      "LDG.E": 20,
+      "LDG.E.128": 32,
+      "LDG.E.128.CONSTANT": 32,
+      "LDG.E.64": 3,
+      "LDG.E.CONSTANT": 13,
+      "LDG.E.U8.CONSTANT": 25,
+      "LDL": 15,
+      "LDL.128": 24,
+      "LDL.LU": 7,
+      "LDL.S8": 2,
+      "LDL.U8": 31,
+      "LDS.64": 32
+    },
+    "sassSha256": "ea07fa43c6ba28a9579a38226d6465fc869184287fbd759562813c09d26fcfcb"
+  }
+}

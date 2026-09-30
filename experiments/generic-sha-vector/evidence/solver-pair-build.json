@@ -1,0 +1,26 @@
+{
+  "flags": [
+    "-O3",
+    "-arch=sm_86",
+    "-DZLAB_TRIM=0",
+    "-DZLAB_K2S=0",
+    "-DQSB_PAIR_SHARED=0",
+    "-DQSB_SPEC_FINISH=0",
+    "-DZLAB_DUAL_EPOCH_SHA=0",
+    "-std=c++17"
+  ],
+  "binaries": {
+    "baseline": {
+      "binarySha256": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+      "treeSha256": "71e4b01469b2d2327c32bc62d4b20d1a6276c20c994cf6c3e8a082e9abac7cdb"
+    },
+    "candidate": {
+      "binarySha256": "0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b",
+      "treeSha256": "14f574832dcea8f8f454af45a1849430e4229a09cee148ff9bf1021adc6cdc2c"
+    }
+  },
+  "compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+  "packages": "g++\t4:11.2.0-1ubuntu1\ngcc\t4:11.2.0-1ubuntu1\nlibssl-dev:amd64\t3.0.2-0ubuntu1.30\n",
+  "gpuExecuted": false,
+  "status": "HOLD"
+}
