@@ -8,9 +8,27 @@ post-signed pool shape; execution and Core refinement are separate bridges.
 namespace QSB.FinalBonusSecond
 open ByteMachine
 open FinalSignedLoop
+open FinalSignedChain
 open PoolRollInvariant
 set_option maxRecDepth 20000
 set_option maxHeartbeats 10000000
+
+def firstBonusOps : List Op :=
+  FinalBonusAccepted.firstBonusPrelude ++ [.roll]
+
+def bothBonusOps : List Op :=
+  firstBonusOps ++ (ByteBonusBetween.betweenOps ++ [.roll])
+
+theorem generated_bonus_op_segments :
+    firstBonusOps = (ByteLayout.program.drop 840).take 5 ∧
+    bothBonusOps = (ByteLayout.program.drop 840).take 10 := by decide
+
+theorem generated_to_bonus_prefix :
+    ByteLayout.program.take 840 =
+      ByteLayout.program.take 446 ++
+        ([.checkmultisig] ++
+          (FinalSignedAccepted.finalRoundAllOps ++ allSignedBlocks)) := by
+  decide
 
 /-- A first bonus draw from the surviving dummy pool keeps every commitment
 in place while moving the selected dummy above the gathered signatures. -/
@@ -262,5 +280,271 @@ theorem accepted_second_bonus_source_role (hashes : Hashes)
                   m parsedLast lastRoll
               rw [postLastShape]
               exact atLast.symm.trans (regionKeep.trans sourceMap)
+
+/-- A completed generated bonus suffix from a seven-signed pool state has
+actual reached states after both bonus rolls. Their top bytes obey the
+first- and second-source maps under the decoded cap bounds. -/
+theorem accepted_bonus_suffix_source_trace (hashes : Hashes)
+    (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (ByteLayout.program.drop 840)
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) = some final) :
+    ∃ (firstIndex lastIndex : Nat) (postFirst postLast : State),
+      run hashes firstBonusOps
+        (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+          outcomes cost) = some postFirst ∧
+      run hashes bothBonusOps
+        (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+          outcomes cost) = some postLast ∧
+      9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
+      10 ≤ lastIndex ∧ lastIndex ≤ 152 ∧
+      postFirst.stack.head? =
+        (if firstIndex < 152 then dummies[firstIndex - 9]?
+          else commitments[0]?) ∧
+      postLast.stack.head? =
+        (if firstIndex < 152 then
+          if lastIndex < 152 then
+            (dummies.eraseIdx (firstIndex - 9))[lastIndex - 10]?
+          else commitments[0]?
+        else dummies[lastIndex - 10]?) := by
+  obtain ⟨nine, ten, nineNonempty, tenNonempty,
+      sourceNine, sourceTen⟩ :=
+    FinalSignedChain.seven_signed_bonus_sources_nonempty prior
+      gathered dummies commitments tail shape seven
+  rw [FinalBonusAccepted.generated_bonus_suffix, run_append] at accepted
+  cases prelude : run hashes FinalBonusAccepted.firstBonusPrelude
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) with
+  | none => simp [prelude] at accepted
+  | some beforeFirst =>
+      obtain ⟨rawFirst, regionFirst, firstShape, firstNine,
+          firstTen, firstCap⟩ :=
+        FinalBonusAccepted.accepted_first_bonus_prelude_sources hashes
+          (nextRawFront prior gathered dummies commitments ++ tail)
+          outcomes cost beforeFirst nine ten sourceNine sourceTen prelude
+      simp only [prelude, Option.bind_some] at accepted
+      cases beforeFirst with
+      | mk firstStack firstOutcomes firstCost =>
+          change firstStack = rawFirst :: regionFirst at firstShape
+          subst firstStack
+          rw [run_append] at accepted
+          cases firstRoll : run hashes [.roll]
+              (State.mk (rawFirst :: regionFirst)
+                firstOutcomes firstCost) with
+          | none => simp [firstRoll] at accepted
+          | some postFirst =>
+              obtain ⟨firstIndex, decodedFirst⟩ :=
+                FinalBonusAccepted.accepted_roll_index hashes rawFirst
+                  regionFirst firstOutcomes firstCost postFirst firstRoll
+              have firstUpper := firstCap firstIndex decodedFirst
+              simp only [firstRoll, Option.bind_some] at accepted
+              rw [run_append] at accepted
+              cases between : run hashes ByteBonusBetween.betweenOps
+                  postFirst with
+              | none => simp [between] at accepted
+              | some beforeLast =>
+                  simp only [between, Option.bind_some] at accepted
+                  rw [run_append] at accepted
+                  cases beforeLast with
+                  | mk lastStack lastOutcomes lastCost =>
+                      cases lastStack with
+                      | nil =>
+                          have noStep : step hashes .roll
+                              (State.mk [] lastOutcomes lastCost) = none := by
+                            change (if lastCost + 1 > 201 then none else none) = none
+                            split_ifs <;> rfl
+                          have noRoll : run hashes [.roll]
+                              (State.mk [] lastOutcomes lastCost) = none := by
+                            simp [run, noStep]
+                          change (run hashes [.roll]
+                              (State.mk [] lastOutcomes lastCost)).bind
+                              (run hashes (ByteLayout.program.drop 850)) =
+                                some final at accepted
+                          simp [noRoll] at accepted
+                      | cons rawLast regionLast =>
+                          cases lastRoll : run hashes [.roll]
+                              (State.mk (rawLast :: regionLast)
+                                lastOutcomes lastCost) with
+                          | none => simp [lastRoll] at accepted
+                          | some postLast =>
+                              obtain ⟨lastIndex, decodedLast⟩ :=
+                                FinalBonusAccepted.accepted_roll_index hashes
+                                  rawLast regionLast lastOutcomes lastCost
+                                  postLast lastRoll
+                              have lastUpper :=
+                                FinalBonusAccepted.accepted_between_cap_index_le_152
+                                  hashes postFirst
+                                  (State.mk (rawLast :: regionLast)
+                                    lastOutcomes lastCost)
+                                  rawLast regionLast between rfl
+                                  lastIndex decodedLast
+                              simp only [lastRoll, Option.bind_some] at accepted
+                              have bounds :=
+                                ByteBonusBetween.successful_two_bonus_index_bounds
+                                  hashes rawFirst rawLast regionFirst regionLast
+                                  firstIndex lastIndex firstOutcomes firstCost
+                                  postFirst
+                                  (State.mk (rawLast :: regionLast)
+                                    lastOutcomes lastCost)
+                                  postLast final nine ten
+                                  nineNonempty tenNonempty firstNine firstTen
+                                  decodedFirst decodedLast firstRoll between
+                                  rfl lastRoll accepted
+                              have firstSource :=
+                                FinalBonusAccepted.accepted_first_bonus_source_role
+                                  hashes prior gathered dummies commitments
+                                  tail shape seven outcomes cost
+                                  (State.mk (rawFirst :: regionFirst)
+                                    firstOutcomes firstCost)
+                                  postFirst prelude rawFirst regionFirst rfl
+                                  firstIndex bounds.1 firstUpper
+                                  decodedFirst firstRoll
+                              have lastSource :=
+                                accepted_second_bonus_source_role hashes prior
+                                  gathered dummies commitments tail shape seven
+                                  outcomes cost
+                                  (State.mk (rawFirst :: regionFirst)
+                                    firstOutcomes firstCost)
+                                  postFirst
+                                  (State.mk (rawLast :: regionLast)
+                                    lastOutcomes lastCost)
+                                  postLast prelude rawFirst regionFirst rfl
+                                  firstIndex bounds.1 firstUpper decodedFirst
+                                  firstRoll between rawLast regionLast rfl
+                                  lastIndex bounds.2 lastUpper decodedLast
+                                  lastRoll
+                              have firstRun : run hashes firstBonusOps
+                                  (State.mk (nextRawFront prior gathered
+                                    dummies commitments ++ tail) outcomes cost) =
+                                    some postFirst := by
+                                simp [firstBonusOps, run_append, prelude,
+                                  firstRoll]
+                              have bothRun : run hashes bothBonusOps
+                                  (State.mk (nextRawFront prior gathered
+                                    dummies commitments ++ tail) outcomes cost) =
+                                    some postLast := by
+                                simp [bothBonusOps, run_append, firstRun,
+                                  between, lastRoll]
+                              exact ⟨firstIndex, lastIndex, postFirst, postLast,
+                                firstRun, bothRun, bounds.1, firstUpper,
+                                bounds.2, lastUpper, firstSource, lastSource⟩
+
+/-- Every successful full generated byte-model run reaches the seven-signed
+pool state and then two concrete bonus-roll states. The two selected top
+bytes satisfy the mutually exclusive commitment-source cases. -/
+theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final) :
+    ∃ (result : Bool)
+      (gathered dummies commitments tail : List Bytes)
+      (outcomes : List Bool) (cost : Nat)
+      (trace : List (Fin 150 × Bytes))
+      (firstIndex lastIndex : Nat) (postFirst postLast : State),
+      run hashes (ByteLayout.program.take 840) initial =
+        some (State.mk (nextRawFront (boolBytes result)
+          gathered dummies commitments ++ tail) outcomes cost) ∧
+      PoolShape gathered dummies commitments ∧
+      gathered.length = 7 ∧
+      trace.length = 7 ∧
+      (trace.map Prod.fst).Nodup ∧
+      (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
+      run hashes firstBonusOps
+        (State.mk (nextRawFront (boolBytes result)
+          gathered dummies commitments ++ tail) outcomes cost) =
+            some postFirst ∧
+      run hashes bothBonusOps
+        (State.mk (nextRawFront (boolBytes result)
+          gathered dummies commitments ++ tail) outcomes cost) =
+            some postLast ∧
+      9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
+      10 ≤ lastIndex ∧ lastIndex ≤ 152 ∧
+      postFirst.stack.head? =
+        (if firstIndex < 152 then dummies[firstIndex - 9]?
+          else commitments[0]?) ∧
+      postLast.stack.head? =
+        (if firstIndex < 152 then
+          if lastIndex < 152 then
+            (dummies.eraseIdx (firstIndex - 9))[lastIndex - 10]?
+          else commitments[0]?
+        else dummies[lastIndex - 10]?) := by
+  rw [FinalSignedChain.generated_whole_signed_boundary,
+    run_append] at accepted
+  cases preRun : run hashes (ByteLayout.program.take 446) initial with
+  | none => simp [preRun] at accepted
+  | some beforeCheck =>
+      simp only [preRun, Option.bind_some] at accepted
+      obtain ⟨afterCheck, checkStep, checkWithin, suffix⟩ :=
+        FirstAcceptedOrigin.run_cons_success hashes .checkmultisig
+          (FinalSignedAccepted.finalRoundAllOps ++
+            (allSignedBlocks ++ ByteLayout.program.drop 840))
+          beforeCheck final accepted
+      have checkRun : run hashes [.checkmultisig] beforeCheck =
+          some afterCheck := by
+        simp [run, checkStep,
+          show ¬afterCheck.stack.length > 1000 by omega]
+      obtain ⟨result, earlyTail, checkShape⟩ :=
+        FinalSignedAccepted.successful_checkmultisig_result_shape
+          hashes beforeCheck afterCheck checkStep
+      cases afterCheck with
+      | mk checkStack checkOutcomes checkCost =>
+          change checkStack = boolBytes result :: earlyTail at checkShape
+          subst checkStack
+          rw [run_append] at suffix
+          cases init : run hashes FinalSignedAccepted.finalRoundAllOps
+              (State.mk (boolBytes result :: earlyTail)
+                checkOutcomes checkCost) with
+          | none => simp [init] at suffix
+          | some afterInit =>
+              have initShape :=
+                FinalSignedAccepted.accepted_final_round_init_shape
+                  hashes (boolBytes result :: earlyTail) checkOutcomes
+                  checkCost afterInit init
+              simp only [init, Option.bind_some] at suffix
+              rw [initShape] at suffix
+              change run hashes (allSignedBlocks ++
+                  ByteLayout.program.drop 840)
+                (State.mk
+                  (FinalSignedAccepted.baseRegion (boolBytes result) earlyTail)
+                  checkOutcomes checkCost) = some final at suffix
+              rw [run_append] at suffix
+              cases signed : run hashes allSignedBlocks
+                  (State.mk
+                    (FinalSignedAccepted.baseRegion (boolBytes result) earlyTail)
+                    checkOutcomes checkCost) with
+              | none => simp [signed] at suffix
+              | some afterSigned =>
+                  obtain ⟨ids', gathered', dummies', commitments', tail',
+                    trace, signedShape, pool, aligned, gatheredCount,
+                    traceCount, distinct, hits⟩ :=
+                    FinalSignedChain.accepted_all_signed_blocks hashes result
+                      earlyTail checkOutcomes checkCost afterSigned signed
+                  have prefixRun : run hashes (ByteLayout.program.take 840)
+                      initial = some afterSigned := by
+                    rw [generated_to_bonus_prefix, run_append]
+                    simp only [preRun, Option.bind_some]
+                    rw [run_append]
+                    simp only [checkRun, Option.bind_some]
+                    rw [run_append]
+                    simpa [init, initShape] using signed
+                  simp only [signed, Option.bind_some] at suffix
+                  rw [signedShape] at suffix
+                  obtain ⟨firstIndex, lastIndex, postFirst, postLast,
+                    firstRun, bothRun, firstLower, firstUpper,
+                    lastLower, lastUpper, firstSource, lastSource⟩ :=
+                    accepted_bonus_suffix_source_trace hashes
+                      (boolBytes result) gathered' dummies' commitments'
+                      tail' pool gatheredCount checkOutcomes
+                      (checkCost + 63) final suffix
+                  refine ⟨result, gathered', dummies', commitments', tail',
+                    checkOutcomes, checkCost + 63, trace, firstIndex,
+                    lastIndex, postFirst, postLast, ?_, pool, gatheredCount,
+                    traceCount, distinct, hits, firstRun, bothRun,
+                    firstLower, firstUpper, lastLower, lastUpper,
+                    firstSource, lastSource⟩
+                  rw [prefixRun, signedShape]
 
 end QSB.FinalBonusSecond

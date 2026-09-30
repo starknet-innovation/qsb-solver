@@ -509,10 +509,14 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds
 #print axioms QSB.FinalBonusSecond.first_dummy_roll_shape
 #print axioms QSB.FinalBonusSecond.first_commitment_roll_shape
+#print axioms QSB.FinalBonusSecond.generated_bonus_op_segments
+#print axioms QSB.FinalBonusSecond.generated_to_bonus_prefix
 #print axioms QSB.FinalBonusSecond.second_source_after_first_dummy
 #print axioms QSB.FinalBonusSecond.second_source_after_first_commitment
 #print axioms QSB.FinalBonusSecond.second_bonus_source_map
 #print axioms QSB.FinalBonusSecond.accepted_second_bonus_source_role
+#print axioms QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace
+#print axioms QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

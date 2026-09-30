@@ -166,8 +166,10 @@ commitment. This is the commitment-as-signature setup exception in the byte
 model. `QSB/FinalBonusSecond.lean` classifies the reached second roll: after a
 dummy first choice, only second depth 152 reaches a commitment; after a
 commitment first choice, every reachable second source is a dummy. It also
-tracks the actual second moved byte. A single whole-run source-role theorem
-and Core signature validity remain unresolved.
+tracks the actual second moved byte. Its full-program theorem reaches both
+post-bonus states from any initial byte stack and supplied signature outcomes
+and records their selected-byte equations alongside the seven signed HORS
+openings. Core signature validity and the DER-shaped setup event remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

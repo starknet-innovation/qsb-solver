@@ -152,8 +152,10 @@ modeled roll. The latter branch is the setup exception requiring signature
 validity analysis. A checked reached-roll map classifies the second source:
 after a dummy first choice, second depth 152 reaches the first commitment;
 after a commitment first choice, every reachable second source is a dummy.
-The actual second moved byte follows that map. A single arbitrary full-run
-source-role statement and Core signature validity remain open.
+The actual second moved byte follows that map. A checked arbitrary full-run
+byte-model theorem records both post-bonus states and selected-byte equations,
+as well as the seven distinct signed HORS openings. Core signature validity
+and the DER-shaped setup event remain open.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's

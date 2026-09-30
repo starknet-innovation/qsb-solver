@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 492 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 496 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -222,9 +222,13 @@ second selected byte through the intervening fixed roll and cap. If the first
 bonus takes a dummy, second depths 10–151 take remaining dummies and depth
 152 takes the first surviving commitment. If the first bonus takes that
 commitment, every second depth 10–152 takes a dummy. Thus the local pool
-geometry permits a commitment in at most one bonus slot. Composing this
-second-source result into a single arbitrary full-run theorem and proving
-Core signature validity remain open.
+geometry permits a commitment in at most one bonus slot. A checked full-run
+theorem now reaches and records both post-bonus states from any initial byte
+stack and supplied signature outcomes, proves the index intervals, and gives
+these exact source equations for the moved top bytes. This still does not
+prove Core accepts the bytes as signatures: scriptSig execution, FindAndDelete,
+sighash, ECDSA validation, and the DER-shaped setup event remain to be
+connected to the byte model.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,
