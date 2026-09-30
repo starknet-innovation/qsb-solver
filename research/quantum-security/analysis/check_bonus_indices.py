@@ -80,7 +80,7 @@ def main():
             lock[i] = 0x6d  # OP_2DROP, while pinning remains checked.
         return exact, bytes(lock)
 
-    def witness(lock, c7, bonus_index):
+    def witness(lock, c7, bonus_index, index_bytes=None):
         w = bytearray()
         for ri in (1, 0):
             selected = [builder.dummy_sigs[ri][j] for j in subsets[ri]]
@@ -105,26 +105,38 @@ def main():
             iv = list(indices[ri])
             if ri == 1:
                 iv[8] = bonus_index
-            for value in reversed(iv):
-                w += bt.push_number(value)
+            for j, value in enumerate(reversed(iv)):
+                if ri == 1 and j == 0 and index_bytes is not None:
+                    # The last bonus index is the first value pushed by this
+                    # reverse-order loop. Preserve its chosen byte encoding.
+                    w += bt.push_data(index_bytes)
+                else:
+                    w += bt.push_number(value)
         pin_key = recover(pin, tx.sighash(1, bt.find_and_delete(lock, pin), 1))
         w += bt.push_data(ec.compress_pubkey(ec.G)) + bt.push_data(pin_key)
         return bytes(w)
 
     results = []
-    for name, c7, bonus_index, expected in (
-        ("revisit_top_0", natural_c7, 0, False),
-        ("revisit_seventh_7", natural_c7, 7, False),
-        ("nonce_slot_8", natural_c7, 8, False),
-        ("nulldummy_slot_9", natural_c7, 9, False),
-        ("first_unused_dummy_10", natural_c7, 10, True),
-        ("next_unused_dummy_11", natural_c7, 11, True),
-        ("last_unused_dummy_151", natural_c7, 151, True),
-        ("natural_commitment_152", natural_c7, 152, False),
-        ("crafted_der_commitment_152", crafted_c7, 152, True),
+    for name, c7, bonus_index, index_bytes, expected in (
+        ("revisit_top_0", natural_c7, 0, None, False),
+        ("revisit_seventh_7", natural_c7, 7, None, False),
+        ("nonce_slot_8", natural_c7, 8, None, False),
+        ("nulldummy_slot_9", natural_c7, 9, None, False),
+        ("first_unused_dummy_10", natural_c7, 10, None, True),
+        ("first_unused_dummy_10_nonminimal", natural_c7, 10, b"\x0a\x00", True),
+        ("next_unused_dummy_11", natural_c7, 11, None, True),
+        ("last_unused_dummy_151", natural_c7, 151, None, True),
+        ("natural_commitment_152", natural_c7, 152, None, False),
+        ("crafted_der_commitment_152", crafted_c7, 152, None, True),
+        ("crafted_der_commitment_152_nonminimal", crafted_c7, 152,
+         b"\x98\x00\x00", True),
+        ("crafted_der_commitment_152_five_bytes", crafted_c7, 152,
+         b"\x98\x00\x00\x00\x00", False),
+        ("crafted_der_commitment_negative_152", crafted_c7, 152,
+         b"\x98\x80", False),
     ):
         exact, lock = make_lock(c7)
-        tx.inputs[1].script_sig = witness(lock, c7, bonus_index)
+        tx.inputs[1].script_sig = witness(lock, c7, bonus_index, index_bytes)
         payload = f"{tx.serialize().hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
         result = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
@@ -138,6 +150,7 @@ def main():
         accepted = result.returncode == 0 and result.stdout.strip() == "core-27.2-api2-all-inputs-valid"
         assert accepted == expected, (name, result)
         results.append({"name": name, "bonus_index": bonus_index,
+                        "index_encoding_hex": index_bytes.hex() if index_bytes is not None else None,
                         "accepted": accepted, "expected": expected,
                         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
                         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),

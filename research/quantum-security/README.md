@@ -36,7 +36,10 @@ tests on a puzzle-relaxed full lock accept sampled fresh choices 10, 11 and
 151, reject sampled nonfresh choices and the natural index-152 commitment,
 and accept the crafted DER-shaped index-152 commitment. These facts depend on
 the canonical preceding stack region; arbitrary-witness extraction remains
-open. See `evidence/bonus-indices.json`.
+open. The same adapter accepts nonminimal byte encodings of indices 10 and
+152. `QSB/ByteIndex.lean` models the pinned Core source's four-byte signed
+ScriptNum rule for these cases; complete compiled-Core equivalence remains
+unproved. See `evidence/bonus-indices.json`.
 
 Read:
 

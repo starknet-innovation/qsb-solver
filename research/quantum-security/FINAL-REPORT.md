@@ -50,7 +50,9 @@ used.
    puzzle-relaxed full lock accept sampled fresh dummy choices 10, 11 and 151,
    reject sampled nonfresh choices, and reproduce the index-152 commitment
    exception. This narrows the canonical-prefix case but does not prove an
-   arbitrary-witness invariant.
+   arbitrary-witness invariant. Nonminimal index encodings of numeric 10 and
+   152 also pass the same Core adapter; a byte-level ScriptNum candidate and
+   selected examples are checked in Lean, but full Core refinement is open.
 
 The complete spend-path and attack table is in `SPECIFICATION.md`. It covers
 funding, pinning, both rounds, index and scriptSig manipulation, disclosure,

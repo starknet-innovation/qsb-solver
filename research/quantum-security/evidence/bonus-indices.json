@@ -12,6 +12,7 @@
     {
       "name": "revisit_top_0",
       "bonus_index": 0,
+      "index_encoding_hex": null,
       "accepted": false,
       "expected": false,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -21,6 +22,7 @@
     {
       "name": "revisit_seventh_7",
       "bonus_index": 7,
+      "index_encoding_hex": null,
       "accepted": false,
       "expected": false,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -30,6 +32,7 @@
     {
       "name": "nonce_slot_8",
       "bonus_index": 8,
+      "index_encoding_hex": null,
       "accepted": false,
       "expected": false,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -39,6 +42,7 @@
     {
       "name": "nulldummy_slot_9",
       "bonus_index": 9,
+      "index_encoding_hex": null,
       "accepted": false,
       "expected": false,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -48,6 +52,7 @@
     {
       "name": "first_unused_dummy_10",
       "bonus_index": 10,
+      "index_encoding_hex": null,
       "accepted": true,
       "expected": true,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -55,8 +60,19 @@
       "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
     },
     {
+      "name": "first_unused_dummy_10_nonminimal",
+      "bonus_index": 10,
+      "index_encoding_hex": "0a00",
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "ad9b55a986105f13e10eb13862787f1a664c45014c758953dd04737b6edeb6ab"
+    },
+    {
       "name": "next_unused_dummy_11",
       "bonus_index": 11,
+      "index_encoding_hex": null,
       "accepted": true,
       "expected": true,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -66,6 +82,7 @@
     {
       "name": "last_unused_dummy_151",
       "bonus_index": 151,
+      "index_encoding_hex": null,
       "accepted": true,
       "expected": true,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -75,6 +92,7 @@
     {
       "name": "natural_commitment_152",
       "bonus_index": 152,
+      "index_encoding_hex": null,
       "accepted": false,
       "expected": false,
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -84,11 +102,42 @@
     {
       "name": "crafted_der_commitment_152",
       "bonus_index": 152,
+      "index_encoding_hex": null,
       "accepted": true,
       "expected": true,
       "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
       "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
       "transaction_sha256": "493b59057811ff72610952b07bf3d6533a6d5a702938788646126fec18bfbdcf"
+    },
+    {
+      "name": "crafted_der_commitment_152_nonminimal",
+      "bonus_index": 152,
+      "index_encoding_hex": "980000",
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
+      "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
+      "transaction_sha256": "358e1cc404e9b7673d3529f781f9867caf4e1c12096babed11f66b6ad69cdedb"
+    },
+    {
+      "name": "crafted_der_commitment_152_five_bytes",
+      "bonus_index": 152,
+      "index_encoding_hex": "9800000000",
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
+      "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
+      "transaction_sha256": "ba38faacd03623457cb51e791b0a333589afa7e31db4325ea9f79b4d294aa37a"
+    },
+    {
+      "name": "crafted_der_commitment_negative_152",
+      "bonus_index": 152,
+      "index_encoding_hex": "9880",
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
+      "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
+      "transaction_sha256": "ee7f50155c609244c535cf1839ae6c0af913ac8a5070a2d96ffc458ee3b23c81"
     }
   ]
 }

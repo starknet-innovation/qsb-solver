@@ -1,5 +1,5 @@
 {
-  "theorem_count": 76,
+  "theorem_count": 87,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -37,6 +37,39 @@
       "propext"
     ],
     "QSB.Bonus.region_length": [],
+    "QSB.ByteIndex.empty_is_zero": [
+      "propext"
+    ],
+    "QSB.ByteIndex.five_bytes_rejected": [
+      "propext"
+    ],
+    "QSB.ByteIndex.negative_152": [
+      "propext"
+    ],
+    "QSB.ByteIndex.negative_152_cannot_roll": [
+      "propext"
+    ],
+    "QSB.ByteIndex.negative_zero_is_zero": [
+      "propext"
+    ],
+    "QSB.ByteIndex.nonminimal_152_selects_commitment": [
+      "propext"
+    ],
+    "QSB.ByteIndex.nonminimal_positive_152": [
+      "propext"
+    ],
+    "QSB.ByteIndex.nonminimal_ten": [
+      "propext"
+    ],
+    "QSB.ByteIndex.nonminimal_ten_selects_dummy": [
+      "propext"
+    ],
+    "QSB.ByteIndex.oversized_encoding_cannot_roll": [
+      "propext"
+    ],
+    "QSB.ByteIndex.positive_152": [
+      "propext"
+    ],
     "QSB.Game.changed_outputs_unauthorized": [],
     "QSB.Game.disclosedAt_append": [
       "Classical.choice",

@@ -41,6 +41,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Generated layout | Last final-round bonus index 152 selects locking-script commitment C[round 2,7], and the symbolic trace completes if final multisignature success is supplied | A concrete role escape in the stack model. Symbolic signature outcomes alone cannot establish final-round dummy-signature shape. |
 | Bonus region | After the canonical preceding eight final-round selections, the final bonus roll's 153 reachable cells are exactly eight gathered dummy signatures, the fixed nonce signature, the zero dummy, 142 unused dummy signatures, and commitment C[round 2,7] | `QSB/Bonus.lean` checks the exact generated prefix region and all 153 index roles. This is conditional on the preceding canonical stack; it does not prove arbitrary-witness extraction. |
 | Bonus region | For indices 0–9, rolling the reachable region places a nonzero generated dummy at the prospective NULLDUMMY slot; indices 10–152 preserve zero there | Local stack-order theorem, not a complete Core-acceptance classification. Later pubkey rolls and arbitrary witness layouts still need refinement. |
+| Byte index | A source-shaped four-byte sign-magnitude ScriptNum parser maps nonminimal `0a00` to 10, nonminimal `980000` to 152, `9880` to -152, and rejects five bytes | `QSB/ByteIndex.lean` checks these byte cases and their local bonus-role consequences. Equivalence to compiled Core for every byte sequence remains unproved; the native boundary cases corroborate the selected examples. |
 | Attack extraction | For an owner-forbidden transaction, extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | The target events depend on owner authorization but not on Bitcoin acceptance. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
 | Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise. The bonus-overshoot Core experiment shows that a DER-shaped HORS commitment can occupy a bonus signature role on an altered lock; unconditional arbitrary-witness extraction needs a bad-setup branch or a stronger shape definition. |
 | Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
@@ -129,6 +130,11 @@ the nonfresh indices also shift a nonzero dummy into the prospective NULLDUMMY
 slot under the canonical preceding trace. At index 152, the deliberately
 DER-shaped altered commitment accepts, reproducing the encoding exception.
 None of these runs accepts the unrelaxed QSB lock.
+The same full-lock adapter accepts nonminimal index bytes `0a00` for numeric 10
+and `980000` for numeric 152, while a five-byte 152 encoding and negative 152
+reject. The negative cases have multiple possible failure causes; the positive
+nonminimal cases directly show that a source extractor must decode values rather
+than require canonical index serialization.
 
 The source of `consensus/verify.cpp` in the native build's named revision
 `9a7c2ab` has the same SHA-256 as the analyzed app revision:
