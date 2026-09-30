@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 536 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 539 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -268,6 +268,17 @@ this predicate. A proof that this Lean predicate equals Core's compiled parser
 for every byte string, and a count of its entire 20-byte accepted set, remain
 open; the earlier `390405/2^65` figure is still conditional on that count
 correspondence.
+Core's `CheckSignatureEncoding` permits the empty signature as an invalid-check
+placeholder under the pinned `VERIFY_ALL` flags. Lean now models that encoding
+gate separately and proves that it equals strict DER on nonempty inputs.
+A 73-case isolated `CHECKSIG; DROP; TRUE` differential corpus matched the
+pinned Core library on all cases, including the empty exception and malformed
+20-byte boundaries. The `DROP` removes the ECDSA result, isolating the parser
+gate for this test. `QSB/FinalBonusIndices.lean` now states a more precise
+conditional interface: successful pair verification must imply both nonempty
+signature bytes and acceptance by that gate before it concludes strict DER and
+the nine-position shape. The corpus does not prove the interface for Core's
+full final multisignature scan or all possible signature bytes.
 An independent conservative count now avoids that exact-count premise for the
 Lean predicate: among all `256^20` twenty-byte strings, at most
 `12·256^14` can satisfy the required header, R-length, S-tag, and S-length

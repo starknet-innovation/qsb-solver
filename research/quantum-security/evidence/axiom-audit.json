@@ -1,5 +1,5 @@
 {
-  "theorem_count": 536,
+  "theorem_count": 539,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -404,6 +404,12 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DERSyntax.verifyAllEncoding_empty": [
+      "propext"
+    ],
+    "QSB.DERSyntax.verifyAllEncoding_nonempty": [
+      "propext"
+    ],
     "QSB.DERSyntax.wrong_sequence_length_rejected": [
       "propext"
     ],
@@ -525,6 +531,11 @@
       "propext"
     ],
     "QSB.FinalBonusIndices.matched_full_run_nine_positions_der": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all": [
       "Classical.choice",
       "Quot.sound",
       "propext"

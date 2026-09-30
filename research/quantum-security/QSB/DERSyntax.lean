@@ -35,6 +35,23 @@ def valid (sig : Bytes) : Bool :=
     (lenS ≤ 1 ∨ byte sig (lenR + 6) ≠ 0 ∨
       128 ≤ byte sig (lenR + 7)))
 
+/-- Source-shaped `CheckSignatureEncoding` under the pinned adapter's
+`VERIFY_ALL` flags: Core permits an empty signature as an invalid-check
+placeholder, while a nonempty signature must satisfy strict DER. Actual
+ECDSA verification rejects the empty placeholder; this predicate models only
+the encoding gate. -/
+def verifyAllEncoding (sig : Bytes) : Bool :=
+  sig.isEmpty || valid sig
+
+theorem verifyAllEncoding_empty : verifyAllEncoding [] = true := by
+  decide
+
+theorem verifyAllEncoding_nonempty (sig : Bytes) (nonempty : sig ≠ []) :
+    verifyAllEncoding sig = valid sig := by
+  cases sig with
+  | nil => exact False.elim (nonempty rfl)
+  | cons b rest => simp [verifyAllEncoding]
+
 /-- Every twenty-byte strict DER signature has positive R and S byte lengths
 adding to thirteen. The remaining conditions constrain the leading bytes. -/
 theorem valid_twenty_byte_lengths (sig : Bytes)

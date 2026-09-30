@@ -193,4 +193,42 @@ theorem matched_full_run_nine_positions_der (hashes : Hashes)
     simp [FinalBonusDER.generated_final_commitments_not_der id]
   · exact matched
 
+/-- Split the source-level Core obligation into the two facts it actually
+needs: a successful ECDSA pair check has a nonempty signature, and its
+encoding gate accepts that signature under `VERIFY_ALL`. Core-to-Lean
+equivalence of the pair check and scan remains unproved. -/
+theorem matched_full_run_nine_positions_verify_all (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify : Bytes → Bytes → Bool)
+    (verifyNonempty : ∀ sig key, verify sig key = true → sig ≠ [])
+    (verifyEncoding : ∀ sig key, verify sig key = true →
+      DERSyntax.verifyAllEncoding sig = true)
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : State),
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
+      beforeCheck.stack[13]? = some (generatedDummyAt a) ∧
+      beforeCheck.stack[12]? = some (generatedDummyAt b) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some PoolRollInvariant.finalNonce ∧
+      beforeCheck.stack[22]? = some [] ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
+      a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
+  apply matched_full_run_nine_positions_der hashes initial final accepted
+    verify ?_ matched
+  intro sig key success
+  have encoded := verifyEncoding sig key success
+  rw [DERSyntax.verifyAllEncoding_nonempty sig
+    (verifyNonempty sig key success)] at encoded
+  exact encoded
+
 end QSB.FinalBonusIndices

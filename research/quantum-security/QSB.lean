@@ -541,11 +541,14 @@ import QSB.Reduction
 #print axioms QSB.DERSyntax.valid_twenty_byte_header
 #print axioms QSB.DERSyntax.crafted_twenty_byte_signature_valid
 #print axioms QSB.DERSyntax.wrong_sequence_length_rejected
+#print axioms QSB.DERSyntax.verifyAllEncoding_empty
+#print axioms QSB.DERSyntax.verifyAllEncoding_nonempty
 #print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
 #print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
 #print axioms QSB.FinalBonusIndices.two_bonus_ids_extend_seven
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_der
+#print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings

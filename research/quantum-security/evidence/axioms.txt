@@ -600,11 +600,16 @@
 'QSB.DERSyntax.valid_twenty_byte_header' depends on axioms: [propext, Quot.sound]
 'QSB.DERSyntax.crafted_twenty_byte_signature_valid' depends on axioms: [propext]
 'QSB.DERSyntax.wrong_sequence_length_rejected' depends on axioms: [propext]
+'QSB.DERSyntax.verifyAllEncoding_empty' depends on axioms: [propext]
+'QSB.DERSyntax.verifyAllEncoding_nonempty' depends on axioms: [propext]
 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions_der' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]

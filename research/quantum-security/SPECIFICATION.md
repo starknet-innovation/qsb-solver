@@ -171,6 +171,10 @@ The Core-shaped equal-count matching-loop theorem provides a narrower
 interface: a successful ten-pair scan and a per-pair verifier sound for syntax
 imply that the reached bonus slots satisfy the syntax predicate. Equality of
 that abstract scan with the actual Core check remains an external obligation.
+The pinned Core encoding gate permits an empty signature, even though an empty
+signature cannot make an ECDSA pair check succeed. The refined Lean interface
+therefore states nonemptiness and encoding acceptance separately for every
+successful pair; it does not infer either fact from a supplied Boolean outcome.
 For the one literal disposable lock in the Lean byte model, all 150
 second-round commitments fail a source-shaped strict DER predicate. Under a
 successful DER-sound ten-pair scan, neither final bonus index can reach a

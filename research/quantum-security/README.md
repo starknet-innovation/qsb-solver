@@ -190,6 +190,10 @@ Equating this scan and verifier with Core execution is still required.
 `QSB/DERSyntax.lean` adds a source-shaped strict DER byte predicate and proves
 the 20-byte R/S length and header constraints. Its equivalence to compiled
 Core and exact accepted-set cardinality remain open.
+It separately models the pinned `VERIFY_ALL` encoding gate's empty-signature
+exception and proves that nonempty inputs reduce to strict DER. A 73-case
+isolated parser differential test matched the pinned Core adapter throughout;
+it does not prove full-lock signature verification.
 `QSB/DERHeaderBound.lean` now proves a conservative target bound without that
 exact count: at most `12·256^14` out of `256^20` twenty-byte outputs match the
 Lean predicate. The generic independent random-function setup theorem gives a
@@ -304,6 +308,7 @@ python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-ro
 python3 analysis/check_bare_script_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bare-script-boundary.json
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
+python3 analysis/check_der20_parser.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/der20-parser.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json
 python3 analysis/check_final_signed_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/final-signed-boundary.json
