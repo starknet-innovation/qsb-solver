@@ -220,6 +220,11 @@ transaction-byte extractor, and Core refinement are still open.
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
 its 15 `OP_EQUALVERIFY` instructions immediately follows `OP_HASH160`.
+`QSB/EncodedLayout.lean` retains each instruction's original serialized bytes.
+`QSB/EncodedScript.lean` parses those 9,923 bytes into 880 chunks, decodes
+them back to `ByteLayout.program`, and checks the 151 final signature-push
+patterns. This proves internal fixture alignment, not equivalence with Core's
+`GetOp` or `FindAndDelete`.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
@@ -276,8 +281,9 @@ python3 analysis/generate_byte_witness.py --app-root /path/to/qsb-app --check
 
 Omit `--check` to regenerate their respective Lean fixtures after deliberately
 updating the pinned source. The byte layout generator also writes
-`evidence/byte-layout-map.json`. Both byte generators cross-check the pinned
-source hash; the layout generator also checks the exact script hash in
+`QSB/EncodedLayout.lean` and `evidence/byte-layout-map.json`. Both byte
+generators cross-check the pinned source hash; the layout generator also
+checks the exact script hash in
 `evidence/layout-map.json`.
 
 The probability lemmas use arbitrary measures, not rational approximations of

@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 551 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 564 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -333,9 +333,15 @@ pushes and that every boundary prefix match is a complete opcode. Whole-opcode
 deletion therefore preserves the segmentation used by Core's source algorithm
 for any subset of these literal patterns. The app's implementation also gives
 identical bytes for 35 selected ten-signature sets under three deletion
-orders. Lean proves the conditional complete-chunk lemma and order
-independence of encoded-chunk filtering, but has no proved serialization or
-Core-parser link for this fixture.
+orders. Lean now parses the generated 9,923 serialized bytes into precisely
+880 chunks, decodes each chunk to the byte-machine instruction, checks all
+151 selected final signature patterns are distinct direct pushes appearing
+exactly once, and proves the chosen chunk-filter scriptCode is independent of
+index order. It also proves that a selected pattern matching at any generated
+opcode boundary consumes exactly that complete chunk, for any following
+bytes. The generator checks the script hash externally. Equivalence to
+Core's `GetOp` and sequential `FindAndDelete`, and arbitrary-witness source
+selection, are still open.
 Lean also checks the literal signature flags: all 150 final dummy signatures
 end in `SIGHASH_SINGLE` (`0x03`), while the fixed final nonce ends in
 `SIGHASH_ALL` (`0x01`). The dummy signatures use the constant SINGLE message

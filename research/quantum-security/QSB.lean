@@ -36,6 +36,7 @@ import QSB.DERSyntax
 import QSB.FinalBonusDER
 import QSB.FinalBonusIndices
 import QSB.ScriptCodeSelection
+import QSB.EncodedScript
 import QSB.FinalRoundWitness
 import QSB.DERHeaderBound
 import QSB.Attack
@@ -561,6 +562,19 @@ import QSB.Reduction
 #print axioms QSB.ScriptCodeSelection.selected_final_signature_flags
 #print axioms QSB.ScriptCodeSelection.boundary_match_consumes_chunk
 #print axioms QSB.ScriptCodeSelection.stripEncodedChunks_perm
+#print axioms QSB.EncodedLayout.chunks_length
+#print axioms QSB.EncodedLayout.script_length
+#print axioms QSB.EncodedScript.literal_chunks_decode
+#print axioms QSB.EncodedScript.literal_parse_chunks
+#print axioms QSB.EncodedScript.final_patterns_direct
+#print axioms QSB.EncodedScript.final_patterns_nodup
+#print axioms QSB.EncodedScript.final_pattern_one_chunk
+#print axioms QSB.EncodedScript.final_pattern_boundary_width
+#print axioms QSB.EncodedScript.literal_chunks_nonempty
+#print axioms QSB.EncodedScript.selected_boundary_match_complete
+#print axioms QSB.EncodedScript.generated_dummy_pattern_mem
+#print axioms QSB.EncodedScript.selected_signature_one_chunk
+#print axioms QSB.EncodedScript.finalEncodedScriptCode_perm
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings

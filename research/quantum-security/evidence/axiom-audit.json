@@ -1,5 +1,5 @@
 {
-  "theorem_count": 551,
+  "theorem_count": 564,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -411,6 +411,39 @@
       "propext"
     ],
     "QSB.DERSyntax.wrong_sequence_length_rejected": [
+      "propext"
+    ],
+    "QSB.EncodedLayout.chunks_length": [],
+    "QSB.EncodedLayout.script_length": [],
+    "QSB.EncodedScript.finalEncodedScriptCode_perm": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.EncodedScript.final_pattern_boundary_width": [
+      "propext"
+    ],
+    "QSB.EncodedScript.final_pattern_one_chunk": [
+      "propext"
+    ],
+    "QSB.EncodedScript.final_patterns_direct": [
+      "propext"
+    ],
+    "QSB.EncodedScript.final_patterns_nodup": [
+      "propext"
+    ],
+    "QSB.EncodedScript.generated_dummy_pattern_mem": [
+      "propext"
+    ],
+    "QSB.EncodedScript.literal_chunks_decode": [],
+    "QSB.EncodedScript.literal_chunks_nonempty": [],
+    "QSB.EncodedScript.literal_parse_chunks": [
+      "propext"
+    ],
+    "QSB.EncodedScript.selected_boundary_match_complete": [
+      "propext"
+    ],
+    "QSB.EncodedScript.selected_signature_one_chunk": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.FinalBonusAccepted.accepted_between_cap_index_le_152": [

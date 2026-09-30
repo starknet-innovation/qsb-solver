@@ -621,6 +621,19 @@
 'QSB.ScriptCodeSelection.selected_final_signature_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptCodeSelection.boundary_match_consumes_chunk' depends on axioms: [propext]
 'QSB.ScriptCodeSelection.stripEncodedChunks_perm' depends on axioms: [propext]
+'QSB.EncodedLayout.chunks_length' does not depend on any axioms
+'QSB.EncodedLayout.script_length' does not depend on any axioms
+'QSB.EncodedScript.literal_chunks_decode' does not depend on any axioms
+'QSB.EncodedScript.literal_parse_chunks' depends on axioms: [propext]
+'QSB.EncodedScript.final_patterns_direct' depends on axioms: [propext]
+'QSB.EncodedScript.final_patterns_nodup' depends on axioms: [propext]
+'QSB.EncodedScript.final_pattern_one_chunk' depends on axioms: [propext]
+'QSB.EncodedScript.final_pattern_boundary_width' depends on axioms: [propext]
+'QSB.EncodedScript.literal_chunks_nonempty' does not depend on any axioms
+'QSB.EncodedScript.selected_boundary_match_complete' depends on axioms: [propext]
+'QSB.EncodedScript.generated_dummy_pattern_mem' depends on axioms: [propext]
+'QSB.EncodedScript.selected_signature_one_chunk' depends on axioms: [propext, Quot.sound]
+'QSB.EncodedScript.finalEncodedScriptCode_perm' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]

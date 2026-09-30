@@ -47,9 +47,14 @@ final signature pushes and proves order independence and equivalence to
 successive single-signature filters. It also proves a byte-chunk boundary
 lemma: if a pattern matches at a parsed opcode boundary and that opcode has
 the pattern's length, the pattern is exactly that complete opcode. Filtering
-whole byte chunks is order-independent. Its opcode model omits original push
-encodings, and the exact-byte chunk sequence has not been linked to Core's
-parser in Lean.
+whole byte chunks is order-independent. `QSB/EncodedScript.lean` now parses
+the generated serialized script into its 880 chunks and checks that decoding
+them yields exactly the byte-machine program. It also checks each of the 151
+selected patterns has exactly one complete encoded chunk and proves the
+selected chunk-filter scriptCode is order-independent. Its boundary-match
+theorem shows that a selected pattern found at any of those opcode boundaries
+consumes the complete chunk, for arbitrary following bytes. Equivalence of the
+Lean parser and filter to Core's C++ implementation is still open.
 
 ## Native differential evidence
 
@@ -80,8 +85,9 @@ subset of these literal patterns, regardless of deletion order. The app's
 single-signature implementation passes all 151 cases; 35 distinct ten-
 signature sets also match whole-chunk filtering in forward, reverse, and
 shuffled orders. This is exact fixture/source reasoning and sampled app
-execution, not a Lean proof of the generated script's serialized bytes or a
-Core binary equivalence theorem for every witness and setup.
+execution, not a Core binary equivalence theorem for every witness and setup.
+The matching Lean fixture and parser results are described above; the builder
+source-to-fixture SHA-256 comparison remains an external generator check.
 The rerun used app checkout `bb5dffcb3e429ea3680db4e0cb9d2c199edb5436`;
 the builder and EC source-file hashes match the pinned
 `3eef7c39ecbe897ac55251841e9f2ec3764e04ad` inventory, and the generated
