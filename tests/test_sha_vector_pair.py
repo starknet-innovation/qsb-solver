@@ -34,3 +34,16 @@ class PairTests(unittest.TestCase):
     with self.assertRaisesRegex(ValueError,'binary hash mismatch'):m.main()
     gpu.assert_not_called();proc.assert_not_called()
    self.assertFalse((p/'output.json').exists())
+
+ def test_frozen_prerequisites_accept_and_tampering_rejects(self):
+  evidence=ROOT/'experiments/generic-sha-vector/evidence'
+  with tempfile.TemporaryDirectory() as d:
+   bundle=pathlib.Path(d)
+   for name in m.PREREQUISITES:(bundle/name).write_bytes((evidence/name).read_bytes())
+   (bundle/'regression.json').write_bytes((evidence/'native-ranges.json').read_bytes())
+   self.assertEqual(m.check_prerequisites(bundle),m.PREREQUISITES)
+   for name in [*m.PREREQUISITES,'regression.json']:
+    with self.subTest(name=name):
+     original=(bundle/name).read_bytes();(bundle/name).write_bytes(original+b' ')
+     with self.assertRaises(ValueError):m.check_prerequisites(bundle)
+     (bundle/name).write_bytes(original)

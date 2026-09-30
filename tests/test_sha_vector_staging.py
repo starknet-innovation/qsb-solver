@@ -13,7 +13,7 @@ spec=importlib.util.spec_from_file_location('stage_full',PATH)
 stage=importlib.util.module_from_spec(spec);spec.loader.exec_module(stage)
 
 class StagingTests(unittest.TestCase):
-    def run_stage(self, corrupt=False):
+    def run_stage(self, corrupt=False, gate="trace"):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp);archive=root/'input.zip';dest=root/'gate'
             public=b'public script';receipt=b'{}';binary=b'public binary'
@@ -24,7 +24,7 @@ class StagingTests(unittest.TestCase):
             hashes={name:hashlib.sha256(binary).hexdigest() for name in ('baseline','candidate','candidate-trace')}
             if corrupt:hashes['candidate']='0'*64
             with patch.object(stage,'payload',return_value=files),patch.object(stage,'BINARIES',hashes),patch.object(stage,'ZIP_SHA',hashlib.sha256(archive.read_bytes()).hexdigest()):
-                script=stage.render('a'*40,'https://example.invalid/archive','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace',hashlib.sha256(receipt).hexdigest())
+                script=stage.render('a'*40,'https://example.invalid/archive','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,gate,hashlib.sha256(receipt).hexdigest())
             subprocess.run(['bash','-n'],input=script,text=True,check=True)
             code=script.split("python3 - <<'QSB_STAGE'\n",1)[1].split('\nQSB_STAGE',1)[0]
             code=code.replace('/var/tmp/qsb-frozen-pair.zip',str(archive)).replace('/opt/qsb-a10g-gate',str(dest))
@@ -36,6 +36,7 @@ class StagingTests(unittest.TestCase):
     def test_frozen_archive_and_file_checks(self):self.run_stage()
     def test_wrong_binary_rejects(self):
         with self.assertRaises(AssertionError):self.run_stage(True)
+    def test_timing_handoff_shell_and_archive(self):self.run_stage(gate="timing")
     def test_moving_runtime_rejected(self):
         with self.assertRaises(ValueError):stage.render('a'*40,'https://example.invalid/x','image:latest','trace','b'*64)
 

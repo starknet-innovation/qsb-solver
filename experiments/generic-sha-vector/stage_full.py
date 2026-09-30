@@ -15,7 +15,7 @@ BINARIES={'baseline':'8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a6254
           'candidate':'0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b',
           'candidate-trace':'42ad9574cef271c80181ece261d680fe771f4c21a383c5c72570f6e8f1d08018'}
 
-def payload(commit):
+def payload(commit, stage='ranges'):
     files={}
     for name in ['run_pair.py','run_ranges.py','run_trace.py','trace_source.py']:
         files['tools/'+name]=subprocess.check_output(['git','show',commit+':experiments/generic-sha-vector/'+name],cwd=ROOT)
@@ -23,9 +23,14 @@ def payload(commit):
         files['bundle/'+name]=subprocess.check_output(['git','show',commit+':worker/promotion/validation/'+name],cwd=ROOT)
     files['host-full.sh']=subprocess.check_output(['git','show',commit+':experiments/generic-sha-vector/host-full.sh'],cwd=ROOT)
     files['ready.sh']=subprocess.check_output(['git','show',commit+':ops/aws-gpu-execution/ready.sh'],cwd=ROOT)
+    if stage == 'timing':
+        for name in ['native-trace-cpu.json','native-compression.json','native-ranges.json']:
+            files['bundle/'+name]=subprocess.check_output(['git','show',commit+':experiments/generic-sha-vector/evidence/'+name],cwd=ROOT)
+        files['bundle/regression.json']=files['bundle/native-ranges.json']
     result={}
     for name,raw in files.items():
         if name.startswith('tools/'):source='experiments/generic-sha-vector/'+name.split('/',1)[1]
+        elif name in ('bundle/native-trace-cpu.json','bundle/native-compression.json','bundle/native-ranges.json','bundle/regression.json'):source='experiments/generic-sha-vector/evidence/'+('native-ranges.json' if name=='bundle/regression.json' else name.split('/',1)[1])
         elif name.startswith('bundle/'):source='worker/promotion/validation/'+name.split('/',1)[1]
         elif name=='ready.sh':source='ops/aws-gpu-execution/ready.sh'
         else:source='experiments/generic-sha-vector/'+name
@@ -36,8 +41,8 @@ def render(commit,url,image,stage,receipt_sha):
     if not re.fullmatch('[0-9a-f]{40}',commit):raise ValueError('commit required')
     if not url.startswith('https://') or any(c in url for c in '\r\n'):raise ValueError('HTTPS artifact URL required')
     if not re.fullmatch('ghcr.io/starknet-innovation/qsb-solver@sha256:[0-9a-f]{64}',image):raise ValueError('immutable runtime required')
-    if stage not in ('ranges','trace') or not re.fullmatch('[0-9a-f]{64}',receipt_sha):raise ValueError('invalid gate binding')
-    packed=base64.b64encode(zlib.compress(json.dumps(payload(commit)).encode())).decode()
+    if stage not in ('ranges','trace','timing') or not re.fullmatch('[0-9a-f]{64}',receipt_sha):raise ValueError('invalid gate binding')
+    packed=base64.b64encode(zlib.compress(json.dumps(payload(commit,stage)).encode())).decode()
     script="set -euo pipefail\nDEADLINE=__DEADLINE__\n"
     # Download immediately: the GitHub artifact URL is short-lived and scoped to public bytes.
     script+='curl --fail --location --max-time 120 --max-filesize 10000000 '+shlex.quote(url)+' -o /var/tmp/qsb-frozen-pair.zip\n'

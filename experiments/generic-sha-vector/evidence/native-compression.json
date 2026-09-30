@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "scope": "extracted compression differential and memcheck only",
+  "nativeComparisons": 174080,
+  "memcheckErrors": 0,
+  "controllerCommit": "c57bea22aacfd91100ece8824471f370a170ba61",
+  "solverCandidateCommit": "aa898b66326706d24e56688eef907ea97bd66f41",
+  "gateBinarySha256": "0d6b0e1994cfb60fee8757c28aa5c241a357f4f50a7c0afa6e69dbe1adad95ec",
+  "resultSha256": "1b84c6431a723b8a5eb3f57e7835a09522df346e8b3fe28537e6fbdf1b13ce3f",
+  "remaining": [
+    "full-binary sampled regression",
+    "native full-transaction trace and independent CPU verification",
+    "matched same-GPU timing"
+  ],
+  "speedupEstablished": false
+}

@@ -116,11 +116,32 @@ def save(path,result):
     sync_directory(path.parent)
 
 
+PREREQUISITES = {'native-trace-cpu.json': '650927daa8935bbd39cc83f3cb394f47fe196b919738d03652f5e356f822d17c', 'native-compression.json': '8c89c9e7b87705225b8fd909b84c7ebef1ffa49315f23b2c3e30fbeb451df8ed', 'native-ranges.json': '43273178c0d7c2c48882ea11a56581ac4365597f1faf5284cd34ddf3afd59775'}
+
+def check_prerequisites(bundle):
+    receipts = {}
+    for name, expected in PREREQUISITES.items():
+        raw = (bundle / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise ValueError('prerequisite receipt mismatch: ' + name)
+        receipts[name] = json.loads(raw)
+    trace = receipts['native-trace-cpu.json']
+    compression = receipts['native-compression.json']
+    if trace['status'] != 'passed' or trace['candidateSha256'] != SUB or trace['candidates'] != 3116 or trace['hashes'] != 6232:
+        raise ValueError('native trace prerequisite failed')
+    if compression['status'] != 'passed' or compression['nativeComparisons'] != 174080 or compression['memcheckErrors'] != 0:
+        raise ValueError('compression prerequisite failed')
+    if (bundle / 'regression.json').read_bytes() != (bundle / 'native-ranges.json').read_bytes():
+        raise ValueError('regression differs from frozen native receipt')
+    return dict(PREREQUISITES)
+
+
 def main():
     bundle,output,fixture_hash=Path(sys.argv[1]),Path(sys.argv[2]),sys.argv[3]
     baseline=(bundle/'baseline').resolve();candidate=(bundle/'candidate').resolve()
     for path,expected in ((baseline,BASELINE),(candidate,SUB)):
         if hashlib.sha256(path.read_bytes()).hexdigest()!=expected:raise ValueError('binary hash mismatch')
+    prerequisite_hashes=check_prerequisites(bundle)
     raw=(bundle/'fixtures.json').read_bytes()
     if hashlib.sha256(raw).hexdigest()!=fixture_hash:raise ValueError('fixture hash mismatch')
     from run_ranges import validate as validate_ranges
@@ -135,7 +156,7 @@ def main():
     gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,driver_version','--format=csv,noheader'],text=True).strip()
     if len(gpu.splitlines())!=1 or 'A10G' not in gpu:raise ValueError('one A10G required')
     result=dict(status='running',baselineSha256=BASELINE,candidateSha256=SUB,gpu=gpu,
-                fixtureSha256=fixture_hash,regressionSha256=hashlib.sha256(regression_raw).hexdigest(),samples=[],freshWithdrawal=False,grantsRangeCredit=False)
+                prerequisiteSha256=prerequisite_hashes,fixtureSha256=fixture_hash,regressionSha256=hashlib.sha256(regression_raw).hexdigest(),samples=[],freshWithdrawal=False,grantsRangeCredit=False)
     with output.open('x') as stream:
         json.dump(result,stream);stream.flush();os.fsync(stream.fileno())
     sync_directory(output.parent)

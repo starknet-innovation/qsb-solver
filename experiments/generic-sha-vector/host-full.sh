@@ -10,6 +10,7 @@ receipt_sha=$4
 case "$stage" in
   ranges) runner=run_ranges.py ;;
   trace) runner=run_trace.py ;;
+  timing) runner=run_pair.py ;;
   *) exit 2 ;;
 esac
 [ -f /run/qsb-shutdown-armed ]
@@ -27,6 +28,7 @@ nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader > "$result
 trap 'docker rm -f qsb-full-gate >/dev/null 2>&1 || true' EXIT
 args=(/gate/bundle /results/result.json)
 if [ "$stage" = trace ]; then args+=("$receipt_sha"); fi
+if [ "$stage" = timing ]; then args+=("e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9"); fi
 set +e
 timeout --signal=TERM --kill-after=10s 720 docker run --name qsb-full-gate --rm --gpus all \
  --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
