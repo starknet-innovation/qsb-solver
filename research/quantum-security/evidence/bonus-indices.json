@@ -1,0 +1,94 @@
+{
+  "scope": "Three puzzle checks relaxed in every case; index 152 positive case also alters a commitment; not a production-vault forgery",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "natural_commitment_hex": "80169aaf992ee7cafff83baf465499fab47262e7",
+  "crafted_der20_commitment_hex": "3011020101020c01000000000000000000001103",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "revisit_top_0",
+      "bonus_index": 0,
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "518f3584b61b0b3b81edf335d61ad8f082114c1d4a4114cabc5dd6a1738af84a"
+    },
+    {
+      "name": "revisit_seventh_7",
+      "bonus_index": 7,
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "6f11873045324a071121534791e3760e36ca608dfd7126fa4bdec22c09708efa"
+    },
+    {
+      "name": "nonce_slot_8",
+      "bonus_index": 8,
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "7db74758c21214f94ecf49aedeb507d292696dc93df3f4e68dde435ad27bf0a6"
+    },
+    {
+      "name": "nulldummy_slot_9",
+      "bonus_index": 9,
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "2f98300e2f55a67c9be15a483b23e08f36d62e4ac7966e19de0419e4d207ac4d"
+    },
+    {
+      "name": "first_unused_dummy_10",
+      "bonus_index": 10,
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
+    },
+    {
+      "name": "next_unused_dummy_11",
+      "bonus_index": 11,
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "c62d0eb19b0957f0d53245c29d9d50fa0927aba89981501a7c99d7917303778b"
+    },
+    {
+      "name": "last_unused_dummy_151",
+      "bonus_index": 151,
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "bf0977141ccdf0d2ac4a33cd0250176d5c99f17ca1a058c338351655b32f3b9d"
+    },
+    {
+      "name": "natural_commitment_152",
+      "bonus_index": 152,
+      "accepted": false,
+      "expected": false,
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "070c0488c4a9f843512fbd14469df750960af568f789375a3dd0d470bc1331cc"
+    },
+    {
+      "name": "crafted_der_commitment_152",
+      "bonus_index": 152,
+      "accepted": true,
+      "expected": true,
+      "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
+      "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
+      "transaction_sha256": "493b59057811ff72610952b07bf3d6533a6d5a702938788646126fec18bfbdcf"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import QSB.Nonce
 import QSB.Parameters
 import QSB.Selection
 import QSB.Layout
+import QSB.Bonus
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -61,6 +62,17 @@ import QSB.Reduction
 #print axioms QSB.Layout.matched_external_fails_second_index
 #print axioms QSB.Layout.last_bonus_overshoot_selects_commitment
 #print axioms QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts
+#print axioms QSB.Bonus.canonical_region_matches_generated_program
+#print axioms QSB.Bonus.region_cell
+#print axioms QSB.Bonus.region_length
+#print axioms QSB.Bonus.first_fresh_dummy
+#print axioms QSB.Bonus.last_fresh_dummy
+#print axioms QSB.Bonus.commitment_boundary
+#print axioms QSB.Bonus.bounded_select_role
+#print axioms QSB.Bonus.negative_index_rejected
+#print axioms QSB.Bonus.oversized_index_selects_commitment
+#print axioms QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot
+#print axioms QSB.Bonus.fresh_or_commitment_preserves_zero_dummy
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

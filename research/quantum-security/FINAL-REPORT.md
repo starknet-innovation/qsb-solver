@@ -42,6 +42,15 @@ used.
    equal `HASH160` of its generated HORS secret. This is a source-extraction
    edge case and a possible bad-setup condition, not a production-vault
    forgery or a solved real hash puzzle.
+5. Under the canonical preceding stack, Lean classifies all 153 cells reachable
+   by the last final-round bonus roll: eight gathered signatures, the fixed
+   nonce signature, the zero dummy, 142 unused dummy signatures, then one HORS
+   commitment. A local Lean theorem shows indices 0–9 shift a nonzero generated
+   dummy into the prospective NULLDUMMY slot. Boundary Core tests on the
+   puzzle-relaxed full lock accept sampled fresh dummy choices 10, 11 and 151,
+   reject sampled nonfresh choices, and reproduce the index-152 commitment
+   exception. This narrows the canonical-prefix case but does not prove an
+   arbitrary-witness invariant.
 
 The complete spend-path and attack table is in `SPECIFICATION.md`. It covers
 funding, pinning, both rounds, index and scriptSig manipulation, disclosure,

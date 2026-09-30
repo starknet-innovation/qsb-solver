@@ -39,6 +39,8 @@ The build and dependency outputs are retained under `evidence/`.
 | Generated layout | With first signed index 152 and one inserted external symbolic 20-byte cell, the first selection's `OP_ROLL` reaches that cell | A checked **local counterexample** to inferring pool confinement from `OP_MIN` alone. The complete malformed probe fails symbolic execution; it is not a forged or accepted witness. The trace ends after instruction 315, the first selection roll. |
 | Generated layout | An externally chosen symbolic commitment can match the first `HASH160` comparison; this probe then fails at the second index `OP_MIN` | Passing one HORS comparison does not imply the selected commitment came from the lock. The global stack invariant may still reject this malformed witness. |
 | Generated layout | Last final-round bonus index 152 selects locking-script commitment C[round 2,7], and the symbolic trace completes if final multisignature success is supplied | A concrete role escape in the stack model. Symbolic signature outcomes alone cannot establish final-round dummy-signature shape. |
+| Bonus region | After the canonical preceding eight final-round selections, the final bonus roll's 153 reachable cells are exactly eight gathered dummy signatures, the fixed nonce signature, the zero dummy, 142 unused dummy signatures, and commitment C[round 2,7] | `QSB/Bonus.lean` checks the exact generated prefix region and all 153 index roles. This is conditional on the preceding canonical stack; it does not prove arbitrary-witness extraction. |
+| Bonus region | For indices 0–9, rolling the reachable region places a nonzero generated dummy at the prospective NULLDUMMY slot; indices 10–152 preserve zero there | Local stack-order theorem, not a complete Core-acceptance classification. Later pubkey rolls and arbitrary witness layouts still need refinement. |
 | Attack extraction | For an owner-forbidden transaction, extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | The target events depend on owner authorization but not on Bitcoin acceptance. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
 | Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise. The bonus-overshoot Core experiment shows that a DER-shaped HORS commitment can occupy a bonus signature role on an altered lock; unconditional arbitrary-witness extraction needs a bad-setup branch or a stronger shape definition. |
 | Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
@@ -116,6 +118,17 @@ commitment was **not** generated as `HASH160(secret)`; it is an altered setup,
 not a production-vault forgery. It demonstrates that DER syntax and setup
 distribution must be part of the source-extraction argument. The other three
 hash-to-signature puzzle checks were replaced by `OP_2DROP` in this experiment.
+
+`bonus-indices.json` tests the last bonus index at the role boundaries using
+the same pinned Core adapter and the same three relaxed puzzle checks. With
+natural commitments, indices 10, 11 and 151 accept when the corresponding
+selected dummy signature and recovered key are supplied; indices 0, 7, 8, 9
+and 152 reject. The negative controls use canonical pubkeys, so their Core
+rejection alone does not isolate the cause; the Lean local stack theorem shows
+the nonfresh indices also shift a nonzero dummy into the prospective NULLDUMMY
+slot under the canonical preceding trace. At index 152, the deliberately
+DER-shaped altered commitment accepts, reproducing the encoding exception.
+None of these runs accepts the unrelaxed QSB lock.
 
 The source of `consensus/verify.cpp` in the native build's named revision
 `9a7c2ab` has the same SHA-256 as the analyzed app revision:

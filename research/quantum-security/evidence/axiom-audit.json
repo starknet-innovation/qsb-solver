@@ -1,11 +1,42 @@
 {
-  "theorem_count": 65,
+  "theorem_count": 76,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
     "propext"
   ],
   "theorems": {
+    "QSB.Bonus.bounded_select_role": [
+      "propext"
+    ],
+    "QSB.Bonus.canonical_region_matches_generated_program": [
+      "propext"
+    ],
+    "QSB.Bonus.commitment_boundary": [
+      "propext"
+    ],
+    "QSB.Bonus.first_fresh_dummy": [
+      "propext"
+    ],
+    "QSB.Bonus.fresh_or_commitment_preserves_zero_dummy": [
+      "propext"
+    ],
+    "QSB.Bonus.last_fresh_dummy": [
+      "propext"
+    ],
+    "QSB.Bonus.negative_index_rejected": [
+      "propext"
+    ],
+    "QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot": [
+      "propext"
+    ],
+    "QSB.Bonus.oversized_index_selects_commitment": [
+      "propext"
+    ],
+    "QSB.Bonus.region_cell": [
+      "propext"
+    ],
+    "QSB.Bonus.region_length": [],
     "QSB.Game.changed_outputs_unauthorized": [],
     "QSB.Game.disclosedAt_append": [
       "Classical.choice",

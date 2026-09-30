@@ -26,6 +26,18 @@ The crafted value was not generated from a HORS secret, so this is a concrete
 source-extraction edge case rather than a valid production-vault forgery. See
 `evidence/bonus-overshoot.json`.
 
+The last final-round bonus index has an exact local stack-role map when the
+preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
+indices 0–7 revisit gathered signatures, 8 selects the fixed nonce signature,
+9 selects the zero CHECKMULTISIG dummy, 10–151 select unused dummy signatures,
+and 152 selects a HORS commitment. It also checks that indices 0–9 move a
+nonzero generated dummy into the prospective NULLDUMMY slot. Core boundary
+tests on a puzzle-relaxed full lock accept sampled fresh choices 10, 11 and
+151, reject sampled nonfresh choices and the natural index-152 commitment,
+and accept the crafted DER-shaped index-152 commitment. These facts depend on
+the canonical preceding stack region; arbitrary-witness extraction remains
+open. See `evidence/bonus-indices.json`.
+
 Read:
 
 - [Final report](FINAL-REPORT.md)
@@ -82,6 +94,7 @@ python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-ro
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
+python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json
 ```
 
 The recorded source inventory identifies exactly the files analyzed. The app
