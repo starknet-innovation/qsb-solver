@@ -129,4 +129,31 @@ theorem matched_run_shape_and_openings (hashes : Hashes)
   exact witnessFromTrace_shape_and_openings hashes trace a b key
     seven distinct hits
 
+/-- The round-witness bridge with Core's empty-signature encoding exception
+made explicit. It still requires an external refinement proving that the
+reached real CHECKMULTISIG is the stated successful scan. -/
+theorem matched_run_shape_and_openings_verify_all (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify : Bytes → Bytes → Bool)
+    (verifyNonempty : ∀ sig key, verify sig key = true → sig ≠ [])
+    (verifyEncoding : ∀ sig key, verify sig key = true →
+      DERSyntax.verifyAllEncoding sig = true)
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true)
+    (key : Bytes) :
+    ∃ w : RoundWitness (Fin 150) Bytes Bytes,
+      w.key = key ∧ FinalRoundShape w ∧
+      OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening := by
+  apply matched_run_shape_and_openings hashes initial final accepted verify
+    ?_ matched key
+  intro sig pub success
+  have encoded := verifyEncoding sig pub success
+  rw [DERSyntax.verifyAllEncoding_nonempty sig
+    (verifyNonempty sig pub success)] at encoded
+  exact encoded
+
 end QSB.FinalRoundWitness

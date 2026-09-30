@@ -1,5 +1,5 @@
 {
-  "theorem_count": 539,
+  "theorem_count": 540,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -640,6 +640,11 @@
       "propext"
     ],
     "QSB.FinalRoundWitness.matched_run_shape_and_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all": [
       "Classical.choice",
       "Quot.sound",
       "propext"

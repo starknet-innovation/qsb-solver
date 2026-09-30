@@ -553,6 +553,7 @@ import QSB.Reduction
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings
+#print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all
 #print axioms QSB.DERHeaderBound.byte_ofFn
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective
