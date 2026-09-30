@@ -9,6 +9,7 @@ import QSB.Bonus
 import QSB.ByteIndex
 import QSB.Multisig
 import QSB.KeyRolls
+import QSB.ByteTrace
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -83,6 +84,12 @@ import QSB.Reduction
 #print axioms QSB.ByteIndex.nonminimal_positive_152
 #print axioms QSB.ByteIndex.negative_152
 #print axioms QSB.ByteIndex.five_bytes_rejected
+#print axioms QSB.ByteIndex.encode_zero
+#print axioms QSB.ByteIndex.encode_ten
+#print axioms QSB.ByteIndex.encode_positive_152
+#print axioms QSB.ByteIndex.encode_negative_152
+#print axioms QSB.ByteIndex.encode_zero_roundtrip
+#print axioms QSB.ByteIndex.encode_152_roundtrip
 #print axioms QSB.ByteIndex.nonminimal_ten_selects_dummy
 #print axioms QSB.ByteIndex.nonminimal_152_selects_commitment
 #print axioms QSB.ByteIndex.negative_152_cannot_roll
@@ -98,6 +105,13 @@ import QSB.Reduction
 #print axioms QSB.KeyRolls.final_count_operands_ten
 #print axioms QSB.KeyRolls.successful_final_pairs
 #print axioms QSB.KeyRolls.generated_final_suffix
+#print axioms QSB.ByteMachine.hash_compare_accepts_iff
+#print axioms QSB.ByteMachine.successful_hash_comparison
+#print axioms QSB.ByteLayout.program_length
+#print axioms QSB.ByteLayout.final_opcode_is_checkmultisig
+#print axioms QSB.ByteLayout.fifteen_hors_comparisons
+#print axioms QSB.ByteLayout.comparisons_follow_hash160
+#print axioms QSB.ByteTrace.forget_trace
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 98,
+  "theorem_count": 111,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -40,6 +40,16 @@
     "QSB.ByteIndex.empty_is_zero": [
       "propext"
     ],
+    "QSB.ByteIndex.encode_152_roundtrip": [
+      "propext"
+    ],
+    "QSB.ByteIndex.encode_negative_152": [],
+    "QSB.ByteIndex.encode_positive_152": [],
+    "QSB.ByteIndex.encode_ten": [],
+    "QSB.ByteIndex.encode_zero": [],
+    "QSB.ByteIndex.encode_zero_roundtrip": [
+      "propext"
+    ],
     "QSB.ByteIndex.five_bytes_rejected": [
       "propext"
     ],
@@ -68,6 +78,22 @@
       "propext"
     ],
     "QSB.ByteIndex.positive_152": [
+      "propext"
+    ],
+    "QSB.ByteLayout.comparisons_follow_hash160": [],
+    "QSB.ByteLayout.fifteen_hors_comparisons": [],
+    "QSB.ByteLayout.final_opcode_is_checkmultisig": [],
+    "QSB.ByteLayout.program_length": [],
+    "QSB.ByteMachine.hash_compare_accepts_iff": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachine.successful_hash_comparison": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.forget_trace": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.Game.changed_outputs_unauthorized": [],

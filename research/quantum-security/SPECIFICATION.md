@@ -123,6 +123,13 @@ successful 10-of-10 match cannot skip a key and must verify each corresponding
 pair. This does not establish that the ten signature cells arose from the
 intended dummy pool or that Core's byte-level verifier equals the abstract
 pair predicate.
+The literal-byte lock fixture separately proves that each of its 15 HORS
+`OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
+interpreter, any reached comparison on an accepting modeled run must equate
+the hash of the actual opening bytes to the bytes immediately below them.
+This has not been lifted to an arbitrary accepted Bitcoin witness: the
+commitment cell's origin and the signature-check outcomes still require a
+whole-program stack invariant and Core refinement.
 The formal disclosure and extracted-witness records expose HORS values only at
 their declared opened positions; no total secret array is included in the
 attacker transcript type.

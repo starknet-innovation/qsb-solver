@@ -42,6 +42,10 @@ The build and dependency outputs are retained under `evidence/`.
 | Bonus region | After the canonical preceding eight final-round selections, the final bonus roll's 153 reachable cells are exactly eight gathered dummy signatures, the fixed nonce signature, the zero dummy, 142 unused dummy signatures, and commitment C[round 2,7] | `QSB/Bonus.lean` checks the exact generated prefix region and all 153 index roles. This is conditional on the preceding canonical stack; it does not prove arbitrary-witness extraction. |
 | Bonus region | For indices 0–9, rolling the reachable region places a nonzero generated dummy at the prospective NULLDUMMY slot; indices 10–152 preserve zero there | Local stack-order theorem, not a complete Core-acceptance classification. Later pubkey rolls and arbitrary witness layouts still need refinement. |
 | Byte index | A source-shaped four-byte sign-magnitude ScriptNum parser maps nonminimal `0a00` to 10, nonminimal `980000` to 152, `9880` to -152, and rejects five bytes | `QSB/ByteIndex.lean` checks these byte cases and their local bonus-role consequences. Equivalence to compiled Core for every byte sequence remains unproved; the native boundary cases corroborate the selected examples. |
+| Byte index | A source-shaped ScriptNum serializer produces the checked encodings of zero, ten and both signs of 152, with checked round trips for zero and positive 152 | The serializer is scoped to at most five magnitude bytes; no all-values parser/serializer equivalence or Core refinement has been proved. |
+| Byte lock | The generated literal-byte lock has 880 instructions, ends in `CHECKMULTISIG`, and has 15 `EQUALVERIFY` opcodes, each immediately preceded by `HASH160` | `QSB/ByteLayout.lean` is generated from the pinned builder and checked against the existing exact script SHA-256. These are syntactic facts, not an arbitrary-witness run theorem. |
+| Byte execution | For arbitrary stack tails, cost and later opcodes, successful execution after a reached `HASH160; EQUALVERIFY` pair implies that the hash of the actual opening bytes equals the compared bytes | `QSB/ByteMachine.lean` models byte equality with arbitrary hash functions. It does not show that the compared bytes are one of the intended HORS commitments. Signature outcomes, FindAndDelete, sighash and ECDSA remain external. |
+| Byte trace | Erasing the equality-pair trace gives the same final state as the byte interpreter for every program and starting state | `QSB/ByteTrace.lean`; the trace records equal byte pairs, but a whole-lock theorem relating every pair to its intended commitment position is still missing. |
 | Final count | For any underlying stack, successful execution of the lock's ten fixed final key rolls leaves the pushed signature count 10 at stack offset 10; the last push gives public-key count 10 | `QSB/KeyRolls.lean` proves the list invariant and checks the generated 23-instruction suffix. This does not identify which arbitrary cells were selected as keys or signatures. |
 | Final matching | In a Core-shaped key-scanning model, success with equal signature/key counts implies every corresponding pair verifies | `QSB/Multisig.lean` proves this for arbitrary lists and verifiers; `QSB/KeyRolls.lean` applies it to the ten cells in the final stack. Equality with Core's actual DER, FindAndDelete, sighash and ECDSA behavior is a separate refinement obligation. |
 | Attack extraction | For an owner-forbidden transaction, extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | The target events depend on owner authorization but not on Bitcoin acceptance. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
@@ -156,7 +160,7 @@ with `solver:`. Line anchors refer to that revision.
 | worker/cpu/qsb_pipeline.py:253 | (150,8,1,7,2), single SHA-256 configuration | `Parameters`; comments about security levels are not adopted. |
 | worker/cpu/qsb_pipeline.py:291 | Public fixed nonce construction, signature hashtype 1 | `Nonce`; precise group instantiation pending. |
 | worker/cpu/bitcoin_tx.py:485 | Pinning: fixed signature check, hash key, puzzle signature check | Isolated Core semantics; future pinning extraction. |
-| worker/cpu/bitcoin_tx.py:545 | OP_MIN/ROLL/HASH160 selection and bonus logic | `Selection` local lemmas; complete invariant pending. |
+| worker/cpu/bitcoin_tx.py:545 | OP_MIN/ROLL/HASH160 selection and bonus logic | `Selection` local lemmas and the literal-byte interpreter; complete arbitrary-witness invariant pending. |
 | worker/cpu/bitcoin_tx.py:598 | CHECKMULTISIG ending each round | First-round result experiment; final-round binding needs extraction. |
 | worker/cpu/bitcoin_tx.py:749 | Concatenation of the two rounds, with first result left on stack | Structural first-round finding. |
 | worker/cpu/bitcoin_tx.py:131 | Legacy sighash and SINGLE bug | Isolated Core mutation evidence; serialization injectivity pending. |
@@ -200,6 +204,9 @@ scoped external assumption, or a counterexample:
    theorem must account for the corresponding rare-event condition.
 3. Bitcoin byte parsing, ScriptNum semantics, integer ranges, resource limits,
    FindAndDelete, sighash serialization, and ALL binding to authorization.
+   The new byte interpreter is an intermediate model with explicit hash
+   functions and Boolean signature outcomes. It does not yet simulate Core's
+   scriptSig execution or establish a full Core-to-Lean refinement.
 4. Curve equations, accepted encodings, at most the appropriate number of
    recovery candidates, scalar reduction modulo N, and degenerate cases.
 5. A correctly specified joint QROM model for SHA-256, SHA256d, and HASH160,

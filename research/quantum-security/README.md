@@ -50,6 +50,17 @@ pair to verify. These results still need byte-level source identification and
 an exact Core checker refinement. See `QSB/KeyRolls.lean` and
 `QSB/Multisig.lean`.
 
+`QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
+retains literal push bytes for all 880 instructions; Lean checks that each of
+its 15 `OP_EQUALVERIFY` instructions immediately follows `OP_HASH160`.
+`QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
+functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
+stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
+the actual opening bytes hash to the compared commitment bytes. This local
+result does not identify where the commitment came from. `QSB/ByteTrace.lean`
+records equality pairs and proves that erasing the record recovers the modeled
+execution; the whole-lock arbitrary-witness source invariant is still open.
+
 Read:
 
 - [Final report](FINAL-REPORT.md)
@@ -76,7 +87,16 @@ theorem. No project axiom, `sorry`, `admit`, or native decision oracle is used.
 The generated `QSB/Layout.lean` checks an 880-instruction symbolic stack trace
 from the exact Config A builder. Signature outcomes are explicit and hashes are
 symbolic. Regenerate it with `analysis/generate_layout.py` after a source change
-and inspect the change before citing it.
+and inspect the change before citing it. The byte fixture is generated from the
+same pinned builder and checked with:
+
+```sh
+python3 analysis/generate_byte_layout.py --app-root /path/to/qsb-app --check
+```
+
+Omit `--check` to regenerate `QSB/ByteLayout.lean` and
+`evidence/byte-layout-map.json` after deliberately updating the pinned source.
+Both generators cross-check the existing script hash in `evidence/layout-map.json`.
 
 The probability lemmas use arbitrary measures, not rational approximations of
 quantum terminal distributions. They are mathematical union bounds, with

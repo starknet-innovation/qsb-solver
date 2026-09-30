@@ -31,6 +31,25 @@ def parseScriptNum (bytes : List UInt8) : Option Int :=
       (if negative then 128 * 256 ^ (bytes.length - 1) else 0)
     some (if negative then -(Int.ofNat magnitude) else Int.ofNat magnitude)
 
+/-- Ordinary QSB arithmetic starts from four-byte ScriptNum operands and only
+adds small lock constants, so five magnitude bytes suffice for its results.
+The explicit size guard prevents silent truncation outside that scope. -/
+def encodeScriptNum (value : Int) : Option (List UInt8) :=
+  let magnitude := value.natAbs
+  if magnitude ≥ 256 ^ 5 then none
+  else if magnitude = 0 then some []
+  else
+    let digits := ((List.range 5).map
+      (fun i => UInt8.ofNat ((magnitude / 256 ^ i) % 256))).reverse
+        |>.dropWhile (· == 0)
+        |>.reverse
+    let high := (digits.getLast?.getD 0).toNat
+    if high ≥ 128 then
+      some (digits ++ [if value < 0 then 0x80 else 0x00])
+    else if value < 0 then
+      some (digits.dropLast ++ [UInt8.ofNat (high + 128)])
+    else some digits
+
 /-- The local `OP_MIN; OP_ROLL` suffix applied to a byte-encoded index after
 the canonical preceding stack region. It is not the complete Bitcoin Script. -/
 def selectEncoded (bytes : List UInt8) : Option Cell := do
@@ -46,6 +65,16 @@ theorem nonminimal_positive_152 :
 theorem negative_152 : parseScriptNum [0x98, 0x80] = some (-152) := by decide
 theorem five_bytes_rejected :
     parseScriptNum [0x98, 0x00, 0x00, 0x00, 0x00] = none := by decide
+theorem encode_zero : encodeScriptNum 0 = some [] := by decide
+theorem encode_ten : encodeScriptNum 10 = some [0x0a] := by decide
+theorem encode_positive_152 :
+    encodeScriptNum 152 = some [0x98, 0x00] := by decide
+theorem encode_negative_152 :
+    encodeScriptNum (-152) = some [0x98, 0x80] := by decide
+theorem encode_zero_roundtrip :
+    (encodeScriptNum 0).bind parseScriptNum = some 0 := by decide
+theorem encode_152_roundtrip :
+    (encodeScriptNum 152).bind parseScriptNum = some 152 := by decide
 
 theorem nonminimal_ten_selects_dummy :
     selectEncoded [0x0a, 0x00] = some (.atom 1158) := by decide

@@ -68,6 +68,12 @@
 'QSB.ByteIndex.nonminimal_positive_152' depends on axioms: [propext]
 'QSB.ByteIndex.negative_152' depends on axioms: [propext]
 'QSB.ByteIndex.five_bytes_rejected' depends on axioms: [propext]
+'QSB.ByteIndex.encode_zero' does not depend on any axioms
+'QSB.ByteIndex.encode_ten' does not depend on any axioms
+'QSB.ByteIndex.encode_positive_152' does not depend on any axioms
+'QSB.ByteIndex.encode_negative_152' does not depend on any axioms
+'QSB.ByteIndex.encode_zero_roundtrip' depends on axioms: [propext]
+'QSB.ByteIndex.encode_152_roundtrip' depends on axioms: [propext]
 'QSB.ByteIndex.nonminimal_ten_selects_dummy' depends on axioms: [propext]
 'QSB.ByteIndex.nonminimal_152_selects_commitment' depends on axioms: [propext]
 'QSB.ByteIndex.negative_152_cannot_roll' depends on axioms: [propext]
@@ -83,6 +89,13 @@
 'QSB.KeyRolls.final_count_operands_ten' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.successful_final_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.generated_final_suffix' does not depend on any axioms
+'QSB.ByteMachine.hash_compare_accepts_iff' depends on axioms: [propext, Quot.sound]
+'QSB.ByteMachine.successful_hash_comparison' depends on axioms: [propext, Quot.sound]
+'QSB.ByteLayout.program_length' does not depend on any axioms
+'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms
+'QSB.ByteLayout.fifteen_hors_comparisons' does not depend on any axioms
+'QSB.ByteLayout.comparisons_follow_hash160' does not depend on any axioms
+'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
