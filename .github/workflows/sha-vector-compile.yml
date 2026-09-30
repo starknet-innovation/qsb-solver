@@ -3,10 +3,12 @@ on:
   push:
     paths:
       - experiments/generic-sha-vector/**
+      - tests/test_sha_vector*.py
       - .github/workflows/sha-vector-compile.yml
   pull_request:
     paths:
       - experiments/generic-sha-vector/**
+      - tests/test_sha_vector*.py
       - .github/workflows/sha-vector-compile.yml
 permissions:
   contents: read
@@ -18,6 +20,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+      - name: Test experiment guards and timing evidence validation
+        run: python3 -m unittest discover -s tests -p 'test_sha_vector*.py'
       - name: Extract hash-bound baseline and vector candidate
         run: |
           mkdir gate results
