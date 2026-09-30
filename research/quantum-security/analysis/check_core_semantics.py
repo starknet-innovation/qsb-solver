@@ -69,6 +69,13 @@ def main():
     tx.outputs[0].script_pubkey = b"\x00\x14" + b"\x88" * 20
     tx.outputs[0].value = 80000
     check("single_bug_changed_destination_and_amount", lock, ec.compress_pubkey(point), True)
+    tx.add_output(bt.TxOut(1000, b"\x51"))
+    in_range_lock, in_range_point, in_range_z = lock_and_point(3)
+    assert in_range_z != 1 << 248
+    check("single_in_range_old_recovery_key", in_range_lock,
+          ec.compress_pubkey(point), False)
+    check("single_in_range_new_recovery_key", in_range_lock,
+          ec.compress_pubkey(in_range_point), True)
     report = {"scope": "isolated legacy scripts; NOT full QSB acceptance or a forgery",
               "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL (consensus, not policy)",
               "image": a.image, "cases": cases}

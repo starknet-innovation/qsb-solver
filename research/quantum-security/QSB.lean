@@ -556,6 +556,11 @@ import QSB.Reduction
 #print axioms QSB.ScriptCodeSelection.stripSignaturePushes_perm
 #print axioms QSB.ScriptCodeSelection.stripSignaturePushes_cons
 #print axioms QSB.ScriptCodeSelection.finalScriptCode_perm
+#print axioms QSB.ScriptCodeSelection.generatedDummyAt_sighash_single
+#print axioms QSB.ScriptCodeSelection.finalNonce_sighash_all
+#print axioms QSB.ScriptCodeSelection.selected_final_signature_flags
+#print axioms QSB.ScriptCodeSelection.boundary_match_consumes_chunk
+#print axioms QSB.ScriptCodeSelection.stripEncodedChunks_perm
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings

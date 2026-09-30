@@ -1,5 +1,5 @@
 {
-  "theorem_count": 546,
+  "theorem_count": 551,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1868,8 +1868,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ScriptCodeSelection.boundary_match_consumes_chunk": [
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.finalNonce_sighash_all": [
+      "propext"
+    ],
     "QSB.ScriptCodeSelection.finalScriptCode_perm": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.generatedDummyAt_sighash_single": [
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.selected_final_signature_flags": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.stripEncodedChunks_perm": [
       "propext"
     ],
     "QSB.ScriptCodeSelection.stripSignaturePushes_cons": [

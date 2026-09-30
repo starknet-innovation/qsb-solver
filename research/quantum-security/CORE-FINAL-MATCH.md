@@ -42,12 +42,14 @@ in the conditional full-run theorem are distinct. Lean alone does not rule out
 the same serialized push elsewhere in the full script. The deterministic
 source-fixture inventory below checks that absence for this one lock.
 
-`QSB/ScriptCodeSelection.lean` defines an opcode-level filter for the selected
+`QSB/ScriptCodeSelection.lean` defines an opcode-level filter for selected
 final signature pushes and proves order independence and equivalence to
-successive single-signature filters. Its `Op.push` representation omits the
-original push opcode encoding, so this result is not a byte-level Core
-FindAndDelete refinement. The literal fixture inventory below provides
-evidence for the selected canonical pushes in this one lock.
+successive single-signature filters. It also proves a byte-chunk boundary
+lemma: if a pattern matches at a parsed opcode boundary and that opcode has
+the pattern's length, the pattern is exactly that complete opcode. Filtering
+whole byte chunks is order-independent. Its opcode model omits original push
+encodings, and the exact-byte chunk sequence has not been linked to Core's
+parser in Lean.
 
 ## Native differential evidence
 
@@ -70,11 +72,32 @@ outcomes test selected paths, not the whole generated QSB lock.
 `analysis/check_literal_findanddelete.py` regenerates the exact disposable
 lock, checks its script SHA-256 against `ByteLayout` evidence, and inventories
 all 880 opcode boundaries. Each of the 150 final dummy signatures and the
-fixed final nonce occurs as exactly one serialized push at a boundary. For
-each of these 151 values, the app's `find_and_delete` output equals the exact
-script with that one push removed. This checks single-signature deletion in
-the literal fixture; it does not formalize sequential deletion of arbitrary
-ten-signature sets or prove equivalence to Core for every script.
+fixed final nonce occurs as exactly one serialized direct push at a boundary.
+All 151 patterns have a direct length opcode and every boundary prefix match
+is that whole opcode. Deleting complete opcodes preserves this segmentation,
+so Core's source algorithm would remove exactly the selected chunks for any
+subset of these literal patterns, regardless of deletion order. The app's
+single-signature implementation passes all 151 cases; 35 distinct ten-
+signature sets also match whole-chunk filtering in forward, reverse, and
+shuffled orders. This is exact fixture/source reasoning and sampled app
+execution, not a Lean proof of the generated script's serialized bytes or a
+Core binary equivalence theorem for every witness and setup.
+The rerun used app checkout `bb5dffcb3e429ea3680db4e0cb9d2c199edb5436`;
+the builder and EC source-file hashes match the pinned
+`3eef7c39ecbe897ac55251841e9f2ec3764e04ad` inventory, and the generated
+lock hash matches the original byte-layout fixture. The report records both
+revision identities.
+
+The literal dummy signatures end with `SIGHASH_SINGLE` (`0x03`), while the
+fixed nonce ends with `SIGHASH_ALL` (`0x01`), as checked in Lean. Core's
+out-of-range SINGLE message applies only if this transaction has fewer
+outputs than the spending input index. With an in-range SINGLE output, each
+dummy check uses its actual transaction sighash. The shared scriptCode is
+still computed before the ten signature checks, regardless of their flags.
+An isolated pinned-Core check confirms the distinction: with a second output,
+the out-of-range recovery key fails for a fixed SINGLE signature, while a
+public key recovered for its in-range message passes. This does not show that
+the full QSB lock accepts the alternate layout.
 
 ## Exact remaining bridge
 

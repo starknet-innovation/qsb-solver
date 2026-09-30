@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 546 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 551 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -325,10 +325,28 @@ one opcode-boundary push in this literal lock and that the app deletes that
 one push. This remains executable evidence rather than a Lean/Core theorem
 about the sequential ten-signature scriptCode. `QSB/ScriptCodeSelection.lean`
 proves that an opcode-level filter of the selected signature pushes is
-independent of their
-order and equals successive single-signature filters. Its `Op.push` model
-does not retain the push opcode encoding, so the byte-faithful Core link is
-still open.
+independent of their order and equals successive single-signature filters. Its
+`Op.push` model does not retain the push opcode encoding, so the byte-faithful
+Core link is still open.
+The fixture inventory now checks that all 151 selected patterns are direct
+pushes and that every boundary prefix match is a complete opcode. Whole-opcode
+deletion therefore preserves the segmentation used by Core's source algorithm
+for any subset of these literal patterns. The app's implementation also gives
+identical bytes for 35 selected ten-signature sets under three deletion
+orders. Lean proves the conditional complete-chunk lemma and order
+independence of encoded-chunk filtering, but has no proved serialization or
+Core-parser link for this fixture.
+Lean also checks the literal signature flags: all 150 final dummy signatures
+end in `SIGHASH_SINGLE` (`0x03`), while the fixed final nonce ends in
+`SIGHASH_ALL` (`0x01`). The dummy signatures use the constant SINGLE message
+only for transactions whose input index is beyond the output list; this is
+not guaranteed for arbitrary transactions. The ALL nonce message depends on
+the selected scriptCode and transaction fields. A sound final-round extractor
+must distinguish these per-signature messages.
+The pinned Core adapter verifies an isolated fixed SINGLE signature with a
+newly recovered key when a second output makes the sighash in range; the
+out-of-range recovery key fails on that same transaction. This does not
+establish full-lock acceptance with an alternate transaction layout.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. Its key is

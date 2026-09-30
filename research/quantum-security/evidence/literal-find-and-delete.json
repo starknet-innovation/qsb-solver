@@ -1,11 +1,18 @@
 {
-  "scope": "one disposable exact lock; single-signature deletion only",
-  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "scope": "one disposable exact lock; exhaustive boundary-pattern inventory and sampled ten-signature orders",
+  "source_revision": "bb5dffcb3e429ea3680db4e0cb9d2c199edb5436",
+  "pinned_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
   "script_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
   "script_bytes": 9923,
   "opcode_boundaries": 880,
   "checked_signature_pushes": 151,
+  "dummy_sighash_byte": "03",
+  "nonce_sighash_byte": "01",
+  "all_selected_patterns_direct_pushes": true,
+  "all_boundary_prefix_matches_complete_opcodes": true,
+  "sampled_ten_signature_sets": 35,
   "cases": [
     {
       "name": "final_dummy_000",
@@ -1063,6 +1070,498 @@
       "push_offset": 9650,
       "push_size": 56,
       "script_code_sha256": "182ba4496164d13657bbc7c76bbaae1a459a63bbd5da7ac9e0ca0ca1cf585993"
+    }
+  ],
+  "multi_cases": [
+    {
+      "dummy_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "script_code_sha256": "6aa4f0407afbe31e0c3f6bb4c3749b66a68bdf7ed704ba0b4cabd12d164c5441"
+    },
+    {
+      "dummy_ids": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149
+      ],
+      "script_code_sha256": "b1630931c74d0f351d7d45ec13828325a8430e6fd61e826f21d9215e37861acb"
+    },
+    {
+      "dummy_ids": [
+        0,
+        1,
+        17,
+        23,
+        41,
+        77,
+        96,
+        111,
+        149
+      ],
+      "script_code_sha256": "9437e9d1ec385513e4c7fb2fd44383fe32a94450e6fe1cb1fedcce6507c60032"
+    },
+    {
+      "dummy_ids": [
+        1,
+        3,
+        58,
+        59,
+        81,
+        88,
+        107,
+        111,
+        132
+      ],
+      "script_code_sha256": "1ef546c50ca93cadc1ce123187f76355dd1a02a002f7279fd9d190e363aeee97"
+    },
+    {
+      "dummy_ids": [
+        5,
+        6,
+        27,
+        28,
+        54,
+        67,
+        97,
+        130,
+        136
+      ],
+      "script_code_sha256": "e71b85da391f32425986556cfb2ef375d6d4334fd52539ebe1a2071f9c64484f"
+    },
+    {
+      "dummy_ids": [
+        4,
+        9,
+        29,
+        34,
+        44,
+        47,
+        66,
+        94,
+        126
+      ],
+      "script_code_sha256": "d595a2b7f2d759c1f5b91ad111bcea8a023113af4d44158e6574f3d8b94edf3d"
+    },
+    {
+      "dummy_ids": [
+        0,
+        46,
+        48,
+        50,
+        63,
+        66,
+        90,
+        102,
+        130
+      ],
+      "script_code_sha256": "a6fee1fe5775155db3a84747589c8cfe1fabed0ad297df41b0a0c07bdfa31b7d"
+    },
+    {
+      "dummy_ids": [
+        2,
+        10,
+        49,
+        57,
+        68,
+        76,
+        93,
+        106,
+        107
+      ],
+      "script_code_sha256": "9efe8934757a5cbbeb9082ef31807fd77e4e2dd49bc5bb5669d8d5d38e57d410"
+    },
+    {
+      "dummy_ids": [
+        2,
+        30,
+        31,
+        39,
+        57,
+        66,
+        71,
+        85,
+        105
+      ],
+      "script_code_sha256": "ea4928aea91ac46c58311129a3a0c1ccbf103de1c74b3494a87afcaa0ae9daaf"
+    },
+    {
+      "dummy_ids": [
+        17,
+        23,
+        28,
+        54,
+        56,
+        96,
+        99,
+        113,
+        140
+      ],
+      "script_code_sha256": "533e625c2b39e139f10ab40e0da8e371a75cb99d040988e79f24b452ff2d2f15"
+    },
+    {
+      "dummy_ids": [
+        13,
+        27,
+        35,
+        81,
+        88,
+        96,
+        120,
+        135,
+        149
+      ],
+      "script_code_sha256": "6668861014afe48221a87d42bbda4c0a6b087e4b50763bd45678f8525bab2f4d"
+    },
+    {
+      "dummy_ids": [
+        6,
+        7,
+        10,
+        48,
+        91,
+        109,
+        112,
+        134,
+        145
+      ],
+      "script_code_sha256": "92431902ee6f1a571d29a76c89ab41f86c716b973aa522dabfcc39af83b1a71a"
+    },
+    {
+      "dummy_ids": [
+        5,
+        10,
+        61,
+        68,
+        92,
+        102,
+        110,
+        134,
+        136
+      ],
+      "script_code_sha256": "8947eaacfcbc41fddc143a8d8603bc1e027a1fe9d229c2c715fe6f6e4bbbdd70"
+    },
+    {
+      "dummy_ids": [
+        21,
+        32,
+        51,
+        54,
+        61,
+        68,
+        70,
+        87,
+        140
+      ],
+      "script_code_sha256": "5cc467238fa8b7815d4a0112c85147470b103ff2a11206be29249b189c17eaf6"
+    },
+    {
+      "dummy_ids": [
+        11,
+        46,
+        84,
+        87,
+        97,
+        98,
+        108,
+        123,
+        141
+      ],
+      "script_code_sha256": "7504d1caad3a4d814f5311f83faf99e6aef99211ab4a676d74c8709e140a70a9"
+    },
+    {
+      "dummy_ids": [
+        0,
+        23,
+        34,
+        35,
+        42,
+        45,
+        58,
+        95,
+        140
+      ],
+      "script_code_sha256": "f0474ffe0246bc9fa6fabd3a8960b3f94bbd7e667a0ad55d4f9c3ba6ca4d92e2"
+    },
+    {
+      "dummy_ids": [
+        11,
+        39,
+        86,
+        88,
+        93,
+        98,
+        125,
+        126,
+        148
+      ],
+      "script_code_sha256": "0f097aec23d3f2a26ba17249f1e9ac54b3ef74d19fb63037b626ec8553aa6be4"
+    },
+    {
+      "dummy_ids": [
+        18,
+        41,
+        74,
+        81,
+        94,
+        95,
+        96,
+        115,
+        125
+      ],
+      "script_code_sha256": "83f88c80ac472c3a7847bce468c19b13241b144fee5cdf8155eaf15850a9dcd9"
+    },
+    {
+      "dummy_ids": [
+        13,
+        47,
+        67,
+        71,
+        96,
+        111,
+        121,
+        131,
+        134
+      ],
+      "script_code_sha256": "6789681a032c41709315c1154f38edaecacddb0802a0fa468a8edd85eaf3b61a"
+    },
+    {
+      "dummy_ids": [
+        20,
+        96,
+        100,
+        111,
+        114,
+        122,
+        132,
+        137,
+        148
+      ],
+      "script_code_sha256": "e49b38ac8baf34203093057c8ed578f5485f037f452adadee0b1679a577565c1"
+    },
+    {
+      "dummy_ids": [
+        8,
+        13,
+        34,
+        52,
+        56,
+        78,
+        82,
+        104,
+        140
+      ],
+      "script_code_sha256": "792a2a97d291246626c4f2a5994d0c106d12d37081834dc7dab156a597333106"
+    },
+    {
+      "dummy_ids": [
+        22,
+        33,
+        34,
+        53,
+        103,
+        107,
+        138,
+        141,
+        142
+      ],
+      "script_code_sha256": "3d1d5e93fe9509a0adc839a9c6d7fefea23b733619c493ba017cd224edbb5e21"
+    },
+    {
+      "dummy_ids": [
+        32,
+        36,
+        55,
+        75,
+        83,
+        95,
+        111,
+        117,
+        138
+      ],
+      "script_code_sha256": "709e7288a3ff5949e7c514670aa71010233c2e34aec8f3e960ce08de3721af19"
+    },
+    {
+      "dummy_ids": [
+        3,
+        4,
+        14,
+        19,
+        24,
+        46,
+        81,
+        101,
+        117
+      ],
+      "script_code_sha256": "3d6708e960ab927ed260b6e736449a21acb16d4fa6ac139aeaf6a6219d1cb708"
+    },
+    {
+      "dummy_ids": [
+        5,
+        58,
+        73,
+        75,
+        76,
+        94,
+        106,
+        128,
+        137
+      ],
+      "script_code_sha256": "563a3422cf893a6166c8f7367184e810af48324864c25ddd79f52f636e57de5e"
+    },
+    {
+      "dummy_ids": [
+        22,
+        38,
+        43,
+        64,
+        82,
+        103,
+        128,
+        132,
+        137
+      ],
+      "script_code_sha256": "5e24c057e379a81f82d04ad625ec85749582a49ea5d11736fefbf9ae8df904d1"
+    },
+    {
+      "dummy_ids": [
+        3,
+        14,
+        37,
+        57,
+        65,
+        113,
+        118,
+        135,
+        144
+      ],
+      "script_code_sha256": "f6c8ba745d8c431e12bdd4d4b4e69c772e074361036df7e99c44b41d56648403"
+    },
+    {
+      "dummy_ids": [
+        14,
+        55,
+        71,
+        73,
+        98,
+        103,
+        116,
+        129,
+        139
+      ],
+      "script_code_sha256": "40d49d0b05586068ec261698cfdd65b3e2f6a9aa2b7489251cb6e4a4dae0d4f0"
+    },
+    {
+      "dummy_ids": [
+        36,
+        53,
+        76,
+        86,
+        90,
+        94,
+        110,
+        118,
+        142
+      ],
+      "script_code_sha256": "366843b9650958b5082842a7286c443831d743e901543560156da87d3cb0a94f"
+    },
+    {
+      "dummy_ids": [
+        6,
+        43,
+        47,
+        63,
+        76,
+        91,
+        93,
+        103,
+        119
+      ],
+      "script_code_sha256": "e4cd37db0a2c33e9d8769cd44d7b34c2c85da27d323122896eb05288e4b50189"
+    },
+    {
+      "dummy_ids": [
+        39,
+        41,
+        45,
+        63,
+        66,
+        88,
+        105,
+        108,
+        141
+      ],
+      "script_code_sha256": "5f90d6193eeb477a155fa2692ff27e868f2d1a1216a3902f902a3d66613ebfc9"
+    },
+    {
+      "dummy_ids": [
+        14,
+        21,
+        27,
+        29,
+        35,
+        101,
+        117,
+        146,
+        148
+      ],
+      "script_code_sha256": "b83e3813db49acb5122f0f9ce95d79e54c0f47244000cd0ef1e8418640050e5d"
+    },
+    {
+      "dummy_ids": [
+        18,
+        22,
+        54,
+        72,
+        105,
+        108,
+        136,
+        143,
+        145
+      ],
+      "script_code_sha256": "9813acef2512d2ec4c11da14e7dc7cea45ba240b7add21e1b22c5566b5617666"
+    },
+    {
+      "dummy_ids": [
+        3,
+        4,
+        12,
+        26,
+        45,
+        48,
+        84,
+        90,
+        115
+      ],
+      "script_code_sha256": "e19722c85ff77c76b942e3932c6ae5e07a26c0cf53d5660cb9ed8ede48a8da3f"
+    },
+    {
+      "dummy_ids": [
+        23,
+        25,
+        36,
+        40,
+        97,
+        100,
+        123,
+        124,
+        147
+      ],
+      "script_code_sha256": "c829bd859c5387de41d48569c7a99fa412e8aa7175db6797a60d0da5993f39ca"
     }
   ]
 }

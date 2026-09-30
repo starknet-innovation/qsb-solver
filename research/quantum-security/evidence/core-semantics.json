@@ -66,6 +66,22 @@
       "script_hex": "093006020101020111037cac",
       "pubkey_encoding_hex": "025d4fccdf2817a971ac33040e86c60ea2d6d59afdf5026b1851a1d677fe781eda",
       "raw_tx_sha256": "250289b0cdb1b089273e33f7a8052303213ecd64da5f473f0eb257793b5ca32d"
+    },
+    {
+      "name": "single_in_range_old_recovery_key",
+      "accepted": false,
+      "expected": false,
+      "script_hex": "093006020101020111037cac",
+      "pubkey_encoding_hex": "025d4fccdf2817a971ac33040e86c60ea2d6d59afdf5026b1851a1d677fe781eda",
+      "raw_tx_sha256": "0fb00184d20f084bd1e5400d2e84ec3a5855f3d91f648dfa81ef89d9151a4d7b"
+    },
+    {
+      "name": "single_in_range_new_recovery_key",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111037cac",
+      "pubkey_encoding_hex": "0349a1b1e440a75f0ada9372f586185e14b14b252991f60d119dca252abce084a5",
+      "raw_tx_sha256": "fe0eefe89df794dea0badd4ed6622758c93c9719ad670b433843272108cb5ffb"
     }
   ]
 }
