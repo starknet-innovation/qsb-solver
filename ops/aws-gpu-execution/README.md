@@ -1,7 +1,7 @@
 # One-shot optimized A10G gate
 
 Adapted from the completed qsb-app AWS execution controller at c8c6f21833798900ae1e6a21f0b5d10d2adab291.
-This operator-specific experiment uses one g5.xlarge in eu-west-1. No app activation.
+This operator-specific experiment uses one g5.xlarge in an explicitly authorized region (eu-west-1 or eu-west-2). No app activation.
 Before launch: verify price, effective quota, zero other test GPUs, clean pushed
 controller source and exact candidate attestation. Prepare creates dedicated SSM-only
 host access and a tagged-instance cleanup role. Arm records an absolute 25-minute
@@ -45,7 +45,7 @@ The file contains exactly `account`, `profile`, `region`, `ami`, `subnet`, and
 ```
 
 These are placeholders, not launch configuration. The controller verifies STS
-against the configured account and restricts the region to Ireland. New external
+against the configured account and restricts the region to Ireland or London. Regional AMI/network values must be independently verified; existing execution state cannot change region. New external
 execution receipts freeze the configuration; resume rejects changes or legacy
 state without that binding. Never mutate an old receipt to bypass that check:
 reconcile prior resources using their original committed controller and scope.
