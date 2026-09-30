@@ -46,6 +46,7 @@ import QSB.Reduction
 #print axioms QSB.event_bound_with_key_cases
 #print axioms QSB.finite_target_union_bound
 #print axioms QSB.der20_setup_union_bound
+#print axioms QSB.der20_final_bonus_setup_union_bound
 #print axioms QSB.RandomOracleSetup.fixed_input_hit_count
 #print axioms QSB.RandomOracleSetup.independent_source_hit_count
 #print axioms QSB.RandomOracleSetup.shared_function_union_hit_count
@@ -513,6 +514,7 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.generated_to_bonus_prefix
 #print axioms QSB.FinalBonusSecond.generated_through_both_bonuses
 #print axioms QSB.FinalBonusSecond.generated_after_both_bonuses
+#print axioms QSB.FinalBonusSecond.generated_precheck_prefix
 #print axioms QSB.FinalBonusSecond.second_source_after_first_dummy
 #print axioms QSB.FinalBonusSecond.second_source_after_first_commitment
 #print axioms QSB.FinalBonusSecond.second_bonus_source_map
@@ -524,7 +526,9 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace
 #print axioms QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins
+#print axioms QSB.FinalBonusSecond.first_remaining_commitment_unopened
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins
+#print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

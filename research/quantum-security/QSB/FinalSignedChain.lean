@@ -149,7 +149,8 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
       gathered'.length = 7 ∧
       trace.length = 7 ∧
       (trace.map Prod.fst).Nodup ∧
-      (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) := by
+      (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
+      List.Perm (trace.map Prod.fst ++ ids') (List.finRange 150) := by
   have startShape : FinalSignedAccepted.baseRegion
       (boolBytes result) tail =
       nextRawFront (boolBytes result) []
@@ -170,7 +171,7 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
     have combined := tracePerm.nodup_iff.mpr allNodup
     exact (List.nodup_append.mp combined).1
   refine ⟨ids', gathered', dummies', commitments', tail', trace,
-    ?_, shape, aligned, ?_, ?_, noDuplicates, traceHits⟩
+    ?_, shape, aligned, ?_, ?_, noDuplicates, traceHits, tracePerm⟩
   · simpa using finalShape
   · simpa using gatheredCount
   · simpa using traceCount
@@ -237,7 +238,7 @@ theorem accepted_whole_program_final_signed_openings (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, finalShape, shape, aligned, gatheredCount,
-                    traceCount, noDuplicates, traceHits⟩ :=
+                    traceCount, noDuplicates, traceHits, _tracePerm⟩ :=
                     accepted_all_signed_blocks hashes result tail
                       checkOutcomes checkCost afterSigned signed
                   exact ⟨trace, traceCount, noDuplicates, traceHits⟩

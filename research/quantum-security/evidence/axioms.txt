@@ -8,6 +8,7 @@
 'QSB.event_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.finite_target_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.der20_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.der20_final_bonus_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RandomOracleSetup.fixed_input_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RandomOracleSetup.independent_source_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RandomOracleSetup.shared_function_union_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -565,6 +566,7 @@
 'QSB.FinalBonusSecond.generated_to_bonus_prefix' does not depend on any axioms
 'QSB.FinalBonusSecond.generated_through_both_bonuses' does not depend on any axioms
 'QSB.FinalBonusSecond.generated_after_both_bonuses' does not depend on any axioms
+'QSB.FinalBonusSecond.generated_precheck_prefix' does not depend on any axioms
 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -582,7 +584,11 @@
 'QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalBonusSecond.first_remaining_commitment_unopened' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]

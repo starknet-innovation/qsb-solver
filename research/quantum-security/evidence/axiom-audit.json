@@ -1,5 +1,5 @@
 {
-  "theorem_count": 504,
+  "theorem_count": 508,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -484,10 +484,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusSecond.first_remaining_commitment_unopened": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.generated_after_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_bonus_op_segments": [],
+    "QSB.FinalBonusSecond.generated_precheck_prefix": [],
     "QSB.FinalBonusSecond.generated_through_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_to_bonus_prefix": [],
+    "QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.second_bonus_source_map": [
       "Classical.choice",
       "Quot.sound",
@@ -1765,6 +1776,11 @@
     ],
     "QSB.der20_count_exact": [],
     "QSB.der20_count_ratio": [],
+    "QSB.der20_final_bonus_setup_union_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.der20_setup_union_bound": [
       "Classical.choice",
       "Quot.sound",

@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 504 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 508 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -237,8 +237,23 @@ signature-source slots are, in order: the second bonus byte, the first bonus
 byte, seven gathered generated dummy bytes, and the fixed nonce byte. The
 following NULLDUMMY slot is empty. The same theorem retains the seven
 distinct final-round HORS opening matches and both bonus source branches for
-an arbitrary initial byte stack. These are byte-model source identities with
+an arbitrary initial byte stack. It identifies the sole possible bonus
+commitment as an original second-round HORS position absent from those seven
+opening matches; either overshoot places that same commitment in a specified
+final signature slot. These are byte-model source identities with
 supplied signature outcomes, not Bitcoin Core ECDSA-validity results.
+The checked conditional syntax theorem says that if both reached final bonus
+signature slots satisfy a supplied signature-syntax predicate, and no
+generated second-round HORS commitment satisfies it, both bonus depths are
+strictly below 152. Its syntax premise must still be derived from Core's
+actual parser and `CHECKMULTISIG`; the model's supplied Boolean outcome alone
+does not imply it. The no-commitment premise is the setup exception to bound
+under a stated hash distribution.
+For this final-round bonus exception alone, the checked measure union bound
+uses 150 second-round commitments: if each has actual parser-syntax marginal
+at most `390405/2^65`, the probability that any is syntax-valid is at most
+`150·390405/2^65`. The marginal and exact Core parser/count correspondence
+remain external. This term does not bound the other extraction or puzzle gaps.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

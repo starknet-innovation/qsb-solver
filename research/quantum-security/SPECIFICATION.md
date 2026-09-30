@@ -157,8 +157,15 @@ byte-model theorem records both post-bonus states and selected-byte equations,
 as well as the seven distinct signed HORS openings. Its final-witness theorem
 identifies the ten pre-CHECKMULTISIG signature-source cells as second bonus,
 first bonus, seven gathered dummy bytes, and fixed nonce, followed by the
-empty dummy. Core signature validity and the DER-shaped setup event remain
+empty dummy. The sole possible bonus commitment is one original second-round
+HORS position absent from the seven signed openings; either overshoot places
+it in a specific final signature slot. Core signature validity and the DER-shaped setup event remain
 open.
+The byte model also proves that both bonus depths stay below 152 if those two
+reached signature slots satisfy a supplied syntax predicate and no generated
+second-round commitment does. The syntax premise is not inferred from the
+model's supplied CHECKMULTISIG Boolean; Core parsing and verification remain
+to be connected.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's

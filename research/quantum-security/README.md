@@ -171,8 +171,19 @@ and records their selected-byte equations alongside the seven signed HORS
 openings. Its final-witness theorem carries those bytes through the late
 puzzle and key rolls: the ten pre-CHECKMULTISIG signature-source slots are
 second bonus, first bonus, seven gathered dummy bytes, and the fixed nonce,
-followed by the empty dummy. Core signature validity and the DER-shaped setup
+followed by the empty dummy. The only possible bonus commitment is the first
+survivor from an original second-round HORS position not among the seven
+matched openings; either overshoot puts it in a specific final signature slot.
+Core signature validity and the DER-shaped setup
 event remain open.
+An additional conditional theorem excludes both commitment overshoots when
+the reached bonus signature slots satisfy a supplied signature-syntax predicate
+and every generated second-round commitment fails that predicate. Connecting
+the syntax premise to Core's CHECKMULTISIG and bounding the setup event remain
+separate obligations.
+The checked final-bonus setup union bound charges only the 150 second-round
+commitments, conditional on an actual parser-syntax marginal of
+`390405/2^65` per commitment. It does not supply that marginal or bound a spend.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
