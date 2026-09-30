@@ -46,4 +46,26 @@ theorem finite_target_union_bound {Ω Vault : Type*}
     ((measure_biUnion_finset_le vaults failure).trans
       (Finset.sum_le_sum fun v hv => perVault v hv))
 
+/-- A concrete setup-syntax union bound for 300 HORS commitments. `der20`
+must mean the actual parser property on the real commitment bytes; the
+marginal premise is NOT supplied by this theorem. No independence is needed.
+This event alone does not characterize the source-extraction gap. -/
+theorem der20_setup_union_bound {Ω : Type*} [MeasurableSpace Ω]
+    (μ : Measure Ω) (der20 : Ω → Fin 300 → Prop)
+    (marginal : ∀ i : Fin 300,
+      μ {ω | der20 ω i} ≤ (390405 : ENNReal) / 2 ^ 65) :
+    μ {ω | ∃ i : Fin 300, der20 ω i} ≤
+      (300 : ENNReal) * ((390405 : ENNReal) / 2 ^ 65) := by
+  have cover : {ω | ∃ i : Fin 300, der20 ω i} ⊆
+      ⋃ i ∈ (Finset.univ : Finset (Fin 300)), {ω | der20 ω i} := by
+    intro ω h
+    obtain ⟨i, hi⟩ := h
+    simpa using (show ∃ j : Fin 300, der20 ω j from ⟨i, hi⟩)
+  have h := finite_target_union_bound μ (Finset.univ : Finset (Fin 300))
+    {ω | ∃ i : Fin 300, der20 ω i}
+    (fun i => {ω | der20 ω i})
+    (fun _ => (390405 : ENNReal) / 2 ^ 65) cover
+    (by intro i _; exact marginal i)
+  simpa [Finset.sum_const, Finset.card_univ] using h
+
 end QSB

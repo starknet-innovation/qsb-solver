@@ -19,6 +19,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Probability | Event inclusion and two primitive bounds imply their sum bounds the bad event | Arbitrary measure; no independence assumed. A probability interpretation requires a normalized terminal distribution. |
 | Probability | Same result with a separately bounded model-gap event | An unknown/structural implementation gap is not negligible and cannot be assigned zero. |
 | Probability | A finite union of vault-failure events is bounded by the sum of their per-vault bounds | No independence premise. Each bound must charge the adversary's shared global hash-query budget. |
+| Probability | If each of 300 commitment-encoding events has probability at most `390405/2^65`, their union has probability at most `300·390405/2^65` | No independence premise. The per-commitment marginal bound and correspondence to Core's parser are explicit external obligations; this is not an extraction-gap or spend-probability bound. |
 | Nonce | The publicly computable scalar (s*k-z)/r satisfies the fixed-signature equation | Field algebra with r nonzero; no discrete-log hardness. |
 | Nonce | A fixed recovery point and public key determine the scalar message | Does not conflate the several possible recovery points or a hash integer with its residue modulo N. |
 | Nonce | Fixed message/recovery point determine the key scalar when r is nonzero | secp256k1 group/encoding instantiation is not yet formalized. |
@@ -210,7 +211,8 @@ The corresponding 20-byte DER expression has density
 `390405 / 36893488147419103232`, approximately 2^-46.425388. If all 300 HORS
 commitments are each marginally uniform 160-bit strings and the parser count
 matches Core, a plain union bound gives at most
-`300·390405 / 36893488147419103232` for **some** DER-shaped commitment. This
+`300·390405 / 36893488147419103232` for **some** DER-shaped commitment; the
+conditional union step is checked in Lean. This
 does not bound the extraction gap: it has other possible causes, and the
 Core-positive overshoot example used a crafted commitment rather than a
 sampled one.

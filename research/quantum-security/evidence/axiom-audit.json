@@ -1,5 +1,5 @@
 {
-  "theorem_count": 64,
+  "theorem_count": 65,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -123,6 +123,11 @@
     ],
     "QSB.der20_count_exact": [],
     "QSB.der20_count_ratio": [],
+    "QSB.der20_setup_union_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.der32_count_exact": [],
     "QSB.der32_count_lower": [],
     "QSB.der32_count_ratio": [],

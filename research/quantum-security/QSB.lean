@@ -17,6 +17,7 @@ import QSB.Reduction
 #print axioms QSB.event_bound
 #print axioms QSB.event_bound_with_gap
 #print axioms QSB.finite_target_union_bound
+#print axioms QSB.der20_setup_union_bound
 #print axioms QSB.public_scalar_satisfies
 #print axioms QSB.fixed_recovery_point_message_unique
 #print axioms QSB.fixed_message_key_unique

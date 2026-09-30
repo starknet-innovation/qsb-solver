@@ -6,6 +6,7 @@
 'QSB.event_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.event_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.finite_target_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.der20_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.public_scalar_satisfies' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.fixed_recovery_point_message_unique' depends on axioms: [propext, Quot.sound]
 'QSB.fixed_message_key_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
