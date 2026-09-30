@@ -36,6 +36,8 @@ import QSB.Reduction
 #print axioms QSB.der32_count_upper
 #print axioms QSB.der32_count_exact
 #print axioms QSB.der32_count_ratio
+#print axioms QSB.der20_count_exact
+#print axioms QSB.der20_count_ratio
 #print axioms QSB.extracted_novel_round_fresh_or_puzzle
 #print axioms QSB.min_roll_bounds
 #print axioms QSB.comparison_selects_pool
@@ -56,6 +58,8 @@ import QSB.Reduction
 #print axioms QSB.Layout.external_probe_not_full_acceptance
 #print axioms QSB.Layout.matched_external_passes_first_comparison
 #print axioms QSB.Layout.matched_external_fails_second_index
+#print axioms QSB.Layout.last_bonus_overshoot_selects_commitment
+#print axioms QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

@@ -28,6 +28,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
 | Parameters | DER count expression is exactly 2449811572532375301807922306615930029710387026976812229606768640, density `780555 / 36893488147419103232`, and lies between 2^210 and 2^211 | Closed arithmetic about an explicit expression; bijection to a formal BIP66 parser remains to be proved. This is not a QROM success bound. |
+| Parameters | The analogous 20-byte DER syntax expression has density `390405 / 36893488147419103232`, about 2^-46.43 | Relevant to accidentally DER-shaped HASH160 commitments, but parser correspondence, hash-output distribution, and whether such a value is exploitable in a valid setup remain separate obligations. |
 | Selection | OP_MIN plus a nonnegative successful roll yields its stated bounds | Large values clamp; there is no inferred upper-bound rejection. |
 | Selection | A bounded, 20-byte comparison selects the pool if earlier items have different lengths | A local loop-invariant building block, not the completed Script extraction. |
 | Selection | Removing a tagged pool position preserves distinctness | Tags are positions; hash collisions are not excluded. |
@@ -36,8 +37,9 @@ The build and dependency outputs are retained under `evidence/`.
 | Generated layout | The trace has 201 counted operations and 569 final stack cells; the first false result remains at depth 285 | Confirms the structural source reading for this fixture. ScriptNum parsing, signature semantics and actual byte sizes are outside this model. |
 | Generated layout | With first signed index 152 and one inserted external symbolic 20-byte cell, the first selection's `OP_ROLL` reaches that cell | A checked **local counterexample** to inferring pool confinement from `OP_MIN` alone. The complete malformed probe fails symbolic execution; it is not a forged or accepted witness. The trace ends after instruction 315, the first selection roll. |
 | Generated layout | An externally chosen symbolic commitment can match the first `HASH160` comparison; this probe then fails at the second index `OP_MIN` | Passing one HORS comparison does not imply the selected commitment came from the lock. The global stack invariant may still reject this malformed witness. |
+| Generated layout | Last final-round bonus index 152 selects locking-script commitment C[round 2,7], and the symbolic trace completes if final multisignature success is supplied | A concrete role escape in the stack model. Symbolic signature outcomes alone cannot establish final-round dummy-signature shape. |
 | Attack extraction | For an owner-forbidden transaction, extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | The target events depend on owner authorization but not on Bitcoin acceptance. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
-| Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise of the attack and source-extraction statements; actual Script enforcement is unproved. |
+| Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise. The bonus-overshoot Core experiment shows that a DER-shaped HORS commitment can occupy a bonus signature role on an altered lock; unconditional arbitrary-witness extraction needs a bad-setup branch or a stronger shape definition. |
 | Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
 | Game | Disclosure sets grow when more signing records are appended, regardless of whether they were mined | No assumption that cancellation, reorgs or backup restoration erase revealed material. |
 | Game | The disclosed union has at most `t·r` positions after `r` records each opening at most `t`, capped by the finite index universe | Counts all records, so a per-vault/per-round transcript can give a tighter bound. The per-record cap is an explicit premise. |
@@ -103,6 +105,17 @@ Only the marker changes within each pair. This corroborates local out-of-pool
 selection and a self-chosen matching commitment, not acceptance by the complete
 QSB script or an attack on funds.
 
+`bonus-overshoot.json` tests the complete **puzzle-relaxed** lock with actual
+Core signature checks. A canonical witness accepts with either the natural
+or a crafted 20-byte round-2 commitment at position 7. Setting the final bonus
+index to 152 rejects with the natural commitment, but accepts when that
+commitment is replaced with a deliberately DER-valid 20-byte signature and the
+corresponding publicly recovered verification key is supplied. The crafted
+commitment was **not** generated as `HASH160(secret)`; it is an altered setup,
+not a production-vault forgery. It demonstrates that DER syntax and setup
+distribution must be part of the source-extraction argument. The other three
+hash-to-signature puzzle checks were replaced by `OP_2DROP` in this experiment.
+
 The source of `consensus/verify.cpp` in the native build's named revision
 `9a7c2ab` has the same SHA-256 as the analyzed app revision:
 `54ddb7c6049a21f4aaad23ef1a5e1fe15249eb2ade1cb5082ef15f90c2847fee`.
@@ -158,7 +171,11 @@ scoped external assumption, or a counterexample:
    shows that the first signed `OP_MIN` cap of 152 plus offset 151 can select an
    attacker-supplied initial-stack cell beyond the 150 intended commitments.
    Later checks reject the tested full probe; any pool-confinement proof needs
-   a global stack invariant, rather than a cap-only argument.
+   a global stack invariant, rather than a cap-only argument. A separate last-
+   bonus probe reaches a locking-script commitment and can pass real final
+   `CHECKMULTISIG` if that 20-byte commitment is DER-shaped. The synthetic
+   positive case violates ordinary HORS commitment generation, so a valid-setup
+   theorem must account for the corresponding rare-event condition.
 3. Bitcoin byte parsing, ScriptNum semantics, integer ranges, resource limits,
    FindAndDelete, sighash serialization, and ALL binding to authorization.
 4. Curve equations, accepted encodings, at most the appropriate number of
@@ -189,6 +206,14 @@ encodings and does not require an on-curve recovery value; real puzzle acceptanc
 is a subset. These facts still do not establish a query-success bound for the
 protocol. The counting expression's combinatorial interpretation remains an
 external argument until the BIP66 parser/counting correspondence is formalized.
+The corresponding 20-byte DER expression has density
+`390405 / 36893488147419103232`, approximately 2^-46.425388. If all 300 HORS
+commitments are each marginally uniform 160-bit strings and the parser count
+matches Core, a plain union bound gives at most
+`300·390405 / 36893488147419103232` for **some** DER-shaped commitment. This
+does not bound the extraction gap: it has other possible causes, and the
+Core-positive overshoot example used a crafted commitment rather than a
+sampled one.
 
 The checked game-level measure theorem is a conditional implication, with
 `NovelTwoPuzzle` as the source-shaped candidate target:

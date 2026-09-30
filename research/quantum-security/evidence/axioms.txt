@@ -25,6 +25,8 @@
 'QSB.der32_count_upper' does not depend on any axioms
 'QSB.der32_count_exact' does not depend on any axioms
 'QSB.der32_count_ratio' does not depend on any axioms
+'QSB.der20_count_exact' does not depend on any axioms
+'QSB.der20_count_ratio' does not depend on any axioms
 'QSB.extracted_novel_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.min_roll_bounds' depends on axioms: [propext]
 'QSB.comparison_selects_pool' depends on axioms: [propext]
@@ -45,6 +47,8 @@
 'QSB.Layout.external_probe_not_full_acceptance' depends on axioms: [propext]
 'QSB.Layout.matched_external_passes_first_comparison' depends on axioms: [propext]
 'QSB.Layout.matched_external_fails_second_index' depends on axioms: [propext]
+'QSB.Layout.last_bonus_overshoot_selects_commitment' depends on axioms: [propext]
+'QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

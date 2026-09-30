@@ -143,6 +143,22 @@ theorem matched_external_fails_second_index :
       (State.mk matchedExternalProbe [true, true, true, false, true, true] 0)).isSome =
       false := by decide
 
+/-- The last final-round bonus index can reach a locking-script HORS
+commitment rather than a dummy signature. Symbolic CHECKMULTISIG success is an
+input here; a real commitment would also need valid DER and an appropriate key.
+The separate altered-lock Core probe tests that condition. -/
+def lastBonusOvershootProbe : List Cell := witness.set 38 (.num 152)
+
+theorem last_bonus_overshoot_selects_commitment :
+    (run (program.take 850)
+      (State.mk lastBonusOvershootProbe [true, true, true, false, true, true] 0)).bind
+      (fun s => s.stack.head?) = some (.hash160 (.atom 157)) := by decide
+
+theorem last_bonus_overshoot_symbolic_trace_accepts :
+    (run program
+      (State.mk lastBonusOvershootProbe [true, true, true, false, true, true] 0)).map
+      (fun s => finalTruth s && s.outcomes.isEmpty) = some true := by decide
+
 def execute (round1 round2 : Bool) : Option State :=
   run program (State.mk witness [true, true, true, round1, true, round2] 0)
 

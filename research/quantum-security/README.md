@@ -19,6 +19,13 @@ test locks. This particular complete symbolic probe fails at the next index
 parse, and the Core tests do not execute the complete lock. See
 `evidence/selection-prefix.json`.
 
+A later bonus-index probe reaches a locking-script HORS commitment. In a
+deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as
+a bonus signature when it is DER-shaped and paired with a recovered public key.
+The crafted value was not generated from a HORS secret, so this is a concrete
+source-extraction edge case rather than a valid production-vault forgery. See
+`evidence/bonus-overshoot.json`.
+
 Read:
 
 - [Security game and attack table](SPECIFICATION.md)
@@ -72,6 +79,7 @@ python3 analysis/check_round_results.py --app-root /path/to/qsb-app --native-roo
 python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/core-semantics.json
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
+python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 ```
 
 The recorded source inventory identifies exactly the files analyzed. The app
@@ -95,8 +103,9 @@ are recorded with the experiment.
 ## Immediate remaining work
 
 1. Mechanize the actual selection-loop invariant for arbitrary witness stacks,
-   including bonus selections and the final `NULLDUMMY` condition. The Lean
-   without-replacement lemma covers the abstract pool traversal only.
+   including bonus selections, DER-shaped commitments and the final `NULLDUMMY`
+   condition. The Lean without-replacement lemma covers the abstract pool
+   traversal only.
 2. Extend the generated opcode trace from one canonical witness to arbitrary
    Bitcoin witnesses and actual ScriptNum/encoding semantics, while keeping
    cryptographic checks explicit.

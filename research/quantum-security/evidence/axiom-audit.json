@@ -1,5 +1,5 @@
 {
-  "theorem_count": 60,
+  "theorem_count": 64,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -47,6 +47,12 @@
       "propext"
     ],
     "QSB.Layout.first_selection_can_reach_external_cell": [
+      "propext"
+    ],
+    "QSB.Layout.last_bonus_overshoot_selects_commitment": [
+      "propext"
+    ],
+    "QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts": [
       "propext"
     ],
     "QSB.Layout.matched_external_fails_second_index": [
@@ -115,6 +121,8 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.der20_count_exact": [],
+    "QSB.der20_count_ratio": [],
     "QSB.der32_count_exact": [],
     "QSB.der32_count_lower": [],
     "QSB.der32_count_ratio": [],

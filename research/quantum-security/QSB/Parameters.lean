@@ -78,6 +78,19 @@ theorem der32_count_ratio :
     der32Count * 36893488147419103232 = 780555 * 2 ^ 256 := by
   decide
 
+/-- The analogous syntactic count for a 20-byte commitment that is also a
+strict DER-encoded signature with one trailing sighash byte. This is relevant
+to bonus-index overshoot; it is not a proof that a real HASH160 output is random
+or that a DER-shaped value yields an accepted CHECKMULTISIG witness. -/
+def der20Count : Nat :=
+  ((List.range 12).map (fun i => derIntegerCount (i + 1) * derIntegerCount (12 - i))).sum * 256
+
+theorem der20_count_exact :
+    der20Count = 15465535393190684359103762965463040 := by decide
+
+theorem der20_count_ratio :
+    der20Count * 36893488147419103232 = 390405 * 2 ^ 160 := by decide
+
 /-- Syntactic DER target density exceeds 2^-46 and is below 2^-45.
 This is arithmetic about the count expression, not a quantum adversary bound. -/
 theorem der32_count_lower : 2 ^ 210 < der32Count := by decide

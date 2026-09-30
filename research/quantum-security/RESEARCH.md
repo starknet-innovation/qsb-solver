@@ -65,6 +65,14 @@ cases and model the signing transcript, rather than simply substitute the
 DER count into Theorem 9. The theorem's q-to-the-fourth loss also shows that
 two unconstrained hits alone do not double the quantum work exponent.
 
+Qipeng Liu, [*Non-uniformity and Quantum Advice in the Quantum Random Oracle
+Model*](https://arxiv.org/abs/2210.06693), treats oracle-dependent advice as
+part of the security experiment and gives bounds for certain search games,
+including one-way inversion. QSB's classical signing transcripts are likewise
+oracle-dependent and may contain already-valid puzzle inputs. Liu's inversion
+bounds do not directly address QSB's joint pinning/subset/sighash relation; they
+identify the kind of advice accounting a new reduction must make explicit.
+
 ## Elliptic-curve threat
 
 Peter Shor,

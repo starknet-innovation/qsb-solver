@@ -124,6 +124,18 @@ that restriction, a replay or harmless mutation of a released authorized
 transaction could make the proposed primitive event likely even when no theft
 occurred. The owner-forbidden message class is fixed independently of the hash
 and Script predicates.
+The last-bonus experiment also means an unconditional final-round
+seven-plus-two *dummy-position* extractor is too strong for arbitrary setup
+bytes. A 20-byte HORS commitment could itself parse as a DER signature; an
+ideal random HASH160 output gives that event positive probability. The current
+Lean reduction leaves it in `ExtractionGap`. A useful next refinement would
+separate such setup/encoding exceptions from other arbitrary-witness gaps and
+bound them under an explicit joint hash model.
+For reference, the Lean-checked 20-byte DER count expression gives syntactic
+density `390405 / 2^65`. If each of the 300 commitment bytestrings is marginally
+uniform and that expression matches Core's parser, the probability that any
+commitment is DER-shaped is at most 300 times this density by a union bound.
+That is only a setup-syntax calculation, not a bound on unauthorized spending.
 
 ## Hash model and resources
 
@@ -181,7 +193,7 @@ separate argument.
 | Round 1 HORS | Supply an incorrect preimage | Rejected in Core experiment. The unchecked multisignature does not remove earlier OP_EQUALVERIFY checks. |
 | Round 2 multisignature | Let final CHECKMULTISIG return false | Rejected in Core experiment; final stack truth is required. |
 | Signed indices | Negative, large, duplicate, or reordered indices | OP_MIN only upper-clamps. A Lean-checked malformed initial stack with index 152 makes the first signed selection roll reach an external symbolic 20-byte cell after the intended commitment pool. Truncated-lock Core tests confirm external-marker selection and a matching self-chosen HASH160 commitment through the first equality check. The complete symbolic probe fails at a later index parse; this is a local counterexample to cap-only or single-comparison confinement arguments, not an accepted forgery. Arbitrary-witness loop invariant pending. |
-| Bonus indices | Reuse gathered signatures, select nonce or null dummy | Requires explicit analysis of stack layout, counts and NULLDUMMY. Counting ordinary subsets alone is insufficient. |
+| Bonus indices | Reuse gathered signatures, select nonce, null dummy, or a commitment | A last-bonus index of 152 reaches round-2 commitment position 7 in the generated trace. An altered-lock Core test accepts that role when the commitment bytes are a DER-valid signature and the attacker supplies the recovered public key, with puzzle checks relaxed. The test's crafted commitment is not HASH160 of a generated secret; valid-setup probability and the full real lock remain unresolved. Counting ordinary subsets alone is insufficient. |
 | Dummy signatures | Change destination under SIGHASH_SINGLE bug | Isolated Core test confirms the dummy signature still verifies in the 2-input/1-output layout. Dummies do not bind outputs. |
 | Alternate transaction layout | Use more inputs/outputs or reorder QSB input | App refuses such layouts, but Bitcoin may admit them. Full security game must analyze their non-bug sighashes, not forbid them by service policy. |
 | ScriptCode | Exploit FindAndDelete across pools / embedded data | Must track deletion at instruction boundaries, all multisig signature items, and code-separator semantics. Source pinning is not a proof. |
