@@ -114,7 +114,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 309 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 312 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -182,8 +182,13 @@ bytes in isolated legacy signature tests. The exact count's equivalence to a
 formal BIP66 parser remains open. Under the explicit premise that each of 300
 commitment-encoding events has marginal probability at most `390405 / 2^65`,
 Lean bounds the probability of *any* such event by
-`300 * 390405 / 2^65`, without assuming independence. This is a setup-syntax
-bound, not an extraction-gap or spend bound.
+`300 * 390405 / 2^65`, without assuming independence. A new finite
+random-function theorem establishes the required individual target densities
+when the whole R160 function is uniform and independent of all setup material
+used to select its inputs; its shared-function union bound permits collisions
+among the 300 inputs. Equating the counted DER target with Core's exact parser
+is still unproved. These are setup-syntax facts, not an extraction-gap or
+spend bound, and they do not analyze adaptive quantum access to R160.
 
 ## Critical remaining proof obligations
 

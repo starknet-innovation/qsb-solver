@@ -20,6 +20,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Probability | Same result with a separately bounded model-gap event | An unknown/structural implementation gap is not negligible and cannot be assigned zero. |
 | Probability | A finite union of vault-failure events is bounded by the sum of their per-vault bounds | No independence premise. Each bound must charge the adversary's shared global hash-query budget. |
 | Probability | If each of 300 commitment-encoding events has probability at most `390405/2^65`, their union has probability at most `300·390405/2^65` | No independence premise. The per-commitment marginal bound and correspondence to Core's parser are explicit external obligations; this is not an extraction-gap or spend-probability bound. |
+| Random-function setup | If a whole finite function `R : X → Y` is sampled uniformly and independently of setup material `ξ`, then `R(source ξ)` hits any fixed target set with exactly its target density. For any finite collection of setup-dependent sources addressing the same `R`, their union has at most the sum of those densities. | `QSB/RandomOracleSetup.lean` proves exact count identities and the shared-function union inequality. In the candidate idealization, `ξ` may include the honest secrets and H256 oracle, while `R` represents R160. The model excludes prior information about `R` in `ξ` and does not model adaptive or quantum access, the exact Core DER target, or spend acceptance. |
 | Nonce | The publicly computable scalar (s*k-z)/r satisfies the fixed-signature equation | Field algebra with r nonzero; no discrete-log hardness. |
 | Nonce | A fixed recovery point and public key determine the scalar message | Does not conflate the several possible recovery points or a hash integer with its residue modulo N. |
 | Nonce | Fixed message/recovery point determine the key scalar when r is nonzero | secp256k1 group/encoding instantiation is not yet formalized. |
@@ -29,7 +30,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
 | Parameters | DER count expression is exactly 2449811572532375301807922306615930029710387026976812229606768640, density `780555 / 36893488147419103232`, and lies between 2^210 and 2^211 | Closed arithmetic about an explicit expression; bijection to a formal BIP66 parser remains to be proved. This is not a QROM success bound. |
-| Parameters | The analogous 20-byte DER syntax expression has density `390405 / 36893488147419103232`, about 2^-46.43 | Relevant to accidentally DER-shaped HASH160 commitments, but parser correspondence, hash-output distribution, and whether such a value is exploitable in a valid setup remain separate obligations. |
+| Parameters | The analogous 20-byte DER syntax expression has density `390405 / 36893488147419103232`, about 2^-46.43 | Relevant to accidentally DER-shaped HASH160 commitments. Independent uniform R160 setup marginals now have a separate checked count theorem, but parser correspondence and whether such a value is exploitable in a valid setup remain open. |
 | Selection | OP_MIN plus a nonnegative successful roll yields its stated bounds | Large values clamp; there is no inferred upper-bound rejection. |
 | Selection | A bounded, 20-byte comparison selects the pool if earlier items have different lengths | A local loop-invariant building block, not the completed Script extraction. |
 | Selection | Removing a tagged pool position preserves distinctness | Tags are positions; hash collisions are not excluded. |
@@ -274,7 +275,11 @@ The corresponding 20-byte DER expression has density
 commitments are each marginally uniform 160-bit strings and the parser count
 matches Core, a plain union bound gives at most
 `300·390405 / 36893488147419103232` for **some** DER-shaped commitment; the
-conditional union step is checked in Lean. This
+conditional union step is checked in Lean. A separate checked finite
+random-function theorem supplies those marginals when R160 is sampled as a
+whole uniform function independently of all input-selecting setup material,
+even though the 300 evaluations share R160 and can collide. The mapping of
+Core's 20-byte DER predicate to the counted target set remains unproved. This
 does not bound the extraction gap: it has other possible causes, and the
 Core-positive overshoot example used a crafted commitment rather than a
 sampled one.

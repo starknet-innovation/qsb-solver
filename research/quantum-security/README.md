@@ -78,6 +78,15 @@ The crafted value was not generated from a HORS secret, so this is a concrete
 source-extraction edge case rather than a valid production-vault forgery. See
 `evidence/bonus-overshoot.json`.
 
+`QSB/RandomOracleSetup.lean` now checks a finite random-function setup fact:
+when the whole R160 function is uniform and independent of material selecting
+its inputs, each `R160(H256(secret))` hits a fixed 20-byte target set at the
+target's exact density. A union bound covers all 300 commitments using the
+same R160, even if inputs collide. The DER-20 arithmetic remains conditional
+on a formal correspondence between that target set and Core's parser. This
+does not bound adaptive quantum searches or the chance of an unauthorized
+spend.
+
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
 indices 0–7 revisit gathered signatures, 8 selects the fixed nonce signature,

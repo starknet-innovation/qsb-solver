@@ -1,5 +1,5 @@
 {
-  "theorem_count": 309,
+  "theorem_count": 312,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -912,6 +912,21 @@
       "propext"
     ],
     "QSB.PinningShape.two_cell_initial_stack_cannot_accept": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RandomOracleSetup.fixed_input_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RandomOracleSetup.independent_source_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RandomOracleSetup.shared_function_union_hit_count": [
       "Classical.choice",
       "Quot.sound",
       "propext"

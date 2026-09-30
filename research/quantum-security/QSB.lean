@@ -1,6 +1,7 @@
 import QSB.Disclosure
 import QSB.Extraction
 import QSB.Probability
+import QSB.RandomOracleSetup
 import QSB.Nonce
 import QSB.Parameters
 import QSB.Selection
@@ -36,6 +37,9 @@ import QSB.Reduction
 #print axioms QSB.event_bound_with_key_cases
 #print axioms QSB.finite_target_union_bound
 #print axioms QSB.der20_setup_union_bound
+#print axioms QSB.RandomOracleSetup.fixed_input_hit_count
+#print axioms QSB.RandomOracleSetup.independent_source_hit_count
+#print axioms QSB.RandomOracleSetup.shared_function_union_hit_count
 #print axioms QSB.public_scalar_satisfies
 #print axioms QSB.fixed_recovery_point_message_unique
 #print axioms QSB.fixed_message_key_unique

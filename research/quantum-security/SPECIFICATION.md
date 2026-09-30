@@ -151,8 +151,13 @@ Lean reduction leaves it in `ExtractionGap`. A useful next refinement would
 separate such setup/encoding exceptions from other arbitrary-witness gaps and
 bound them under an explicit joint hash model.
 For reference, the Lean-checked 20-byte DER count expression gives syntactic
-density `390405 / 2^65`. If each of the 300 commitment bytestrings is marginally
-uniform and that expression matches Core's parser, the probability that any
+density `390405 / 2^65`. Lean now proves uniform target density for any
+`R160(source ξ)` in a finite idealization where the entire R160 function is
+sampled independently of input-selecting setup material `ξ`. Taking `ξ` to
+contain the H256 oracle and honest secret makes `source ξ = H256(secret)`. The
+same shared-function model proves a union bound without assuming distinct
+inputs or independent outputs. If the expression matches Core's parser, the
+probability that any
 commitment is DER-shaped is at most 300 times this density by a union bound.
 That is only a setup-syntax calculation, not a bound on unauthorized spending.
 
