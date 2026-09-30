@@ -199,6 +199,12 @@ explicit independence premise. This is not a spend or quantum-query bound.
 second-round commitments in the disposable generated lock matches that
 predicate. Its no-overshoot consequence still assumes a successful DER-sound
 ten-pair final scan and does not cover other vault setups.
+`QSB/FinalBonusIndices.lean` composes that conditional no-overshoot result
+with the accepted full byte-model run. It identifies both reached bonus
+signature bytes as generated dummies and proves that their original HORS
+positions and the seven signed opening positions are nine distinct indices.
+The final scan and DER-sound verifier are explicit premises; Core refinement
+and a quantum bound remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

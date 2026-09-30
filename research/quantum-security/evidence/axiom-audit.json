@@ -1,5 +1,5 @@
 {
-  "theorem_count": 529,
+  "theorem_count": 532,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -515,6 +515,21 @@
       "propext"
     ],
     "QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusIndices.matched_full_run_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusIndices.matched_full_run_nine_positions_der": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusIndices.two_bonus_ids_extend_seven": [
       "Classical.choice",
       "Quot.sound",
       "propext"

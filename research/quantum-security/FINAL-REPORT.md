@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 529 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 532 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -286,6 +286,14 @@ conditionally that a successful final matching scan with a DER-sound pair
 verifier cannot take either bonus commitment branch for that lock. This does
 not prove the same fact for all generated vaults, equate the predicate or scan
 with the compiled Core verifier, or supply a spend-probability bound.
+`QSB/FinalBonusIndices.lean` then extracts the two actual bonus signature
+bytes from that same accepted byte-model run. Each equals a generated dummy
+at a surviving original HORS position. The surviving-position permutation
+proves that these two positions differ from each other and from all seven
+signed opening positions, so their union has exactly nine positions. This
+full-run statement still assumes the successful DER-sound ten-pair scan;
+the byte interpreter's supplied final signature Boolean does not establish
+that premise, and Core refinement remains open.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,
