@@ -417,6 +417,7 @@
 'QSB.FinalSignedBoundary.generated_commitment_pool_width' depends on axioms: [propext]
 'QSB.FinalSignedBoundary.generated_dummy_pool_width' depends on axioms: [propext]
 'QSB.FinalSignedBoundary.low_index_source_is_dummy' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedBoundary.shallow_source_wrong_width' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedBoundary.middle_index_source_is_commitment' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedBoundary.low_index_cannot_match_hash160' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedBoundary.cap_source_is_prior_result' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -428,8 +429,17 @@
 'QSB.FinalSignedBoundary.generated_first_signed_comparison_tail' does not depend on any axioms
 'QSB.FinalSignedBoundary.capped_offset_encoding' depends on axioms: [propext]
 'QSB.FinalSignedBoundary.preimage_roll_index_decode' depends on axioms: [propext]
-'QSB.FinalSignedBoundary.short_target_rejects_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.wrong_width_target_rejects_comparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedBoundary.successful_target_matches_hash160' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedBoundary.low_first_signed_comparison_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.shallow_first_signed_comparison_rejects' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedBoundary.middle_first_signed_comparison_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -447,12 +457,21 @@
 'QSB.FinalSignedAccepted.accepted_fixed_index_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedAccepted.oversized_cap_add_shape' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedAccepted.inrange_cap_add_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedAccepted.negative_cap_add_shape' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedAccepted.accepted_cap_add_parses_raw' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.accepted_roll_parses_nonnegative' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedAccepted.oversized_first_comparison_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedAccepted.inrange_low_first_comparison_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalSignedAccepted.inrange_first_comparison_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedAccepted.negative_first_comparison_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedAccepted.generated_first_final_round_prefix' does not depend on any axioms
+'QSB.FinalSignedAccepted.accepted_first_final_signed_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalSignedAccepted.accepted_first_final_signed_below_cap' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -460,6 +479,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.FinalSignedAccepted.generated_first_round_check_boundary' does not depend on any axioms
+'QSB.FinalSignedAccepted.accepted_whole_program_first_final_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalSignedAccepted.accepted_whole_program_first_final_index_below_cap' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

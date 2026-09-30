@@ -1,5 +1,5 @@
 {
-  "theorem_count": 408,
+  "theorem_count": 418,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -378,12 +378,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSignedAccepted.accepted_first_final_signed_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedAccepted.accepted_fixed_index_shape": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.FinalSignedAccepted.accepted_pushes_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_roll_parses_nonnegative": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_whole_program_first_final_commitment_origin": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -420,12 +434,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSignedAccepted.inrange_first_comparison_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedAccepted.inrange_low_first_comparison_rejected": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.FinalSignedAccepted.lookup_region_is_retained_base": [
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.negative_cap_add_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.negative_first_comparison_rejected": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.FinalSignedAccepted.oversized_cap_add_shape": [
@@ -496,6 +524,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSignedBoundary.middle_first_signed_comparison_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedBoundary.middle_index_source_is_commitment": [
       "Quot.sound",
       "propext"
@@ -503,7 +536,21 @@
     "QSB.FinalSignedBoundary.preimage_roll_index_decode": [
       "propext"
     ],
-    "QSB.FinalSignedBoundary.short_target_rejects_comparison": [
+    "QSB.FinalSignedBoundary.shallow_first_signed_comparison_rejects": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.shallow_source_wrong_width": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.successful_target_matches_hash160": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.wrong_width_target_rejects_comparison": [
       "Classical.choice",
       "Quot.sound",
       "propext"

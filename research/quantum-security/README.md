@@ -139,11 +139,11 @@ signed rolls remains open for arbitrary accepted witnesses.
 the exact generated commitment and dummy pushes: indices 0–1 select 9-byte
 dummies, 2–151 select 20-byte commitments, and capped 152 selects the prior
 round's Boolean CHECKMULTISIG result. Lean checks that the generated five-op
-comparison tail rejects that capped case from the stated post-ADD stack.
+comparison tail rejects that capped case and shallow non-20-byte targets.
 `QSB/FinalSignedAccepted.lean` derives that stack from any successful full
-byte-model run, so the first final-round signed index must parse below 152
-and cannot be 0 or 1. Negative values, the other six selections, and Core refinement remain
-open.
+byte-model run, so the first final-round signed index must parse as `2+i`
+for some `i<150`, and commitment `i` matches HASH160 of the actual opening.
+The other six selections and Core refinement remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

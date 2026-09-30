@@ -146,11 +146,12 @@ At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
 Boolean CHECKMULTISIG result. The modeled generated comparison tail rejects
-the capped case from its stated post-ADD stack because HASH160 outputs 20
-bytes. Lean now derives that stack shape from any successful full byte-model
-execution and forces the first final-round signed raw index below 152 and
-outside 0–1. Excluding negative values, extending the map through the remaining
-signed selections, and refining the model to Core are still required.
+the capped case and low indices because HASH160 outputs 20 bytes. A successful
+full byte-model execution now forces the first final-round signed raw index
+to parse as `2+i` for `i<150`, with generated commitment `i` equal to the
+HASH160 of the actual opening. This includes all negative raw values and
+nonminimal encodings in the exclusion argument. Extending the map through
+the remaining signed selections and refining the model to Core are still required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

@@ -70,6 +70,45 @@ theorem low_index_source_is_dummy (retained prior : Bytes)
     generated_dummy_pool_width chosen (List.getElem_mem hj)
   exact ⟨chosen, source, width⟩
 
+/-- The entire shallow signed-roll window, at depths 0 through 151, has
+non-HASH160 width. It consists of the retained ScriptNum, the fixed nonce,
+the empty dummy, and generated nine-byte dummy signatures. -/
+theorem shallow_source_wrong_width (retained prior : Bytes)
+    (tail : List Bytes) (n : Nat)
+    (retainedSmall : retained.length ≤ 4) (shallow : n ≤ 151) :
+    ∃ chosen : Bytes,
+      (lookupRegion retained prior tail)[n]? = some chosen ∧
+      chosen.length ≠ 20 := by
+  by_cases firstThree : n < 3
+  · interval_cases n
+    · exact ⟨retained, rfl, by omega⟩
+    · exact ⟨finalNonce, rfl, by decide⟩
+    · exact ⟨[], rfl, by decide⟩
+  · have lower : 3 ≤ n := by omega
+    let j := n - 3
+    have hj : j < finalDummyPool.length := by
+      rw [generated_dummy_pool_length]
+      dsimp [j]
+      omega
+    let chosen := finalDummyPool[j]
+    have source : (lookupRegion retained prior tail)[n]? =
+        some chosen := by
+      change ([retained, finalNonce, []] ++
+        (finalDummyPool ++ finalCommitmentPool ++ prior :: tail))[n]? =
+        some chosen
+      rw [List.getElem?_append_right (by simp; omega)]
+      have frontLen : ([retained, finalNonce, []] : List Bytes).length =
+          3 := by simp
+      rw [frontLen]
+      have index : n - 3 = j := rfl
+      rw [index]
+      rw [List.append_assoc]
+      rw [List.getElem?_append_left hj]
+      exact List.getElem?_eq_getElem hj
+    have width : chosen.length = 9 :=
+      generated_dummy_pool_width chosen (List.getElem_mem hj)
+    exact ⟨chosen, source, by omega⟩
+
 /-- Numeric choices 2 through 151 name one of the 150 generated 20-byte
 commitments, indexed by `n-2`, independent of the earlier stack. -/
 theorem middle_index_source_is_commitment (retained prior : Bytes)
@@ -160,11 +199,11 @@ theorem preimage_roll_index_decode :
     ByteIndex.parseScriptNum [0x53, 0x02] = some 595 := by decide
 
 /-- The generated deep preimage roll shifts the existing comparison target
-from top to depth one. A target shorter than 20 bytes cannot then pass the
+from top to depth one. A target of any non-20-byte width cannot then pass the
 HASH160 comparison, regardless of the supplied opening. -/
-theorem short_target_rejects_comparison (hashes : Hashes)
+theorem wrong_width_target_rejects_comparison (hashes : Hashes)
     (target : Bytes) (rest : List Bytes) (outcomes : List Bool)
-    (cost : Nat) (final : State) (short : target.length < 20)
+    (cost : Nat) (final : State) (wrongWidth : target.length ≠ 20)
     (accepted : run hashes
       [.push [0x53, 0x02], .roll, .hash160, .equalverify]
       (State.mk (target :: rest) outcomes cost) = some final) : False := by
@@ -196,7 +235,43 @@ theorem short_target_rejects_comparison (hashes : Hashes)
                     (by rw [accepted]; rfl)
                   have width := hashes.h160_width opening
                   rw [equalHash] at width
-                  omega
+                  exact wrongWidth width
+
+/-- A successful generated deep preimage roll and HASH160 comparison
+identifies an actual opening for the target preserved at depth one. -/
+theorem successful_target_matches_hash160 (hashes : Hashes)
+    (target : Bytes) (rest : List Bytes) (outcomes : List Bool)
+    (cost : Nat) (final : State)
+    (accepted : run hashes
+      [.push [0x53, 0x02], .roll, .hash160, .equalverify]
+      (State.mk (target :: rest) outcomes cost) = some final) :
+    ∃ opening : Bytes, hashes.h160 opening = target := by
+  have split : ([.push [0x53, 0x02], .roll,
+      .hash160, .equalverify] : List Op) =
+      [.push [0x53, 0x02], .roll] ++ [.hash160, .equalverify] := rfl
+  rw [split, run_append] at accepted
+  cases first : run hashes [.push [0x53, 0x02], .roll]
+      (State.mk (target :: rest) outcomes cost) with
+  | none => simp [first] at accepted
+  | some middle =>
+      have preserved := ByteFinalCounts.accepted_pair_preserves_shallower_option
+        hashes [0x53, 0x02] 595 0 (target :: rest) outcomes cost middle
+        preimage_roll_index_decode (by omega) first
+      simp only [first, Option.bind_some] at accepted
+      cases middle with
+      | mk middleStack middleOutcomes middleCost =>
+          cases middleStack with
+          | nil => simp at preserved
+          | cons opening below =>
+              cases below with
+              | nil => simp at preserved
+              | cons compared tail =>
+                  have same : compared = target := by
+                    simpa using preserved
+                  subst compared
+                  exact ⟨opening, ByteMachine.successful_hash_comparison
+                    hashes opening target tail middleOutcomes middleCost []
+                    (by rw [accepted]; rfl)⟩
 
 /-- The first final-round signed selection cannot use numeric raw index 0
 or 1: its signed roll selects a generated nine-byte dummy, which fails the
@@ -227,9 +302,92 @@ theorem low_first_signed_comparison_rejects (hashes : Hashes)
   rw [source] at rolled
   simp at rolled
   cases rolled
-  exact short_target_rejects_comparison hashes chosen
+  exact wrong_width_target_rejects_comparison hashes chosen
     ((lookupRegion retained prior tail).eraseIdx (151 + n))
     outcomes (cost + 1) final (by omega) suffix
+
+/-- Any successful signed roll confined to the first 152 cells of the
+generated second-round region reaches non-HASH160-width data and fails the
+generated comparison. -/
+theorem shallow_first_signed_comparison_rejects (hashes : Hashes)
+    (offset retained prior : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (index : Nat) (retainedSmall : retained.length ≤ 4)
+    (shallow : index ≤ 151)
+    (parsed : ByteIndex.parseScriptNum offset = some (Int.ofNat index))
+    (accepted : run hashes ((ByteLayout.program.drop 756).take 5)
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) = some final) : False := by
+  rw [generated_first_signed_comparison_tail] at accepted
+  obtain ⟨afterRoll, rolled, _, suffix⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .roll
+      [.push [0x53, 0x02], .roll, .hash160, .equalverify]
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) final accepted
+  have budget := ByteFinalCounts.roll_success_budget hashes offset
+    (lookupRegion retained prior tail) outcomes cost afterRoll rolled
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes offset index
+    (lookupRegion retained prior tail)
+    outcomes cost parsed budget] at rolled
+  obtain ⟨chosen, source, wrongWidth⟩ :=
+    shallow_source_wrong_width retained prior tail index
+      retainedSmall shallow
+  unfold KeyRolls.rollAt at rolled
+  rw [source] at rolled
+  simp at rolled
+  cases rolled
+  exact wrong_width_target_rejects_comparison hashes chosen
+    ((lookupRegion retained prior tail).eraseIdx index)
+    outcomes (cost + 1) final wrongWidth suffix
+
+/-- A successful first final-round comparison with a nonnegative in-range
+index at least two must match the HASH160 of an opening to a generated
+second-round commitment. -/
+theorem middle_first_signed_comparison_origin (hashes : Hashes)
+    (offset retained prior : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (n : Fin 152) (low : 2 ≤ n.val)
+    (parsed : ByteIndex.parseScriptNum offset =
+      some (Int.ofNat (151 + n.val)))
+    (accepted : run hashes ((ByteLayout.program.drop 756).take 5)
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) = some final) :
+    ∃ i : Fin 150, n.val = 2 + i.val ∧
+      ∃ opening : Bytes,
+        finalCommitmentPool[i.val]? = some (hashes.h160 opening) := by
+  rw [generated_first_signed_comparison_tail] at accepted
+  obtain ⟨afterRoll, rolled, _, suffix⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .roll
+      [.push [0x53, 0x02], .roll, .hash160, .equalverify]
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) final accepted
+  have budget := ByteFinalCounts.roll_success_budget hashes offset
+    (lookupRegion retained prior tail) outcomes cost afterRoll rolled
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes offset
+    (151 + n.val) (lookupRegion retained prior tail)
+    outcomes cost parsed budget] at rolled
+  let i : Fin 150 := ⟨n.val - 2, by omega⟩
+  have source := middle_index_source_is_commitment retained prior tail
+    n.val low n.isLt
+  have indexEq : n.val - 2 = i.val := rfl
+  rw [indexEq] at source
+  have within : i.val < finalCommitmentPool.length := by
+    rw [generated_commitment_pool_length]
+    exact i.isLt
+  have chosen : finalCommitmentPool[i.val]? =
+      some finalCommitmentPool[i.val] := List.getElem?_eq_getElem within
+  rw [chosen] at source
+  unfold KeyRolls.rollAt at rolled
+  rw [source] at rolled
+  simp at rolled
+  rw [← rolled] at suffix
+  obtain ⟨opening, equalHash⟩ :=
+    successful_target_matches_hash160 hashes finalCommitmentPool[i.val]
+      ((lookupRegion retained prior tail).eraseIdx (151 + n.val))
+      outcomes (cost + 1) final suffix
+  refine ⟨i, by dsimp [i]; omega, opening, ?_⟩
+  rw [chosen]
+  exact congrArg some equalHash.symm
 
 /-- With the exact five-opcode generated tail, a capped first signed choice
 of 152 cannot pass the HORS comparison when the prior round left its ordinary
@@ -258,7 +416,7 @@ theorem capped_first_signed_comparison_rejects (hashes : Hashes)
     outcomes cost decoded budget] at rolled
   rw [cap_roll_moves_prior_result] at rolled
   cases rolled
-  exact short_target_rejects_comparison hashes
+  exact wrong_width_target_rejects_comparison hashes
     (ByteMachine.boolBytes result)
     (retained :: finalNonce :: [] ::
       (finalDummyPool ++ finalCommitmentPool ++ tail))
