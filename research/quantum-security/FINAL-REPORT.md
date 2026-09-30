@@ -54,7 +54,9 @@ used.
    selects exactly one of them regardless of the lower witness stack. The
    152 shallower fixed cells cannot equal a HASH160 output by length. This
    narrows the first-selection provenance question without proving which
-   indices every accepted scriptSig can supply.
+   indices every accepted scriptSig can supply. A further Lean lemma says that
+   any matching HASH160 lookup with a roll index at most 302 and a retained
+   cell no longer than four bytes must identify one of those 150 commitments.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
    altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
@@ -81,7 +83,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 216 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 217 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

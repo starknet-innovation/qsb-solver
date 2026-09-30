@@ -220,6 +220,7 @@ import QSB.Reduction
 #print axioms QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes
 #print axioms QSB.FirstIndexMap.signed_window_roll_has_lock_origin
 #print axioms QSB.FirstIndexMap.shallow_window_cannot_match_hash160
+#print axioms QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 216,
+  "theorem_count": 217,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -129,6 +129,11 @@
       "propext"
     ],
     "QSB.FirstIndexMap.first_pool_window_covers_region": [
+      "propext"
+    ],
+    "QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes": [

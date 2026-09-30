@@ -92,4 +92,44 @@ theorem shallow_window_cannot_match_hash160 (hashes : Hashes)
   rw [hmatch]
   simp [hashes.h160_width]
 
+/-- Conditional first-selection extraction inside the lock-owned region.
+If a realized roll index stays at most 302, the retained cell is no longer
+than a four-byte ScriptNum, and its selected cell matches a HASH160 output,
+the matching cell is one of the 150 fixed HORS commitments. This theorem does
+not establish those runtime premises for every accepted Bitcoin scriptSig. -/
+theorem fixed_region_hash_hit_has_commitment_origin (hashes : Hashes)
+    (opening retained : Bytes) (tail : List Bytes) (n : Nat)
+    (retainedSmall : retained.length ≤ 4) (within : n ≤ 302)
+    (hit : (retained :: (fixedRegion ++ tail))[n]? =
+      some (hashes.h160 opening)) :
+    ∃ i : Fin 150,
+      n = 153 + i.val ∧
+      fixedRegion[152 + i.val]? = some (hashes.h160 opening) := by
+  have deep : 153 ≤ n := by
+    by_contra tooShallow
+    have shallow : n ≤ 152 := by omega
+    by_cases zero : n = 0
+    · subst n
+      simp at hit
+      have equalLengths : retained.length = (hashes.h160 opening).length := by
+        rw [hit]
+      rw [hashes.h160_width] at equalLengths
+      omega
+    · let i : Fin 152 := ⟨n - 1, by omega⟩
+      have offset : 1 + i.val = n := by
+        dsimp [i]
+        omega
+      rw [← offset] at hit
+      exact (shallow_window_cannot_match_hash160 hashes opening retained tail i
+        hit).elim
+  let i : Fin 150 := ⟨n - 153, by omega⟩
+  refine ⟨i, ?_, ?_⟩
+  · dsimp [i]
+    omega
+  · have offset : n = 153 + i.val := by
+      dsimp [i]
+      omega
+    rw [offset] at hit
+    rwa [signed_window_lookup] at hit
+
 end QSB.FirstIndexMap

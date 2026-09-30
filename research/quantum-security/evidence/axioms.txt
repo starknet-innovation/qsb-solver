@@ -215,6 +215,9 @@
 'QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes' depends on axioms: [propext, Quot.sound]
 'QSB.FirstIndexMap.signed_window_roll_has_lock_origin' depends on axioms: [propext, Quot.sound]
 'QSB.FirstIndexMap.shallow_window_cannot_match_hash160' depends on axioms: [propext, Quot.sound]
+'QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
