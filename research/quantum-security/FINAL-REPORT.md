@@ -41,10 +41,12 @@ used.
    with a match, the next fixed roll selects a 20-byte lock commitment as a
    numeric index, so `OP_MIN` fails. Longer stacks reject at the modeled
    1000-cell limit during pinning, lock pushes, or early selection.
-   Lean now connects this to the full byte-model program from an initial
-   stack of two pinning keys followed by that exact marker/index layout,
+   Unparsable first-index bytes also fail at the first `OP_MIN`. Lean now
+   connects these failures to the full byte-model program from an initial
+   stack of two pinning keys followed by the first index and arbitrary cells,
    granting true outcomes for both pinning checks and arbitrary later
-   signature outcomes. This is one family of arbitrary byte values, not a
+   signature outcomes. A successful modeled run with this layout has a parsed
+   first-index value below 152. This is one family of arbitrary byte values, not a
    complete arbitrary-scriptSig extraction. Pinned Core prefixes for canonical
    152, nonminimal `980000`, and four-byte `ffffff7f` accept immediately
    before that `OP_MIN` and reject when it is added. These are
@@ -85,7 +87,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 222 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 229 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

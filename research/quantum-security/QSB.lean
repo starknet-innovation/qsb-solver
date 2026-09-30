@@ -150,6 +150,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.first_index_roll
 #print axioms QSB.FirstOvershoot.first_index_roll_raw
 #print axioms QSB.FirstOvershoot.first_index_roll_no_external
+#print axioms QSB.FirstOvershoot.first_index_roll_any_tail
 #print axioms QSB.FirstOvershoot.external_commitment_roll
 #print axioms QSB.FirstOvershoot.displaced_preimage_roll
 #print axioms QSB.FirstOvershoot.retained_index_roll
@@ -163,6 +164,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.parse_311
 #print axioms QSB.FirstOvershoot.oversized_index_clamps_to_152
 #print axioms QSB.FirstOvershoot.oversized_index_min_step
+#print axioms QSB.FirstOvershoot.unparseable_index_min_fails
 #print axioms QSB.FirstOvershoot.first_index_prefix_opcodes
 #print axioms QSB.FirstOvershoot.segment_split_first_index
 #print axioms QSB.FirstOvershoot.first_comparison_lead_opcodes
@@ -177,6 +179,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.first_six_split
 #print axioms QSB.FirstOvershoot.segment_split_six
 #print axioms QSB.FirstOvershoot.oversized_first_index_prefix
+#print axioms QSB.FirstOvershoot.unparseable_first_index_prefix_fails
 #print axioms QSB.FirstOvershoot.segment_first_push_overflows
 #print axioms QSB.FirstOvershoot.duplicate_then_push_overflows
 #print axioms QSB.FirstOvershoot.penultimate_capacity_segment_fails
@@ -201,6 +204,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_arbitrary_tail_segment_fails
 #print axioms QSB.FirstOvershoot.oversized_any_postindex_tail_segment_fails
 #print axioms QSB.FirstOvershoot.generated_program_split
+#print axioms QSB.FirstOvershoot.generated_program_split_first_index
 #print axioms QSB.FirstOvershoot.matched_first_overshoot_cannot_finish
 #print axioms QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails
 #print axioms QSB.FirstOvershoot.matched_external_initial_stack_rejected
@@ -214,7 +218,10 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_all_capacity_tails_rejected
 #print axioms QSB.FirstOvershoot.oversized_initial_tail_rejected
 #print axioms QSB.FirstOvershoot.oversized_first_index_rejected_given_pinning
+#print axioms QSB.FirstOvershoot.unparseable_first_index_rejected_given_pinning
 #print axioms QSB.FirstOvershoot.accepted_first_index_below_152
+#print axioms QSB.FirstOvershoot.accepted_first_index_parses
+#print axioms QSB.FirstOvershoot.accepted_first_index_parses_below_152
 #print axioms QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes
 #print axioms QSB.FirstIndexMap.commitment_cells_are_twenty_bytes
 #print axioms QSB.FirstIndexMap.first_pool_window_covers_region

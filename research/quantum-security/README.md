@@ -23,7 +23,9 @@ Fewer than eight cells after an external marker fail at the opening roll. Otherw
 mismatched marker fails the first hash comparison; a matching one reaches a
 20-byte lock commitment at the next fixed roll and fails the following numeric
 parse. Large stacks fail the modeled 1000-cell limit even earlier. The byte
-model grants both pinning checks true and leaves later
+model also rejects unparsable first indices at the first `OP_MIN`. A successful
+run with this top-stack layout therefore has a parsed first-index value below
+152. The byte model grants both pinning checks true and leaves later
 signature outcomes arbitrary. Pinned Core tests accept truncated locks
 immediately before that `OP_MIN` and reject when it is added for canonical
 152, nonminimal `980000`, and four-byte `ffffff7f`. The initial-stack
