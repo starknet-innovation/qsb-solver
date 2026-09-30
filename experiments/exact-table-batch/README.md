@@ -95,3 +95,20 @@ No upstream implementation was imported. The extracted baseline arithmetic is
 existing repository GPL-3.0 VanitySearch-derived code; its original copyright
 and license header is preserved in the emitted `GPUMath.h`. Generated artifacts
 must retain repository licensing and corresponding sources.
+
+## Bounded combined host runner
+
+`host.sh` runs memcheck, racecheck and synccheck in correctness-only mode before
+the normal timing invocation. The combined sequence has a single 600-second
+internal budget and a 720-second outer budget; these are not four separate
+600-second allowances. The standalone commands above illustrate individual
+checks, not the combined runner's time allocation. If this combined budget is
+insufficient, the experiment is incomplete and requires diagnosis before any
+subsequent allocation. No missing sanitizer result counts as a pass.
+
+After result-directory creation, the EXIT handler records the original exit
+status and packages available evidence even after staging, image-pull or GPU
+identity failures. Container removal has a separate bounded timeout. Packaging
+failure emits a collection-error marker with the original gate status, and a
+successful gate with failed packaging returns failure. EC2 and volume cleanup
+remain the independent controller's responsibility.
