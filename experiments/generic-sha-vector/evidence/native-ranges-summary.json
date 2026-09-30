@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "samples": 32,
+  "baselineSha256": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+  "candidateSha256": "0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b",
+  "fixtureSha256": "e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9",
+  "resultSha256": "43273178c0d7c2c48882ea11a56581ac4365597f1faf5284cd34ddf3afd59775",
+  "gpu": "NVIDIA A10G, 595.91.07",
+  "cpuDifferential": false,
+  "freshWithdrawal": false,
+  "grantsRangeCredit": false,
+  "matchedTiming": false,
+  "controllerCommit": "279ab1077f7ac7e0b8f998f8c88067f92f25e421",
+  "candidateSourceCommit": "aa898b66326706d24e56688eef907ea97bd66f41",
+  "runtimeImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf",
+  "runtimeSourceCommit": "068a90dee65fb4567df1086261ee6350942558e7",
+  "runtimeCiRun": 36745858082,
+  "cleanupVerified": true
+}
