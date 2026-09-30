@@ -312,6 +312,27 @@
 'QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.BareBoundary.accepted_bare_composition_first_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BareBoundary.accepted_bare_first_origin_and_final_counts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ByteFinalCounts.generated_final_byte_suffix' does not depend on any axioms
+'QSB.ByteFinalCounts.generated_final_setup_suffix' does not depend on any axioms
+'QSB.ByteFinalCounts.key_index_bytes_decode' depends on axioms: [propext]
+'QSB.ByteFinalCounts.key_index_values' does not depend on any axioms
+'QSB.ByteFinalCounts.push_success_shape' depends on axioms: [propext]
+'QSB.ByteFinalCounts.roll_success_budget' depends on axioms: [propext, Quot.sound]
+'QSB.ByteFinalCounts.accepted_pair_preserves_shallower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_pairs_preserve_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_final_setup_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_final_suffix_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ByteFinalCounts.accepted_true_final_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_true_whole_program_final_counts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

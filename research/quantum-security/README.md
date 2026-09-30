@@ -61,6 +61,13 @@ success from any initial byte stack and Boolean outcome list forces the top
 three cells and two true pinning outcomes, then the same first lock commitment
 origin. This says nothing about how a real `scriptSig` produces the initial
 stack or how Core decides the signature outcomes.
+`QSB/BareBoundary.lean` composes that theorem with an arbitrary partial
+`scriptSig` evaluator. For the bare output, Core runs `scriptSig` and the lock
+sequentially on one main stack, resetting the opcode counter between calls;
+isolated native checks confirm non-push-only stack handoff and independent
+201-op budgets. See [the boundary note](CORE-BARE-BOUNDARY.md) and
+`evidence/bare-script-boundary.json`. The formal composition still assumes
+Core's lock execution refines the byte model.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as
@@ -92,6 +99,10 @@ success with those equal counts requires every corresponding signature/key
 pair to verify. These results still need byte-level source identification and
 an exact Core checker refinement. See `QSB/KeyRolls.lean` and
 `QSB/Multisig.lean`.
+`QSB/ByteFinalCounts.lean` additionally checks the generated *byte* suffix:
+success from any underlying byte stack preserves both raw 10 counts; a truthy
+whole-program result requires the supplied final CHECKMULTISIG outcome true.
+Its Boolean outcome is still external to Core's signature checker.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
@@ -120,6 +131,7 @@ Read:
 - [Final report](FINAL-REPORT.md)
 - [Security game and attack table](SPECIFICATION.md)
 - [Proof status and source mapping](PROOF-STATUS.md)
+- [Bare-script Core boundary](CORE-BARE-BOUNDARY.md)
 - [Research sources and applicability](RESEARCH.md)
 
 ## Reproduce the Lean results
@@ -180,6 +192,7 @@ and without capabilities. No node or funded transaction is required.
 python3 analysis/source_inventory.py --app-root /path/to/qsb-app --output evidence/source-inventory.json
 python3 analysis/check_round_results.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/round-results.json
 python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/core-semantics.json
+python3 analysis/check_bare_script_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bare-script-boundary.json
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json

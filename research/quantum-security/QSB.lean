@@ -19,6 +19,8 @@ import QSB.ByteIndexSign
 import QSB.FirstNegativeAll
 import QSB.FirstAcceptedOrigin
 import QSB.PinningShape
+import QSB.BareBoundary
+import QSB.ByteFinalCounts
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -299,6 +301,21 @@ import QSB.Reduction
 #print axioms QSB.PinningShape.two_cell_initial_stack_cannot_accept
 #print axioms QSB.PinningShape.accepted_initial_shape
 #print axioms QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin
+#print axioms QSB.BareBoundary.accepted_bare_composition_first_origin
+#print axioms QSB.BareBoundary.accepted_bare_first_origin_and_final_counts
+#print axioms QSB.ByteFinalCounts.generated_final_byte_suffix
+#print axioms QSB.ByteFinalCounts.generated_final_setup_suffix
+#print axioms QSB.ByteFinalCounts.key_index_bytes_decode
+#print axioms QSB.ByteFinalCounts.key_index_values
+#print axioms QSB.ByteFinalCounts.push_success_shape
+#print axioms QSB.ByteFinalCounts.roll_success_budget
+#print axioms QSB.ByteFinalCounts.accepted_pair_preserves_shallower
+#print axioms QSB.ByteFinalCounts.accepted_pairs_preserve_marker
+#print axioms QSB.ByteFinalCounts.accepted_final_setup_count_operands
+#print axioms QSB.ByteFinalCounts.accepted_final_suffix_count_operands
+#print axioms QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome
+#print axioms QSB.ByteFinalCounts.accepted_true_final_suffix
+#print axioms QSB.ByteFinalCounts.accepted_true_whole_program_final_counts
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
