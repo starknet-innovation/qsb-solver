@@ -1,0 +1,36 @@
+name: Scalar SHA index compile
+on:
+  push:
+    paths:
+      - experiments/sha-constant-index/**
+      - tests/test_sha_constant_index.py
+      - .github/workflows/sha-constant-index.yml
+  pull_request:
+    paths:
+      - experiments/sha-constant-index/**
+      - tests/test_sha_constant_index.py
+      - .github/workflows/sha-constant-index.yml
+permissions:
+  contents: read
+jobs:
+  native-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test isolated source and gate guards
+        run: python3 -m unittest discover -s tests -p 'test_sha_constant_index.py'
+      - name: Compile isolated native scalar SHA comparison without GPU execution
+        run: |
+          docker build -f experiments/sha-constant-index/Dockerfile -t qsb-scalar-sha .
+          id=$(docker create qsb-scalar-sha)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sha-constant-index-native
+          path: results/
+          retention-days: 14
