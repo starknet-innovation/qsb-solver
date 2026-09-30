@@ -1,5 +1,5 @@
 {
-  "theorem_count": 532,
+  "theorem_count": 536,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -624,6 +624,23 @@
       "propext"
     ],
     "QSB.FinalBonusSecond.signed_front_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.matched_run_shape_and_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.openingAt_complete": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.openingAt_sound": [
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings": [
       "Classical.choice",
       "Quot.sound",
       "propext"

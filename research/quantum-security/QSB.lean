@@ -35,6 +35,7 @@ import QSB.FinalBonusSecond
 import QSB.DERSyntax
 import QSB.FinalBonusDER
 import QSB.FinalBonusIndices
+import QSB.FinalRoundWitness
 import QSB.DERHeaderBound
 import QSB.Attack
 import QSB.Game
@@ -545,6 +546,10 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusIndices.two_bonus_ids_extend_seven
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_der
+#print axioms QSB.FinalRoundWitness.openingAt_sound
+#print axioms QSB.FinalRoundWitness.openingAt_complete
+#print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
+#print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings
 #print axioms QSB.DERHeaderBound.byte_ofFn
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective

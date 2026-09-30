@@ -130,8 +130,9 @@ The exact byte-model suffix from immediately after the last final-round bonus
 roll sharpens this source statement: for any stack at that boundary whose
 remaining program succeeds, its cells 0–9 become the final signature slots,
 and cell 10 becomes the empty NULLDUMMY slot. The intervening late puzzle
-check and deep key rolls do not change those eleven sources. Their provenance
-through the preceding signed and bonus selections remains unproved.
+check and deep key rolls do not change those eleven sources. Later full-run
+byte-model theorems identify the preceding signed and bonus sources; Core
+execution and signature-verifier refinement remain unproved.
 For the last bonus roll, this forces an empty pre-roll source at depth 10 if
 the decoded index is below 10, or at depth 9 if it is at least 10. The four
 generated instructions between bonus rolls preserve the first roll's shallow
@@ -175,6 +176,14 @@ second-round commitments fail a source-shaped strict DER predicate. Under a
 successful DER-sound ten-pair scan, neither final bonus index can reach a
 commitment in that lock. The claim does not quantify over other generated
 setups or replace compiled-Core refinement.
+For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
+both reached bonus signature bytes as generated dummies at original HORS
+positions disjoint from the seven signed opening positions. The union has nine
+positions. `QSB/FinalRoundWitness.lean` uses an executable lookup over the
+seven recorded opening pairs to populate the `RoundWitness` shape and valid
+opening fields used by the abstract reduction. Its key is supplied separately;
+the theorem does not derive nonce binding, a puzzle hit, a transaction-byte
+extractor, or Core acceptance.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
@@ -198,9 +207,10 @@ The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate
 the hash of the actual opening bytes to the bytes immediately below them.
-This has not been lifted to an arbitrary accepted Bitcoin witness: the
-commitment cell's origin and the signature-check outcomes still require a
-whole-program stack invariant and Core refinement.
+The full-run byte-model theorem now identifies commitment origins for the
+seven final signed checks. It has not been lifted to an arbitrary
+consensus-accepted Bitcoin witness: Core execution and signature-check
+outcomes still require refinement.
 A generated disposable witness executes the complete byte fixture and reaches
 all 15 comparisons, conditional on a lookup-table HASH160 and externally
 supplied signature results. That single run does not discharge the

@@ -205,6 +205,11 @@ signature bytes as generated dummies and proves that their original HORS
 positions and the seven signed opening positions are nine distinct indices.
 The final scan and DER-sound verifier are explicit premises; Core refinement
 and a quantum bound remain open.
+`QSB/FinalRoundWitness.lean` converts the seven recorded opening pairs and
+two bonus positions into the abstract `RoundWitness` shape. An executable
+lookup supplies opening bytes, and Lean proves their HASH160 equalities. The
+witness key remains a caller input; nonce binding, puzzle success, a
+transaction-byte extractor, and Core refinement are still open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

@@ -88,6 +88,7 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
       (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
   obtain ⟨result, gathered, dummies, commitments, tail,
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
@@ -145,7 +146,7 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
   dsimp only at two
   exact ⟨trace, a, b, beforeCheck, beforePrefix, firstAt, lastAt,
     traceCount, hits, two.1, two.2.1,
-    two.2.2.1, two.2.2.2.2⟩
+    two.2.2.1, two.2.2.2.1, two.2.2.2.2⟩
 
 /-- The nine-position source result specialized to the literal lock's strict
 DER predicate. The successful Core-shaped scan and parser-soundness premises
@@ -169,6 +170,7 @@ theorem matched_full_run_nine_positions_der (hashes : Hashes)
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
       (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
   apply matched_full_run_nine_positions hashes initial final accepted verify
     (fun sig => DERSyntax.valid sig = true) verifySound

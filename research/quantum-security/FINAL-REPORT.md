@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 532 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 536 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -294,6 +294,11 @@ signed opening positions, so their union has exactly nine positions. This
 full-run statement still assumes the successful DER-sound ten-pair scan;
 the byte interpreter's supplied final signature Boolean does not establish
 that premise, and Core refinement remains open.
+`QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
+round-witness interface using an executable lookup. Lean checks the seven-plus-two
+shape and the opening hash equalities for the constructed witness. Its key is
+provided independently; nonce binding, the final puzzle, a transaction-byte
+extractor, and Core acceptance still need separate proofs or assumptions.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,
