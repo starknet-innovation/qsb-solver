@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 525 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 529 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -270,11 +270,13 @@ open; the earlier `390405/2^65` figure is still conditional on that count
 correspondence.
 An independent conservative count now avoids that exact-count premise for the
 Lean predicate: among all `256^20` twenty-byte strings, at most
-`12·256^16` can satisfy even its first-three-byte and R-length conditions.
-Thus its density is at most `12/256^4`. The checked finite random-function
-union theorem combines this target bound with 150 setup-selected inputs when
+`12·256^14` can satisfy the required header, R-length, S-tag, and S-length
+conditions. The injection removes all six constrained byte positions, even
+though two move with the R length. Thus its density is at most `12/256^6`.
+The checked finite random-function union theorem combines this target bound
+with 150 setup-selected inputs when
 the entire uniform R160 function is independent of the material selecting
-those inputs, giving at most `150·12/256^4` for this *syntax setup event*.
+those inputs, giving at most `150·12/256^6` for this *syntax setup event*.
 This deliberately loose estimate is not a quantum-query or unauthorized-spend
 bound, and connecting the Lean predicate to Core's compiled parser remains
 unproved.

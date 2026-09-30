@@ -1,5 +1,5 @@
 {
-  "theorem_count": 525,
+  "theorem_count": 529,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -338,6 +338,11 @@
     "QSB.DERHeaderBound.byte_ofFn": [
       "propext"
     ],
+    "QSB.DERHeaderBound.encodeTight_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERHeaderBound.encode_injective": [
       "Classical.choice",
       "Quot.sound",
@@ -358,12 +363,27 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DERHeaderBound.target_card_tight_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERHeaderBound.target_density_scaled": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
+    "QSB.DERHeaderBound.target_density_tight_scaled": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERHeaderBound.target_header": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.target_second_header": [
       "Classical.choice",
       "Quot.sound",
       "propext"

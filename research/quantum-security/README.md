@@ -191,9 +191,9 @@ Equating this scan and verifier with Core execution is still required.
 the 20-byte R/S length and header constraints. Its equivalence to compiled
 Core and exact accepted-set cardinality remain open.
 `QSB/DERHeaderBound.lean` now proves a conservative target bound without that
-exact count: at most `12·256^16` out of `256^20` twenty-byte outputs match the
+exact count: at most `12·256^14` out of `256^20` twenty-byte outputs match the
 Lean predicate. The generic independent random-function setup theorem gives a
-150-target union bound of `150·12/256^4` for this syntax exception under its
+150-target union bound of `150·12/256^6` for this syntax exception under its
 explicit independence premise. This is not a spend or quantum-query bound.
 `QSB/FinalBonusDER.lean` additionally checks that none of the 150 literal
 second-round commitments in the disposable generated lock matches that

@@ -545,9 +545,13 @@ import QSB.Reduction
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective
 #print axioms QSB.DERHeaderBound.rChoices_card
+#print axioms QSB.DERHeaderBound.target_second_header
+#print axioms QSB.DERHeaderBound.encodeTight_injective
 #print axioms QSB.DERHeaderBound.target_card_le
+#print axioms QSB.DERHeaderBound.target_card_tight_le
 #print axioms QSB.DERHeaderBound.output_space_card
 #print axioms QSB.DERHeaderBound.target_density_scaled
+#print axioms QSB.DERHeaderBound.target_density_tight_scaled
 #print axioms QSB.DERHeaderBound.bounded_target_setup_union_count
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
