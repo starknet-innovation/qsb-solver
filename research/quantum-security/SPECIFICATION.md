@@ -143,8 +143,8 @@ selections confined to that pool leave the two premises true regardless of
 selection order. The checked full-program byte-model theorem now confines all
 seven signed selections to that pool and records their distinct original HORS
 positions. A second full-program byte-model theorem transports those cells
-through the reached bonus suffix: the decoded first bonus roll depth is at
-least 9 and the last at least 10. Classifying deeper bonus sources and
+through the reached bonus suffix: the decoded first bonus roll depth is in
+9–152 and the last in 10–152. Classifying deeper bonus sources and
 Bitcoin Core refinement remain unproved.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,

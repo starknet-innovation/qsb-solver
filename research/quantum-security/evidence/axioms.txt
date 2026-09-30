@@ -542,8 +542,11 @@
 'QSB.FinalBonusAccepted.generated_first_bonus_prelude' does not depend on any axioms
 'QSB.FinalBonusAccepted.generated_bonus_suffix' does not depend on any axioms
 'QSB.FinalBonusAccepted.accepted_cap_pair_stack' depends on axioms: [propext, Quot.sound]
+'QSB.FinalBonusAccepted.accepted_cap_pair_encoding' depends on axioms: [propext, Quot.sound]
+'QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_index' depends on axioms: [propext, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusAccepted.accepted_between_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds' depends on axioms: [propext,
  Classical.choice,

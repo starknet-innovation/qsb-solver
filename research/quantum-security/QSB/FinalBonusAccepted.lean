@@ -51,6 +51,70 @@ theorem accepted_cap_pair_stack (hashes : Hashes)
   cases finished
   exact ⟨retained, shape⟩
 
+/-- Successful bonus OP_MIN records the actual parsed raw value and the
+ScriptNum encoding of its cap, including nonminimal raw encodings. -/
+theorem accepted_cap_pair_encoding (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (accepted : run hashes [.push [0x98, 0x00], .min]
+      (State.mk (raw :: tail) outcomes cost) = some after) :
+    ∃ (value : Int) (retained : Bytes),
+      ByteIndex.parseScriptNum raw = some value ∧
+      ByteIndex.encodeScriptNum (min 152 value) = some retained ∧
+      after.stack = retained :: tail := by
+  obtain ⟨afterPush, pushed, _, afterMin⟩ :=
+    run_cons_success hashes (.push [0x98, 0x00]) [.min]
+      (State.mk (raw :: tail) outcomes cost) after accepted
+  have pushShape := push_success_shape hashes [0x98, 0x00]
+    (raw :: tail) outcomes cost afterPush pushed
+  subst afterPush
+  obtain ⟨next, minStep, _, finished⟩ :=
+    run_cons_success hashes .min []
+      (State.mk ([0x98, 0x00] :: raw :: tail) outcomes cost)
+      after afterMin
+  change (if cost + 1 > 201 then none else do
+    let cap ← ByteIndex.parseScriptNum [0x98, 0x00]
+    let value ← ByteIndex.parseScriptNum raw
+    let retained ← ByteIndex.encodeScriptNum (min cap value)
+    some (State.mk (retained :: tail) outcomes (cost + 1))) =
+      some next at minStep
+  by_cases budget : cost + 1 > 201
+  · simp [budget] at minStep
+  · simp [budget, ByteIndex.positive_152] at minStep
+    cases parsed : ByteIndex.parseScriptNum raw with
+    | none => simp [parsed] at minStep
+    | some value =>
+        simp only [parsed, Option.bind_some] at minStep
+        cases encoded : ByteIndex.encodeScriptNum (min 152 value) with
+        | none => simp [encoded] at minStep
+        | some retained =>
+            simp only [encoded, Option.bind_some, Option.some.injEq] at minStep
+            subst next
+            simp [run] at finished
+            cases finished
+            exact ⟨value, retained, rfl, encoded, rfl⟩
+
+/-- A successfully parsed bonus roll depth after OP_MIN cannot exceed 152. -/
+theorem accepted_bonus_cap_index_le_152 (hashes : Hashes)
+    (raw retained : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (accepted : run hashes [.push [0x98, 0x00], .min]
+      (State.mk (raw :: tail) outcomes cost) = some after)
+    (shape : after.stack = retained :: tail)
+    (n : Nat)
+    (parsed : ByteIndex.parseScriptNum retained = some (Int.ofNat n)) :
+    n ≤ 152 := by
+  obtain ⟨value, actual, _, encoded, actualShape⟩ :=
+    accepted_cap_pair_encoding hashes raw tail outcomes cost after accepted
+  have same : actual = retained := by
+    injection actualShape.symm.trans shape with same _
+  subst actual
+  have capBound : min 152 value ≤ (152 : Int) := min_le_left _ _
+  have result := encoded_reparse_preserves_upper_bound
+    (min 152 value) (Int.ofNat n) 152 retained capBound
+    (by omega) (by omega) encoded parsed
+  exact Int.ofNat_le.mp (by simpa using result)
+
 /-- Successful modeled OP_ROLL requires a parsed nonnegative ScriptNum,
 without assuming a minimal encoding. -/
 theorem accepted_roll_index (hashes : Hashes)
@@ -91,7 +155,9 @@ theorem accepted_first_bonus_prelude_sources (hashes : Hashes)
     ∃ rawFirst : Bytes, ∃ regionFirst : List Bytes,
       after.stack = rawFirst :: regionFirst ∧
       regionFirst[9]? = some nine ∧
-      regionFirst[10]? = some ten := by
+      regionFirst[10]? = some ten ∧
+      (∀ n : Nat, ByteIndex.parseScriptNum rawFirst =
+        some (Int.ofNat n) → n ≤ 152) := by
   rw [generated_first_bonus_prelude] at accepted
   have split : ([.push [0x43, 0x02], .roll,
       .push [0x98, 0x00], .min] : List Op) =
@@ -130,9 +196,60 @@ theorem accepted_first_bonus_prelude_sources (hashes : Hashes)
               obtain ⟨retained, shape⟩ :=
                 accepted_cap_pair_stack hashes raw region fixedOutcomes
                   fixedCost after accepted
-              refine ⟨retained, region, shape, ?_, ?_⟩
+              refine ⟨retained, region, shape, ?_, ?_, ?_⟩
               · simpa using keepNine.trans sourceNine
               · simpa using keepTen.trans sourceTen
+              · intro n parsed
+                exact accepted_bonus_cap_index_le_152 hashes raw retained
+                  region fixedOutcomes fixedCost after accepted shape n parsed
+
+/-- The fixed roll and cap between bonus choices likewise bound the second
+decoded roll depth by 152, regardless of its raw ScriptNum encoding. -/
+theorem accepted_between_cap_index_le_152 (hashes : Hashes)
+    (before after : State) (retained : Bytes) (region : List Bytes)
+    (accepted : run hashes ByteBonusBetween.betweenOps before = some after)
+    (shape : after.stack = retained :: region)
+    (n : Nat)
+    (parsed : ByteIndex.parseScriptNum retained = some (Int.ofNat n)) :
+    n ≤ 152 := by
+  rw [ByteBonusBetween.generated_between_ops] at accepted
+  have split : ([.push [0x43, 0x02], .roll,
+      .push [0x98, 0x00], .min] : List Op) =
+      [.push [0x43, 0x02], .roll] ++
+        [.push [0x98, 0x00], .min] := rfl
+  rw [split, run_append] at accepted
+  cases fixedRun : run hashes [.push [0x43, 0x02], .roll]
+      before with
+  | none => simp [fixedRun] at accepted
+  | some afterFixed =>
+      simp only [fixedRun, Option.bind_some] at accepted
+      cases afterFixed with
+      | mk fixedStack fixedOutcomes fixedCost =>
+          cases fixedStack with
+          | nil =>
+              obtain ⟨afterPush, pushed, _, afterMin⟩ :=
+                run_cons_success hashes (.push [0x98, 0x00]) [.min]
+                  (State.mk [] fixedOutcomes fixedCost) after accepted
+              have pushShape := push_success_shape hashes [0x98, 0x00]
+                [] fixedOutcomes fixedCost afterPush pushed
+              subst afterPush
+              obtain ⟨next, minStep, _, _⟩ :=
+                run_cons_success hashes .min []
+                  (State.mk [[0x98, 0x00]] fixedOutcomes fixedCost)
+                  after afterMin
+              change (if fixedCost + 1 > 201 then none else none) =
+                some next at minStep
+              simp at minStep
+          | cons raw tail =>
+              obtain ⟨actual, actualShape⟩ :=
+                accepted_cap_pair_stack hashes raw tail fixedOutcomes
+                  fixedCost after accepted
+              have same : actual = retained := by
+                injection actualShape.symm.trans shape with same _
+              subst actual
+              exact accepted_bonus_cap_index_le_152 hashes raw retained
+                tail fixedOutcomes fixedCost after accepted
+                actualShape n parsed
 
 /-- Nonempty source cells at depths nine and ten before the generated bonus
 prefix force both capped bonus rolls past the shallow gathered signatures.
@@ -146,13 +263,15 @@ theorem accepted_bonus_suffix_index_bounds (hashes : Hashes)
     (accepted : run hashes (ByteLayout.program.drop 840)
       (State.mk stack outcomes cost) = some final) :
     ∃ firstIndex lastIndex : Nat,
-      9 ≤ firstIndex ∧ 10 ≤ lastIndex := by
+      9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
+      10 ≤ lastIndex ∧ lastIndex ≤ 152 := by
   rw [generated_bonus_suffix, run_append] at accepted
   cases prelude : run hashes firstBonusPrelude
       (State.mk stack outcomes cost) with
   | none => simp [prelude] at accepted
   | some beforeFirst =>
-      obtain ⟨rawFirst, regionFirst, firstShape, firstNine, firstTen⟩ :=
+      obtain ⟨rawFirst, regionFirst, firstShape, firstNine,
+          firstTen, firstCap⟩ :=
         accepted_first_bonus_prelude_sources hashes stack outcomes cost
           beforeFirst nine ten sourceNine sourceTen prelude
       simp only [prelude, Option.bind_some] at accepted
@@ -169,6 +288,7 @@ theorem accepted_bonus_suffix_index_bounds (hashes : Hashes)
               obtain ⟨firstIndex, decodedFirst⟩ :=
                 accepted_roll_index hashes rawFirst regionFirst
                   firstOutcomes firstCost postFirst firstRoll
+              have firstUpper := firstCap firstIndex decodedFirst
               simp only [firstRoll, Option.bind_some] at accepted
               rw [run_append] at accepted
               cases between : run hashes ByteBonusBetween.betweenOps
@@ -202,6 +322,13 @@ theorem accepted_bonus_suffix_index_bounds (hashes : Hashes)
                               obtain ⟨lastIndex, decodedLast⟩ :=
                                 accepted_roll_index hashes rawLast regionLast
                                   lastOutcomes lastCost postLast lastRoll
+                              have lastUpper :=
+                                accepted_between_cap_index_le_152 hashes
+                                  postFirst
+                                  (State.mk (rawLast :: regionLast)
+                                    lastOutcomes lastCost)
+                                  rawLast regionLast between rfl
+                                  lastIndex decodedLast
                               simp only [lastRoll, Option.bind_some] at accepted
                               have bounds :=
                                 ByteBonusBetween.successful_two_bonus_index_bounds
@@ -214,7 +341,8 @@ theorem accepted_bonus_suffix_index_bounds (hashes : Hashes)
                                   nineNonempty tenNonempty firstNine firstTen
                                   decodedFirst decodedLast firstRoll between
                                   rfl lastRoll accepted
-                              exact ⟨firstIndex, lastIndex, bounds⟩
+                              exact ⟨firstIndex, lastIndex,
+                                bounds.1, firstUpper, bounds.2, lastUpper⟩
 
 /-- In every successful full generated byte-model run, the seven signed
 openings target distinct original HORS commitments and the two final bonus
@@ -229,7 +357,8 @@ theorem accepted_whole_program_signed_and_bonus_bounds (hashes : Hashes)
       trace.length = 7 ∧
       (trace.map Prod.fst).Nodup ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
-      9 ≤ firstIndex ∧ 10 ≤ lastIndex := by
+      9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
+      10 ≤ lastIndex ∧ lastIndex ≤ 152 := by
   rw [FinalSignedChain.generated_whole_signed_boundary,
     run_append] at accepted
   cases preRun : run hashes (ByteLayout.program.take 446) initial with
@@ -284,13 +413,15 @@ theorem accepted_whole_program_signed_and_bonus_bounds (hashes : Hashes)
                     seven_signed_bonus_sources_nonempty
                       (boolBytes result) gathered' dummies' commitments'
                       tail' pool gatheredCount
-                  obtain ⟨firstIndex, lastIndex, firstBound, lastBound⟩ :=
+                  obtain ⟨firstIndex, lastIndex, firstLower,
+                    firstUpper, lastLower, lastUpper⟩ :=
                     accepted_bonus_suffix_index_bounds hashes
                       (nextRawFront (boolBytes result)
                         gathered' dummies' commitments' ++ tail')
                       checkOutcomes (checkCost + 63) final nine ten
                       nineNonempty tenNonempty atNine atTen suffix
                   exact ⟨trace, firstIndex, lastIndex, traceCount,
-                    distinct, hits, firstBound, lastBound⟩
+                    distinct, hits, firstLower, firstUpper,
+                    lastLower, lastUpper⟩
 
 end QSB.FinalBonusAccepted

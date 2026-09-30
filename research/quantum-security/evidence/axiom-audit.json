@@ -1,5 +1,5 @@
 {
-  "theorem_count": 477,
+  "theorem_count": 480,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -330,8 +330,22 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FinalBonusAccepted.accepted_between_cap_index_le_152": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_cap_pair_encoding": [
       "Quot.sound",
       "propext"
     ],

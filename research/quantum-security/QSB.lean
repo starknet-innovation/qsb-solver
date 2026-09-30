@@ -493,8 +493,11 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusAccepted.generated_first_bonus_prelude
 #print axioms QSB.FinalBonusAccepted.generated_bonus_suffix
 #print axioms QSB.FinalBonusAccepted.accepted_cap_pair_stack
+#print axioms QSB.FinalBonusAccepted.accepted_cap_pair_encoding
+#print axioms QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152
 #print axioms QSB.FinalBonusAccepted.accepted_roll_index
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources
+#print axioms QSB.FinalBonusAccepted.accepted_between_cap_index_le_152
 #print axioms QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds
 #print axioms QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles

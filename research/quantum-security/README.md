@@ -157,8 +157,8 @@ seven distinct original second-round commitments. It starts from an arbitrary
 initial byte stack and supplied signature outcomes.
 `QSB/FinalBonusAccepted.lean` carries the resulting nonempty shallow dummy
 cells through the exact bonus prefix and final NULLDUMMY check. Every
-successful full byte-model run therefore has decoded bonus depths at least 9
-and 10. Classifying the deeper bonus and final signature sources, then
+successful full byte-model run therefore has decoded bonus depths in 9–152
+and 10–152. Classifying the deeper bonus and final signature sources, then
 refining the model to Core, remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
