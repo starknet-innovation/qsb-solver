@@ -11,6 +11,7 @@ import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
 import QSB.ByteWitness
+import QSB.FirstOvershoot
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -109,6 +110,7 @@ import QSB.Reduction
 #print axioms QSB.ByteMachine.hash_compare_accepts_iff
 #print axioms QSB.ByteMachine.successful_hash_comparison
 #print axioms QSB.ByteMachine.run_append
+#print axioms QSB.ByteMachine.run_pushes
 #print axioms QSB.ByteMachine.successful_hash_comparison_in_context
 #print axioms QSB.ByteLayout.program_length
 #print axioms QSB.ByteLayout.final_opcode_is_checkmultisig
@@ -120,6 +122,41 @@ import QSB.Reduction
 #print axioms QSB.ByteWitness.canonical_byte_run
 #print axioms QSB.ByteWitness.first_round_boolean_ignored
 #print axioms QSB.ByteWitness.all_fifteen_comparisons_reached
+#print axioms QSB.FirstOvershoot.fixed_region_length
+#print axioms QSB.FirstOvershoot.generated_region_is_pushes
+#print axioms QSB.FirstOvershoot.generated_push_values_small
+#print axioms QSB.FirstOvershoot.generated_region_pushes
+#print axioms QSB.FirstOvershoot.generated_prefix_split
+#print axioms QSB.FirstOvershoot.generated_pinning_opcodes
+#print axioms QSB.FirstOvershoot.pin_signature_fits
+#print axioms QSB.FirstOvershoot.modeled_pinning_consumes_two_keys
+#print axioms QSB.FirstOvershoot.generated_prefix_after_pinning
+#print axioms QSB.FirstOvershoot.segment_is_first_two_selection_prefix
+#print axioms QSB.FirstOvershoot.first_commitment_is_twenty_bytes
+#print axioms QSB.FirstOvershoot.last_commitment_is_twenty_bytes
+#print axioms QSB.FirstOvershoot.last_commitment_is_not_scriptnum
+#print axioms QSB.FirstOvershoot.shifted_last_from_any_tail
+#print axioms QSB.FirstOvershoot.first_index_roll
+#print axioms QSB.FirstOvershoot.external_commitment_roll
+#print axioms QSB.FirstOvershoot.displaced_preimage_roll
+#print axioms QSB.FirstOvershoot.retained_index_roll
+#print axioms QSB.FirstOvershoot.byte_roll_matches_list_roll
+#print axioms QSB.FirstOvershoot.next_index_is_lock_commitment
+#print axioms QSB.FirstOvershoot.next_index_roll_full
+#print axioms QSB.FirstOvershoot.second_min_rejects_commitment
+#print axioms QSB.FirstOvershoot.parse_151
+#print axioms QSB.FirstOvershoot.encode_303
+#print axioms QSB.FirstOvershoot.parse_303
+#print axioms QSB.FirstOvershoot.parse_311
+#print axioms QSB.FirstOvershoot.first_selection_prefix_opcodes
+#print axioms QSB.FirstOvershoot.segment_split
+#print axioms QSB.FirstOvershoot.overshoot_suffix_fails
+#print axioms QSB.FirstOvershoot.first_selection_reaches_forced_suffix
+#print axioms QSB.FirstOvershoot.matched_first_overshoot_segment_fails
+#print axioms QSB.FirstOvershoot.generated_program_split
+#print axioms QSB.FirstOvershoot.matched_first_overshoot_cannot_finish
+#print axioms QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails
+#print axioms QSB.FirstOvershoot.matched_external_initial_stack_rejected
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

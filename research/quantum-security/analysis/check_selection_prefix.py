@@ -1,8 +1,9 @@
 """Core check of first-selection local reachability on TRUNCATED test locks.
 
 Only the pinning signature check is real; the first puzzle CHECKSIGVERIFY is
-replaced by OP_2DROP. The locks end after the first signed-pool OP_ROLL or its
-HASH160 comparison. This is NOT full-lock acceptance or unauthorized spending.
+replaced by OP_2DROP. The locks end at selected instructions spanning the
+first signed-pool comparison and next numeric parse. This is NOT full-lock
+acceptance or unauthorized spending.
 """
 import argparse
 import hashlib
@@ -45,11 +46,22 @@ def main():
     pin = nonce_sig(b"qsb_pin")
     exact_lock = builder.build_full_script(
         pin, nonce_sig(b"qsb_r0"), nonce_sig(b"qsb_r1"))
+    layout = json.loads((Path(__file__).resolve().parents[1] /
+                         "evidence/layout-map.json").read_text())
+    source_hash = hashlib.sha256(
+        (args.app_root / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
+    assert source_hash == layout["builder_sha256"]
+    assert hashlib.sha256(exact_lock).hexdigest() == layout["script_sha256"]
     instructions = list(opcodes(exact_lock))
     assert instructions[315] == (4783, bt.OP_ROLL)
     roll_prefix_len = instructions[316][0]
     comparison_prefix_len = instructions[320][0]
+    second_roll_prefix_len = instructions[323][0]
+    before_min_prefix_len = instructions[324][0]
+    second_min_prefix_len = instructions[325][0]
     assert (roll_prefix_len, comparison_prefix_len) == (4784, 4790)
+    assert instructions[322][1] == bt.OP_ROLL
+    assert instructions[324][1] == bt.OP_MIN
 
     def test_lock(prefix_len):
         # The first puzzle check is intentionally relaxed. Pinning remains real.
@@ -104,6 +116,12 @@ def main():
          ec.hash160(b"\x0a"), True),
         ("comparison_wrong_commitment", comparison_prefix_len,
          b"\x00" * 20, False),
+        ("second_index_roll_reaches_commitment", second_roll_prefix_len,
+         ec.hash160(b"\x0a"), True),
+        ("before_second_index_min", before_min_prefix_len,
+         ec.hash160(b"\x0a"), True),
+        ("second_index_min_rejects", second_min_prefix_len,
+         ec.hash160(b"\x0a"), False),
     ):
         lock = test_lock(prefix_len)
         tx.inputs[1].script_sig = witness(marker, pin_key_for(lock))
@@ -130,6 +148,9 @@ def main():
         "exact_lock_sha256": hashlib.sha256(exact_lock).hexdigest(),
         "roll_prefix_bytes": roll_prefix_len,
         "comparison_prefix_bytes": comparison_prefix_len,
+        "second_roll_prefix_bytes": second_roll_prefix_len,
+        "before_min_prefix_bytes": before_min_prefix_len,
+        "second_min_prefix_bytes": second_min_prefix_len,
         "first_selection_roll_offset": 4783,
         "native_files_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                                 for p in args.native_root.iterdir() if p.is_file()},

@@ -14,9 +14,15 @@ unauthorized spend of the real lock. See `evidence/round-results.json`.
 
 A separate malformed-witness probe makes the first signed-pool `OP_ROLL` reach
 an attacker-supplied cell. Lean checks that a self-chosen commitment can pass
-the first HASH160 comparison, and Core confirms both local steps on truncated
-test locks. This particular complete symbolic probe fails at the next index
-parse, and the Core tests do not execute the complete lock. See
+the first HASH160 comparison. `QSB/FirstOvershoot.lean` proves a stronger
+byte-level result for the full generated program and this initial-stack
+family: with arbitrary pinning-key bytes, a matching external commitment,
+arbitrary bytes in the eight following cells, and up to 680 later cells, the
+next fixed roll reaches a 20-byte lock commitment and the following numeric
+parse fails. The byte model grants both pinning checks true and leaves later
+signature outcomes arbitrary. Pinned Core tests accept a truncated lock
+immediately before that `OP_MIN` and reject when it is added. The initial-stack
+shape is explicit; the Core tests do not execute the complete lock. See
 `evidence/selection-prefix.json`.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
@@ -66,8 +72,11 @@ truth, 201-op count and 569-cell stack. It also confirms that the first-round
 multisignature Boolean does not affect final truth in this byte fixture. Its
 HASH160 is a lookup table for the 15 generated opening/commitment pairs, its
 SHA256 is an arbitrary 32-byte function, and signature results are supplied
-Boolean values. This is a model
-consistency check, not Core acceptance or a hash/puzzle solution.
+Boolean values. This is a model consistency check, not Core acceptance or a
+hash/puzzle solution.
+For stack-origin diagnostics against the same disposable setup, run
+`python3 analysis/explore_origins.py --app-root /path/to/qsb-app --probe external`.
+This Python trace supplies signature outcomes and is not a consensus test.
 
 Read:
 

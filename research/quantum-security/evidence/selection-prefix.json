@@ -4,6 +4,9 @@
   "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
   "roll_prefix_bytes": 4784,
   "comparison_prefix_bytes": 4790,
+  "second_roll_prefix_bytes": 4795,
+  "before_min_prefix_bytes": 4798,
+  "second_min_prefix_bytes": 4799,
   "first_selection_roll_offset": 4783,
   "native_files_sha256": {
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
@@ -42,6 +45,30 @@
       "accepted": false,
       "expected": false,
       "transaction_sha256": "857006cec216c05baef5db83b5cd3c57d3e421e69c921663a34f7f7f60966487"
+    },
+    {
+      "name": "second_index_roll_reaches_commitment",
+      "prefix_bytes": 4795,
+      "test_lock_sha256": "53c8f33f29ddcb4c4a027792e5b2a08b1fd876b1ca9663f7fe426113eca1199a",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "c50a55473cc69565533653a25af0ed501214ba6fbf2abd24e282c0a584f87ea1"
+    },
+    {
+      "name": "before_second_index_min",
+      "prefix_bytes": 4798,
+      "test_lock_sha256": "521fc8b2635f5d0bac4c404e67c2aebaf906be3b0fb0a230fb76892ccee7709c",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "461991b78a44759c764254dbad17f204526c0e0ac360f623c891b6a69f45101f"
+    },
+    {
+      "name": "second_index_min_rejects",
+      "prefix_bytes": 4799,
+      "test_lock_sha256": "8dd1a5d8477b9dbc56285600985de0afd96d1fb8daa6f9453af5be4ed7b74291",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "b314507cbd4dbfbf4a0a430cb44eaa690d782528b42bba3f0d34ad4ac7982e47"
     }
   ]
 }

@@ -104,6 +104,41 @@ theorem run_append (hashes : Hashes) (before after : List Op) (s : State) :
           · simp [large]
           · simp [large, ih]
 
+/-- Executing a sequence of byte pushes places their values, in reverse
+instruction order, above an arbitrary starting stack. The size hypotheses
+are the legacy Script element and combined-stack limits. -/
+theorem run_pushes (hashes : Hashes) (values : List Bytes)
+    (stack : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (small : ∀ value ∈ values, value.length ≤ 520)
+    (capacity : values.length + stack.length ≤ 1000)
+    (budget : cost ≤ 201) :
+    run hashes (values.map Op.push) (State.mk stack outcomes cost) =
+      some (State.mk (values.reverse ++ stack) outcomes cost) := by
+  induction values generalizing stack with
+  | nil => rfl
+  | cons value rest ih =>
+      have valueSmall : value.length ≤ 520 := small value (by simp)
+      have restSmall : ∀ x ∈ rest, x.length ≤ 520 := by
+        intro x hx
+        exact small x (by simp [hx])
+      have restCapacity : rest.length + (value :: stack).length ≤ 1000 := by
+        simpa [List.length_cons, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+          using capacity
+      have stepPush : step hashes (.push value) (State.mk stack outcomes cost) =
+          some (State.mk (value :: stack) outcomes cost) := by
+        unfold step
+        have within : ¬ (cost > 201) := by omega
+        have width : ¬ (value.length > 520) := by omega
+        simp [within, width]
+      simp only [List.map_cons, run, stepPush]
+      have size : ¬ ((value :: stack).length > 1000) := by
+        simp only [List.length_cons] at capacity ⊢
+        omega
+      simp only [List.length_cons] at capacity
+      simp [ih (value :: stack) restSmall restCapacity,
+        List.reverse_cons, List.append_assoc]
+      omega
+
 def finalTruth (s : State) : Bool :=
   s.stack.head? = some [1]
 
