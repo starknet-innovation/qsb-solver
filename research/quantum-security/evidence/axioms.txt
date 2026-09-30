@@ -72,6 +72,17 @@
 'QSB.ByteIndex.nonminimal_152_selects_commitment' depends on axioms: [propext]
 'QSB.ByteIndex.negative_152_cannot_roll' depends on axioms: [propext]
 'QSB.ByteIndex.oversized_encoding_cannot_roll' depends on axioms: [propext]
+'QSB.Multisig.too_many_signatures_fail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.Multisig.equal_counts_success_iff_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.rollAt_matches_symbolic_step' depends on axioms: [propext, Quot.sound]
+'QSB.KeyRolls.rollAt_preserves_shallower_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.rollMany_preserves_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.key_indices_length' does not depend on any axioms
+'QSB.KeyRolls.final_signature_count_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.final_count_operands_ten' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.successful_final_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.generated_final_suffix' does not depend on any axioms
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -41,6 +41,15 @@ open. The same adapter accepts nonminimal byte encodings of indices 10 and
 ScriptNum rule for these cases; complete compiled-Core equivalence remains
 unproved. See `evidence/bonus-indices.json`.
 
+The final key-roll suffix has a stronger arbitrary-stack result. Lean checks
+that its ten fixed rolls preserve the lock-pushed signature count at the exact
+position read by final CHECKMULTISIG. Thus both final count operands are 10
+whenever that suffix completes. A Core-shaped matching-loop theorem then says
+success with those equal counts requires every corresponding signature/key
+pair to verify. These results still need byte-level source identification and
+an exact Core checker refinement. See `QSB/KeyRolls.lean` and
+`QSB/Multisig.lean`.
+
 Read:
 
 - [Final report](FINAL-REPORT.md)

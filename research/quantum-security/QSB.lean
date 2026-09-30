@@ -7,6 +7,8 @@ import QSB.Selection
 import QSB.Layout
 import QSB.Bonus
 import QSB.ByteIndex
+import QSB.Multisig
+import QSB.KeyRolls
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -85,6 +87,17 @@ import QSB.Reduction
 #print axioms QSB.ByteIndex.nonminimal_152_selects_commitment
 #print axioms QSB.ByteIndex.negative_152_cannot_roll
 #print axioms QSB.ByteIndex.oversized_encoding_cannot_roll
+#print axioms QSB.Multisig.too_many_signatures_fail
+#print axioms QSB.Multisig.equal_counts_success_iff_pairs
+#print axioms QSB.KeyRolls.rollAt_matches_symbolic_step
+#print axioms QSB.KeyRolls.rollAt_preserves_shallower_cell
+#print axioms QSB.KeyRolls.rollMany_preserves_marker
+#print axioms QSB.KeyRolls.key_indices_safe
+#print axioms QSB.KeyRolls.key_indices_length
+#print axioms QSB.KeyRolls.final_signature_count_fixed
+#print axioms QSB.KeyRolls.final_count_operands_ten
+#print axioms QSB.KeyRolls.successful_final_pairs
+#print axioms QSB.KeyRolls.generated_final_suffix
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

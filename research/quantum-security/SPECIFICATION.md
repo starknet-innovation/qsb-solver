@@ -115,6 +115,14 @@ the adversary's transaction and returns its pinning and final-round witness.
 That extractor is not implemented for arbitrary Script executions. A shaped
 final witness requires seven distinct signed positions and two disjoint bonus
 positions; otherwise the corresponding extraction gap remains possible.
+One final-suffix invariant is now proved for arbitrary underlying stacks:
+successful execution of the ten fixed public-key rolls preserves the pushed
+signature count 10 at CHECKMULTISIG's count position, and the final push makes
+the public-key count 10. A Core-style matching-loop theorem shows that a
+successful 10-of-10 match cannot skip a key and must verify each corresponding
+pair. This does not establish that the ten signature cells arose from the
+intended dummy pool or that Core's byte-level verifier equals the abstract
+pair predicate.
 The formal disclosure and extracted-witness records expose HORS values only at
 their declared opened positions; no total secret array is included in the
 attacker transcript type.

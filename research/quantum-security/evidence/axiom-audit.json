@@ -1,5 +1,5 @@
 {
-  "theorem_count": 87,
+  "theorem_count": 98,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -86,6 +86,42 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.KeyRolls.final_count_operands_ten": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.final_signature_count_fixed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.generated_final_suffix": [],
+    "QSB.KeyRolls.key_indices_length": [],
+    "QSB.KeyRolls.key_indices_safe": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.rollAt_matches_symbolic_step": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.rollAt_preserves_shallower_cell": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.rollMany_preserves_marker": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.successful_final_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.Layout.accepted_trace_operation_count": [
       "propext"
     ],
@@ -123,6 +159,16 @@
       "propext"
     ],
     "QSB.Layout.matched_external_passes_first_comparison": [
+      "propext"
+    ],
+    "QSB.Multisig.equal_counts_success_iff_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.Multisig.too_many_signatures_fail": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.abstract_run_final_shape": [

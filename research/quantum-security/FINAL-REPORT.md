@@ -60,7 +60,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 65 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 98 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -68,6 +68,14 @@ and cardinality accounting, fixed-recovery-point ECDSA algebra, abstract
 without-replacement selection, concrete generated stack traces, owner-forbidden
 message classification, and measure union bounds. Witness and disclosure
 records expose HORS values only at opened positions.
+
+An arbitrary-underlying-stack theorem covers the final key-roll suffix: if
+its ten constant-index rolls complete, the two final CHECKMULTISIG count
+operands are both 10. A separate Lean model of Core's key-scanning loop proves
+that a successful equal-count match verifies every corresponding signature/key
+pair. This fixes the count and matching obligations, but not the provenance of
+those cells or the refinement from the abstract pair predicate to Core's byte
+parser, FindAndDelete scriptCode and ECDSA checker.
 
 The game-level theorem has the exact form
 
