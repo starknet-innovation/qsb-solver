@@ -1,0 +1,64 @@
+name: Public host ladder math
+on:
+  push:
+    paths:
+      - experiments/host-ladder-batch/**
+      - tests/test_host_ladder_batch.py
+      - .github/workflows/host-ladder-batch.yml
+  pull_request:
+    paths:
+      - experiments/host-ladder-batch/**
+      - tests/test_host_ladder_batch.py
+      - .github/workflows/host-ladder-batch.yml
+permissions:
+  contents: read
+jobs:
+  native-public-math:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Check isolated preparation and invariants
+        run: python3 -m unittest discover -s tests -p 'test_host_ladder_batch.py'
+      - name: Build isolated public arithmetic artifact
+        run: |
+          docker build -f experiments/host-ladder-batch/Dockerfile -t qsb-host-ladder .
+          id=$(docker create qsb-host-ladder)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - name: Execute fixed public arithmetic checks without network or GPU
+        run: |
+          set -euo pipefail
+          mkdir run-results
+          trap 'timeout --kill-after=2s 10s docker rm -f qsb-host-ladder-check >/dev/null 2>&1 || true' EXIT
+          timeout --kill-after=10s 180s docker run --rm --name qsb-host-ladder-check --network none --read-only \
+            --cap-drop ALL --security-opt no-new-privileges --tmpfs /tmp:rw,noexec,nosuid,size=64m \
+            -v "$PWD/run-results:/out:rw" qsb-host-ladder \
+            /out/result.json 2>&1 | tee run-results/run.log
+      - name: Verify explicit infinity rejection in both implementations
+        run: |
+          set -euo pipefail
+          trap 'timeout --kill-after=2s 10s docker rm -f qsb-host-ladder-negative >/dev/null 2>&1 || true' EXIT
+          for implementation in baseline batch; do
+            for input in zero order; do
+              mode="--reject-${implementation}-${input}"
+              log="run-results/reject-${implementation}-${input}.log"
+              rc=0
+              timeout --kill-after=10s 60s docker run --rm --name qsb-host-ladder-negative \
+                --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+                --tmpfs /tmp:rw,noexec,nosuid,size=64m qsb-host-ladder "$mode" >"$log" 2>&1 || rc=$?
+              printf '%s\n' "$rc" >"${log}.exit"
+              test "$rc" -eq 2
+              python3 -c 'import pathlib,sys; assert pathlib.Path(sys.argv[1]).read_text().count("QSB_RANGE_INCOMPLETE: OpenSSL table operation failed") == 1' "$log"
+            done
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: host-ladder-public-math
+          path: |
+            results/
+            run-results/
+          retention-days: 14
