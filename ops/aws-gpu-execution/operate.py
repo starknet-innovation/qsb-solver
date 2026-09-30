@@ -1,4 +1,4 @@
-"""Operate one existing scoped execution. Usage: operate.py STATE_DIRECTORY MODE.
+"""Operate one existing scoped execution. Usage: operate.py STATE_DIRECTORY MODE [table].
 
 No replacement submissions or new infrastructure are created by this adapter.
 """
@@ -16,6 +16,9 @@ def aws(*args):
  return json.loads(subprocess.check_output(['aws','--profile',config['profile'],'--region',config['region'],'--output','json',*args],text=True,timeout=60,env={**os.environ,'AWS_MAX_ATTEMPTS':'1'}))
 assert aws('sts','get-caller-identity')['Account']==config['account']
 mode=sys.argv[2]
+profile=sys.argv[3] if len(sys.argv)==4 else 'default'
+if len(sys.argv) not in (3,4) or profile not in ('default','table') or (profile=='table' and mode!='send'):
+ raise ValueError('Only send accepts the table execution profile')
 if mode=='record':
  r=aws('ec2','describe-instances','--instance-ids',s['instanceId']);i=r['Reservations'][0]['Instances'][0];assert i['ClientToken']==s['token'];assert i['InstanceType']=='g5.xlarge'
  s['volumeIds']=[x['Ebs']['VolumeId'] for x in i['BlockDeviceMappings']];assert s['volumeIds'];save('allocated.json',r)
@@ -23,9 +26,13 @@ if mode=='record':
 elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
- assert time.time()+1080<s['deadline'];assert not (p/'send-intent.json').exists()
+ # Table staging+readiness+pull+compute can exceed the default 20-minute SSM budget.
+ # Reserve submission, delivery and prompt polling (60s each), 30min execution and 10min collection.
+ execution_timeout=1800 if profile=='table' else 1200
+ minimum_remaining=2580 if profile=='table' else 1080
+ assert time.time()+minimum_remaining<s['deadline'];assert not (p/'send-intent.json').exists()
  command=bash_command((p/'host-template.sh').read_text().replace('__DEADLINE__',str(s['deadline'])))
- req={'InstanceIds':[s['instanceId']],'DocumentName':'AWS-RunShellScript','Parameters':{'commands':[command],'executionTimeout':['1200']},'TimeoutSeconds':60}
+ req={'InstanceIds':[s['instanceId']],'DocumentName':'AWS-RunShellScript','Parameters':{'commands':[command],'executionTimeout':[str(execution_timeout)]},'TimeoutSeconds':60}
  save('send-intent.json',{'request':req,'sha256':hashlib.sha256(command.encode()).hexdigest()})
  r=aws('ssm','send-command','--cli-input-json',json.dumps(req));save('send-response.json',r);print(r['Command']['CommandId'])
 elif mode=='poll':

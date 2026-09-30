@@ -14,8 +14,8 @@ class OperateTests(unittest.TestCase):
         config=dict(profile='test',region='eu-west-2',account='123')
         (p/'operator.json').write_text(json.dumps(config))
         (p/'execution.json').write_text(json.dumps(dict(operatorConfig=config,instanceId='i-test',deadline=int(time.time())+1500)))
-    def invoke(self,p,mode,fake):
-        with patch.object(sys,'argv',['operate.py',str(p),mode]),patch.object(sys,'path',[str(OPS),*sys.path]),patch('subprocess.check_output',side_effect=fake):
+    def invoke(self,p,mode,fake,profile=None):
+        with patch.object(sys,'argv',['operate.py',str(p),mode]+([profile] if profile else [])),patch.object(sys,'path',[str(OPS),*sys.path]),patch('subprocess.check_output',side_effect=fake):
             runpy.run_path(str(OPS/'operate.py'),run_name='__main__')
     def test_early_shell_failure_preserves_diagnostics_and_terminates(self):
         with tempfile.TemporaryDirectory() as d:
@@ -48,3 +48,26 @@ class OperateTests(unittest.TestCase):
             self.invoke(p,'send',fake)
             self.assertTrue((p/'send-response.json').exists())
             with self.assertRaises(AssertionError):self.invoke(p,'send',fake)
+
+    def test_table_profile_budget_and_unchanged_deadline(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p)
+            state=json.loads((p/'execution.json').read_text());state['deadline']=int(time.time())+3500
+            (p/'execution.json').write_text(json.dumps(state));(p/'host-template.sh').write_text('echo table')
+            before=(p/'execution.json').read_bytes()
+            def fake(args,**kwargs):
+                if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                intent=json.loads((p/'send-intent.json').read_text())
+                self.assertEqual(intent['request']['Parameters']['executionTimeout'],['1800'])
+                return json.dumps({'Command':{'CommandId':'table-test'}})
+            self.invoke(p,'send',fake,'table')
+            self.assertEqual((p/'execution.json').read_bytes(),before)
+
+    def test_table_profile_insufficient_time_creates_no_intent(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p);(p/'host-template.sh').write_text('echo table')
+            def fake(args,**kwargs):
+                self.assertIn('get-caller-identity',args)
+                return json.dumps({'Account':'123'})
+            with self.assertRaises(AssertionError):self.invoke(p,'send',fake,'table')
+            self.assertFalse((p/'send-intent.json').exists())

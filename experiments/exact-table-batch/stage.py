@@ -131,7 +131,7 @@ def render(commit, url, zip_sha256, binary_sha256, image):
     script += " for name in ('host.sh','ready.sh','table-gate'):\n"
     script += "  stream.write(hashlib.sha256((root/name).read_bytes()).hexdigest()+'  '+name+'\\n')\n"
     script += "QSB_TABLE_STAGE\n"
-    script += 'bash /opt/qsb-a10g-gate/ready.sh "$DEADLINE"\n'
+    script += 'timeout --signal=TERM --kill-after=5s 190 bash /opt/qsb-a10g-gate/ready.sh "$DEADLINE"\n'
     script += 'bash /opt/qsb-a10g-gate/host.sh ' + shlex.quote(image) + ' "$DEADLINE"\n'
     require(len(script.encode()) <= 60000, "SSM handoff too large")
     return script

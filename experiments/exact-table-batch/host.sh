@@ -18,7 +18,7 @@ finish() {
  timeout --signal=TERM --kill-after=2s 10 docker rm -f qsb-table-gate > "$results/cleanup.log" 2>&1
  cleanup_status=$?
  printf '%s\n' "$cleanup_status" > "$results/cleanup-exit-code.txt"
-python3 - "$results" <<'QSB_ENVELOPE'
+timeout --signal=TERM --kill-after=5s 30 python3 - "$results" <<'QSB_ENVELOPE'
 import base64,gzip,hashlib,json,pathlib,sys
 root=pathlib.Path(sys.argv[1]);files={p.name:p.read_text() for p in root.iterdir() if p.is_file()}
 raw=json.dumps(files).encode()
