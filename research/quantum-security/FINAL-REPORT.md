@@ -76,6 +76,11 @@ used.
    full 880-op byte-model run with the stated top-stack layout and granted
    pinning outcomes. Arbitrary `scriptSig` extraction, later selections,
    signature semantics, and Core refinement remain open.
+   A further Lean theorem removes that starting-layout premise *inside the
+   byte model*: any successful run from an arbitrary initial byte stack and
+   Boolean outcome list forces three top cells and two true pinning outcomes,
+   then the same first lock-commitment origin. It does not justify those
+   outcomes against Core or model `scriptSig` execution.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
    altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
@@ -102,7 +107,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 285 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 291 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

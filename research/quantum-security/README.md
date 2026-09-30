@@ -35,8 +35,8 @@ shape is explicit; the Core tests do not execute the complete lock. See
 the 150 cells at depths 152–301 are 20-byte commitments, and every shallower
 lock cell has another length. For a first signed roll at depth `153 + i`,
 `0 ≤ i < 150`, the selected cell comes from that fixed commitment window,
-independent of the lower witness stack. This is a local origin fact; the
-parser-to-roll-index and later selection obligations remain open.
+independent of the lower witness stack. The parser-to-roll-index link is
+proved below within the byte model; later selection obligations remain open.
 `QSB/FirstNumericRange.lean` closes that parser-to-roll-index link for all
 nonnegative first-index values below 152 in the byte model: `OP_ADD` produces
 offset `151+n`, and a matching `HASH160` result from the first signed roll
@@ -56,6 +56,11 @@ must equal `2+i` for a fixed commitment `152+i`, with `i<150`.
 comparison from every successful run of the full 880-op byte program under
 the specified top-stack layout and granted pinning outcomes. Arbitrary
 `scriptSig` extraction, later selections, and Core refinement remain open.
+`QSB/PinningShape.lean` removes that layout premise within the byte model:
+success from any initial byte stack and Boolean outcome list forces the top
+three cells and two true pinning outcomes, then the same first lock commitment
+origin. This says nothing about how a real `scriptSig` produces the initial
+stack or how Core decides the signature outcomes.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as

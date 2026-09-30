@@ -18,6 +18,7 @@ import QSB.FirstNegativeRange
 import QSB.ByteIndexSign
 import QSB.FirstNegativeAll
 import QSB.FirstAcceptedOrigin
+import QSB.PinningShape
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -292,6 +293,12 @@ import QSB.Reduction
 #print axioms QSB.FirstAcceptedOrigin.successful_first_selection_prefix_origin
 #print axioms QSB.FirstAcceptedOrigin.accepted_postindex_tail_small
 #print axioms QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin
+#print axioms QSB.PinningShape.accepted_has_pinning_prefix
+#print axioms QSB.PinningShape.accepted_pinning_input_shape
+#print axioms QSB.PinningShape.empty_post_pinning_first_roll_fails
+#print axioms QSB.PinningShape.two_cell_initial_stack_cannot_accept
+#print axioms QSB.PinningShape.accepted_initial_shape
+#print axioms QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

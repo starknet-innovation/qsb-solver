@@ -304,6 +304,14 @@
 'QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.PinningShape.accepted_has_pinning_prefix' depends on axioms: [propext, Quot.sound]
+'QSB.PinningShape.accepted_pinning_input_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PinningShape.empty_post_pinning_first_roll_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PinningShape.two_cell_initial_stack_cannot_accept' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PinningShape.accepted_initial_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

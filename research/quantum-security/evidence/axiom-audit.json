@@ -1,5 +1,5 @@
 {
-  "theorem_count": 285,
+  "theorem_count": 291,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -816,6 +816,35 @@
       "propext"
     ],
     "QSB.Multisig.too_many_signatures_fail": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.accepted_has_pinning_prefix": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.accepted_initial_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.accepted_pinning_input_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.empty_post_pinning_first_roll_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningShape.two_cell_initial_stack_cannot_accept": [
       "Classical.choice",
       "Quot.sound",
       "propext"
