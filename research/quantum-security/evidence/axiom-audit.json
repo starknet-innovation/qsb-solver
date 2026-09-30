@@ -1,5 +1,5 @@
 {
-  "theorem_count": 162,
+  "theorem_count": 169,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -121,6 +121,7 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FirstOvershoot.before_first_comparison_split": [],
     "QSB.FirstOvershoot.byte_roll_matches_list_roll": [
       "Classical.choice",
       "Quot.sound",
@@ -134,6 +135,12 @@
       "propext"
     ],
     "QSB.FirstOvershoot.first_commitment_is_twenty_bytes": [
+      "propext"
+    ],
+    "QSB.FirstOvershoot.first_comparison_lead_opcodes": [],
+    "QSB.FirstOvershoot.first_comparison_lead_reaches_opening": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.FirstOvershoot.first_index_prefix_opcodes": [],
@@ -214,6 +221,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_any_marker_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_before_first_comparison": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.oversized_external_initial_stack_rejected": [
       "Classical.choice",
       "Quot.sound",
@@ -258,6 +280,7 @@
     ],
     "QSB.FirstOvershoot.segment_is_first_two_selection_prefix": [],
     "QSB.FirstOvershoot.segment_split": [],
+    "QSB.FirstOvershoot.segment_split_comparison": [],
     "QSB.FirstOvershoot.segment_split_first_index": [],
     "QSB.FirstOvershoot.shifted_last_from_any_tail": [
       "propext"

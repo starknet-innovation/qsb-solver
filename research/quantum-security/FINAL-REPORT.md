@@ -33,10 +33,12 @@ used.
 3. `OP_MIN` alone does not confine selection to intended pools. A generated
    Lean trace and truncated Core tests show the first signed roll can select
    an external cell and pass a self-chosen `HASH160` comparison. A new byte
-   theorem covers the matching-marker case with any parsed first-index value
+   theorem covers any marker bytes and any parsed first-index value
    at least 152 (including nonminimal encodings in the byte model), arbitrary
-   bytes in eight following cells and a tail of at most 680 cells: the next fixed roll
-   selects a 20-byte lock commitment as a numeric index, so `OP_MIN` fails.
+   bytes in eight following cells and a tail of at most 680 cells. A marker
+   mismatch fails the first `HASH160` comparison. With a matching marker, the
+   next fixed roll selects a 20-byte lock commitment as a numeric index, so
+   `OP_MIN` fails.
    Lean now connects this to the full byte-model program from an initial
    stack of two pinning keys followed by that exact marker/index layout,
    granting true outcomes for both pinning checks and arbitrary later
@@ -71,7 +73,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 162 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 169 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

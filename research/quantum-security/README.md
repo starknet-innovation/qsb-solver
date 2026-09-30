@@ -17,10 +17,11 @@ an attacker-supplied cell. Lean checks that a self-chosen commitment can pass
 the first HASH160 comparison. `QSB/FirstOvershoot.lean` proves a stronger
 byte-level result for the full generated program and this initial-stack
 family: with any parsed first-index value at least 152, including nonminimal
-encodings accepted by the model, arbitrary pinning-key bytes, a matching external commitment,
-arbitrary bytes in the eight following cells, and up to 680 later cells, the
-next fixed roll reaches a 20-byte lock commitment and the following numeric
-parse fails. The byte model grants both pinning checks true and leaves later
+encodings accepted by the model, arbitrary pinning-key bytes, any external
+commitment bytes, arbitrary bytes in the eight following cells, and up to 680
+later cells, the program rejects. A mismatched marker fails the first hash
+comparison; a matching one reaches a 20-byte lock commitment at the next fixed
+roll and fails the following numeric parse. The byte model grants both pinning checks true and leaves later
 signature outcomes arbitrary. Pinned Core tests accept truncated locks
 immediately before that `OP_MIN` and reject when it is added for canonical
 152, nonminimal `980000`, and four-byte `ffffff7f`. The initial-stack

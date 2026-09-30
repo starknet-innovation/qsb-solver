@@ -135,13 +135,19 @@
 'QSB.FirstOvershoot.oversized_index_min_step' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.first_index_prefix_opcodes' does not depend on any axioms
 'QSB.FirstOvershoot.segment_split_first_index' does not depend on any axioms
+'QSB.FirstOvershoot.first_comparison_lead_opcodes' does not depend on any axioms
+'QSB.FirstOvershoot.before_first_comparison_split' does not depend on any axioms
 'QSB.FirstOvershoot.oversized_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.first_comparison_lead_reaches_opening' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_before_first_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.first_selection_prefix_opcodes' does not depend on any axioms
 'QSB.FirstOvershoot.segment_split' does not depend on any axioms
+'QSB.FirstOvershoot.segment_split_comparison' does not depend on any axioms
 'QSB.FirstOvershoot.overshoot_suffix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.first_selection_reaches_forced_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.matched_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.oversized_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_any_marker_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.generated_program_split' does not depend on any axioms
 'QSB.FirstOvershoot.matched_first_overshoot_cannot_finish' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails' depends on axioms: [propext,
@@ -149,6 +155,9 @@
  Quot.sound]
 'QSB.FirstOvershoot.matched_external_initial_stack_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.oversized_external_initial_stack_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
