@@ -1,5 +1,5 @@
 {
-  "theorem_count": 589,
+  "theorem_count": 593,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2183,6 +2183,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.messageTargets_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.min_roll_bounds": [
       "propext"
     ],
@@ -2204,12 +2209,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.opposite_points_distinct_messages": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.public_recovery_for_any_message": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.public_scalar_satisfies": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.recovery_iff_message_for_point": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.recovery_in_messageTargets": [
       "Classical.choice",
       "Quot.sound",
       "propext"

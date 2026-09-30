@@ -1,0 +1,19 @@
+{
+  "scope": "public disposable secp256k1 algebra; no transaction or SHA256d preimage",
+  "pinned_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "observed_app_head": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+  "public_fixture_scalars": {
+    "x": 7,
+    "k": 3,
+    "s": 11
+  },
+  "r_hex": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+  "signature_hex": "3026022100f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f902010b01",
+  "public_key_hex": "025cbdf0646e5db4eaa398f365f2ea7a0e3d419b7e0330e39ce92bddedcac4f9bc",
+  "message_scalar_positive_hex": "2fac39f4ff92aa8dff91d35633b2c0d3266b906832ef2dce94b2fe4f875a4819",
+  "message_scalar_negative_hex": "2fac39f4ff92aa8dff91d35633b2c0d3266b906832ef2dce94b2fe4f875a47d7",
+  "messages_distinct": true,
+  "both_ecdsa_verify": true,
+  "both_recover_same_key": true
+}

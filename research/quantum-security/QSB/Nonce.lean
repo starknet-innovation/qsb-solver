@@ -2,6 +2,7 @@ import Mathlib.Algebra.Field.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 import Mathlib.Algebra.Module.Basic
+import Mathlib.Data.Finset.Card
 
 /-!
 Scalar equation underlying a fixed ECDSA signature and a chosen recovery point.
@@ -80,5 +81,56 @@ theorem public_recovery_for_any_message (r s : F) (R Z : G) (hr : r ≠ 0) :
   unfold RecoveryEquation
   rw [smul_smul, mul_inv_cancel₀ hr, one_smul]
   exact (sub_add_cancel (s • R) Z).symm.trans (add_comm _ _)
+
+/-- For a fixed public key and one ECDSA recovery point, the message group
+element is uniquely determined. A different admissible recovery point may
+produce a different message even when the signature and key are unchanged. -/
+def messageForPoint (r s : F) (R Q : G) : G :=
+  s • R - r • Q
+
+theorem recovery_iff_message_for_point (r s : F) (R Z Q : G) :
+    RecoveryEquation r s R Z Q ↔ Z = messageForPoint r s R Q := by
+  unfold RecoveryEquation messageForPoint
+  constructor
+  · intro h
+    exact (eq_sub_iff_add_eq).mpr h.symm
+  · intro h
+    rw [h]
+    exact (sub_add_cancel (s • R) (r • Q)).symm
+
+/-- If both `R` and `-R` are admissible for the same signature scalar `r`,
+they give two different message targets unless `sR` is 2-torsion. On
+secp256k1 a point and its negation share an x-coordinate; admissibility and
+the at-most-four-point count require separate curve/parser refinement. -/
+theorem opposite_points_distinct_messages (r s : F) (R Q : G)
+    (notTwoTorsion : s • R ≠ -(s • R)) :
+    messageForPoint r s R Q ≠ messageForPoint r s (-R) Q := by
+  intro equal
+  unfold messageForPoint at equal
+  rw [smul_neg] at equal
+  have same : s • R = -(s • R) := by
+    have h := congrArg (fun x : G => x + r • Q) equal
+    simpa using h
+  exact notTwoTorsion same
+
+/-- A finite set of admissible recovery points gives at most that many
+message group-element targets for a fixed signature and key. This is the
+right target-set interface for a same-key replay analysis; it does not count
+the actual secp256k1 recovery points or bound quantum hash queries. -/
+def messageTargets [DecidableEq G] (r s : F) (Q : G)
+    (points : Finset G) : Finset G :=
+  points.image (fun R => messageForPoint r s R Q)
+
+theorem messageTargets_card_le [DecidableEq G] (r s : F) (Q : G)
+    (points : Finset G) :
+    (messageTargets r s Q points).card ≤ points.card := by
+  exact Finset.card_image_le
+
+theorem recovery_in_messageTargets [DecidableEq G] (r s : F) (Q Z R : G)
+    (points : Finset G) (present : R ∈ points)
+    (verified : RecoveryEquation r s R Z Q) :
+    Z ∈ messageTargets r s Q points := by
+  rw [(recovery_iff_message_for_point r s R Z Q).mp verified]
+  exact Finset.mem_image_of_mem _ present
 
 end QSB

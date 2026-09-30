@@ -445,6 +445,15 @@ distinct-key and same-key events:
 The published two-distinct-input QROM result could address only the distinct
 branch after its other game hypotheses are met. The same-key branch needs a
 separate argument; no nontrivial bound is established for either branch.
+In particular, a same-key replay is not limited to identical sighash digests.
+For a fixed ECDSA signature and public key, opposite admissible recovery
+points can yield two different verified message scalars. Lean proves the
+finite-recovery-point group-element target-set algebra, and a pinned public
+secp256k1 fixture verifies both messages for one signature and key. The fixture
+supplies neither a SHA256d preimage nor an accepted QSB spend. A QROM argument
+must bound hits to the full admissible message-target set; a collision-only
+replay event is too narrow. The actual secp256k1 point count, Core digest
+conversion and transaction refinement remain open.
 
 The closed DER-32 *syntax count expression* has density
 `780555 / 2^65` (about `2^-45.426`), and the analogous DER-20 expression is
@@ -472,9 +481,10 @@ spend bound, and they do not analyze adaptive quantum access to R160.
 2. Prove a quantum query-success bound for the *joint* SHA-256/SHA256d/HASH160
    oracle game after adaptive honest disclosures. It must cover known good
    puzzle inputs, key reuse, equal pin/final keys, variable selected subsets,
-   accepted key encodings, sighash collisions, multiple vaults, and one shared
-   query budget. Standalone unstructured-search or two-distinct-input results
-   do not by themselves meet these hypotheses.
+   accepted key encodings, sighash collisions and other same-key ECDSA
+   recovery targets, multiple vaults, and one shared query budget. Standalone
+   unstructured-search or two-distinct-input results do not by themselves meet
+   these hypotheses.
 3. Refine the Lean projection and acceptance predicates to Core byte parsing,
    consensus and the chosen chain state. Distinguish consensus validity from
    default relay and miner inclusion; verify the deployed binary if a claim

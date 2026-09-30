@@ -291,11 +291,20 @@ density calculation is neither a lower bound on attack work nor an upper bound
 on QSB forgery probability. No multiplication of pinning and round probabilities
 is justified by separate-looking code paths.
 The `NovelTwoPuzzle` event asks for two DER-valid key hashes, but a new
-transaction might reuse a previously successful key if its fixed-signature
-legacy sighash collides or has an overlooked serialization equivalence. It is
-therefore a joint search-or-replay target, not necessarily two fresh independent
-DER hits. Bounding it must include the shared hash oracles, sighash collisions,
-all accepted public-key encodings, and adaptive disclosed subsets.
+transaction might reuse a previously successful key. Exact legacy sighash
+replay and serialization equivalence are possible routes. Moreover, even with
+*different* message scalars, one fixed ECDSA signature and public key can
+verify through different admissible recovery points: `R` and `-R` share an
+x-coordinate and hence the same `r`. The pinned secp256k1 fixture in
+`evidence/ecdsa-replay-targets.json` exhibits this algebraic case, not a QSB
+spend or a transaction preimage. A same-key bound must target the finite set
+of message scalars permitted by all admissible recovery points, after Core's
+hash-to-scalar conversion; it cannot classify every new-message replay as a
+hash collision. The actual admissible-point count and Core parser bridge remain
+unproved. The event is therefore a joint search-or-replay target, not
+necessarily two fresh independent DER hits. Bounding it must include the
+shared hash oracles, sighash correlations, all accepted public-key encodings,
+and adaptive disclosed subsets.
 It also does not require the pin and final-round key bytes to be distinct; a
 distinct-input QROM theorem cannot cover their equality case without a
 separate argument.
