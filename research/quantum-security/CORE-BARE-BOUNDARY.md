@@ -60,5 +60,7 @@ exact bytecode decoding, ScriptNum and `OP_ROLL`, 520-byte element and
 externally supplied Boolean signature outcomes and does not model
 FindAndDelete, sighash, DER/hashtype/key parsing, or ECDSA. Therefore the
 source inspection and this Lean composition do **not** set the game's
-`ExtractionGap` to zero. Later HORS selections, final signature provenance,
-and the joint quantum hash bound remain independent open obligations.
+`ExtractionGap` to zero. Later full-run byte-model theorems now identify the
+seven final HORS openings and the final signature-source slots from an
+arbitrary initial byte stack. Core execution and signature-checker refinement,
+the nonce and puzzle relations, and the joint quantum hash bound remain open.
