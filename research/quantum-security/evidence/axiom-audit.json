@@ -1,5 +1,5 @@
 {
-  "theorem_count": 325,
+  "theorem_count": 338,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -191,6 +191,57 @@
     ],
     "QSB.ByteIndexSign.parsed_bytes_are_short": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_checksigverify_tail": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_dup_sha256_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_generated_final_witness_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_late_final_witness_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_late_preserves_witness_option": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.final_suffix_rejects_empty_stack": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.generated_late_final_check_split": [],
+    "QSB.ByteLatePuzzle.generated_late_final_suffix": [],
+    "QSB.ByteLatePuzzle.generated_late_ops": [],
+    "QSB.ByteLatePuzzle.late_indices_decode": [
       "propext"
     ],
     "QSB.ByteLayout.comparisons_follow_hash160": [],

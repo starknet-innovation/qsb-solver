@@ -119,6 +119,12 @@ For a pre-suffix stack `first :: rest`, the ten signature slots retain
 signature and dummy bytes within the pre-suffix stack, but does not identify
 their earlier selection sources. The Boolean outcome remains external to
 Core's signature checker.
+`QSB/ByteLatePuzzle.lean` now carries that result back across the exact seven
+opcodes after the final bonus roll. Any post-bonus byte stack that completes
+the generated suffix supplies its cells 0–9 as the final signatures and its
+empty cell 10 as NULLDUMMY. This is independent of the earlier witness stack
+shape, but it does not classify the signed/bonus selections that filled those
+slots or prove Core's signature-verification result.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

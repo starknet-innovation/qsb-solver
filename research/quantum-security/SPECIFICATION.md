@@ -126,6 +126,12 @@ successful 10-of-10 match cannot skip a key and must verify each corresponding
 pair. This does not establish that the ten signature cells arose from the
 intended dummy pool or that Core's byte-level verifier equals the abstract
 pair predicate.
+The exact byte-model suffix from immediately after the last final-round bonus
+roll sharpens this source statement: for any stack at that boundary whose
+remaining program succeeds, its cells 0–9 become the final signature slots,
+and cell 10 becomes the empty NULLDUMMY slot. The intervening late puzzle
+check and deep key rolls do not change those eleven sources. Their provenance
+through the preceding signed and bonus selections remains unproved.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

@@ -23,6 +23,7 @@ import QSB.FirstAcceptedOrigin
 import QSB.PinningShape
 import QSB.BareBoundary
 import QSB.ByteFinalCounts
+import QSB.ByteLatePuzzle
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -337,6 +338,19 @@ import QSB.Reduction
 #print axioms QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome
 #print axioms QSB.ByteFinalCounts.accepted_true_final_suffix
 #print axioms QSB.ByteFinalCounts.accepted_true_whole_program_final_counts
+#print axioms QSB.ByteLatePuzzle.generated_late_ops
+#print axioms QSB.ByteLatePuzzle.late_indices_decode
+#print axioms QSB.ByteLatePuzzle.accepted_dup_sha256_shape
+#print axioms QSB.ByteLatePuzzle.accepted_checksigverify_tail
+#print axioms QSB.ByteLatePuzzle.accepted_late_preserves_witness_option
+#print axioms QSB.ByteLatePuzzle.accepted_late_final_witness_origin
+#print axioms QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty
+#print axioms QSB.ByteLatePuzzle.final_suffix_rejects_empty_stack
+#print axioms QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty
+#print axioms QSB.ByteLatePuzzle.generated_late_final_suffix
+#print axioms QSB.ByteLatePuzzle.generated_late_final_check_split
+#print axioms QSB.ByteLatePuzzle.accepted_generated_final_witness_origins
+#print axioms QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

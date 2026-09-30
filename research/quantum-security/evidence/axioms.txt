@@ -358,6 +358,19 @@
 'QSB.ByteFinalCounts.accepted_true_whole_program_final_counts' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ByteLatePuzzle.generated_late_ops' does not depend on any axioms
+'QSB.ByteLatePuzzle.late_indices_decode' depends on axioms: [propext]
+'QSB.ByteLatePuzzle.accepted_dup_sha256_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_checksigverify_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_late_preserves_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_late_final_witness_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.final_suffix_rejects_empty_stack' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.generated_late_final_suffix' does not depend on any axioms
+'QSB.ByteLatePuzzle.generated_late_final_check_split' does not depend on any axioms
+'QSB.ByteLatePuzzle.accepted_generated_final_witness_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
