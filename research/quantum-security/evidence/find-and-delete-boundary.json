@@ -1,0 +1,59 @@
+{
+  "scope": "isolated bare legacy FindAndDelete cases, not QSB lock",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "signature_hex": "300602010102011101",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+  "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+  "cases": [
+    {
+      "name": "one_canonical_push",
+      "lock_hex": "0930060201010201110175ac",
+      "script_code_hex": "75ac",
+      "wrong_script_code_hex": "0930060201010201110175ac",
+      "correct_pubkey_hex": "03de89481c4418a36ae4a2975b72221b875fb8a0fee3b177975d1cdce04ef289cd",
+      "wrong_pubkey_hex": "02ffa4ff84fe428129b2fce4d4c70bfbcb9206a89e40f89ec568667e839cf8400d",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "b6262b77b71239901b2e9dba4bcb0ddf9150e4e89be1055c277ce2206b2bcc5a",
+      "negative_tx_sha256": "9b4e7cdfab0392036a599aba012929db848b5e4c848b7aa804d9457f4d3f0941"
+    },
+    {
+      "name": "two_canonical_pushes",
+      "lock_hex": "09300602010102011101750930060201010201110175ac",
+      "script_code_hex": "7575ac",
+      "wrong_script_code_hex": "09300602010102011101750930060201010201110175ac",
+      "correct_pubkey_hex": "03e8d1ffb19a9d960fd6737f905aa415f7325e9bd62ba7417cae5746c809b5769e",
+      "wrong_pubkey_hex": "02950acebe7ac39ceb86be956734093d480844f50132c8e96f996a95fe078b81e9",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "73399c36605b53c08ea419848a2dbeb82227986ada3372caa5cf53e988a3cccc",
+      "negative_tx_sha256": "3ae78434dfc10da6319a2daec7a18b045cf4b6c296a1cef886212837c39de6f6"
+    },
+    {
+      "name": "embedded_pattern_inside_push",
+      "lock_hex": "0caa09300602010102011101bb75ac",
+      "script_code_hex": "0caa09300602010102011101bb75ac",
+      "wrong_script_code_hex": "0caabb75ac",
+      "correct_pubkey_hex": "02ec0b96290ee025a4bc9ded606ce5e64639ae4a0569c38bfdd0da22ac00d6fbb4",
+      "wrong_pubkey_hex": "02be842a3d1cdb812ba1fe1096815875defb817e20e2751ddf0682d886845c97d0",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "d6488c53689db0606f323ce5b6f444bddb96104e36332cb9a49f97e598c7d54c",
+      "negative_tx_sha256": "e3d69adfc8312c5b57495c31489461987b2e149eaa957afd59a0e99b45d98d3d"
+    },
+    {
+      "name": "noncanonical_pushdata1",
+      "lock_hex": "4c0930060201010201110175ac",
+      "script_code_hex": "4c0930060201010201110175ac",
+      "wrong_script_code_hex": "75ac",
+      "correct_pubkey_hex": "02f0125992d73c9fd20e378cff906844e7170585edcb4a7bac784bd20974c616b1",
+      "wrong_pubkey_hex": "03de89481c4418a36ae4a2975b72221b875fb8a0fee3b177975d1cdce04ef289cd",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "8e9b2270e3589eff3d4292d95b37dd1d12040e4b142235b1a0d16b4af6421745",
+      "negative_tx_sha256": "b6262b77b71239901b2e9dba4bcb0ddf9150e4e89be1055c277ce2206b2bcc5a"
+    }
+  ]
+}

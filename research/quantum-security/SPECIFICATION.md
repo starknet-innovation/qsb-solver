@@ -171,6 +171,11 @@ The Core-shaped equal-count matching-loop theorem provides a narrower
 interface: a successful ten-pair scan and a per-pair verifier sound for syntax
 imply that the reached bonus slots satisfy the syntax predicate. Equality of
 that abstract scan with the actual Core check remains an external obligation.
+`CORE-FINAL-MATCH.md` states the source-level refinement contract, including
+Core's sequential opcode-boundary FindAndDelete before its ten-pair scan. Four
+isolated pinned-Core differential cases corroborate the app's FindAndDelete
+behavior on canonical, repeated, embedded-pattern, and noncanonical pushes;
+they do not determine the full QSB scriptCode for arbitrary witnesses.
 The pinned Core encoding gate permits an empty signature, even though an empty
 signature cannot make an ECDSA pair check succeed. The refined Lean interface
 therefore states nonemptiness and encoding acceptance separately for every

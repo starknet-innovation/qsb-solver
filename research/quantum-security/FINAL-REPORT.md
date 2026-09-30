@@ -279,6 +279,13 @@ conditional interface: successful pair verification must imply both nonempty
 signature bytes and acceptance by that gate before it concludes strict DER and
 the nine-position shape. The corpus does not prove the interface for Core's
 full final multisignature scan or all possible signature bytes.
+Four further isolated `FindAndDelete` cases each pass with a public key
+recovered for the app's opcode-boundary scriptCode and fail with a key
+recovered for a deliberately wrong scriptCode. They cover repeated canonical
+signature pushes, an embedded byte pattern, and noncanonical `PUSHDATA1`.
+This corroborates the selected source behavior but does not compute the final
+QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
+remaining Core-to-Lean final-checker bridge.
 An independent conservative count now avoids that exact-count premise for the
 Lean predicate: among all `256^20` twenty-byte strings, at most
 `12·256^14` can satisfy the required header, R-length, S-tag, and S-length

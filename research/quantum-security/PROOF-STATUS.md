@@ -160,6 +160,16 @@ cases and the encoding gate accepts 43 because Core permits empty signatures.
 This is finite differential evidence for the parser boundary, not a proof for
 all byte strings, final multisignature success, or a QSB-lock spend.
 
+`find-and-delete-boundary.json` records four isolated legacy `CHECKSIG` lock
+shapes, each with a matching recovered key and a mismatching negative control.
+Core accepts the four keys recovered from the app's opcode-boundary
+`find_and_delete` scriptCode and rejects all four recovered from deliberately
+wrong scriptCodes. Canonical pushes are removed, including two occurrences;
+a signature-push pattern embedded within another push and a noncanonical
+`PUSHDATA1` push remain. This corroborates selected source-level behavior,
+not a complete FindAndDelete equivalence or the QSB final scriptCode. The
+exact refinement contract is in `CORE-FINAL-MATCH.md`.
+
 `selection-prefix.json` independently checks first-selection reachability with
 Core v27.2. Disposable test locks are **truncated** at selected instructions
 from the first signed-pool `OP_ROLL` (byte offset 4783) through the next
