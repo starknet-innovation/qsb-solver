@@ -1,5 +1,5 @@
 {
-  "theorem_count": 470,
+  "theorem_count": 477,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -330,6 +330,31 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_cap_pair_stack": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_roll_index": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusAccepted.generated_bonus_suffix": [],
+    "QSB.FinalBonusAccepted.generated_first_bonus_prelude": [],
     "QSB.FinalBonusBoundary.deep_roll_ninth_source": [
       "Classical.choice",
       "Quot.sound",

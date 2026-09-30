@@ -30,6 +30,7 @@ import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
 import QSB.FinalSignedChain
+import QSB.FinalBonusAccepted
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -489,6 +490,13 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedChain.generated_whole_signed_boundary
 #print axioms QSB.FinalSignedChain.accepted_whole_program_final_signed_openings
 #print axioms QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty
+#print axioms QSB.FinalBonusAccepted.generated_first_bonus_prelude
+#print axioms QSB.FinalBonusAccepted.generated_bonus_suffix
+#print axioms QSB.FinalBonusAccepted.accepted_cap_pair_stack
+#print axioms QSB.FinalBonusAccepted.accepted_roll_index
+#print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources
+#print axioms QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds
+#print axioms QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
