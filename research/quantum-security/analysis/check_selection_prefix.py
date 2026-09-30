@@ -89,7 +89,7 @@ def main():
 
     indices = builder.compute_witness_indices({0: list(range(9)), 1: list(range(9))})
 
-    def witness(marker, pin_key):
+    def witness(marker, pin_key, first_index):
         cells = []  # Bottom-to-top, using arbitrary disposable round material.
         for ri in (1, 0):
             cells += [b"\x51", b"\x52"]  # Puzzle and nonce keys, unused by the prefix.
@@ -97,7 +97,7 @@ def main():
             cells += [b"\x54"] * (7 if ri else 8)  # HORS openings, unused.
             iv = list(indices[ri])
             if ri == 0:
-                iv[0] = 152
+                iv[0] = first_index
             for j in range(8, -1, -1):
                 cells.append(iv[j])
                 if ri == 0 and j == 1:
@@ -109,22 +109,30 @@ def main():
         return bytes(data)
 
     results = []
-    for name, prefix_len, marker, expected in (
-        ("roll_nonzero_external_marker", roll_prefix_len, b"\xa5" * 20, True),
-        ("roll_zero_external_marker", roll_prefix_len, b"\x00" * 20, False),
+    for name, prefix_len, marker, first_index, expected in (
+        ("roll_nonzero_external_marker", roll_prefix_len, b"\xa5" * 20, 152, True),
+        ("roll_zero_external_marker", roll_prefix_len, b"\x00" * 20, 152, False),
         ("comparison_self_chosen_commitment", comparison_prefix_len,
-         ec.hash160(b"\x0a"), True),
+         ec.hash160(b"\x0a"), 152, True),
         ("comparison_wrong_commitment", comparison_prefix_len,
-         b"\x00" * 20, False),
+         b"\x00" * 20, 152, False),
         ("second_index_roll_reaches_commitment", second_roll_prefix_len,
-         ec.hash160(b"\x0a"), True),
+         ec.hash160(b"\x0a"), 152, True),
         ("before_second_index_min", before_min_prefix_len,
-         ec.hash160(b"\x0a"), True),
+         ec.hash160(b"\x0a"), 152, True),
         ("second_index_min_rejects", second_min_prefix_len,
-         ec.hash160(b"\x0a"), False),
+         ec.hash160(b"\x0a"), 152, False),
+        ("nonminimal_index_before_second_min", before_min_prefix_len,
+         ec.hash160(b"\x0a"), b"\x98\x00\x00", True),
+        ("nonminimal_index_second_min_rejects", second_min_prefix_len,
+         ec.hash160(b"\x0a"), b"\x98\x00\x00", False),
+        ("large_index_before_second_min", before_min_prefix_len,
+         ec.hash160(b"\x0a"), b"\xff\xff\xff\x7f", True),
+        ("large_index_second_min_rejects", second_min_prefix_len,
+         ec.hash160(b"\x0a"), b"\xff\xff\xff\x7f", False),
     ):
         lock = test_lock(prefix_len)
-        tx.inputs[1].script_sig = witness(marker, pin_key_for(lock))
+        tx.inputs[1].script_sig = witness(marker, pin_key_for(lock), first_index)
         payload = f"{tx.serialize().hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
         result = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
@@ -137,6 +145,8 @@ def main():
         accepted = result.returncode == 0 and result.stdout.strip() == "core-27.2-api2-all-inputs-valid"
         assert accepted == expected, (name, result)
         results.append({"name": name, "prefix_bytes": prefix_len,
+                        "first_index": first_index if isinstance(first_index, int)
+                        else first_index.hex(),
                         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
                         "accepted": accepted, "expected": expected,
                         "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest()})

@@ -138,6 +138,11 @@ theorem first_index_roll (external : Bytes) (tail : List Bytes) :
       some ([0x98, 0x00] :: fixedRegion ++ external :: tail) := by
   rfl
 
+theorem first_index_roll_raw (raw external : Bytes) (tail : List Bytes) :
+    KeyRolls.rollAt 302 (fixedRegion ++ raw :: external :: tail) =
+      some (raw :: fixedRegion ++ external :: tail) := by
+  rfl
+
 theorem external_commitment_roll (external : Bytes) (tail : List Bytes) :
     KeyRolls.rollAt 303
       ([0x98, 0x00] :: (fixedRegion ++ external :: tail)) =
@@ -202,10 +207,82 @@ theorem encode_303 : ByteIndex.encodeScriptNum 303 = some [0x2f, 0x01] := by dec
 theorem parse_303 : ByteIndex.parseScriptNum [0x2f, 0x01] = some 303 := by decide
 theorem parse_311 : ByteIndex.parseScriptNum [0x37, 0x01] = some 311 := by decide
 
+/-- The first signed selection normalizes every nonnegative ScriptNum value at
+least 152 to the same canonical two-byte value after `OP_MIN`, including
+nonminimal raw encodings accepted by the parser. -/
+theorem oversized_index_clamps_to_152 (raw : Bytes) (value : Int)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) :
+    (do
+      let cap ← ByteIndex.parseScriptNum [0x98, 0x00]
+      let index ← ByteIndex.parseScriptNum raw
+      ByteIndex.encodeScriptNum (min cap index)) = some [0x98, 0x00] := by
+  simp [ByteIndex.positive_152, parsed, min_eq_left large,
+    ByteIndex.encode_positive_152]
+
+theorem oversized_index_min_step (hashes : Hashes)
+    (raw : Bytes) (value : Int) (stack : List Bytes)
+    (outcomes : List Bool) (cost : Nat)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (budget : cost + 1 ≤ 201) :
+    step hashes .min
+      (State.mk ([0x98, 0x00] :: raw :: stack) outcomes cost) =
+      some (State.mk ([0x98, 0x00] :: stack) outcomes (cost + 1)) := by
+  unfold step
+  have within : ¬ (cost + 1 > 201) := by omega
+  simp [within, ByteIndex.positive_152, parsed,
+    min_eq_left large, ByteIndex.encode_positive_152]
+
 def forcedFailureSuffix : List Op :=
   [.roll, .push [0x2d, 0x01], .roll, .push [0x98, 0x00], .min]
 
 def firstSelectionPrefix : List Op := (ByteLayout.program.drop 308).take 12
+
+def firstIndexPrefix : List Op := (ByteLayout.program.drop 308).take 4
+
+theorem first_index_prefix_opcodes : firstIndexPrefix =
+    [.push [0x2e, 0x01], .roll, .push [0x98, 0x00], .min] := by decide
+
+theorem segment_split_first_index :
+    segment = firstIndexPrefix ++ segment.drop 4 := by decide
+
+theorem oversized_first_index_prefix (hashes : Hashes)
+    (raw external : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (value : Int)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 690) :
+    run hashes firstIndexPrefix
+      (State.mk (fixedRegion ++ raw :: external :: tail) outcomes 5) =
+      some (State.mk
+        ([0x98, 0x00] :: fixedRegion ++ external :: tail) outcomes 7) := by
+  rw [first_index_prefix_opcodes]
+  unfold run step
+  simp
+  constructor
+  · rw [fixed_region_length]
+    omega
+  · unfold run
+    rw [byte_roll_matches_list_roll hashes [0x2e, 0x01] 302
+      (fixedRegion ++ raw :: external :: tail) outcomes 5 (by decide) (by omega)]
+    rw [first_index_roll_raw]
+    simp
+    constructor
+    · rw [fixed_region_length]
+      omega
+    · unfold run
+      unfold step
+      simp
+      constructor
+      · rw [fixed_region_length]
+        omega
+      · unfold run
+        rw [oversized_index_min_step hashes raw value
+          (fixedRegion ++ external :: tail) outcomes 6 parsed large (by omega)]
+        simp
+        rw [fixed_region_length]
+        constructor
+        · omega
+        · rfl
 
 theorem first_selection_prefix_opcodes : firstSelectionPrefix =
     [.push [0x2e, 0x01], .roll, .push [0x98, 0x00], .min,
@@ -362,6 +439,36 @@ theorem matched_first_overshoot_segment_fails (hashes : Hashes)
     (overshoot_suffix_fails hashes (a :: b :: c :: d :: e :: f :: g :: tail)
       outcomes 13)
 
+theorem oversized_first_overshoot_segment_fails (hashes : Hashes)
+    (raw : Bytes) (value : Int) (a b c d e f g h : Bytes)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 680) :
+    run hashes segment
+      (State.mk
+        (fixedRegion ++ [raw, hashes.h160 h,
+          a, b, c, d, e, f, g, h] ++ tail) outcomes 5) = none := by
+  have canonical :
+      run hashes (segment.drop 4)
+        (State.mk
+          ([0x98, 0x00] :: fixedRegion ++
+            hashes.h160 h :: a :: b :: c :: d :: e :: f :: g :: h :: tail)
+          outcomes 7) = none := by
+    have rejected := matched_first_overshoot_segment_fails hashes
+      a b c d e f g h tail outcomes small
+    rw [segment_split_first_index, run_append] at rejected
+    simp only [List.append_assoc, List.cons_append, List.nil_append] at rejected
+    rw [oversized_first_index_prefix hashes [0x98, 0x00]
+      (hashes.h160 h) (a :: b :: c :: d :: e :: f :: g :: h :: tail)
+      outcomes 152 (by decide) (by omega) (by simp; omega)] at rejected
+    simpa only [Option.bind_some] using rejected
+  rw [segment_split_first_index, run_append]
+  simp only [List.append_assoc, List.cons_append, List.nil_append]
+  rw [oversized_first_index_prefix hashes raw
+    (hashes.h160 h) (a :: b :: c :: d :: e :: f :: g :: h :: tail)
+    outcomes value parsed large (by simp; omega)]
+  simpa only [Option.bind_some] using canonical
+
 theorem generated_program_split :
     ByteLayout.program =
       ByteLayout.program.take 308 ++ segment ++ ByteLayout.program.drop 325 := by
@@ -428,5 +535,48 @@ theorem matched_external_initial_stack_rejected (hashes : Hashes)
     outcomes
   simp only [List.length_append, List.length_cons, List.length_nil]
   omega
+
+/-- The same modeled full-lock rejection holds for every raw first index whose
+ScriptNum value is at least 152. This includes nonminimal encodings that the
+model parser accepts, and is conditional on the two pin signatures succeeding.
+It does not quantify over arbitrary unlocking scripts. -/
+theorem oversized_external_initial_stack_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (value : Int)
+    (a b c d e f g h : Bytes)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 680) :
+    run hashes ByteLayout.program
+      (State.mk
+        (nonce :: puzzle ::
+          ([raw, hashes.h160 h, a, b, c, d, e, f, g, h] ++ tail))
+        (true :: true :: outcomes) 0) = none := by
+  have pinning :
+      run hashes (ByteLayout.program.take 6)
+        (State.mk
+          (nonce :: puzzle ::
+            ([raw, hashes.h160 h, a, b, c, d, e, f, g, h] ++ tail))
+          (true :: true :: outcomes) 0) =
+        some (State.mk
+          ([raw, hashes.h160 h, a, b, c, d, e, f, g, h] ++ tail)
+          outcomes 5) := by
+    apply modeled_pinning_consumes_two_keys
+    simp only [List.length_append, List.length_cons, List.length_nil]
+    omega
+  have prefix_state := generated_prefix_after_pinning hashes
+    (State.mk
+      (nonce :: puzzle ::
+        ([raw, hashes.h160 h, a, b, c, d, e, f, g, h] ++ tail))
+      (true :: true :: outcomes) 0)
+    ([raw, hashes.h160 h, a, b, c, d, e, f, g, h] ++ tail)
+    outcomes pinning (by
+      simp only [List.length_append, List.length_cons, List.length_nil]
+      omega)
+  rw [generated_program_split, List.append_assoc, run_append, prefix_state]
+  simp only [Option.bind_some]
+  rw [← List.append_assoc]
+  rw [run_append, oversized_first_overshoot_segment_fails hashes raw value
+    a b c d e f g h tail outcomes parsed large small]
+  rfl
 
 end QSB.FirstOvershoot

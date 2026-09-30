@@ -119,6 +119,7 @@
 'QSB.FirstOvershoot.last_commitment_is_not_scriptnum' depends on axioms: [propext]
 'QSB.FirstOvershoot.shifted_last_from_any_tail' depends on axioms: [propext]
 'QSB.FirstOvershoot.first_index_roll' depends on axioms: [propext]
+'QSB.FirstOvershoot.first_index_roll_raw' depends on axioms: [propext]
 'QSB.FirstOvershoot.external_commitment_roll' depends on axioms: [propext]
 'QSB.FirstOvershoot.displaced_preimage_roll' depends on axioms: [propext]
 'QSB.FirstOvershoot.retained_index_roll' depends on axioms: [propext]
@@ -130,17 +131,26 @@
 'QSB.FirstOvershoot.encode_303' does not depend on any axioms
 'QSB.FirstOvershoot.parse_303' depends on axioms: [propext]
 'QSB.FirstOvershoot.parse_311' depends on axioms: [propext]
+'QSB.FirstOvershoot.oversized_index_clamps_to_152' depends on axioms: [propext, Quot.sound]
+'QSB.FirstOvershoot.oversized_index_min_step' depends on axioms: [propext, Quot.sound]
+'QSB.FirstOvershoot.first_index_prefix_opcodes' does not depend on any axioms
+'QSB.FirstOvershoot.segment_split_first_index' does not depend on any axioms
+'QSB.FirstOvershoot.oversized_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.first_selection_prefix_opcodes' does not depend on any axioms
 'QSB.FirstOvershoot.segment_split' does not depend on any axioms
 'QSB.FirstOvershoot.overshoot_suffix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.first_selection_reaches_forced_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.matched_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.generated_program_split' does not depend on any axioms
 'QSB.FirstOvershoot.matched_first_overshoot_cannot_finish' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.FirstOvershoot.matched_external_initial_stack_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_external_initial_stack_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

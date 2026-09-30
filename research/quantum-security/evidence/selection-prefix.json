@@ -17,6 +17,7 @@
     {
       "name": "roll_nonzero_external_marker",
       "prefix_bytes": 4784,
+      "first_index": 152,
       "test_lock_sha256": "c7477ee101c3d14c8860f6ec840c94cd65dadd14c620c734e5ad3315afd99356",
       "accepted": true,
       "expected": true,
@@ -25,6 +26,7 @@
     {
       "name": "roll_zero_external_marker",
       "prefix_bytes": 4784,
+      "first_index": 152,
       "test_lock_sha256": "c7477ee101c3d14c8860f6ec840c94cd65dadd14c620c734e5ad3315afd99356",
       "accepted": false,
       "expected": false,
@@ -33,6 +35,7 @@
     {
       "name": "comparison_self_chosen_commitment",
       "prefix_bytes": 4790,
+      "first_index": 152,
       "test_lock_sha256": "134fd0ff92a1a14aa2deac471fedd232dae8a7ec13f8aea8ae71f2bcbf60caff",
       "accepted": true,
       "expected": true,
@@ -41,6 +44,7 @@
     {
       "name": "comparison_wrong_commitment",
       "prefix_bytes": 4790,
+      "first_index": 152,
       "test_lock_sha256": "134fd0ff92a1a14aa2deac471fedd232dae8a7ec13f8aea8ae71f2bcbf60caff",
       "accepted": false,
       "expected": false,
@@ -49,6 +53,7 @@
     {
       "name": "second_index_roll_reaches_commitment",
       "prefix_bytes": 4795,
+      "first_index": 152,
       "test_lock_sha256": "53c8f33f29ddcb4c4a027792e5b2a08b1fd876b1ca9663f7fe426113eca1199a",
       "accepted": true,
       "expected": true,
@@ -57,6 +62,7 @@
     {
       "name": "before_second_index_min",
       "prefix_bytes": 4798,
+      "first_index": 152,
       "test_lock_sha256": "521fc8b2635f5d0bac4c404e67c2aebaf906be3b0fb0a230fb76892ccee7709c",
       "accepted": true,
       "expected": true,
@@ -65,10 +71,47 @@
     {
       "name": "second_index_min_rejects",
       "prefix_bytes": 4799,
+      "first_index": 152,
       "test_lock_sha256": "8dd1a5d8477b9dbc56285600985de0afd96d1fb8daa6f9453af5be4ed7b74291",
       "accepted": false,
       "expected": false,
       "transaction_sha256": "b314507cbd4dbfbf4a0a430cb44eaa690d782528b42bba3f0d34ad4ac7982e47"
+    },
+    {
+      "name": "nonminimal_index_before_second_min",
+      "prefix_bytes": 4798,
+      "first_index": "980000",
+      "test_lock_sha256": "521fc8b2635f5d0bac4c404e67c2aebaf906be3b0fb0a230fb76892ccee7709c",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "9b6013aeecb7d590fa13a913eb624d436f1930e94249e6e47aa79e45a6c7ffdf"
+    },
+    {
+      "name": "nonminimal_index_second_min_rejects",
+      "prefix_bytes": 4799,
+      "first_index": "980000",
+      "test_lock_sha256": "8dd1a5d8477b9dbc56285600985de0afd96d1fb8daa6f9453af5be4ed7b74291",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "b9465cee16922094a40a42fbceb218a460c9371e17a1246d05f8d513b8e5aec0"
+    },
+    {
+      "name": "large_index_before_second_min",
+      "prefix_bytes": 4798,
+      "first_index": "ffffff7f",
+      "test_lock_sha256": "521fc8b2635f5d0bac4c404e67c2aebaf906be3b0fb0a230fb76892ccee7709c",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "34a3ccc3eb11178459199844a8df4794b11e5562217f9121b2d7597d88a8ab3e"
+    },
+    {
+      "name": "large_index_second_min_rejects",
+      "prefix_bytes": 4799,
+      "first_index": "ffffff7f",
+      "test_lock_sha256": "8dd1a5d8477b9dbc56285600985de0afd96d1fb8daa6f9453af5be4ed7b74291",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "e8df90540246b927396cd6c4ce3eef00f51f2806b32090e413c9721896fa6ba6"
     }
   ]
 }

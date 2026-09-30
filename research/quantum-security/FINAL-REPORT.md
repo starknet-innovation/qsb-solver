@@ -33,15 +33,17 @@ used.
 3. `OP_MIN` alone does not confine selection to intended pools. A generated
    Lean trace and truncated Core tests show the first signed roll can select
    an external cell and pass a self-chosen `HASH160` comparison. A new byte
-   theorem covers the matching-marker case with arbitrary bytes in eight
-   following cells and a tail of at most 680 cells: the next fixed roll
+   theorem covers the matching-marker case with any parsed first-index value
+   at least 152 (including nonminimal encodings in the byte model), arbitrary
+   bytes in eight following cells and a tail of at most 680 cells: the next fixed roll
    selects a 20-byte lock commitment as a numeric index, so `OP_MIN` fails.
    Lean now connects this to the full byte-model program from an initial
    stack of two pinning keys followed by that exact marker/index layout,
    granting true outcomes for both pinning checks and arbitrary later
    signature outcomes. This is one family of arbitrary byte values, not a
-   complete arbitrary-scriptSig extraction. Pinned Core prefixes accept
-   immediately before that `OP_MIN` and reject when it is added. These are
+   complete arbitrary-scriptSig extraction. Pinned Core prefixes for canonical
+   152, nonminimal `980000`, and four-byte `ffffff7f` accept immediately
+   before that `OP_MIN` and reject when it is added. These are
    truncated, puzzle-relaxed tests, not full-lock acceptance.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
@@ -69,7 +71,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 154 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 162 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

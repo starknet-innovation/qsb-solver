@@ -1,5 +1,5 @@
 {
-  "theorem_count": 154,
+  "theorem_count": 162,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -136,7 +136,11 @@
     "QSB.FirstOvershoot.first_commitment_is_twenty_bytes": [
       "propext"
     ],
+    "QSB.FirstOvershoot.first_index_prefix_opcodes": [],
     "QSB.FirstOvershoot.first_index_roll": [
+      "propext"
+    ],
+    "QSB.FirstOvershoot.first_index_roll_raw": [
       "propext"
     ],
     "QSB.FirstOvershoot.first_selection_prefix_opcodes": [],
@@ -210,6 +214,29 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FirstOvershoot.oversized_external_initial_stack_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_first_index_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_first_overshoot_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_index_clamps_to_152": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_index_min_step": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.parse_151": [
       "propext"
     ],
@@ -231,6 +258,7 @@
     ],
     "QSB.FirstOvershoot.segment_is_first_two_selection_prefix": [],
     "QSB.FirstOvershoot.segment_split": [],
+    "QSB.FirstOvershoot.segment_split_first_index": [],
     "QSB.FirstOvershoot.shifted_last_from_any_tail": [
       "propext"
     ],
