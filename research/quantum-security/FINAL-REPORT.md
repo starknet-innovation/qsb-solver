@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 510 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 517 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -260,6 +260,20 @@ success implies `sigSyntax`, then each bonus signature slot satisfies that
 predicate. The checked theorem combines this with the unopened-commitment
 origin to exclude bonus overshoots under the no-commitment condition. Matching
 the pair verifier and scan result to actual Core execution remains open.
+`QSB/DERSyntax.lean` now gives an executable source-shaped translation of
+[Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
+20-byte value has positive R/S byte lengths summing to 13 and the required
+six-byte header/length shape. The crafted overshoot signature is accepted by
+this predicate. A proof that this Lean predicate equals Core's compiled parser
+for every byte string, and a count of its entire 20-byte accepted set, remain
+open; the earlier `390405/2^65` figure is still conditional on that count
+correspondence.
+For the one literal disposable lock in `ByteLayout.program`, Lean checks that
+none of its 150 second-round commitments passes this DER predicate. It follows
+conditionally that a successful final matching scan with a DER-sound pair
+verifier cannot take either bonus commitment branch for that lock. This does
+not prove the same fact for all generated vaults, equate the predicate or scan
+with the compiled Core verifier, or supply a spend-probability bound.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

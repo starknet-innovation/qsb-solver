@@ -32,6 +32,8 @@ import QSB.FinalSignedLoop
 import QSB.FinalSignedChain
 import QSB.FinalBonusAccepted
 import QSB.FinalBonusSecond
+import QSB.DERSyntax
+import QSB.FinalBonusDER
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -531,6 +533,13 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax
 #print axioms QSB.FinalBonusSecond.matched_final_signature_has_syntax
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier
+#print axioms QSB.DERSyntax.valid_twenty_byte_lengths
+#print axioms QSB.DERSyntax.valid_twenty_byte_ranges
+#print axioms QSB.DERSyntax.valid_twenty_byte_header
+#print axioms QSB.DERSyntax.crafted_twenty_byte_signature_valid
+#print axioms QSB.DERSyntax.wrong_sequence_length_rejected
+#print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
+#print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

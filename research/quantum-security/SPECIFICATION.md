@@ -170,6 +170,11 @@ The Core-shaped equal-count matching-loop theorem provides a narrower
 interface: a successful ten-pair scan and a per-pair verifier sound for syntax
 imply that the reached bonus slots satisfy the syntax predicate. Equality of
 that abstract scan with the actual Core check remains an external obligation.
+For the one literal disposable lock in the Lean byte model, all 150
+second-round commitments fail a source-shaped strict DER predicate. Under a
+successful DER-sound ten-pair scan, neither final bonus index can reach a
+commitment in that lock. The claim does not quantify over other generated
+setups or replace compiled-Core refinement.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's

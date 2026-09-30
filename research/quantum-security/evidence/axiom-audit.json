@@ -1,5 +1,5 @@
 {
-  "theorem_count": 510,
+  "theorem_count": 517,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -330,6 +330,25 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.DERSyntax.crafted_twenty_byte_signature_valid": [
+      "propext"
+    ],
+    "QSB.DERSyntax.valid_twenty_byte_header": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERSyntax.valid_twenty_byte_lengths": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERSyntax.valid_twenty_byte_ranges": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERSyntax.wrong_sequence_length_rejected": [
+      "propext"
+    ],
     "QSB.FinalBonusAccepted.accepted_between_cap_index_le_152": [
       "Classical.choice",
       "Quot.sound",
@@ -430,6 +449,14 @@
       "propext"
     ],
     "QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusDER.generated_final_commitments_not_der": [
+      "propext"
+    ],
+    "QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching": [
       "Classical.choice",
       "Quot.sound",
       "propext"

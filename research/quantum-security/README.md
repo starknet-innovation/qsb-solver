@@ -187,6 +187,13 @@ commitments, conditional on an actual parser-syntax marginal of
 The conditional matching-loop theorem also derives bonus-slot syntax from a
 successful ten-pair scan when each successful pair check implies that syntax.
 Equating this scan and verifier with Core execution is still required.
+`QSB/DERSyntax.lean` adds a source-shaped strict DER byte predicate and proves
+the 20-byte R/S length and header constraints. Its equivalence to compiled
+Core and exact accepted-set cardinality remain open.
+`QSB/FinalBonusDER.lean` additionally checks that none of the 150 literal
+second-round commitments in the disposable generated lock matches that
+predicate. Its no-overshoot consequence still assumes a successful DER-sound
+ten-pair final scan and does not cover other vault setups.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
