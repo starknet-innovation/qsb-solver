@@ -94,7 +94,7 @@ def main():
         if args.mode=='arm':
             if s['phase']!='prepared': raise ValueError('Already armed or launched')
             # Start the fixed deadline before launch. Repeating arm is forbidden.
-            deadline=datetime.now(timezone.utc)+timedelta(minutes=25)
+            deadline=datetime.now(timezone.utc)+timedelta(minutes=60)
             s.update(deadline=int(deadline.timestamp()),phase='arming');save(path,s)
             archive=path.parent/'cleanup.zip'
             with zipfile.ZipFile(archive,'w') as z: z.write(Path(__file__).with_name('cleanup.py'),'cleanup.py')

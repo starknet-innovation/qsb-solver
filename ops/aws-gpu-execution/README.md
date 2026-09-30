@@ -4,7 +4,7 @@ Adapted from the completed qsb-app AWS execution controller at c8c6f21833798900a
 This operator-specific experiment uses one g5.xlarge in an explicitly authorized region (eu-west-1 or eu-west-2). No app activation.
 Before launch: verify price, effective quota, zero other test GPUs, clean pushed
 controller source and exact candidate attestation. Prepare creates dedicated SSM-only
-host access and a tagged-instance cleanup role. Arm records an absolute 25-minute
+host access and a tagged-instance cleanup role. Arm records an absolute 60-minute
 deadline; the independent Scheduler invokes cleanup in the following full minute
 (to avoid an early minute-precision invocation). Guest shutdown shares the deadline.
 Control-plane latency is not a guaranteed billing ceiling. Terminate immediately
@@ -77,3 +77,13 @@ payload preservation, pipeline failure status, result validation, durable send
 intent and termination after missing results. These tests use inert local Bash
 and mocked AWS responses, not a new cloud execution. The capacity watcher remains
 paused; correcting this adapter does not automatically authorize another paid run.
+
+## Extended multi-region capacity watch
+
+The operator authorized sequential London and Ireland capacity checks and a maximum
+60-minute host lifetime on 30 September. Each new scope keeps one g5.xlarge,
+independent cleanup and the same absolute guest deadline. Never extend an active
+deadline. Terminate immediately when the prepared gate finishes or fails. Existing
+25-minute receipts retain their original deadlines. A longer lifetime is not an
+advance capacity reservation and does not change the 12-minute outer compute limit
+or authorize additional paid experiments after an allocated attempt.
