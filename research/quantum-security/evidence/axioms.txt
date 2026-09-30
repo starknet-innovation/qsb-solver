@@ -5,6 +5,7 @@
 'QSB.extracted_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.event_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.event_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.event_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.finite_target_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.der20_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.public_scalar_satisfies' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -231,3 +232,5 @@
 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]

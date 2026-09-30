@@ -32,6 +32,24 @@ theorem event_bound_with_gap {Ω : Type*} [MeasurableSpace Ω]
   · exact (measure_union_le fresh puzzle).trans (add_le_add freshBound puzzleBound)
   · exact gapBound
 
+/-- Separates the distinct-input target from the same-input target. A
+two-distinct-input QROM theorem can only be used for `distinct`; the `same`
+event needs its own quantitative argument. -/
+theorem event_bound_with_key_cases {Ω : Type*} [MeasurableSpace Ω]
+    (μ : Measure Ω) (bad fresh distinct same gap : Set Ω)
+    (cover : bad ⊆ (fresh ∪ (distinct ∪ same)) ∪ gap)
+    (εfresh εdistinct εsame εgap : ENNReal)
+    (freshBound : μ fresh ≤ εfresh)
+    (distinctBound : μ distinct ≤ εdistinct)
+    (sameBound : μ same ≤ εsame)
+    (gapBound : μ gap ≤ εgap) :
+    μ bad ≤ (εfresh + (εdistinct + εsame)) + εgap := by
+  apply event_bound_with_gap μ bad fresh (distinct ∪ same) gap cover
+    εfresh (εdistinct + εsame) εgap freshBound
+  · exact (measure_union_le distinct same).trans
+      (add_le_add distinctBound sameBound)
+  · exact gapBound
+
 /-- Finite multi-vault accounting with no independence premise. Each per-vault
 bound must already charge the adversary's *global* shared-oracle query budget;
 splitting that budget for free would invalidate the inputs to this theorem. -/

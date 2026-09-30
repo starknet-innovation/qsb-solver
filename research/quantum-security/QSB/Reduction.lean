@@ -81,6 +81,56 @@ def TwoPuzzleFailure
     NovelTwoPuzzle pinRelation roundRelation hashKey target forbidden
       released disclosed tx pinKey w
 
+def DistinctKeyFailure
+    (extractor : Extractor Index Secret Key SignedTx)
+    (pinRelation : SignedTx → Key → Prop)
+    (roundRelation : SignedTx → Finset Index → Key → Prop)
+    (hashKey : Key → Digest) (target : Set Digest)
+    (forbidden : SignedTx → Prop)
+    (released : Set SignedTx) (disclosed : Finset Index)
+    (tx : SignedTx) : Prop :=
+  ∃ pinKey w,
+    extractor tx = some (pinKey, w) ∧
+    DistinctKeyPuzzle pinRelation roundRelation hashKey target forbidden
+      released disclosed tx pinKey w
+
+def SameKeyFailure
+    (extractor : Extractor Index Secret Key SignedTx)
+    (pinRelation : SignedTx → Key → Prop)
+    (roundRelation : SignedTx → Finset Index → Key → Prop)
+    (hashKey : Key → Digest) (target : Set Digest)
+    (forbidden : SignedTx → Prop)
+    (released : Set SignedTx) (disclosed : Finset Index)
+    (tx : SignedTx) : Prop :=
+  ∃ pinKey w,
+    extractor tx = some (pinKey, w) ∧
+    SameKeyPuzzle pinRelation roundRelation hashKey target forbidden
+      released disclosed tx pinKey w
+
+theorem two_puzzle_failure_key_cases
+    {extractor : Extractor Index Secret Key SignedTx}
+    {pinRelation : SignedTx → Key → Prop}
+    {roundRelation : SignedTx → Finset Index → Key → Prop}
+    {hashKey : Key → Digest} {target : Set Digest}
+    {forbidden : SignedTx → Prop}
+    {released : Set SignedTx} {disclosed : Finset Index}
+    {tx : SignedTx} :
+    TwoPuzzleFailure extractor pinRelation roundRelation hashKey target
+      forbidden released disclosed tx ↔
+      DistinctKeyFailure extractor pinRelation roundRelation hashKey target
+        forbidden released disclosed tx ∨
+      SameKeyFailure extractor pinRelation roundRelation hashKey target
+        forbidden released disclosed tx := by
+  constructor
+  · rintro ⟨pinKey, w, extracted, puzzle⟩
+    rcases novel_two_puzzle_key_cases puzzle with distinct | same
+    · exact Or.inl ⟨pinKey, w, extracted, distinct⟩
+    · exact Or.inr ⟨pinKey, w, extracted, same⟩
+  · rintro (⟨pinKey, w, extracted, distinct⟩ |
+      ⟨pinKey, w, extracted, same⟩)
+    · exact ⟨pinKey, w, extracted, distinct.1⟩
+    · exact ⟨pinKey, w, extracted, same.1⟩
+
 def ExtractionGap
     (accepted spendsTarget : SignedTx → Prop)
     (projection : SignedTx → Game.Projection)
@@ -238,5 +288,66 @@ theorem unauthorized_measure_bound_with_gap
       (released := released ω) (honest ω) bad)
   exact event_bound_with_gap μ badEvent freshEvent puzzleEvent gapEvent
     inclusion εfresh εpuzzle εgap freshBound puzzleBound gapBound
+
+/-- The same conditional security-game bound with the two-puzzle target
+separated by whether the extracted pinning and final-round key bytes coincide.
+The distinct branch is the only possible target for a distinct-input QROM
+search theorem; neither branch has a proved QSB query bound here. -/
+theorem unauthorized_measure_bound_with_key_cases
+    {Ω : Type*} [MeasurableSpace Ω]
+    {accepted spendsTarget : SignedTx → Prop}
+    {projection : SignedTx → Game.Projection}
+    {authorized : Set Game.Projection}
+    {extractor : Extractor Index Secret Key SignedTx}
+    {hashSecret : Secret → Digest} {commitments : Index → Digest}
+    {pinRelation : SignedTx → Key → Prop}
+    {roundRelation : SignedTx → Finset Index → Key → Prop}
+    {hashKey : Key → Digest} {target : Set Digest}
+    (μ : MeasureTheory.Measure Ω)
+    (output : Ω → SignedTx) (released : Ω → Set SignedTx)
+    (disclosed : Ω → Finset Index)
+    (honest : ∀ ω, AuthorizedRelease projection authorized (released ω))
+    (εfresh εdistinct εsame εgap : ENNReal)
+    (freshBound : μ {ω | FreshFailure extractor hashSecret commitments
+      (ForbiddenMessage projection authorized)
+      (disclosed ω) (output ω)} ≤ εfresh)
+    (distinctBound : μ {ω | DistinctKeyFailure extractor pinRelation
+      roundRelation hashKey target (ForbiddenMessage projection authorized)
+      (released ω) (disclosed ω) (output ω)} ≤ εdistinct)
+    (sameBound : μ {ω | SameKeyFailure extractor pinRelation
+      roundRelation hashKey target (ForbiddenMessage projection authorized)
+      (released ω) (disclosed ω) (output ω)} ≤ εsame)
+    (gapBound : μ {ω | ExtractionGap accepted spendsTarget projection authorized
+      extractor hashSecret commitments pinRelation roundRelation hashKey target
+      (output ω)} ≤ εgap) :
+    μ {ω | Game.Unauthorized accepted spendsTarget projection authorized
+      (output ω)} ≤
+      (εfresh + (εdistinct + εsame)) + εgap := by
+  let distinctEvent : Set Ω :=
+    {ω | DistinctKeyFailure extractor pinRelation roundRelation hashKey target
+      (ForbiddenMessage projection authorized)
+      (released ω) (disclosed ω) (output ω)}
+  let sameEvent : Set Ω :=
+    {ω | SameKeyFailure extractor pinRelation roundRelation hashKey target
+      (ForbiddenMessage projection authorized)
+      (released ω) (disclosed ω) (output ω)}
+  have cover :
+      {ω | TwoPuzzleFailure extractor pinRelation roundRelation hashKey target
+        (ForbiddenMessage projection authorized)
+        (released ω) (disclosed ω) (output ω)} ⊆
+        distinctEvent ∪ sameEvent := by
+    intro ω puzzle
+    simpa [distinctEvent, sameEvent] using
+      (two_puzzle_failure_key_cases.mp puzzle)
+  have puzzleBound :
+      μ {ω | TwoPuzzleFailure extractor pinRelation roundRelation hashKey target
+        (ForbiddenMessage projection authorized)
+        (released ω) (disclosed ω) (output ω)} ≤
+        εdistinct + εsame := by
+    exact (MeasureTheory.measure_mono cover).trans
+      ((MeasureTheory.measure_union_le distinctEvent sameEvent).trans
+        (add_le_add distinctBound sameBound))
+  exact unauthorized_measure_bound_with_gap μ output released disclosed
+    honest εfresh (εdistinct + εsame) εgap freshBound puzzleBound gapBound
 
 end QSB

@@ -270,3 +270,12 @@ witness. No nontrivial upper bounds for εFresh, εTwoPuzzle, or εExtractionGap
 are established. A zero gap would require the missing Bitcoin execution
 refinement. Reporting a numerical QSB quantum security level now would be
 unsupported.
+The checked refinement separates the two-puzzle event by equality of the
+extracted pinning and final-round key bytes:
+
+    Pr[UnauthorizedSpend] ≤ εFresh + εDistinctKey + εSameKey + εExtractionGap.
+
+The distinct-input QROM theorem cited in `RESEARCH.md` does not cover the
+same-key event, and its transcript and relation hypotheses have not been
+established for the distinct event. These are explicit event-bound premises,
+not derived QSB probabilities.

@@ -24,6 +24,7 @@ import QSB.Reduction
 #print axioms QSB.extracted_round_fresh_or_puzzle
 #print axioms QSB.event_bound
 #print axioms QSB.event_bound_with_gap
+#print axioms QSB.event_bound_with_key_cases
 #print axioms QSB.finite_target_union_bound
 #print axioms QSB.der20_setup_union_bound
 #print axioms QSB.public_scalar_satisfies
@@ -234,3 +235,5 @@ import QSB.Reduction
 #print axioms QSB.unauthorized_under_source_extraction
 #print axioms QSB.unauthorized_with_explicit_gap
 #print axioms QSB.unauthorized_measure_bound_with_gap
+#print axioms QSB.two_puzzle_failure_key_cases
+#print axioms QSB.unauthorized_measure_bound_with_key_cases

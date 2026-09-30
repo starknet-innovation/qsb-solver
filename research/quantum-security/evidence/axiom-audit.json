@@ -1,5 +1,5 @@
 {
-  "theorem_count": 217,
+  "theorem_count": 220,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -653,6 +653,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.event_bound_with_key_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.extracted_novel_round_fresh_or_puzzle": [
       "Classical.choice",
       "Quot.sound",
@@ -733,7 +738,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.two_puzzle_failure_key_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.unauthorized_measure_bound_with_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.unauthorized_measure_bound_with_key_cases": [
       "Classical.choice",
       "Quot.sound",
       "propext"

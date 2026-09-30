@@ -83,7 +83,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 217 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 220 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -129,6 +129,15 @@ The primitive events do not assume Script acceptance. The source-extraction
 premise, when used, is explicit and unproved; the unconditional theorem retains
 the gap. Lean proves that a constant-`none` extractor puts the entire bad event
 in that gap. None of the three epsilon terms has a nontrivial QSB bound.
+Lean also checks the refined bound with the two-puzzle term split into
+distinct-key and same-key events:
+
+    Pr[accepted unauthorized spend]
+      <= εFresh + εDistinctKey + εSameKey + εExtractionGap.
+
+The published two-distinct-input QROM result could address only the distinct
+branch after its other game hypotheses are met. The same-key branch needs a
+separate argument; no nontrivial bound is established for either branch.
 
 The closed DER-32 *syntax count expression* has density
 `780555 / 2^65` (about `2^-45.426`), and the analogous DER-20 expression is
