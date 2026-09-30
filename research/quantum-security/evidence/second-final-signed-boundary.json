@@ -1,0 +1,78 @@
+{
+  "scope": "Three puzzle checks relaxed; pinning, HORS comparisons, and both CHECKMULTISIGs real; not a production-vault spend",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "canonical_3",
+      "second_final_signed_index": 3,
+      "raw_encoding_hex": null,
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
+    },
+    {
+      "name": "nonminimal_3",
+      "second_final_signed_index": 3,
+      "raw_encoding_hex": "0300",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "dc3041d76226087e8dc8bf7eb37474093e4f84c18454f00666c345cd1b991e48"
+    },
+    {
+      "name": "dummy_0",
+      "second_final_signed_index": 0,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "5d1ad4044f9c487a3d5ebd0ef1de0420ce25c9dbebcbdb81104f25afac4fb5d0"
+    },
+    {
+      "name": "dummy_1",
+      "second_final_signed_index": 1,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "a79d13331e94063cb43534757f5bc8297e07a2f142669c5091a06fd7343b65d8"
+    },
+    {
+      "name": "dummy_2",
+      "second_final_signed_index": 2,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "f6c1f5b7a8c3840b0f40c62b0ed1aae181d549e8916b765aba47626d2239e0d2"
+    },
+    {
+      "name": "negative_1",
+      "second_final_signed_index": -1,
+      "raw_encoding_hex": "81",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "39cb223774a5e2722ca4a2b1376c32ef4244f6b72736a6e2affbc05af43c2680"
+    },
+    {
+      "name": "cap_152",
+      "second_final_signed_index": 152,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "dc3d1875e1ac11eb46d5df1891749cbe5d5150557060ba16b41e6aa33bb24818"
+    },
+    {
+      "name": "cap_152_nonminimal",
+      "second_final_signed_index": 152,
+      "raw_encoding_hex": "980000",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "62fa5fe4ac4bf9fa791a630840c55abf16b7ad57398427759a8e8f0d33657f68"
+    }
+  ]
+}

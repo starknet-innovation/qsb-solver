@@ -152,11 +152,13 @@ full byte-model execution now forces the first final-round signed raw index
 to parse as `2+i` for `i<150`, with generated commitment `i` equal to the
 HASH160 of the actual opening. This includes all negative raw values and
 nonminimal encodings in the exclusion argument. Lean checks the repeated
-11-opcode schema for all seven signed blocks and proves a conditional paired
-roll invariant: a commitment and its matching dummy at the same current pool
-position are removed together, preserving pool lengths and byte widths.
-Deriving those transitions from accepted byte runs for the remaining six
-selections and refining the model to Core are still required.
+13-opcode schema, including the fixed raw-index roll, for all seven signed
+blocks. For any reached block with the current pool shape and original-index
+alignment, successful byte-model execution forces an in-range current
+commitment, equates it with the actual opening's HASH160, and removes that
+commitment and its matching dummy. The two pool invariants survive for the
+next block. The starting premises and seven-block composition from an
+arbitrary accepted full run, followed by Core refinement, are still required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

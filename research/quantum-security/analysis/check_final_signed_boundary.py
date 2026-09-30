@@ -1,4 +1,4 @@
-"""Probe the first final-round signed index with the pinned Core adapter.
+"""Probe a final-round signed index with the pinned Core adapter.
 
 The three hash-to-signature puzzle checks are replaced with OP_2DROP. Pinning,
 all HORS comparisons, and both CHECKMULTISIGs remain real. The witness and
@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--native-root", type=Path, required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--position", type=int, choices=(0, 1), default=0)
     args = parser.parse_args()
     sys.path.insert(0, str(args.app_root / "worker/cpu"))
     import bitcoin_tx as bt
@@ -48,7 +49,7 @@ def main():
     nonces = [nonce_sig(b"qsb_r0"), nonce_sig(b"qsb_r1")]
     subsets = {0: list(range(9)), 1: list(range(9))}
     indices = builder.compute_witness_indices(subsets)
-    assert indices[1][0] == 2
+    assert indices[1][args.position] == 2 + args.position
     tx = bt.Transaction(version=1, locktime=1234567)
     tx.add_input(bt.TxIn(b"\x11" * 32, 0, b"", 0xfffffffe))
     tx.add_input(bt.TxIn(b"\x22" * 32, 0, b"", 0x80000000))
@@ -93,9 +94,11 @@ def main():
                     builder.hors_secrets[round_index][subsets[round_index][j]])
             values = list(indices[round_index])
             if round_index == 1:
-                values[0] = index
+                values[args.position] = index
             for j, value in enumerate(reversed(values)):
-                if round_index == 1 and j == len(values) - 1 and raw_encoding is not None:
+                if (round_index == 1 and
+                        j == len(values) - 1 - args.position and
+                        raw_encoding is not None):
                     script_sig += bt.push_data(raw_encoding)
                 else:
                     script_sig += bt.push_number(value)
@@ -104,13 +107,25 @@ def main():
         script_sig += bt.push_data(pin_key)
         return bytes(script_sig)
 
-    cases = [
-        ("canonical_2", 2, None, True),
-        ("dummy_0", 0, None, False),
-        ("dummy_1", 1, None, False),
-        ("cap_152", 152, None, False),
-        ("cap_152_nonminimal", 152, b"\x98\x00\x00", False),
-    ]
+    if args.position == 0:
+        cases = [
+            ("canonical_2", 2, None, True),
+            ("dummy_0", 0, None, False),
+            ("dummy_1", 1, None, False),
+            ("cap_152", 152, None, False),
+            ("cap_152_nonminimal", 152, b"\x98\x00\x00", False),
+        ]
+    else:
+        cases = [
+            ("canonical_3", 3, None, True),
+            ("nonminimal_3", 3, b"\x03\x00", True),
+            ("dummy_0", 0, None, False),
+            ("dummy_1", 1, None, False),
+            ("dummy_2", 2, None, False),
+            ("negative_1", -1, b"\x81", False),
+            ("cap_152", 152, None, False),
+            ("cap_152_nonminimal", 152, b"\x98\x00\x00", False),
+        ]
     results = []
     for name, index, raw_encoding, expected in cases:
         tx.inputs[1].script_sig = witness(index, raw_encoding)
@@ -128,7 +143,9 @@ def main():
                     process.stdout.strip() == "core-27.2-api2-all-inputs-valid")
         assert accepted == expected, (name, process)
         results.append({
-            "name": name, "first_final_signed_index": index,
+            "name": name,
+            ("first_final_signed_index" if args.position == 0 else
+             "second_final_signed_index"): index,
             "raw_encoding_hex": raw_encoding.hex() if raw_encoding else None,
             "accepted": accepted, "expected": expected,
             "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
