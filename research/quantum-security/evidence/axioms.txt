@@ -651,6 +651,7 @@
 'QSB.FinalScriptCode.expected_signature_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalScriptCode.reached_signature_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalScriptCode.reached_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.matched_reached_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

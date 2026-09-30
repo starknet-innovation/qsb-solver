@@ -71,6 +71,9 @@ and the fixed nonce, and deleting their serialized pushes gives the selected
 scriptCode. The nine reached dummies carry `SIGHASH_SINGLE`; the nonce carries
 `SIGHASH_ALL`. The remaining identification is Core's real reached stack and
 checker, not a caller-selected list in the Lean conclusion.
+The same conditional theorem now yields all ten successful reached pair checks
+and identifies a last reached key against which the fixed nonce verifies. It
+still supplies no ECDSA or real transaction-sighash relation for that key.
 
 ## Native differential evidence
 

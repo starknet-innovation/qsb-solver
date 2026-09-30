@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 582 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 583 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -358,6 +358,8 @@ reverse draw order, then the fixed nonce. Permuting that list to the nine
 original dummy positions plus nonce leaves the resulting scriptCode unchanged.
 The theorem also identifies `SIGHASH_SINGLE` on each of the nine reached
 dummy signatures and the fixed `SIGHASH_ALL` nonce in slot ten.
+The successful equal-count scan verifies every corresponding reached key pair;
+in particular, the fixed nonce verifies against the last reached key.
 This removes a freely chosen signature-list premise from the modeled
 scriptCode result; it does not show that Core supplies the scan premise or
 that ECDSA verifies against the real transaction sighashes.

@@ -594,6 +594,7 @@ import QSB.Reduction
 #print axioms QSB.FinalScriptCode.expected_signature_flags
 #print axioms QSB.FinalScriptCode.reached_signature_flags
 #print axioms QSB.FinalScriptCode.reached_scriptCode
+#print axioms QSB.FinalScriptCode.matched_reached_pairs
 #print axioms QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete

@@ -132,6 +132,62 @@ theorem reached_scriptCode (stack : List Bytes)
             stripEncodedChunks_perm EncodedLayout.chunks patternPerm
     _ = finalEncodedScriptCode ids := rfl
 
+/-- A successful ten-against-ten scan verifies each reached signature against
+its corresponding reached key. In particular, the fixed final nonce must
+verify against the last key. This remains conditional on the supplied pair
+verifier, not Core's ECDSA checker. -/
+theorem matched_reached_pairs (stack : List Bytes)
+    (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+    (h12 : stack[12]? = some (generatedDummyAt b))
+    (h13 : stack[13]? = some (generatedDummyAt a))
+    (signed : ∀ j : Nat, j < 7 → stack[j + 14]? =
+      (trace.map (fun p => generatedDummyAt p.1)).reverse[j]?)
+    (h21 : stack[21]? = some PoolRollInvariant.finalNonce)
+    (seven : trace.length = 7)
+    (verify : Bytes → Bytes → Bool)
+    (matched : Multisig.matchSigs verify
+      (reachedSignatures stack) ((stack.drop 1).take 10) = true) :
+    List.Forall₂ (fun sig key => verify sig key = true)
+      (expectedSignatures trace a b) ((stack.drop 1).take 10) ∧
+    ∃ key, stack[10]? = some key ∧
+      verify PoolRollInvariant.finalNonce key = true := by
+  have stackLength : 22 ≤ stack.length := by
+    obtain ⟨bound, _⟩ := List.getElem?_eq_some_iff.mp h21
+    omega
+  have sigLength : (reachedSignatures stack).length = 10 := by
+    simp [reachedSignatures, List.length_take]
+    omega
+  have keyLength : ((stack.drop 1).take 10).length = 10 := by
+    simp [List.length_take]
+    omega
+  have pairs := (Multisig.equal_counts_success_iff_pairs verify
+    (sigLength.trans keyLength.symm)).mp matched
+  rw [reached_signatures_exact stack trace a b h12 h13 signed h21 seven]
+    at pairs
+  refine ⟨pairs, ?_⟩
+  have nonceAt : (expectedSignatures trace a b)[9]? =
+      some PoolRollInvariant.finalNonce :=
+    (expected_signature_flags trace a b seven).2
+  have stackIndex : 10 < stack.length := by omega
+  let key := stack[10]
+  have keyAt : stack[10]? = some key :=
+    List.getElem?_eq_getElem stackIndex
+  have keyAtList : ((stack.drop 1).take 10)[9]? = some key := by
+    simpa [List.getElem?_drop] using keyAt
+  have sigIndex : 9 < (expectedSignatures trace a b).length := by
+    simp [expectedSignatures, seven]
+  have keyIndex : 9 < ((stack.drop 1).take 10).length := by
+    omega
+  have pairAt := pairs.get sigIndex keyIndex
+  have sigValue : (expectedSignatures trace a b)[9]'sigIndex =
+      PoolRollInvariant.finalNonce := by
+    rw [List.getElem?_eq_getElem sigIndex] at nonceAt
+    exact Option.some.inj nonceAt
+  have keyValue : ((stack.drop 1).take 10)[9]'keyIndex = key := by
+    rw [List.getElem?_eq_getElem keyIndex] at keyAtList
+    exact Option.some.inj keyAtList
+  exact ⟨key, keyAt, by simpa [sigValue, keyValue] using pairAt⟩
+
 /-- A successful full byte-model run with an encoding-sound, nonempty final
 ten-pair scan determines the serialized scriptCode from its *reached* final
 signature bytes. The scan and verifier still require Core refinement. -/
@@ -158,7 +214,12 @@ theorem matched_run_reached_scriptCode_verify_all (hashes : Hashes)
         some PoolRollInvariant.finalNonce ∧
       FindAndDelete.scanMany 880 EncodedLayout.chunks.flatten
         ((reachedSignatures beforeCheck.stack).map directPushPattern) =
-        finalEncodedScriptCode (a :: b :: trace.map Prod.fst) := by
+        finalEncodedScriptCode (a :: b :: trace.map Prod.fst) ∧
+      List.Forall₂ (fun sig key => verify sig key = true)
+        (expectedSignatures trace a b)
+        ((beforeCheck.stack.drop 1).take 10) ∧
+      (∃ key, beforeCheck.stack[10]? = some key ∧
+        verify PoolRollInvariant.finalNonce key = true) := by
   obtain ⟨trace, a, b, beforeCheck, reached, first, last, signed,
     nonce, _dummy, seven, _hits, _different, _aFresh, _bFresh,
     distinct, _nine⟩ :=
@@ -166,8 +227,11 @@ theorem matched_run_reached_scriptCode_verify_all (hashes : Hashes)
         hashes initial final accepted verify verifyNonempty verifyEncoding matched
   have flags := reached_signature_flags beforeCheck.stack trace a b
     last first signed nonce seven
+  have pairs := matched_reached_pairs beforeCheck.stack trace a b
+    last first signed nonce seven verify (matched beforeCheck reached)
   exact ⟨trace, a, b, beforeCheck, reached, seven, distinct,
     flags.1, flags.2,
-    reached_scriptCode beforeCheck.stack trace a b last first signed nonce seven⟩
+    reached_scriptCode beforeCheck.stack trace a b last first signed nonce seven,
+    pairs.1, pairs.2⟩
 
 end QSB.FinalScriptCode

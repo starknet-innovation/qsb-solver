@@ -1,5 +1,5 @@
 {
-  "theorem_count": 582,
+  "theorem_count": 583,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -705,6 +705,11 @@
       "propext"
     ],
     "QSB.FinalScriptCode.expected_signatures_perm": [
+      "propext"
+    ],
+    "QSB.FinalScriptCode.matched_reached_pairs": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all": [
