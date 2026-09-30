@@ -1,5 +1,5 @@
 {
-  "theorem_count": 353,
+  "theorem_count": 369,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -71,6 +71,11 @@
       "propext"
     ],
     "QSB.ByteBonusBetween.successful_cap_min_tail": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.successful_two_bonus_index_bounds": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -1093,6 +1098,66 @@
       "propext"
     ],
     "QSB.PinningShape.two_cell_initial_stack_cannot_accept": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.drawMany_matches_rollMany": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.drawMany_preserves_nonempty_pool": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_dummy_ops_are_pushes": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_dummy_pool_length": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_dummy_pool_nonempty": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_dummy_pool_pushes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_dummy_pushes_small": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_final_nonce_nonempty": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_final_round_init_ops": [
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_final_round_initial_stack": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.generated_pool_seven_draws_sources_nonempty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.roll_at_pool": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.roll_from_middle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty": [
       "Classical.choice",
       "Quot.sound",
       "propext"

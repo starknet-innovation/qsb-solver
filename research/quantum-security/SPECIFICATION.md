@@ -137,8 +137,11 @@ the decoded index is below 10, or at depth 9 if it is at least 10. The four
 generated instructions between bonus rolls preserve the first roll's shallow
 cells below a new top index. Consequently, when pre-first-bonus source cells
 9 and 10 are both nonempty, a first bonus index below 9 is impossible on a
-successful modeled suffix. The source-cell premises for arbitrary signed
-selection histories and the Bitcoin Core refinement are still unproved.
+successful modeled suffix; the last bonus index must also be at least 10.
+The generated initialization pushes 150 nonempty dummy bytes, and seven
+selections confined to that pool leave the two premises true regardless of
+selection order. Whether every successful signed selection is confined to
+that pool, and the Bitcoin Core refinement, remain unproved.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

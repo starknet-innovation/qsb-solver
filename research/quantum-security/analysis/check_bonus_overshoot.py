@@ -53,6 +53,8 @@ def main():
     nonces = [nonce_sig(b"qsb_r0"), nonce_sig(b"qsb_r1")]
     subsets = {0: list(range(9)), 1: list(range(9))}
     indices = builder.compute_witness_indices(subsets)
+    canonical_bonus_indices = indices[1][7:9]
+    assert canonical_bonus_indices == [9, 10]
     tx = bt.Transaction(version=1, locktime=1234567)
     tx.add_input(bt.TxIn(b"\x11" * 32, 0, b"", 0xfffffffe))
     tx.add_input(bt.TxIn(b"\x22" * 32, 0, b"", 0x80000000))
@@ -139,7 +141,8 @@ def main():
         results.append({"name": name, "accepted": accepted, "expected": expected,
                         "overshoot_slot": overshoot_slot,
                         "final_bonus_indices": [152, 11] if overshoot_slot == 7 else
-                            [10, 152] if overshoot_slot == 8 else [10, 10],
+                            [canonical_bonus_indices[0], 152]
+                            if overshoot_slot == 8 else canonical_bonus_indices,
                         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
                         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
                         "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest()})

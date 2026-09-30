@@ -1,412 +1,432 @@
-✔ [2992/2994] Built QSB.ByteBonusBetween (4.6s)
-ℹ [2993/2994] Built QSB (3.1s)
-info: QSB.lean:32:0: 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:33:0: 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:34:0: 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:35:0: 'QSB.covered_after_more_disclosure' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:36:0: 'QSB.extracted_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:37:0: 'QSB.event_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:38:0: 'QSB.event_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:39:0: 'QSB.event_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:40:0: 'QSB.finite_target_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:41:0: 'QSB.der20_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:42:0: 'QSB.RandomOracleSetup.fixed_input_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:43:0: 'QSB.RandomOracleSetup.independent_source_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:44:0: 'QSB.RandomOracleSetup.shared_function_union_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:45:0: 'QSB.public_scalar_satisfies' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:46:0: 'QSB.fixed_recovery_point_message_unique' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:47:0: 'QSB.fixed_message_key_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:48:0: 'QSB.public_recovery_for_any_message' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:49:0: 'QSB.common_key_requires_equal_recoveries' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:50:0: 'QSB.equal_recoveries_give_common_key' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:51:0: 'QSB.configA_round1_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:52:0: 'QSB.configA_round2_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:53:0: 'QSB.configA_pool_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:54:0: 'QSB.coveredFinalChoices_zero' does not depend on any axioms
-info: QSB.lean:55:0: 'QSB.coveredFinalChoices_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:56:0: 'QSB.coveredFinalChoices_one_disclosure' does not depend on any axioms
-info: QSB.lean:57:0: 'QSB.coveredFinalChoices_two_disjoint_disclosures' does not depend on any axioms
-info: QSB.lean:58:0: 'QSB.coveredFinalChoices_three_disjoint_disclosures' does not depend on any axioms
-info: QSB.lean:59:0: 'QSB.coveredFinalChoices_after_history' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:60:0: 'QSB.der32_count_lower' does not depend on any axioms
-info: QSB.lean:61:0: 'QSB.der32_count_upper' does not depend on any axioms
-info: QSB.lean:62:0: 'QSB.der32_count_exact' does not depend on any axioms
-info: QSB.lean:63:0: 'QSB.der32_count_ratio' does not depend on any axioms
-info: QSB.lean:64:0: 'QSB.der20_count_exact' does not depend on any axioms
-info: QSB.lean:65:0: 'QSB.der20_count_ratio' does not depend on any axioms
-info: QSB.lean:66:0: 'QSB.extracted_novel_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:67:0: 'QSB.min_roll_bounds' depends on axioms: [propext]
-info: QSB.lean:68:0: 'QSB.comparison_selects_pool' depends on axioms: [propext]
-info: QSB.lean:69:0: 'QSB.distinct_positions_after_roll' depends on axioms: [propext]
-info: QSB.lean:70:0: 'QSB.selected_not_in_erased' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:71:0: 'QSB.chooseMany_values_in_pool' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:72:0: 'QSB.chooseMany_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:73:0: 'QSB.chooseMany_length' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:74:0: 'QSB.nine_selected_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:75:0: 'QSB.Layout.first_multisig_false_still_accepts' depends on axioms: [propext]
-info: QSB.lean:76:0: 'QSB.Layout.both_multisigs_true_accept' depends on axioms: [propext]
-info: QSB.lean:77:0: 'QSB.Layout.final_multisig_false_rejects' depends on axioms: [propext]
-info: QSB.lean:78:0: 'QSB.Layout.first_multisig_result_irrelevant' depends on axioms: [propext]
-info: QSB.lean:79:0: 'QSB.Layout.accepted_trace_operation_count' depends on axioms: [propext]
-info: QSB.lean:80:0: 'QSB.Layout.accepted_trace_stack_size' depends on axioms: [propext]
-info: QSB.lean:81:0: 'QSB.Layout.first_result_retained_below_top' depends on axioms: [propext]
-info: QSB.lean:82:0: 'QSB.Layout.first_selection_can_reach_external_cell' depends on axioms: [propext]
-info: QSB.lean:83:0: 'QSB.Layout.external_probe_not_full_acceptance' depends on axioms: [propext]
-info: QSB.lean:84:0: 'QSB.Layout.matched_external_passes_first_comparison' depends on axioms: [propext]
-info: QSB.lean:85:0: 'QSB.Layout.matched_external_fails_second_index' depends on axioms: [propext]
-info: QSB.lean:86:0: 'QSB.Layout.last_bonus_overshoot_selects_commitment' depends on axioms: [propext]
-info: QSB.lean:87:0: 'QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
-info: QSB.lean:88:0: 'QSB.FirstBonus.first_bonus_overshoot_selects_commitment' depends on axioms: [propext]
-info: QSB.lean:89:0: 'QSB.FirstBonus.first_bonus_overshoot_reaches_signature_slot' depends on axioms: [propext]
-info: QSB.lean:90:0: 'QSB.FirstBonus.first_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
-info: QSB.lean:91:0: 'QSB.Bonus.canonical_region_matches_generated_program' depends on axioms: [propext]
-info: QSB.lean:92:0: 'QSB.Bonus.region_cell' depends on axioms: [propext]
-info: QSB.lean:93:0: 'QSB.Bonus.region_length' does not depend on any axioms
-info: QSB.lean:94:0: 'QSB.Bonus.first_fresh_dummy' depends on axioms: [propext]
-info: QSB.lean:95:0: 'QSB.Bonus.last_fresh_dummy' depends on axioms: [propext]
-info: QSB.lean:96:0: 'QSB.Bonus.commitment_boundary' depends on axioms: [propext]
-info: QSB.lean:97:0: 'QSB.Bonus.bounded_select_role' depends on axioms: [propext]
-info: QSB.lean:98:0: 'QSB.Bonus.negative_index_rejected' depends on axioms: [propext]
-info: QSB.lean:99:0: 'QSB.Bonus.oversized_index_selects_commitment' depends on axioms: [propext]
-info: QSB.lean:100:0: 'QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot' depends on axioms: [propext]
-info: QSB.lean:101:0: 'QSB.Bonus.fresh_or_commitment_preserves_zero_dummy' depends on axioms: [propext]
-info: QSB.lean:102:0: 'QSB.ByteIndex.empty_is_zero' depends on axioms: [propext]
-info: QSB.lean:103:0: 'QSB.ByteIndex.negative_zero_is_zero' depends on axioms: [propext]
-info: QSB.lean:104:0: 'QSB.ByteIndex.nonminimal_ten' depends on axioms: [propext]
-info: QSB.lean:105:0: 'QSB.ByteIndex.positive_152' depends on axioms: [propext]
-info: QSB.lean:106:0: 'QSB.ByteIndex.nonminimal_positive_152' depends on axioms: [propext]
-info: QSB.lean:107:0: 'QSB.ByteIndex.negative_152' depends on axioms: [propext]
-info: QSB.lean:108:0: 'QSB.ByteIndex.five_bytes_rejected' depends on axioms: [propext]
-info: QSB.lean:109:0: 'QSB.ByteIndex.encode_zero' does not depend on any axioms
-info: QSB.lean:110:0: 'QSB.ByteIndex.encode_ten' does not depend on any axioms
-info: QSB.lean:111:0: 'QSB.ByteIndex.encode_positive_152' does not depend on any axioms
-info: QSB.lean:112:0: 'QSB.ByteIndex.encode_negative_152' does not depend on any axioms
-info: QSB.lean:113:0: 'QSB.ByteIndex.encode_zero_roundtrip' depends on axioms: [propext]
-info: QSB.lean:114:0: 'QSB.ByteIndex.encode_152_roundtrip' depends on axioms: [propext]
-info: QSB.lean:115:0: 'QSB.ByteIndex.nonminimal_ten_selects_dummy' depends on axioms: [propext]
-info: QSB.lean:116:0: 'QSB.ByteIndex.nonminimal_152_selects_commitment' depends on axioms: [propext]
-info: QSB.lean:117:0: 'QSB.ByteIndex.negative_152_cannot_roll' depends on axioms: [propext]
-info: QSB.lean:118:0: 'QSB.ByteIndex.oversized_encoding_cannot_roll' depends on axioms: [propext]
-info: QSB.lean:119:0: 'QSB.Multisig.too_many_signatures_fail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:120:0: 'QSB.Multisig.equal_counts_success_iff_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:121:0: 'QSB.KeyRolls.rollAt_matches_symbolic_step' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:122:0: 'QSB.KeyRolls.rollAt_preserves_shallower_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:123:0: 'QSB.KeyRolls.rollAt_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:124:0: 'QSB.KeyRolls.rollMany_preserves_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:125:0: 'QSB.KeyRolls.rollMany_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:126:0: 'QSB.KeyRolls.first_key_roll' depends on axioms: [propext]
-info: QSB.lean:127:0: 'QSB.KeyRolls.high_key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:128:0: 'QSB.KeyRolls.final_witness_cell_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:129:0: 'QSB.KeyRolls.final_witness_option_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:130:0: 'QSB.KeyRolls.key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:131:0: 'QSB.KeyRolls.key_indices_length' does not depend on any axioms
-info: QSB.lean:132:0: 'QSB.KeyRolls.final_signature_count_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:133:0: 'QSB.KeyRolls.final_count_operands_ten' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:134:0: 'QSB.KeyRolls.successful_final_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:135:0: 'QSB.KeyRolls.generated_final_suffix' does not depend on any axioms
-info: QSB.lean:136:0: 'QSB.ByteMachine.hash_compare_accepts_iff' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:137:0: 'QSB.ByteMachine.successful_hash_comparison' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:138:0: 'QSB.ByteMachine.run_append' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:139:0: 'QSB.ByteMachine.run_pushes' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:140:0: 'QSB.ByteMachine.run_pushes_overflow' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:141:0: 'QSB.ByteMachine.add_success_requires_four_byte_operands' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:142:0: 'QSB.ByteMachine.successful_hash_comparison_in_context' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:143:0: 'QSB.ByteLayout.program_length' does not depend on any axioms
-info: QSB.lean:144:0: 'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms
-info: QSB.lean:145:0: 'QSB.ByteLayout.fifteen_hors_comparisons' does not depend on any axioms
-info: QSB.lean:146:0: 'QSB.ByteLayout.comparisons_follow_hash160' does not depend on any axioms
-info: QSB.lean:147:0: 'QSB.ByteLayout.hash_comparison_positions_valid' depends on axioms: [propext]
-info: QSB.lean:148:0: 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:149:0: 'QSB.ByteWitness.witness_length' does not depend on any axioms
-info: QSB.lean:150:0: 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]
-info: QSB.lean:151:0: 'QSB.ByteWitness.first_round_boolean_ignored' depends on axioms: [propext]
-info: QSB.lean:152:0: 'QSB.ByteWitness.all_fifteen_comparisons_reached' depends on axioms: [propext]
-info: QSB.lean:153:0: 'QSB.FirstOvershoot.fixed_region_length' depends on axioms: [propext]
-info: QSB.lean:154:0: 'QSB.FirstOvershoot.generated_region_is_pushes' depends on axioms: [propext]
-info: QSB.lean:155:0: 'QSB.FirstOvershoot.generated_push_values_small' depends on axioms: [propext]
-info: QSB.lean:156:0: 'QSB.FirstOvershoot.generated_region_pushes' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:157:0: 'QSB.FirstOvershoot.generated_region_overflows' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:158:0: 'QSB.FirstOvershoot.generated_prefix_split' does not depend on any axioms
-info: QSB.lean:159:0: 'QSB.FirstOvershoot.generated_program_split_pinning' does not depend on any axioms
-info: QSB.lean:160:0: 'QSB.FirstOvershoot.generated_pinning_opcodes' depends on axioms: [propext]
-info: QSB.lean:161:0: 'QSB.FirstOvershoot.first_two_pinning_opcodes' depends on axioms: [propext]
-info: QSB.lean:162:0: 'QSB.FirstOvershoot.generated_pinning_split_two' does not depend on any axioms
-info: QSB.lean:163:0: 'QSB.FirstOvershoot.pin_signature_fits' depends on axioms: [propext]
-info: QSB.lean:164:0: 'QSB.FirstOvershoot.oversized_initial_stack_fails_first_two' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:165:0: 'QSB.FirstOvershoot.oversized_initial_stack_fails_pinning' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:166:0: 'QSB.FirstOvershoot.modeled_pinning_consumes_two_keys' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:167:0: 'QSB.FirstOvershoot.generated_prefix_after_pinning' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:168:0: 'QSB.FirstOvershoot.generated_prefix_overflows_after_pinning' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:169:0: 'QSB.FirstOvershoot.segment_is_first_two_selection_prefix' does not depend on any axioms
-info: QSB.lean:170:0: 'QSB.FirstOvershoot.first_commitment_is_twenty_bytes' depends on axioms: [propext]
-info: QSB.lean:171:0: 'QSB.FirstOvershoot.last_commitment_is_twenty_bytes' depends on axioms: [propext]
-info: QSB.lean:172:0: 'QSB.FirstOvershoot.last_commitment_is_not_scriptnum' depends on axioms: [propext]
-info: QSB.lean:173:0: 'QSB.FirstOvershoot.shifted_last_from_any_tail' depends on axioms: [propext]
-info: QSB.lean:174:0: 'QSB.FirstOvershoot.first_index_roll' depends on axioms: [propext]
-info: QSB.lean:175:0: 'QSB.FirstOvershoot.first_index_roll_raw' depends on axioms: [propext]
-info: QSB.lean:176:0: 'QSB.FirstOvershoot.first_index_roll_no_external' depends on axioms: [propext]
-info: QSB.lean:177:0: 'QSB.FirstOvershoot.first_index_roll_any_tail' depends on axioms: [propext]
-info: QSB.lean:178:0: 'QSB.FirstOvershoot.external_commitment_roll' depends on axioms: [propext]
-info: QSB.lean:179:0: 'QSB.FirstOvershoot.displaced_preimage_roll' depends on axioms: [propext]
-info: QSB.lean:180:0: 'QSB.FirstOvershoot.retained_index_roll' depends on axioms: [propext]
-info: QSB.lean:181:0: 'QSB.FirstOvershoot.byte_roll_matches_list_roll' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:182:0: 'QSB.FirstOvershoot.next_index_is_lock_commitment' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:183:0: 'QSB.FirstOvershoot.next_index_roll_full' depends on axioms: [propext]
-info: QSB.lean:184:0: 'QSB.FirstOvershoot.second_min_rejects_commitment' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:185:0: 'QSB.FirstOvershoot.parse_151' depends on axioms: [propext]
-info: QSB.lean:186:0: 'QSB.FirstOvershoot.encode_303' does not depend on any axioms
-info: QSB.lean:187:0: 'QSB.FirstOvershoot.parse_303' depends on axioms: [propext]
-info: QSB.lean:188:0: 'QSB.FirstOvershoot.parse_311' depends on axioms: [propext]
-info: QSB.lean:189:0: 'QSB.FirstOvershoot.oversized_index_clamps_to_152' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:190:0: 'QSB.FirstOvershoot.oversized_index_min_step' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:191:0: 'QSB.FirstOvershoot.unparseable_index_min_fails' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:192:0: 'QSB.FirstOvershoot.first_index_prefix_opcodes' does not depend on any axioms
-info: QSB.lean:193:0: 'QSB.FirstOvershoot.segment_split_first_index' does not depend on any axioms
-info: QSB.lean:194:0: 'QSB.FirstOvershoot.first_comparison_lead_opcodes' does not depend on any axioms
-info: QSB.lean:195:0: 'QSB.FirstOvershoot.before_first_comparison_split' does not depend on any axioms
-info: QSB.lean:196:0: 'QSB.FirstOvershoot.opening_roll_lead_opcodes' does not depend on any axioms
-info: QSB.lean:197:0: 'QSB.FirstOvershoot.before_opening_roll_split' does not depend on any axioms
-info: QSB.lean:198:0: 'QSB.FirstOvershoot.segment_split_opening_roll' does not depend on any axioms
-info: QSB.lean:199:0: 'QSB.FirstOvershoot.no_external_lead_opcodes' does not depend on any axioms
-info: QSB.lean:200:0: 'QSB.FirstOvershoot.first_eight_split' does not depend on any axioms
-info: QSB.lean:201:0: 'QSB.FirstOvershoot.segment_split_eight' does not depend on any axioms
-info: QSB.lean:202:0: 'QSB.FirstOvershoot.segment_starts_with_index_push' does not depend on any axioms
-info: QSB.lean:203:0: 'QSB.FirstOvershoot.first_six_split' does not depend on any axioms
-info: QSB.lean:204:0: 'QSB.FirstOvershoot.segment_split_six' does not depend on any axioms
-info: QSB.lean:205:0: 'QSB.FirstOvershoot.oversized_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:206:0: 'QSB.FirstOvershoot.unparseable_first_index_prefix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:207:0: 'QSB.FirstOvershoot.segment_first_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:208:0: 'QSB.FirstOvershoot.duplicate_then_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:209:0: 'QSB.FirstOvershoot.penultimate_capacity_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:210:0: 'QSB.FirstOvershoot.oversized_first_index_without_external' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:211:0: 'QSB.FirstOvershoot.no_external_lead_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:212:0: 'QSB.FirstOvershoot.no_external_first_eight_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:213:0: 'QSB.FirstOvershoot.no_external_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:214:0: 'QSB.FirstOvershoot.opening_roll_lead_reaches' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:215:0: 'QSB.FirstOvershoot.oversized_before_opening_roll' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:216:0: 'QSB.FirstOvershoot.short_tail_opening_roll_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:217:0: 'QSB.FirstOvershoot.short_tail_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:218:0: 'QSB.FirstOvershoot.first_comparison_lead_reaches_opening' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:219:0: 'QSB.FirstOvershoot.oversized_before_first_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:220:0: 'QSB.FirstOvershoot.first_selection_prefix_opcodes' does not depend on any axioms
-info: QSB.lean:221:0: 'QSB.FirstOvershoot.segment_split' does not depend on any axioms
-info: QSB.lean:222:0: 'QSB.FirstOvershoot.segment_split_comparison' does not depend on any axioms
-info: QSB.lean:223:0: 'QSB.FirstOvershoot.overshoot_suffix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:224:0: 'QSB.FirstOvershoot.first_selection_reaches_forced_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:225:0: 'QSB.FirstOvershoot.matched_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:226:0: 'QSB.FirstOvershoot.oversized_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:227:0: 'QSB.FirstOvershoot.oversized_any_marker_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:228:0: 'QSB.FirstOvershoot.oversized_arbitrary_tail_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:229:0: 'QSB.FirstOvershoot.oversized_any_postindex_tail_segment_fails' depends on axioms: [propext,
+✔ [2993/2995] Built QSB.PoolRollInvariant (6.4s)
+ℹ [2994/2995] Built QSB (3.1s)
+info: QSB.lean:33:0: 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:34:0: 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:35:0: 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:36:0: 'QSB.covered_after_more_disclosure' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:37:0: 'QSB.extracted_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:38:0: 'QSB.event_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:39:0: 'QSB.event_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:40:0: 'QSB.event_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:41:0: 'QSB.finite_target_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:42:0: 'QSB.der20_setup_union_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:43:0: 'QSB.RandomOracleSetup.fixed_input_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:44:0: 'QSB.RandomOracleSetup.independent_source_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:45:0: 'QSB.RandomOracleSetup.shared_function_union_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:46:0: 'QSB.public_scalar_satisfies' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:47:0: 'QSB.fixed_recovery_point_message_unique' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:48:0: 'QSB.fixed_message_key_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:49:0: 'QSB.public_recovery_for_any_message' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:50:0: 'QSB.common_key_requires_equal_recoveries' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:51:0: 'QSB.equal_recoveries_give_common_key' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:52:0: 'QSB.configA_round1_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:53:0: 'QSB.configA_round2_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:54:0: 'QSB.configA_pool_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:55:0: 'QSB.coveredFinalChoices_zero' does not depend on any axioms
+info: QSB.lean:56:0: 'QSB.coveredFinalChoices_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:57:0: 'QSB.coveredFinalChoices_one_disclosure' does not depend on any axioms
+info: QSB.lean:58:0: 'QSB.coveredFinalChoices_two_disjoint_disclosures' does not depend on any axioms
+info: QSB.lean:59:0: 'QSB.coveredFinalChoices_three_disjoint_disclosures' does not depend on any axioms
+info: QSB.lean:60:0: 'QSB.coveredFinalChoices_after_history' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:61:0: 'QSB.der32_count_lower' does not depend on any axioms
+info: QSB.lean:62:0: 'QSB.der32_count_upper' does not depend on any axioms
+info: QSB.lean:63:0: 'QSB.der32_count_exact' does not depend on any axioms
+info: QSB.lean:64:0: 'QSB.der32_count_ratio' does not depend on any axioms
+info: QSB.lean:65:0: 'QSB.der20_count_exact' does not depend on any axioms
+info: QSB.lean:66:0: 'QSB.der20_count_ratio' does not depend on any axioms
+info: QSB.lean:67:0: 'QSB.extracted_novel_round_fresh_or_puzzle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:68:0: 'QSB.min_roll_bounds' depends on axioms: [propext]
+info: QSB.lean:69:0: 'QSB.comparison_selects_pool' depends on axioms: [propext]
+info: QSB.lean:70:0: 'QSB.distinct_positions_after_roll' depends on axioms: [propext]
+info: QSB.lean:71:0: 'QSB.selected_not_in_erased' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:72:0: 'QSB.chooseMany_values_in_pool' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:73:0: 'QSB.chooseMany_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:74:0: 'QSB.chooseMany_length' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:75:0: 'QSB.nine_selected_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:76:0: 'QSB.Layout.first_multisig_false_still_accepts' depends on axioms: [propext]
+info: QSB.lean:77:0: 'QSB.Layout.both_multisigs_true_accept' depends on axioms: [propext]
+info: QSB.lean:78:0: 'QSB.Layout.final_multisig_false_rejects' depends on axioms: [propext]
+info: QSB.lean:79:0: 'QSB.Layout.first_multisig_result_irrelevant' depends on axioms: [propext]
+info: QSB.lean:80:0: 'QSB.Layout.accepted_trace_operation_count' depends on axioms: [propext]
+info: QSB.lean:81:0: 'QSB.Layout.accepted_trace_stack_size' depends on axioms: [propext]
+info: QSB.lean:82:0: 'QSB.Layout.first_result_retained_below_top' depends on axioms: [propext]
+info: QSB.lean:83:0: 'QSB.Layout.first_selection_can_reach_external_cell' depends on axioms: [propext]
+info: QSB.lean:84:0: 'QSB.Layout.external_probe_not_full_acceptance' depends on axioms: [propext]
+info: QSB.lean:85:0: 'QSB.Layout.matched_external_passes_first_comparison' depends on axioms: [propext]
+info: QSB.lean:86:0: 'QSB.Layout.matched_external_fails_second_index' depends on axioms: [propext]
+info: QSB.lean:87:0: 'QSB.Layout.last_bonus_overshoot_selects_commitment' depends on axioms: [propext]
+info: QSB.lean:88:0: 'QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
+info: QSB.lean:89:0: 'QSB.FirstBonus.first_bonus_overshoot_selects_commitment' depends on axioms: [propext]
+info: QSB.lean:90:0: 'QSB.FirstBonus.first_bonus_overshoot_reaches_signature_slot' depends on axioms: [propext]
+info: QSB.lean:91:0: 'QSB.FirstBonus.first_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
+info: QSB.lean:92:0: 'QSB.Bonus.canonical_region_matches_generated_program' depends on axioms: [propext]
+info: QSB.lean:93:0: 'QSB.Bonus.region_cell' depends on axioms: [propext]
+info: QSB.lean:94:0: 'QSB.Bonus.region_length' does not depend on any axioms
+info: QSB.lean:95:0: 'QSB.Bonus.first_fresh_dummy' depends on axioms: [propext]
+info: QSB.lean:96:0: 'QSB.Bonus.last_fresh_dummy' depends on axioms: [propext]
+info: QSB.lean:97:0: 'QSB.Bonus.commitment_boundary' depends on axioms: [propext]
+info: QSB.lean:98:0: 'QSB.Bonus.bounded_select_role' depends on axioms: [propext]
+info: QSB.lean:99:0: 'QSB.Bonus.negative_index_rejected' depends on axioms: [propext]
+info: QSB.lean:100:0: 'QSB.Bonus.oversized_index_selects_commitment' depends on axioms: [propext]
+info: QSB.lean:101:0: 'QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot' depends on axioms: [propext]
+info: QSB.lean:102:0: 'QSB.Bonus.fresh_or_commitment_preserves_zero_dummy' depends on axioms: [propext]
+info: QSB.lean:103:0: 'QSB.ByteIndex.empty_is_zero' depends on axioms: [propext]
+info: QSB.lean:104:0: 'QSB.ByteIndex.negative_zero_is_zero' depends on axioms: [propext]
+info: QSB.lean:105:0: 'QSB.ByteIndex.nonminimal_ten' depends on axioms: [propext]
+info: QSB.lean:106:0: 'QSB.ByteIndex.positive_152' depends on axioms: [propext]
+info: QSB.lean:107:0: 'QSB.ByteIndex.nonminimal_positive_152' depends on axioms: [propext]
+info: QSB.lean:108:0: 'QSB.ByteIndex.negative_152' depends on axioms: [propext]
+info: QSB.lean:109:0: 'QSB.ByteIndex.five_bytes_rejected' depends on axioms: [propext]
+info: QSB.lean:110:0: 'QSB.ByteIndex.encode_zero' does not depend on any axioms
+info: QSB.lean:111:0: 'QSB.ByteIndex.encode_ten' does not depend on any axioms
+info: QSB.lean:112:0: 'QSB.ByteIndex.encode_positive_152' does not depend on any axioms
+info: QSB.lean:113:0: 'QSB.ByteIndex.encode_negative_152' does not depend on any axioms
+info: QSB.lean:114:0: 'QSB.ByteIndex.encode_zero_roundtrip' depends on axioms: [propext]
+info: QSB.lean:115:0: 'QSB.ByteIndex.encode_152_roundtrip' depends on axioms: [propext]
+info: QSB.lean:116:0: 'QSB.ByteIndex.nonminimal_ten_selects_dummy' depends on axioms: [propext]
+info: QSB.lean:117:0: 'QSB.ByteIndex.nonminimal_152_selects_commitment' depends on axioms: [propext]
+info: QSB.lean:118:0: 'QSB.ByteIndex.negative_152_cannot_roll' depends on axioms: [propext]
+info: QSB.lean:119:0: 'QSB.ByteIndex.oversized_encoding_cannot_roll' depends on axioms: [propext]
+info: QSB.lean:120:0: 'QSB.Multisig.too_many_signatures_fail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:121:0: 'QSB.Multisig.equal_counts_success_iff_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:122:0: 'QSB.KeyRolls.rollAt_matches_symbolic_step' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:123:0: 'QSB.KeyRolls.rollAt_preserves_shallower_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:124:0: 'QSB.KeyRolls.rollAt_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:125:0: 'QSB.KeyRolls.rollMany_preserves_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:126:0: 'QSB.KeyRolls.rollMany_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:127:0: 'QSB.KeyRolls.first_key_roll' depends on axioms: [propext]
+info: QSB.lean:128:0: 'QSB.KeyRolls.high_key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:129:0: 'QSB.KeyRolls.final_witness_cell_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:130:0: 'QSB.KeyRolls.final_witness_option_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:131:0: 'QSB.KeyRolls.key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:132:0: 'QSB.KeyRolls.key_indices_length' does not depend on any axioms
+info: QSB.lean:133:0: 'QSB.KeyRolls.final_signature_count_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:134:0: 'QSB.KeyRolls.final_count_operands_ten' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:135:0: 'QSB.KeyRolls.successful_final_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:136:0: 'QSB.KeyRolls.generated_final_suffix' does not depend on any axioms
+info: QSB.lean:137:0: 'QSB.ByteMachine.hash_compare_accepts_iff' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:138:0: 'QSB.ByteMachine.successful_hash_comparison' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:139:0: 'QSB.ByteMachine.run_append' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:140:0: 'QSB.ByteMachine.run_pushes' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:141:0: 'QSB.ByteMachine.run_pushes_overflow' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:142:0: 'QSB.ByteMachine.add_success_requires_four_byte_operands' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:143:0: 'QSB.ByteMachine.successful_hash_comparison_in_context' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:144:0: 'QSB.ByteLayout.program_length' does not depend on any axioms
+info: QSB.lean:145:0: 'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms
+info: QSB.lean:146:0: 'QSB.ByteLayout.fifteen_hors_comparisons' does not depend on any axioms
+info: QSB.lean:147:0: 'QSB.ByteLayout.comparisons_follow_hash160' does not depend on any axioms
+info: QSB.lean:148:0: 'QSB.ByteLayout.hash_comparison_positions_valid' depends on axioms: [propext]
+info: QSB.lean:149:0: 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:150:0: 'QSB.ByteWitness.witness_length' does not depend on any axioms
+info: QSB.lean:151:0: 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]
+info: QSB.lean:152:0: 'QSB.ByteWitness.first_round_boolean_ignored' depends on axioms: [propext]
+info: QSB.lean:153:0: 'QSB.ByteWitness.all_fifteen_comparisons_reached' depends on axioms: [propext]
+info: QSB.lean:154:0: 'QSB.FirstOvershoot.fixed_region_length' depends on axioms: [propext]
+info: QSB.lean:155:0: 'QSB.FirstOvershoot.generated_region_is_pushes' depends on axioms: [propext]
+info: QSB.lean:156:0: 'QSB.FirstOvershoot.generated_push_values_small' depends on axioms: [propext]
+info: QSB.lean:157:0: 'QSB.FirstOvershoot.generated_region_pushes' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:158:0: 'QSB.FirstOvershoot.generated_region_overflows' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:159:0: 'QSB.FirstOvershoot.generated_prefix_split' does not depend on any axioms
+info: QSB.lean:160:0: 'QSB.FirstOvershoot.generated_program_split_pinning' does not depend on any axioms
+info: QSB.lean:161:0: 'QSB.FirstOvershoot.generated_pinning_opcodes' depends on axioms: [propext]
+info: QSB.lean:162:0: 'QSB.FirstOvershoot.first_two_pinning_opcodes' depends on axioms: [propext]
+info: QSB.lean:163:0: 'QSB.FirstOvershoot.generated_pinning_split_two' does not depend on any axioms
+info: QSB.lean:164:0: 'QSB.FirstOvershoot.pin_signature_fits' depends on axioms: [propext]
+info: QSB.lean:165:0: 'QSB.FirstOvershoot.oversized_initial_stack_fails_first_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:166:0: 'QSB.FirstOvershoot.oversized_initial_stack_fails_pinning' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:167:0: 'QSB.FirstOvershoot.modeled_pinning_consumes_two_keys' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:168:0: 'QSB.FirstOvershoot.generated_prefix_after_pinning' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:169:0: 'QSB.FirstOvershoot.generated_prefix_overflows_after_pinning' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:170:0: 'QSB.FirstOvershoot.segment_is_first_two_selection_prefix' does not depend on any axioms
+info: QSB.lean:171:0: 'QSB.FirstOvershoot.first_commitment_is_twenty_bytes' depends on axioms: [propext]
+info: QSB.lean:172:0: 'QSB.FirstOvershoot.last_commitment_is_twenty_bytes' depends on axioms: [propext]
+info: QSB.lean:173:0: 'QSB.FirstOvershoot.last_commitment_is_not_scriptnum' depends on axioms: [propext]
+info: QSB.lean:174:0: 'QSB.FirstOvershoot.shifted_last_from_any_tail' depends on axioms: [propext]
+info: QSB.lean:175:0: 'QSB.FirstOvershoot.first_index_roll' depends on axioms: [propext]
+info: QSB.lean:176:0: 'QSB.FirstOvershoot.first_index_roll_raw' depends on axioms: [propext]
+info: QSB.lean:177:0: 'QSB.FirstOvershoot.first_index_roll_no_external' depends on axioms: [propext]
+info: QSB.lean:178:0: 'QSB.FirstOvershoot.first_index_roll_any_tail' depends on axioms: [propext]
+info: QSB.lean:179:0: 'QSB.FirstOvershoot.external_commitment_roll' depends on axioms: [propext]
+info: QSB.lean:180:0: 'QSB.FirstOvershoot.displaced_preimage_roll' depends on axioms: [propext]
+info: QSB.lean:181:0: 'QSB.FirstOvershoot.retained_index_roll' depends on axioms: [propext]
+info: QSB.lean:182:0: 'QSB.FirstOvershoot.byte_roll_matches_list_roll' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:183:0: 'QSB.FirstOvershoot.next_index_is_lock_commitment' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:184:0: 'QSB.FirstOvershoot.next_index_roll_full' depends on axioms: [propext]
+info: QSB.lean:185:0: 'QSB.FirstOvershoot.second_min_rejects_commitment' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:186:0: 'QSB.FirstOvershoot.parse_151' depends on axioms: [propext]
+info: QSB.lean:187:0: 'QSB.FirstOvershoot.encode_303' does not depend on any axioms
+info: QSB.lean:188:0: 'QSB.FirstOvershoot.parse_303' depends on axioms: [propext]
+info: QSB.lean:189:0: 'QSB.FirstOvershoot.parse_311' depends on axioms: [propext]
+info: QSB.lean:190:0: 'QSB.FirstOvershoot.oversized_index_clamps_to_152' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:191:0: 'QSB.FirstOvershoot.oversized_index_min_step' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:192:0: 'QSB.FirstOvershoot.unparseable_index_min_fails' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:193:0: 'QSB.FirstOvershoot.first_index_prefix_opcodes' does not depend on any axioms
+info: QSB.lean:194:0: 'QSB.FirstOvershoot.segment_split_first_index' does not depend on any axioms
+info: QSB.lean:195:0: 'QSB.FirstOvershoot.first_comparison_lead_opcodes' does not depend on any axioms
+info: QSB.lean:196:0: 'QSB.FirstOvershoot.before_first_comparison_split' does not depend on any axioms
+info: QSB.lean:197:0: 'QSB.FirstOvershoot.opening_roll_lead_opcodes' does not depend on any axioms
+info: QSB.lean:198:0: 'QSB.FirstOvershoot.before_opening_roll_split' does not depend on any axioms
+info: QSB.lean:199:0: 'QSB.FirstOvershoot.segment_split_opening_roll' does not depend on any axioms
+info: QSB.lean:200:0: 'QSB.FirstOvershoot.no_external_lead_opcodes' does not depend on any axioms
+info: QSB.lean:201:0: 'QSB.FirstOvershoot.first_eight_split' does not depend on any axioms
+info: QSB.lean:202:0: 'QSB.FirstOvershoot.segment_split_eight' does not depend on any axioms
+info: QSB.lean:203:0: 'QSB.FirstOvershoot.segment_starts_with_index_push' does not depend on any axioms
+info: QSB.lean:204:0: 'QSB.FirstOvershoot.first_six_split' does not depend on any axioms
+info: QSB.lean:205:0: 'QSB.FirstOvershoot.segment_split_six' does not depend on any axioms
+info: QSB.lean:206:0: 'QSB.FirstOvershoot.oversized_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:207:0: 'QSB.FirstOvershoot.unparseable_first_index_prefix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:208:0: 'QSB.FirstOvershoot.segment_first_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:209:0: 'QSB.FirstOvershoot.duplicate_then_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:210:0: 'QSB.FirstOvershoot.penultimate_capacity_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:211:0: 'QSB.FirstOvershoot.oversized_first_index_without_external' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:212:0: 'QSB.FirstOvershoot.no_external_lead_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:213:0: 'QSB.FirstOvershoot.no_external_first_eight_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:214:0: 'QSB.FirstOvershoot.no_external_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:215:0: 'QSB.FirstOvershoot.opening_roll_lead_reaches' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:216:0: 'QSB.FirstOvershoot.oversized_before_opening_roll' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:217:0: 'QSB.FirstOvershoot.short_tail_opening_roll_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:218:0: 'QSB.FirstOvershoot.short_tail_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:219:0: 'QSB.FirstOvershoot.first_comparison_lead_reaches_opening' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:220:0: 'QSB.FirstOvershoot.oversized_before_first_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:221:0: 'QSB.FirstOvershoot.first_selection_prefix_opcodes' does not depend on any axioms
+info: QSB.lean:222:0: 'QSB.FirstOvershoot.segment_split' does not depend on any axioms
+info: QSB.lean:223:0: 'QSB.FirstOvershoot.segment_split_comparison' does not depend on any axioms
+info: QSB.lean:224:0: 'QSB.FirstOvershoot.overshoot_suffix_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:225:0: 'QSB.FirstOvershoot.first_selection_reaches_forced_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:226:0: 'QSB.FirstOvershoot.matched_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:227:0: 'QSB.FirstOvershoot.oversized_first_overshoot_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:228:0: 'QSB.FirstOvershoot.oversized_any_marker_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:229:0: 'QSB.FirstOvershoot.oversized_arbitrary_tail_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:230:0: 'QSB.FirstOvershoot.oversized_any_postindex_tail_segment_fails' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:230:0: 'QSB.FirstOvershoot.generated_program_split' does not depend on any axioms
-info: QSB.lean:231:0: 'QSB.FirstOvershoot.generated_program_split_first_index' does not depend on any axioms
-info: QSB.lean:232:0: 'QSB.FirstOvershoot.matched_first_overshoot_cannot_finish' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:233:0: 'QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails' depends on axioms: [propext,
+info: QSB.lean:231:0: 'QSB.FirstOvershoot.generated_program_split' does not depend on any axioms
+info: QSB.lean:232:0: 'QSB.FirstOvershoot.generated_program_split_first_index' does not depend on any axioms
+info: QSB.lean:233:0: 'QSB.FirstOvershoot.matched_first_overshoot_cannot_finish' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:234:0: 'QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:234:0: 'QSB.FirstOvershoot.matched_external_initial_stack_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:235:0: 'QSB.FirstOvershoot.oversized_external_initial_stack_rejected' depends on axioms: [propext,
+info: QSB.lean:235:0: 'QSB.FirstOvershoot.matched_external_initial_stack_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:236:0: 'QSB.FirstOvershoot.oversized_external_initial_stack_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:236:0: 'QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected' depends on axioms: [propext,
+info: QSB.lean:237:0: 'QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:237:0: 'QSB.FirstOvershoot.oversized_arbitrary_tail_initial_stack_rejected' depends on axioms: [propext,
+info: QSB.lean:238:0: 'QSB.FirstOvershoot.oversized_arbitrary_tail_initial_stack_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:238:0: 'QSB.FirstOvershoot.oversized_any_postindex_tail_initial_stack_rejected' depends on axioms: [propext,
+info: QSB.lean:239:0: 'QSB.FirstOvershoot.oversized_any_postindex_tail_initial_stack_rejected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:239:0: 'QSB.FirstOvershoot.long_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:240:0: 'QSB.FirstOvershoot.saturated_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:241:0: 'QSB.FirstOvershoot.penultimate_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:242:0: 'QSB.FirstOvershoot.oversized_all_capacity_tails_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:243:0: 'QSB.FirstOvershoot.oversized_initial_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:244:0: 'QSB.FirstOvershoot.oversized_first_index_rejected_given_pinning' depends on axioms: [propext,
+info: QSB.lean:240:0: 'QSB.FirstOvershoot.long_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:241:0: 'QSB.FirstOvershoot.saturated_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:242:0: 'QSB.FirstOvershoot.penultimate_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:243:0: 'QSB.FirstOvershoot.oversized_all_capacity_tails_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:244:0: 'QSB.FirstOvershoot.oversized_initial_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:245:0: 'QSB.FirstOvershoot.oversized_first_index_rejected_given_pinning' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:245:0: 'QSB.FirstOvershoot.unparseable_first_index_rejected_given_pinning' depends on axioms: [propext,
+info: QSB.lean:246:0: 'QSB.FirstOvershoot.unparseable_first_index_rejected_given_pinning' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:246:0: 'QSB.FirstOvershoot.accepted_first_index_below_152' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:247:0: 'QSB.FirstOvershoot.accepted_first_index_parses' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:248:0: 'QSB.FirstOvershoot.accepted_first_index_parses_below_152' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:249:0: 'QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes' depends on axioms: [propext]
-info: QSB.lean:250:0: 'QSB.FirstIndexMap.commitment_cells_are_twenty_bytes' depends on axioms: [propext]
-info: QSB.lean:251:0: 'QSB.FirstIndexMap.first_pool_window_covers_region' depends on axioms: [propext]
-info: QSB.lean:252:0: 'QSB.FirstIndexMap.signed_window_lookup' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:253:0: 'QSB.FirstIndexMap.signed_window_cell_is_twenty_bytes' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:254:0: 'QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:255:0: 'QSB.FirstIndexMap.signed_window_roll_has_lock_origin' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:256:0: 'QSB.FirstIndexMap.shallow_window_cannot_match_hash160' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:257:0: 'QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:247:0: 'QSB.FirstOvershoot.accepted_first_index_below_152' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:248:0: 'QSB.FirstOvershoot.accepted_first_index_parses' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:249:0: 'QSB.FirstOvershoot.accepted_first_index_parses_below_152' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:250:0: 'QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes' depends on axioms: [propext]
+info: QSB.lean:251:0: 'QSB.FirstIndexMap.commitment_cells_are_twenty_bytes' depends on axioms: [propext]
+info: QSB.lean:252:0: 'QSB.FirstIndexMap.first_pool_window_covers_region' depends on axioms: [propext]
+info: QSB.lean:253:0: 'QSB.FirstIndexMap.signed_window_lookup' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:254:0: 'QSB.FirstIndexMap.signed_window_cell_is_twenty_bytes' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:255:0: 'QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:256:0: 'QSB.FirstIndexMap.signed_window_roll_has_lock_origin' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:257:0: 'QSB.FirstIndexMap.shallow_window_cannot_match_hash160' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:258:0: 'QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:258:0: 'QSB.FirstNumericRange.canonical_index_roundtrip' depends on axioms: [propext]
-info: QSB.lean:259:0: 'QSB.FirstNumericRange.signed_offset_roundtrip' depends on axioms: [propext]
-info: QSB.lean:260:0: 'QSB.FirstNumericRange.encode_canonical_index' does not depend on any axioms
-info: QSB.lean:261:0: 'QSB.FirstNumericRange.parse_canonical_index' depends on axioms: [propext]
-info: QSB.lean:262:0: 'QSB.FirstNumericRange.encode_signed_offset' does not depend on any axioms
-info: QSB.lean:263:0: 'QSB.FirstNumericRange.parse_signed_offset' depends on axioms: [propext]
-info: QSB.lean:264:0: 'QSB.FirstNumericRange.canonical_index_small' does not depend on any axioms
-info: QSB.lean:265:0: 'QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:259:0: 'QSB.FirstNumericRange.canonical_index_roundtrip' depends on axioms: [propext]
+info: QSB.lean:260:0: 'QSB.FirstNumericRange.signed_offset_roundtrip' depends on axioms: [propext]
+info: QSB.lean:261:0: 'QSB.FirstNumericRange.encode_canonical_index' does not depend on any axioms
+info: QSB.lean:262:0: 'QSB.FirstNumericRange.parse_canonical_index' depends on axioms: [propext]
+info: QSB.lean:263:0: 'QSB.FirstNumericRange.encode_signed_offset' does not depend on any axioms
+info: QSB.lean:264:0: 'QSB.FirstNumericRange.parse_signed_offset' depends on axioms: [propext]
+info: QSB.lean:265:0: 'QSB.FirstNumericRange.canonical_index_small' does not depend on any axioms
+info: QSB.lean:266:0: 'QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:266:0: 'QSB.FirstNumericRange.inrange_index_min_step' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:267:0: 'QSB.FirstNumericRange.inrange_index_add_step' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:268:0: 'QSB.FirstNumericRange.inrange_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:269:0: 'QSB.FirstNumericRange.inrange_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:270:0: 'QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:267:0: 'QSB.FirstNumericRange.inrange_index_min_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:268:0: 'QSB.FirstNumericRange.inrange_index_add_step' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:269:0: 'QSB.FirstNumericRange.inrange_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:270:0: 'QSB.FirstNumericRange.inrange_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:271:0: 'QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:271:0: 'QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:272:0: 'QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:272:0: 'QSB.FirstNegativeRange.negative_roundtrip' depends on axioms: [propext]
-info: QSB.lean:273:0: 'QSB.FirstNegativeRange.negative_encode' does not depend on any axioms
-info: QSB.lean:274:0: 'QSB.FirstNegativeRange.depth_roundtrip' depends on axioms: [propext]
-info: QSB.lean:275:0: 'QSB.FirstNegativeRange.depth_encode' does not depend on any axioms
-info: QSB.lean:276:0: 'QSB.FirstNegativeRange.negative_arithmetic' does not depend on any axioms
-info: QSB.lean:277:0: 'QSB.FirstNegativeRange.negative_canonical_small' does not depend on any axioms
-info: QSB.lean:278:0: 'QSB.FirstNegativeRange.negative_index_min_step' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:279:0: 'QSB.FirstNegativeRange.negative_index_add_step' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:280:0: 'QSB.FirstNegativeRange.negative_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:281:0: 'QSB.FirstNegativeRange.negative_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:282:0: 'QSB.FirstNegativeRange.negative_roll_cannot_hash_match' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:283:0: 'QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:284:0: 'QSB.ByteIndexSign.negative_encoding_has_sign_bit' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:285:0: 'QSB.ByteIndexSign.parse_sign_bit_nonpositive' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:286:0: 'QSB.ByteIndexSign.parsed_bytes_are_short' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:287:0: 'QSB.ByteIndexSign.negative_encoding_never_parses_positive' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:288:0: 'QSB.ByteIndexSign.encoded_below_152_parses_below_152' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:289:0: 'QSB.FirstNegativeAll.negative_min_output' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:290:0: 'QSB.FirstNegativeAll.add_output' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:291:0: 'QSB.FirstNegativeAll.add_success_parses_operand' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:292:0: 'QSB.FirstNegativeAll.roll_success_parses_index' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:293:0: 'QSB.FirstNegativeAll.rolled_hash_has_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:294:0: 'QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:295:0: 'QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:273:0: 'QSB.FirstNegativeRange.negative_roundtrip' depends on axioms: [propext]
+info: QSB.lean:274:0: 'QSB.FirstNegativeRange.negative_encode' does not depend on any axioms
+info: QSB.lean:275:0: 'QSB.FirstNegativeRange.depth_roundtrip' depends on axioms: [propext]
+info: QSB.lean:276:0: 'QSB.FirstNegativeRange.depth_encode' does not depend on any axioms
+info: QSB.lean:277:0: 'QSB.FirstNegativeRange.negative_arithmetic' does not depend on any axioms
+info: QSB.lean:278:0: 'QSB.FirstNegativeRange.negative_canonical_small' does not depend on any axioms
+info: QSB.lean:279:0: 'QSB.FirstNegativeRange.negative_index_min_step' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:280:0: 'QSB.FirstNegativeRange.negative_index_add_step' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:281:0: 'QSB.FirstNegativeRange.negative_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:282:0: 'QSB.FirstNegativeRange.negative_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:283:0: 'QSB.FirstNegativeRange.negative_roll_cannot_hash_match' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:284:0: 'QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:285:0: 'QSB.ByteIndexSign.negative_encoding_has_sign_bit' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:286:0: 'QSB.ByteIndexSign.parse_sign_bit_nonpositive' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:287:0: 'QSB.ByteIndexSign.parsed_bytes_are_short' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:288:0: 'QSB.ByteIndexSign.negative_encoding_never_parses_positive' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:289:0: 'QSB.ByteIndexSign.encoded_below_152_parses_below_152' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:290:0: 'QSB.FirstNegativeAll.negative_min_output' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:291:0: 'QSB.FirstNegativeAll.add_output' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:292:0: 'QSB.FirstNegativeAll.add_success_parses_operand' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:293:0: 'QSB.FirstNegativeAll.roll_success_parses_index' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:294:0: 'QSB.FirstNegativeAll.rolled_hash_has_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:295:0: 'QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:296:0: 'QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:296:0: 'QSB.FirstAcceptedOrigin.run_cons_success' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:297:0: 'QSB.FirstAcceptedOrigin.successful_prefix' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:298:0: 'QSB.FirstAcceptedOrigin.first_selection_split_three' does not depend on any axioms
-info: QSB.lean:299:0: 'QSB.FirstAcceptedOrigin.first_three_run' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:300:0: 'QSB.FirstAcceptedOrigin.first_selection_success_small' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:301:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_three' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:302:0: 'QSB.FirstAcceptedOrigin.successful_min_has_retained' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:303:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_min' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:304:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_dup_push' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:305:0: 'QSB.FirstAcceptedOrigin.successful_add_has_offset' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:306:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_add' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:307:0: 'QSB.FirstAcceptedOrigin.successful_roll_has_top' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:308:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_first_roll' depends on axioms: [propext,
+info: QSB.lean:297:0: 'QSB.FirstAcceptedOrigin.run_cons_success' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:298:0: 'QSB.FirstAcceptedOrigin.successful_prefix' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:299:0: 'QSB.FirstAcceptedOrigin.first_selection_split_three' does not depend on any axioms
+info: QSB.lean:300:0: 'QSB.FirstAcceptedOrigin.first_three_run' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:301:0: 'QSB.FirstAcceptedOrigin.first_selection_success_small' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:302:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_three' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:303:0: 'QSB.FirstAcceptedOrigin.successful_min_has_retained' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:304:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_min' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:305:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_dup_push' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:306:0: 'QSB.FirstAcceptedOrigin.successful_add_has_offset' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:307:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:308:0: 'QSB.FirstAcceptedOrigin.successful_roll_has_top' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:309:0: 'QSB.FirstAcceptedOrigin.successful_selection_after_first_roll' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:309:0: 'QSB.FirstAcceptedOrigin.successful_opening_roll_preserves_selected' depends on axioms: [propext,
+info: QSB.lean:310:0: 'QSB.FirstAcceptedOrigin.successful_opening_roll_preserves_selected' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:310:0: 'QSB.FirstAcceptedOrigin.successful_comparison_suffix_matches' depends on axioms: [propext,
+info: QSB.lean:311:0: 'QSB.FirstAcceptedOrigin.successful_comparison_suffix_matches' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:311:0: 'QSB.FirstAcceptedOrigin.successful_first_selection_prefix_origin' depends on axioms: [propext,
+info: QSB.lean:312:0: 'QSB.FirstAcceptedOrigin.successful_first_selection_prefix_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:312:0: 'QSB.FirstAcceptedOrigin.accepted_postindex_tail_small' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:313:0: 'QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin' depends on axioms: [propext,
+info: QSB.lean:313:0: 'QSB.FirstAcceptedOrigin.accepted_postindex_tail_small' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:314:0: 'QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:314:0: 'QSB.PinningShape.accepted_has_pinning_prefix' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:315:0: 'QSB.PinningShape.accepted_pinning_input_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:316:0: 'QSB.PinningShape.empty_post_pinning_first_roll_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:317:0: 'QSB.PinningShape.two_cell_initial_stack_cannot_accept' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:318:0: 'QSB.PinningShape.accepted_initial_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:319:0: 'QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin' depends on axioms: [propext,
+info: QSB.lean:315:0: 'QSB.PinningShape.accepted_has_pinning_prefix' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:316:0: 'QSB.PinningShape.accepted_pinning_input_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:317:0: 'QSB.PinningShape.empty_post_pinning_first_roll_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:318:0: 'QSB.PinningShape.two_cell_initial_stack_cannot_accept' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:319:0: 'QSB.PinningShape.accepted_initial_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:320:0: 'QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:320:0: 'QSB.BareBoundary.accepted_bare_composition_first_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:321:0: 'QSB.BareBoundary.accepted_bare_first_origin_and_final_counts' depends on axioms: [propext,
+info: QSB.lean:321:0: 'QSB.BareBoundary.accepted_bare_composition_first_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:322:0: 'QSB.BareBoundary.accepted_bare_first_origin_and_final_counts' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:322:0: 'QSB.ByteFinalCounts.generated_final_byte_suffix' does not depend on any axioms
-info: QSB.lean:323:0: 'QSB.ByteFinalCounts.generated_final_setup_suffix' does not depend on any axioms
-info: QSB.lean:324:0: 'QSB.ByteFinalCounts.key_index_bytes_decode' depends on axioms: [propext]
-info: QSB.lean:325:0: 'QSB.ByteFinalCounts.key_index_values' does not depend on any axioms
-info: QSB.lean:326:0: 'QSB.ByteFinalCounts.push_success_shape' depends on axioms: [propext]
-info: QSB.lean:327:0: 'QSB.ByteFinalCounts.roll_success_budget' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:328:0: 'QSB.ByteFinalCounts.accepted_pair_preserves_shallower' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:329:0: 'QSB.ByteFinalCounts.accepted_pair_preserves_shallower_option' depends on axioms: [propext,
+info: QSB.lean:323:0: 'QSB.ByteFinalCounts.generated_final_byte_suffix' does not depend on any axioms
+info: QSB.lean:324:0: 'QSB.ByteFinalCounts.generated_final_setup_suffix' does not depend on any axioms
+info: QSB.lean:325:0: 'QSB.ByteFinalCounts.key_index_bytes_decode' depends on axioms: [propext]
+info: QSB.lean:326:0: 'QSB.ByteFinalCounts.key_index_values' does not depend on any axioms
+info: QSB.lean:327:0: 'QSB.ByteFinalCounts.push_success_shape' depends on axioms: [propext]
+info: QSB.lean:328:0: 'QSB.ByteFinalCounts.roll_success_budget' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:329:0: 'QSB.ByteFinalCounts.accepted_pair_preserves_shallower' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:330:0: 'QSB.ByteFinalCounts.accepted_pair_preserves_shallower_option' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:330:0: 'QSB.ByteFinalCounts.accepted_pairs_preserve_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:331:0: 'QSB.ByteFinalCounts.accepted_pairs_preserve_shallower_option' depends on axioms: [propext,
+info: QSB.lean:331:0: 'QSB.ByteFinalCounts.accepted_pairs_preserve_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:332:0: 'QSB.ByteFinalCounts.accepted_pairs_preserve_shallower_option' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:332:0: 'QSB.ByteFinalCounts.accepted_first_key_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:333:0: 'QSB.ByteFinalCounts.accepted_final_setup_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:334:0: 'QSB.ByteFinalCounts.accepted_final_setup_witness_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:335:0: 'QSB.ByteFinalCounts.successful_final_check_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:336:0: 'QSB.ByteFinalCounts.accepted_final_setup_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:337:0: 'QSB.ByteFinalCounts.accepted_final_suffix_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:338:0: 'QSB.ByteFinalCounts.accepted_final_suffix_source_dummy_empty' depends on axioms: [propext,
+info: QSB.lean:333:0: 'QSB.ByteFinalCounts.accepted_first_key_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:334:0: 'QSB.ByteFinalCounts.accepted_final_setup_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:335:0: 'QSB.ByteFinalCounts.accepted_final_setup_witness_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:336:0: 'QSB.ByteFinalCounts.successful_final_check_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:337:0: 'QSB.ByteFinalCounts.accepted_final_setup_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:338:0: 'QSB.ByteFinalCounts.accepted_final_suffix_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:339:0: 'QSB.ByteFinalCounts.accepted_final_suffix_source_dummy_empty' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:339:0: 'QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome' depends on axioms: [propext,
+info: QSB.lean:340:0: 'QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:340:0: 'QSB.ByteFinalCounts.accepted_true_final_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:341:0: 'QSB.ByteFinalCounts.accepted_true_whole_program_final_counts' depends on axioms: [propext,
+info: QSB.lean:341:0: 'QSB.ByteFinalCounts.accepted_true_final_suffix' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:342:0: 'QSB.ByteFinalCounts.accepted_true_whole_program_final_counts' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:342:0: 'QSB.ByteLatePuzzle.generated_late_ops' does not depend on any axioms
-info: QSB.lean:343:0: 'QSB.ByteLatePuzzle.late_indices_decode' depends on axioms: [propext]
-info: QSB.lean:344:0: 'QSB.ByteLatePuzzle.accepted_dup_sha256_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:345:0: 'QSB.ByteLatePuzzle.accepted_checksigverify_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:346:0: 'QSB.ByteLatePuzzle.accepted_late_preserves_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:347:0: 'QSB.ByteLatePuzzle.accepted_late_final_witness_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:348:0: 'QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:349:0: 'QSB.ByteLatePuzzle.final_suffix_rejects_empty_stack' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:350:0: 'QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:351:0: 'QSB.ByteLatePuzzle.generated_late_final_suffix' does not depend on any axioms
-info: QSB.lean:352:0: 'QSB.ByteLatePuzzle.generated_late_final_check_split' does not depend on any axioms
-info: QSB.lean:353:0: 'QSB.ByteLatePuzzle.accepted_generated_final_witness_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:354:0: 'QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:355:0: 'QSB.FinalBonusBoundary.shallow_roll_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:356:0: 'QSB.FinalBonusBoundary.deep_roll_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:357:0: 'QSB.FinalBonusBoundary.modeled_shallow_bonus_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:358:0: 'QSB.FinalBonusBoundary.modeled_deep_bonus_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:359:0: 'QSB.FinalBonusBoundary.successful_bonus_empty_source_dichotomy' depends on axioms: [propext,
+info: QSB.lean:343:0: 'QSB.ByteLatePuzzle.generated_late_ops' does not depend on any axioms
+info: QSB.lean:344:0: 'QSB.ByteLatePuzzle.late_indices_decode' depends on axioms: [propext]
+info: QSB.lean:345:0: 'QSB.ByteLatePuzzle.accepted_dup_sha256_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:346:0: 'QSB.ByteLatePuzzle.accepted_checksigverify_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:347:0: 'QSB.ByteLatePuzzle.accepted_late_preserves_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:348:0: 'QSB.ByteLatePuzzle.accepted_late_final_witness_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:349:0: 'QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:350:0: 'QSB.ByteLatePuzzle.final_suffix_rejects_empty_stack' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:351:0: 'QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:352:0: 'QSB.ByteLatePuzzle.generated_late_final_suffix' does not depend on any axioms
+info: QSB.lean:353:0: 'QSB.ByteLatePuzzle.generated_late_final_check_split' does not depend on any axioms
+info: QSB.lean:354:0: 'QSB.ByteLatePuzzle.accepted_generated_final_witness_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:355:0: 'QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:356:0: 'QSB.FinalBonusBoundary.shallow_roll_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:357:0: 'QSB.FinalBonusBoundary.deep_roll_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:358:0: 'QSB.FinalBonusBoundary.modeled_shallow_bonus_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:359:0: 'QSB.FinalBonusBoundary.modeled_deep_bonus_tenth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:360:0: 'QSB.FinalBonusBoundary.successful_bonus_empty_source_dichotomy' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:360:0: 'QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:361:0: 'QSB.FinalBonusBoundary.successful_bonus_requires_depth_at_least_ten' depends on axioms: [propext,
+info: QSB.lean:361:0: 'QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:362:0: 'QSB.FinalBonusBoundary.successful_bonus_requires_depth_at_least_ten' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:362:0: 'QSB.ByteBonusBetween.generated_between_ops' does not depend on any axioms
-info: QSB.lean:363:0: 'QSB.ByteBonusBetween.between_roll_index_decode' depends on axioms: [propext]
-info: QSB.lean:364:0: 'QSB.ByteBonusBetween.successful_cap_min_tail' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:365:0: 'QSB.ByteBonusBetween.accepted_cap_min_preserves_tail' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:366:0: 'QSB.ByteBonusBetween.accepted_between_preserves_shallow' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:367:0: 'QSB.ByteBonusBetween.shallow_first_roll_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:368:0: 'QSB.ByteBonusBetween.modeled_shallow_first_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:369:0: 'QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine' depends on axioms: [propext,
+info: QSB.lean:363:0: 'QSB.ByteBonusBetween.generated_between_ops' does not depend on any axioms
+info: QSB.lean:364:0: 'QSB.ByteBonusBetween.between_roll_index_decode' depends on axioms: [propext]
+info: QSB.lean:365:0: 'QSB.ByteBonusBetween.successful_cap_min_tail' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:366:0: 'QSB.ByteBonusBetween.accepted_cap_min_preserves_tail' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:367:0: 'QSB.ByteBonusBetween.accepted_between_preserves_shallow' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:368:0: 'QSB.ByteBonusBetween.shallow_first_roll_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:369:0: 'QSB.ByteBonusBetween.modeled_shallow_first_ninth_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:370:0: 'QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:370:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:371:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:372:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:373:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:374:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
-info: QSB.lean:375:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:376:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:377:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:378:0: 'QSB.unauthorized_not_released' does not depend on any axioms
-info: QSB.lean:379:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:380:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:381:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:382:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:383:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:384:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-Build completed successfully (2994 jobs).
+info: QSB.lean:371:0: 'QSB.ByteBonusBetween.successful_two_bonus_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:372:0: 'QSB.PoolRollInvariant.roll_from_middle' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:373:0: 'QSB.PoolRollInvariant.roll_at_pool' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:374:0: 'QSB.PoolRollInvariant.drawMany_matches_rollMany' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:375:0: 'QSB.PoolRollInvariant.drawMany_preserves_nonempty_pool' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:376:0: 'QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:377:0: 'QSB.PoolRollInvariant.generated_dummy_ops_are_pushes' depends on axioms: [propext]
+info: QSB.lean:378:0: 'QSB.PoolRollInvariant.generated_dummy_pool_length' depends on axioms: [propext]
+info: QSB.lean:379:0: 'QSB.PoolRollInvariant.generated_dummy_pool_nonempty' depends on axioms: [propext]
+info: QSB.lean:380:0: 'QSB.PoolRollInvariant.generated_dummy_pushes_small' depends on axioms: [propext]
+info: QSB.lean:381:0: 'QSB.PoolRollInvariant.generated_dummy_pool_pushes' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:382:0: 'QSB.PoolRollInvariant.generated_final_round_init_ops' depends on axioms: [propext]
+info: QSB.lean:383:0: 'QSB.PoolRollInvariant.generated_final_nonce_nonempty' depends on axioms: [propext]
+info: QSB.lean:384:0: 'QSB.PoolRollInvariant.generated_final_round_initial_stack' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:385:0: 'QSB.PoolRollInvariant.generated_pool_seven_draws_sources_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: QSB.lean:386:0: 'QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: QSB.lean:387:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:388:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:389:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:390:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:391:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
+info: QSB.lean:392:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:393:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:394:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:395:0: 'QSB.unauthorized_not_released' does not depend on any axioms
+info: QSB.lean:396:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:397:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:398:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:399:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:400:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:401:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (2995 jobs).

@@ -130,8 +130,11 @@ sources of that empty dummy: depth 10 when the last bonus index is below 10,
 and depth 9 otherwise. `QSB/ByteBonusBetween.lean` transports shallow cells
 through the fixed deep roll and cap between bonus choices. If the two relevant
 pre-first-bonus source cells are nonempty, it proves that a first bonus index
-below 9 cannot complete the modeled suffix. Those source-cell premises and
-the earlier signed-selection invariant remain open for arbitrary witnesses.
+below 9 or a last index below 10 cannot complete the modeled suffix.
+`QSB/PoolRollInvariant.lean` checks that the generated second-round pushes
+establish 150 nonempty dummy bytes, and that any seven pool-only signed rolls
+leave those two source cells nonempty. Proving pool-only behavior for all seven
+signed rolls remains open for arbitrary accepted witnesses.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

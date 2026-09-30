@@ -202,4 +202,63 @@ theorem successful_two_bonus_requires_first_depth_nine (hashes : Hashes)
             postLast final nine ten nineNonempty tenNonempty lastNine
             lastTen decodedLast lastRoll suffix
 
+/-- Once both pre-first-bonus candidate pool cells are nonempty, successful
+modeled execution imposes both boundary indices. The last-index bound follows
+because the first roll leaves one of those two cells at post-first depth ten,
+which the fixed roll and cap carry to last-roll source depth ten. -/
+theorem successful_two_bonus_index_bounds (hashes : Hashes)
+    (rawFirst rawLast : Bytes) (regionFirst regionLast : List Bytes)
+    (firstIndex lastIndex : Nat) (outcomes : List Bool) (cost : Nat)
+    (postFirst beforeLast postLast final : State)
+    (nine ten : Bytes) (nineNonempty : nine ≠ []) (tenNonempty : ten ≠ [])
+    (firstNine : regionFirst[9]? = some nine)
+    (firstTen : regionFirst[10]? = some ten)
+    (decodedFirst : ByteIndex.parseScriptNum rawFirst =
+      some (Int.ofNat firstIndex))
+    (decodedLast : ByteIndex.parseScriptNum rawLast =
+      some (Int.ofNat lastIndex))
+    (firstRoll : run hashes [.roll]
+      (State.mk (rawFirst :: regionFirst) outcomes cost) = some postFirst)
+    (between : run hashes betweenOps postFirst = some beforeLast)
+    (lastShape : beforeLast.stack = rawLast :: regionLast)
+    (lastRoll : run hashes [.roll] beforeLast = some postLast)
+    (suffix : run hashes (ByteLayout.program.drop 850)
+      postLast = some final) :
+    9 ≤ firstIndex ∧ 10 ≤ lastIndex := by
+  have firstBound := successful_two_bonus_requires_first_depth_nine
+    hashes rawFirst rawLast regionFirst regionLast firstIndex lastIndex
+    outcomes cost postFirst beforeLast postLast final nine ten
+    nineNonempty tenNonempty firstNine firstTen decodedFirst decodedLast
+    firstRoll between lastShape lastRoll suffix
+  have firstSource : ∃ marker : Bytes, marker ≠ [] ∧
+      postFirst.stack[10]? = some marker := by
+    by_cases shallow : firstIndex < 10
+    · have source := FinalBonusBoundary.modeled_shallow_bonus_tenth_source
+        hashes rawFirst regionFirst firstIndex outcomes cost postFirst
+        shallow decodedFirst firstRoll
+      exact ⟨ten, tenNonempty, source.trans firstTen⟩
+    · have deep : 10 ≤ firstIndex := by omega
+      have source := FinalBonusBoundary.modeled_deep_bonus_tenth_source
+        hashes rawFirst regionFirst firstIndex outcomes cost postFirst
+        deep decodedFirst firstRoll
+      exact ⟨nine, nineNonempty, source.trans firstNine⟩
+  obtain ⟨marker, nonempty, postTen⟩ := firstSource
+  cases postFirst with
+  | mk firstStack firstOutcomes firstCost =>
+      have carried := accepted_between_preserves_shallow hashes
+        firstStack firstOutcomes firstCost beforeLast 10 (by omega) between
+      have lastTen : regionLast[10]? = some marker := by
+        rw [lastShape] at carried
+        simpa using carried.trans postTen
+      cases beforeLast with
+      | mk lastStack lastOutcomes lastCost =>
+          change lastStack = rawLast :: regionLast at lastShape
+          subst lastStack
+          have lastBound :=
+            FinalBonusBoundary.successful_bonus_requires_depth_at_least_ten
+              hashes rawLast regionLast lastIndex lastOutcomes lastCost
+              postLast final marker nonempty lastTen decodedLast
+              lastRoll suffix
+          exact ⟨firstBound, lastBound⟩
+
 end QSB.ByteBonusBetween

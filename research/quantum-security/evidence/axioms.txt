@@ -392,6 +392,26 @@
 'QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ByteBonusBetween.successful_two_bonus_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PoolRollInvariant.roll_from_middle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PoolRollInvariant.roll_at_pool' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PoolRollInvariant.drawMany_matches_rollMany' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PoolRollInvariant.drawMany_preserves_nonempty_pool' depends on axioms: [propext, Quot.sound]
+'QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PoolRollInvariant.generated_dummy_ops_are_pushes' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_dummy_pool_length' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_dummy_pool_nonempty' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_dummy_pushes_small' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_dummy_pool_pushes' depends on axioms: [propext, Quot.sound]
+'QSB.PoolRollInvariant.generated_final_round_init_ops' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_final_nonce_nonempty' depends on axioms: [propext]
+'QSB.PoolRollInvariant.generated_final_round_initial_stack' depends on axioms: [propext, Quot.sound]
+'QSB.PoolRollInvariant.generated_pool_seven_draws_sources_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

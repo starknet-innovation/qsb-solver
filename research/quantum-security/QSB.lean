@@ -25,6 +25,7 @@ import QSB.BareBoundary
 import QSB.ByteFinalCounts
 import QSB.ByteLatePuzzle
 import QSB.ByteBonusBetween
+import QSB.PoolRollInvariant
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -367,6 +368,22 @@ import QSB.Reduction
 #print axioms QSB.ByteBonusBetween.shallow_first_roll_ninth_source
 #print axioms QSB.ByteBonusBetween.modeled_shallow_first_ninth_source
 #print axioms QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine
+#print axioms QSB.ByteBonusBetween.successful_two_bonus_index_bounds
+#print axioms QSB.PoolRollInvariant.roll_from_middle
+#print axioms QSB.PoolRollInvariant.roll_at_pool
+#print axioms QSB.PoolRollInvariant.drawMany_matches_rollMany
+#print axioms QSB.PoolRollInvariant.drawMany_preserves_nonempty_pool
+#print axioms QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty
+#print axioms QSB.PoolRollInvariant.generated_dummy_ops_are_pushes
+#print axioms QSB.PoolRollInvariant.generated_dummy_pool_length
+#print axioms QSB.PoolRollInvariant.generated_dummy_pool_nonempty
+#print axioms QSB.PoolRollInvariant.generated_dummy_pushes_small
+#print axioms QSB.PoolRollInvariant.generated_dummy_pool_pushes
+#print axioms QSB.PoolRollInvariant.generated_final_round_init_ops
+#print axioms QSB.PoolRollInvariant.generated_final_nonce_nonempty
+#print axioms QSB.PoolRollInvariant.generated_final_round_initial_stack
+#print axioms QSB.PoolRollInvariant.generated_pool_seven_draws_sources_nonempty
+#print axioms QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

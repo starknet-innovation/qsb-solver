@@ -16,7 +16,7 @@
       "expected": true,
       "overshoot_slot": null,
       "final_bonus_indices": [
-        10,
+        9,
         10
       ],
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -29,7 +29,7 @@
       "expected": false,
       "overshoot_slot": 8,
       "final_bonus_indices": [
-        10,
+        9,
         152
       ],
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -42,7 +42,7 @@
       "expected": true,
       "overshoot_slot": null,
       "final_bonus_indices": [
-        10,
+        9,
         10
       ],
       "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
@@ -55,7 +55,7 @@
       "expected": true,
       "overshoot_slot": 8,
       "final_bonus_indices": [
-        10,
+        9,
         152
       ],
       "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
