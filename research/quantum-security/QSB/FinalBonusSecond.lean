@@ -645,6 +645,8 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
       AlignedPool remainingIds dummies commitments ∧
       List.Perm (trace.map Prod.fst ++ remainingIds)
         (List.finRange 150) ∧
+      gathered =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse ∧
       run hashes firstBonusOps
         (State.mk (nextRawFront (boolBytes result)
           gathered dummies commitments ++ tail) outcomes cost) =
@@ -716,7 +718,8 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, signedShape, pool, aligned, gatheredCount,
-                    traceCount, distinct, hits, tracePerm⟩ :=
+                    traceCount, distinct, hits, tracePerm,
+                    gatheredTrace⟩ :=
                     FinalSignedChain.accepted_all_signed_blocks hashes result
                       earlyTail checkOutcomes checkCost afterSigned signed
                   have prefixRun : run hashes (ByteLayout.program.take 840)
@@ -741,6 +744,7 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
                     checkOutcomes, checkCost + 63, trace, ids', firstIndex,
                     lastIndex, postFirst, postLast, ?_, pool, gatheredCount,
                     traceCount, distinct, hits, aligned, tracePerm,
+                    gatheredTrace,
                     firstRun, bothRun,
                     firstLower, firstUpper, lastLower, lastUpper,
                     firstSource, lastSource, firstCarried, shallow⟩
@@ -850,6 +854,8 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
       AlignedPool remainingIds dummies commitments ∧
       List.Perm (trace.map Prod.fst ++ remainingIds)
         (List.finRange 150) ∧
+      gathered =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse ∧
       commitments[0]? = some (generatedCommitmentAt candidate) ∧
       candidate ∉ trace.map Prod.fst ∧
       9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
@@ -881,7 +887,7 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
       outcomes, cost, trace, remainingIds, firstIndex, lastIndex,
       postFirst, postLast,
       prefixRun, pool, seven, traceCount, distinct, hits,
-      aligned, tracePerm,
+      aligned, tracePerm, gatheredTrace,
       firstRun, bothRun, firstLower, firstUpper,
       lastLower, lastUpper, firstSource, lastSource,
       firstCarried, shallow⟩ :=
@@ -927,7 +933,8 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
     postFirst, postLast,
     beforeCheck, prefixRun, through, beforePrefix, pool, traceCount, distinct,
-    hits, aligned, tracePerm, candidateSource, candidateUnopened,
+    hits, aligned, tracePerm, gatheredTrace,
+    candidateSource, candidateUnopened,
     firstLower, firstUpper, lastLower, lastUpper,
     firstSource, lastSource, beforeRun, lastSlot, firstSlot,
     gatheredSlots, nonceSlot, dummySlot,
@@ -955,7 +962,8 @@ theorem no_bonus_commitment_of_signature_syntax (hashes : Hashes)
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
     postFirst, postLast, beforeCheck,
     _prefixRun, _through, beforePrefix, _pool, _traceCount, _distinct,
-    _hits, _aligned, _tracePerm, _candidateSource, _candidateUnopened,
+    _hits, _aligned, _tracePerm, _gatheredTrace,
+    _candidateSource, _candidateUnopened,
     firstLower, firstUpper, lastLower, lastUpper,
     _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
     _gatheredSlots, _nonceSlot, _dummySlot,
@@ -1036,7 +1044,8 @@ theorem no_bonus_commitment_of_matching_verifier (hashes : Hashes)
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
     postFirst, postLast, beforeCheck,
     _prefixRun, _through, beforePrefix, _pool, _traceCount, _distinct,
-    _hits, _aligned, _tracePerm, _candidateSource, _candidateUnopened,
+    _hits, _aligned, _tracePerm, _gatheredTrace,
+    _candidateSource, _candidateUnopened,
     _firstLower, _firstUpper, _lastLower, _lastUpper,
     _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
     _gatheredSlots, _nonceSlot, dummySlot,

@@ -290,7 +290,10 @@ with the compiled Core verifier, or supply a spend-probability bound.
 bytes from that same accepted byte-model run. Each equals a generated dummy
 at a surviving original HORS position. The surviving-position permutation
 proves that these two positions differ from each other and from all seven
-signed opening positions, so their union has exactly nine positions. This
+signed opening positions, so their union has exactly nine positions. The
+seven other reached signature slots are the generated dummies at those seven
+traced positions in reverse draw order; the theorem also identifies the fixed
+nonce slot and empty NULLDUMMY cell. This
 full-run statement still assumes the successful DER-sound ten-pair scan;
 the byte interpreter's supplied final signature Boolean does not establish
 that premise, and Core refinement remains open.

@@ -179,8 +179,11 @@ setups or replace compiled-Core refinement.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine
-positions. `QSB/FinalRoundWitness.lean` uses an executable lookup over the
-seven recorded opening pairs to populate the `RoundWitness` shape and valid
+positions. The seven other final signature slots contain generated dummies at
+the traced positions in reverse draw order; the remaining slots contain the
+fixed nonce and empty NULLDUMMY byte. `QSB/FinalRoundWitness.lean` uses an
+executable lookup over the seven recorded opening pairs to populate the
+`RoundWitness` shape and valid
 opening fields used by the abstract reduction. Its key is supplied separately;
 the theorem does not derive nonce binding, a puzzle hit, a transaction-byte
 extractor, or Core acceptance.

@@ -203,6 +203,8 @@ ten-pair final scan and does not cover other vault setups.
 with the accepted full byte-model run. It identifies both reached bonus
 signature bytes as generated dummies and proves that their original HORS
 positions and the seven signed opening positions are nine distinct indices.
+It also maps the seven gathered signature slots to those traced positions in
+reverse draw order and identifies the fixed nonce and empty dummy slots.
 The final scan and DER-sound verifier are explicit premises; Core refinement
 and a quantum bound remain open.
 `QSB/FinalRoundWitness.lean` converts the seven recorded opening pairs and

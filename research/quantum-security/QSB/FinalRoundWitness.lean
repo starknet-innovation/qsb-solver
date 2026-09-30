@@ -120,7 +120,8 @@ theorem matched_run_shape_and_openings (hashes : Hashes)
       w.key = key ∧ FinalRoundShape w ∧
       OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening := by
   obtain ⟨trace, a, b, beforeCheck,
-    _reached, _firstSlot, _lastSlot, seven, hits,
+    _reached, _firstSlot, _lastSlot, _signedSlots,
+    _nonceSlot, _dummySlot, seven, hits,
     _different, _aUnopened, _bUnopened, distinct, _nine⟩ :=
       FinalBonusIndices.matched_full_run_nine_positions_der
         hashes initial final accepted verify verifySound matched

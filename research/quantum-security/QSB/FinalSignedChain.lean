@@ -55,16 +55,19 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
       gathered'.length = start + ks.length ∧
       trace.length = ks.length ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
-      List.Perm (trace.map Prod.fst ++ ids') ids := by
+      List.Perm (trace.map Prod.fst ++ ids') ids ∧
+      gathered' = (trace.map (fun p => generatedDummyAt p.1)).reverse ++
+        gathered := by
   induction ks generalizing start ids gathered dummies commitments tail
       outcomes cost final with
   | nil =>
       simp [blockProgram, run] at accepted
       subst final
       refine ⟨ids, gathered, dummies, commitments, tail, [], ?_, shape,
-        aligned, ?_, rfl, ?_, ?_⟩
+        aligned, ?_, rfl, ?_, ?_, ?_⟩
       · simp
-      · simpa using count
+      · exact count
+      · simp
       · simp
       · simp
   | cons k rest ih =>
@@ -90,6 +93,12 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
             rw [aligned.dummyMap] at dummyWithin
             simpa using dummyWithin
           let id : Fin 150 := ids[j]
+          have selectedDummy : dummies[j]'dummyWithin =
+              generatedDummyAt id := by
+            have source :=
+              (aligned_pair_at ids dummies commitments aligned j idWithin).1
+            exact Option.some.inj
+              ((List.getElem?_eq_getElem dummyWithin).symm.trans source)
           have originalHit : hashes.h160 opening =
               generatedCommitmentAt id := by
             obtain ⟨_, commitmentAt⟩ :=
@@ -103,7 +112,8 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
           rw [middleShape] at accepted
           obtain ⟨ids', gathered', dummies', commitments', tail',
               restTrace, finalShape, finalPool, finalAligned,
-              finalCount, traceCount, traceHits, tracePerm⟩ :=
+              finalCount, traceCount, traceHits, tracePerm,
+              gatheredTrace⟩ :=
             ih (start + 1) restOrdered
               (ids.eraseIdx j) (dummies[j]'dummyWithin :: gathered)
               (dummies.eraseIdx j) (commitments.eraseIdx j)
@@ -112,7 +122,7 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
               outcomes (cost + 9) final accepted
           refine ⟨ids', gathered', dummies', commitments', tail',
             (id, opening) :: restTrace, ?_, finalPool, finalAligned,
-            ?_, ?_, ?_, ?_⟩
+            ?_, ?_, ?_, ?_, ?_⟩
           · simpa [List.length_cons, Nat.mul_add, Nat.add_assoc,
               Nat.add_comm, Nat.add_left_comm] using finalShape
           · simp only [List.length_cons]
@@ -126,6 +136,8 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
               simpa [id] using List.getElem_cons_eraseIdx_perm idWithin
             simpa [List.map_cons, List.append_assoc] using
               (tracePerm.cons id).trans firstPerm
+          · simpa [List.map_cons, List.reverse_cons, List.append_assoc,
+              selectedDummy] using gatheredTrace
 
 /-- Starting from the generated second-round pool, any successful execution
 of all seven literal signed blocks yields seven distinct original HORS
@@ -150,7 +162,9 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
       trace.length = 7 ∧
       (trace.map Prod.fst).Nodup ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
-      List.Perm (trace.map Prod.fst ++ ids') (List.finRange 150) := by
+      List.Perm (trace.map Prod.fst ++ ids') (List.finRange 150) ∧
+      gathered' =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse := by
   have startShape : FinalSignedAccepted.baseRegion
       (boolBytes result) tail =
       nextRawFront (boolBytes result) []
@@ -160,7 +174,7 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
   rw [startShape] at accepted
   obtain ⟨ids', gathered', dummies', commitments', tail', trace,
       finalShape, shape, aligned, gatheredCount, traceCount,
-      traceHits, tracePerm⟩ :=
+      traceHits, tracePerm, gatheredTrace⟩ :=
     accepted_ordered_blocks hashes result (List.finRange 7) 0
       generated_blocks_ordered (List.finRange 150) []
       finalDummyPool finalCommitmentPool tail
@@ -171,10 +185,11 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
     have combined := tracePerm.nodup_iff.mpr allNodup
     exact (List.nodup_append.mp combined).1
   refine ⟨ids', gathered', dummies', commitments', tail', trace,
-    ?_, shape, aligned, ?_, ?_, noDuplicates, traceHits, tracePerm⟩
+    ?_, shape, aligned, ?_, ?_, noDuplicates, traceHits, tracePerm, ?_⟩
   · simpa using finalShape
   · simpa using gatheredCount
   · simpa using traceCount
+  · simpa using gatheredTrace
 
 theorem generated_whole_signed_boundary :
     ByteLayout.program =

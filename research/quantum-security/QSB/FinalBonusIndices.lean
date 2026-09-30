@@ -85,6 +85,10 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
       run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
       beforeCheck.stack[13]? = some (generatedDummyAt a) ∧
       beforeCheck.stack[12]? = some (generatedDummyAt b) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some PoolRollInvariant.finalNonce ∧
+      beforeCheck.stack[22]? = some [] ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
@@ -94,10 +98,11 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
     postFirst, postLast, beforeCheck,
     _prefixRun, _through, beforePrefix, _pool, traceCount, _distinct,
-    hits, aligned, tracePerm, _candidateSource, _candidateUnopened,
+    hits, aligned, tracePerm, gatheredTrace,
+    _candidateSource, _candidateUnopened,
     firstLower, firstUpper, lastLower, lastUpper,
     firstSource, lastSource, _beforeRun, lastSlot, firstSlot,
-    _gatheredSlots, _nonceSlot, dummySlot,
+    gatheredSlots, nonceSlot, dummySlot,
     firstException, lastException⟩ :=
       FinalBonusSecond.accepted_whole_program_final_signature_origins
         hashes initial final accepted
@@ -143,8 +148,14 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
     rw [lastSlot, lastSource]
     simp [firstShallow, lastShallow, aligned.dummyMap,
       List.eraseIdx_map, b, secondWithin]
+  have signedSlots : ∀ j : Nat, j < 7 →
+      beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]? := by
+    intro j within
+    rw [gatheredSlots j within, gatheredTrace]
   dsimp only at two
   exact ⟨trace, a, b, beforeCheck, beforePrefix, firstAt, lastAt,
+    signedSlots, nonceSlot, dummySlot,
     traceCount, hits, two.1, two.2.1,
     two.2.2.1, two.2.2.2.1, two.2.2.2.2⟩
 
@@ -167,6 +178,10 @@ theorem matched_full_run_nine_positions_der (hashes : Hashes)
       run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
       beforeCheck.stack[13]? = some (generatedDummyAt a) ∧
       beforeCheck.stack[12]? = some (generatedDummyAt b) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some PoolRollInvariant.finalNonce ∧
+      beforeCheck.stack[22]? = some [] ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧

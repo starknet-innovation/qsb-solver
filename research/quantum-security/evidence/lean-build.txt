@@ -1,4 +1,4 @@
-ℹ [8521/8522] Built QSB (9.1s)
+ℹ [8521/8522] Built QSB (9.4s)
 info: QSB.lean:44:0: 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:45:0: 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:46:0: 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]
