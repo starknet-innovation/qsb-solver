@@ -35,6 +35,7 @@ import QSB.FinalBonusSecond
 import QSB.DERSyntax
 import QSB.FinalBonusDER
 import QSB.FinalBonusIndices
+import QSB.ScriptCodeSelection
 import QSB.FinalRoundWitness
 import QSB.DERHeaderBound
 import QSB.Attack
@@ -552,6 +553,9 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_der
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all
+#print axioms QSB.ScriptCodeSelection.stripSignaturePushes_perm
+#print axioms QSB.ScriptCodeSelection.stripSignaturePushes_cons
+#print axioms QSB.ScriptCodeSelection.finalScriptCode_perm
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings

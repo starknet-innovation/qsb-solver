@@ -42,6 +42,13 @@ in the conditional full-run theorem are distinct. Lean alone does not rule out
 the same serialized push elsewhere in the full script. The deterministic
 source-fixture inventory below checks that absence for this one lock.
 
+`QSB/ScriptCodeSelection.lean` defines an opcode-level filter for the selected
+final signature pushes and proves order independence and equivalence to
+successive single-signature filters. Its `Op.push` representation omits the
+original push opcode encoding, so this result is not a byte-level Core
+FindAndDelete refinement. The literal fixture inventory below provides
+evidence for the selected canonical pushes in this one lock.
+
 ## Native differential evidence
 
 `analysis/check_der20_parser.py` evaluates Lean's strict-DER and `VERIFY_ALL`

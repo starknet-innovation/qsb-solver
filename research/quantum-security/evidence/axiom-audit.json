@@ -1,5 +1,5 @@
 {
-  "theorem_count": 543,
+  "theorem_count": 546,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1865,6 +1865,17 @@
     ],
     "QSB.RandomOracleSetup.shared_function_union_hit_count": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.finalScriptCode_perm": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.stripSignaturePushes_cons": [
+      "propext"
+    ],
+    "QSB.ScriptCodeSelection.stripSignaturePushes_perm": [
       "Quot.sound",
       "propext"
     ],

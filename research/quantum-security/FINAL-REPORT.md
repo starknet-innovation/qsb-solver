@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 543 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 546 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -323,7 +323,12 @@ itself. A deterministic source-fixture inventory separately checks that each
 of the 150 final dummy signatures and the fixed final nonce appears as exactly
 one opcode-boundary push in this literal lock and that the app deletes that
 one push. This remains executable evidence rather than a Lean/Core theorem
-about the sequential ten-signature scriptCode.
+about the sequential ten-signature scriptCode. `QSB/ScriptCodeSelection.lean`
+proves that an opcode-level filter of the selected signature pushes is
+independent of their
+order and equals successive single-signature filters. Its `Op.push` model
+does not retain the push opcode encoding, so the byte-faithful Core link is
+still open.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. Its key is

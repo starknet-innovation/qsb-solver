@@ -613,6 +613,9 @@
 'QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ScriptCodeSelection.stripSignaturePushes_perm' depends on axioms: [propext, Quot.sound]
+'QSB.ScriptCodeSelection.stripSignaturePushes_cons' depends on axioms: [propext]
+'QSB.ScriptCodeSelection.finalScriptCode_perm' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
