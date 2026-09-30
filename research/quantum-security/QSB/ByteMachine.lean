@@ -90,6 +90,20 @@ def run (hashes : Hashes) : List Op → State → Option State
       let s' ← step hashes op s
       if s'.stack.length > 1000 then none else run hashes rest s'
 
+theorem run_append (hashes : Hashes) (before after : List Op) (s : State) :
+    run hashes (before ++ after) s =
+      (run hashes before s).bind (run hashes after) := by
+  induction before generalizing s with
+  | nil => rfl
+  | cons op rest ih =>
+      simp only [List.cons_append, run]
+      cases hstep : step hashes op s with
+      | none => simp
+      | some next =>
+          by_cases large : next.stack.length > 1000
+          · simp [large]
+          · simp [large, ih]
+
 def finalTruth (s : State) : Bool :=
   s.stack.head? = some [1]
 
@@ -126,5 +140,23 @@ theorem successful_hash_comparison (hashes : Hashes)
     unfold run at accepted
     unfold step at accepted
     simp [unequal] at accepted
+
+/-- A successful whole program forces the hash equation at any reached
+`HASH160; EQUALVERIFY` pair, provided the public prefix execution exposes the
+opening and compared bytes at the pair boundary. -/
+theorem successful_hash_comparison_in_context (hashes : Hashes)
+    (before after : List Op) (initial : State)
+    (opening commitment : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (before_state : run hashes before initial =
+      some (State.mk (opening :: commitment :: tail) outcomes cost))
+    (accepted : run hashes
+      (before ++ .hash160 :: .equalverify :: after) initial = some final) :
+    hashes.h160 opening = commitment := by
+  rw [run_append, before_state] at accepted
+  simp only [Option.bind_some] at accepted
+  apply successful_hash_comparison hashes opening commitment tail outcomes cost after
+  rw [accepted]
+  rfl
 
 end QSB.ByteMachine

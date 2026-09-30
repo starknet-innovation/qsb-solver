@@ -108,10 +108,13 @@ import QSB.Reduction
 #print axioms QSB.KeyRolls.generated_final_suffix
 #print axioms QSB.ByteMachine.hash_compare_accepts_iff
 #print axioms QSB.ByteMachine.successful_hash_comparison
+#print axioms QSB.ByteMachine.run_append
+#print axioms QSB.ByteMachine.successful_hash_comparison_in_context
 #print axioms QSB.ByteLayout.program_length
 #print axioms QSB.ByteLayout.final_opcode_is_checkmultisig
 #print axioms QSB.ByteLayout.fifteen_hors_comparisons
 #print axioms QSB.ByteLayout.comparisons_follow_hash160
+#print axioms QSB.ByteLayout.hash_comparison_positions_valid
 #print axioms QSB.ByteTrace.forget_trace
 #print axioms QSB.ByteWitness.witness_length
 #print axioms QSB.ByteWitness.canonical_byte_run

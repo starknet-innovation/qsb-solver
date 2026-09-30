@@ -905,4 +905,12 @@ theorem comparisons_follow_hash160 :
       (fun pair => if pair.2 == .equalverify then pair.1 == .hash160 else true) = true := by
   decide
 
+def hashComparisonPositions : List Nat := [318, 331, 344, 357, 370, 383, 396, 409, 759, 772, 785, 798, 811, 824, 837]
+
+theorem hash_comparison_positions_valid :
+    hashComparisonPositions.length = 15 ∧
+    hashComparisonPositions.all (fun i =>
+      program[i]? == some .hash160 && program[i + 1]? == some .equalverify) = true := by
+  decide
+
 end QSB.ByteLayout

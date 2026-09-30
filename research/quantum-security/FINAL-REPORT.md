@@ -60,7 +60,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 115 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 118 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -85,6 +85,8 @@ opening's hash with the next stack item, for arbitrary hash functions, stack
 tails and suffixes. This advances local HORS extraction but does not identify
 that stack item as an intended commitment in every witness or refine signature
 outcomes to Bitcoin Core.
+The result also composes with any executable program prefix, so a future
+provenance invariant can apply it at each of the 15 concrete comparison sites.
 
 A disposable byte witness also completes all 880 modeled instructions and all
 15 HORS comparisons with the expected 201-op and 569-cell final stack. It uses

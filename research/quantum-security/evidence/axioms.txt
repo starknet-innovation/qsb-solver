@@ -91,10 +91,13 @@
 'QSB.KeyRolls.generated_final_suffix' does not depend on any axioms
 'QSB.ByteMachine.hash_compare_accepts_iff' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.successful_hash_comparison' depends on axioms: [propext, Quot.sound]
+'QSB.ByteMachine.run_append' depends on axioms: [propext, Quot.sound]
+'QSB.ByteMachine.successful_hash_comparison_in_context' depends on axioms: [propext, Quot.sound]
 'QSB.ByteLayout.program_length' does not depend on any axioms
 'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms
 'QSB.ByteLayout.fifteen_hors_comparisons' does not depend on any axioms
 'QSB.ByteLayout.comparisons_follow_hash160' does not depend on any axioms
+'QSB.ByteLayout.hash_comparison_positions_valid' depends on axioms: [propext]
 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
 'QSB.ByteWitness.witness_length' does not depend on any axioms
 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]

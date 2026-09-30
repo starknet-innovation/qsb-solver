@@ -75,7 +75,12 @@ def main():
                         "byte_offset": start, "term": term})
 
     assert len(instructions) == 880
+    comparison_positions = [i - 1 for i, op in enumerate(instructions)
+                            if op == ".equalverify"]
+    assert len(comparison_positions) == 15
+    assert all(instructions[i] == ".hash160" for i in comparison_positions)
     instruction_text = ",\n  ".join(instructions)
+    comparison_text = ", ".join(map(str, comparison_positions))
     out = f"""import QSB.ByteMachine
 
 /-!
@@ -102,6 +107,14 @@ theorem fifteen_hors_comparisons :
 theorem comparisons_follow_hash160 :
     (program.zip (program.drop 1)).all
       (fun pair => if pair.2 == .equalverify then pair.1 == .hash160 else true) = true := by
+  decide
+
+def hashComparisonPositions : List Nat := [{comparison_text}]
+
+theorem hash_comparison_positions_valid :
+    hashComparisonPositions.length = 15 ∧
+    hashComparisonPositions.all (fun i =>
+      program[i]? == some .hash160 && program[i + 1]? == some .equalverify) = true := by
   decide
 
 end QSB.ByteLayout

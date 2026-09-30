@@ -1,5 +1,5 @@
 {
-  "theorem_count": 115,
+  "theorem_count": 118,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -83,12 +83,23 @@
     "QSB.ByteLayout.comparisons_follow_hash160": [],
     "QSB.ByteLayout.fifteen_hors_comparisons": [],
     "QSB.ByteLayout.final_opcode_is_checkmultisig": [],
+    "QSB.ByteLayout.hash_comparison_positions_valid": [
+      "propext"
+    ],
     "QSB.ByteLayout.program_length": [],
     "QSB.ByteMachine.hash_compare_accepts_iff": [
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteMachine.run_append": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteMachine.successful_hash_comparison": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachine.successful_hash_comparison_in_context": [
       "Quot.sound",
       "propext"
     ],
