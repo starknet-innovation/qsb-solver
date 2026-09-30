@@ -113,7 +113,12 @@ an exact Core checker refinement. See `QSB/KeyRolls.lean` and
 `QSB/ByteFinalCounts.lean` additionally checks the generated *byte* suffix:
 success from any underlying byte stack preserves both raw 10 counts; a truthy
 whole-program result requires the supplied final CHECKMULTISIG outcome true.
-Its Boolean outcome is still external to Core's signature checker.
+For a pre-suffix stack `first :: rest`, the ten signature slots retain
+`rest[0..9]`; successful modeled execution also forces the next source cell
+`rest[10]` to exist and be empty under NULLDUMMY. This locates the final
+signature and dummy bytes within the pre-suffix stack, but does not identify
+their earlier selection sources. The Boolean outcome remains external to
+Core's signature checker.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

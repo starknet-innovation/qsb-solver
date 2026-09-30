@@ -89,7 +89,13 @@
 'QSB.Multisig.equal_counts_success_iff_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.rollAt_matches_symbolic_step' depends on axioms: [propext, Quot.sound]
 'QSB.KeyRolls.rollAt_preserves_shallower_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.rollAt_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.rollMany_preserves_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.rollMany_preserves_shallower_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.first_key_roll' depends on axioms: [propext]
+'QSB.KeyRolls.high_key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.final_witness_cell_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.KeyRolls.final_witness_option_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.key_indices_safe' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.KeyRolls.key_indices_length' does not depend on any axioms
 'QSB.KeyRolls.final_signature_count_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -329,9 +335,22 @@
 'QSB.ByteFinalCounts.push_success_shape' depends on axioms: [propext]
 'QSB.ByteFinalCounts.roll_success_budget' depends on axioms: [propext, Quot.sound]
 'QSB.ByteFinalCounts.accepted_pair_preserves_shallower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_pair_preserves_shallower_option' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ByteFinalCounts.accepted_pairs_preserve_marker' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_pairs_preserve_shallower_option' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ByteFinalCounts.accepted_first_key_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_final_setup_witness_option' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_final_setup_witness_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.successful_final_check_dummy_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteFinalCounts.accepted_final_setup_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteFinalCounts.accepted_final_suffix_count_operands' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteFinalCounts.accepted_final_suffix_source_dummy_empty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ByteFinalCounts.successful_last_multisig_requires_true_outcome' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

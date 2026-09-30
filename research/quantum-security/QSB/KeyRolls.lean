@@ -58,6 +58,18 @@ theorem rollAt_preserves_shallower_cell {α : Type*}
       cases run
       simpa using (List.getElem?_eraseIdx_of_lt shallower).trans atP
 
+theorem rollAt_preserves_shallower_option {α : Type*}
+    {stack next : List α} {n p : Nat}
+    (shallower : p < n) (run : rollAt n stack = some next) :
+    next[p + 1]? = stack[p]? := by
+  unfold rollAt at run
+  cases hget : stack[n]? with
+  | none => simp [hget] at run
+  | some x =>
+      simp [hget] at run
+      cases run
+      simpa using (List.getElem?_eraseIdx_of_lt shallower)
+
 def safeIndices : Nat → List Nat → Prop
   | _, [] => True
   | p, n :: ns => p < n ∧ safeIndices (p + 1) ns
@@ -84,7 +96,73 @@ theorem rollMany_preserves_marker {α : Type*}
           have tail := ih (p + 1) tailSafe moved run
           simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using tail
 
+theorem rollMany_preserves_shallower_option {α : Type*}
+    (indices : List Nat) (p : Nat) {stack final : List α}
+    (safe : safeIndices p indices)
+    (run : rollMany indices stack = some final) :
+    final[p + indices.length]? = stack[p]? := by
+  induction indices generalizing p stack final with
+  | nil =>
+      simp [rollMany] at run
+      cases run
+      simp
+  | cons n ns ih =>
+      obtain ⟨shallower, tailSafe⟩ := safe
+      simp only [rollMany] at run
+      cases hfirst : rollAt n stack with
+      | none => simp [hfirst] at run
+      | some next =>
+          simp only [hfirst] at run
+          have moved := rollAt_preserves_shallower_option shallower hfirst
+          have tail := ih (p + 1) tailSafe run
+          simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+            using tail.trans moved
+
 def keyIndices : List Nat := [1, 581, 582, 583, 584, 585, 586, 587, 588, 589]
+def highKeyIndices : List Nat := [581, 582, 583, 584, 585, 586, 587, 588, 589]
+
+theorem first_key_roll {α : Type*} (count first : α) (rest : List α) :
+    rollAt 1 (count :: first :: rest) = some (first :: count :: rest) := by
+  rfl
+
+theorem high_key_indices_safe (p : Nat) (hp : p ≤ 12) :
+    safeIndices p highKeyIndices := by
+  simp [safeIndices, highKeyIndices]
+  omega
+
+/-- The first key roll takes the shallow key, while the nine high-index rolls
+leave each of the next eleven cells in order. Thus the ten signature slots
+and the following dummy retain their precise source cells for any underlying
+stack on which all ten rolls succeed. -/
+theorem final_witness_cell_origin {α : Type*}
+    (count first marker : α) (rest final : List α) (p : Nat)
+    (hp : p ≤ 10) (atP : rest[p]? = some marker)
+    (run : rollMany keyIndices (count :: first :: rest) = some final) :
+    final[p + 11]? = some marker := by
+  have firstRoll := first_key_roll count first rest
+  change (rollAt 1 (count :: first :: rest) >>= rollMany highKeyIndices) =
+    some final at run
+  simp only [firstRoll] at run
+  have atStart : (first :: count :: rest)[p + 2]? = some marker := by
+    simpa using atP
+  have preserved := rollMany_preserves_marker highKeyIndices (p + 2)
+    (high_key_indices_safe (p + 2) (by omega)) atStart run
+  simpa [highKeyIndices, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+    using preserved
+
+theorem final_witness_option_origin {α : Type*}
+    (count first : α) (rest final : List α) (p : Nat)
+    (hp : p ≤ 10)
+    (run : rollMany keyIndices (count :: first :: rest) = some final) :
+    final[p + 11]? = rest[p]? := by
+  have firstRoll := first_key_roll count first rest
+  change (rollAt 1 (count :: first :: rest) >>= rollMany highKeyIndices) =
+    some final at run
+  simp only [firstRoll] at run
+  have preserved := rollMany_preserves_shallower_option highKeyIndices
+    (p + 2) (high_key_indices_safe (p + 2) (by omega)) run
+  simpa [highKeyIndices, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+    using preserved
 
 theorem key_indices_safe : safeIndices 0 keyIndices := by
   simp [safeIndices, keyIndices]

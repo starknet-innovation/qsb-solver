@@ -1,5 +1,5 @@
 {
-  "theorem_count": 312,
+  "theorem_count": 325,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -52,7 +52,27 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteFinalCounts.accepted_final_setup_witness_cell": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.accepted_final_setup_witness_option": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteFinalCounts.accepted_final_suffix_count_operands": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.accepted_final_suffix_source_dummy_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.accepted_first_key_pair_shape": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -62,7 +82,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteFinalCounts.accepted_pair_preserves_shallower_option": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteFinalCounts.accepted_pairs_preserve_marker": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.accepted_pairs_preserve_shallower_option": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -87,6 +117,11 @@
       "propext"
     ],
     "QSB.ByteFinalCounts.roll_success_budget": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.successful_final_check_dummy_empty": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -812,7 +847,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.KeyRolls.final_witness_cell_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.final_witness_option_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.first_key_roll": [
+      "propext"
+    ],
     "QSB.KeyRolls.generated_final_suffix": [],
+    "QSB.KeyRolls.high_key_indices_safe": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.KeyRolls.key_indices_length": [],
     "QSB.KeyRolls.key_indices_safe": [
       "Classical.choice",
@@ -828,7 +881,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.KeyRolls.rollAt_preserves_shallower_option": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.KeyRolls.rollMany_preserves_marker": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.KeyRolls.rollMany_preserves_shallower_option": [
       "Classical.choice",
       "Quot.sound",
       "propext"
