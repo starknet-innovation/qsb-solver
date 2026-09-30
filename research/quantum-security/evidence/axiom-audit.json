@@ -1,0 +1,203 @@
+{
+  "theorem_count": 50,
+  "allowed_foundations": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "theorems": {
+    "QSB.Game.changed_outputs_unauthorized": [],
+    "QSB.Game.disclosedAt_append": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.Layout.accepted_trace_operation_count": [
+      "propext"
+    ],
+    "QSB.Layout.accepted_trace_stack_size": [
+      "propext"
+    ],
+    "QSB.Layout.both_multisigs_true_accept": [
+      "propext"
+    ],
+    "QSB.Layout.final_multisig_false_rejects": [
+      "propext"
+    ],
+    "QSB.Layout.first_multisig_false_still_accepts": [
+      "propext"
+    ],
+    "QSB.Layout.first_multisig_result_irrelevant": [
+      "propext"
+    ],
+    "QSB.Layout.first_result_retained_below_top": [
+      "propext"
+    ],
+    "QSB.abstract_run_final_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.chooseMany_distinct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.chooseMany_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.chooseMany_values_in_pool": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.common_key_requires_equal_recoveries": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.comparison_selects_pool": [
+      "propext"
+    ],
+    "QSB.configA_pool_choices": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.configA_round1_bonus_choices": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.configA_round2_bonus_choices": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.coveredFinalChoices_mono": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.coveredFinalChoices_one_disclosure": [],
+    "QSB.coveredFinalChoices_three_disjoint_disclosures": [],
+    "QSB.coveredFinalChoices_two_disjoint_disclosures": [],
+    "QSB.coveredFinalChoices_zero": [],
+    "QSB.covered_after_more_disclosure": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.der32_count_lower": [],
+    "QSB.der32_count_upper": [],
+    "QSB.distinct_positions_after_roll": [
+      "propext"
+    ],
+    "QSB.equal_recoveries_give_common_key": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.event_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.event_bound_with_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.extracted_novel_round_fresh_or_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.extracted_pin_final_fresh_or_two_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.extracted_round_fresh_or_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.final_round_shape_total": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.finite_target_union_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.fixed_message_key_unique": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.fixed_recovery_point_message_unique": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.insufficient_disclosure_requires_fresh": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.min_roll_bounds": [
+      "propext"
+    ],
+    "QSB.nine_selected_partition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.novel_two_puzzle_key_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.one_disclosure_fresh_or_same": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.openings_fresh_or_covered": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.public_recovery_for_any_message": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.public_scalar_satisfies": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.selected_not_in_erased": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.unauthorized_measure_bound_with_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.unauthorized_not_published": [],
+    "QSB.unauthorized_under_source_extraction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.unauthorized_with_explicit_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  }
+}

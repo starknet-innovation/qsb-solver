@@ -1,0 +1,165 @@
+{
+  "scope": "MODIFIED lock; three puzzle CHECKSIGVERIFYs replaced with OP_2DROP; not a real-lock forgery",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "modified_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+  "script_bytes": 9923,
+  "runtime_ops": 201,
+  "checksigverify_offsets": [
+    58,
+    61,
+    4957,
+    9881
+  ],
+  "checkmultisig_offsets": [
+    4998,
+    9922
+  ],
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "honest_relaxed",
+      "accepted": true,
+      "expected": true,
+      "exit_code": 0,
+      "stdout": "core-27.2-api2-all-inputs-valid",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "dcf9d73971b6ad0569789fc72b690ba074141fbcc4eecdef3a007d57a06c2841"
+    },
+    {
+      "name": "invalid_round1_multisig",
+      "accepted": true,
+      "expected": true,
+      "exit_code": 0,
+      "stdout": "core-27.2-api2-all-inputs-valid",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": false,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "2edfe84730e18a45344e143fe3ea31685928cffa96b81bff5192fd430bc5fcdd"
+    },
+    {
+      "name": "invalid_round2_multisig",
+      "accepted": false,
+      "expected": false,
+      "exit_code": 1,
+      "stdout": "",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": false,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "859d5778d1ca0ce0582f3886240b13c1d2a75fde12f9881a88a05fd633f38ec7"
+    },
+    {
+      "name": "invalid_round1_preimage",
+      "accepted": false,
+      "expected": false,
+      "exit_code": 1,
+      "stdout": "",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "8e981845fb8fdaaf635f1accdfa7fb6a9c1e0bb8ad558e2b45b63a1db3624cb3"
+    },
+    {
+      "name": "invalid_round2_preimage",
+      "accepted": false,
+      "expected": false,
+      "exit_code": 1,
+      "stdout": "",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "1831154430c9184555f0038c729e700b3464e9de14fc7397516345a435134636"
+    },
+    {
+      "name": "changed_destination_fresh_nonce",
+      "accepted": true,
+      "expected": true,
+      "exit_code": 0,
+      "stdout": "core-27.2-api2-all-inputs-valid",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        }
+      ],
+      "synthetic_transaction_sha256": "47e8adaa62c65d5c70fe7023ac73390d01322850e34a5a314ff6afcd9baf82cf"
+    },
+    {
+      "name": "changed_destination_reused_round1_nonce",
+      "accepted": true,
+      "expected": true,
+      "exit_code": 0,
+      "stdout": "core-27.2-api2-all-inputs-valid",
+      "independent_dummy_checks": [
+        {
+          "round": 2,
+          "first_dummy_verifies": true,
+          "nonce_verifies": true
+        },
+        {
+          "round": 1,
+          "first_dummy_verifies": true,
+          "nonce_verifies": false
+        }
+      ],
+      "synthetic_transaction_sha256": "d5e38db5248442011e457d977cdc1ca885b8a942b3fd51c9050e02a36a50dc39"
+    }
+  ]
+}

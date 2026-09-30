@@ -1,0 +1,4408 @@
+{
+  "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "script_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "script_bytes": 9923,
+  "instructions": [
+    {
+      "instruction": 0,
+      "byte_offset": 0,
+      "term": ".push (.atom 2000)"
+    },
+    {
+      "instruction": 1,
+      "byte_offset": 57,
+      "term": ".over"
+    },
+    {
+      "instruction": 2,
+      "byte_offset": 58,
+      "term": ".checksigverify"
+    },
+    {
+      "instruction": 3,
+      "byte_offset": 59,
+      "term": ".sha256"
+    },
+    {
+      "instruction": 4,
+      "byte_offset": 60,
+      "term": ".swap"
+    },
+    {
+      "instruction": 5,
+      "byte_offset": 61,
+      "term": ".checksigverify"
+    },
+    {
+      "instruction": 6,
+      "byte_offset": 62,
+      "term": ".push (.hash160 (.atom 149))"
+    },
+    {
+      "instruction": 7,
+      "byte_offset": 83,
+      "term": ".push (.hash160 (.atom 148))"
+    },
+    {
+      "instruction": 8,
+      "byte_offset": 104,
+      "term": ".push (.hash160 (.atom 147))"
+    },
+    {
+      "instruction": 9,
+      "byte_offset": 125,
+      "term": ".push (.hash160 (.atom 146))"
+    },
+    {
+      "instruction": 10,
+      "byte_offset": 146,
+      "term": ".push (.hash160 (.atom 145))"
+    },
+    {
+      "instruction": 11,
+      "byte_offset": 167,
+      "term": ".push (.hash160 (.atom 144))"
+    },
+    {
+      "instruction": 12,
+      "byte_offset": 188,
+      "term": ".push (.hash160 (.atom 143))"
+    },
+    {
+      "instruction": 13,
+      "byte_offset": 209,
+      "term": ".push (.hash160 (.atom 142))"
+    },
+    {
+      "instruction": 14,
+      "byte_offset": 230,
+      "term": ".push (.hash160 (.atom 141))"
+    },
+    {
+      "instruction": 15,
+      "byte_offset": 251,
+      "term": ".push (.hash160 (.atom 140))"
+    },
+    {
+      "instruction": 16,
+      "byte_offset": 272,
+      "term": ".push (.hash160 (.atom 139))"
+    },
+    {
+      "instruction": 17,
+      "byte_offset": 293,
+      "term": ".push (.hash160 (.atom 138))"
+    },
+    {
+      "instruction": 18,
+      "byte_offset": 314,
+      "term": ".push (.hash160 (.atom 137))"
+    },
+    {
+      "instruction": 19,
+      "byte_offset": 335,
+      "term": ".push (.hash160 (.atom 136))"
+    },
+    {
+      "instruction": 20,
+      "byte_offset": 356,
+      "term": ".push (.hash160 (.atom 135))"
+    },
+    {
+      "instruction": 21,
+      "byte_offset": 377,
+      "term": ".push (.hash160 (.atom 134))"
+    },
+    {
+      "instruction": 22,
+      "byte_offset": 398,
+      "term": ".push (.hash160 (.atom 133))"
+    },
+    {
+      "instruction": 23,
+      "byte_offset": 419,
+      "term": ".push (.hash160 (.atom 132))"
+    },
+    {
+      "instruction": 24,
+      "byte_offset": 440,
+      "term": ".push (.hash160 (.atom 131))"
+    },
+    {
+      "instruction": 25,
+      "byte_offset": 461,
+      "term": ".push (.hash160 (.atom 130))"
+    },
+    {
+      "instruction": 26,
+      "byte_offset": 482,
+      "term": ".push (.hash160 (.atom 129))"
+    },
+    {
+      "instruction": 27,
+      "byte_offset": 503,
+      "term": ".push (.hash160 (.atom 128))"
+    },
+    {
+      "instruction": 28,
+      "byte_offset": 524,
+      "term": ".push (.hash160 (.atom 127))"
+    },
+    {
+      "instruction": 29,
+      "byte_offset": 545,
+      "term": ".push (.hash160 (.atom 126))"
+    },
+    {
+      "instruction": 30,
+      "byte_offset": 566,
+      "term": ".push (.hash160 (.atom 125))"
+    },
+    {
+      "instruction": 31,
+      "byte_offset": 587,
+      "term": ".push (.hash160 (.atom 124))"
+    },
+    {
+      "instruction": 32,
+      "byte_offset": 608,
+      "term": ".push (.hash160 (.atom 123))"
+    },
+    {
+      "instruction": 33,
+      "byte_offset": 629,
+      "term": ".push (.hash160 (.atom 122))"
+    },
+    {
+      "instruction": 34,
+      "byte_offset": 650,
+      "term": ".push (.hash160 (.atom 121))"
+    },
+    {
+      "instruction": 35,
+      "byte_offset": 671,
+      "term": ".push (.hash160 (.atom 120))"
+    },
+    {
+      "instruction": 36,
+      "byte_offset": 692,
+      "term": ".push (.hash160 (.atom 119))"
+    },
+    {
+      "instruction": 37,
+      "byte_offset": 713,
+      "term": ".push (.hash160 (.atom 118))"
+    },
+    {
+      "instruction": 38,
+      "byte_offset": 734,
+      "term": ".push (.hash160 (.atom 117))"
+    },
+    {
+      "instruction": 39,
+      "byte_offset": 755,
+      "term": ".push (.hash160 (.atom 116))"
+    },
+    {
+      "instruction": 40,
+      "byte_offset": 776,
+      "term": ".push (.hash160 (.atom 115))"
+    },
+    {
+      "instruction": 41,
+      "byte_offset": 797,
+      "term": ".push (.hash160 (.atom 114))"
+    },
+    {
+      "instruction": 42,
+      "byte_offset": 818,
+      "term": ".push (.hash160 (.atom 113))"
+    },
+    {
+      "instruction": 43,
+      "byte_offset": 839,
+      "term": ".push (.hash160 (.atom 112))"
+    },
+    {
+      "instruction": 44,
+      "byte_offset": 860,
+      "term": ".push (.hash160 (.atom 111))"
+    },
+    {
+      "instruction": 45,
+      "byte_offset": 881,
+      "term": ".push (.hash160 (.atom 110))"
+    },
+    {
+      "instruction": 46,
+      "byte_offset": 902,
+      "term": ".push (.hash160 (.atom 109))"
+    },
+    {
+      "instruction": 47,
+      "byte_offset": 923,
+      "term": ".push (.hash160 (.atom 108))"
+    },
+    {
+      "instruction": 48,
+      "byte_offset": 944,
+      "term": ".push (.hash160 (.atom 107))"
+    },
+    {
+      "instruction": 49,
+      "byte_offset": 965,
+      "term": ".push (.hash160 (.atom 106))"
+    },
+    {
+      "instruction": 50,
+      "byte_offset": 986,
+      "term": ".push (.hash160 (.atom 105))"
+    },
+    {
+      "instruction": 51,
+      "byte_offset": 1007,
+      "term": ".push (.hash160 (.atom 104))"
+    },
+    {
+      "instruction": 52,
+      "byte_offset": 1028,
+      "term": ".push (.hash160 (.atom 103))"
+    },
+    {
+      "instruction": 53,
+      "byte_offset": 1049,
+      "term": ".push (.hash160 (.atom 102))"
+    },
+    {
+      "instruction": 54,
+      "byte_offset": 1070,
+      "term": ".push (.hash160 (.atom 101))"
+    },
+    {
+      "instruction": 55,
+      "byte_offset": 1091,
+      "term": ".push (.hash160 (.atom 100))"
+    },
+    {
+      "instruction": 56,
+      "byte_offset": 1112,
+      "term": ".push (.hash160 (.atom 99))"
+    },
+    {
+      "instruction": 57,
+      "byte_offset": 1133,
+      "term": ".push (.hash160 (.atom 98))"
+    },
+    {
+      "instruction": 58,
+      "byte_offset": 1154,
+      "term": ".push (.hash160 (.atom 97))"
+    },
+    {
+      "instruction": 59,
+      "byte_offset": 1175,
+      "term": ".push (.hash160 (.atom 96))"
+    },
+    {
+      "instruction": 60,
+      "byte_offset": 1196,
+      "term": ".push (.hash160 (.atom 95))"
+    },
+    {
+      "instruction": 61,
+      "byte_offset": 1217,
+      "term": ".push (.hash160 (.atom 94))"
+    },
+    {
+      "instruction": 62,
+      "byte_offset": 1238,
+      "term": ".push (.hash160 (.atom 93))"
+    },
+    {
+      "instruction": 63,
+      "byte_offset": 1259,
+      "term": ".push (.hash160 (.atom 92))"
+    },
+    {
+      "instruction": 64,
+      "byte_offset": 1280,
+      "term": ".push (.hash160 (.atom 91))"
+    },
+    {
+      "instruction": 65,
+      "byte_offset": 1301,
+      "term": ".push (.hash160 (.atom 90))"
+    },
+    {
+      "instruction": 66,
+      "byte_offset": 1322,
+      "term": ".push (.hash160 (.atom 89))"
+    },
+    {
+      "instruction": 67,
+      "byte_offset": 1343,
+      "term": ".push (.hash160 (.atom 88))"
+    },
+    {
+      "instruction": 68,
+      "byte_offset": 1364,
+      "term": ".push (.hash160 (.atom 87))"
+    },
+    {
+      "instruction": 69,
+      "byte_offset": 1385,
+      "term": ".push (.hash160 (.atom 86))"
+    },
+    {
+      "instruction": 70,
+      "byte_offset": 1406,
+      "term": ".push (.hash160 (.atom 85))"
+    },
+    {
+      "instruction": 71,
+      "byte_offset": 1427,
+      "term": ".push (.hash160 (.atom 84))"
+    },
+    {
+      "instruction": 72,
+      "byte_offset": 1448,
+      "term": ".push (.hash160 (.atom 83))"
+    },
+    {
+      "instruction": 73,
+      "byte_offset": 1469,
+      "term": ".push (.hash160 (.atom 82))"
+    },
+    {
+      "instruction": 74,
+      "byte_offset": 1490,
+      "term": ".push (.hash160 (.atom 81))"
+    },
+    {
+      "instruction": 75,
+      "byte_offset": 1511,
+      "term": ".push (.hash160 (.atom 80))"
+    },
+    {
+      "instruction": 76,
+      "byte_offset": 1532,
+      "term": ".push (.hash160 (.atom 79))"
+    },
+    {
+      "instruction": 77,
+      "byte_offset": 1553,
+      "term": ".push (.hash160 (.atom 78))"
+    },
+    {
+      "instruction": 78,
+      "byte_offset": 1574,
+      "term": ".push (.hash160 (.atom 77))"
+    },
+    {
+      "instruction": 79,
+      "byte_offset": 1595,
+      "term": ".push (.hash160 (.atom 76))"
+    },
+    {
+      "instruction": 80,
+      "byte_offset": 1616,
+      "term": ".push (.hash160 (.atom 75))"
+    },
+    {
+      "instruction": 81,
+      "byte_offset": 1637,
+      "term": ".push (.hash160 (.atom 74))"
+    },
+    {
+      "instruction": 82,
+      "byte_offset": 1658,
+      "term": ".push (.hash160 (.atom 73))"
+    },
+    {
+      "instruction": 83,
+      "byte_offset": 1679,
+      "term": ".push (.hash160 (.atom 72))"
+    },
+    {
+      "instruction": 84,
+      "byte_offset": 1700,
+      "term": ".push (.hash160 (.atom 71))"
+    },
+    {
+      "instruction": 85,
+      "byte_offset": 1721,
+      "term": ".push (.hash160 (.atom 70))"
+    },
+    {
+      "instruction": 86,
+      "byte_offset": 1742,
+      "term": ".push (.hash160 (.atom 69))"
+    },
+    {
+      "instruction": 87,
+      "byte_offset": 1763,
+      "term": ".push (.hash160 (.atom 68))"
+    },
+    {
+      "instruction": 88,
+      "byte_offset": 1784,
+      "term": ".push (.hash160 (.atom 67))"
+    },
+    {
+      "instruction": 89,
+      "byte_offset": 1805,
+      "term": ".push (.hash160 (.atom 66))"
+    },
+    {
+      "instruction": 90,
+      "byte_offset": 1826,
+      "term": ".push (.hash160 (.atom 65))"
+    },
+    {
+      "instruction": 91,
+      "byte_offset": 1847,
+      "term": ".push (.hash160 (.atom 64))"
+    },
+    {
+      "instruction": 92,
+      "byte_offset": 1868,
+      "term": ".push (.hash160 (.atom 63))"
+    },
+    {
+      "instruction": 93,
+      "byte_offset": 1889,
+      "term": ".push (.hash160 (.atom 62))"
+    },
+    {
+      "instruction": 94,
+      "byte_offset": 1910,
+      "term": ".push (.hash160 (.atom 61))"
+    },
+    {
+      "instruction": 95,
+      "byte_offset": 1931,
+      "term": ".push (.hash160 (.atom 60))"
+    },
+    {
+      "instruction": 96,
+      "byte_offset": 1952,
+      "term": ".push (.hash160 (.atom 59))"
+    },
+    {
+      "instruction": 97,
+      "byte_offset": 1973,
+      "term": ".push (.hash160 (.atom 58))"
+    },
+    {
+      "instruction": 98,
+      "byte_offset": 1994,
+      "term": ".push (.hash160 (.atom 57))"
+    },
+    {
+      "instruction": 99,
+      "byte_offset": 2015,
+      "term": ".push (.hash160 (.atom 56))"
+    },
+    {
+      "instruction": 100,
+      "byte_offset": 2036,
+      "term": ".push (.hash160 (.atom 55))"
+    },
+    {
+      "instruction": 101,
+      "byte_offset": 2057,
+      "term": ".push (.hash160 (.atom 54))"
+    },
+    {
+      "instruction": 102,
+      "byte_offset": 2078,
+      "term": ".push (.hash160 (.atom 53))"
+    },
+    {
+      "instruction": 103,
+      "byte_offset": 2099,
+      "term": ".push (.hash160 (.atom 52))"
+    },
+    {
+      "instruction": 104,
+      "byte_offset": 2120,
+      "term": ".push (.hash160 (.atom 51))"
+    },
+    {
+      "instruction": 105,
+      "byte_offset": 2141,
+      "term": ".push (.hash160 (.atom 50))"
+    },
+    {
+      "instruction": 106,
+      "byte_offset": 2162,
+      "term": ".push (.hash160 (.atom 49))"
+    },
+    {
+      "instruction": 107,
+      "byte_offset": 2183,
+      "term": ".push (.hash160 (.atom 48))"
+    },
+    {
+      "instruction": 108,
+      "byte_offset": 2204,
+      "term": ".push (.hash160 (.atom 47))"
+    },
+    {
+      "instruction": 109,
+      "byte_offset": 2225,
+      "term": ".push (.hash160 (.atom 46))"
+    },
+    {
+      "instruction": 110,
+      "byte_offset": 2246,
+      "term": ".push (.hash160 (.atom 45))"
+    },
+    {
+      "instruction": 111,
+      "byte_offset": 2267,
+      "term": ".push (.hash160 (.atom 44))"
+    },
+    {
+      "instruction": 112,
+      "byte_offset": 2288,
+      "term": ".push (.hash160 (.atom 43))"
+    },
+    {
+      "instruction": 113,
+      "byte_offset": 2309,
+      "term": ".push (.hash160 (.atom 42))"
+    },
+    {
+      "instruction": 114,
+      "byte_offset": 2330,
+      "term": ".push (.hash160 (.atom 41))"
+    },
+    {
+      "instruction": 115,
+      "byte_offset": 2351,
+      "term": ".push (.hash160 (.atom 40))"
+    },
+    {
+      "instruction": 116,
+      "byte_offset": 2372,
+      "term": ".push (.hash160 (.atom 39))"
+    },
+    {
+      "instruction": 117,
+      "byte_offset": 2393,
+      "term": ".push (.hash160 (.atom 38))"
+    },
+    {
+      "instruction": 118,
+      "byte_offset": 2414,
+      "term": ".push (.hash160 (.atom 37))"
+    },
+    {
+      "instruction": 119,
+      "byte_offset": 2435,
+      "term": ".push (.hash160 (.atom 36))"
+    },
+    {
+      "instruction": 120,
+      "byte_offset": 2456,
+      "term": ".push (.hash160 (.atom 35))"
+    },
+    {
+      "instruction": 121,
+      "byte_offset": 2477,
+      "term": ".push (.hash160 (.atom 34))"
+    },
+    {
+      "instruction": 122,
+      "byte_offset": 2498,
+      "term": ".push (.hash160 (.atom 33))"
+    },
+    {
+      "instruction": 123,
+      "byte_offset": 2519,
+      "term": ".push (.hash160 (.atom 32))"
+    },
+    {
+      "instruction": 124,
+      "byte_offset": 2540,
+      "term": ".push (.hash160 (.atom 31))"
+    },
+    {
+      "instruction": 125,
+      "byte_offset": 2561,
+      "term": ".push (.hash160 (.atom 30))"
+    },
+    {
+      "instruction": 126,
+      "byte_offset": 2582,
+      "term": ".push (.hash160 (.atom 29))"
+    },
+    {
+      "instruction": 127,
+      "byte_offset": 2603,
+      "term": ".push (.hash160 (.atom 28))"
+    },
+    {
+      "instruction": 128,
+      "byte_offset": 2624,
+      "term": ".push (.hash160 (.atom 27))"
+    },
+    {
+      "instruction": 129,
+      "byte_offset": 2645,
+      "term": ".push (.hash160 (.atom 26))"
+    },
+    {
+      "instruction": 130,
+      "byte_offset": 2666,
+      "term": ".push (.hash160 (.atom 25))"
+    },
+    {
+      "instruction": 131,
+      "byte_offset": 2687,
+      "term": ".push (.hash160 (.atom 24))"
+    },
+    {
+      "instruction": 132,
+      "byte_offset": 2708,
+      "term": ".push (.hash160 (.atom 23))"
+    },
+    {
+      "instruction": 133,
+      "byte_offset": 2729,
+      "term": ".push (.hash160 (.atom 22))"
+    },
+    {
+      "instruction": 134,
+      "byte_offset": 2750,
+      "term": ".push (.hash160 (.atom 21))"
+    },
+    {
+      "instruction": 135,
+      "byte_offset": 2771,
+      "term": ".push (.hash160 (.atom 20))"
+    },
+    {
+      "instruction": 136,
+      "byte_offset": 2792,
+      "term": ".push (.hash160 (.atom 19))"
+    },
+    {
+      "instruction": 137,
+      "byte_offset": 2813,
+      "term": ".push (.hash160 (.atom 18))"
+    },
+    {
+      "instruction": 138,
+      "byte_offset": 2834,
+      "term": ".push (.hash160 (.atom 17))"
+    },
+    {
+      "instruction": 139,
+      "byte_offset": 2855,
+      "term": ".push (.hash160 (.atom 16))"
+    },
+    {
+      "instruction": 140,
+      "byte_offset": 2876,
+      "term": ".push (.hash160 (.atom 15))"
+    },
+    {
+      "instruction": 141,
+      "byte_offset": 2897,
+      "term": ".push (.hash160 (.atom 14))"
+    },
+    {
+      "instruction": 142,
+      "byte_offset": 2918,
+      "term": ".push (.hash160 (.atom 13))"
+    },
+    {
+      "instruction": 143,
+      "byte_offset": 2939,
+      "term": ".push (.hash160 (.atom 12))"
+    },
+    {
+      "instruction": 144,
+      "byte_offset": 2960,
+      "term": ".push (.hash160 (.atom 11))"
+    },
+    {
+      "instruction": 145,
+      "byte_offset": 2981,
+      "term": ".push (.hash160 (.atom 10))"
+    },
+    {
+      "instruction": 146,
+      "byte_offset": 3002,
+      "term": ".push (.hash160 (.atom 9))"
+    },
+    {
+      "instruction": 147,
+      "byte_offset": 3023,
+      "term": ".push (.hash160 (.atom 8))"
+    },
+    {
+      "instruction": 148,
+      "byte_offset": 3044,
+      "term": ".push (.hash160 (.atom 7))"
+    },
+    {
+      "instruction": 149,
+      "byte_offset": 3065,
+      "term": ".push (.hash160 (.atom 6))"
+    },
+    {
+      "instruction": 150,
+      "byte_offset": 3086,
+      "term": ".push (.hash160 (.atom 5))"
+    },
+    {
+      "instruction": 151,
+      "byte_offset": 3107,
+      "term": ".push (.hash160 (.atom 4))"
+    },
+    {
+      "instruction": 152,
+      "byte_offset": 3128,
+      "term": ".push (.hash160 (.atom 3))"
+    },
+    {
+      "instruction": 153,
+      "byte_offset": 3149,
+      "term": ".push (.hash160 (.atom 2))"
+    },
+    {
+      "instruction": 154,
+      "byte_offset": 3170,
+      "term": ".push (.hash160 (.atom 1))"
+    },
+    {
+      "instruction": 155,
+      "byte_offset": 3191,
+      "term": ".push (.hash160 (.atom 0))"
+    },
+    {
+      "instruction": 156,
+      "byte_offset": 3212,
+      "term": ".push (.atom 1149)"
+    },
+    {
+      "instruction": 157,
+      "byte_offset": 3222,
+      "term": ".push (.atom 1148)"
+    },
+    {
+      "instruction": 158,
+      "byte_offset": 3232,
+      "term": ".push (.atom 1147)"
+    },
+    {
+      "instruction": 159,
+      "byte_offset": 3242,
+      "term": ".push (.atom 1146)"
+    },
+    {
+      "instruction": 160,
+      "byte_offset": 3252,
+      "term": ".push (.atom 1145)"
+    },
+    {
+      "instruction": 161,
+      "byte_offset": 3262,
+      "term": ".push (.atom 1144)"
+    },
+    {
+      "instruction": 162,
+      "byte_offset": 3272,
+      "term": ".push (.atom 1143)"
+    },
+    {
+      "instruction": 163,
+      "byte_offset": 3282,
+      "term": ".push (.atom 1142)"
+    },
+    {
+      "instruction": 164,
+      "byte_offset": 3292,
+      "term": ".push (.atom 1141)"
+    },
+    {
+      "instruction": 165,
+      "byte_offset": 3302,
+      "term": ".push (.atom 1140)"
+    },
+    {
+      "instruction": 166,
+      "byte_offset": 3312,
+      "term": ".push (.atom 1139)"
+    },
+    {
+      "instruction": 167,
+      "byte_offset": 3322,
+      "term": ".push (.atom 1138)"
+    },
+    {
+      "instruction": 168,
+      "byte_offset": 3332,
+      "term": ".push (.atom 1137)"
+    },
+    {
+      "instruction": 169,
+      "byte_offset": 3342,
+      "term": ".push (.atom 1136)"
+    },
+    {
+      "instruction": 170,
+      "byte_offset": 3352,
+      "term": ".push (.atom 1135)"
+    },
+    {
+      "instruction": 171,
+      "byte_offset": 3362,
+      "term": ".push (.atom 1134)"
+    },
+    {
+      "instruction": 172,
+      "byte_offset": 3372,
+      "term": ".push (.atom 1133)"
+    },
+    {
+      "instruction": 173,
+      "byte_offset": 3382,
+      "term": ".push (.atom 1132)"
+    },
+    {
+      "instruction": 174,
+      "byte_offset": 3392,
+      "term": ".push (.atom 1131)"
+    },
+    {
+      "instruction": 175,
+      "byte_offset": 3402,
+      "term": ".push (.atom 1130)"
+    },
+    {
+      "instruction": 176,
+      "byte_offset": 3412,
+      "term": ".push (.atom 1129)"
+    },
+    {
+      "instruction": 177,
+      "byte_offset": 3422,
+      "term": ".push (.atom 1128)"
+    },
+    {
+      "instruction": 178,
+      "byte_offset": 3432,
+      "term": ".push (.atom 1127)"
+    },
+    {
+      "instruction": 179,
+      "byte_offset": 3442,
+      "term": ".push (.atom 1126)"
+    },
+    {
+      "instruction": 180,
+      "byte_offset": 3452,
+      "term": ".push (.atom 1125)"
+    },
+    {
+      "instruction": 181,
+      "byte_offset": 3462,
+      "term": ".push (.atom 1124)"
+    },
+    {
+      "instruction": 182,
+      "byte_offset": 3472,
+      "term": ".push (.atom 1123)"
+    },
+    {
+      "instruction": 183,
+      "byte_offset": 3482,
+      "term": ".push (.atom 1122)"
+    },
+    {
+      "instruction": 184,
+      "byte_offset": 3492,
+      "term": ".push (.atom 1121)"
+    },
+    {
+      "instruction": 185,
+      "byte_offset": 3502,
+      "term": ".push (.atom 1120)"
+    },
+    {
+      "instruction": 186,
+      "byte_offset": 3512,
+      "term": ".push (.atom 1119)"
+    },
+    {
+      "instruction": 187,
+      "byte_offset": 3522,
+      "term": ".push (.atom 1118)"
+    },
+    {
+      "instruction": 188,
+      "byte_offset": 3532,
+      "term": ".push (.atom 1117)"
+    },
+    {
+      "instruction": 189,
+      "byte_offset": 3542,
+      "term": ".push (.atom 1116)"
+    },
+    {
+      "instruction": 190,
+      "byte_offset": 3552,
+      "term": ".push (.atom 1115)"
+    },
+    {
+      "instruction": 191,
+      "byte_offset": 3562,
+      "term": ".push (.atom 1114)"
+    },
+    {
+      "instruction": 192,
+      "byte_offset": 3572,
+      "term": ".push (.atom 1113)"
+    },
+    {
+      "instruction": 193,
+      "byte_offset": 3582,
+      "term": ".push (.atom 1112)"
+    },
+    {
+      "instruction": 194,
+      "byte_offset": 3592,
+      "term": ".push (.atom 1111)"
+    },
+    {
+      "instruction": 195,
+      "byte_offset": 3602,
+      "term": ".push (.atom 1110)"
+    },
+    {
+      "instruction": 196,
+      "byte_offset": 3612,
+      "term": ".push (.atom 1109)"
+    },
+    {
+      "instruction": 197,
+      "byte_offset": 3622,
+      "term": ".push (.atom 1108)"
+    },
+    {
+      "instruction": 198,
+      "byte_offset": 3632,
+      "term": ".push (.atom 1107)"
+    },
+    {
+      "instruction": 199,
+      "byte_offset": 3642,
+      "term": ".push (.atom 1106)"
+    },
+    {
+      "instruction": 200,
+      "byte_offset": 3652,
+      "term": ".push (.atom 1105)"
+    },
+    {
+      "instruction": 201,
+      "byte_offset": 3662,
+      "term": ".push (.atom 1104)"
+    },
+    {
+      "instruction": 202,
+      "byte_offset": 3672,
+      "term": ".push (.atom 1103)"
+    },
+    {
+      "instruction": 203,
+      "byte_offset": 3682,
+      "term": ".push (.atom 1102)"
+    },
+    {
+      "instruction": 204,
+      "byte_offset": 3692,
+      "term": ".push (.atom 1101)"
+    },
+    {
+      "instruction": 205,
+      "byte_offset": 3702,
+      "term": ".push (.atom 1100)"
+    },
+    {
+      "instruction": 206,
+      "byte_offset": 3712,
+      "term": ".push (.atom 1099)"
+    },
+    {
+      "instruction": 207,
+      "byte_offset": 3722,
+      "term": ".push (.atom 1098)"
+    },
+    {
+      "instruction": 208,
+      "byte_offset": 3732,
+      "term": ".push (.atom 1097)"
+    },
+    {
+      "instruction": 209,
+      "byte_offset": 3742,
+      "term": ".push (.atom 1096)"
+    },
+    {
+      "instruction": 210,
+      "byte_offset": 3752,
+      "term": ".push (.atom 1095)"
+    },
+    {
+      "instruction": 211,
+      "byte_offset": 3762,
+      "term": ".push (.atom 1094)"
+    },
+    {
+      "instruction": 212,
+      "byte_offset": 3772,
+      "term": ".push (.atom 1093)"
+    },
+    {
+      "instruction": 213,
+      "byte_offset": 3782,
+      "term": ".push (.atom 1092)"
+    },
+    {
+      "instruction": 214,
+      "byte_offset": 3792,
+      "term": ".push (.atom 1091)"
+    },
+    {
+      "instruction": 215,
+      "byte_offset": 3802,
+      "term": ".push (.atom 1090)"
+    },
+    {
+      "instruction": 216,
+      "byte_offset": 3812,
+      "term": ".push (.atom 1089)"
+    },
+    {
+      "instruction": 217,
+      "byte_offset": 3822,
+      "term": ".push (.atom 1088)"
+    },
+    {
+      "instruction": 218,
+      "byte_offset": 3832,
+      "term": ".push (.atom 1087)"
+    },
+    {
+      "instruction": 219,
+      "byte_offset": 3842,
+      "term": ".push (.atom 1086)"
+    },
+    {
+      "instruction": 220,
+      "byte_offset": 3852,
+      "term": ".push (.atom 1085)"
+    },
+    {
+      "instruction": 221,
+      "byte_offset": 3862,
+      "term": ".push (.atom 1084)"
+    },
+    {
+      "instruction": 222,
+      "byte_offset": 3872,
+      "term": ".push (.atom 1083)"
+    },
+    {
+      "instruction": 223,
+      "byte_offset": 3882,
+      "term": ".push (.atom 1082)"
+    },
+    {
+      "instruction": 224,
+      "byte_offset": 3892,
+      "term": ".push (.atom 1081)"
+    },
+    {
+      "instruction": 225,
+      "byte_offset": 3902,
+      "term": ".push (.atom 1080)"
+    },
+    {
+      "instruction": 226,
+      "byte_offset": 3912,
+      "term": ".push (.atom 1079)"
+    },
+    {
+      "instruction": 227,
+      "byte_offset": 3922,
+      "term": ".push (.atom 1078)"
+    },
+    {
+      "instruction": 228,
+      "byte_offset": 3932,
+      "term": ".push (.atom 1077)"
+    },
+    {
+      "instruction": 229,
+      "byte_offset": 3942,
+      "term": ".push (.atom 1076)"
+    },
+    {
+      "instruction": 230,
+      "byte_offset": 3952,
+      "term": ".push (.atom 1075)"
+    },
+    {
+      "instruction": 231,
+      "byte_offset": 3962,
+      "term": ".push (.atom 1074)"
+    },
+    {
+      "instruction": 232,
+      "byte_offset": 3972,
+      "term": ".push (.atom 1073)"
+    },
+    {
+      "instruction": 233,
+      "byte_offset": 3982,
+      "term": ".push (.atom 1072)"
+    },
+    {
+      "instruction": 234,
+      "byte_offset": 3992,
+      "term": ".push (.atom 1071)"
+    },
+    {
+      "instruction": 235,
+      "byte_offset": 4002,
+      "term": ".push (.atom 1070)"
+    },
+    {
+      "instruction": 236,
+      "byte_offset": 4012,
+      "term": ".push (.atom 1069)"
+    },
+    {
+      "instruction": 237,
+      "byte_offset": 4022,
+      "term": ".push (.atom 1068)"
+    },
+    {
+      "instruction": 238,
+      "byte_offset": 4032,
+      "term": ".push (.atom 1067)"
+    },
+    {
+      "instruction": 239,
+      "byte_offset": 4042,
+      "term": ".push (.atom 1066)"
+    },
+    {
+      "instruction": 240,
+      "byte_offset": 4052,
+      "term": ".push (.atom 1065)"
+    },
+    {
+      "instruction": 241,
+      "byte_offset": 4062,
+      "term": ".push (.atom 1064)"
+    },
+    {
+      "instruction": 242,
+      "byte_offset": 4072,
+      "term": ".push (.atom 1063)"
+    },
+    {
+      "instruction": 243,
+      "byte_offset": 4082,
+      "term": ".push (.atom 1062)"
+    },
+    {
+      "instruction": 244,
+      "byte_offset": 4092,
+      "term": ".push (.atom 1061)"
+    },
+    {
+      "instruction": 245,
+      "byte_offset": 4102,
+      "term": ".push (.atom 1060)"
+    },
+    {
+      "instruction": 246,
+      "byte_offset": 4112,
+      "term": ".push (.atom 1059)"
+    },
+    {
+      "instruction": 247,
+      "byte_offset": 4122,
+      "term": ".push (.atom 1058)"
+    },
+    {
+      "instruction": 248,
+      "byte_offset": 4132,
+      "term": ".push (.atom 1057)"
+    },
+    {
+      "instruction": 249,
+      "byte_offset": 4142,
+      "term": ".push (.atom 1056)"
+    },
+    {
+      "instruction": 250,
+      "byte_offset": 4152,
+      "term": ".push (.atom 1055)"
+    },
+    {
+      "instruction": 251,
+      "byte_offset": 4162,
+      "term": ".push (.atom 1054)"
+    },
+    {
+      "instruction": 252,
+      "byte_offset": 4172,
+      "term": ".push (.atom 1053)"
+    },
+    {
+      "instruction": 253,
+      "byte_offset": 4182,
+      "term": ".push (.atom 1052)"
+    },
+    {
+      "instruction": 254,
+      "byte_offset": 4192,
+      "term": ".push (.atom 1051)"
+    },
+    {
+      "instruction": 255,
+      "byte_offset": 4202,
+      "term": ".push (.atom 1050)"
+    },
+    {
+      "instruction": 256,
+      "byte_offset": 4212,
+      "term": ".push (.atom 1049)"
+    },
+    {
+      "instruction": 257,
+      "byte_offset": 4222,
+      "term": ".push (.atom 1048)"
+    },
+    {
+      "instruction": 258,
+      "byte_offset": 4232,
+      "term": ".push (.atom 1047)"
+    },
+    {
+      "instruction": 259,
+      "byte_offset": 4242,
+      "term": ".push (.atom 1046)"
+    },
+    {
+      "instruction": 260,
+      "byte_offset": 4252,
+      "term": ".push (.atom 1045)"
+    },
+    {
+      "instruction": 261,
+      "byte_offset": 4262,
+      "term": ".push (.atom 1044)"
+    },
+    {
+      "instruction": 262,
+      "byte_offset": 4272,
+      "term": ".push (.atom 1043)"
+    },
+    {
+      "instruction": 263,
+      "byte_offset": 4282,
+      "term": ".push (.atom 1042)"
+    },
+    {
+      "instruction": 264,
+      "byte_offset": 4292,
+      "term": ".push (.atom 1041)"
+    },
+    {
+      "instruction": 265,
+      "byte_offset": 4302,
+      "term": ".push (.atom 1040)"
+    },
+    {
+      "instruction": 266,
+      "byte_offset": 4312,
+      "term": ".push (.atom 1039)"
+    },
+    {
+      "instruction": 267,
+      "byte_offset": 4322,
+      "term": ".push (.atom 1038)"
+    },
+    {
+      "instruction": 268,
+      "byte_offset": 4332,
+      "term": ".push (.atom 1037)"
+    },
+    {
+      "instruction": 269,
+      "byte_offset": 4342,
+      "term": ".push (.atom 1036)"
+    },
+    {
+      "instruction": 270,
+      "byte_offset": 4352,
+      "term": ".push (.atom 1035)"
+    },
+    {
+      "instruction": 271,
+      "byte_offset": 4362,
+      "term": ".push (.atom 1034)"
+    },
+    {
+      "instruction": 272,
+      "byte_offset": 4372,
+      "term": ".push (.atom 1033)"
+    },
+    {
+      "instruction": 273,
+      "byte_offset": 4382,
+      "term": ".push (.atom 1032)"
+    },
+    {
+      "instruction": 274,
+      "byte_offset": 4392,
+      "term": ".push (.atom 1031)"
+    },
+    {
+      "instruction": 275,
+      "byte_offset": 4402,
+      "term": ".push (.atom 1030)"
+    },
+    {
+      "instruction": 276,
+      "byte_offset": 4412,
+      "term": ".push (.atom 1029)"
+    },
+    {
+      "instruction": 277,
+      "byte_offset": 4422,
+      "term": ".push (.atom 1028)"
+    },
+    {
+      "instruction": 278,
+      "byte_offset": 4432,
+      "term": ".push (.atom 1027)"
+    },
+    {
+      "instruction": 279,
+      "byte_offset": 4442,
+      "term": ".push (.atom 1026)"
+    },
+    {
+      "instruction": 280,
+      "byte_offset": 4452,
+      "term": ".push (.atom 1025)"
+    },
+    {
+      "instruction": 281,
+      "byte_offset": 4462,
+      "term": ".push (.atom 1024)"
+    },
+    {
+      "instruction": 282,
+      "byte_offset": 4472,
+      "term": ".push (.atom 1023)"
+    },
+    {
+      "instruction": 283,
+      "byte_offset": 4482,
+      "term": ".push (.atom 1022)"
+    },
+    {
+      "instruction": 284,
+      "byte_offset": 4492,
+      "term": ".push (.atom 1021)"
+    },
+    {
+      "instruction": 285,
+      "byte_offset": 4502,
+      "term": ".push (.atom 1020)"
+    },
+    {
+      "instruction": 286,
+      "byte_offset": 4512,
+      "term": ".push (.atom 1019)"
+    },
+    {
+      "instruction": 287,
+      "byte_offset": 4522,
+      "term": ".push (.atom 1018)"
+    },
+    {
+      "instruction": 288,
+      "byte_offset": 4532,
+      "term": ".push (.atom 1017)"
+    },
+    {
+      "instruction": 289,
+      "byte_offset": 4542,
+      "term": ".push (.atom 1016)"
+    },
+    {
+      "instruction": 290,
+      "byte_offset": 4552,
+      "term": ".push (.atom 1015)"
+    },
+    {
+      "instruction": 291,
+      "byte_offset": 4562,
+      "term": ".push (.atom 1014)"
+    },
+    {
+      "instruction": 292,
+      "byte_offset": 4572,
+      "term": ".push (.atom 1013)"
+    },
+    {
+      "instruction": 293,
+      "byte_offset": 4582,
+      "term": ".push (.atom 1012)"
+    },
+    {
+      "instruction": 294,
+      "byte_offset": 4592,
+      "term": ".push (.atom 1011)"
+    },
+    {
+      "instruction": 295,
+      "byte_offset": 4602,
+      "term": ".push (.atom 1010)"
+    },
+    {
+      "instruction": 296,
+      "byte_offset": 4612,
+      "term": ".push (.atom 1009)"
+    },
+    {
+      "instruction": 297,
+      "byte_offset": 4622,
+      "term": ".push (.atom 1008)"
+    },
+    {
+      "instruction": 298,
+      "byte_offset": 4632,
+      "term": ".push (.atom 1007)"
+    },
+    {
+      "instruction": 299,
+      "byte_offset": 4642,
+      "term": ".push (.atom 1006)"
+    },
+    {
+      "instruction": 300,
+      "byte_offset": 4652,
+      "term": ".push (.atom 1005)"
+    },
+    {
+      "instruction": 301,
+      "byte_offset": 4662,
+      "term": ".push (.atom 1004)"
+    },
+    {
+      "instruction": 302,
+      "byte_offset": 4672,
+      "term": ".push (.atom 1003)"
+    },
+    {
+      "instruction": 303,
+      "byte_offset": 4682,
+      "term": ".push (.atom 1002)"
+    },
+    {
+      "instruction": 304,
+      "byte_offset": 4692,
+      "term": ".push (.atom 1001)"
+    },
+    {
+      "instruction": 305,
+      "byte_offset": 4702,
+      "term": ".push (.atom 1000)"
+    },
+    {
+      "instruction": 306,
+      "byte_offset": 4712,
+      "term": ".push (.num 0)"
+    },
+    {
+      "instruction": 307,
+      "byte_offset": 4713,
+      "term": ".push (.atom 2001)"
+    },
+    {
+      "instruction": 308,
+      "byte_offset": 4770,
+      "term": ".push (.num 302)"
+    },
+    {
+      "instruction": 309,
+      "byte_offset": 4773,
+      "term": ".roll"
+    },
+    {
+      "instruction": 310,
+      "byte_offset": 4774,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 311,
+      "byte_offset": 4777,
+      "term": ".min"
+    },
+    {
+      "instruction": 312,
+      "byte_offset": 4778,
+      "term": ".dup"
+    },
+    {
+      "instruction": 313,
+      "byte_offset": 4779,
+      "term": ".push (.num 151)"
+    },
+    {
+      "instruction": 314,
+      "byte_offset": 4782,
+      "term": ".add"
+    },
+    {
+      "instruction": 315,
+      "byte_offset": 4783,
+      "term": ".roll"
+    },
+    {
+      "instruction": 316,
+      "byte_offset": 4784,
+      "term": ".push (.num 311)"
+    },
+    {
+      "instruction": 317,
+      "byte_offset": 4787,
+      "term": ".roll"
+    },
+    {
+      "instruction": 318,
+      "byte_offset": 4788,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 319,
+      "byte_offset": 4789,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 320,
+      "byte_offset": 4790,
+      "term": ".roll"
+    },
+    {
+      "instruction": 321,
+      "byte_offset": 4791,
+      "term": ".push (.num 301)"
+    },
+    {
+      "instruction": 322,
+      "byte_offset": 4794,
+      "term": ".roll"
+    },
+    {
+      "instruction": 323,
+      "byte_offset": 4795,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 324,
+      "byte_offset": 4798,
+      "term": ".min"
+    },
+    {
+      "instruction": 325,
+      "byte_offset": 4799,
+      "term": ".dup"
+    },
+    {
+      "instruction": 326,
+      "byte_offset": 4800,
+      "term": ".push (.num 150)"
+    },
+    {
+      "instruction": 327,
+      "byte_offset": 4803,
+      "term": ".add"
+    },
+    {
+      "instruction": 328,
+      "byte_offset": 4804,
+      "term": ".roll"
+    },
+    {
+      "instruction": 329,
+      "byte_offset": 4805,
+      "term": ".push (.num 309)"
+    },
+    {
+      "instruction": 330,
+      "byte_offset": 4808,
+      "term": ".roll"
+    },
+    {
+      "instruction": 331,
+      "byte_offset": 4809,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 332,
+      "byte_offset": 4810,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 333,
+      "byte_offset": 4811,
+      "term": ".roll"
+    },
+    {
+      "instruction": 334,
+      "byte_offset": 4812,
+      "term": ".push (.num 300)"
+    },
+    {
+      "instruction": 335,
+      "byte_offset": 4815,
+      "term": ".roll"
+    },
+    {
+      "instruction": 336,
+      "byte_offset": 4816,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 337,
+      "byte_offset": 4819,
+      "term": ".min"
+    },
+    {
+      "instruction": 338,
+      "byte_offset": 4820,
+      "term": ".dup"
+    },
+    {
+      "instruction": 339,
+      "byte_offset": 4821,
+      "term": ".push (.num 149)"
+    },
+    {
+      "instruction": 340,
+      "byte_offset": 4824,
+      "term": ".add"
+    },
+    {
+      "instruction": 341,
+      "byte_offset": 4825,
+      "term": ".roll"
+    },
+    {
+      "instruction": 342,
+      "byte_offset": 4826,
+      "term": ".push (.num 307)"
+    },
+    {
+      "instruction": 343,
+      "byte_offset": 4829,
+      "term": ".roll"
+    },
+    {
+      "instruction": 344,
+      "byte_offset": 4830,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 345,
+      "byte_offset": 4831,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 346,
+      "byte_offset": 4832,
+      "term": ".roll"
+    },
+    {
+      "instruction": 347,
+      "byte_offset": 4833,
+      "term": ".push (.num 299)"
+    },
+    {
+      "instruction": 348,
+      "byte_offset": 4836,
+      "term": ".roll"
+    },
+    {
+      "instruction": 349,
+      "byte_offset": 4837,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 350,
+      "byte_offset": 4840,
+      "term": ".min"
+    },
+    {
+      "instruction": 351,
+      "byte_offset": 4841,
+      "term": ".dup"
+    },
+    {
+      "instruction": 352,
+      "byte_offset": 4842,
+      "term": ".push (.num 148)"
+    },
+    {
+      "instruction": 353,
+      "byte_offset": 4845,
+      "term": ".add"
+    },
+    {
+      "instruction": 354,
+      "byte_offset": 4846,
+      "term": ".roll"
+    },
+    {
+      "instruction": 355,
+      "byte_offset": 4847,
+      "term": ".push (.num 305)"
+    },
+    {
+      "instruction": 356,
+      "byte_offset": 4850,
+      "term": ".roll"
+    },
+    {
+      "instruction": 357,
+      "byte_offset": 4851,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 358,
+      "byte_offset": 4852,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 359,
+      "byte_offset": 4853,
+      "term": ".roll"
+    },
+    {
+      "instruction": 360,
+      "byte_offset": 4854,
+      "term": ".push (.num 298)"
+    },
+    {
+      "instruction": 361,
+      "byte_offset": 4857,
+      "term": ".roll"
+    },
+    {
+      "instruction": 362,
+      "byte_offset": 4858,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 363,
+      "byte_offset": 4861,
+      "term": ".min"
+    },
+    {
+      "instruction": 364,
+      "byte_offset": 4862,
+      "term": ".dup"
+    },
+    {
+      "instruction": 365,
+      "byte_offset": 4863,
+      "term": ".push (.num 147)"
+    },
+    {
+      "instruction": 366,
+      "byte_offset": 4866,
+      "term": ".add"
+    },
+    {
+      "instruction": 367,
+      "byte_offset": 4867,
+      "term": ".roll"
+    },
+    {
+      "instruction": 368,
+      "byte_offset": 4868,
+      "term": ".push (.num 303)"
+    },
+    {
+      "instruction": 369,
+      "byte_offset": 4871,
+      "term": ".roll"
+    },
+    {
+      "instruction": 370,
+      "byte_offset": 4872,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 371,
+      "byte_offset": 4873,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 372,
+      "byte_offset": 4874,
+      "term": ".roll"
+    },
+    {
+      "instruction": 373,
+      "byte_offset": 4875,
+      "term": ".push (.num 297)"
+    },
+    {
+      "instruction": 374,
+      "byte_offset": 4878,
+      "term": ".roll"
+    },
+    {
+      "instruction": 375,
+      "byte_offset": 4879,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 376,
+      "byte_offset": 4882,
+      "term": ".min"
+    },
+    {
+      "instruction": 377,
+      "byte_offset": 4883,
+      "term": ".dup"
+    },
+    {
+      "instruction": 378,
+      "byte_offset": 4884,
+      "term": ".push (.num 146)"
+    },
+    {
+      "instruction": 379,
+      "byte_offset": 4887,
+      "term": ".add"
+    },
+    {
+      "instruction": 380,
+      "byte_offset": 4888,
+      "term": ".roll"
+    },
+    {
+      "instruction": 381,
+      "byte_offset": 4889,
+      "term": ".push (.num 301)"
+    },
+    {
+      "instruction": 382,
+      "byte_offset": 4892,
+      "term": ".roll"
+    },
+    {
+      "instruction": 383,
+      "byte_offset": 4893,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 384,
+      "byte_offset": 4894,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 385,
+      "byte_offset": 4895,
+      "term": ".roll"
+    },
+    {
+      "instruction": 386,
+      "byte_offset": 4896,
+      "term": ".push (.num 296)"
+    },
+    {
+      "instruction": 387,
+      "byte_offset": 4899,
+      "term": ".roll"
+    },
+    {
+      "instruction": 388,
+      "byte_offset": 4900,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 389,
+      "byte_offset": 4903,
+      "term": ".min"
+    },
+    {
+      "instruction": 390,
+      "byte_offset": 4904,
+      "term": ".dup"
+    },
+    {
+      "instruction": 391,
+      "byte_offset": 4905,
+      "term": ".push (.num 145)"
+    },
+    {
+      "instruction": 392,
+      "byte_offset": 4908,
+      "term": ".add"
+    },
+    {
+      "instruction": 393,
+      "byte_offset": 4909,
+      "term": ".roll"
+    },
+    {
+      "instruction": 394,
+      "byte_offset": 4910,
+      "term": ".push (.num 299)"
+    },
+    {
+      "instruction": 395,
+      "byte_offset": 4913,
+      "term": ".roll"
+    },
+    {
+      "instruction": 396,
+      "byte_offset": 4914,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 397,
+      "byte_offset": 4915,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 398,
+      "byte_offset": 4916,
+      "term": ".roll"
+    },
+    {
+      "instruction": 399,
+      "byte_offset": 4917,
+      "term": ".push (.num 295)"
+    },
+    {
+      "instruction": 400,
+      "byte_offset": 4920,
+      "term": ".roll"
+    },
+    {
+      "instruction": 401,
+      "byte_offset": 4921,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 402,
+      "byte_offset": 4924,
+      "term": ".min"
+    },
+    {
+      "instruction": 403,
+      "byte_offset": 4925,
+      "term": ".dup"
+    },
+    {
+      "instruction": 404,
+      "byte_offset": 4926,
+      "term": ".push (.num 144)"
+    },
+    {
+      "instruction": 405,
+      "byte_offset": 4929,
+      "term": ".add"
+    },
+    {
+      "instruction": 406,
+      "byte_offset": 4930,
+      "term": ".roll"
+    },
+    {
+      "instruction": 407,
+      "byte_offset": 4931,
+      "term": ".push (.num 297)"
+    },
+    {
+      "instruction": 408,
+      "byte_offset": 4934,
+      "term": ".roll"
+    },
+    {
+      "instruction": 409,
+      "byte_offset": 4935,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 410,
+      "byte_offset": 4936,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 411,
+      "byte_offset": 4937,
+      "term": ".roll"
+    },
+    {
+      "instruction": 412,
+      "byte_offset": 4938,
+      "term": ".push (.num 294)"
+    },
+    {
+      "instruction": 413,
+      "byte_offset": 4941,
+      "term": ".roll"
+    },
+    {
+      "instruction": 414,
+      "byte_offset": 4942,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 415,
+      "byte_offset": 4945,
+      "term": ".min"
+    },
+    {
+      "instruction": 416,
+      "byte_offset": 4946,
+      "term": ".roll"
+    },
+    {
+      "instruction": 417,
+      "byte_offset": 4947,
+      "term": ".push (.num 303)"
+    },
+    {
+      "instruction": 418,
+      "byte_offset": 4950,
+      "term": ".roll"
+    },
+    {
+      "instruction": 419,
+      "byte_offset": 4951,
+      "term": ".dup"
+    },
+    {
+      "instruction": 420,
+      "byte_offset": 4952,
+      "term": ".sha256"
+    },
+    {
+      "instruction": 421,
+      "byte_offset": 4953,
+      "term": ".push (.num 305)"
+    },
+    {
+      "instruction": 422,
+      "byte_offset": 4956,
+      "term": ".roll"
+    },
+    {
+      "instruction": 423,
+      "byte_offset": 4957,
+      "term": ".checksigverify"
+    },
+    {
+      "instruction": 424,
+      "byte_offset": 4958,
+      "term": ".push (.num 10)"
+    },
+    {
+      "instruction": 425,
+      "byte_offset": 4959,
+      "term": ".push (.num 1)"
+    },
+    {
+      "instruction": 426,
+      "byte_offset": 4960,
+      "term": ".roll"
+    },
+    {
+      "instruction": 427,
+      "byte_offset": 4961,
+      "term": ".push (.num 296)"
+    },
+    {
+      "instruction": 428,
+      "byte_offset": 4964,
+      "term": ".roll"
+    },
+    {
+      "instruction": 429,
+      "byte_offset": 4965,
+      "term": ".push (.num 297)"
+    },
+    {
+      "instruction": 430,
+      "byte_offset": 4968,
+      "term": ".roll"
+    },
+    {
+      "instruction": 431,
+      "byte_offset": 4969,
+      "term": ".push (.num 298)"
+    },
+    {
+      "instruction": 432,
+      "byte_offset": 4972,
+      "term": ".roll"
+    },
+    {
+      "instruction": 433,
+      "byte_offset": 4973,
+      "term": ".push (.num 299)"
+    },
+    {
+      "instruction": 434,
+      "byte_offset": 4976,
+      "term": ".roll"
+    },
+    {
+      "instruction": 435,
+      "byte_offset": 4977,
+      "term": ".push (.num 300)"
+    },
+    {
+      "instruction": 436,
+      "byte_offset": 4980,
+      "term": ".roll"
+    },
+    {
+      "instruction": 437,
+      "byte_offset": 4981,
+      "term": ".push (.num 301)"
+    },
+    {
+      "instruction": 438,
+      "byte_offset": 4984,
+      "term": ".roll"
+    },
+    {
+      "instruction": 439,
+      "byte_offset": 4985,
+      "term": ".push (.num 302)"
+    },
+    {
+      "instruction": 440,
+      "byte_offset": 4988,
+      "term": ".roll"
+    },
+    {
+      "instruction": 441,
+      "byte_offset": 4989,
+      "term": ".push (.num 303)"
+    },
+    {
+      "instruction": 442,
+      "byte_offset": 4992,
+      "term": ".roll"
+    },
+    {
+      "instruction": 443,
+      "byte_offset": 4993,
+      "term": ".push (.num 304)"
+    },
+    {
+      "instruction": 444,
+      "byte_offset": 4996,
+      "term": ".roll"
+    },
+    {
+      "instruction": 445,
+      "byte_offset": 4997,
+      "term": ".push (.num 10)"
+    },
+    {
+      "instruction": 446,
+      "byte_offset": 4998,
+      "term": ".checkmultisig"
+    },
+    {
+      "instruction": 447,
+      "byte_offset": 4999,
+      "term": ".push (.hash160 (.atom 299))"
+    },
+    {
+      "instruction": 448,
+      "byte_offset": 5020,
+      "term": ".push (.hash160 (.atom 298))"
+    },
+    {
+      "instruction": 449,
+      "byte_offset": 5041,
+      "term": ".push (.hash160 (.atom 297))"
+    },
+    {
+      "instruction": 450,
+      "byte_offset": 5062,
+      "term": ".push (.hash160 (.atom 296))"
+    },
+    {
+      "instruction": 451,
+      "byte_offset": 5083,
+      "term": ".push (.hash160 (.atom 295))"
+    },
+    {
+      "instruction": 452,
+      "byte_offset": 5104,
+      "term": ".push (.hash160 (.atom 294))"
+    },
+    {
+      "instruction": 453,
+      "byte_offset": 5125,
+      "term": ".push (.hash160 (.atom 293))"
+    },
+    {
+      "instruction": 454,
+      "byte_offset": 5146,
+      "term": ".push (.hash160 (.atom 292))"
+    },
+    {
+      "instruction": 455,
+      "byte_offset": 5167,
+      "term": ".push (.hash160 (.atom 291))"
+    },
+    {
+      "instruction": 456,
+      "byte_offset": 5188,
+      "term": ".push (.hash160 (.atom 290))"
+    },
+    {
+      "instruction": 457,
+      "byte_offset": 5209,
+      "term": ".push (.hash160 (.atom 289))"
+    },
+    {
+      "instruction": 458,
+      "byte_offset": 5230,
+      "term": ".push (.hash160 (.atom 288))"
+    },
+    {
+      "instruction": 459,
+      "byte_offset": 5251,
+      "term": ".push (.hash160 (.atom 287))"
+    },
+    {
+      "instruction": 460,
+      "byte_offset": 5272,
+      "term": ".push (.hash160 (.atom 286))"
+    },
+    {
+      "instruction": 461,
+      "byte_offset": 5293,
+      "term": ".push (.hash160 (.atom 285))"
+    },
+    {
+      "instruction": 462,
+      "byte_offset": 5314,
+      "term": ".push (.hash160 (.atom 284))"
+    },
+    {
+      "instruction": 463,
+      "byte_offset": 5335,
+      "term": ".push (.hash160 (.atom 283))"
+    },
+    {
+      "instruction": 464,
+      "byte_offset": 5356,
+      "term": ".push (.hash160 (.atom 282))"
+    },
+    {
+      "instruction": 465,
+      "byte_offset": 5377,
+      "term": ".push (.hash160 (.atom 281))"
+    },
+    {
+      "instruction": 466,
+      "byte_offset": 5398,
+      "term": ".push (.hash160 (.atom 280))"
+    },
+    {
+      "instruction": 467,
+      "byte_offset": 5419,
+      "term": ".push (.hash160 (.atom 279))"
+    },
+    {
+      "instruction": 468,
+      "byte_offset": 5440,
+      "term": ".push (.hash160 (.atom 278))"
+    },
+    {
+      "instruction": 469,
+      "byte_offset": 5461,
+      "term": ".push (.hash160 (.atom 277))"
+    },
+    {
+      "instruction": 470,
+      "byte_offset": 5482,
+      "term": ".push (.hash160 (.atom 276))"
+    },
+    {
+      "instruction": 471,
+      "byte_offset": 5503,
+      "term": ".push (.hash160 (.atom 275))"
+    },
+    {
+      "instruction": 472,
+      "byte_offset": 5524,
+      "term": ".push (.hash160 (.atom 274))"
+    },
+    {
+      "instruction": 473,
+      "byte_offset": 5545,
+      "term": ".push (.hash160 (.atom 273))"
+    },
+    {
+      "instruction": 474,
+      "byte_offset": 5566,
+      "term": ".push (.hash160 (.atom 272))"
+    },
+    {
+      "instruction": 475,
+      "byte_offset": 5587,
+      "term": ".push (.hash160 (.atom 271))"
+    },
+    {
+      "instruction": 476,
+      "byte_offset": 5608,
+      "term": ".push (.hash160 (.atom 270))"
+    },
+    {
+      "instruction": 477,
+      "byte_offset": 5629,
+      "term": ".push (.hash160 (.atom 269))"
+    },
+    {
+      "instruction": 478,
+      "byte_offset": 5650,
+      "term": ".push (.hash160 (.atom 268))"
+    },
+    {
+      "instruction": 479,
+      "byte_offset": 5671,
+      "term": ".push (.hash160 (.atom 267))"
+    },
+    {
+      "instruction": 480,
+      "byte_offset": 5692,
+      "term": ".push (.hash160 (.atom 266))"
+    },
+    {
+      "instruction": 481,
+      "byte_offset": 5713,
+      "term": ".push (.hash160 (.atom 265))"
+    },
+    {
+      "instruction": 482,
+      "byte_offset": 5734,
+      "term": ".push (.hash160 (.atom 264))"
+    },
+    {
+      "instruction": 483,
+      "byte_offset": 5755,
+      "term": ".push (.hash160 (.atom 263))"
+    },
+    {
+      "instruction": 484,
+      "byte_offset": 5776,
+      "term": ".push (.hash160 (.atom 262))"
+    },
+    {
+      "instruction": 485,
+      "byte_offset": 5797,
+      "term": ".push (.hash160 (.atom 261))"
+    },
+    {
+      "instruction": 486,
+      "byte_offset": 5818,
+      "term": ".push (.hash160 (.atom 260))"
+    },
+    {
+      "instruction": 487,
+      "byte_offset": 5839,
+      "term": ".push (.hash160 (.atom 259))"
+    },
+    {
+      "instruction": 488,
+      "byte_offset": 5860,
+      "term": ".push (.hash160 (.atom 258))"
+    },
+    {
+      "instruction": 489,
+      "byte_offset": 5881,
+      "term": ".push (.hash160 (.atom 257))"
+    },
+    {
+      "instruction": 490,
+      "byte_offset": 5902,
+      "term": ".push (.hash160 (.atom 256))"
+    },
+    {
+      "instruction": 491,
+      "byte_offset": 5923,
+      "term": ".push (.hash160 (.atom 255))"
+    },
+    {
+      "instruction": 492,
+      "byte_offset": 5944,
+      "term": ".push (.hash160 (.atom 254))"
+    },
+    {
+      "instruction": 493,
+      "byte_offset": 5965,
+      "term": ".push (.hash160 (.atom 253))"
+    },
+    {
+      "instruction": 494,
+      "byte_offset": 5986,
+      "term": ".push (.hash160 (.atom 252))"
+    },
+    {
+      "instruction": 495,
+      "byte_offset": 6007,
+      "term": ".push (.hash160 (.atom 251))"
+    },
+    {
+      "instruction": 496,
+      "byte_offset": 6028,
+      "term": ".push (.hash160 (.atom 250))"
+    },
+    {
+      "instruction": 497,
+      "byte_offset": 6049,
+      "term": ".push (.hash160 (.atom 249))"
+    },
+    {
+      "instruction": 498,
+      "byte_offset": 6070,
+      "term": ".push (.hash160 (.atom 248))"
+    },
+    {
+      "instruction": 499,
+      "byte_offset": 6091,
+      "term": ".push (.hash160 (.atom 247))"
+    },
+    {
+      "instruction": 500,
+      "byte_offset": 6112,
+      "term": ".push (.hash160 (.atom 246))"
+    },
+    {
+      "instruction": 501,
+      "byte_offset": 6133,
+      "term": ".push (.hash160 (.atom 245))"
+    },
+    {
+      "instruction": 502,
+      "byte_offset": 6154,
+      "term": ".push (.hash160 (.atom 244))"
+    },
+    {
+      "instruction": 503,
+      "byte_offset": 6175,
+      "term": ".push (.hash160 (.atom 243))"
+    },
+    {
+      "instruction": 504,
+      "byte_offset": 6196,
+      "term": ".push (.hash160 (.atom 242))"
+    },
+    {
+      "instruction": 505,
+      "byte_offset": 6217,
+      "term": ".push (.hash160 (.atom 241))"
+    },
+    {
+      "instruction": 506,
+      "byte_offset": 6238,
+      "term": ".push (.hash160 (.atom 240))"
+    },
+    {
+      "instruction": 507,
+      "byte_offset": 6259,
+      "term": ".push (.hash160 (.atom 239))"
+    },
+    {
+      "instruction": 508,
+      "byte_offset": 6280,
+      "term": ".push (.hash160 (.atom 238))"
+    },
+    {
+      "instruction": 509,
+      "byte_offset": 6301,
+      "term": ".push (.hash160 (.atom 237))"
+    },
+    {
+      "instruction": 510,
+      "byte_offset": 6322,
+      "term": ".push (.hash160 (.atom 236))"
+    },
+    {
+      "instruction": 511,
+      "byte_offset": 6343,
+      "term": ".push (.hash160 (.atom 235))"
+    },
+    {
+      "instruction": 512,
+      "byte_offset": 6364,
+      "term": ".push (.hash160 (.atom 234))"
+    },
+    {
+      "instruction": 513,
+      "byte_offset": 6385,
+      "term": ".push (.hash160 (.atom 233))"
+    },
+    {
+      "instruction": 514,
+      "byte_offset": 6406,
+      "term": ".push (.hash160 (.atom 232))"
+    },
+    {
+      "instruction": 515,
+      "byte_offset": 6427,
+      "term": ".push (.hash160 (.atom 231))"
+    },
+    {
+      "instruction": 516,
+      "byte_offset": 6448,
+      "term": ".push (.hash160 (.atom 230))"
+    },
+    {
+      "instruction": 517,
+      "byte_offset": 6469,
+      "term": ".push (.hash160 (.atom 229))"
+    },
+    {
+      "instruction": 518,
+      "byte_offset": 6490,
+      "term": ".push (.hash160 (.atom 228))"
+    },
+    {
+      "instruction": 519,
+      "byte_offset": 6511,
+      "term": ".push (.hash160 (.atom 227))"
+    },
+    {
+      "instruction": 520,
+      "byte_offset": 6532,
+      "term": ".push (.hash160 (.atom 226))"
+    },
+    {
+      "instruction": 521,
+      "byte_offset": 6553,
+      "term": ".push (.hash160 (.atom 225))"
+    },
+    {
+      "instruction": 522,
+      "byte_offset": 6574,
+      "term": ".push (.hash160 (.atom 224))"
+    },
+    {
+      "instruction": 523,
+      "byte_offset": 6595,
+      "term": ".push (.hash160 (.atom 223))"
+    },
+    {
+      "instruction": 524,
+      "byte_offset": 6616,
+      "term": ".push (.hash160 (.atom 222))"
+    },
+    {
+      "instruction": 525,
+      "byte_offset": 6637,
+      "term": ".push (.hash160 (.atom 221))"
+    },
+    {
+      "instruction": 526,
+      "byte_offset": 6658,
+      "term": ".push (.hash160 (.atom 220))"
+    },
+    {
+      "instruction": 527,
+      "byte_offset": 6679,
+      "term": ".push (.hash160 (.atom 219))"
+    },
+    {
+      "instruction": 528,
+      "byte_offset": 6700,
+      "term": ".push (.hash160 (.atom 218))"
+    },
+    {
+      "instruction": 529,
+      "byte_offset": 6721,
+      "term": ".push (.hash160 (.atom 217))"
+    },
+    {
+      "instruction": 530,
+      "byte_offset": 6742,
+      "term": ".push (.hash160 (.atom 216))"
+    },
+    {
+      "instruction": 531,
+      "byte_offset": 6763,
+      "term": ".push (.hash160 (.atom 215))"
+    },
+    {
+      "instruction": 532,
+      "byte_offset": 6784,
+      "term": ".push (.hash160 (.atom 214))"
+    },
+    {
+      "instruction": 533,
+      "byte_offset": 6805,
+      "term": ".push (.hash160 (.atom 213))"
+    },
+    {
+      "instruction": 534,
+      "byte_offset": 6826,
+      "term": ".push (.hash160 (.atom 212))"
+    },
+    {
+      "instruction": 535,
+      "byte_offset": 6847,
+      "term": ".push (.hash160 (.atom 211))"
+    },
+    {
+      "instruction": 536,
+      "byte_offset": 6868,
+      "term": ".push (.hash160 (.atom 210))"
+    },
+    {
+      "instruction": 537,
+      "byte_offset": 6889,
+      "term": ".push (.hash160 (.atom 209))"
+    },
+    {
+      "instruction": 538,
+      "byte_offset": 6910,
+      "term": ".push (.hash160 (.atom 208))"
+    },
+    {
+      "instruction": 539,
+      "byte_offset": 6931,
+      "term": ".push (.hash160 (.atom 207))"
+    },
+    {
+      "instruction": 540,
+      "byte_offset": 6952,
+      "term": ".push (.hash160 (.atom 206))"
+    },
+    {
+      "instruction": 541,
+      "byte_offset": 6973,
+      "term": ".push (.hash160 (.atom 205))"
+    },
+    {
+      "instruction": 542,
+      "byte_offset": 6994,
+      "term": ".push (.hash160 (.atom 204))"
+    },
+    {
+      "instruction": 543,
+      "byte_offset": 7015,
+      "term": ".push (.hash160 (.atom 203))"
+    },
+    {
+      "instruction": 544,
+      "byte_offset": 7036,
+      "term": ".push (.hash160 (.atom 202))"
+    },
+    {
+      "instruction": 545,
+      "byte_offset": 7057,
+      "term": ".push (.hash160 (.atom 201))"
+    },
+    {
+      "instruction": 546,
+      "byte_offset": 7078,
+      "term": ".push (.hash160 (.atom 200))"
+    },
+    {
+      "instruction": 547,
+      "byte_offset": 7099,
+      "term": ".push (.hash160 (.atom 199))"
+    },
+    {
+      "instruction": 548,
+      "byte_offset": 7120,
+      "term": ".push (.hash160 (.atom 198))"
+    },
+    {
+      "instruction": 549,
+      "byte_offset": 7141,
+      "term": ".push (.hash160 (.atom 197))"
+    },
+    {
+      "instruction": 550,
+      "byte_offset": 7162,
+      "term": ".push (.hash160 (.atom 196))"
+    },
+    {
+      "instruction": 551,
+      "byte_offset": 7183,
+      "term": ".push (.hash160 (.atom 195))"
+    },
+    {
+      "instruction": 552,
+      "byte_offset": 7204,
+      "term": ".push (.hash160 (.atom 194))"
+    },
+    {
+      "instruction": 553,
+      "byte_offset": 7225,
+      "term": ".push (.hash160 (.atom 193))"
+    },
+    {
+      "instruction": 554,
+      "byte_offset": 7246,
+      "term": ".push (.hash160 (.atom 192))"
+    },
+    {
+      "instruction": 555,
+      "byte_offset": 7267,
+      "term": ".push (.hash160 (.atom 191))"
+    },
+    {
+      "instruction": 556,
+      "byte_offset": 7288,
+      "term": ".push (.hash160 (.atom 190))"
+    },
+    {
+      "instruction": 557,
+      "byte_offset": 7309,
+      "term": ".push (.hash160 (.atom 189))"
+    },
+    {
+      "instruction": 558,
+      "byte_offset": 7330,
+      "term": ".push (.hash160 (.atom 188))"
+    },
+    {
+      "instruction": 559,
+      "byte_offset": 7351,
+      "term": ".push (.hash160 (.atom 187))"
+    },
+    {
+      "instruction": 560,
+      "byte_offset": 7372,
+      "term": ".push (.hash160 (.atom 186))"
+    },
+    {
+      "instruction": 561,
+      "byte_offset": 7393,
+      "term": ".push (.hash160 (.atom 185))"
+    },
+    {
+      "instruction": 562,
+      "byte_offset": 7414,
+      "term": ".push (.hash160 (.atom 184))"
+    },
+    {
+      "instruction": 563,
+      "byte_offset": 7435,
+      "term": ".push (.hash160 (.atom 183))"
+    },
+    {
+      "instruction": 564,
+      "byte_offset": 7456,
+      "term": ".push (.hash160 (.atom 182))"
+    },
+    {
+      "instruction": 565,
+      "byte_offset": 7477,
+      "term": ".push (.hash160 (.atom 181))"
+    },
+    {
+      "instruction": 566,
+      "byte_offset": 7498,
+      "term": ".push (.hash160 (.atom 180))"
+    },
+    {
+      "instruction": 567,
+      "byte_offset": 7519,
+      "term": ".push (.hash160 (.atom 179))"
+    },
+    {
+      "instruction": 568,
+      "byte_offset": 7540,
+      "term": ".push (.hash160 (.atom 178))"
+    },
+    {
+      "instruction": 569,
+      "byte_offset": 7561,
+      "term": ".push (.hash160 (.atom 177))"
+    },
+    {
+      "instruction": 570,
+      "byte_offset": 7582,
+      "term": ".push (.hash160 (.atom 176))"
+    },
+    {
+      "instruction": 571,
+      "byte_offset": 7603,
+      "term": ".push (.hash160 (.atom 175))"
+    },
+    {
+      "instruction": 572,
+      "byte_offset": 7624,
+      "term": ".push (.hash160 (.atom 174))"
+    },
+    {
+      "instruction": 573,
+      "byte_offset": 7645,
+      "term": ".push (.hash160 (.atom 173))"
+    },
+    {
+      "instruction": 574,
+      "byte_offset": 7666,
+      "term": ".push (.hash160 (.atom 172))"
+    },
+    {
+      "instruction": 575,
+      "byte_offset": 7687,
+      "term": ".push (.hash160 (.atom 171))"
+    },
+    {
+      "instruction": 576,
+      "byte_offset": 7708,
+      "term": ".push (.hash160 (.atom 170))"
+    },
+    {
+      "instruction": 577,
+      "byte_offset": 7729,
+      "term": ".push (.hash160 (.atom 169))"
+    },
+    {
+      "instruction": 578,
+      "byte_offset": 7750,
+      "term": ".push (.hash160 (.atom 168))"
+    },
+    {
+      "instruction": 579,
+      "byte_offset": 7771,
+      "term": ".push (.hash160 (.atom 167))"
+    },
+    {
+      "instruction": 580,
+      "byte_offset": 7792,
+      "term": ".push (.hash160 (.atom 166))"
+    },
+    {
+      "instruction": 581,
+      "byte_offset": 7813,
+      "term": ".push (.hash160 (.atom 165))"
+    },
+    {
+      "instruction": 582,
+      "byte_offset": 7834,
+      "term": ".push (.hash160 (.atom 164))"
+    },
+    {
+      "instruction": 583,
+      "byte_offset": 7855,
+      "term": ".push (.hash160 (.atom 163))"
+    },
+    {
+      "instruction": 584,
+      "byte_offset": 7876,
+      "term": ".push (.hash160 (.atom 162))"
+    },
+    {
+      "instruction": 585,
+      "byte_offset": 7897,
+      "term": ".push (.hash160 (.atom 161))"
+    },
+    {
+      "instruction": 586,
+      "byte_offset": 7918,
+      "term": ".push (.hash160 (.atom 160))"
+    },
+    {
+      "instruction": 587,
+      "byte_offset": 7939,
+      "term": ".push (.hash160 (.atom 159))"
+    },
+    {
+      "instruction": 588,
+      "byte_offset": 7960,
+      "term": ".push (.hash160 (.atom 158))"
+    },
+    {
+      "instruction": 589,
+      "byte_offset": 7981,
+      "term": ".push (.hash160 (.atom 157))"
+    },
+    {
+      "instruction": 590,
+      "byte_offset": 8002,
+      "term": ".push (.hash160 (.atom 156))"
+    },
+    {
+      "instruction": 591,
+      "byte_offset": 8023,
+      "term": ".push (.hash160 (.atom 155))"
+    },
+    {
+      "instruction": 592,
+      "byte_offset": 8044,
+      "term": ".push (.hash160 (.atom 154))"
+    },
+    {
+      "instruction": 593,
+      "byte_offset": 8065,
+      "term": ".push (.hash160 (.atom 153))"
+    },
+    {
+      "instruction": 594,
+      "byte_offset": 8086,
+      "term": ".push (.hash160 (.atom 152))"
+    },
+    {
+      "instruction": 595,
+      "byte_offset": 8107,
+      "term": ".push (.hash160 (.atom 151))"
+    },
+    {
+      "instruction": 596,
+      "byte_offset": 8128,
+      "term": ".push (.hash160 (.atom 150))"
+    },
+    {
+      "instruction": 597,
+      "byte_offset": 8149,
+      "term": ".push (.atom 1299)"
+    },
+    {
+      "instruction": 598,
+      "byte_offset": 8159,
+      "term": ".push (.atom 1298)"
+    },
+    {
+      "instruction": 599,
+      "byte_offset": 8169,
+      "term": ".push (.atom 1297)"
+    },
+    {
+      "instruction": 600,
+      "byte_offset": 8179,
+      "term": ".push (.atom 1296)"
+    },
+    {
+      "instruction": 601,
+      "byte_offset": 8189,
+      "term": ".push (.atom 1295)"
+    },
+    {
+      "instruction": 602,
+      "byte_offset": 8199,
+      "term": ".push (.atom 1294)"
+    },
+    {
+      "instruction": 603,
+      "byte_offset": 8209,
+      "term": ".push (.atom 1293)"
+    },
+    {
+      "instruction": 604,
+      "byte_offset": 8219,
+      "term": ".push (.atom 1292)"
+    },
+    {
+      "instruction": 605,
+      "byte_offset": 8229,
+      "term": ".push (.atom 1291)"
+    },
+    {
+      "instruction": 606,
+      "byte_offset": 8239,
+      "term": ".push (.atom 1290)"
+    },
+    {
+      "instruction": 607,
+      "byte_offset": 8249,
+      "term": ".push (.atom 1289)"
+    },
+    {
+      "instruction": 608,
+      "byte_offset": 8259,
+      "term": ".push (.atom 1288)"
+    },
+    {
+      "instruction": 609,
+      "byte_offset": 8269,
+      "term": ".push (.atom 1287)"
+    },
+    {
+      "instruction": 610,
+      "byte_offset": 8279,
+      "term": ".push (.atom 1286)"
+    },
+    {
+      "instruction": 611,
+      "byte_offset": 8289,
+      "term": ".push (.atom 1285)"
+    },
+    {
+      "instruction": 612,
+      "byte_offset": 8299,
+      "term": ".push (.atom 1284)"
+    },
+    {
+      "instruction": 613,
+      "byte_offset": 8309,
+      "term": ".push (.atom 1283)"
+    },
+    {
+      "instruction": 614,
+      "byte_offset": 8319,
+      "term": ".push (.atom 1282)"
+    },
+    {
+      "instruction": 615,
+      "byte_offset": 8329,
+      "term": ".push (.atom 1281)"
+    },
+    {
+      "instruction": 616,
+      "byte_offset": 8339,
+      "term": ".push (.atom 1280)"
+    },
+    {
+      "instruction": 617,
+      "byte_offset": 8349,
+      "term": ".push (.atom 1279)"
+    },
+    {
+      "instruction": 618,
+      "byte_offset": 8359,
+      "term": ".push (.atom 1278)"
+    },
+    {
+      "instruction": 619,
+      "byte_offset": 8369,
+      "term": ".push (.atom 1277)"
+    },
+    {
+      "instruction": 620,
+      "byte_offset": 8379,
+      "term": ".push (.atom 1276)"
+    },
+    {
+      "instruction": 621,
+      "byte_offset": 8389,
+      "term": ".push (.atom 1275)"
+    },
+    {
+      "instruction": 622,
+      "byte_offset": 8399,
+      "term": ".push (.atom 1274)"
+    },
+    {
+      "instruction": 623,
+      "byte_offset": 8409,
+      "term": ".push (.atom 1273)"
+    },
+    {
+      "instruction": 624,
+      "byte_offset": 8419,
+      "term": ".push (.atom 1272)"
+    },
+    {
+      "instruction": 625,
+      "byte_offset": 8429,
+      "term": ".push (.atom 1271)"
+    },
+    {
+      "instruction": 626,
+      "byte_offset": 8439,
+      "term": ".push (.atom 1270)"
+    },
+    {
+      "instruction": 627,
+      "byte_offset": 8449,
+      "term": ".push (.atom 1269)"
+    },
+    {
+      "instruction": 628,
+      "byte_offset": 8459,
+      "term": ".push (.atom 1268)"
+    },
+    {
+      "instruction": 629,
+      "byte_offset": 8469,
+      "term": ".push (.atom 1267)"
+    },
+    {
+      "instruction": 630,
+      "byte_offset": 8479,
+      "term": ".push (.atom 1266)"
+    },
+    {
+      "instruction": 631,
+      "byte_offset": 8489,
+      "term": ".push (.atom 1265)"
+    },
+    {
+      "instruction": 632,
+      "byte_offset": 8499,
+      "term": ".push (.atom 1264)"
+    },
+    {
+      "instruction": 633,
+      "byte_offset": 8509,
+      "term": ".push (.atom 1263)"
+    },
+    {
+      "instruction": 634,
+      "byte_offset": 8519,
+      "term": ".push (.atom 1262)"
+    },
+    {
+      "instruction": 635,
+      "byte_offset": 8529,
+      "term": ".push (.atom 1261)"
+    },
+    {
+      "instruction": 636,
+      "byte_offset": 8539,
+      "term": ".push (.atom 1260)"
+    },
+    {
+      "instruction": 637,
+      "byte_offset": 8549,
+      "term": ".push (.atom 1259)"
+    },
+    {
+      "instruction": 638,
+      "byte_offset": 8559,
+      "term": ".push (.atom 1258)"
+    },
+    {
+      "instruction": 639,
+      "byte_offset": 8569,
+      "term": ".push (.atom 1257)"
+    },
+    {
+      "instruction": 640,
+      "byte_offset": 8579,
+      "term": ".push (.atom 1256)"
+    },
+    {
+      "instruction": 641,
+      "byte_offset": 8589,
+      "term": ".push (.atom 1255)"
+    },
+    {
+      "instruction": 642,
+      "byte_offset": 8599,
+      "term": ".push (.atom 1254)"
+    },
+    {
+      "instruction": 643,
+      "byte_offset": 8609,
+      "term": ".push (.atom 1253)"
+    },
+    {
+      "instruction": 644,
+      "byte_offset": 8619,
+      "term": ".push (.atom 1252)"
+    },
+    {
+      "instruction": 645,
+      "byte_offset": 8629,
+      "term": ".push (.atom 1251)"
+    },
+    {
+      "instruction": 646,
+      "byte_offset": 8639,
+      "term": ".push (.atom 1250)"
+    },
+    {
+      "instruction": 647,
+      "byte_offset": 8649,
+      "term": ".push (.atom 1249)"
+    },
+    {
+      "instruction": 648,
+      "byte_offset": 8659,
+      "term": ".push (.atom 1248)"
+    },
+    {
+      "instruction": 649,
+      "byte_offset": 8669,
+      "term": ".push (.atom 1247)"
+    },
+    {
+      "instruction": 650,
+      "byte_offset": 8679,
+      "term": ".push (.atom 1246)"
+    },
+    {
+      "instruction": 651,
+      "byte_offset": 8689,
+      "term": ".push (.atom 1245)"
+    },
+    {
+      "instruction": 652,
+      "byte_offset": 8699,
+      "term": ".push (.atom 1244)"
+    },
+    {
+      "instruction": 653,
+      "byte_offset": 8709,
+      "term": ".push (.atom 1243)"
+    },
+    {
+      "instruction": 654,
+      "byte_offset": 8719,
+      "term": ".push (.atom 1242)"
+    },
+    {
+      "instruction": 655,
+      "byte_offset": 8729,
+      "term": ".push (.atom 1241)"
+    },
+    {
+      "instruction": 656,
+      "byte_offset": 8739,
+      "term": ".push (.atom 1240)"
+    },
+    {
+      "instruction": 657,
+      "byte_offset": 8749,
+      "term": ".push (.atom 1239)"
+    },
+    {
+      "instruction": 658,
+      "byte_offset": 8759,
+      "term": ".push (.atom 1238)"
+    },
+    {
+      "instruction": 659,
+      "byte_offset": 8769,
+      "term": ".push (.atom 1237)"
+    },
+    {
+      "instruction": 660,
+      "byte_offset": 8779,
+      "term": ".push (.atom 1236)"
+    },
+    {
+      "instruction": 661,
+      "byte_offset": 8789,
+      "term": ".push (.atom 1235)"
+    },
+    {
+      "instruction": 662,
+      "byte_offset": 8799,
+      "term": ".push (.atom 1234)"
+    },
+    {
+      "instruction": 663,
+      "byte_offset": 8809,
+      "term": ".push (.atom 1233)"
+    },
+    {
+      "instruction": 664,
+      "byte_offset": 8819,
+      "term": ".push (.atom 1232)"
+    },
+    {
+      "instruction": 665,
+      "byte_offset": 8829,
+      "term": ".push (.atom 1231)"
+    },
+    {
+      "instruction": 666,
+      "byte_offset": 8839,
+      "term": ".push (.atom 1230)"
+    },
+    {
+      "instruction": 667,
+      "byte_offset": 8849,
+      "term": ".push (.atom 1229)"
+    },
+    {
+      "instruction": 668,
+      "byte_offset": 8859,
+      "term": ".push (.atom 1228)"
+    },
+    {
+      "instruction": 669,
+      "byte_offset": 8869,
+      "term": ".push (.atom 1227)"
+    },
+    {
+      "instruction": 670,
+      "byte_offset": 8879,
+      "term": ".push (.atom 1226)"
+    },
+    {
+      "instruction": 671,
+      "byte_offset": 8889,
+      "term": ".push (.atom 1225)"
+    },
+    {
+      "instruction": 672,
+      "byte_offset": 8899,
+      "term": ".push (.atom 1224)"
+    },
+    {
+      "instruction": 673,
+      "byte_offset": 8909,
+      "term": ".push (.atom 1223)"
+    },
+    {
+      "instruction": 674,
+      "byte_offset": 8919,
+      "term": ".push (.atom 1222)"
+    },
+    {
+      "instruction": 675,
+      "byte_offset": 8929,
+      "term": ".push (.atom 1221)"
+    },
+    {
+      "instruction": 676,
+      "byte_offset": 8939,
+      "term": ".push (.atom 1220)"
+    },
+    {
+      "instruction": 677,
+      "byte_offset": 8949,
+      "term": ".push (.atom 1219)"
+    },
+    {
+      "instruction": 678,
+      "byte_offset": 8959,
+      "term": ".push (.atom 1218)"
+    },
+    {
+      "instruction": 679,
+      "byte_offset": 8969,
+      "term": ".push (.atom 1217)"
+    },
+    {
+      "instruction": 680,
+      "byte_offset": 8979,
+      "term": ".push (.atom 1216)"
+    },
+    {
+      "instruction": 681,
+      "byte_offset": 8989,
+      "term": ".push (.atom 1215)"
+    },
+    {
+      "instruction": 682,
+      "byte_offset": 8999,
+      "term": ".push (.atom 1214)"
+    },
+    {
+      "instruction": 683,
+      "byte_offset": 9009,
+      "term": ".push (.atom 1213)"
+    },
+    {
+      "instruction": 684,
+      "byte_offset": 9019,
+      "term": ".push (.atom 1212)"
+    },
+    {
+      "instruction": 685,
+      "byte_offset": 9029,
+      "term": ".push (.atom 1211)"
+    },
+    {
+      "instruction": 686,
+      "byte_offset": 9039,
+      "term": ".push (.atom 1210)"
+    },
+    {
+      "instruction": 687,
+      "byte_offset": 9049,
+      "term": ".push (.atom 1209)"
+    },
+    {
+      "instruction": 688,
+      "byte_offset": 9059,
+      "term": ".push (.atom 1208)"
+    },
+    {
+      "instruction": 689,
+      "byte_offset": 9069,
+      "term": ".push (.atom 1207)"
+    },
+    {
+      "instruction": 690,
+      "byte_offset": 9079,
+      "term": ".push (.atom 1206)"
+    },
+    {
+      "instruction": 691,
+      "byte_offset": 9089,
+      "term": ".push (.atom 1205)"
+    },
+    {
+      "instruction": 692,
+      "byte_offset": 9099,
+      "term": ".push (.atom 1204)"
+    },
+    {
+      "instruction": 693,
+      "byte_offset": 9109,
+      "term": ".push (.atom 1203)"
+    },
+    {
+      "instruction": 694,
+      "byte_offset": 9119,
+      "term": ".push (.atom 1202)"
+    },
+    {
+      "instruction": 695,
+      "byte_offset": 9129,
+      "term": ".push (.atom 1201)"
+    },
+    {
+      "instruction": 696,
+      "byte_offset": 9139,
+      "term": ".push (.atom 1200)"
+    },
+    {
+      "instruction": 697,
+      "byte_offset": 9149,
+      "term": ".push (.atom 1199)"
+    },
+    {
+      "instruction": 698,
+      "byte_offset": 9159,
+      "term": ".push (.atom 1198)"
+    },
+    {
+      "instruction": 699,
+      "byte_offset": 9169,
+      "term": ".push (.atom 1197)"
+    },
+    {
+      "instruction": 700,
+      "byte_offset": 9179,
+      "term": ".push (.atom 1196)"
+    },
+    {
+      "instruction": 701,
+      "byte_offset": 9189,
+      "term": ".push (.atom 1195)"
+    },
+    {
+      "instruction": 702,
+      "byte_offset": 9199,
+      "term": ".push (.atom 1194)"
+    },
+    {
+      "instruction": 703,
+      "byte_offset": 9209,
+      "term": ".push (.atom 1193)"
+    },
+    {
+      "instruction": 704,
+      "byte_offset": 9219,
+      "term": ".push (.atom 1192)"
+    },
+    {
+      "instruction": 705,
+      "byte_offset": 9229,
+      "term": ".push (.atom 1191)"
+    },
+    {
+      "instruction": 706,
+      "byte_offset": 9239,
+      "term": ".push (.atom 1190)"
+    },
+    {
+      "instruction": 707,
+      "byte_offset": 9249,
+      "term": ".push (.atom 1189)"
+    },
+    {
+      "instruction": 708,
+      "byte_offset": 9259,
+      "term": ".push (.atom 1188)"
+    },
+    {
+      "instruction": 709,
+      "byte_offset": 9269,
+      "term": ".push (.atom 1187)"
+    },
+    {
+      "instruction": 710,
+      "byte_offset": 9279,
+      "term": ".push (.atom 1186)"
+    },
+    {
+      "instruction": 711,
+      "byte_offset": 9289,
+      "term": ".push (.atom 1185)"
+    },
+    {
+      "instruction": 712,
+      "byte_offset": 9299,
+      "term": ".push (.atom 1184)"
+    },
+    {
+      "instruction": 713,
+      "byte_offset": 9309,
+      "term": ".push (.atom 1183)"
+    },
+    {
+      "instruction": 714,
+      "byte_offset": 9319,
+      "term": ".push (.atom 1182)"
+    },
+    {
+      "instruction": 715,
+      "byte_offset": 9329,
+      "term": ".push (.atom 1181)"
+    },
+    {
+      "instruction": 716,
+      "byte_offset": 9339,
+      "term": ".push (.atom 1180)"
+    },
+    {
+      "instruction": 717,
+      "byte_offset": 9349,
+      "term": ".push (.atom 1179)"
+    },
+    {
+      "instruction": 718,
+      "byte_offset": 9359,
+      "term": ".push (.atom 1178)"
+    },
+    {
+      "instruction": 719,
+      "byte_offset": 9369,
+      "term": ".push (.atom 1177)"
+    },
+    {
+      "instruction": 720,
+      "byte_offset": 9379,
+      "term": ".push (.atom 1176)"
+    },
+    {
+      "instruction": 721,
+      "byte_offset": 9389,
+      "term": ".push (.atom 1175)"
+    },
+    {
+      "instruction": 722,
+      "byte_offset": 9399,
+      "term": ".push (.atom 1174)"
+    },
+    {
+      "instruction": 723,
+      "byte_offset": 9409,
+      "term": ".push (.atom 1173)"
+    },
+    {
+      "instruction": 724,
+      "byte_offset": 9419,
+      "term": ".push (.atom 1172)"
+    },
+    {
+      "instruction": 725,
+      "byte_offset": 9429,
+      "term": ".push (.atom 1171)"
+    },
+    {
+      "instruction": 726,
+      "byte_offset": 9439,
+      "term": ".push (.atom 1170)"
+    },
+    {
+      "instruction": 727,
+      "byte_offset": 9449,
+      "term": ".push (.atom 1169)"
+    },
+    {
+      "instruction": 728,
+      "byte_offset": 9459,
+      "term": ".push (.atom 1168)"
+    },
+    {
+      "instruction": 729,
+      "byte_offset": 9469,
+      "term": ".push (.atom 1167)"
+    },
+    {
+      "instruction": 730,
+      "byte_offset": 9479,
+      "term": ".push (.atom 1166)"
+    },
+    {
+      "instruction": 731,
+      "byte_offset": 9489,
+      "term": ".push (.atom 1165)"
+    },
+    {
+      "instruction": 732,
+      "byte_offset": 9499,
+      "term": ".push (.atom 1164)"
+    },
+    {
+      "instruction": 733,
+      "byte_offset": 9509,
+      "term": ".push (.atom 1163)"
+    },
+    {
+      "instruction": 734,
+      "byte_offset": 9519,
+      "term": ".push (.atom 1162)"
+    },
+    {
+      "instruction": 735,
+      "byte_offset": 9529,
+      "term": ".push (.atom 1161)"
+    },
+    {
+      "instruction": 736,
+      "byte_offset": 9539,
+      "term": ".push (.atom 1160)"
+    },
+    {
+      "instruction": 737,
+      "byte_offset": 9549,
+      "term": ".push (.atom 1159)"
+    },
+    {
+      "instruction": 738,
+      "byte_offset": 9559,
+      "term": ".push (.atom 1158)"
+    },
+    {
+      "instruction": 739,
+      "byte_offset": 9569,
+      "term": ".push (.atom 1157)"
+    },
+    {
+      "instruction": 740,
+      "byte_offset": 9579,
+      "term": ".push (.atom 1156)"
+    },
+    {
+      "instruction": 741,
+      "byte_offset": 9589,
+      "term": ".push (.atom 1155)"
+    },
+    {
+      "instruction": 742,
+      "byte_offset": 9599,
+      "term": ".push (.atom 1154)"
+    },
+    {
+      "instruction": 743,
+      "byte_offset": 9609,
+      "term": ".push (.atom 1153)"
+    },
+    {
+      "instruction": 744,
+      "byte_offset": 9619,
+      "term": ".push (.atom 1152)"
+    },
+    {
+      "instruction": 745,
+      "byte_offset": 9629,
+      "term": ".push (.atom 1151)"
+    },
+    {
+      "instruction": 746,
+      "byte_offset": 9639,
+      "term": ".push (.atom 1150)"
+    },
+    {
+      "instruction": 747,
+      "byte_offset": 9649,
+      "term": ".push (.num 0)"
+    },
+    {
+      "instruction": 748,
+      "byte_offset": 9650,
+      "term": ".push (.atom 2002)"
+    },
+    {
+      "instruction": 749,
+      "byte_offset": 9706,
+      "term": ".push (.num 586)"
+    },
+    {
+      "instruction": 750,
+      "byte_offset": 9709,
+      "term": ".roll"
+    },
+    {
+      "instruction": 751,
+      "byte_offset": 9710,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 752,
+      "byte_offset": 9713,
+      "term": ".min"
+    },
+    {
+      "instruction": 753,
+      "byte_offset": 9714,
+      "term": ".dup"
+    },
+    {
+      "instruction": 754,
+      "byte_offset": 9715,
+      "term": ".push (.num 151)"
+    },
+    {
+      "instruction": 755,
+      "byte_offset": 9718,
+      "term": ".add"
+    },
+    {
+      "instruction": 756,
+      "byte_offset": 9719,
+      "term": ".roll"
+    },
+    {
+      "instruction": 757,
+      "byte_offset": 9720,
+      "term": ".push (.num 595)"
+    },
+    {
+      "instruction": 758,
+      "byte_offset": 9723,
+      "term": ".roll"
+    },
+    {
+      "instruction": 759,
+      "byte_offset": 9724,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 760,
+      "byte_offset": 9725,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 761,
+      "byte_offset": 9726,
+      "term": ".roll"
+    },
+    {
+      "instruction": 762,
+      "byte_offset": 9727,
+      "term": ".push (.num 585)"
+    },
+    {
+      "instruction": 763,
+      "byte_offset": 9730,
+      "term": ".roll"
+    },
+    {
+      "instruction": 764,
+      "byte_offset": 9731,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 765,
+      "byte_offset": 9734,
+      "term": ".min"
+    },
+    {
+      "instruction": 766,
+      "byte_offset": 9735,
+      "term": ".dup"
+    },
+    {
+      "instruction": 767,
+      "byte_offset": 9736,
+      "term": ".push (.num 150)"
+    },
+    {
+      "instruction": 768,
+      "byte_offset": 9739,
+      "term": ".add"
+    },
+    {
+      "instruction": 769,
+      "byte_offset": 9740,
+      "term": ".roll"
+    },
+    {
+      "instruction": 770,
+      "byte_offset": 9741,
+      "term": ".push (.num 593)"
+    },
+    {
+      "instruction": 771,
+      "byte_offset": 9744,
+      "term": ".roll"
+    },
+    {
+      "instruction": 772,
+      "byte_offset": 9745,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 773,
+      "byte_offset": 9746,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 774,
+      "byte_offset": 9747,
+      "term": ".roll"
+    },
+    {
+      "instruction": 775,
+      "byte_offset": 9748,
+      "term": ".push (.num 584)"
+    },
+    {
+      "instruction": 776,
+      "byte_offset": 9751,
+      "term": ".roll"
+    },
+    {
+      "instruction": 777,
+      "byte_offset": 9752,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 778,
+      "byte_offset": 9755,
+      "term": ".min"
+    },
+    {
+      "instruction": 779,
+      "byte_offset": 9756,
+      "term": ".dup"
+    },
+    {
+      "instruction": 780,
+      "byte_offset": 9757,
+      "term": ".push (.num 149)"
+    },
+    {
+      "instruction": 781,
+      "byte_offset": 9760,
+      "term": ".add"
+    },
+    {
+      "instruction": 782,
+      "byte_offset": 9761,
+      "term": ".roll"
+    },
+    {
+      "instruction": 783,
+      "byte_offset": 9762,
+      "term": ".push (.num 591)"
+    },
+    {
+      "instruction": 784,
+      "byte_offset": 9765,
+      "term": ".roll"
+    },
+    {
+      "instruction": 785,
+      "byte_offset": 9766,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 786,
+      "byte_offset": 9767,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 787,
+      "byte_offset": 9768,
+      "term": ".roll"
+    },
+    {
+      "instruction": 788,
+      "byte_offset": 9769,
+      "term": ".push (.num 583)"
+    },
+    {
+      "instruction": 789,
+      "byte_offset": 9772,
+      "term": ".roll"
+    },
+    {
+      "instruction": 790,
+      "byte_offset": 9773,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 791,
+      "byte_offset": 9776,
+      "term": ".min"
+    },
+    {
+      "instruction": 792,
+      "byte_offset": 9777,
+      "term": ".dup"
+    },
+    {
+      "instruction": 793,
+      "byte_offset": 9778,
+      "term": ".push (.num 148)"
+    },
+    {
+      "instruction": 794,
+      "byte_offset": 9781,
+      "term": ".add"
+    },
+    {
+      "instruction": 795,
+      "byte_offset": 9782,
+      "term": ".roll"
+    },
+    {
+      "instruction": 796,
+      "byte_offset": 9783,
+      "term": ".push (.num 589)"
+    },
+    {
+      "instruction": 797,
+      "byte_offset": 9786,
+      "term": ".roll"
+    },
+    {
+      "instruction": 798,
+      "byte_offset": 9787,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 799,
+      "byte_offset": 9788,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 800,
+      "byte_offset": 9789,
+      "term": ".roll"
+    },
+    {
+      "instruction": 801,
+      "byte_offset": 9790,
+      "term": ".push (.num 582)"
+    },
+    {
+      "instruction": 802,
+      "byte_offset": 9793,
+      "term": ".roll"
+    },
+    {
+      "instruction": 803,
+      "byte_offset": 9794,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 804,
+      "byte_offset": 9797,
+      "term": ".min"
+    },
+    {
+      "instruction": 805,
+      "byte_offset": 9798,
+      "term": ".dup"
+    },
+    {
+      "instruction": 806,
+      "byte_offset": 9799,
+      "term": ".push (.num 147)"
+    },
+    {
+      "instruction": 807,
+      "byte_offset": 9802,
+      "term": ".add"
+    },
+    {
+      "instruction": 808,
+      "byte_offset": 9803,
+      "term": ".roll"
+    },
+    {
+      "instruction": 809,
+      "byte_offset": 9804,
+      "term": ".push (.num 587)"
+    },
+    {
+      "instruction": 810,
+      "byte_offset": 9807,
+      "term": ".roll"
+    },
+    {
+      "instruction": 811,
+      "byte_offset": 9808,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 812,
+      "byte_offset": 9809,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 813,
+      "byte_offset": 9810,
+      "term": ".roll"
+    },
+    {
+      "instruction": 814,
+      "byte_offset": 9811,
+      "term": ".push (.num 581)"
+    },
+    {
+      "instruction": 815,
+      "byte_offset": 9814,
+      "term": ".roll"
+    },
+    {
+      "instruction": 816,
+      "byte_offset": 9815,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 817,
+      "byte_offset": 9818,
+      "term": ".min"
+    },
+    {
+      "instruction": 818,
+      "byte_offset": 9819,
+      "term": ".dup"
+    },
+    {
+      "instruction": 819,
+      "byte_offset": 9820,
+      "term": ".push (.num 146)"
+    },
+    {
+      "instruction": 820,
+      "byte_offset": 9823,
+      "term": ".add"
+    },
+    {
+      "instruction": 821,
+      "byte_offset": 9824,
+      "term": ".roll"
+    },
+    {
+      "instruction": 822,
+      "byte_offset": 9825,
+      "term": ".push (.num 585)"
+    },
+    {
+      "instruction": 823,
+      "byte_offset": 9828,
+      "term": ".roll"
+    },
+    {
+      "instruction": 824,
+      "byte_offset": 9829,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 825,
+      "byte_offset": 9830,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 826,
+      "byte_offset": 9831,
+      "term": ".roll"
+    },
+    {
+      "instruction": 827,
+      "byte_offset": 9832,
+      "term": ".push (.num 580)"
+    },
+    {
+      "instruction": 828,
+      "byte_offset": 9835,
+      "term": ".roll"
+    },
+    {
+      "instruction": 829,
+      "byte_offset": 9836,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 830,
+      "byte_offset": 9839,
+      "term": ".min"
+    },
+    {
+      "instruction": 831,
+      "byte_offset": 9840,
+      "term": ".dup"
+    },
+    {
+      "instruction": 832,
+      "byte_offset": 9841,
+      "term": ".push (.num 145)"
+    },
+    {
+      "instruction": 833,
+      "byte_offset": 9844,
+      "term": ".add"
+    },
+    {
+      "instruction": 834,
+      "byte_offset": 9845,
+      "term": ".roll"
+    },
+    {
+      "instruction": 835,
+      "byte_offset": 9846,
+      "term": ".push (.num 583)"
+    },
+    {
+      "instruction": 836,
+      "byte_offset": 9849,
+      "term": ".roll"
+    },
+    {
+      "instruction": 837,
+      "byte_offset": 9850,
+      "term": ".hash160"
+    },
+    {
+      "instruction": 838,
+      "byte_offset": 9851,
+      "term": ".equalverify"
+    },
+    {
+      "instruction": 839,
+      "byte_offset": 9852,
+      "term": ".roll"
+    },
+    {
+      "instruction": 840,
+      "byte_offset": 9853,
+      "term": ".push (.num 579)"
+    },
+    {
+      "instruction": 841,
+      "byte_offset": 9856,
+      "term": ".roll"
+    },
+    {
+      "instruction": 842,
+      "byte_offset": 9857,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 843,
+      "byte_offset": 9860,
+      "term": ".min"
+    },
+    {
+      "instruction": 844,
+      "byte_offset": 9861,
+      "term": ".roll"
+    },
+    {
+      "instruction": 845,
+      "byte_offset": 9862,
+      "term": ".push (.num 579)"
+    },
+    {
+      "instruction": 846,
+      "byte_offset": 9865,
+      "term": ".roll"
+    },
+    {
+      "instruction": 847,
+      "byte_offset": 9866,
+      "term": ".push (.num 152)"
+    },
+    {
+      "instruction": 848,
+      "byte_offset": 9869,
+      "term": ".min"
+    },
+    {
+      "instruction": 849,
+      "byte_offset": 9870,
+      "term": ".roll"
+    },
+    {
+      "instruction": 850,
+      "byte_offset": 9871,
+      "term": ".push (.num 588)"
+    },
+    {
+      "instruction": 851,
+      "byte_offset": 9874,
+      "term": ".roll"
+    },
+    {
+      "instruction": 852,
+      "byte_offset": 9875,
+      "term": ".dup"
+    },
+    {
+      "instruction": 853,
+      "byte_offset": 9876,
+      "term": ".sha256"
+    },
+    {
+      "instruction": 854,
+      "byte_offset": 9877,
+      "term": ".push (.num 590)"
+    },
+    {
+      "instruction": 855,
+      "byte_offset": 9880,
+      "term": ".roll"
+    },
+    {
+      "instruction": 856,
+      "byte_offset": 9881,
+      "term": ".checksigverify"
+    },
+    {
+      "instruction": 857,
+      "byte_offset": 9882,
+      "term": ".push (.num 10)"
+    },
+    {
+      "instruction": 858,
+      "byte_offset": 9883,
+      "term": ".push (.num 1)"
+    },
+    {
+      "instruction": 859,
+      "byte_offset": 9884,
+      "term": ".roll"
+    },
+    {
+      "instruction": 860,
+      "byte_offset": 9885,
+      "term": ".push (.num 581)"
+    },
+    {
+      "instruction": 861,
+      "byte_offset": 9888,
+      "term": ".roll"
+    },
+    {
+      "instruction": 862,
+      "byte_offset": 9889,
+      "term": ".push (.num 582)"
+    },
+    {
+      "instruction": 863,
+      "byte_offset": 9892,
+      "term": ".roll"
+    },
+    {
+      "instruction": 864,
+      "byte_offset": 9893,
+      "term": ".push (.num 583)"
+    },
+    {
+      "instruction": 865,
+      "byte_offset": 9896,
+      "term": ".roll"
+    },
+    {
+      "instruction": 866,
+      "byte_offset": 9897,
+      "term": ".push (.num 584)"
+    },
+    {
+      "instruction": 867,
+      "byte_offset": 9900,
+      "term": ".roll"
+    },
+    {
+      "instruction": 868,
+      "byte_offset": 9901,
+      "term": ".push (.num 585)"
+    },
+    {
+      "instruction": 869,
+      "byte_offset": 9904,
+      "term": ".roll"
+    },
+    {
+      "instruction": 870,
+      "byte_offset": 9905,
+      "term": ".push (.num 586)"
+    },
+    {
+      "instruction": 871,
+      "byte_offset": 9908,
+      "term": ".roll"
+    },
+    {
+      "instruction": 872,
+      "byte_offset": 9909,
+      "term": ".push (.num 587)"
+    },
+    {
+      "instruction": 873,
+      "byte_offset": 9912,
+      "term": ".roll"
+    },
+    {
+      "instruction": 874,
+      "byte_offset": 9913,
+      "term": ".push (.num 588)"
+    },
+    {
+      "instruction": 875,
+      "byte_offset": 9916,
+      "term": ".roll"
+    },
+    {
+      "instruction": 876,
+      "byte_offset": 9917,
+      "term": ".push (.num 589)"
+    },
+    {
+      "instruction": 877,
+      "byte_offset": 9920,
+      "term": ".roll"
+    },
+    {
+      "instruction": 878,
+      "byte_offset": 9921,
+      "term": ".push (.num 10)"
+    },
+    {
+      "instruction": 879,
+      "byte_offset": 9922,
+      "term": ".checkmultisig"
+    }
+  ],
+  "witness_cells": 57
+}

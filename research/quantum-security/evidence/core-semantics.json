@@ -1,0 +1,71 @@
+{
+  "scope": "isolated legacy scripts; NOT full QSB acceptance or a forgery",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL (consensus, not policy)",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "all_compressed",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "03b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "6159a4cd2561fc1df2554dde737682a4ac525ed8fd218da74876c6dcd4e4590b"
+    },
+    {
+      "name": "all_uncompressed",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "04b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb3750f350f70b1b78a1f65a25f9907b585910e01af0bb09525b3667a14e0a00f98b",
+      "raw_tx_sha256": "79bf78a0001c01870f62b396ecd14ac231bdee8675b367d3bf5cd02a28fd4c7e"
+    },
+    {
+      "name": "all_hybrid",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "07b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb3750f350f70b1b78a1f65a25f9907b585910e01af0bb09525b3667a14e0a00f98b",
+      "raw_tx_sha256": "5626e7c1a5bfc9b89ec348cbb84f51f85164a14011ecf9e9def13ddbadd2e7fc"
+    },
+    {
+      "name": "all_hybrid_wrong_parity",
+      "accepted": false,
+      "expected": false,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "06b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb3750f350f70b1b78a1f65a25f9907b585910e01af0bb09525b3667a14e0a00f98b",
+      "raw_tx_sha256": "f373e7f48845f1fe45535238e3b29e0092560f2199b9b51d438d7e824baa8b70"
+    },
+    {
+      "name": "all_changed_destination_same_key",
+      "accepted": false,
+      "expected": false,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "03b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "f1ea44924e8995bed68a352a8a71f30272b8a0b85a6d49eedc4976a6e380311e"
+    },
+    {
+      "name": "all_changed_destination_recovered_key",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111017cac",
+      "pubkey_encoding_hex": "02162252f4480f576cb9a014efbe2798997f4f5bdc54b95e3b78a989f84450cbca",
+      "raw_tx_sha256": "1ef8176be93fb3b71ec855f876bce979f7d7491c7b6cdf392b363be3930b5c54"
+    },
+    {
+      "name": "single_bug_original",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111037cac",
+      "pubkey_encoding_hex": "025d4fccdf2817a971ac33040e86c60ea2d6d59afdf5026b1851a1d677fe781eda",
+      "raw_tx_sha256": "1bf62b99c241cb80dc61750eaf29539b8ca84d506b3110175d7b193afc77cd4b"
+    },
+    {
+      "name": "single_bug_changed_destination_and_amount",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "093006020101020111037cac",
+      "pubkey_encoding_hex": "025d4fccdf2817a971ac33040e86c60ea2d6d59afdf5026b1851a1d677fe781eda",
+      "raw_tx_sha256": "250289b0cdb1b089273e33f7a8052303213ecd64da5f473f0eb257793b5ca32d"
+    }
+  ]
+}

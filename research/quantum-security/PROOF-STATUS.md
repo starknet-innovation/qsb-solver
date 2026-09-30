@@ -1,0 +1,171 @@
+# Proof status and implementation boundary
+
+This file distinguishes checked mathematics, computational experiments, and
+unresolved claims. There is no theorem of full QSB unforgeability yet.
+
+## Checked Lean statements
+
+`QSB.lean` imports the modules and prints dependencies for the reported results.
+The build and dependency outputs are retained under `evidence/`.
+
+| Module | Result | Scope / missing connection |
+|---|---|---|
+| Disclosure | Valid openings either open an undisclosed indexed target or use only disclosed indices | Assumes an extracted set of distinct commitment positions and actual hash equalities. |
+| Disclosure | With one disclosure of the same cardinality, no fresh opening implies exactly the same signed set | Does not prove that Script enforces the cardinality or that a different message cannot reuse this set. |
+| Disclosure | Fewer disclosed positions than required implies a fresh target opening | A structural implication, not a query-success bound. |
+| Disclosure | Additional disclosures preserve coverage | Supports union accounting, including unmined authorizations. |
+| Extraction | An extracted enforced round implies a fresh opening or covered puzzle solution | `ExtractedRound` premises are explicit. It is not Bitcoin acceptance, and cannot presently be supplied for round 1. |
+| Extraction | Novel-message version excludes already-published transactions | Essential because an attacker can replay an old valid puzzle with certainty. |
+| Probability | Event inclusion and two primitive bounds imply their sum bounds the bad event | Arbitrary measure; no independence assumed. A probability interpretation requires a normalized terminal distribution. |
+| Probability | Same result with a separately bounded model-gap event | An unknown/structural implementation gap is not negligible and cannot be assigned zero. |
+| Probability | A finite union of vault-failure events is bounded by the sum of their per-vault bounds | No independence premise. Each bound must charge the adversary's shared global hash-query budget. |
+| Nonce | The publicly computable scalar (s*k-z)/r satisfies the fixed-signature equation | Field algebra with r nonzero; no discrete-log hardness. |
+| Nonce | A fixed recovery point and public key determine the scalar message | Does not conflate the several possible recovery points or a hash integer with its residue modulo N. |
+| Nonce | Fixed message/recovery point determine the key scalar when r is nonzero | secp256k1 group/encoding instantiation is not yet formalized. |
+| Nonce | Given a fixed recovery point, any new message has a publicly computable verification key | Formalized over a field module. It explains why the hash-derived puzzle signature alone cannot authorize the destination. Bitcoin group parsing and encoding remain open. |
+| Nonce | In the fixed-recovery-scalar field model, one key can satisfy both fixed signatures exactly when their publicly computed recovered scalars coincide | Gives an explicit equality-case equation; real sighash correlations, alternate recovery points and key-byte encodings remain unproved. |
+| Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
+| Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
+| Parameters | DER count expression lies strictly between 2^210 and 2^211 | Arithmetic about an explicit counting expression; bijection to a formal BIP66 parser remains to be proved. |
+| Selection | OP_MIN plus a nonnegative successful roll yields its stated bounds | Large values clamp; there is no inferred upper-bound rejection. |
+| Selection | A bounded, 20-byte comparison selects the pool if earlier items have different lengths | A local loop-invariant building block, not the completed Script extraction. |
+| Selection | Removing a tagged pool position preserves distinctness | Tags are positions; hash collisions are not excluded. |
+| Selection | A successful nine-step abstract without-replacement traversal partitions into seven signed and two disjoint bonus tags | Does not prove that every accepted production Script execution behaves like this traversal. The exact stack/byte invariant is still missing. |
+| Generated layout | A false first `CHECKMULTISIG` result leaves the symbolic trace accepting; the final result controls the top of stack | Generated from 880 actual Config A instructions and a disposable canonical witness, with signature outcomes supplied explicitly. This is not an arbitrary-witness Script theorem or a solved hash puzzle. |
+| Generated layout | The trace has 201 counted operations and 569 final stack cells; the first false result remains at depth 285 | Confirms the structural source reading for this fixture. ScriptNum parsing, signature semantics and actual byte sizes are outside this model. |
+| Attack extraction | Extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | This is the candidate reduced problem after the first-round finding. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
+| Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise of the attack and source-extraction statements; actual Script enforcement is unproved. |
+| Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
+| Game | Disclosure sets grow when more signing records are appended, regardless of whether they were mined | No assumption that cancellation, reorgs or backup restoration erase revealed material. |
+| Reduction | An unauthorized spend under `SourceExtraction` and honest publication implies a fresh final-round opening or `NovelTwoPuzzle` | `SourceExtraction` is an explicit **unproved** arbitrary-witness Script premise. It must be computed from the adversary's transaction, not selected from private challenger state. |
+| Reduction | Every unauthorized spend implies a fresh opening, a two-puzzle event, **or an extraction gap** | The gap has no small probability bound. The theorem does not prove QSB security. |
+| Reduction | For any terminal measure, bounds on those three events add | The terminal transcript and disclosures may be adaptive. The theorem supplies no cryptographic event bounds and no zero-gap claim. |
+
+The parameters and extraction interface currently accept general types; they do
+not instantiate SHA-256 or HASH160 as concrete Lean functions. Their generic
+status is intentional and appears in theorem types, rather than being hidden
+behind a QSB-specific cryptographic axiom.
+
+## Native evidence
+
+`round-results.json` records seven cases through the app's actual Core adapter:
+
+- Original synthetic witness against the **modified** lock: accepted.
+- Invalid round-1 dummy signature/key pair: accepted.
+- Invalid round-2 dummy signature/key pair: rejected.
+- Incorrect round-1 HORS preimage: rejected.
+- Incorrect round-2 HORS preimage: rejected.
+- Changed destination with freshly recovered nonce keys: accepted.
+- Changed destination with the **old round-1 nonce key**: accepted. The
+  independent CPU check confirms that old key no longer verifies the
+  first-round nonce signature on the new transaction. Pinning and round 2 do.
+
+The lock has exactly three puzzle CHECKSIGVERIFY sites replaced by OP_2DROP.
+The pinning signature check, both CHECKMULTISIG instructions, and all HASH160
+comparisons remain real. Signature encodings are well formed. The invalid pair
+is independently checked as invalid by the CPU EC implementation. This rules
+out treating first-round success as a necessary condition in this experiment.
+It does not solve the real hash puzzles or change a real payment destination.
+
+`core-semantics.json` records isolated fixed-signature scripts, with no relaxed
+opcodes. Compressed, uncompressed, and correct-parity hybrid encodings verify;
+wrong-parity hybrid encoding fails. Changing the destination with a fixed ALL
+signature and the same key fails; recomputing the key by public recovery passes.
+The SINGLE-bug signature continues to verify after destination and amount change.
+These are component facts, not an accepted QSB forgery.
+
+The source of `consensus/verify.cpp` in the native build's named revision
+`9a7c2ab` has the same SHA-256 as the analyzed app revision:
+`54ddb7c6049a21f4aaad23ef1a5e1fe15249eb2ade1cb5082ef15f90c2847fee`.
+The library was separately matched to the official archive. This is provenance
+and component evidence, not a reproducible compilation proof of the wrapper.
+
+## Source-to-model map
+
+Paths below are relative to the app revision in the inventory unless prefixed
+with `solver:`. Line anchors refer to that revision.
+
+| Source | Concrete responsibility | Formal / evidence connection |
+|---|---|---|
+| public/qsb/bridge.py:16 | Only Config A is admitted; rebuilds exact lock and checks commitments | Security-game configuration boundary; not mechanized. |
+| worker/cpu/bitcoin_tx.py:415 | 20-byte secrets and HASH160 commitments | `OpeningsValid`, `FreshOpening`; concrete hash correctness unproved. |
+| worker/cpu/qsb_pipeline.py:253 | (150,8,1,7,2), single SHA-256 configuration | `Parameters`; comments about security levels are not adopted. |
+| worker/cpu/qsb_pipeline.py:291 | Public fixed nonce construction, signature hashtype 1 | `Nonce`; precise group instantiation pending. |
+| worker/cpu/bitcoin_tx.py:485 | Pinning: fixed signature check, hash key, puzzle signature check | Isolated Core semantics; future pinning extraction. |
+| worker/cpu/bitcoin_tx.py:545 | OP_MIN/ROLL/HASH160 selection and bonus logic | `Selection` local lemmas; complete invariant pending. |
+| worker/cpu/bitcoin_tx.py:598 | CHECKMULTISIG ending each round | First-round result experiment; final-round binding needs extraction. |
+| worker/cpu/bitcoin_tx.py:749 | Concatenation of the two rounds, with first result left on stack | Structural first-round finding. |
+| worker/cpu/bitcoin_tx.py:131 | Legacy sighash and SINGLE bug | Isolated Core mutation evidence; serialization injectivity pending. |
+| worker/cpu/bitcoin_tx.py:199 | FindAndDelete implementation | Must match Core boundary semantics; not replaced by abstract subset deletion in any claimed full proof. |
+| worker/cpu/secp256k1.py | Curve operations and DER/recoverability checks | CPU experiment oracle; full Lean correctness not claimed. |
+| worker/cpu/qsb_pipeline.py:1033 | Round key recovery after deleting selected signatures | Intended `nonceRelation`; adversarial witness equivalence unproved. |
+| src/lib/backup.ts:46 | Persisted authorization and reuse guards | Honest-client game rules, not on-chain enforcement. |
+| src/lib/transactions.ts:309 | Exact-spend checks | Owner authorization boundary; server rejection does not bound Bitcoin attackers. |
+| src/TransactionDialog.tsx:650 | Browser intent, assembly and wallet-signing flow | Local reminders are not on-chain constraints; HORS preimages enter the scriptSig before helper-wallet signing, so external-signer delivery is a disclosure boundary. |
+| sdk/client.ts:299,782,849 | SDK's default in-memory guard, saved intent and assembly binding | Auth game must allow older backup restores; CLI's file-backed guard is a separate honest-client behavior. |
+| sdk/signer.ts:26 | SDK wallet/address restriction | Service-flow helper signing, not a Script-enforced requirement. |
+| docs/KEY-CUSTODY.md:5 | Original wallet is a service requirement | Helper-input adversary scope. |
+| consensus/verify.cpp:29 | Ordered spent outputs and VERIFY_ALL for each input | Native evidence with official Core library; ledger state external. |
+| solver:worker/prepare_kernels.py:35 | Production DER predicate adaptation | Distinguishes benchmark scoring from actual puzzle target. |
+| solver:README.md:3 | Public, untrusted solver / independent verifier boundary | No claim based on image identity, GPU speed, or honest enumeration. |
+
+## Assumption and dependency inventory
+
+No cryptographic axiom has been declared in Lean. The checked theorems use only
+standard Lean foundations as reported by `#print axioms`: propositional
+extensionality (`propext`), quotient soundness (`Quot.sound`), and classical choice
+where listed. They have explicit mathematical premises rather than hidden
+security assumptions. Closed DER arithmetic uses kernel reduction.
+
+For a future end-to-end theorem, all of the following need a proof, an explicitly
+scoped external assumption, or a counterexample:
+
+1. Correct owner authorization and fresh local randomness; honest-device and
+   backup-confidentiality boundaries; bounded disclosure history.
+2. Full arbitrary-witness extraction from the real legacy script, including
+   bonus indices, stack roles, NULLDUMMY, the seven-plus-two distinct final-round
+   shape, and the unchecked first-round result. The extractor must be efficiently
+   computable from the adversary's transaction bytes.
+3. Bitcoin byte parsing, ScriptNum semantics, integer ranges, resource limits,
+   FindAndDelete, sighash serialization, and ALL binding to authorization.
+4. Curve equations, accepted encodings, at most the appropriate number of
+   recovery candidates, scalar reduction modulo N, and degenerate cases.
+5. A correctly specified joint QROM model for SHA-256, SHA256d, and HASH160,
+   including setup/signing transcripts and shared hash inputs.
+6. A multi-target unopened-commitment bound with adaptive disclosures.
+7. A fresh-message, covered-subset puzzle-search bound that applies to QSB's
+   variable-subset FindAndDelete construction, with bonus choices and pinning.
+   Its target event admits reused keys if a novel transaction collides under
+   the fixed-signature sighash; the bound must cover that route too. It cannot
+   be computed by multiplying two independent DER-hit probabilities. The pin
+   and final-round key byte strings can also be equal in the current model;
+   distinct-input QROM bounds need a separate equality-case reduction.
+8. Composition across multiple vaults/targets without unproved independence.
+9. Refinement from the model to deployed implementations and binaries, plus
+   the selected ledger's unspent-output, value, locktime, and consensus rules.
+
+Items 2 and 7 are the immediate critical path. The first-round finding prevents
+silently satisfying item 2 with the intended two-enforced-round model. The
+current source is not changed to make the desired theorem true.
+
+## Quantitative status
+
+The exact syntactic DER-32 counting expression evaluates to target density
+`780555 / 36893488147419103232`, approximately 2^-45.425859. It allows zero scalar
+encodings and does not require an on-curve recovery value; real puzzle acceptance
+is a subset. These facts still do not establish a query-success bound for the
+protocol. The counting expression's combinatorial interpretation remains an
+external argument until the BIP66 parser/counting correspondence is formalized.
+
+The checked game-level measure theorem is a conditional implication, with
+`NovelTwoPuzzle` as the source-shaped candidate target:
+
+    Pr[UnauthorizedSpend] ≤ εFresh + εTwoPuzzle + εExtractionGap,
+
+provided the three **explicit** event bounds hold for the same terminal game
+distribution and honest publication is respected. The gap event records a bad
+transaction for which the source extractor fails to provide a shaped pin/final
+witness. No nontrivial upper bounds for εFresh, εTwoPuzzle, or εExtractionGap
+are established. A zero gap would require the missing Bitcoin execution
+refinement. Reporting a numerical QSB quantum security level now would be
+unsupported.

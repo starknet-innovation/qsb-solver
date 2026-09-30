@@ -1,0 +1,43 @@
+{
+  "app": {
+    "revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+    "files": {
+      "AGENTS.md": "e6612eb10ffd7df547a4eb161ee93e704c0b5c10bca858fbe00400b270957638",
+      "worker/cpu/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+      "worker/cpu/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+      "worker/cpu/qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+      "worker/cpu/verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba",
+      "worker/cpu/handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+      "public/qsb/bridge.py": "ba02b56d763533ca144f9ea17cfab6f01dd87d9658a17c4af8744c75803455e2",
+      "public/qsb/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+      "public/qsb/qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+      "src/lib/backup.ts": "bc8be06c10e970dad3ef335f9f2788bb58628c350490052155cf37a54840c572",
+      "src/lib/transactions.ts": "ac30a232d24a02df517e083e3a0fb3428d4465a6b4f63c5f71511c16b623deac",
+      "src/lib/model.ts": "3c07a6a5e355ec54b03f7b981414cf5a435f66c4c919acf13e7cd6fedb0c52d2",
+      "src/lib/wallet.ts": "0db5c0364a5745486762a01bb9b8a50e80086a564d9202153a39830fb82e163c",
+      "src/TransactionDialog.tsx": "36ebccf1be8e20cb6849f593c7e9d0648b39d666b83e956fcb7412e146508e51",
+      "sdk/client.ts": "0c2c9abeb0c34bbf6150f83952e8e49b8fc425c5b8a0aa4fc57edd2462042ce3",
+      "sdk/runtime.ts": "a371ceabf05c9ad3e34eb8d866dc6bb27cb1f7006a466855a94ddc5a6c71c675",
+      "sdk/signer.ts": "09892ea12475bbd66563a5f36cbcb2727f3818846a4412fad80bd333170c0cb7",
+      "sdk/cli.ts": "859923a6c8fdf2c3926832ceb414aa0e4b1c39631336026c00300cd225c44a8c",
+      "server/consensus.ts": "2684a00a3a53a942d3cc0815b8f9aa5fd659439f6811ceac465d38cbd08377a8",
+      "consensus/verify.cpp": "54ddb7c6049a21f4aaad23ef1a5e1fe15249eb2ade1cb5082ef15f90c2847fee",
+      "consensus/build.mjs": "53ec24bad981a16dbc613a88fe5ced0eb3e70b24a8e5d89d4a43964ff89134bc",
+      "scripts/vendor.py": "0497ba13b565926a810b0fc91ebfd94d041d99280ef63c8abf7498d7f260bd2e",
+      "scripts/patch_upstream.py": "3fb75a18a58950e902a197a5272233f59a0fde967bf7994b0782313daa528643",
+      "docs/KEY-CUSTODY.md": "8e1f958e7b7132cda417c8d29cc928a61be46b0879b647eb6d222fa937cefa07"
+    },
+    "tracked_modifications": ""
+  },
+  "solver": {
+    "revision": "8fe127790397b6903640f8949219c1ef34a92db2",
+    "files": {
+      "README.md": "455a296533a5df1ef7841396d64bab1f75dfa670bd4d03b1807dfb7c86595928",
+      "worker/prepare_kernels.py": "689c6cd2b0667ef396e5f42efb126405a529625920028125276dd99a1e870ad9",
+      "contracts/ranked-v2.json": "1bf7fb177e684c7b9c520b2dcb3c6e840f346e6d9c2c37089b35ee6fae010076",
+      "vendor/challenge/provenance.json": "2b71eb211a1ec2c72aed4b2d3c3a2b2de47c73269785f3a3312a2b24ead9b175",
+      "worker/promotion/README.md": "8925eeae5bf40b29417b2dfd73ee17ec60ba571057037dabbf9e440752e884ad"
+    },
+    "tracked_modifications": ""
+  }
+}

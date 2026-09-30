@@ -1,0 +1,61 @@
+import QSB.Disclosure
+import QSB.Extraction
+import QSB.Probability
+import QSB.Nonce
+import QSB.Parameters
+import QSB.Selection
+import QSB.Layout
+import QSB.Attack
+import QSB.Game
+import QSB.Reduction
+
+#print axioms QSB.openings_fresh_or_covered
+#print axioms QSB.one_disclosure_fresh_or_same
+#print axioms QSB.insufficient_disclosure_requires_fresh
+#print axioms QSB.covered_after_more_disclosure
+#print axioms QSB.extracted_round_fresh_or_puzzle
+#print axioms QSB.event_bound
+#print axioms QSB.event_bound_with_gap
+#print axioms QSB.finite_target_union_bound
+#print axioms QSB.public_scalar_satisfies
+#print axioms QSB.fixed_recovery_point_message_unique
+#print axioms QSB.fixed_message_key_unique
+#print axioms QSB.public_recovery_for_any_message
+#print axioms QSB.common_key_requires_equal_recoveries
+#print axioms QSB.equal_recoveries_give_common_key
+#print axioms QSB.configA_round1_bonus_choices
+#print axioms QSB.configA_round2_bonus_choices
+#print axioms QSB.configA_pool_choices
+#print axioms QSB.coveredFinalChoices_zero
+#print axioms QSB.coveredFinalChoices_mono
+#print axioms QSB.coveredFinalChoices_one_disclosure
+#print axioms QSB.coveredFinalChoices_two_disjoint_disclosures
+#print axioms QSB.coveredFinalChoices_three_disjoint_disclosures
+#print axioms QSB.der32_count_lower
+#print axioms QSB.der32_count_upper
+#print axioms QSB.extracted_novel_round_fresh_or_puzzle
+#print axioms QSB.min_roll_bounds
+#print axioms QSB.comparison_selects_pool
+#print axioms QSB.distinct_positions_after_roll
+#print axioms QSB.selected_not_in_erased
+#print axioms QSB.chooseMany_values_in_pool
+#print axioms QSB.chooseMany_distinct
+#print axioms QSB.chooseMany_length
+#print axioms QSB.nine_selected_partition
+#print axioms QSB.Layout.first_multisig_false_still_accepts
+#print axioms QSB.Layout.both_multisigs_true_accept
+#print axioms QSB.Layout.final_multisig_false_rejects
+#print axioms QSB.Layout.first_multisig_result_irrelevant
+#print axioms QSB.Layout.accepted_trace_operation_count
+#print axioms QSB.Layout.accepted_trace_stack_size
+#print axioms QSB.Layout.first_result_retained_below_top
+#print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
+#print axioms QSB.final_round_shape_total
+#print axioms QSB.abstract_run_final_shape
+#print axioms QSB.novel_two_puzzle_key_cases
+#print axioms QSB.Game.changed_outputs_unauthorized
+#print axioms QSB.Game.disclosedAt_append
+#print axioms QSB.unauthorized_not_published
+#print axioms QSB.unauthorized_under_source_extraction
+#print axioms QSB.unauthorized_with_explicit_gap
+#print axioms QSB.unauthorized_measure_bound_with_gap
