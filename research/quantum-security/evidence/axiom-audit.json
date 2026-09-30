@@ -1,5 +1,5 @@
 {
-  "theorem_count": 57,
+  "theorem_count": 58,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -169,6 +169,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.gap_with_no_extractor": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.insufficient_disclosure_requires_fresh": [
       "Classical.choice",
       "Quot.sound",
@@ -215,7 +220,7 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.unauthorized_not_published": [],
+    "QSB.unauthorized_not_released": [],
     "QSB.unauthorized_under_source_extraction": [
       "Classical.choice",
       "Quot.sound",

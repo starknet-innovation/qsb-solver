@@ -15,7 +15,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Disclosure | Fewer disclosed positions than required implies a fresh target opening | A structural implication, not a query-success bound. |
 | Disclosure | Additional disclosures preserve coverage | Supports union accounting, including unmined authorizations. |
 | Extraction | An extracted enforced round implies a fresh opening or covered puzzle solution | `ExtractedRound` premises are explicit. It is not Bitcoin acceptance, and cannot presently be supplied for round 1. |
-| Extraction | Novel-message version excludes already-published transactions | Essential because an attacker can replay an old valid puzzle with certainty. |
+| Extraction | Novel-message version targets owner-forbidden projections and excludes assembled transactions whose QSB unlocking material was already released | Necessary because replay or harmless mutation of an authorized release may otherwise satisfy an overbroad puzzle event with certainty. Release includes unmined and helper-unsigned material. |
 | Probability | Event inclusion and two primitive bounds imply their sum bounds the bad event | Arbitrary measure; no independence assumed. A probability interpretation requires a normalized terminal distribution. |
 | Probability | Same result with a separately bounded model-gap event | An unknown/structural implementation gap is not negligible and cannot be assigned zero. |
 | Probability | A finite union of vault-failure events is bounded by the sum of their per-vault bounds | No independence premise. Each bound must charge the adversary's shared global hash-query budget. |
@@ -36,20 +36,25 @@ The build and dependency outputs are retained under `evidence/`.
 | Generated layout | The trace has 201 counted operations and 569 final stack cells; the first false result remains at depth 285 | Confirms the structural source reading for this fixture. ScriptNum parsing, signature semantics and actual byte sizes are outside this model. |
 | Generated layout | With first signed index 152 and one inserted external symbolic 20-byte cell, the first selection's `OP_ROLL` reaches that cell | A checked **local counterexample** to inferring pool confinement from `OP_MIN` alone. The complete malformed probe fails symbolic execution; it is not a forged or accepted witness. The trace ends after instruction 315, the first selection roll. |
 | Generated layout | An externally chosen symbolic commitment can match the first `HASH160` comparison; this probe then fails at the second index `OP_MIN` | Passing one HORS comparison does not imply the selected commitment came from the lock. The global stack invariant may still reject this malformed witness. |
-| Attack extraction | Extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | This is the candidate reduced problem after the first-round finding. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
+| Attack extraction | For an owner-forbidden transaction, extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | The target events depend on owner authorization but not on Bitcoin acceptance. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
 | Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise of the attack and source-extraction statements; actual Script enforcement is unproved. |
 | Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
 | Game | Disclosure sets grow when more signing records are appended, regardless of whether they were mined | No assumption that cancellation, reorgs or backup restoration erase revealed material. |
 | Game | The disclosed union has at most `t·r` positions after `r` records each opening at most `t`, capped by the finite index universe | Counts all records, so a per-vault/per-round transcript can give a tighter bound. The per-record cap is an explicit premise. |
-| Reduction | An unauthorized spend under `SourceExtraction` and honest publication implies a fresh final-round opening or `NovelTwoPuzzle` | `SourceExtraction` is an explicit **unproved** arbitrary-witness Script premise. It must be computed from the adversary's transaction, not selected from private challenger state. |
-| Reduction | A bad spend is novel relative to honestly published transactions | Requires the publication invariant: every released transaction's semantic projection remains in the *ever-authorized* set. Revocation after release is outside this unforgeability definition. |
+| Reduction | An unauthorized spend under `SourceExtraction` and honest release implies a fresh final-round opening or `NovelTwoPuzzle` | `SourceExtraction` is an explicit **unproved** arbitrary-witness Script premise. It must be computed from the adversary's transaction, not selected from private challenger state. |
+| Reduction | A bad spend is novel relative to honestly released QSB unlocking transcripts | Requires the release invariant: every released transaction's semantic projection remains in the *ever-authorized* set. Revocation after release is outside this unforgeability definition. |
 | Reduction | Every unauthorized spend implies a fresh opening, a two-puzzle event, **or an extraction gap** | The gap has no small probability bound. The theorem does not prove QSB security. |
-| Reduction | For any terminal measure, bounds on those three events add | The terminal transcript and disclosures may be adaptive. The theorem supplies no cryptographic event bounds and no zero-gap claim. |
+| Reduction | A constant-`none` extractor makes the gap event exactly the unauthorized-spend event | Nonvacuity check: a trivial extractor cannot make the missing source-refinement obligation disappear. |
+| Reduction | For any terminal measure, bounds on those three events add | The fresh and puzzle events exclude owner-authorized projections; otherwise their probability could be one for a trivial replay. The theorem supplies no cryptographic event bounds and no zero-gap claim. |
 
 The parameters and extraction interface currently accept general types; they do
 not instantiate SHA-256 or HASH160 as concrete Lean functions. Their generic
 status is intentional and appears in theorem types, rather than being hidden
-behind a QSB-specific cryptographic axiom.
+behind a QSB-specific cryptographic axiom. Disclosure records and extracted
+round witnesses carry preimage values **only for their opened positions** using
+membership-indexed functions. This prevents their types from granting all
+unopened HORS secrets to the adversary. The source extractor still requires a
+proof that each carried value comes from the adversary's transaction bytes.
 
 ## Native evidence
 
@@ -183,8 +188,11 @@ The checked game-level measure theorem is a conditional implication, with
     Pr[UnauthorizedSpend] ≤ εFresh + εTwoPuzzle + εExtractionGap,
 
 provided the three **explicit** event bounds hold for the same terminal game
-distribution and honest publication is respected. The gap event records a bad
-transaction for which the source extractor fails to provide a shaped pin/final
+distribution and honest release is respected. Fresh-opening and two-puzzle
+events require an owner-forbidden projection, but not Bitcoin acceptance; they
+remain computational targets separate from the QSB Script predicate. The gap
+event records a bad transaction for which the source extractor fails to provide
+a shaped pin/final
 witness. No nontrivial upper bounds for εFresh, εTwoPuzzle, or εExtractionGap
 are established. A zero gap would require the missing Bitcoin execution
 refinement. Reporting a numerical QSB quantum security level now would be

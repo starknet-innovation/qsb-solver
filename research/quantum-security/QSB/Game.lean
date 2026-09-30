@@ -65,7 +65,7 @@ structure Disclosure (Index Secret : Type*) where
   vault : Nat
   round : Fin 2
   opened : Finset Index
-  values : Index → Secret
+  values : (i : Index) → i ∈ opened → Secret
   mined : Bool
 
 def disclosedAt {Index Secret : Type*} [DecidableEq Index]

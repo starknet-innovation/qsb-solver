@@ -11,18 +11,22 @@ namespace QSB
 variable {Index Secret Digest : Type*} [DecidableEq Index]
 
 def OpeningsValid (hash : Secret → Digest) (commitments : Index → Digest)
-    (opened : Finset Index) (values : Index → Secret) : Prop :=
-  ∀ i ∈ opened, hash (values i) = commitments i
+    (opened : Finset Index)
+    (values : (i : Index) → i ∈ opened → Secret) : Prop :=
+  ∀ i (h : i ∈ opened), hash (values i h) = commitments i
 
 /-- A concrete output (position, value) opening a target not previously disclosed.
 This is not an existential over arbitrary secrets: values come from the witness. -/
 def FreshOpening (hash : Secret → Digest) (commitments : Index → Digest)
-    (disclosed opened : Finset Index) (values : Index → Secret) : Prop :=
-  ∃ i ∈ opened, i ∉ disclosed ∧ hash (values i) = commitments i
+    (disclosed opened : Finset Index)
+    (values : (i : Index) → i ∈ opened → Secret) : Prop :=
+  ∃ i, ∃ h : i ∈ opened, i ∉ disclosed ∧
+    hash (values i h) = commitments i
 
 theorem openings_fresh_or_covered
     {hash : Secret → Digest} {commitments : Index → Digest}
-    {disclosed opened : Finset Index} {values : Index → Secret}
+    {disclosed opened : Finset Index}
+    {values : (i : Index) → i ∈ opened → Secret}
     (valid : OpeningsValid hash commitments opened values) :
     FreshOpening hash commitments disclosed opened values ∨ opened ⊆ disclosed := by
   classical
@@ -42,7 +46,8 @@ theorem openings_fresh_or_covered
 t-position valid opening either opens a fresh target or uses exactly that set. -/
 theorem one_disclosure_fresh_or_same
     {hash : Secret → Digest} {commitments : Index → Digest}
-    {disclosed opened : Finset Index} {values : Index → Secret}
+    {disclosed opened : Finset Index}
+    {values : (i : Index) → i ∈ opened → Secret}
     (valid : OpeningsValid hash commitments opened values)
     (sameCard : opened.card = disclosed.card) :
     FreshOpening hash commitments disclosed opened values ∨ opened = disclosed := by
@@ -52,7 +57,8 @@ theorem one_disclosure_fresh_or_same
 
 theorem insufficient_disclosure_requires_fresh
     {hash : Secret → Digest} {commitments : Index → Digest}
-    {disclosed opened : Finset Index} {values : Index → Secret}
+    {disclosed opened : Finset Index}
+    {values : (i : Index) → i ∈ opened → Secret}
     (valid : OpeningsValid hash commitments opened values)
     (more : disclosed.card < opened.card) :
     FreshOpening hash commitments disclosed opened values := by

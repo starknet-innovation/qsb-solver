@@ -115,6 +115,15 @@ the adversary's transaction and returns its pinning and final-round witness.
 That extractor is not implemented for arbitrary Script executions. A shaped
 final witness requires seven distinct signed positions and two disjoint bonus
 positions; otherwise the corresponding extraction gap remains possible.
+The formal disclosure and extracted-witness records expose HORS values only at
+their declared opened positions; no total secret array is included in the
+attacker transcript type.
+The measured fresh-opening and two-puzzle events require a projection outside
+the owner's authorization set, but do not assume Bitcoin acceptance. Without
+that restriction, a replay or harmless mutation of a released authorized
+transaction could make the proposed primitive event likely even when no theft
+occurred. The owner-forbidden message class is fixed independently of the hash
+and Script predicates.
 
 ## Hash model and resources
 

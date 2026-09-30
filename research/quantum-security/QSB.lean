@@ -62,7 +62,8 @@ import QSB.Reduction
 #print axioms QSB.Game.disclosedAt_append
 #print axioms QSB.Game.disclosedAt_card_le_history
 #print axioms QSB.Game.disclosedAt_card_le_min
-#print axioms QSB.unauthorized_not_published
+#print axioms QSB.unauthorized_not_released
+#print axioms QSB.gap_with_no_extractor
 #print axioms QSB.unauthorized_under_source_extraction
 #print axioms QSB.unauthorized_with_explicit_gap
 #print axioms QSB.unauthorized_measure_bound_with_gap

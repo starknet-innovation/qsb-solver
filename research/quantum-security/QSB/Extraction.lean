@@ -11,7 +11,7 @@ namespace QSB
 structure RoundWitness (Index Secret Key : Type*) where
   signed : Finset Index
   bonus : Finset Index
-  opening : Index → Secret
+  opening : (i : Index) → i ∈ signed → Secret
   key : Key
 
 variable {Index Secret Digest Key Tx : Type*} [DecidableEq Index]
@@ -48,28 +48,30 @@ theorem extracted_round_fresh_or_puzzle
   · exact Or.inl fresh
   · exact Or.inr ⟨covered, extracted.nonceBound, extracted.puzzle⟩
 
-/-- Fresh-message target search relative to published transcript messages.
-Excluding old messages is essential: a published solution can otherwise be
-replayed with probability one. This is still NOT standard HORS hash-to-subset. -/
+/-- Search on an owner-forbidden message relative to prior QSB releases.
+Restricting to forbidden messages prevents ordinary authorized releases from
+making the target event certain. This is still NOT standard HORS hash-to-subset. -/
 def NovelCoveredPuzzle
     (nonceRelation : Tx → Finset Index → Key → Prop)
     (hashKey : Key → Digest) (target : Set Digest)
-    (published : Set Tx) (disclosed : Finset Index)
+    (forbidden : Tx → Prop) (released : Set Tx) (disclosed : Finset Index)
     (tx : Tx) (w : RoundWitness Index Secret Key) : Prop :=
-  tx ∉ published ∧ CoveredPuzzle nonceRelation hashKey target disclosed tx w
+  forbidden tx ∧ tx ∉ released ∧
+    CoveredPuzzle nonceRelation hashKey target disclosed tx w
 
 theorem extracted_novel_round_fresh_or_puzzle
     {hashSecret : Secret → Digest} {commitments : Index → Digest}
     {nonceRelation : Tx → Finset Index → Key → Prop}
     {hashKey : Key → Digest} {target : Set Digest}
-    {published : Set Tx} {disclosed : Finset Index}
+    {forbidden : Tx → Prop} {released : Set Tx} {disclosed : Finset Index}
     {tx : Tx} {w : RoundWitness Index Secret Key}
-    (novel : tx ∉ published)
+    (badMessage : forbidden tx) (novel : tx ∉ released)
     (extracted : ExtractedRound hashSecret commitments nonceRelation hashKey target tx w) :
     FreshOpening hashSecret commitments disclosed w.signed w.opening ∨
-      NovelCoveredPuzzle nonceRelation hashKey target published disclosed tx w := by
+      NovelCoveredPuzzle nonceRelation hashKey target forbidden
+        released disclosed tx w := by
   rcases extracted_round_fresh_or_puzzle extracted with fresh | covered
   · exact Or.inl fresh
-  · exact Or.inr ⟨novel, covered⟩
+  · exact Or.inr ⟨badMessage, novel, covered⟩
 
 end QSB

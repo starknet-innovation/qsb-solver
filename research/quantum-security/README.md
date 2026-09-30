@@ -53,6 +53,9 @@ supply the missing quantum primitive bounds or Bitcoin execution refinement.
 retaining a separately measured extraction gap. Its source-extraction premise
 requires a seven-signed, two-bonus final round from the actual attacker output;
 neither that premise nor a small gap probability has been established.
+The primitive failure events target owner-forbidden transaction projections;
+ordinary authorized replays are outside them. They do not assume Script
+acceptance, and their quantum query bounds remain open.
 
 ## Reproduce the Core experiments
 

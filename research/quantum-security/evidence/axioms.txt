@@ -51,7 +51,8 @@
 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
-'QSB.unauthorized_not_published' does not depend on any axioms
+'QSB.unauthorized_not_released' does not depend on any axioms
+'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
