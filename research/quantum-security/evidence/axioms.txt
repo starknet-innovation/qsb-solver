@@ -432,6 +432,32 @@
 'QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalSignedAccepted.generated_cap_add_ops' does not depend on any axioms
+'QSB.FinalSignedAccepted.generated_first_comparison_ops' does not depend on any axioms
+'QSB.FinalSignedAccepted.lookup_region_is_retained_base' depends on axioms: [propext]
+'QSB.FinalSignedAccepted.accepted_pushes_shape' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.generated_final_round_all_pushes' depends on axioms: [propext]
+'QSB.FinalSignedAccepted.accepted_final_round_init_shape' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.generated_fixed_index_pair' does not depend on any axioms
+'QSB.FinalSignedAccepted.fixed_index_decodes' depends on axioms: [propext]
+'QSB.FinalSignedAccepted.base_region_prefix_length' depends on axioms: [propext]
+'QSB.FinalSignedAccepted.fixed_index_roll_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedAccepted.fixed_index_roll_requires_tail' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.accepted_fixed_index_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedAccepted.oversized_cap_add_shape' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.accepted_cap_add_parses_raw' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedAccepted.oversized_first_comparison_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedAccepted.generated_first_final_round_prefix' does not depend on any axioms
+'QSB.FinalSignedAccepted.accepted_first_final_signed_below_cap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedAccepted.successful_checkmultisig_result_shape' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedAccepted.generated_first_round_check_boundary' does not depend on any axioms
+'QSB.FinalSignedAccepted.accepted_whole_program_first_final_index_below_cap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

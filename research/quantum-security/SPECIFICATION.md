@@ -147,8 +147,10 @@ has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
 Boolean CHECKMULTISIG result. The modeled generated comparison tail rejects
 the capped case from its stated post-ADD stack because HASH160 outputs 20
-bytes. Deriving that stack shape from arbitrary full executions and extending
-the map through the remaining signed selections are still required.
+bytes. Lean now derives that stack shape from any successful full byte-model
+execution and forces the first final-round signed raw index below 152.
+Excluding negative and 0–1 values, extending the map through the remaining
+signed selections, and refining the model to Core are still required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

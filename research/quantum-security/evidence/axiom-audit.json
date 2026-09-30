@@ -1,5 +1,5 @@
 {
-  "theorem_count": 385,
+  "theorem_count": 405,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -361,6 +361,73 @@
       "propext"
     ],
     "QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_cap_add_parses_raw": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_final_round_init_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_first_final_signed_below_cap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_fixed_index_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_pushes_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.accepted_whole_program_first_final_index_below_cap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.base_region_prefix_length": [
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.fixed_index_decodes": [
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.fixed_index_roll_requires_tail": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.fixed_index_roll_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.generated_cap_add_ops": [],
+    "QSB.FinalSignedAccepted.generated_final_round_all_pushes": [
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.generated_first_comparison_ops": [],
+    "QSB.FinalSignedAccepted.generated_first_final_round_prefix": [],
+    "QSB.FinalSignedAccepted.generated_first_round_check_boundary": [],
+    "QSB.FinalSignedAccepted.generated_fixed_index_pair": [],
+    "QSB.FinalSignedAccepted.lookup_region_is_retained_base": [
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.oversized_cap_add_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.oversized_first_comparison_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.successful_checkmultisig_result_shape": [
       "Classical.choice",
       "Quot.sound",
       "propext"

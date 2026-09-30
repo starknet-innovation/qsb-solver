@@ -1,0 +1,54 @@
+{
+  "scope": "Three puzzle checks relaxed; pinning, HORS comparisons, and both CHECKMULTISIGs real; not a production-vault spend",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "canonical_2",
+      "first_final_signed_index": 2,
+      "raw_encoding_hex": null,
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
+    },
+    {
+      "name": "dummy_0",
+      "first_final_signed_index": 0,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "4969cd440057214b2839b50f61ec29d4353a570ffa78c0e1a1b12111c0b43900"
+    },
+    {
+      "name": "dummy_1",
+      "first_final_signed_index": 1,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "a8f6b881c897f001b93655422b6ab906e74c5144f58156f58aedf7d4dd929e5d"
+    },
+    {
+      "name": "cap_152",
+      "first_final_signed_index": 152,
+      "raw_encoding_hex": null,
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "a79cbc7e95b68b78174acaa015bd17717c309dfba3712f62a8479e83e01c49a2"
+    },
+    {
+      "name": "cap_152_nonminimal",
+      "first_final_signed_index": 152,
+      "raw_encoding_hex": "980000",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "946ad8145b99dfae0853f98fe6b1e68bc052f6cca603b7051fc17bb5b29a4a33"
+    }
+  ]
+}

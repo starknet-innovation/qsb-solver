@@ -27,6 +27,7 @@ import QSB.ByteLatePuzzle
 import QSB.ByteBonusBetween
 import QSB.PoolRollInvariant
 import QSB.FinalSignedBoundary
+import QSB.FinalSignedAccepted
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -401,6 +402,26 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedBoundary.preimage_roll_index_decode
 #print axioms QSB.FinalSignedBoundary.short_target_rejects_comparison
 #print axioms QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects
+#print axioms QSB.FinalSignedAccepted.generated_cap_add_ops
+#print axioms QSB.FinalSignedAccepted.generated_first_comparison_ops
+#print axioms QSB.FinalSignedAccepted.lookup_region_is_retained_base
+#print axioms QSB.FinalSignedAccepted.accepted_pushes_shape
+#print axioms QSB.FinalSignedAccepted.generated_final_round_all_pushes
+#print axioms QSB.FinalSignedAccepted.accepted_final_round_init_shape
+#print axioms QSB.FinalSignedAccepted.generated_fixed_index_pair
+#print axioms QSB.FinalSignedAccepted.fixed_index_decodes
+#print axioms QSB.FinalSignedAccepted.base_region_prefix_length
+#print axioms QSB.FinalSignedAccepted.fixed_index_roll_source
+#print axioms QSB.FinalSignedAccepted.fixed_index_roll_requires_tail
+#print axioms QSB.FinalSignedAccepted.accepted_fixed_index_shape
+#print axioms QSB.FinalSignedAccepted.oversized_cap_add_shape
+#print axioms QSB.FinalSignedAccepted.accepted_cap_add_parses_raw
+#print axioms QSB.FinalSignedAccepted.oversized_first_comparison_rejected
+#print axioms QSB.FinalSignedAccepted.generated_first_final_round_prefix
+#print axioms QSB.FinalSignedAccepted.accepted_first_final_signed_below_cap
+#print axioms QSB.FinalSignedAccepted.successful_checkmultisig_result_shape
+#print axioms QSB.FinalSignedAccepted.generated_first_round_check_boundary
+#print axioms QSB.FinalSignedAccepted.accepted_whole_program_first_final_index_below_cap
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

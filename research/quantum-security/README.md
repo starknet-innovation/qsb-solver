@@ -139,9 +139,11 @@ signed rolls remains open for arbitrary accepted witnesses.
 the exact generated commitment and dummy pushes: indices 0–1 select 9-byte
 dummies, 2–151 select 20-byte commitments, and capped 152 selects the prior
 round's Boolean CHECKMULTISIG result. Lean checks that the generated five-op
-comparison tail rejects that capped case from the stated post-ADD stack. The
-earlier byte steps and the other six signed selections still need a full-run
-invariant.
+comparison tail rejects that capped case from the stated post-ADD stack.
+`QSB/FinalSignedAccepted.lean` derives that stack from any successful full
+byte-model run, so the first final-round signed index must parse below 152.
+Negative and 0–1 values, the other six selections, and Core refinement remain
+open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
@@ -236,6 +238,7 @@ python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json
+python3 analysis/check_final_signed_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/final-signed-boundary.json
 ```
 
 The recorded source inventory identifies exactly the files analyzed. The app
