@@ -28,6 +28,7 @@ source-extraction edge case rather than a valid production-vault forgery. See
 
 Read:
 
+- [Final report](FINAL-REPORT.md)
 - [Security game and attack table](SPECIFICATION.md)
 - [Proof status and source mapping](PROOF-STATUS.md)
 - [Research sources and applicability](RESEARCH.md)
@@ -41,6 +42,7 @@ lake update
 lake exe cache get
 lake build
 lake env lean QSB.lean
+python3 analysis/check_axioms.py
 ```
 
 `lean-toolchain` pins Lean 4.30.0. The mathlib commit and transitive dependencies
