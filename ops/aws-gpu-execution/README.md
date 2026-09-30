@@ -53,3 +53,27 @@ No prior experiment is authorized to relaunch by this configuration change.
 Keep original private operational receipts outside Git; public evidence uses
 hashes and cleanup counts. Earlier branch history remains unchanged and must be
 considered separately before any requested history rewrite.
+
+## SSM shell and early-failure collection
+
+Use the committed `operate.py STATE_DIRECTORY MODE` adapter for future scoped
+experiments (`record`, `ready`, `send`, `poll`, `terminate`). Do not copy historical
+operational adapters into a new run. `send` wraps the host template in an explicit
+`exec /bin/bash -s` with a quoted, collision-checked heredoc: AWS-RunShellScript's
+outer `/bin/sh` must never interpret Bash-only options, arrays or conditionals.
+The literal wrapped command and its hash are saved before the single SSM send.
+An existing send intent is still non-retryable until reconciled.
+
+On terminal SSM failure, raw output is saved even if the host failed before emitting
+its result envelope. Missing, duplicate, oversized or malformed result envelopes
+produce a separate collection-error receipt; instance termination remains in the
+`finally` path. A result-envelope error never counts as a successful GPU gate.
+
+The 30 September allocated experiment failed at its first `set -o pipefail` under
+`/bin/sh`; no GPU test ran. Its instance, root volume and temporary infrastructure
+were independently confirmed deleted. Original execution receipts remain unchanged.
+Six local transport/operator regression tests cover the shell failure, literal
+payload preservation, pipeline failure status, result validation, durable send
+intent and termination after missing results. These tests use inert local Bash
+and mocked AWS responses, not a new cloud execution. The capacity watcher remains
+paused; correcting this adapter does not automatically authorize another paid run.
