@@ -109,6 +109,20 @@ def main() -> None:
                       "push_offset": offset, "push_size": len(pattern),
                       "script_code_sha256": hashlib.sha256(actual).hexdigest()})
 
+    pin_pattern = bt.push_data(pin)
+    assert pin[-1] == 0x01
+    assert pin_pattern == bytes((len(pin),)) + pin
+    assert all(not chunk.startswith(pin_pattern) or chunk == pin_pattern
+               for chunk in chunks)
+    pin_matches = [pc for pc in boundaries
+                   if script[pc:pc + len(pin_pattern)] == pin_pattern]
+    assert pin_matches == [0]
+    pin_script_code = bt.find_and_delete(script, pin)
+    assert pin_script_code == script[len(pin_pattern):]
+    pin_case = {"signature_hex": pin.hex(), "push_offset": 0,
+                "push_size": len(pin_pattern),
+                "script_code_sha256": hashlib.sha256(pin_script_code).hexdigest()}
+
     rng = random.Random("QSB exact final scriptCode selection orders")
     choices = [list(range(9)), list(range(141, 150)),
                [0, 1, 17, 23, 41, 77, 96, 111, 149]]
@@ -143,6 +157,7 @@ def main() -> None:
         "script_bytes": len(script),
         "opcode_boundaries": len(boundaries),
         "checked_signature_pushes": len(cases),
+        "pinning_signature_push": pin_case,
         "dummy_sighash_byte": "03",
         "nonce_sighash_byte": "01",
         "all_selected_patterns_direct_pushes": True,

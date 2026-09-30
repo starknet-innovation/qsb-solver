@@ -1,6 +1,6 @@
 {
   "scope": "one disposable exact lock; exhaustive boundary-pattern inventory and sampled ten-signature orders",
-  "source_revision": "bb5dffcb3e429ea3680db4e0cb9d2c199edb5436",
+  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
   "pinned_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
   "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
@@ -8,6 +8,12 @@
   "script_bytes": 9923,
   "opcode_boundaries": 880,
   "checked_signature_pushes": 151,
+  "pinning_signature_push": {
+    "signature_hex": "3035022100cd5d30548bce1250c3c711be4b9a92d2716a8942d44d60954bfc8cd784658fa9021046a0e8dfe7826f5522c56def38a8f75e01",
+    "push_offset": 0,
+    "push_size": 57,
+    "script_code_sha256": "cd4b92034a8d582c7573e29a60b38b36b6200391ef1cc12cd107f4b4fc21bff5"
+  },
   "dummy_sighash_byte": "03",
   "nonce_sighash_byte": "01",
   "all_selected_patterns_direct_pushes": true,

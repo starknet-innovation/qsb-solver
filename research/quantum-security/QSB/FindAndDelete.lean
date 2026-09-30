@@ -1,4 +1,5 @@
 import QSB.EncodedScript
+import QSB.FirstOvershoot
 
 /-!
 A source-shaped byte loop for Core's legacy FindAndDelete: at each opcode
@@ -234,5 +235,51 @@ theorem final_scriptCode_scan (ids : List (Fin 150)) :
       ((finalSignatureBytes ids).map directPushPattern) =
       finalEncodedScriptCode ids := by
   exact literal_many_delete _ (selected_patterns_subset ids)
+
+/-- The fixed pinning CHECKSIGVERIFY signature's serialized push. -/
+def pinPattern : Bytes :=
+  directPushPattern FirstOvershoot.pinSignature
+
+theorem pin_signature_sighash_all :
+    FirstOvershoot.pinSignature.getLast? = some 0x01 := by decide
+
+/-- This exact generated lock contains the pin signature as one complete
+direct-push opcode. It says nothing about other generated vault instances. -/
+theorem pin_pattern_one_chunk :
+    (EncodedLayout.chunks.filter (· == pinPattern)).length = 1 := by decide
+
+theorem pin_pattern_boundary_width :
+    ∀ chunk ∈ EncodedLayout.chunks,
+      chunk.head? = pinPattern.head? → chunk.length = pinPattern.length := by
+  decide
+
+theorem pin_pattern_rigid : rigidChunks pinPattern EncodedLayout.chunks := by
+  intro chunk boundary suffix
+  constructor
+  · intro matched
+    have sameFirst := EncodedScript.head_eq_of_prefix_match
+      pinPattern chunk suffix (by simp [pinPattern, directPushPattern])
+      (EncodedScript.literal_chunks_nonempty chunk boundary) matched
+    have sameLength := pin_pattern_boundary_width chunk boundary sameFirst
+    exact boundary_match_consumes_chunk FirstOvershoot.pinSignature
+      chunk suffix (by simpa [pinPattern] using sameLength)
+      (by simpa [pinPattern] using matched)
+  · intro same
+    subst chunk
+    simp
+
+/-- In the source-shaped FindAndDelete loop, removal of the *reached fixed
+pin signature* deletes precisely its complete serialized push. The remaining
+bytes are the pinning scriptCode candidate for legacy SIGHASH_ALL. The Core
+C++ parser and ECDSA checker still require refinement. -/
+theorem pin_scriptCode_scan :
+    scan 880 EncodedLayout.chunks.flatten pinPattern =
+      stripEncodedChunks [pinPattern] EncodedLayout.chunks := by
+  have enough : EncodedLayout.chunks.length ≤ 880 := by
+    simp [EncodedLayout.chunks_length]
+  simpa [stripEncodedChunks] using
+    scan_eq_chunk_filter pinPattern EncodedLayout.chunks
+      EncodedScript.literal_chunks_nonempty literal_stable_chunks
+      pin_pattern_rigid 880 enough
 
 end QSB.FindAndDelete

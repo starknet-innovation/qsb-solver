@@ -125,7 +125,7 @@ theorem final_pattern_boundary_width :
 theorem literal_chunks_nonempty :
     ∀ chunk ∈ EncodedLayout.chunks, chunk ≠ [] := by decide
 
-private theorem head_eq_of_prefix_match (pattern chunk suffix : Bytes)
+theorem head_eq_of_prefix_match (pattern chunk suffix : Bytes)
     (patternNonempty : pattern ≠ []) (chunkNonempty : chunk ≠ [])
     (isMatch : (chunk ++ suffix).take pattern.length = pattern) :
     chunk.head? = pattern.head? := by

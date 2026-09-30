@@ -226,8 +226,9 @@ and a quantum bound remain open.
 `QSB/FinalRoundWitness.lean` converts the seven recorded opening pairs and
 two bonus positions into the abstract `RoundWitness` shape. An executable
 lookup supplies opening bytes, and Lean proves their HASH160 equalities. The
-witness key remains a caller input; nonce binding, puzzle success, a
-transaction-byte extractor, and Core refinement are still open.
+earlier bridge's witness key was a caller input; the reached-key theorem below
+removes that freedom inside the byte model. Transaction-bound nonce semantics,
+a transaction-byte extractor, and Core refinement are still open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
@@ -239,7 +240,8 @@ patterns. This proves internal fixture alignment, not equivalence with Core's
 `GetOp` or `FindAndDelete`.
 `QSB/FindAndDelete.lean` proves the sequential deletion result for the
 source-shaped Lean byte loop and every selected final-signature list. It does
-not replace a Core C++ refinement or transaction-level extraction proof.
+the same for the fixed pinning signature's one serialized push. It does not
+replace a Core C++ refinement or transaction-level extraction proof.
 `QSB/FinalScriptCode.lean` derives that modeled scriptCode from the ten
 signature bytes actually reached in a conditional successful final byte-model
 run. The Core final-scan premise remains external.
@@ -248,6 +250,11 @@ last reached multisignature key with the key SHA256-hashed into the late puzzle
 signature. A conditional theorem derives strict-DER syntax of that hash from
 an encoding-sound reached puzzle check. Core verifier and sighash refinement
 are still required.
+`QSB/PinningScriptCode.lean` extracts the reached pinning nonce and puzzle key
+bytes from any successful arbitrary-stack byte-model run. With explicit
+verification premises it proves strict DER for SHA256 of the reached pin key.
+`QSB/SourceWitness.lean` combines that result with the final-round extraction
+in the same run; the Core verifier bridge and quantum bound remain open.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

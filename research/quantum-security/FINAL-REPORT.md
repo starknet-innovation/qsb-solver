@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 598 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 607 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -279,10 +279,11 @@ conditional interface: successful pair verification must imply both nonempty
 signature bytes and acceptance by that gate before it concludes strict DER and
 the nine-position shape. The corpus does not prove the interface for Core's
 full final multisignature scan or all possible signature bytes.
-Four further isolated `FindAndDelete` cases each pass with a public key
+Five further isolated `FindAndDelete` cases each pass with a public key
 recovered for the app's opcode-boundary scriptCode and fail with a key
 recovered for a deliberately wrong scriptCode. They cover repeated canonical
-signature pushes, an embedded byte pattern, and noncanonical `PUSHDATA1`.
+signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1`, and the
+literal 56-byte pinning signature in an isolated lock.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.
@@ -356,7 +357,18 @@ loop returns the exact serialized-chunk filter of the literal lock, including
 repeated patterns. The proof uses checked simple-opcode and complete-match
 properties; the literal script also has no `OP_CODESEPARATOR` opcode. It is
 still a Lean model of Core's loop, not a C++ refinement theorem or a full
-scriptSig and transaction extractor.
+scriptSig and transaction extractor. It now proves the analogous one-push result
+for the literal fixed pinning signature. The source fixture confirms that
+the pinning push occurs only once at byte offset zero; the fifth isolated
+Core case corroborates deletion for those signature bytes.
+
+`QSB/PinningScriptCode.lean` identifies the actual nonce and puzzle key bytes
+reached by both pinning checks from any successful initial byte-model stack.
+Under an explicit successful-verifier bridge, the SHA256 of that nonce key is
+strict DER. `QSB/SourceWitness.lean` composes this with the final-round
+witness theorem: both puzzle hits and the seven final openings arise from the
+same modeled execution. It still lacks Core verifier/sighash equivalence,
+dynamic-setup parameterization, and a joint quantum hash bound.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

@@ -39,8 +39,10 @@ import QSB.FinalBonusIndices
 import QSB.ScriptCodeSelection
 import QSB.EncodedScript
 import QSB.FindAndDelete
+import QSB.PinningScriptCode
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
+import QSB.SourceWitness
 import QSB.DERHeaderBound
 import QSB.Attack
 import QSB.Game
@@ -603,6 +605,14 @@ import QSB.Reduction
 #print axioms QSB.FindAndDelete.literal_many_delete
 #print axioms QSB.FindAndDelete.selected_patterns_subset
 #print axioms QSB.FindAndDelete.final_scriptCode_scan
+#print axioms QSB.EncodedScript.head_eq_of_prefix_match
+#print axioms QSB.FindAndDelete.pin_signature_sighash_all
+#print axioms QSB.FindAndDelete.pin_pattern_one_chunk
+#print axioms QSB.FindAndDelete.pin_pattern_boundary_width
+#print axioms QSB.FindAndDelete.pin_pattern_rigid
+#print axioms QSB.FindAndDelete.pin_scriptCode_scan
+#print axioms QSB.PinningScriptCode.accepted_pinning_reached_bytes
+#print axioms QSB.PinningScriptCode.matched_run_pinning_der_puzzle
 #print axioms QSB.FinalScriptCode.reached_signatures_exact
 #print axioms QSB.FinalScriptCode.expected_signatures_perm
 #print axioms QSB.FinalScriptCode.expected_signature_flags
@@ -617,6 +627,7 @@ import QSB.Reduction
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all
 #print axioms QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature
 #print axioms QSB.FinalRoundWitness.matched_run_reached_key_der_puzzle
+#print axioms QSB.SourceWitness.matched_run_pin_and_final_der_puzzles
 #print axioms QSB.DERHeaderBound.byte_ofFn
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective

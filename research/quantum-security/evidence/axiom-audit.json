@@ -1,5 +1,5 @@
 {
-  "theorem_count": 598,
+  "theorem_count": 607,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -452,6 +452,9 @@
       "propext"
     ],
     "QSB.EncodedScript.generated_dummy_pattern_mem": [
+      "propext"
+    ],
+    "QSB.EncodedScript.head_eq_of_prefix_match": [
       "propext"
     ],
     "QSB.EncodedScript.literal_chunks_decode": [],
@@ -1181,6 +1184,23 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FindAndDelete.pin_pattern_boundary_width": [
+      "propext"
+    ],
+    "QSB.FindAndDelete.pin_pattern_one_chunk": [
+      "propext"
+    ],
+    "QSB.FindAndDelete.pin_pattern_rigid": [
+      "propext"
+    ],
+    "QSB.FindAndDelete.pin_scriptCode_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.pin_signature_sighash_all": [
+      "propext"
+    ],
     "QSB.FindAndDelete.scanMany_eq_chunk_filter": [
       "Classical.choice",
       "Quot.sound",
@@ -1908,6 +1928,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.PinningScriptCode.accepted_pinning_reached_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinningScriptCode.matched_run_pinning_der_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.PinningShape.accepted_arbitrary_initial_stack_first_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -2057,6 +2087,11 @@
       "propext"
     ],
     "QSB.ScriptCodeSelection.stripSignaturePushes_perm": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
