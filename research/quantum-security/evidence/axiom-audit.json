@@ -1,5 +1,5 @@
 {
-  "theorem_count": 186,
+  "theorem_count": 196,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -173,8 +173,12 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FirstOvershoot.first_eight_split": [],
     "QSB.FirstOvershoot.first_index_prefix_opcodes": [],
     "QSB.FirstOvershoot.first_index_roll": [
+      "propext"
+    ],
+    "QSB.FirstOvershoot.first_index_roll_no_external": [
       "propext"
     ],
     "QSB.FirstOvershoot.first_index_roll_raw": [
@@ -246,6 +250,22 @@
     "QSB.FirstOvershoot.next_index_roll_full": [
       "propext"
     ],
+    "QSB.FirstOvershoot.no_external_first_eight_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.no_external_lead_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.no_external_lead_opcodes": [],
+    "QSB.FirstOvershoot.no_external_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.opening_roll_lead_opcodes": [],
     "QSB.FirstOvershoot.opening_roll_lead_reaches": [
       "Classical.choice",
@@ -263,6 +283,16 @@
       "propext"
     ],
     "QSB.FirstOvershoot.oversized_any_marker_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_any_postindex_tail_initial_stack_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_any_postindex_tail_segment_fails": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -293,6 +323,11 @@
       "propext"
     ],
     "QSB.FirstOvershoot.oversized_first_index_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_first_index_without_external": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -332,6 +367,7 @@
     "QSB.FirstOvershoot.segment_is_first_two_selection_prefix": [],
     "QSB.FirstOvershoot.segment_split": [],
     "QSB.FirstOvershoot.segment_split_comparison": [],
+    "QSB.FirstOvershoot.segment_split_eight": [],
     "QSB.FirstOvershoot.segment_split_first_index": [],
     "QSB.FirstOvershoot.segment_split_opening_roll": [],
     "QSB.FirstOvershoot.shifted_last_from_any_tail": [

@@ -17,9 +17,10 @@ an attacker-supplied cell. Lean checks that a self-chosen commitment can pass
 the first HASH160 comparison. `QSB/FirstOvershoot.lean` proves a stronger
 byte-level result for the full generated program and this initial-stack
 family: with any parsed first-index value at least 152, including nonminimal
-encodings accepted by the model, arbitrary pinning-key bytes, any external
-marker bytes, and any continuation of at most 688 cells, the program rejects.
-Fewer than eight continuation cells fail at the opening roll. Otherwise a
+encodings accepted by the model, arbitrary pinning-key bytes, and any
+post-index continuation of at most 695 cells, the program rejects. An empty
+continuation fails at the first external-cell roll. Fewer than eight cells
+after an external marker fail at the opening roll. Otherwise a
 mismatched marker fails the first hash comparison; a matching one reaches a
 20-byte lock commitment at the next fixed roll and fails the following numeric
 parse. The byte model grants both pinning checks true and leaves later

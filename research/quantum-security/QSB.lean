@@ -139,6 +139,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.shifted_last_from_any_tail
 #print axioms QSB.FirstOvershoot.first_index_roll
 #print axioms QSB.FirstOvershoot.first_index_roll_raw
+#print axioms QSB.FirstOvershoot.first_index_roll_no_external
 #print axioms QSB.FirstOvershoot.external_commitment_roll
 #print axioms QSB.FirstOvershoot.displaced_preimage_roll
 #print axioms QSB.FirstOvershoot.retained_index_roll
@@ -159,7 +160,14 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.opening_roll_lead_opcodes
 #print axioms QSB.FirstOvershoot.before_opening_roll_split
 #print axioms QSB.FirstOvershoot.segment_split_opening_roll
+#print axioms QSB.FirstOvershoot.no_external_lead_opcodes
+#print axioms QSB.FirstOvershoot.first_eight_split
+#print axioms QSB.FirstOvershoot.segment_split_eight
 #print axioms QSB.FirstOvershoot.oversized_first_index_prefix
+#print axioms QSB.FirstOvershoot.oversized_first_index_without_external
+#print axioms QSB.FirstOvershoot.no_external_lead_fails
+#print axioms QSB.FirstOvershoot.no_external_first_eight_fails
+#print axioms QSB.FirstOvershoot.no_external_segment_fails
 #print axioms QSB.FirstOvershoot.opening_roll_lead_reaches
 #print axioms QSB.FirstOvershoot.oversized_before_opening_roll
 #print axioms QSB.FirstOvershoot.short_tail_opening_roll_fails
@@ -175,6 +183,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_first_overshoot_segment_fails
 #print axioms QSB.FirstOvershoot.oversized_any_marker_segment_fails
 #print axioms QSB.FirstOvershoot.oversized_arbitrary_tail_segment_fails
+#print axioms QSB.FirstOvershoot.oversized_any_postindex_tail_segment_fails
 #print axioms QSB.FirstOvershoot.generated_program_split
 #print axioms QSB.FirstOvershoot.matched_first_overshoot_cannot_finish
 #print axioms QSB.FirstOvershoot.matched_first_overshoot_after_pinning_fails
@@ -182,6 +191,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_external_initial_stack_rejected
 #print axioms QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected
 #print axioms QSB.FirstOvershoot.oversized_arbitrary_tail_initial_stack_rejected
+#print axioms QSB.FirstOvershoot.oversized_any_postindex_tail_initial_stack_rejected
 #print axioms QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes
 #print axioms QSB.FirstIndexMap.commitment_cells_are_twenty_bytes
 #print axioms QSB.FirstIndexMap.first_pool_window_covers_region
