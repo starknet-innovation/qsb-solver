@@ -300,8 +300,10 @@ x-coordinate and hence the same `r`. The pinned secp256k1 fixture in
 spend or a transaction preimage. A same-key bound must target the finite set
 of message scalars permitted by all admissible recovery points, after Core's
 hash-to-scalar conversion; it cannot classify every new-message replay as a
-hash collision. The actual admissible-point count and Core parser bridge remain
-unproved. The event is therefore a joint search-or-replay target, not
+hash collision. Lean bounds admissible points and message group-element
+targets by four conditional on the at-most-two-points-per-x curve/parser
+premise; that premise and Core's digest conversion remain unproved. The event
+is therefore a joint search-or-replay target, not
 necessarily two fresh independent DER hits. Bounding it must include the
 shared hash oracles, sighash correlations, all accepted public-key encodings,
 and adaptive disclosed subsets.

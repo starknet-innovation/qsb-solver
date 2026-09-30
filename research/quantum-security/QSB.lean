@@ -3,6 +3,7 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.Nonce
+import QSB.RecoveryCandidates
 import QSB.Parameters
 import QSB.Selection
 import QSB.Layout
@@ -69,6 +70,11 @@ import QSB.Reduction
 #print axioms QSB.opposite_points_distinct_messages
 #print axioms QSB.messageTargets_card_le
 #print axioms QSB.recovery_in_messageTargets
+#print axioms QSB.RecoveryCandidates.secp_prime_lt_twice_order
+#print axioms QSB.RecoveryCandidates.x_coordinate_candidates
+#print axioms QSB.RecoveryCandidates.recovery_points_card_le_four
+#print axioms QSB.RecoveryCandidates.secp_recovery_points_card_le_four
+#print axioms QSB.RecoveryCandidates.secp_messageTargets_card_le_four
 #print axioms QSB.configA_round1_bonus_choices
 #print axioms QSB.configA_round2_bonus_choices
 #print axioms QSB.configA_pool_choices

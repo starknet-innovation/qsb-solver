@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 589 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 598 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -454,6 +454,16 @@ supplies neither a SHA256d preimage nor an accepted QSB spend. A QROM argument
 must bound hits to the full admissible message-target set; a collision-only
 replay event is too narrow. The actual secp256k1 point count, Core digest
 conversion and transaction refinement remain open.
+Lean also proves the numerical inequality `p < 2n` for the secp256k1 field
+prime and subgroup order. Under an explicit at-most-two-points-per-x premise,
+it bounds admissible recovery points and their message group-element targets
+by four. The curve-fiber premise and its connection to Core's accepted keys
+are not proved.
+The pinned app's `ecdsa_recover` helper considers only x=`r`. A second public
+algebraic fixture uses x=`r+n`: the app's ECDSA verifier accepts its signature
+and key at scalar message zero, but neither helper parity reconstructs that
+key. This shows why the helper's candidate count is not an adversary bound.
+No SHA256d preimage, Core transaction, or QSB spend is exhibited.
 
 The closed DER-32 *syntax count expression* has density
 `780555 / 2^65` (about `2^-45.426`), and the analogous DER-20 expression is

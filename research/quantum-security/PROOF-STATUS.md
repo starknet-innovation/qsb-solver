@@ -27,6 +27,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Nonce | Given a fixed recovery point, any new message has a publicly computable verification key | Formalized over a field module. It explains why the hash-derived puzzle signature alone cannot authorize the destination. Bitcoin group parsing and encoding remain open. |
 | Nonce | In the fixed-recovery-scalar field model, one key can satisfy both fixed signatures exactly when their publicly computed recovered scalars coincide | Gives an explicit equality-case equation; real sighash correlations, alternate recovery points and key-byte encodings remain unproved. |
 | Nonce | For a fixed signature and key, each admissible recovery point determines one message group element; the finite set of message targets has cardinality at most the recovery-point set. Opposite points give distinct targets unless their scalar multiples are 2-torsion. | `QSB/Nonce.lean` proves the field-module algebra. It does not prove which secp256k1 points Core admits, how SHA256d digests reduce modulo the group order, or a quantum success bound. A public secp256k1 fixture checks that the same signature/key verifies two distinct scalars; no Bitcoin preimage or spend is shown. |
+| Recovery candidates | Since the secp256k1 field prime is below twice its group order, an admissible x-coordinate reducing to `r` is either `r` or `r+n`. If each x-coordinate has at most two admitted points, there are at most four recovery points and four message group-element targets. | `QSB/RecoveryCandidates.lean` proves the modulus arithmetic and conditional cardinality bound. The two-points-per-x curve/parser premise, infinity and invalid-point exclusions, and Core digest conversion are not formalized. This is a target-set size bound, not a quantum success bound. |
 | Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
@@ -293,6 +294,7 @@ with `solver:`. Line anchors refer to that revision.
 | worker/cpu/bitcoin_tx.py:131 | Legacy sighash and SINGLE bug | Isolated Core mutation evidence; serialization injectivity pending. |
 | worker/cpu/bitcoin_tx.py:199 | FindAndDelete implementation | Must match Core boundary semantics; not replaced by abstract subset deletion in any claimed full proof. |
 | worker/cpu/secp256k1.py | Curve operations and DER/recoverability checks | CPU experiment oracle; full Lean correctness not claimed. |
+| worker/cpu/secp256k1.py:135 | App `ecdsa_recover` reconstructs only x=`r` with a parity flag | An adversary-facing bound cannot inherit this helper's omission of the possible x=`r+n` branch. `evidence/ecdsa-replay-targets.json` includes a public scalar-zero x=`r+n` ECDSA verification whose key the helper cannot recover. The conditional four-point Lean bound includes both x candidates; no Core transaction or SHA256d preimage is shown. |
 | worker/cpu/qsb_pipeline.py:1033 | Round key recovery after deleting selected signatures | Intended `nonceRelation`; adversarial witness equivalence unproved. |
 | src/lib/backup.ts:46 | Persisted authorization and reuse guards | Honest-client game rules, not on-chain enforcement. |
 | src/lib/transactions.ts:309 | Exact-spend checks | Owner authorization boundary; server rejection does not bound Bitcoin attackers. |
@@ -345,8 +347,9 @@ scoped external assumption, or a counterexample:
 6. A multi-target unopened-commitment bound with adaptive disclosures.
 7. A fresh-message, covered-subset puzzle-search bound that applies to QSB's
    variable-subset FindAndDelete construction, with bonus choices and pinning.
-   Its target event admits reused keys if a novel transaction collides under
-   the fixed-signature sighash; the bound must cover that route too. It cannot
+   Its target event admits reused keys if a novel transaction hits any
+   fixed-signature ECDSA recovery target, even without a sighash collision;
+   the bound must cover those routes too. It cannot
    be computed by multiplying two independent DER-hit probabilities. The pin
    and final-round key byte strings can also be equal in the current model;
    distinct-input QROM bounds need a separate equality-case reduction.

@@ -3,6 +3,9 @@
   "pinned_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "observed_app_head": "4389e25077d48354dd85347391b6ca6a47888bd5",
   "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+  "field_prime_hex": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+  "group_order_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
+  "field_prime_lt_twice_order": true,
   "public_fixture_scalars": {
     "x": 7,
     "k": 3,
@@ -15,5 +18,17 @@
   "message_scalar_negative_hex": "2fac39f4ff92aa8dff91d35633b2c0d3266b906832ef2dce94b2fe4f875a47d7",
   "messages_distinct": true,
   "both_ecdsa_verify": true,
-  "both_recover_same_key": true
+  "both_recover_same_key": true,
+  "alternate_x_fixture": {
+    "scope": "ECDSA scalar z=0 only; no SHA256d preimage or Bitcoin transaction",
+    "r": 2,
+    "s": 1,
+    "message_scalar": 0,
+    "recovery_x_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364143",
+    "recovery_y_hex": "36b1aa62eb77c1973025cbcbea9740eed8eacdab8772268b395064453269d1d3",
+    "public_key_hex": "03ad802f2145df548ce1fc418b851cb32669c5a6bb939e6caf744de90310f8f1ff",
+    "signature_hex": "300602010202010101",
+    "ecdsa_verify": true,
+    "app_two_parities_recover_this_key": false
+  }
 }

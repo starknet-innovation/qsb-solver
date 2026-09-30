@@ -22,6 +22,11 @@
 'QSB.opposite_points_distinct_messages' depends on axioms: [propext, Quot.sound]
 'QSB.messageTargets_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.recovery_in_messageTargets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms
+'QSB.RecoveryCandidates.x_coordinate_candidates' depends on axioms: [propext, Quot.sound]
+'QSB.RecoveryCandidates.recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.secp_recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.secp_messageTargets_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_round1_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_round2_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_pool_choices' depends on axioms: [propext, Classical.choice, Quot.sound]

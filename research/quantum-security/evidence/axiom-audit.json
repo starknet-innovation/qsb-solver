@@ -1,5 +1,5 @@
 {
-  "theorem_count": 593,
+  "theorem_count": 598,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2009,6 +2009,26 @@
     ],
     "QSB.RandomOracleSetup.shared_function_union_hit_count": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.recovery_points_card_le_four": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_messageTargets_card_le_four": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_prime_lt_twice_order": [],
+    "QSB.RecoveryCandidates.secp_recovery_points_card_le_four": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.x_coordinate_candidates": [
       "Quot.sound",
       "propext"
     ],

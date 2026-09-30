@@ -87,6 +87,18 @@ on a formal correspondence between that target set and Core's parser. This
 does not bound adaptive quantum searches or the chance of an unauthorized
 spend.
 
+`QSB/Nonce.lean` models fixed-signature ECDSA recovery targets, including the
+possibility that opposite recovery points admit different message scalars for
+one signature and key. `QSB/RecoveryCandidates.lean` proves `p < 2n` for
+secp256k1 and a conditional four-target bound when each x-coordinate admits
+at most two parsed curve points. The curve/parser and Core digest bridges,
+plus any joint quantum hash success bound, remain open. A public algebraic
+fixture is in `evidence/ecdsa-replay-targets.json`.
+The pinned app recovery helper reconstructs only x=`r`; its choice does not
+restrict the recovery points relevant to a consensus attacker model. The same
+fixture file records an x=`r+n` algebraic verification that this helper omits;
+the test uses message scalar zero and supplies no Bitcoin transaction preimage.
+
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
 indices 0–7 revisit gathered signatures, 8 selects the fixed nonce signature,
