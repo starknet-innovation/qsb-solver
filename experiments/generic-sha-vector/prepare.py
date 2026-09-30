@@ -12,7 +12,9 @@ def function(s):
 def main():
     import argparse
     parser=argparse.ArgumentParser();parser.add_argument('output',type=Path);args=parser.parse_args()
-    original=SOURCE.read_bytes();assert hashlib.sha256(original).hexdigest()==EXPECTED
+    original=SOURCE.read_bytes()
+    if hashlib.sha256(original).hexdigest()!=EXPECTED:
+        raise ValueError('Baseline source hash mismatch')
     with tempfile.TemporaryDirectory() as tmp:
         p=Path(tmp)/'subset/tests/gpu_epochs/tree.cu';p.parent.mkdir(parents=True);p.write_bytes(original)
         subprocess.run(['patch','--batch','-p1','-i',str(Path(__file__).with_name('generic-tail-vector.patch'))],cwd=tmp,check=True)

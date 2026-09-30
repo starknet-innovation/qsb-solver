@@ -5,7 +5,7 @@ deadline=$1
 [ -f /run/qsb-shutdown-armed ]
 systemctl is-active --quiet qsb-benchmark-expire.timer
 [ "$((deadline-$(date -u +%s)))" -ge 780 ]
-image=ghcr.io/starknet-innovation/qsb-solver@sha256:c05d39a303971baaca6908b19427158d0428963f16b57c5e823432b50ddf307b
+image=nvidia/cuda:12.8.1-devel-ubuntu22.04@sha256:6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7
 timeout 300 docker pull "$image" >/var/tmp/qsb-sha-pull.log 2>&1
 [ "$((deadline-$(date -u +%s)))" -ge 780 ]
 mkdir /var/tmp/qsb-sha-results
