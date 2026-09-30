@@ -45,3 +45,21 @@ jobs:
           name: sha-vector-compile
           path: results/
           retention-days: 14
+  isolated-solver-pair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build both sm86 solvers without running them
+        run: |
+          docker build -f experiments/generic-sha-vector/Dockerfile -t qsb-sha-pair .
+          id=$(docker create qsb-sha-pair)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sha-vector-solver-pair
+          path: results/
+          retention-days: 14
