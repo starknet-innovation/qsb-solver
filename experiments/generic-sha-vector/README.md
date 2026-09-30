@@ -23,3 +23,11 @@ Full solver compilation passed in native Linux CI run [36693028154](https://gith
 The runner requires one A10G and records 24 interleaved startup-inclusive samples, three baseline/candidate pairs per context, each covering 2^29 ranks from zero. Each process has a 120-second limit within a 600-second total deadline. Complete output, exact attempted count, no hit files, and both frozen binary identities are required for a gain summary. Unexpected hits stop timing for CPU review. Failures retain diagnostics and never produce a partial gain claim. Output is exclusive on creation and progress is fsynced. Projected full-range time is an estimate, not a measured full-range result.
 
 Five local tests cover source preparation and timing acceptance/rejection; CI runs them before compiling the native gate. No matched GPU timings have been collected. The subsequent London 2a attempt also returned explicit capacity rejection; independent cleanup confirmed no allocation or remaining temporary resources.
+
+## Full-binary sampled range prerequisite
+
+`run_ranges.py BUNDLE BUNDLE/regression.json` runs 32 exact-binary checks: both binaries on four ranges for each of the four synthetic benchmark contexts. The ranges are `(start,count)` = `(0,1)`, `(63,257)`, `(65535,65537)`, `(0,2^26)`. The committed public fixture file is pinned to SHA256 `e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9`. This is sampled range/output regression only, not full CPU differential, all-alignments coverage or a fresh withdrawal.
+
+The timing runner now refuses to start unless `BUNDLE/regression.json` reports completion, contains every expected successful sample and matches both binary hashes and the fixture hash. It records the regression receipt hash. These checks bind local evidence; they are not remote attestation. Seven local tests pass, including incomplete inventory, wrong rank/count, failed process, unexpected hit and shortened completion rejection. Neither the sampled native regression nor timing has run on a GPU yet.
+
+Keep correctness and timing in separately bounded scopes if the remaining host deadline cannot accommodate both. The 25-minute cleanup deadline must never be extended to finish timing.

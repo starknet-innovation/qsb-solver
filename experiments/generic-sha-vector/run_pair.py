@@ -20,8 +20,8 @@ FULL_RANGE = 1 << 34
 NAMES = {'wpkh-round1','wpkh-round2','taproot-round1','taproot-round2'}
 
 
-def check_sample(row):
-    if row['count'] != COUNT or row['rank'] != 0:
+def check_sample(row, count=COUNT, rank=0):
+    if row['count'] != count or row['rank'] != rank:
         raise ValueError('wrong sample range')
     seconds=row['seconds']
     if type(seconds) not in (int,float) or not math.isfinite(seconds) or not 0 < seconds <= 120:
@@ -31,7 +31,7 @@ def check_sample(row):
     if len(re.findall(r'\[GPU 0\] Done enum:',row['log'])) != 1:
         raise ValueError('missing unique completion')
     statuses=re.findall(r'^STATUS=.*$',row['summary'],re.M)
-    if len(statuses)!=1 or not re.fullmatch(r'STATUS=EXHAUSTED \d+ total_attempts='+str(COUNT)+r' elapsed_s=\d+ hits=0',statuses[0]):
+    if len(statuses)!=1 or not re.fullmatch(r'STATUS=EXHAUSTED \d+ total_attempts='+str(count)+r' elapsed_s=\d+ hits=0',statuses[0]):
         raise ValueError('incomplete or shortened sample')
     if row['hitFiles'] or re.search(r'^HIT ',row['summary'],re.M):
         raise ValueError('unexpected hit requires CPU review')
@@ -43,13 +43,13 @@ class SampleFailure(RuntimeError):
         self.row=row
 
 
-def execute(binary, fixture, deadline):
+def execute(binary, fixture, deadline, count=COUNT, rank=0):
     remaining=min(120,deadline-time.monotonic())
     if remaining<=0:raise TimeoutError('benchmark deadline')
     with tempfile.TemporaryDirectory() as directory:
         root=Path(directory);(root/'params.bin').write_bytes(base64.b64decode(fixture['params'],validate=True))
         command=[str(binary),'params.bin','0',str(fixture['sequence']),str(fixture['locktime']),
-                 '1','0','single_hash','rank_start=0',f'rank_count={COUNT}']
+                 '1','0','single_hash',f'rank_start={rank}',f'rank_count={count}']
         started=time.monotonic()
         process=subprocess.Popen(command,cwd=root,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,start_new_session=True)
         timed_out=False
@@ -65,12 +65,12 @@ def execute(binary, fixture, deadline):
             process.communicate();raise
         seconds=time.monotonic()-started
         summary=root/'results/digest_summary_gpu0.txt'
-        row=dict(count=COUNT,rank=0,seconds=seconds,exit=process.returncode,timedOut=timed_out,
+        row=dict(count=count,rank=rank,seconds=seconds,exit=process.returncode,timedOut=timed_out,
                  log=output.decode(errors='replace'),summary=summary.read_text() if summary.exists() else '',
                  hitFiles={p.name:p.read_text() for p in (root/'results').glob('*hit*')})
         try:
             if timed_out:raise ValueError('sample timed out')
-            check_sample(row)
+            check_sample(row,count,rank)
         except ValueError as error:
             row['failureReason']=str(error)
             raise SampleFailure(row) from error
@@ -123,13 +123,19 @@ def main():
         if hashlib.sha256(path.read_bytes()).hexdigest()!=expected:raise ValueError('binary hash mismatch')
     raw=(bundle/'fixtures.json').read_bytes()
     if hashlib.sha256(raw).hexdigest()!=fixture_hash:raise ValueError('fixture hash mismatch')
+    from run_ranges import validate as validate_ranges
+    regression_raw=(bundle/'regression.json').read_bytes()
+    regression=json.loads(regression_raw)
+    if regression.get('status')!='completed':raise ValueError('range regression not completed')
+    validate_ranges(regression)
+    if regression['fixtureSha256']!=fixture_hash:raise ValueError('regression fixture mismatch')
     fixtures=json.loads(raw)['benchmark']
     if len(fixtures)!=4 or {f['name'] for f in fixtures}!=NAMES:raise ValueError('fixture inventory mismatch')
     # Name and driver only: the UUID identifies the physical GPU and stays out of public evidence.
     gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,driver_version','--format=csv,noheader'],text=True).strip()
     if len(gpu.splitlines())!=1 or 'A10G' not in gpu:raise ValueError('one A10G required')
     result=dict(status='running',baselineSha256=BASELINE,candidateSha256=SUB,gpu=gpu,
-                fixtureSha256=fixture_hash,samples=[],freshWithdrawal=False,grantsRangeCredit=False)
+                fixtureSha256=fixture_hash,regressionSha256=hashlib.sha256(regression_raw).hexdigest(),samples=[],freshWithdrawal=False,grantsRangeCredit=False)
     with output.open('x') as stream:
         json.dump(result,stream);stream.flush();os.fsync(stream.fileno())
     sync_directory(output.parent)
