@@ -247,6 +247,9 @@
 'QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FirstNegativeRange.negative_roundtrip' depends on axioms: [propext]
 'QSB.FirstNegativeRange.negative_encode' does not depend on any axioms
 'QSB.FirstNegativeRange.depth_roundtrip' depends on axioms: [propext]
@@ -259,6 +262,20 @@
 'QSB.FirstNegativeRange.negative_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstNegativeRange.negative_roll_cannot_hash_match' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndexSign.negative_encoding_has_sign_bit' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndexSign.parse_sign_bit_nonpositive' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndexSign.parsed_bytes_are_short' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndexSign.negative_encoding_never_parses_positive' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndexSign.encoded_below_152_parses_below_152' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeAll.negative_min_output' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeAll.add_output' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeAll.add_success_parses_operand' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeAll.roll_success_parses_index' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeAll.rolled_hash_has_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

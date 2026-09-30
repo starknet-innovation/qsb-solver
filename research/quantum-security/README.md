@@ -44,8 +44,15 @@ implies `n=2+i` and lock commitment `152+i` for some `i<150`. The first-index
 prefix theorem allows arbitrary lower cells within the modeled stack limit.
 `QSB/FirstNegativeRange.lean` additionally covers parsed values −1 through
 −151: their computed roll depths are 150 down to 0, and none can produce a
-matching `HASH160` output. More-negative values, arbitrary-scriptSig
-extraction, later selections, and Core refinement remain open.
+matching `HASH160` output. `QSB/ByteIndexSign.lean` and
+`QSB/FirstNegativeAll.lean` extend the local exclusion to every negative
+parsed first index, conditional on the actual `OP_MIN`, `OP_ADD`, and
+`OP_ROLL` steps succeeding. Arbitrary-scriptSig extraction, later
+selections, and Core refinement remain open.
+Together, the byte-model local-step theorem says that any parsed first index
+below 152 whose first signed roll leaves an opening's `HASH160` value on top
+must equal `2+i` for a fixed commitment `152+i`, with `i<150`. This does not
+yet derive the reached steps and hash comparison from every accepted full run.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as

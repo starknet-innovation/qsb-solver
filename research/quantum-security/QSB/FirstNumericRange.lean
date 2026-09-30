@@ -197,4 +197,39 @@ theorem inrange_roll_hash_hit_has_commitment_origin (hashes : Hashes)
         exact rolled.1
       exact inrange_hash_hit_has_commitment_origin hashes opening tail n hit
 
+/-- Explicit local-step extraction for any raw encoding of an in-range
+nonnegative first index. The retained bytes and computed offset need not be
+assumed canonical: the successful MIN and ADD steps determine them. -/
+theorem inrange_first_roll_has_commitment_origin (hashes : Hashes)
+    (raw retained offset opening : Bytes) (tail rest : List Bytes)
+    (n : Fin 152) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some (Int.ofNat n.val))
+    (minResult : step hashes .min
+      (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail)) outcomes 6) =
+      some (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7))
+    (addResult : step hashes .add
+      (State.mk ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8) =
+      some (State.mk (offset :: retained :: (fixedRegion ++ tail)) outcomes 9))
+    (rollResult : step hashes .roll
+      (State.mk (offset :: retained :: (fixedRegion ++ tail)) outcomes 9) =
+      some (State.mk (hashes.h160 opening :: rest) outcomes 10)) :
+    ∃ i : Fin 150,
+      n.val = 2 + i.val ∧
+      fixedRegion[152 + i.val]? = some (hashes.h160 opening) := by
+  have minExact := inrange_index_min_step hashes raw n
+    (fixedRegion ++ tail) outcomes 6 parsed (by omega)
+  rw [minExact] at minResult
+  have retainedEq : retained = canonicalIndex n := by
+    simpa using minResult.symm
+  subst retained
+  have addExact := inrange_index_add_step hashes n
+    (canonicalIndex n :: (fixedRegion ++ tail)) outcomes 8 (by omega)
+  rw [addExact] at addResult
+  have offsetEq : offset = signedOffset n := by
+    simpa using addResult.symm
+  subst offset
+  exact inrange_roll_hash_hit_has_commitment_origin hashes opening tail rest
+    n outcomes 9 (by omega) rollResult
+
 end QSB.FirstNumericRange

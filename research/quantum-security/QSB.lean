@@ -15,6 +15,8 @@ import QSB.FirstOvershoot
 import QSB.FirstIndexMap
 import QSB.FirstNumericRange
 import QSB.FirstNegativeRange
+import QSB.ByteIndexSign
+import QSB.FirstNegativeAll
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -246,6 +248,7 @@ import QSB.Reduction
 #print axioms QSB.FirstNumericRange.inrange_index_roll_step
 #print axioms QSB.FirstNumericRange.inrange_first_index_prefix
 #print axioms QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin
+#print axioms QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin
 #print axioms QSB.FirstNegativeRange.negative_roundtrip
 #print axioms QSB.FirstNegativeRange.negative_encode
 #print axioms QSB.FirstNegativeRange.depth_roundtrip
@@ -258,6 +261,18 @@ import QSB.Reduction
 #print axioms QSB.FirstNegativeRange.negative_first_index_prefix
 #print axioms QSB.FirstNegativeRange.negative_roll_cannot_hash_match
 #print axioms QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash
+#print axioms QSB.ByteIndexSign.negative_encoding_has_sign_bit
+#print axioms QSB.ByteIndexSign.parse_sign_bit_nonpositive
+#print axioms QSB.ByteIndexSign.parsed_bytes_are_short
+#print axioms QSB.ByteIndexSign.negative_encoding_never_parses_positive
+#print axioms QSB.ByteIndexSign.encoded_below_152_parses_below_152
+#print axioms QSB.FirstNegativeAll.negative_min_output
+#print axioms QSB.FirstNegativeAll.add_output
+#print axioms QSB.FirstNegativeAll.add_success_parses_operand
+#print axioms QSB.FirstNegativeAll.roll_success_parses_index
+#print axioms QSB.FirstNegativeAll.rolled_hash_has_source
+#print axioms QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash
+#print axioms QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

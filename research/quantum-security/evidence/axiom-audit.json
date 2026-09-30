@@ -1,5 +1,5 @@
 {
-  "theorem_count": 254,
+  "theorem_count": 267,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -78,6 +78,26 @@
       "propext"
     ],
     "QSB.ByteIndex.positive_152": [
+      "propext"
+    ],
+    "QSB.ByteIndexSign.encoded_below_152_parses_below_152": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexSign.negative_encoding_has_sign_bit": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexSign.negative_encoding_never_parses_positive": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexSign.parse_sign_bit_nonpositive": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexSign.parsed_bytes_are_short": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.ByteLayout.comparisons_follow_hash160": [],
@@ -163,6 +183,37 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FirstNegativeAll.add_output": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.add_success_parses_operand": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.negative_min_output": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.roll_success_parses_index": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeAll.rolled_hash_has_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstNegativeRange.depth_encode": [],
     "QSB.FirstNegativeRange.depth_roundtrip": [
       "propext"
@@ -208,6 +259,11 @@
     "QSB.FirstNumericRange.encode_canonical_index": [],
     "QSB.FirstNumericRange.encode_signed_offset": [],
     "QSB.FirstNumericRange.inrange_first_index_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin": [
       "Classical.choice",
       "Quot.sound",
       "propext"
