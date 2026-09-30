@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 583 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 589 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -383,9 +383,16 @@ out-of-range recovery key fails on that same transaction. This does not
 establish full-lock acceptance with an alternate transaction layout.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
-shape and the opening hash equalities for the constructed witness. Its key is
-provided independently; nonce binding, the final puzzle, a transaction-byte
-extractor, and Core acceptance still need separate proofs or assumptions.
+shape and the opening hash equalities for the constructed witness. The earlier
+theorem permits an independently supplied key; a new full-run theorem instead
+uses the actual last reached multisignature key. The generated late puzzle
+segment proves that its CHECKSIGVERIFY signature is SHA256 of that same key.
+Under explicit successful, encoding-sound predicates for the reached final
+ten-pair scan and late puzzle check, the fixed final nonce verifies against
+this key and its SHA256 is strict DER in the source-shaped Lean predicate.
+This removes a freely chosen key from the modeled final-round witness, but
+does not establish Core checker equivalence, the ECDSA nonce equation for the
+real legacy sighash, a transaction extractor, or a quantum puzzle bound.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

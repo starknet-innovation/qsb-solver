@@ -329,6 +329,74 @@ theorem accepted_final_setup_witness_option (hashes : Hashes)
                   simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
                     using atEleven
 
+/-- The first key at the final-setup entrance is moved by the shallow roll,
+then carried below nine deeper rolled keys and the final count push. It is
+therefore the last reached CHECKMULTISIG key, at stack offset ten. -/
+theorem accepted_final_setup_first_key (hashes : Hashes)
+    (first : Bytes) (rest : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (beforeCheck : State)
+    (accepted : run hashes finalSetup
+      (State.mk (first :: rest) outcomes cost) = some beforeCheck) :
+    beforeCheck.stack[10]? = some first := by
+  have setupSplit : finalSetup =
+      .push [0x0a] ::
+        ([.push [0x01], .roll] ++
+          (pairOps keyIndexBytes.tail ++ [.push [0x0a]])) := by decide
+  rw [setupSplit] at accepted
+  obtain ⟨afterCount, countPush, _, remaining⟩ :=
+    run_cons_success hashes (.push [0x0a])
+      ([.push [0x01], .roll] ++
+        (pairOps keyIndexBytes.tail ++ [.push [0x0a]]))
+      (State.mk (first :: rest) outcomes cost) beforeCheck accepted
+  have countShape := push_success_shape hashes [0x0a]
+    (first :: rest) outcomes cost afterCount countPush
+  subst afterCount
+  rw [run_append] at remaining
+  cases firstRun : run hashes [.push [0x01], .roll]
+      (State.mk ([0x0a] :: first :: rest) outcomes cost) with
+  | none => simp [firstRun] at remaining
+  | some afterFirst =>
+      have firstShape := accepted_first_key_pair_shape hashes first rest
+        outcomes cost afterFirst firstRun
+      simp only [firstRun, Option.bind_some] at remaining
+      cases afterFirst with
+      | mk firstStack firstOutcomes firstCost =>
+          change firstStack = first :: [0x0a] :: rest at firstShape
+          subst firstStack
+          rw [run_append] at remaining
+          cases tailRun : run hashes (pairOps keyIndexBytes.tail)
+              (State.mk (first :: [0x0a] :: rest)
+                firstOutcomes firstCost) with
+          | none => simp [tailRun] at remaining
+          | some afterTail =>
+              have decoded : ∀ pair ∈ keyIndexBytes.tail,
+                  ByteIndex.parseScriptNum pair.1 =
+                    some (Int.ofNat pair.2) := by decide
+              have safe : KeyRolls.safeIndices 0
+                  (keyIndexBytes.tail.map Prod.snd) := by
+                simp [keyIndexBytes, KeyRolls.safeIndices]
+              have firstAt : (first :: [0x0a] :: rest)[0]? =
+                  some first := rfl
+              have marker := accepted_pairs_preserve_marker hashes
+                keyIndexBytes.tail 0 (first :: [0x0a] :: rest)
+                firstOutcomes firstCost afterTail first decoded safe
+                firstAt tailRun
+              have atNine : afterTail.stack[9]? = some first := by
+                simpa [keyIndexBytes] using marker
+              simp only [tailRun, Option.bind_some] at remaining
+              cases afterTail with
+              | mk tailStack tailOutcomes tailCost =>
+                  obtain ⟨afterLastPush, lastPush, _, finished⟩ :=
+                    run_cons_success hashes (.push [0x0a]) []
+                      (State.mk tailStack tailOutcomes tailCost)
+                      beforeCheck remaining
+                  have lastShape := push_success_shape hashes [0x0a]
+                    tailStack tailOutcomes tailCost afterLastPush lastPush
+                  subst afterLastPush
+                  simp [run] at finished
+                  cases finished
+                  simpa using atNine
+
 theorem accepted_final_setup_witness_cell (hashes : Hashes)
     (first marker : Bytes) (rest : List Bytes)
     (outcomes : List Bool) (cost p : Nat) (beforeCheck : State)

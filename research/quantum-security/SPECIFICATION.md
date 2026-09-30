@@ -193,9 +193,14 @@ the traced positions in reverse draw order; the remaining slots contain the
 fixed nonce and empty NULLDUMMY byte. `QSB/FinalRoundWitness.lean` uses an
 executable lookup over the seven recorded opening pairs to populate the
 `RoundWitness` shape and valid
-opening fields used by the abstract reduction. Its key is supplied separately;
-the theorem does not derive nonce binding, a puzzle hit, a transaction-byte
-extractor, or Core acceptance.
+opening fields used by the abstract reduction. The earlier shape theorem
+accepts a separately supplied key. A newer full-run theorem uses the key in
+the actual last reached final multisignature slot and proves that the late
+puzzle CHECKSIGVERIFY receives SHA256 of those same bytes. Conditional on
+encoding-sound successful final and puzzle checks, SHA256 of this reached key
+is strict DER and the fixed nonce checks against it. The real transaction
+sighash/ECDSA nonce relation, compiled-Core refinement, and a transaction-byte
+extractor remain open.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's

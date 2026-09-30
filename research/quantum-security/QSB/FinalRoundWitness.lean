@@ -1,4 +1,6 @@
 import QSB.FinalBonusIndices
+import QSB.ByteLatePuzzle
+import QSB.FinalScriptCode
 import QSB.Attack
 
 /-!
@@ -155,5 +157,103 @@ theorem matched_run_shape_and_openings_verify_all (hashes : Hashes)
   rw [DERSyntax.verifyAllEncoding_nonempty sig
     (verifyNonempty sig pub success)] at encoded
   exact encoded
+
+/-- Unlike the earlier trace bridge, the witness key is fixed by the actual
+last reached CHECKMULTISIG key. The same bytes were SHA256-hashed into the
+late puzzle CHECKSIGVERIFY signature. Successful Core signature verification
+and transaction-bound ECDSA relations remain external obligations. -/
+theorem matched_run_reached_key_and_puzzle_signature (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify : Bytes → Bytes → Bool)
+    (verifyNonempty : ∀ sig key, verify sig key = true → sig ≠ [])
+    (verifyEncoding : ∀ sig key, verify sig key = true →
+      DERSyntax.verifyAllEncoding sig = true)
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true) :
+    ∃ (w : RoundWitness (Fin 150) Bytes Bytes)
+      (beforeVerify beforeSuffix beforeCheck : State),
+      FinalRoundShape w ∧
+      OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening ∧
+      run hashes (ByteLayout.program.take 856) initial = some beforeVerify ∧
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
+      beforeCheck.stack[10]? = some w.key ∧
+      beforeVerify.stack[1]? = some (hashes.h256 w.key) ∧
+      run hashes [.checksigverify] beforeVerify = some beforeSuffix ∧
+      verify PoolRollInvariant.finalNonce w.key = true := by
+  obtain ⟨trace, a, b, beforeCheck, reached,
+    firstSlot, lastSlot, signedSlots, nonceSlot, _dummySlot,
+    seven, hits, _different, _aUnopened, _bUnopened, distinct, _nine⟩ :=
+      FinalBonusIndices.matched_full_run_nine_positions_verify_all
+        hashes initial final accepted verify verifyNonempty verifyEncoding matched
+  obtain ⟨key, beforeVerify, beforeSuffix, reachedCheck,
+    reachedPuzzle, reachedKey, verifyRun, sigAt, keyAt⟩ :=
+      ByteLatePuzzle.accepted_whole_program_final_puzzle_key
+        hashes initial final accepted
+  have sameCheck : reachedCheck = beforeCheck :=
+    Option.some.inj (reachedKey.symm.trans reached)
+  subst reachedCheck
+  have pairFacts := FinalScriptCode.matched_reached_pairs
+    beforeCheck.stack trace a b lastSlot firstSlot signedSlots nonceSlot
+    seven verify (matched beforeCheck reached)
+  obtain ⟨lastKey, lastAt, nonceVerified⟩ := pairFacts.2
+  have sameKey : lastKey = key :=
+    Option.some.inj (lastAt.symm.trans keyAt)
+  subst lastKey
+  have shapeAndOpen := witnessFromTrace_shape_and_openings
+    hashes trace a b key seven distinct hits
+  exact ⟨witnessFromTrace trace a b key,
+    beforeVerify, beforeSuffix, beforeCheck,
+    shapeAndOpen.1, shapeAndOpen.2, reachedPuzzle,
+    reached, keyAt, sigAt, verifyRun, nonceVerified⟩
+
+/-- If the reached late CHECKSIGVERIFY pair is accepted by a verifier whose
+successful checks pass the VERIFY_ALL encoding gate, SHA256 of the *actual*
+last final multisignature key is strict DER. The same key is checked by the
+fixed final nonce. The pair verifiers and their links to Core remain explicit
+premises, so this is not yet a consensus extraction theorem. -/
+theorem matched_run_reached_key_der_puzzle (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify puzzleVerify : Bytes → Bytes → Bool)
+    (verifyNonempty : ∀ sig key, verify sig key = true → sig ≠ [])
+    (verifyEncoding : ∀ sig key, verify sig key = true →
+      DERSyntax.verifyAllEncoding sig = true)
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true)
+    (puzzleVerifyEncoding : ∀ sig pub,
+      puzzleVerify sig pub = true →
+      DERSyntax.verifyAllEncoding sig = true)
+    (puzzleMatched : ∀ beforeVerify : State,
+      run hashes (ByteLayout.program.take 856) initial = some beforeVerify →
+      puzzleVerify (beforeVerify.stack[1]?.getD [])
+        (beforeVerify.stack[0]?.getD []) = true) :
+    ∃ w : RoundWitness (Fin 150) Bytes Bytes,
+      FinalRoundShape w ∧
+      OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening ∧
+      verify PoolRollInvariant.finalNonce w.key = true ∧
+      DERSyntax.valid (hashes.h256 w.key) = true := by
+  obtain ⟨w, beforeVerify, _beforeSuffix, _beforeCheck,
+    shape, openings, reachedPuzzle, _reachedCheck, _keyAt,
+    sigAt, _verifyRun, nonceVerified⟩ :=
+      matched_run_reached_key_and_puzzle_signature
+        hashes initial final accepted verify verifyNonempty verifyEncoding matched
+  have encoded := puzzleVerifyEncoding _ _
+    (puzzleMatched beforeVerify reachedPuzzle)
+  have sigEq : beforeVerify.stack[1]?.getD [] = hashes.h256 w.key := by
+    simp [sigAt]
+  rw [sigEq] at encoded
+  have nonempty : hashes.h256 w.key ≠ [] := by
+    intro empty
+    have width := hashes.h256_width w.key
+    simp [empty] at width
+  rw [DERSyntax.verifyAllEncoding_nonempty _ nonempty] at encoded
+  exact ⟨w, shape, openings, nonceVerified, encoded⟩
 
 end QSB.FinalRoundWitness

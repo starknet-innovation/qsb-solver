@@ -348,6 +348,7 @@ import QSB.Reduction
 #print axioms QSB.ByteFinalCounts.accepted_pairs_preserve_shallower_option
 #print axioms QSB.ByteFinalCounts.accepted_first_key_pair_shape
 #print axioms QSB.ByteFinalCounts.accepted_final_setup_witness_option
+#print axioms QSB.ByteFinalCounts.accepted_final_setup_first_key
 #print axioms QSB.ByteFinalCounts.accepted_final_setup_witness_cell
 #print axioms QSB.ByteFinalCounts.successful_final_check_dummy_empty
 #print axioms QSB.ByteFinalCounts.accepted_final_setup_count_operands
@@ -360,6 +361,7 @@ import QSB.Reduction
 #print axioms QSB.ByteLatePuzzle.late_indices_decode
 #print axioms QSB.ByteLatePuzzle.accepted_dup_sha256_shape
 #print axioms QSB.ByteLatePuzzle.accepted_checksigverify_tail
+#print axioms QSB.ByteLatePuzzle.accepted_late_puzzle_key
 #print axioms QSB.ByteLatePuzzle.accepted_late_preserves_witness_option
 #print axioms QSB.ByteLatePuzzle.accepted_late_final_witness_origin
 #print axioms QSB.ByteLatePuzzle.accepted_late_final_dummy_source_empty
@@ -367,6 +369,8 @@ import QSB.Reduction
 #print axioms QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty
 #print axioms QSB.ByteLatePuzzle.generated_late_final_suffix
 #print axioms QSB.ByteLatePuzzle.generated_late_final_check_split
+#print axioms QSB.ByteLatePuzzle.accepted_late_final_puzzle_key
+#print axioms QSB.ByteLatePuzzle.accepted_whole_program_final_puzzle_key
 #print axioms QSB.ByteLatePuzzle.accepted_generated_final_witness_origins
 #print axioms QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty
 #print axioms QSB.FinalBonusBoundary.shallow_roll_tenth_source
@@ -601,6 +605,8 @@ import QSB.Reduction
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all
+#print axioms QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature
+#print axioms QSB.FinalRoundWitness.matched_run_reached_key_der_puzzle
 #print axioms QSB.DERHeaderBound.byte_ofFn
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective

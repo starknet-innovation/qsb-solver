@@ -146,7 +146,11 @@ Core's actual scan. The per-pair verifier must use the one shared scriptCode
 obtained by Core's sequential FindAndDelete on those ten signatures and the
 real legacy sighash of that transaction. It must prove that a true pair check
 is nonempty and encoding-valid. The resulting key still needs a transaction-
-bound nonce relation and the final hash-to-DER puzzle condition before it can
-populate `ExtractedRound`; pinning requires the analogous first signature
+bound nonce relation and Core equivalence of the late puzzle encoding check.
+Within the byte model, `QSB/FinalRoundWitness.lean` now proves that SHA256 of
+this exact reached key is the late puzzle signature, and derives strict-DER
+syntax if that reached check is encoding-sound. Core and real ECDSA/sighash
+refinement are still required before this can populate `ExtractedRound`;
+pinning requires the analogous first signature
 relation. The joint adaptive quantum hash event and query bound remain after
 that extraction step.

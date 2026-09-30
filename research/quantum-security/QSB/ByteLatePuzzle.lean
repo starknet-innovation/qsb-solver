@@ -105,6 +105,78 @@ theorem accepted_checksigverify_tail (hashes : Hashes)
                       cases finished
                       exact ⟨pub, sig, tail, rfl, shape⟩
 
+/-- The bytes SHA256-hashed as the late puzzle signature are exactly the
+key left on top after CHECKSIGVERIFY. This identifies the actual consumed
+signature bytes in the byte model; the successful signature Boolean remains
+external to Core. -/
+theorem accepted_late_puzzle_key (hashes : Hashes)
+    (before after : State)
+    (accepted : run hashes lateOps before = some after) :
+    ∃ key beforeVerify,
+      run hashes (lateOps.take 6) before = some beforeVerify ∧
+      beforeVerify.stack[1]? = some (hashes.h256 key) ∧
+      after.stack[0]? = some key ∧
+      run hashes [.checksigverify] beforeVerify = some after := by
+  rw [generated_late_ops] at accepted
+  have split : ([.push [0x4c, 0x02], .roll, .dup, .sha256,
+      .push [0x4e, 0x02], .roll, .checksigverify] : List Op) =
+      [.push [0x4c, 0x02], .roll] ++
+      ([.dup, .sha256] ++
+        ([.push [0x4e, 0x02], .roll] ++ [.checksigverify])) := rfl
+  rw [split, run_append] at accepted
+  cases firstRun : run hashes [.push [0x4c, 0x02], .roll] before with
+  | none => simp [firstRun] at accepted
+  | some afterFirst =>
+      simp only [firstRun, Option.bind_some] at accepted
+      rw [run_append] at accepted
+      cases hashRun : run hashes [.dup, .sha256] afterFirst with
+      | none => simp [hashRun] at accepted
+      | some afterHash =>
+          obtain ⟨key, xs, _, hashShape⟩ :=
+            accepted_dup_sha256_shape hashes afterFirst afterHash hashRun
+          simp only [hashRun, Option.bind_some] at accepted
+          rw [run_append] at accepted
+          cases secondRun : run hashes [.push [0x4e, 0x02], .roll]
+              afterHash with
+          | none => simp [secondRun] at accepted
+          | some beforeVerify =>
+              cases afterHash with
+              | mk hashStack hashOutcomes hashCost =>
+                  change hashStack = hashes.h256 key :: key :: xs at hashShape
+                  have sigPreserved := accepted_pair_preserves_shallower_option
+                    hashes [0x4e, 0x02] 590 0 hashStack
+                    hashOutcomes hashCost beforeVerify late_indices_decode.2
+                    (by omega) secondRun
+                  have keyPreserved := accepted_pair_preserves_shallower_option
+                    hashes [0x4e, 0x02] 590 1 hashStack
+                    hashOutcomes hashCost beforeVerify late_indices_decode.2
+                    (by omega) secondRun
+                  have sigAt : beforeVerify.stack[1]? =
+                      some (hashes.h256 key) := by
+                    rw [hashShape] at sigPreserved
+                    simpa using sigPreserved
+                  have keyAt : beforeVerify.stack[2]? = some key := by
+                    rw [hashShape] at keyPreserved
+                    simpa using keyPreserved
+                  simp only [secondRun, Option.bind_some] at accepted
+                  obtain ⟨_pub, _sig, tail, verifyShape, afterShape⟩ :=
+                    accepted_checksigverify_tail hashes beforeVerify after
+                      accepted
+                  have keyTail : tail[0]? = some key := by
+                    rw [verifyShape] at keyAt
+                    simpa using keyAt
+                  have prefixOps : lateOps.take 6 =
+                      ([.push [0x4c, 0x02], .roll] ++
+                        [.dup, .sha256]) ++
+                        [.push [0x4e, 0x02], .roll] := by decide
+                  have prefixRun : run hashes (lateOps.take 6) before =
+                      some beforeVerify := by
+                    rw [prefixOps, run_append, run_append]
+                    simp [firstRun, hashRun, secondRun]
+                  refine ⟨key, beforeVerify, prefixRun, sigAt, ?_, accepted⟩
+                  rw [afterShape]
+                  exact keyTail
+
 /-- Every shallow cell through the prospective NULLDUMMY slot survives the
 exact puzzle segment, shifted one place below the deep key moved to the top.
 This statement starts after the last bonus roll and assumes only successful
@@ -277,6 +349,83 @@ theorem generated_late_final_suffix :
 theorem generated_late_final_check_split :
     ByteLayout.program.drop 850 =
       (lateOps ++ ByteFinalCounts.finalSetup) ++ [.checkmultisig] := by decide
+
+/-- In every successful final byte-model suffix, the signature consumed by
+the late puzzle CHECKSIGVERIFY is SHA256 of the last reached multisignature
+key. The modeled signature outcomes remain externally supplied. -/
+theorem accepted_late_final_puzzle_key (hashes : Hashes)
+    (afterBonus final : State)
+    (accepted : run hashes (ByteLayout.program.drop 850)
+      afterBonus = some final) :
+    ∃ key beforeVerify beforeSuffix beforeCheck,
+      run hashes lateOps afterBonus = some beforeSuffix ∧
+      run hashes (lateOps.take 6) afterBonus = some beforeVerify ∧
+      run hashes [.checksigverify] beforeVerify = some beforeSuffix ∧
+      beforeVerify.stack[1]? = some (hashes.h256 key) ∧
+      run hashes ByteFinalCounts.finalSetup beforeSuffix = some beforeCheck ∧
+      beforeCheck.stack[10]? = some key := by
+  rw [generated_late_final_check_split] at accepted
+  obtain ⟨beforeCheck, prefixRun⟩ := successful_prefix hashes
+    (lateOps ++ ByteFinalCounts.finalSetup) [.checkmultisig]
+    afterBonus final accepted
+  rw [run_append] at prefixRun
+  cases lateRun : run hashes lateOps afterBonus with
+  | none => simp [lateRun] at prefixRun
+  | some beforeSuffix =>
+      simp only [lateRun, Option.bind_some] at prefixRun
+      obtain ⟨key, beforeVerify, puzzlePrefix, sigAt, keyAt,
+        verifyRun⟩ :=
+        accepted_late_puzzle_key hashes afterBonus beforeSuffix lateRun
+      cases beforeSuffix with
+      | mk stack outcomes cost =>
+          cases stack with
+          | nil => simp at keyAt
+          | cons first rest =>
+              have firstKey : first = key := by simpa using keyAt
+              subst first
+              have keyReached := ByteFinalCounts.accepted_final_setup_first_key
+                hashes key rest outcomes cost beforeCheck prefixRun
+              exact ⟨key, beforeVerify,
+                State.mk (key :: rest) outcomes cost, beforeCheck,
+                rfl, puzzlePrefix, verifyRun, sigAt, prefixRun, keyReached⟩
+
+/-- The same puzzle-to-last-key relation for a successful execution of all
+880 generated byte-model opcodes, from an arbitrary initial byte stack. -/
+theorem accepted_whole_program_final_puzzle_key (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final) :
+    ∃ key beforeVerify beforeSuffix beforeCheck,
+      run hashes (ByteLayout.program.take 856) initial = some beforeVerify ∧
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
+      run hashes [.checksigverify] beforeVerify = some beforeSuffix ∧
+      beforeVerify.stack[1]? = some (hashes.h256 key) ∧
+      beforeCheck.stack[10]? = some key := by
+  have split : ByteLayout.program =
+      ByteLayout.program.take 850 ++ ByteLayout.program.drop 850 :=
+    (List.take_append_drop 850 ByteLayout.program).symm
+  rw [split, run_append] at accepted
+  cases prefixRun : run hashes (ByteLayout.program.take 850) initial with
+  | none => simp [prefixRun] at accepted
+  | some afterBonus =>
+      simp only [prefixRun, Option.bind_some] at accepted
+      obtain ⟨key, beforeVerify, beforeSuffix, beforeCheck,
+        lateRun, puzzlePrefix, verifyRun, sigAt, setupRun, keyAt⟩ :=
+          accepted_late_final_puzzle_key hashes afterBonus final accepted
+      have puzzleSplit : ByteLayout.program.take 856 =
+          ByteLayout.program.take 850 ++ lateOps.take 6 := by decide
+      have puzzleReached : run hashes (ByteLayout.program.take 856)
+          initial = some beforeVerify := by
+        rw [puzzleSplit, run_append]
+        simp [prefixRun, puzzlePrefix]
+      have precheckSplit : ByteLayout.program.take 879 =
+          (ByteLayout.program.take 850 ++ lateOps) ++
+            ByteFinalCounts.finalSetup := by decide
+      have reached : run hashes (ByteLayout.program.take 879)
+          initial = some beforeCheck := by
+        rw [precheckSplit, run_append, run_append]
+        simp [prefixRun, lateRun, setupRun]
+      exact ⟨key, beforeVerify, beforeSuffix, beforeCheck,
+        puzzleReached, reached, verifyRun, sigAt, keyAt⟩
 
 /-- For every successful modeled execution from just after the last bonus
 roll, the final ten signature slots and dummy slot are exactly the first

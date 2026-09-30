@@ -231,6 +231,11 @@ not replace a Core C++ refinement or transaction-level extraction proof.
 `QSB/FinalScriptCode.lean` derives that modeled scriptCode from the ten
 signature bytes actually reached in a conditional successful final byte-model
 run. The Core final-scan premise remains external.
+`QSB/ByteLatePuzzle.lean` and `QSB/FinalRoundWitness.lean` further identify the
+last reached multisignature key with the key SHA256-hashed into the late puzzle
+signature. A conditional theorem derives strict-DER syntax of that hash from
+an encoding-sound reached puzzle check. Core verifier and sighash refinement
+are still required.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

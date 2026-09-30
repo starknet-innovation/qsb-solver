@@ -1,5 +1,5 @@
 {
-  "theorem_count": 583,
+  "theorem_count": 589,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -85,6 +85,11 @@
       "propext"
     ],
     "QSB.ByteFinalCounts.accepted_final_setup_count_operands": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteFinalCounts.accepted_final_setup_first_key": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -255,6 +260,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteLatePuzzle.accepted_late_final_puzzle_key": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteLatePuzzle.accepted_late_final_witness_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -265,7 +275,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteLatePuzzle.accepted_late_puzzle_key": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteLatePuzzle.accepted_late_suffix_dummy_empty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteLatePuzzle.accepted_whole_program_final_puzzle_key": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -673,6 +693,16 @@
       "propext"
     ],
     "QSB.FinalBonusSecond.signed_front_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.matched_run_reached_key_der_puzzle": [
       "Classical.choice",
       "Quot.sound",
       "propext"
