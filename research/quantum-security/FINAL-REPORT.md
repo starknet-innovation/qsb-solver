@@ -47,6 +47,12 @@ used.
    152, nonminimal `980000`, and four-byte `ffffff7f` accept immediately
    before that `OP_MIN` and reject when it is added. These are
    truncated, puzzle-relaxed tests, not full-lock acceptance.
+   A separate Lean lookup map proves that the 150 fixed cells at depths
+   152–301 are 20-byte commitments and a roll at depth `153+i`, `i<150`,
+   selects exactly one of them regardless of the lower witness stack. The
+   152 shallower fixed cells cannot equal a HASH160 output by length. This
+   narrows the first-selection provenance question without proving which
+   indices every accepted scriptSig can supply.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
    altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
@@ -73,7 +79,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 178 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 186 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

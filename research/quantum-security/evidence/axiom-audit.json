@@ -1,5 +1,5 @@
 {
-  "theorem_count": 178,
+  "theorem_count": 186,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -121,6 +121,35 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FirstIndexMap.commitment_cells_are_twenty_bytes": [
+      "propext"
+    ],
+    "QSB.FirstIndexMap.first_pool_window_covers_region": [
+      "propext"
+    ],
+    "QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes": [
+      "propext"
+    ],
+    "QSB.FirstIndexMap.shallow_window_cannot_match_hash160": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstIndexMap.signed_window_cell_is_twenty_bytes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstIndexMap.signed_window_lookup": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstIndexMap.signed_window_roll_has_lock_origin": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.before_first_comparison_split": [],
     "QSB.FirstOvershoot.before_opening_roll_split": [],
     "QSB.FirstOvershoot.byte_roll_matches_list_roll": [

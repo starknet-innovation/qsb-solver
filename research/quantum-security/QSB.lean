@@ -12,6 +12,7 @@ import QSB.KeyRolls
 import QSB.ByteTrace
 import QSB.ByteWitness
 import QSB.FirstOvershoot
+import QSB.FirstIndexMap
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -181,6 +182,14 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_external_initial_stack_rejected
 #print axioms QSB.FirstOvershoot.oversized_any_marker_initial_stack_rejected
 #print axioms QSB.FirstOvershoot.oversized_arbitrary_tail_initial_stack_rejected
+#print axioms QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes
+#print axioms QSB.FirstIndexMap.commitment_cells_are_twenty_bytes
+#print axioms QSB.FirstIndexMap.first_pool_window_covers_region
+#print axioms QSB.FirstIndexMap.signed_window_lookup
+#print axioms QSB.FirstIndexMap.signed_window_cell_is_twenty_bytes
+#print axioms QSB.FirstIndexMap.shallow_window_cell_not_twenty_bytes
+#print axioms QSB.FirstIndexMap.signed_window_roll_has_lock_origin
+#print axioms QSB.FirstIndexMap.shallow_window_cannot_match_hash160
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

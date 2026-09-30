@@ -28,6 +28,12 @@ immediately before that `OP_MIN` and reject when it is added for canonical
 152, nonminimal `980000`, and four-byte `ffffff7f`. The initial-stack
 shape is explicit; the Core tests do not execute the complete lock. See
 `evidence/selection-prefix.json`.
+`QSB/FirstIndexMap.lean` checks the complementary lock-owned lookup window:
+the 150 cells at depths 152–301 are 20-byte commitments, and every shallower
+lock cell has another length. For a first signed roll at depth `153 + i`,
+`0 ≤ i < 150`, the selected cell comes from that fixed commitment window,
+independent of the lower witness stack. This is a local origin fact; the
+parser-to-roll-index and later selection obligations remain open.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as
