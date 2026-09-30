@@ -1,5 +1,5 @@
 {
-  "theorem_count": 58,
+  "theorem_count": 60,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -115,7 +115,9 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.der32_count_exact": [],
     "QSB.der32_count_lower": [],
+    "QSB.der32_count_ratio": [],
     "QSB.der32_count_upper": [],
     "QSB.distinct_positions_after_roll": [
       "propext"

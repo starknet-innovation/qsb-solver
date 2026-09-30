@@ -34,6 +34,8 @@ import QSB.Reduction
 #print axioms QSB.coveredFinalChoices_after_history
 #print axioms QSB.der32_count_lower
 #print axioms QSB.der32_count_upper
+#print axioms QSB.der32_count_exact
+#print axioms QSB.der32_count_ratio
 #print axioms QSB.extracted_novel_round_fresh_or_puzzle
 #print axioms QSB.min_roll_bounds
 #print axioms QSB.comparison_selects_pool

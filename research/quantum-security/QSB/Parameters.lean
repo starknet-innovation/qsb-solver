@@ -64,6 +64,20 @@ is explicit; a bijection with a formal BIP66 parser has not yet been proved. -/
 def der32Count : Nat :=
   ((List.range 24).map (fun i => derIntegerCount (i + 1) * derIntegerCount (24 - i))).sum * 256
 
+/-- Exact arithmetic for the syntactic count expression. Parser/counting
+equivalence is still external; this number alone is not a success bound. -/
+theorem der32_count_exact :
+    der32Count =
+      2449811572532375301807922306615930029710387026976812229606768640 := by
+  decide
+
+/-- If a fresh 256-bit oracle output is uniform, this count expression has
+density 780555 / 36893488147419103232. This does not model oracle queries,
+advice, or all of Bitcoin's ECDSA acceptance conditions. -/
+theorem der32_count_ratio :
+    der32Count * 36893488147419103232 = 780555 * 2 ^ 256 := by
+  decide
+
 /-- Syntactic DER target density exceeds 2^-46 and is below 2^-45.
 This is arithmetic about the count expression, not a quantum adversary bound. -/
 theorem der32_count_lower : 2 ^ 210 < der32Count := by decide

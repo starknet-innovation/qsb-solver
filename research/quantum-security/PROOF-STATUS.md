@@ -27,7 +27,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
-| Parameters | DER count expression lies strictly between 2^210 and 2^211 | Arithmetic about an explicit counting expression; bijection to a formal BIP66 parser remains to be proved. |
+| Parameters | DER count expression is exactly 2449811572532375301807922306615930029710387026976812229606768640, density `780555 / 36893488147419103232`, and lies between 2^210 and 2^211 | Closed arithmetic about an explicit expression; bijection to a formal BIP66 parser remains to be proved. This is not a QROM success bound. |
 | Selection | OP_MIN plus a nonnegative successful roll yields its stated bounds | Large values clamp; there is no inferred upper-bound rejection. |
 | Selection | A bounded, 20-byte comparison selects the pool if earlier items have different lengths | A local loop-invariant building block, not the completed Script extraction. |
 | Selection | Removing a tagged pool position preserves distinctness | Tags are positions; hash collisions are not excluded. |
@@ -83,6 +83,14 @@ wrong-parity hybrid encoding fails. Changing the destination with a fixed ALL
 signature and the same key fails; recomputing the key by public recovery passes.
 The SINGLE-bug signature continues to verify after destination and amount change.
 These are component facts, not an accepted QSB forgery.
+
+`sighash-types.json` records 256 isolated `CHECKSIG` transactions with fixed
+valid DER integers, one for each possible trailing sighash byte. For each byte,
+the test recomputed the legacy sighash, publicly recovered a verification key,
+and used the pinned Core consensus adapter. All 256 verified under its
+`VERIFY_ALL` consensus flags. This supports using 256 possibilities in the
+syntactic DER count for this pinned legacy context; it does not prove a
+uniformity or quantum query bound for SHA-256 outputs.
 
 `selection-prefix.json` independently checks first-selection reachability with
 Core v27.2. Disposable test locks are **truncated** after the first signed-pool

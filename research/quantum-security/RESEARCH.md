@@ -78,6 +78,7 @@ they do not formalize Shor's algorithm or a quantum circuit.
 
 - [Core v27.2 interpreter](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp): CHECKMULTISIG result handling, optional NULLFAIL/CLEANSTACK policy checks, FindAndDelete and legacy signature rules.
 - [Core v27.2 consensus API flags](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/bitcoinconsensus.h): flags used by the app adapter.
+- [Core v27.2 strict DER and hashtype checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp): the trailing hashtype restriction is guarded by `STRICTENC`, separately from `DERSIG`. The local 256-case Core sweep confirms that the pinned consensus adapter accepts all trailing bytes with recovered verification keys; this concerns isolated scripts, not QSB's complete lock.
 - [Core v27.2 policy flags](https://github.com/bitcoin/bitcoin/blob/v27.2/src/policy/policy.h): `NULLFAIL` and `CLEANSTACK` are in standard policy, not the listed mandatory verification flags. The QSB output uses an unusual bare script and the structural fixture leaves a large stack; direct miner acceptance must be kept separate from default relay policy.
 - [Core v27.2 public-key parser](https://github.com/bitcoin/bitcoin/blob/v27.2/src/pubkey.h) and [secp256k1 key parsing](https://github.com/bitcoin/bitcoin/blob/v27.2/src/secp256k1/src/eckey_impl.h): legacy key encodings included in the attacker model.
 - [Core v27.2 official checksums](https://bitcoincore.org/bin/bitcoin-core-27.2/SHA256SUMS): archive identity for the native experiments.
