@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 517 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 525 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -268,6 +268,16 @@ this predicate. A proof that this Lean predicate equals Core's compiled parser
 for every byte string, and a count of its entire 20-byte accepted set, remain
 open; the earlier `390405/2^65` figure is still conditional on that count
 correspondence.
+An independent conservative count now avoids that exact-count premise for the
+Lean predicate: among all `256^20` twenty-byte strings, at most
+`12·256^16` can satisfy even its first-three-byte and R-length conditions.
+Thus its density is at most `12/256^4`. The checked finite random-function
+union theorem combines this target bound with 150 setup-selected inputs when
+the entire uniform R160 function is independent of the material selecting
+those inputs, giving at most `150·12/256^4` for this *syntax setup event*.
+This deliberately loose estimate is not a quantum-query or unauthorized-spend
+bound, and connecting the Lean predicate to Core's compiled parser remains
+unproved.
 For the one literal disposable lock in `ByteLayout.program`, Lean checks that
 none of its 150 second-round commitments passes this DER predicate. It follows
 conditionally that a successful final matching scan with a DER-sound pair

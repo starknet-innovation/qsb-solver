@@ -34,6 +34,7 @@ import QSB.FinalBonusAccepted
 import QSB.FinalBonusSecond
 import QSB.DERSyntax
 import QSB.FinalBonusDER
+import QSB.DERHeaderBound
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -540,6 +541,14 @@ import QSB.Reduction
 #print axioms QSB.DERSyntax.wrong_sequence_length_rejected
 #print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
 #print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
+#print axioms QSB.DERHeaderBound.byte_ofFn
+#print axioms QSB.DERHeaderBound.target_header
+#print axioms QSB.DERHeaderBound.encode_injective
+#print axioms QSB.DERHeaderBound.rChoices_card
+#print axioms QSB.DERHeaderBound.target_card_le
+#print axioms QSB.DERHeaderBound.output_space_card
+#print axioms QSB.DERHeaderBound.target_density_scaled
+#print axioms QSB.DERHeaderBound.bounded_target_setup_union_count
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

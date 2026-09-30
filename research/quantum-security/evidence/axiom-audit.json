@@ -1,5 +1,5 @@
 {
-  "theorem_count": 517,
+  "theorem_count": 525,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -330,6 +330,44 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.DERHeaderBound.bounded_target_setup_union_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.byte_ofFn": [
+      "propext"
+    ],
+    "QSB.DERHeaderBound.encode_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.output_space_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.rChoices_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.target_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.target_density_scaled": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.target_header": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERSyntax.crafted_twenty_byte_signature_valid": [
       "propext"
     ],
