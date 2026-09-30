@@ -290,7 +290,8 @@ theorem accepted_roll_selected_source (hashes : Hashes)
     (accepted : run hashes [.roll]
       (State.mk (raw :: region) outcomes cost) = some after) :
     ∃ selected : Bytes,
-      region[n]? = some selected ∧ after.stack.head? = some selected := by
+      region[n]? = some selected ∧
+      after.stack = selected :: region.eraseIdx n := by
   obtain ⟨next, rollStep, _, finished⟩ :=
     run_cons_success hashes .roll []
       (State.mk (raw :: region) outcomes cost) after accepted
@@ -352,14 +353,15 @@ theorem accepted_first_bonus_source_role (hashes : Hashes)
   | mk firstStack firstOutcomes firstCost =>
       change firstStack = rawFirst :: regionFirst at firstShape
       subst firstStack
-      obtain ⟨selected, source, top⟩ :=
+      obtain ⟨selected, source, postShape⟩ :=
         accepted_roll_selected_source hashes rawFirst regionFirst
           firstOutcomes firstCost postFirst n parsed firstRoll
       rw [regionEq] at source
       have mapped := first_bonus_source_map prior gathered dummies
         commitments (tail.eraseIdx 283) shape seven n lower upper
       rw [source] at mapped
-      exact top.trans mapped
+      rw [postShape]
+      exact mapped
 
 /-- The fixed deep roll and cap before the first bonus roll leave the two
 post-signed shallow dummy-source cells at region depths nine and ten. -/

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 486,
+  "theorem_count": 492,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -430,6 +430,35 @@
       "propext"
     ],
     "QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.accepted_second_bonus_source_role": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.first_commitment_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.first_dummy_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.second_bonus_source_map": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.second_source_after_first_commitment": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.second_source_after_first_dummy": [
       "Classical.choice",
       "Quot.sound",
       "propext"

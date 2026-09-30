@@ -163,7 +163,11 @@ refining the model to Core, remain open.
 The reached first-bonus roll has a checked source map: depths 9–151 move an
 unused 9-byte dummy, while depth 152 moves the first surviving 20-byte HORS
 commitment. This is the commitment-as-signature setup exception in the byte
-model; its Core validity and the second bonus source remain unresolved.
+model. `QSB/FinalBonusSecond.lean` classifies the reached second roll: after a
+dummy first choice, only second depth 152 reaches a commitment; after a
+commitment first choice, every reachable second source is a dummy. It also
+tracks the actual second moved byte. A single whole-run source-role theorem
+and Core signature validity remain unresolved.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

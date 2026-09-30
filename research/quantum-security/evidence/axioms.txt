@@ -559,6 +559,12 @@
 'QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalBonusSecond.first_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
+'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
