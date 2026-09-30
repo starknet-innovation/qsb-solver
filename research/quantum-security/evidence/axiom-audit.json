@@ -1,5 +1,5 @@
 {
-  "theorem_count": 169,
+  "theorem_count": 178,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -122,6 +122,7 @@
     ],
     "QSB.ByteWitness.witness_length": [],
     "QSB.FirstOvershoot.before_first_comparison_split": [],
+    "QSB.FirstOvershoot.before_opening_roll_split": [],
     "QSB.FirstOvershoot.byte_roll_matches_list_roll": [
       "Classical.choice",
       "Quot.sound",
@@ -216,6 +217,12 @@
     "QSB.FirstOvershoot.next_index_roll_full": [
       "propext"
     ],
+    "QSB.FirstOvershoot.opening_roll_lead_opcodes": [],
+    "QSB.FirstOvershoot.opening_roll_lead_reaches": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.overshoot_suffix_fails": [
       "Classical.choice",
       "Quot.sound",
@@ -231,7 +238,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FirstOvershoot.oversized_arbitrary_tail_initial_stack_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_arbitrary_tail_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstOvershoot.oversized_before_first_comparison": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.oversized_before_opening_roll": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -282,7 +304,18 @@
     "QSB.FirstOvershoot.segment_split": [],
     "QSB.FirstOvershoot.segment_split_comparison": [],
     "QSB.FirstOvershoot.segment_split_first_index": [],
+    "QSB.FirstOvershoot.segment_split_opening_roll": [],
     "QSB.FirstOvershoot.shifted_last_from_any_tail": [
+      "propext"
+    ],
+    "QSB.FirstOvershoot.short_tail_opening_roll_fails": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.short_tail_segment_fails": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.Game.changed_outputs_unauthorized": [],

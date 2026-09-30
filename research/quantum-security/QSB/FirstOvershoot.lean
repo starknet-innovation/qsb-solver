@@ -241,6 +241,8 @@ def firstSelectionPrefix : List Op := (ByteLayout.program.drop 308).take 12
 def firstIndexPrefix : List Op := (ByteLayout.program.drop 308).take 4
 def firstComparisonLead : List Op := (ByteLayout.program.drop 312).take 6
 def beforeFirstComparison : List Op := (ByteLayout.program.drop 308).take 10
+def beforeOpeningRoll : List Op := (ByteLayout.program.drop 308).take 9
+def openingRollLead : List Op := (ByteLayout.program.drop 312).take 5
 
 theorem first_index_prefix_opcodes : firstIndexPrefix =
     [.push [0x2e, 0x01], .roll, .push [0x98, 0x00], .min] := by decide
@@ -254,6 +256,16 @@ theorem first_comparison_lead_opcodes : firstComparisonLead =
 
 theorem before_first_comparison_split :
     beforeFirstComparison = firstIndexPrefix ++ firstComparisonLead := by decide
+
+theorem opening_roll_lead_opcodes : openingRollLead =
+    [.dup, .push [0x97, 0x00], .add, .roll,
+      .push [0x37, 0x01]] := by decide
+
+theorem before_opening_roll_split :
+    beforeOpeningRoll = firstIndexPrefix ++ openingRollLead := by decide
+
+theorem segment_split_opening_roll :
+    segment = beforeOpeningRoll ++ .roll :: segment.drop 10 := by decide
 
 theorem oversized_first_index_prefix (hashes : Hashes)
     (raw external : Bytes) (tail : List Bytes)
@@ -292,6 +304,100 @@ theorem oversized_first_index_prefix (hashes : Hashes)
         constructor
         · omega
         · rfl
+
+theorem opening_roll_lead_reaches (hashes : Hashes)
+    (external : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (small : tail.length ≤ 690) :
+    run hashes openingRollLead
+      (State.mk
+        ([0x98, 0x00] :: fixedRegion ++ external :: tail)
+        outcomes 7) =
+      some (State.mk
+        ([0x37, 0x01] :: external :: [0x98, 0x00] :: fixedRegion ++ tail)
+        outcomes 10) := by
+  rw [opening_roll_lead_opcodes]
+  unfold run step
+  simp
+  constructor
+  · rw [fixed_region_length]
+    omega
+  · unfold run
+    unfold step
+    simp
+    constructor
+    · rw [fixed_region_length]
+      omega
+    · unfold run
+      unfold step
+      simp [parse_151, ByteIndex.positive_152, encode_303]
+      constructor
+      · rw [fixed_region_length]
+        omega
+      · unfold run
+        rw [byte_roll_matches_list_roll hashes [0x2f, 0x01] 303
+          ([0x98, 0x00] :: (fixedRegion ++ external :: tail))
+          outcomes 9 parse_303 (by omega)]
+        rw [external_commitment_roll]
+        simp
+        constructor
+        · rw [fixed_region_length]
+          omega
+        · unfold run
+          unfold step
+          simp
+          constructor
+          · rw [fixed_region_length]
+            omega
+          · rfl
+
+theorem oversized_before_opening_roll (hashes : Hashes)
+    (raw external : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 690) :
+    run hashes beforeOpeningRoll
+      (State.mk (fixedRegion ++ raw :: external :: tail) outcomes 5) =
+      some (State.mk
+        ([0x37, 0x01] :: external :: [0x98, 0x00] :: fixedRegion ++ tail)
+        outcomes 10) := by
+  rw [before_opening_roll_split, run_append]
+  rw [oversized_first_index_prefix hashes raw external tail outcomes
+    value parsed large small]
+  simp only [Option.bind_some]
+  exact opening_roll_lead_reaches hashes external tail outcomes small
+
+theorem short_tail_opening_roll_fails (hashes : Hashes)
+    (external : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (short : tail.length < 8) :
+    step hashes .roll
+      (State.mk
+        ([0x37, 0x01] :: external :: [0x98, 0x00] :: fixedRegion ++ tail)
+        outcomes 10) = none := by
+  simp only [List.cons_append]
+  rw [byte_roll_matches_list_roll hashes [0x37, 0x01] 311
+    (external :: [0x98, 0x00] :: (fixedRegion ++ tail))
+    outcomes 10 parse_311 (by omega)]
+  have noCell : (fixedRegion ++ tail)[309]? = none := by
+    apply List.getElem?_eq_none
+    rw [List.length_append, fixed_region_length]
+    omega
+  simp [KeyRolls.rollAt, noCell]
+
+theorem short_tail_segment_fails (hashes : Hashes)
+    (raw external : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (short : tail.length < 8) :
+    run hashes segment
+      (State.mk (fixedRegion ++ raw :: external :: tail) outcomes 5) =
+      none := by
+  rw [segment_split_opening_roll, run_append]
+  rw [oversized_before_opening_roll hashes raw external value tail outcomes
+    parsed large (by omega)]
+  simp only [Option.bind_some]
+  unfold run
+  rw [short_tail_opening_roll_fails hashes external tail outcomes short]
+  rfl
 
 theorem first_comparison_lead_reaches_opening (hashes : Hashes)
     (external a b c d e f g h : Bytes)
@@ -612,6 +718,41 @@ theorem oversized_any_marker_segment_fails (hashes : Hashes)
           accepted
         exact (matching eq.symm).elim
 
+/-- The first oversized signed selection fails for every bounded stack tail
+below its attacker-supplied marker. Fewer than eight further cells cannot
+reach the opening roll; with eight or more, the comparison/ScriptNum dichotomy
+applies. -/
+theorem oversized_arbitrary_tail_segment_fails (hashes : Hashes)
+    (raw external : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 688) :
+    run hashes segment
+      (State.mk (fixedRegion ++ raw :: external :: tail) outcomes 5) =
+      none := by
+  by_cases short : tail.length < 8
+  · exact short_tail_segment_fails hashes raw external value tail outcomes
+      parsed large short
+  · rcases tail with _ | ⟨a, t1⟩
+    · simp at short
+    rcases t1 with _ | ⟨b, t2⟩
+    · simp at short
+    rcases t2 with _ | ⟨c, t3⟩
+    · simp at short
+    rcases t3 with _ | ⟨d, t4⟩
+    · simp at short
+    rcases t4 with _ | ⟨e, t5⟩
+    · simp at short
+    rcases t5 with _ | ⟨f, t6⟩
+    · simp at short
+    rcases t6 with _ | ⟨g, t7⟩
+    · simp at short
+    rcases t7 with _ | ⟨h, rest⟩
+    · simp at short
+    simpa only [List.append_assoc, List.cons_append, List.nil_append] using
+      (oversized_any_marker_segment_fails hashes raw external value
+        a b c d e f g h rest outcomes parsed large (by simp at small; omega))
+
 theorem generated_program_split :
     ByteLayout.program =
       ByteLayout.program.take 308 ++ segment ++ ByteLayout.program.drop 325 := by
@@ -761,6 +902,38 @@ theorem oversized_any_marker_initial_stack_rejected (hashes : Hashes)
   rw [← List.append_assoc]
   rw [run_append, oversized_any_marker_segment_fails hashes raw external value
     a b c d e f g h tail outcomes parsed large small]
+  rfl
+
+/-- The modeled generated lock rejects every initial-stack continuation below
+an attacker-supplied external cell for this first-overshoot position. The tail
+bound is a sufficient stack-capacity condition, not a claim about all possible
+unlocking scripts or consensus acceptance. -/
+theorem oversized_arbitrary_tail_initial_stack_rejected (hashes : Hashes)
+    (nonce puzzle raw external : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (small : tail.length ≤ 688) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: external :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  have pinning :
+      run hashes (ByteLayout.program.take 6)
+        (State.mk (nonce :: puzzle :: raw :: external :: tail)
+          (true :: true :: outcomes) 0) =
+        some (State.mk (raw :: external :: tail) outcomes 5) := by
+    apply modeled_pinning_consumes_two_keys
+    simp only [List.length_cons]
+    omega
+  have prefix_state := generated_prefix_after_pinning hashes
+    (State.mk (nonce :: puzzle :: raw :: external :: tail)
+      (true :: true :: outcomes) 0)
+    (raw :: external :: tail) outcomes pinning (by
+      simp only [List.length_cons]
+      omega)
+  rw [generated_program_split, List.append_assoc, run_append, prefix_state]
+  simp only [Option.bind_some]
+  rw [run_append, oversized_arbitrary_tail_segment_fails hashes raw external
+    value tail outcomes parsed large small]
   rfl
 
 end QSB.FirstOvershoot

@@ -18,10 +18,11 @@ the first HASH160 comparison. `QSB/FirstOvershoot.lean` proves a stronger
 byte-level result for the full generated program and this initial-stack
 family: with any parsed first-index value at least 152, including nonminimal
 encodings accepted by the model, arbitrary pinning-key bytes, any external
-commitment bytes, arbitrary bytes in the eight following cells, and up to 680
-later cells, the program rejects. A mismatched marker fails the first hash
-comparison; a matching one reaches a 20-byte lock commitment at the next fixed
-roll and fails the following numeric parse. The byte model grants both pinning checks true and leaves later
+marker bytes, and any continuation of at most 688 cells, the program rejects.
+Fewer than eight continuation cells fail at the opening roll. Otherwise a
+mismatched marker fails the first hash comparison; a matching one reaches a
+20-byte lock commitment at the next fixed roll and fails the following numeric
+parse. The byte model grants both pinning checks true and leaves later
 signature outcomes arbitrary. Pinned Core tests accept truncated locks
 immediately before that `OP_MIN` and reject when it is added for canonical
 152, nonminimal `980000`, and four-byte `ffffff7f`. The initial-stack
