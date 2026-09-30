@@ -142,6 +142,13 @@ The generated initialization pushes 150 nonempty dummy bytes, and seven
 selections confined to that pool leave the two premises true regardless of
 selection order. Whether every successful signed selection is confined to
 that pool, and the Bitcoin Core refinement, remain unproved.
+At the first signed selection of the final round, the generated lookup map
+has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
+2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
+Boolean CHECKMULTISIG result. The modeled generated comparison tail rejects
+the capped case from its stated post-ADD stack because HASH160 outputs 20
+bytes. Deriving that stack shape from arbitrary full executions and extending
+the map through the remaining signed selections are still required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

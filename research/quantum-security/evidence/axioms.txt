@@ -412,6 +412,26 @@
 'QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalSignedBoundary.generated_commitment_ops_are_pushes' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.generated_commitment_pool_length' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.generated_commitment_pool_width' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.generated_dummy_pool_width' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.low_index_source_is_dummy' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedBoundary.middle_index_source_is_commitment' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedBoundary.low_index_cannot_match_hash160' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedBoundary.cap_source_is_prior_result' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.cap_roll_moves_prior_result' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.cap_source_cannot_match_hash160' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.cap_cannot_match_prior_multisig_result' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedBoundary.generated_first_signed_comparison_tail' does not depend on any axioms
+'QSB.FinalSignedBoundary.capped_offset_encoding' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.preimage_roll_index_decode' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.short_target_rejects_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

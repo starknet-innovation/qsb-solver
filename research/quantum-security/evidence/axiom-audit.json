@@ -1,5 +1,5 @@
 {
-  "theorem_count": 369,
+  "theorem_count": 385,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -361,6 +361,67 @@
       "propext"
     ],
     "QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.cap_cannot_match_prior_multisig_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.cap_roll_moves_prior_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.cap_source_cannot_match_hash160": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.cap_source_is_prior_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.capped_offset_encoding": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.generated_commitment_ops_are_pushes": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.generated_commitment_pool_length": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.generated_commitment_pool_width": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.generated_dummy_pool_width": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.generated_first_signed_comparison_tail": [],
+    "QSB.FinalSignedBoundary.low_index_cannot_match_hash160": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.low_index_source_is_dummy": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.middle_index_source_is_commitment": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.preimage_roll_index_decode": [
+      "propext"
+    ],
+    "QSB.FinalSignedBoundary.short_target_rejects_comparison": [
       "Classical.choice",
       "Quot.sound",
       "propext"

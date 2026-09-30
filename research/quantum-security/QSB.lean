@@ -26,6 +26,7 @@ import QSB.ByteFinalCounts
 import QSB.ByteLatePuzzle
 import QSB.ByteBonusBetween
 import QSB.PoolRollInvariant
+import QSB.FinalSignedBoundary
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -384,6 +385,22 @@ import QSB.Reduction
 #print axioms QSB.PoolRollInvariant.generated_final_round_initial_stack
 #print axioms QSB.PoolRollInvariant.generated_pool_seven_draws_sources_nonempty
 #print axioms QSB.PoolRollInvariant.accepted_bonus_bounds_after_pool_draws
+#print axioms QSB.FinalSignedBoundary.generated_commitment_ops_are_pushes
+#print axioms QSB.FinalSignedBoundary.generated_commitment_pool_length
+#print axioms QSB.FinalSignedBoundary.generated_commitment_pool_width
+#print axioms QSB.FinalSignedBoundary.generated_dummy_pool_width
+#print axioms QSB.FinalSignedBoundary.low_index_source_is_dummy
+#print axioms QSB.FinalSignedBoundary.middle_index_source_is_commitment
+#print axioms QSB.FinalSignedBoundary.low_index_cannot_match_hash160
+#print axioms QSB.FinalSignedBoundary.cap_source_is_prior_result
+#print axioms QSB.FinalSignedBoundary.cap_roll_moves_prior_result
+#print axioms QSB.FinalSignedBoundary.cap_source_cannot_match_hash160
+#print axioms QSB.FinalSignedBoundary.cap_cannot_match_prior_multisig_result
+#print axioms QSB.FinalSignedBoundary.generated_first_signed_comparison_tail
+#print axioms QSB.FinalSignedBoundary.capped_offset_encoding
+#print axioms QSB.FinalSignedBoundary.preimage_roll_index_decode
+#print axioms QSB.FinalSignedBoundary.short_target_rejects_comparison
+#print axioms QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

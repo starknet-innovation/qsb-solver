@@ -135,6 +135,13 @@ below 9 or a last index below 10 cannot complete the modeled suffix.
 establish 150 nonempty dummy bytes, and that any seven pool-only signed rolls
 leave those two source cells nonempty. Proving pool-only behavior for all seven
 signed rolls remains open for arbitrary accepted witnesses.
+`QSB/FinalSignedBoundary.lean` maps the first final-round signed lookup over
+the exact generated commitment and dummy pushes: indices 0–1 select 9-byte
+dummies, 2–151 select 20-byte commitments, and capped 152 selects the prior
+round's Boolean CHECKMULTISIG result. Lean checks that the generated five-op
+comparison tail rejects that capped case from the stated post-ADD stack. The
+earlier byte steps and the other six signed selections still need a full-run
+invariant.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
