@@ -114,6 +114,7 @@ import QSB.Reduction
 #print axioms QSB.ByteMachine.run_append
 #print axioms QSB.ByteMachine.run_pushes
 #print axioms QSB.ByteMachine.run_pushes_overflow
+#print axioms QSB.ByteMachine.add_success_requires_four_byte_operands
 #print axioms QSB.ByteMachine.successful_hash_comparison_in_context
 #print axioms QSB.ByteLayout.program_length
 #print axioms QSB.ByteLayout.final_opcode_is_checkmultisig

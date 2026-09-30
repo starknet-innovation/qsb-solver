@@ -1,5 +1,5 @@
 {
-  "theorem_count": 220,
+  "theorem_count": 221,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -87,6 +87,10 @@
       "propext"
     ],
     "QSB.ByteLayout.program_length": [],
+    "QSB.ByteMachine.add_success_requires_four_byte_operands": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteMachine.hash_compare_accepts_iff": [
       "Quot.sound",
       "propext"

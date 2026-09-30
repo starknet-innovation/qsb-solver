@@ -95,6 +95,7 @@
 'QSB.ByteMachine.run_append' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.run_pushes' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.run_pushes_overflow' depends on axioms: [propext, Quot.sound]
+'QSB.ByteMachine.add_success_requires_four_byte_operands' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.successful_hash_comparison_in_context' depends on axioms: [propext, Quot.sound]
 'QSB.ByteLayout.program_length' does not depend on any axioms
 'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms

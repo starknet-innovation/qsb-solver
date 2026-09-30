@@ -180,6 +180,30 @@ theorem run_pushes_overflow (hashes : Hashes) (values : List Bytes)
         intro _
         exact ih (value :: stack) restNonempty restSmall restOver
 
+/-- A successful numeric addition has parsed both supplied ScriptNum cells.
+The parser rejects encodings longer than four bytes, regardless of their
+mathematical value or minimality. -/
+theorem add_success_requires_four_byte_operands (hashes : Hashes)
+    (x y : Bytes) (stack : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (next : State)
+    (success : step hashes .add
+      (State.mk (x :: y :: stack) outcomes cost) = some next) :
+    x.length ≤ 4 ∧ y.length ≤ 4 := by
+  have parseLong (raw : Bytes) (long : raw.length > 4) :
+      ByteIndex.parseScriptNum raw = none := by
+    simp [ByteIndex.parseScriptNum, long]
+  constructor
+  · by_contra long
+    have hx : x.length > 4 := by omega
+    have bad := parseLong x hx
+    unfold step at success
+    simp [bad] at success
+  · by_contra long
+    have hy : y.length > 4 := by omega
+    have bad := parseLong y hy
+    unfold step at success
+    simp [bad] at success
+
 def finalTruth (s : State) : Bool :=
   s.stack.head? = some [1]
 
