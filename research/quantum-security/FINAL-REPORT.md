@@ -35,11 +35,12 @@ used.
    an external cell and pass a self-chosen `HASH160` comparison. A new byte
    theorem covers any marker bytes and any parsed first-index value
    at least 152 (including nonminimal encodings in the byte model), and any
-   post-index continuation of at most 695 cells, including an empty one. An
+   post-index continuation stack, including an empty one. An
    empty continuation fails the external-cell roll; fewer than eight cells
    after a marker fail the opening roll. Otherwise a marker mismatch fails the first `HASH160` comparison;
    with a match, the next fixed roll selects a 20-byte lock commitment as a
-   numeric index, so `OP_MIN` fails.
+   numeric index, so `OP_MIN` fails. Longer stacks reject at the modeled
+   1000-cell limit during pinning, lock pushes, or early selection.
    Lean now connects this to the full byte-model program from an initial
    stack of two pinning keys followed by that exact marker/index layout,
    granting true outcomes for both pinning checks and arbitrary later
@@ -80,7 +81,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 196 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 216 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

@@ -52,10 +52,28 @@ theorem generated_region_pushes (hashes : Hashes)
     (ByteMachine.run_pushes hashes pushedValues stack outcomes 5
       generated_push_values_small enough (by omega))
 
+theorem generated_region_overflows (hashes : Hashes)
+    (stack : List Bytes) (outcomes : List Bool)
+    (tooLarge : 302 + stack.length > 1000) :
+    run hashes ((ByteLayout.program.drop 6).take 302)
+      (State.mk stack outcomes 5) = none := by
+  rw [generated_region_is_pushes]
+  have count : pushedValues.length = 302 := by decide
+  apply ByteMachine.run_pushes_overflow hashes pushedValues stack outcomes 5
+  · intro empty
+    simp [empty] at count
+  · exact generated_push_values_small
+  · simpa only [count] using tooLarge
+  · omega
+
 theorem generated_prefix_split :
     ByteLayout.program.take 308 =
       ByteLayout.program.take 6 ++ (ByteLayout.program.drop 6).take 302 := by
   decide
+
+theorem generated_program_split_pinning :
+    ByteLayout.program = ByteLayout.program.take 6 ++
+      ByteLayout.program.drop 6 := by decide
 
 def pinSignature : Bytes :=
   match ByteLayout.program[0]? with
@@ -66,7 +84,72 @@ theorem generated_pinning_opcodes : ByteLayout.program.take 6 =
     [.push pinSignature, .over, .checksigverify,
      .sha256, .swap, .checksigverify] := by decide
 
+theorem first_two_pinning_opcodes : ByteLayout.program.take 2 =
+    [.push pinSignature, .over] := by decide
+
+theorem generated_pinning_split_two :
+    ByteLayout.program.take 6 =
+      ByteLayout.program.take 2 ++ (ByteLayout.program.drop 2).take 4 := by
+  decide
+
 theorem pin_signature_fits : pinSignature.length ≤ 520 := by decide
+
+theorem oversized_initial_stack_fails_first_two (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (large : 996 ≤ tail.length) :
+    run hashes (ByteLayout.program.take 2)
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  rw [first_two_pinning_opcodes]
+  have pushStep :
+      step hashes (.push pinSignature)
+        (State.mk (nonce :: puzzle :: raw :: tail)
+          (true :: true :: outcomes) 0) =
+        some (State.mk (pinSignature :: nonce :: puzzle :: raw :: tail)
+          (true :: true :: outcomes) 0) := by
+    unfold step
+    have pinSize : ¬ (pinSignature.length > 520) :=
+      Nat.not_lt.mpr pin_signature_fits
+    simp [pinSize]
+  unfold run
+  rw [pushStep]
+  by_cases firstTooLarge :
+      (pinSignature :: nonce :: puzzle :: raw :: tail).length > 1000
+  · simp
+    intro below
+    simp only [List.length_cons] at firstTooLarge
+    omega
+  · have overStep :
+        step hashes .over
+          (State.mk (pinSignature :: nonce :: puzzle :: raw :: tail)
+            (true :: true :: outcomes) 0) =
+          some (State.mk
+            (nonce :: pinSignature :: nonce :: puzzle :: raw :: tail)
+            (true :: true :: outcomes) 1) := by
+        unfold step
+        simp
+    have secondTooLarge :
+        (nonce :: pinSignature :: nonce :: puzzle :: raw :: tail).length >
+          1000 := by
+      simp only [List.length_cons]
+      omega
+    simp
+    intro _
+    unfold run
+    rw [overStep]
+    simp
+    omega
+
+theorem oversized_initial_stack_fails_pinning (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (large : 996 ≤ tail.length) :
+    run hashes (ByteLayout.program.take 6)
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  rw [generated_pinning_split_two, run_append,
+    oversized_initial_stack_fails_first_two hashes nonce puzzle raw tail
+      outcomes large]
+  rfl
 
 theorem modeled_pinning_consumes_two_keys (hashes : Hashes)
     (nonce puzzle : Bytes) (stack : List Bytes)
@@ -112,6 +195,16 @@ theorem generated_prefix_after_pinning (hashes : Hashes)
       some (State.mk (fixedRegion ++ stack) outcomes 5) := by
   rw [generated_prefix_split, ByteMachine.run_append, pinning]
   simp [generated_region_pushes hashes stack outcomes capacity]
+
+theorem generated_prefix_overflows_after_pinning (hashes : Hashes)
+    (initial : State) (stack : List Bytes) (outcomes : List Bool)
+    (pinning : run hashes (ByteLayout.program.take 6) initial =
+      some (State.mk stack outcomes 5))
+    (tooLarge : 302 + stack.length > 1000) :
+    run hashes (ByteLayout.program.take 308) initial = none := by
+  rw [generated_prefix_split, ByteMachine.run_append, pinning]
+  simpa only [Option.bind_some] using
+    (generated_region_overflows hashes stack outcomes tooLarge)
 
 theorem segment_is_first_two_selection_prefix : segment =
     [.push [0x2e, 0x01], .roll, .push [0x98, 0x00], .min,
@@ -281,11 +374,20 @@ theorem first_eight_split :
 theorem segment_split_eight :
     segment = segment.take 8 ++ segment.drop 8 := by decide
 
+theorem segment_starts_with_index_push :
+    segment = .push [0x2e, 0x01] :: segment.drop 1 := by decide
+
+theorem first_six_split :
+    segment.take 6 = firstIndexPrefix ++ [.dup, .push [0x97, 0x00]] := by decide
+
+theorem segment_split_six :
+    segment = segment.take 6 ++ segment.drop 6 := by decide
+
 theorem oversized_first_index_prefix (hashes : Hashes)
     (raw external : Bytes) (tail : List Bytes)
     (outcomes : List Bool) (value : Int)
     (parsed : ByteIndex.parseScriptNum raw = some value)
-    (large : 152 ≤ value) (small : tail.length ≤ 694) :
+    (large : 152 ≤ value) (small : tail.length ≤ 695) :
     run hashes firstIndexPrefix
       (State.mk (fixedRegion ++ raw :: external :: tail) outcomes 5) =
       some (State.mk
@@ -399,6 +501,74 @@ theorem no_external_segment_fails (hashes : Hashes)
   rw [no_external_first_eight_fails hashes raw outcomes value parsed large]
   rfl
 
+theorem segment_first_push_overflows (hashes : Hashes)
+    (stack : List Bytes) (outcomes : List Bool)
+    (full : 1000 ≤ stack.length) :
+    run hashes segment (State.mk stack outcomes 5) = none := by
+  rw [segment_starts_with_index_push]
+  have stepPush :
+      step hashes (.push [0x2e, 0x01]) (State.mk stack outcomes 5) =
+        some (State.mk ([0x2e, 0x01] :: stack) outcomes 5) := by
+    unfold step
+    simp
+  unfold run
+  rw [stepPush]
+  simp
+  intro below
+  omega
+
+theorem duplicate_then_push_overflows (hashes : Hashes)
+    (stack : List Bytes) (outcomes : List Bool)
+    (almostFull : stack.length = 998) :
+    run hashes [.dup, .push [0x97, 0x00]]
+      (State.mk ([0x98, 0x00] :: stack) outcomes 7) = none := by
+  have dupStep :
+      step hashes .dup (State.mk ([0x98, 0x00] :: stack) outcomes 7) =
+        some (State.mk ([0x98, 0x00] :: [0x98, 0x00] :: stack)
+          outcomes 8) := by
+    unfold step
+    simp
+  unfold run
+  rw [dupStep]
+  have dupFits : ¬ (([0x98, 0x00] :: [0x98, 0x00] :: stack).length > 1000) := by
+    simp only [List.length_cons]
+    omega
+  simp
+  have pushStep :
+      step hashes (.push [0x97, 0x00])
+        (State.mk ([0x98, 0x00] :: [0x98, 0x00] :: stack)
+          outcomes 8) =
+        some (State.mk
+          ([0x97, 0x00] :: [0x98, 0x00] :: [0x98, 0x00] :: stack)
+          outcomes 8) := by
+    unfold step
+    simp
+  unfold run
+  rw [pushStep]
+  simp [almostFull]
+
+theorem penultimate_capacity_segment_fails (hashes : Hashes)
+    (raw external : Bytes) (value : Int)
+    (rest : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (length : rest.length = 695) :
+    run hashes segment
+      (State.mk (fixedRegion ++ raw :: external :: rest) outcomes 5) = none := by
+  have firstIndex := oversized_first_index_prefix hashes raw external rest
+    outcomes value parsed large (by omega)
+  have firstSix :
+      run hashes (segment.take 6)
+        (State.mk (fixedRegion ++ raw :: external :: rest) outcomes 5) = none := by
+    rw [first_six_split, run_append, firstIndex]
+    simp only [Option.bind_some]
+    apply duplicate_then_push_overflows hashes
+      (fixedRegion ++ external :: rest) outcomes
+    rw [List.length_append, fixed_region_length]
+    simp only [List.length_cons]
+    omega
+  rw [segment_split_six, run_append, firstSix]
+  rfl
+
 theorem opening_roll_lead_reaches (hashes : Hashes)
     (external : Bytes) (tail : List Bytes)
     (outcomes : List Bool) (small : tail.length ≤ 694) :
@@ -456,7 +626,7 @@ theorem oversized_before_opening_roll (hashes : Hashes)
         outcomes 10) := by
   rw [before_opening_roll_split, run_append]
   rw [oversized_first_index_prefix hashes raw external tail outcomes
-    value parsed large small]
+    value parsed large (by omega)]
   simp only [Option.bind_some]
   exact opening_roll_lead_reaches hashes external tail outcomes small
 
@@ -1076,5 +1246,148 @@ theorem oversized_any_postindex_tail_initial_stack_rejected (hashes : Hashes)
   rw [run_append, oversized_any_postindex_tail_segment_fails hashes raw value
     tail outcomes parsed large small]
   rfl
+
+/-- When more than 697 cells trail the first index, the generated lock's 302
+literal pushes exceed the modeled combined-stack limit after successful
+pinning. This structural rejection does not depend on the index value. -/
+theorem long_postindex_tail_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool)
+    (long : 698 ≤ tail.length) (bounded : tail.length ≤ 995) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  have pinning :
+      run hashes (ByteLayout.program.take 6)
+        (State.mk (nonce :: puzzle :: raw :: tail)
+          (true :: true :: outcomes) 0) =
+        some (State.mk (raw :: tail) outcomes 5) := by
+    apply modeled_pinning_consumes_two_keys
+    simp only [List.length_cons]
+    omega
+  have prefix_fails := generated_prefix_overflows_after_pinning hashes
+    (State.mk (nonce :: puzzle :: raw :: tail)
+      (true :: true :: outcomes) 0)
+    (raw :: tail) outcomes pinning (by
+      simp only [List.length_cons]
+      omega)
+  rw [generated_program_split, List.append_assoc, run_append, prefix_fails]
+  rfl
+
+theorem saturated_postindex_tail_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (saturated : tail.length = 697) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  have pinning :
+      run hashes (ByteLayout.program.take 6)
+        (State.mk (nonce :: puzzle :: raw :: tail)
+          (true :: true :: outcomes) 0) =
+        some (State.mk (raw :: tail) outcomes 5) := by
+    apply modeled_pinning_consumes_two_keys
+    simp only [List.length_cons]
+    omega
+  have prefix_state := generated_prefix_after_pinning hashes
+    (State.mk (nonce :: puzzle :: raw :: tail)
+      (true :: true :: outcomes) 0)
+    (raw :: tail) outcomes pinning (by
+      simp only [List.length_cons]
+      omega)
+  rw [generated_program_split, List.append_assoc, run_append, prefix_state]
+  simp only [Option.bind_some]
+  rw [run_append, segment_first_push_overflows hashes
+    (fixedRegion ++ raw :: tail) outcomes (by
+      rw [List.length_append, fixed_region_length]
+      simp only [List.length_cons]
+      omega)]
+  rfl
+
+theorem penultimate_postindex_tail_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (length : tail.length = 696) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  cases tail with
+  | nil => simp at length
+  | cons external rest =>
+      have pinning :
+          run hashes (ByteLayout.program.take 6)
+            (State.mk (nonce :: puzzle :: raw :: external :: rest)
+              (true :: true :: outcomes) 0) =
+            some (State.mk (raw :: external :: rest) outcomes 5) := by
+        apply modeled_pinning_consumes_two_keys
+        simp only [List.length_cons] at length ⊢
+        omega
+      have prefix_state := generated_prefix_after_pinning hashes
+        (State.mk (nonce :: puzzle :: raw :: external :: rest)
+          (true :: true :: outcomes) 0)
+        (raw :: external :: rest) outcomes pinning (by
+          simp only [List.length_cons] at length ⊢
+          omega)
+      rw [generated_program_split, List.append_assoc, run_append, prefix_state]
+      simp only [Option.bind_some]
+      rw [run_append, penultimate_capacity_segment_fails hashes raw external
+        value rest outcomes parsed large (by
+          simp only [List.length_cons] at length
+          omega)]
+      rfl
+
+/-- All first-index ScriptNum values at least 152 fail in the modeled generated
+lock for every post-index tail within the range where successful pinning can
+be analyzed by the generic pinning theorem. The boundary cases fail from
+the stack-size limit before reaching a hash comparison. -/
+theorem oversized_all_capacity_tails_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) (bounded : tail.length ≤ 995) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  by_cases long : 698 ≤ tail.length
+  · exact long_postindex_tail_rejected hashes nonce puzzle raw tail
+      outcomes long bounded
+  by_cases saturated : tail.length = 697
+  · exact saturated_postindex_tail_rejected hashes nonce puzzle raw tail
+      outcomes saturated
+  by_cases penultimate : tail.length = 696
+  · exact penultimate_postindex_tail_rejected hashes nonce puzzle raw value
+      tail outcomes parsed large penultimate
+  exact oversized_any_postindex_tail_initial_stack_rejected hashes
+    nonce puzzle raw value tail outcomes parsed large (by omega)
+
+theorem oversized_initial_tail_rejected (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (large : 996 ≤ tail.length) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  rw [generated_program_split_pinning, run_append,
+    oversized_initial_stack_fails_pinning hashes nonce puzzle raw tail
+      outcomes large]
+  rfl
+
+/-- In the generated byte model, any first signed index whose parsed
+ScriptNum is at least 152 is rejected for every continuation stack and every
+hash function, assuming the two pinning checks report success. This is a
+single-selection fact under the specified top-stack position; it is not an
+arbitrary-scriptSig/Core extraction theorem. -/
+theorem oversized_first_index_rejected_given_pinning (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (large : 152 ≤ value) :
+    run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = none := by
+  by_cases bounded : tail.length ≤ 995
+  · exact oversized_all_capacity_tails_rejected hashes nonce puzzle raw
+      value tail outcomes parsed large bounded
+  · exact oversized_initial_tail_rejected hashes nonce puzzle raw tail
+      outcomes (by omega)
 
 end QSB.FirstOvershoot

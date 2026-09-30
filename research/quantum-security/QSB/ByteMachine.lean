@@ -139,6 +139,47 @@ theorem run_pushes (hashes : Hashes) (values : List Bytes)
         List.reverse_cons, List.append_assoc]
       omega
 
+/-- A nonempty sequence of modeled pushes cannot finish if its final stack
+would exceed the 1000-cell combined-stack limit. -/
+theorem run_pushes_overflow (hashes : Hashes) (values : List Bytes)
+    (stack : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (nonempty : values ≠ [])
+    (small : ∀ value ∈ values, value.length ≤ 520)
+    (over : values.length + stack.length > 1000)
+    (budget : cost ≤ 201) :
+    run hashes (values.map Op.push) (State.mk stack outcomes cost) = none := by
+  induction values generalizing stack with
+  | nil => contradiction
+  | cons value rest ih =>
+      have valueSmall : value.length ≤ 520 := small value (by simp)
+      have restSmall : ∀ x ∈ rest, x.length ≤ 520 := by
+        intro x hx
+        exact small x (by simp [hx])
+      have stepPush : step hashes (.push value) (State.mk stack outcomes cost) =
+          some (State.mk (value :: stack) outcomes cost) := by
+        unfold step
+        have within : ¬ (cost > 201) := by omega
+        have width : ¬ (value.length > 520) := by omega
+        simp [within, width]
+      simp only [List.map_cons, run, stepPush]
+      by_cases size : (value :: stack).length > 1000
+      · simp
+        intro h
+        simp only [List.length_cons] at size
+        omega
+      · have restNonempty : rest ≠ [] := by
+          intro empty
+          subst rest
+          simp only [List.length_cons, List.length_nil] at over
+          simp only [List.length_cons] at size
+          omega
+        have restOver : rest.length + (value :: stack).length > 1000 := by
+          simp only [List.length_cons] at over ⊢
+          omega
+        simp
+        intro _
+        exact ih (value :: stack) restNonempty restSmall restOver
+
 def finalTruth (s : State) : Bool :=
   s.stack.head? = some [1]
 

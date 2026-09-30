@@ -93,6 +93,7 @@
 'QSB.ByteMachine.successful_hash_comparison' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.run_append' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.run_pushes' depends on axioms: [propext, Quot.sound]
+'QSB.ByteMachine.run_pushes_overflow' depends on axioms: [propext, Quot.sound]
 'QSB.ByteMachine.successful_hash_comparison_in_context' depends on axioms: [propext, Quot.sound]
 'QSB.ByteLayout.program_length' does not depend on any axioms
 'QSB.ByteLayout.final_opcode_is_checkmultisig' does not depend on any axioms
@@ -108,11 +109,18 @@
 'QSB.FirstOvershoot.generated_region_is_pushes' depends on axioms: [propext]
 'QSB.FirstOvershoot.generated_push_values_small' depends on axioms: [propext]
 'QSB.FirstOvershoot.generated_region_pushes' depends on axioms: [propext, Quot.sound]
+'QSB.FirstOvershoot.generated_region_overflows' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.generated_prefix_split' does not depend on any axioms
+'QSB.FirstOvershoot.generated_program_split_pinning' does not depend on any axioms
 'QSB.FirstOvershoot.generated_pinning_opcodes' depends on axioms: [propext]
+'QSB.FirstOvershoot.first_two_pinning_opcodes' depends on axioms: [propext]
+'QSB.FirstOvershoot.generated_pinning_split_two' does not depend on any axioms
 'QSB.FirstOvershoot.pin_signature_fits' depends on axioms: [propext]
+'QSB.FirstOvershoot.oversized_initial_stack_fails_first_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_initial_stack_fails_pinning' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.modeled_pinning_consumes_two_keys' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.generated_prefix_after_pinning' depends on axioms: [propext, Quot.sound]
+'QSB.FirstOvershoot.generated_prefix_overflows_after_pinning' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.segment_is_first_two_selection_prefix' does not depend on any axioms
 'QSB.FirstOvershoot.first_commitment_is_twenty_bytes' depends on axioms: [propext]
 'QSB.FirstOvershoot.last_commitment_is_twenty_bytes' depends on axioms: [propext]
@@ -144,7 +152,13 @@
 'QSB.FirstOvershoot.no_external_lead_opcodes' does not depend on any axioms
 'QSB.FirstOvershoot.first_eight_split' does not depend on any axioms
 'QSB.FirstOvershoot.segment_split_eight' does not depend on any axioms
+'QSB.FirstOvershoot.segment_starts_with_index_push' does not depend on any axioms
+'QSB.FirstOvershoot.first_six_split' does not depend on any axioms
+'QSB.FirstOvershoot.segment_split_six' does not depend on any axioms
 'QSB.FirstOvershoot.oversized_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.segment_first_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.duplicate_then_push_overflows' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.penultimate_capacity_segment_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.oversized_first_index_without_external' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.no_external_lead_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FirstOvershoot.no_external_first_eight_fails' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -183,6 +197,14 @@
  Classical.choice,
  Quot.sound]
 'QSB.FirstOvershoot.oversized_any_postindex_tail_initial_stack_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FirstOvershoot.long_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.saturated_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.penultimate_postindex_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_all_capacity_tails_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_initial_tail_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstOvershoot.oversized_first_index_rejected_given_pinning' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes' depends on axioms: [propext]

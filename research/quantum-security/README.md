@@ -15,15 +15,15 @@ unauthorized spend of the real lock. See `evidence/round-results.json`.
 A separate malformed-witness probe makes the first signed-pool `OP_ROLL` reach
 an attacker-supplied cell. Lean checks that a self-chosen commitment can pass
 the first HASH160 comparison. `QSB/FirstOvershoot.lean` proves a stronger
-byte-level result for the full generated program and this initial-stack
-family: with any parsed first-index value at least 152, including nonminimal
-encodings accepted by the model, arbitrary pinning-key bytes, and any
-post-index continuation of at most 695 cells, the program rejects. An empty
-continuation fails at the first external-cell roll. Fewer than eight cells
-after an external marker fail at the opening roll. Otherwise a
+byte-level result for the full generated program and this top-stack family:
+with any parsed first-index value at least 152, including nonminimal encodings
+accepted by the model, arbitrary pinning-key bytes, and any lower stack, the
+program rejects. An empty continuation fails at the first external-cell roll.
+Fewer than eight cells after an external marker fail at the opening roll. Otherwise a
 mismatched marker fails the first hash comparison; a matching one reaches a
 20-byte lock commitment at the next fixed roll and fails the following numeric
-parse. The byte model grants both pinning checks true and leaves later
+parse. Large stacks fail the modeled 1000-cell limit even earlier. The byte
+model grants both pinning checks true and leaves later
 signature outcomes arbitrary. Pinned Core tests accept truncated locks
 immediately before that `OP_MIN` and reject when it is added for canonical
 152, nonminimal `980000`, and four-byte `ffffff7f`. The initial-stack
