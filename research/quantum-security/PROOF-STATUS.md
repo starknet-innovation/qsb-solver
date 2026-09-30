@@ -26,6 +26,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Nonce | In the fixed-recovery-scalar field model, one key can satisfy both fixed signatures exactly when their publicly computed recovered scalars coincide | Gives an explicit equality-case equation; real sighash correlations, alternate recovery points and key-byte encodings remain unproved. |
 | Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
+| Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
 | Parameters | DER count expression lies strictly between 2^210 and 2^211 | Arithmetic about an explicit counting expression; bijection to a formal BIP66 parser remains to be proved. |
 | Selection | OP_MIN plus a nonnegative successful roll yields its stated bounds | Large values clamp; there is no inferred upper-bound rejection. |
 | Selection | A bounded, 20-byte comparison selects the pool if earlier items have different lengths | A local loop-invariant building block, not the completed Script extraction. |
@@ -33,11 +34,15 @@ The build and dependency outputs are retained under `evidence/`.
 | Selection | A successful nine-step abstract without-replacement traversal partitions into seven signed and two disjoint bonus tags | Does not prove that every accepted production Script execution behaves like this traversal. The exact stack/byte invariant is still missing. |
 | Generated layout | A false first `CHECKMULTISIG` result leaves the symbolic trace accepting; the final result controls the top of stack | Generated from 880 actual Config A instructions and a disposable canonical witness, with signature outcomes supplied explicitly. This is not an arbitrary-witness Script theorem or a solved hash puzzle. |
 | Generated layout | The trace has 201 counted operations and 569 final stack cells; the first false result remains at depth 285 | Confirms the structural source reading for this fixture. ScriptNum parsing, signature semantics and actual byte sizes are outside this model. |
+| Generated layout | With first signed index 152 and one inserted external symbolic 20-byte cell, the first selection's `OP_ROLL` reaches that cell | A checked **local counterexample** to inferring pool confinement from `OP_MIN` alone. The complete malformed probe fails symbolic execution; it is not a forged or accepted witness. The trace ends after instruction 315, the first selection roll. |
+| Generated layout | An externally chosen symbolic commitment can match the first `HASH160` comparison; this probe then fails at the second index `OP_MIN` | Passing one HORS comparison does not imply the selected commitment came from the lock. The global stack invariant may still reject this malformed witness. |
 | Attack extraction | Extracted pinning and final round imply a fresh final-round opening or a novel two-puzzle search result | This is the candidate reduced problem after the first-round finding. Actual arbitrary-witness extraction and a quantum query bound are still missing. |
 | Final-round shape | Seven distinct signed positions plus two disjoint bonus positions give nine total | The shape is an explicit premise of the attack and source-extraction statements; actual Script enforcement is unproved. |
 | Game | A Core-accepted target spend with changed ordered outputs is unauthorized when the owner bound those outputs | The Core acceptance and target-consumption predicates are explicit inputs; parsing and ledger acceptance remain unproved. |
 | Game | Disclosure sets grow when more signing records are appended, regardless of whether they were mined | No assumption that cancellation, reorgs or backup restoration erase revealed material. |
+| Game | The disclosed union has at most `t·r` positions after `r` records each opening at most `t`, capped by the finite index universe | Counts all records, so a per-vault/per-round transcript can give a tighter bound. The per-record cap is an explicit premise. |
 | Reduction | An unauthorized spend under `SourceExtraction` and honest publication implies a fresh final-round opening or `NovelTwoPuzzle` | `SourceExtraction` is an explicit **unproved** arbitrary-witness Script premise. It must be computed from the adversary's transaction, not selected from private challenger state. |
+| Reduction | A bad spend is novel relative to honestly published transactions | Requires the publication invariant: every released transaction's semantic projection remains in the *ever-authorized* set. Revocation after release is outside this unforgeability definition. |
 | Reduction | Every unauthorized spend implies a fresh opening, a two-puzzle event, **or an extraction gap** | The gap has no small probability bound. The theorem does not prove QSB security. |
 | Reduction | For any terminal measure, bounds on those three events add | The terminal transcript and disclosures may be adaptive. The theorem supplies no cryptographic event bounds and no zero-gap claim. |
 
@@ -73,6 +78,17 @@ wrong-parity hybrid encoding fails. Changing the destination with a fixed ALL
 signature and the same key fails; recomputing the key by public recovery passes.
 The SINGLE-bug signature continues to verify after destination and amount change.
 These are component facts, not an accepted QSB forgery.
+
+`selection-prefix.json` independently checks first-selection reachability with
+Core v27.2. Disposable test locks are **truncated** after the first signed-pool
+`OP_ROLL` (byte offset 4783) or its `HASH160` equality check (byte offset 4789).
+The first hash puzzle check is replaced with `OP_2DROP`, while pinning remains
+real. With index 152 and an inserted external 20-byte marker, the first prefix
+accepts a nonzero marker and rejects an all-zero marker. A second prefix accepts
+an attacker-chosen `HASH160(0x0a)` marker and rejects a mismatched marker.
+Only the marker changes within each pair. This corroborates local out-of-pool
+selection and a self-chosen matching commitment, not acceptance by the complete
+QSB script or an attack on funds.
 
 The source of `consensus/verify.cpp` in the native build's named revision
 `9a7c2ab` has the same SHA-256 as the analyzed app revision:
@@ -125,7 +141,11 @@ scoped external assumption, or a counterexample:
 2. Full arbitrary-witness extraction from the real legacy script, including
    bonus indices, stack roles, NULLDUMMY, the seven-plus-two distinct final-round
    shape, and the unchecked first-round result. The extractor must be efficiently
-   computable from the adversary's transaction bytes.
+   computable from the adversary's transaction bytes. The generated local probe
+   shows that the first signed `OP_MIN` cap of 152 plus offset 151 can select an
+   attacker-supplied initial-stack cell beyond the 150 intended commitments.
+   Later checks reject the tested full probe; any pool-confinement proof needs
+   a global stack invariant, rather than a cap-only argument.
 3. Bitcoin byte parsing, ScriptNum semantics, integer ranges, resource limits,
    FindAndDelete, sighash serialization, and ALL binding to authorization.
 4. Curve equations, accepted encodings, at most the appropriate number of

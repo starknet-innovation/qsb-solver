@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.Choose.Basic
+import QSB.Game
 
 /-! Concrete arithmetic, NOT security levels. Bonus counts presume exactly the
 required distinct disclosed signed positions and disjoint distinct bonus sets.
@@ -36,6 +37,18 @@ theorem coveredFinalChoices_two_disjoint_disclosures :
     coveredFinalChoices 14 = 34845096 := by decide
 theorem coveredFinalChoices_three_disjoint_disclosures :
     coveredFinalChoices 21 = 1180590840 := by decide
+
+/-- A conservative upper bound after `r = history.length` releases. It counts
+all signing records, even those for other vaults or rounds; a per-vault record
+count gives a sharper version. It still says nothing about QROM success. -/
+theorem coveredFinalChoices_after_history {Secret : Type*}
+    (history : List (Game.Disclosure (Fin 150) Secret))
+    (vault : Nat) (round : Fin 2)
+    (each : ∀ d ∈ history, d.opened.card ≤ 7) :
+    coveredFinalChoices (Game.disclosedAt history vault round).card ≤
+      coveredFinalChoices (min 150 (7 * history.length)) := by
+  apply coveredFinalChoices_mono
+  simpa using Game.disclosedAt_card_le_min history vault round 7 each
 
 /-- Count minimally encoded, nonnegative DER integers of a specified byte length.
 Zero is included at length one, because syntax validity alone permits it.

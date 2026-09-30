@@ -31,6 +31,7 @@ import QSB.Reduction
 #print axioms QSB.coveredFinalChoices_one_disclosure
 #print axioms QSB.coveredFinalChoices_two_disjoint_disclosures
 #print axioms QSB.coveredFinalChoices_three_disjoint_disclosures
+#print axioms QSB.coveredFinalChoices_after_history
 #print axioms QSB.der32_count_lower
 #print axioms QSB.der32_count_upper
 #print axioms QSB.extracted_novel_round_fresh_or_puzzle
@@ -49,12 +50,18 @@ import QSB.Reduction
 #print axioms QSB.Layout.accepted_trace_operation_count
 #print axioms QSB.Layout.accepted_trace_stack_size
 #print axioms QSB.Layout.first_result_retained_below_top
+#print axioms QSB.Layout.first_selection_can_reach_external_cell
+#print axioms QSB.Layout.external_probe_not_full_acceptance
+#print axioms QSB.Layout.matched_external_passes_first_comparison
+#print axioms QSB.Layout.matched_external_fails_second_index
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
 #print axioms QSB.novel_two_puzzle_key_cases
 #print axioms QSB.Game.changed_outputs_unauthorized
 #print axioms QSB.Game.disclosedAt_append
+#print axioms QSB.Game.disclosedAt_card_le_history
+#print axioms QSB.Game.disclosedAt_card_le_min
 #print axioms QSB.unauthorized_not_published
 #print axioms QSB.unauthorized_under_source_extraction
 #print axioms QSB.unauthorized_with_explicit_gap

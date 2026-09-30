@@ -1,0 +1,47 @@
+{
+  "scope": "TRUNCATED first-selection test lock with one puzzle check relaxed; not full-lock acceptance",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "roll_prefix_bytes": 4784,
+  "comparison_prefix_bytes": 4790,
+  "first_selection_roll_offset": 4783,
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "roll_nonzero_external_marker",
+      "prefix_bytes": 4784,
+      "test_lock_sha256": "c7477ee101c3d14c8860f6ec840c94cd65dadd14c620c734e5ad3315afd99356",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "d331853295912f6955c393b218a71082908754f32f62cd279b16885b54a3ba7d"
+    },
+    {
+      "name": "roll_zero_external_marker",
+      "prefix_bytes": 4784,
+      "test_lock_sha256": "c7477ee101c3d14c8860f6ec840c94cd65dadd14c620c734e5ad3315afd99356",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "6b9dacf404c8f620d62688dcf4d87cb3fa84ef1a6c072af89420b97f3aaabd7c"
+    },
+    {
+      "name": "comparison_self_chosen_commitment",
+      "prefix_bytes": 4790,
+      "test_lock_sha256": "134fd0ff92a1a14aa2deac471fedd232dae8a7ec13f8aea8ae71f2bcbf60caff",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "b3b59fd3056e4978fbd40ec02f9b82dd678b3e7ac8d37c99d0eefc98fc759b81"
+    },
+    {
+      "name": "comparison_wrong_commitment",
+      "prefix_bytes": 4790,
+      "test_lock_sha256": "134fd0ff92a1a14aa2deac471fedd232dae8a7ec13f8aea8ae71f2bcbf60caff",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "857006cec216c05baef5db83b5cd3c57d3e421e69c921663a34f7f7f60966487"
+    }
+  ]
+}

@@ -59,9 +59,13 @@ hash lengths and pool sizes are fixed as above.
    non-witness transaction fields. The solver may propose locktime/sequence
    within the intended search range, but HORS disclosure is attached to the
    final assembled transaction. Define Auth as the set of authorized semantic
-   transaction projections, not the set of transactions the server happens to
-   accept. At minimum every unauthorized recipient, value, or fee change is a
-   forbidden projection. Witness-only malleations are not themselves theft.
+   transaction projections **ever released with owner approval**, not the set
+   of transactions the server happens to accept or currently displays. Once
+   full signing material is released, later cancellation cannot revoke that
+   transaction cryptographically. At minimum every never-approved recipient,
+   value, or fee change is a forbidden projection. Witness-only malleations are
+   not themselves theft. A separate current-intent or cancellation property
+   would need a different game and likely ledger assumptions.
 3. **Disclosure.** On an authorized signing request the attacker receives all
    public solver inputs and outputs, the complete assembled transaction, and
    all revealed HORS preimages. This is a conservative grant: the QSB scriptSig
@@ -167,7 +171,7 @@ separate argument.
 | Round 1 after disclosure | Reuse its old nonce key after changing destination | Core accepts the modified test lock even though the old nonce key fails on the new transaction; pinning and round 2 are freshly recovered. Under the real lock, the original DER-valid SHA256(old key) remains DER-valid, and a puzzle verification key for the new message is publicly recoverable. This is a conditional attack route, not a solved real-lock forgery. |
 | Round 1 HORS | Supply an incorrect preimage | Rejected in Core experiment. The unchecked multisignature does not remove earlier OP_EQUALVERIFY checks. |
 | Round 2 multisignature | Let final CHECKMULTISIG return false | Rejected in Core experiment; final stack truth is required. |
-| Signed indices | Negative, large, duplicate, or reordered indices | OP_MIN only upper-clamps. OP_ROLL bounds and 20-byte HASH160 comparisons matter. Generic local lemmas exist; arbitrary-witness loop invariant pending. |
+| Signed indices | Negative, large, duplicate, or reordered indices | OP_MIN only upper-clamps. A Lean-checked malformed initial stack with index 152 makes the first signed selection roll reach an external symbolic 20-byte cell after the intended commitment pool. Truncated-lock Core tests confirm external-marker selection and a matching self-chosen HASH160 commitment through the first equality check. The complete symbolic probe fails at a later index parse; this is a local counterexample to cap-only or single-comparison confinement arguments, not an accepted forgery. Arbitrary-witness loop invariant pending. |
 | Bonus indices | Reuse gathered signatures, select nonce or null dummy | Requires explicit analysis of stack layout, counts and NULLDUMMY. Counting ordinary subsets alone is insufficient. |
 | Dummy signatures | Change destination under SIGHASH_SINGLE bug | Isolated Core test confirms the dummy signature still verifies in the 2-input/1-output layout. Dummies do not bind outputs. |
 | Alternate transaction layout | Use more inputs/outputs or reorder QSB input | App refuses such layouts, but Bitcoin may admit them. Full security game must analyze their non-bug sighashes, not forbid them by service policy. |

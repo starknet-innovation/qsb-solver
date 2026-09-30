@@ -1,5 +1,5 @@
 {
-  "theorem_count": 50,
+  "theorem_count": 57,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -8,6 +8,16 @@
   "theorems": {
     "QSB.Game.changed_outputs_unauthorized": [],
     "QSB.Game.disclosedAt_append": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.Game.disclosedAt_card_le_history": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.Game.disclosedAt_card_le_min": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -21,6 +31,9 @@
     "QSB.Layout.both_multisigs_true_accept": [
       "propext"
     ],
+    "QSB.Layout.external_probe_not_full_acceptance": [
+      "propext"
+    ],
     "QSB.Layout.final_multisig_false_rejects": [
       "propext"
     ],
@@ -31,6 +44,15 @@
       "propext"
     ],
     "QSB.Layout.first_result_retained_below_top": [
+      "propext"
+    ],
+    "QSB.Layout.first_selection_can_reach_external_cell": [
+      "propext"
+    ],
+    "QSB.Layout.matched_external_fails_second_index": [
+      "propext"
+    ],
+    "QSB.Layout.matched_external_passes_first_comparison": [
       "propext"
     ],
     "QSB.abstract_run_final_shape": [
@@ -70,6 +92,11 @@
       "propext"
     ],
     "QSB.configA_round2_bonus_choices": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.coveredFinalChoices_after_history": [
       "Classical.choice",
       "Quot.sound",
       "propext"

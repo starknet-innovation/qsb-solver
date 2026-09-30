@@ -1,4 +1,6 @@
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Card
+import Mathlib.Data.Fintype.Card
 
 /-!
 Transaction-level authorization and disclosure bookkeeping.
@@ -91,5 +93,62 @@ theorem disclosedAt_append
         exact Finset.Subset.trans Finset.subset_union_left (ih (old ∪ d.opened))
       · simp only [if_neg h]
         exact ih old
+
+/-- A conservative cap on disclosed positions after `r` signing records: if
+each record opens at most `t` positions, the union has at most `t*r` positions.
+The history may include records for other vaults/rounds, so this bound can be
+loose. It counts releases whether or not they were mined. -/
+theorem disclosedAt_card_le_history
+    {Index Secret : Type*} [DecidableEq Index]
+    (history : List (Disclosure Index Secret))
+    (vault : Nat) (round : Fin 2) (t : Nat)
+    (each : ∀ d ∈ history, d.opened.card ≤ t) :
+    (disclosedAt history vault round).card ≤ t * history.length := by
+  let step : Finset Index → Disclosure Index Secret → Finset Index :=
+    fun acc d => if d.vault == vault && d.round == round then acc ∪ d.opened else acc
+  have foldBound : ∀ (more : List (Disclosure Index Secret)) (acc : Finset Index),
+      (∀ d ∈ more, d.opened.card ≤ t) →
+      (more.foldl step acc).card ≤ acc.card + t * more.length := by
+    intro more
+    induction more with
+    | nil =>
+        intro acc _
+        simp
+    | cons d rest ih =>
+        intro acc bounded
+        have hd : d.opened.card ≤ t := bounded d (by simp)
+        have hrest : ∀ x ∈ rest, x.opened.card ≤ t := by
+          intro x hx
+          exact bounded x (by simp [hx])
+        simp only [List.foldl_cons, List.length_cons]
+        by_cases h : d.vault == vault && d.round == round
+        · have hu := Finset.card_union_le acc d.opened
+          have hr := ih (acc ∪ d.opened) hrest
+          simpa only [step, if_pos h] using
+            (show (rest.foldl step (acc ∪ d.opened)).card ≤
+              acc.card + t * (rest.length + 1) by
+                rw [Nat.mul_add, Nat.mul_one]
+                omega)
+        · have hr := ih acc hrest
+          simpa only [step, if_neg h] using
+            (show (rest.foldl step acc).card ≤
+              acc.card + t * (rest.length + 1) by
+                rw [Nat.mul_add, Nat.mul_one]
+                omega)
+  have h := foldBound history ∅ each
+  simpa [disclosedAt, step] using h
+
+theorem disclosedAt_card_le_min
+    {Index Secret : Type*} [Fintype Index] [DecidableEq Index]
+    (history : List (Disclosure Index Secret))
+    (vault : Nat) (round : Fin 2) (t : Nat)
+    (each : ∀ d ∈ history, d.opened.card ≤ t) :
+    (disclosedAt history vault round).card ≤
+      min (Fintype.card Index) (t * history.length) := by
+  apply Nat.le_min.mpr
+  constructor
+  · simpa using Finset.card_le_card
+      (Finset.subset_univ (disclosedAt history vault round))
+  · exact disclosedAt_card_le_history history vault round t each
 
 end QSB.Game

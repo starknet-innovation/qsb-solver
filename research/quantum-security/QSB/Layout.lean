@@ -957,6 +957,42 @@ def witness : List Cell := [
   .atom 3100
 ]
 
+/-- In this deliberately malformed witness, the first signed index is 152 and
+an attacker-controlled 20-byte cell is inserted just below the initial indices.
+The first selection's OP_MIN/OP_ROLL can therefore reach beyond the intended
+commitment pool. This is a local reachability example, not an accepted spend. -/
+def externalCommitmentProbe : List Cell :=
+  (witness.set 2 (.num 152)).insertIdx 3 (.hash160 (.atom 9999))
+
+theorem first_selection_can_reach_external_cell :
+    (run (program.take 316)
+      (State.mk externalCommitmentProbe [true, true, true, false, true, true] 0)).bind
+      (fun s => s.stack.head?) = some (.hash160 (.atom 9999)) := by decide
+
+theorem external_probe_not_full_acceptance :
+    (run program
+      (State.mk externalCommitmentProbe [true, true, true, false, true, true] 0)).isSome =
+      false := by decide
+
+/-- If the external marker is chosen to match the next rolled preimage, the
+first HASH160 comparison succeeds. The next index parse fails in this particular
+malformed witness. Neither result is a complete-lock forgery. -/
+def matchedExternalProbe : List Cell :=
+  (witness.set 2 (.num 152)).insertIdx 3 (.hash160 (.num 10))
+
+theorem matched_external_passes_first_comparison :
+    (run (program.take 320)
+      (State.mk matchedExternalProbe [true, true, true, false, true, true] 0)).isSome =
+      true := by decide
+
+theorem matched_external_fails_second_index :
+    (run (program.take 324)
+      (State.mk matchedExternalProbe [true, true, true, false, true, true] 0)).isSome =
+      true ∧
+    (run (program.take 325)
+      (State.mk matchedExternalProbe [true, true, true, false, true, true] 0)).isSome =
+      false := by decide
+
 def execute (round1 round2 : Bool) : Option State :=
   run program (State.mk witness [true, true, true, round1, true, round2] 0)
 

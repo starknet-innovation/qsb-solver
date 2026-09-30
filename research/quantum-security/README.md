@@ -12,6 +12,13 @@ second-round and HORS-preimage mutations were rejected. The experiment relaxes
 three hash-to-signature puzzle checks, explicitly, so it does not establish an
 unauthorized spend of the real lock. See `evidence/round-results.json`.
 
+A separate malformed-witness probe makes the first signed-pool `OP_ROLL` reach
+an attacker-supplied cell. Lean checks that a self-chosen commitment can pass
+the first HASH160 comparison, and Core confirms both local steps on truncated
+test locks. This particular complete symbolic probe fails at the next index
+parse, and the Core tests do not execute the complete lock. See
+`evidence/selection-prefix.json`.
+
 Read:
 
 - [Security game and attack table](SPECIFICATION.md)
@@ -60,6 +67,7 @@ and without capabilities. No node or funded transaction is required.
 python3 analysis/source_inventory.py --app-root /path/to/qsb-app --output evidence/source-inventory.json
 python3 analysis/check_round_results.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/round-results.json
 python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/core-semantics.json
+python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 ```
 
 The recorded source inventory identifies exactly the files analyzed. The app
