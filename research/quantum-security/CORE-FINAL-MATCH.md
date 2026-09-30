@@ -38,9 +38,9 @@ key. A search game cannot replace this with a subset hash that ignores exact
 byte serialization, duplicate pushes, or noncanonical encodings.
 For the one literal lock, Lean proves that all 150 generated final dummy
 signature bytes are pairwise distinct, so the nine selected dummy signatures
-in the conditional full-run theorem are distinct. The full script may still
-contain the same serialized byte pattern elsewhere; exact FindAndDelete output
-has not been derived from this fact alone.
+in the conditional full-run theorem are distinct. Lean alone does not rule out
+the same serialized push elsewhere in the full script. The deterministic
+source-fixture inventory below checks that absence for this one lock.
 
 ## Native differential evidence
 
@@ -59,6 +59,15 @@ signature-push byte pattern embedded inside another push, and a noncanonical
 scriptCode is rejected. The embedded and noncanonical pushes remain in the
 correct scriptCode; canonical boundary pushes are removed. These eight native
 outcomes test selected paths, not the whole generated QSB lock.
+
+`analysis/check_literal_findanddelete.py` regenerates the exact disposable
+lock, checks its script SHA-256 against `ByteLayout` evidence, and inventories
+all 880 opcode boundaries. Each of the 150 final dummy signatures and the
+fixed final nonce occurs as exactly one serialized push at a boundary. For
+each of these 151 values, the app's `find_and_delete` output equals the exact
+script with that one push removed. This checks single-signature deletion in
+the literal fixture; it does not formalize sequential deletion of arbitrary
+ten-signature sets or prove equivalence to Core for every script.
 
 ## Exact remaining bridge
 

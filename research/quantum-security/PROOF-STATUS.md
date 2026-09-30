@@ -171,6 +171,14 @@ a signature-push pattern embedded within another push and a noncanonical
 not a complete FindAndDelete equivalence or the QSB final scriptCode. The
 exact refinement contract is in `CORE-FINAL-MATCH.md`.
 
+`literal-find-and-delete.json` regenerates the disposable Config A lock and
+checks its 9,923-byte script SHA-256 against the byte-layout fixture. At its
+880 opcode boundaries, each of the 150 final dummy signatures and the fixed
+final nonce occurs as one serialized push. For every one of those 151 values,
+the app's single-signature FindAndDelete result is exactly the script with
+that push removed. This is deterministic fixture evidence, not a Lean theorem
+or a Core equivalence proof for sequential deletion on arbitrary witnesses.
+
 `selection-prefix.json` independently checks first-selection reachability with
 Core v27.2. Disposable test locks are **truncated** at selected instructions
 from the first signed-pool `OP_ROLL` (byte offset 4783) through the next

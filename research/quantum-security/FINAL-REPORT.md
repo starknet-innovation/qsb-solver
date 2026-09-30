@@ -318,8 +318,12 @@ that premise, and Core refinement remains open.
 Lean also checks that the 150 literal generated dummy signatures are pairwise
 distinct as byte strings. The nine selected original positions therefore
 yield nine distinct dummy-signature bytes. This does not exclude another
-occurrence of one of those byte patterns elsewhere in the locking script, so
-it does not resolve the full FindAndDelete scriptCode calculation.
+occurrence of one of those byte patterns elsewhere in the locking script by
+itself. A deterministic source-fixture inventory separately checks that each
+of the 150 final dummy signatures and the fixed final nonce appears as exactly
+one opcode-boundary push in this literal lock and that the app deletes that
+one push. This remains executable evidence rather than a Lean/Core theorem
+about the sequential ten-signature scriptCode.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. Its key is
