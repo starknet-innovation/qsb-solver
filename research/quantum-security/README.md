@@ -228,6 +228,9 @@ patterns. This proves internal fixture alignment, not equivalence with Core's
 `QSB/FindAndDelete.lean` proves the sequential deletion result for the
 source-shaped Lean byte loop and every selected final-signature list. It does
 not replace a Core C++ refinement or transaction-level extraction proof.
+`QSB/FinalScriptCode.lean` derives that modeled scriptCode from the ten
+signature bytes actually reached in a conditional successful final byte-model
+run. The Core final-scan premise remains external.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

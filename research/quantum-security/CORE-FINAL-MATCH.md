@@ -64,6 +64,13 @@ change how a surviving chunk parses. Lean also checks that no parsed opcode
 is `OP_CODESEPARATOR`. The remaining link is the C++ parser/delete loop and
 the identification of Core's reached ten signature bytes with these selected
 patterns for every accepted witness.
+Within the full byte model, `QSB/FinalScriptCode.lean` now makes that
+identification conditional on a successful, encoding-sound final ten-pair
+scan: the reached stack slots contain exactly nine selected dummy signatures
+and the fixed nonce, and deleting their serialized pushes gives the selected
+scriptCode. The nine reached dummies carry `SIGHASH_SINGLE`; the nonce carries
+`SIGHASH_ALL`. The remaining identification is Core's real reached stack and
+checker, not a caller-selected list in the Lean conclusion.
 
 ## Native differential evidence
 

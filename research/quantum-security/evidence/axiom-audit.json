@@ -1,5 +1,5 @@
 {
-  "theorem_count": 576,
+  "theorem_count": 582,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -695,6 +695,34 @@
       "propext"
     ],
     "QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalScriptCode.expected_signature_flags": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalScriptCode.expected_signatures_perm": [
+      "propext"
+    ],
+    "QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalScriptCode.reached_scriptCode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalScriptCode.reached_signature_flags": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalScriptCode.reached_signatures_exact": [
       "Classical.choice",
       "Quot.sound",
       "propext"

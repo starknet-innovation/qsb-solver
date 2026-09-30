@@ -646,6 +646,14 @@
 'QSB.FindAndDelete.literal_many_delete' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FindAndDelete.selected_patterns_subset' depends on axioms: [propext, Quot.sound]
 'QSB.FindAndDelete.final_scriptCode_scan' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.reached_signatures_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.expected_signatures_perm' depends on axioms: [propext]
+'QSB.FinalScriptCode.expected_signature_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.reached_signature_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.reached_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]

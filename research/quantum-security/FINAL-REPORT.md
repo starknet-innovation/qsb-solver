@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 576 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 582 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -350,6 +350,17 @@ repeated patterns. The proof uses checked simple-opcode and complete-match
 properties; the literal script also has no `OP_CODESEPARATOR` opcode. It is
 still a Lean model of Core's loop, not a C++ refinement theorem or a full
 scriptSig and transaction extractor.
+`QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
+actually reached by the final modeled CHECKMULTISIG. Under an accepted full
+byte-model run and the explicit nonempty, encoding-sound successful-scan
+premises, their order is second bonus, first bonus, seven gathered dummies in
+reverse draw order, then the fixed nonce. Permuting that list to the nine
+original dummy positions plus nonce leaves the resulting scriptCode unchanged.
+The theorem also identifies `SIGHASH_SINGLE` on each of the nine reached
+dummy signatures and the fixed `SIGHASH_ALL` nonce in slot ten.
+This removes a freely chosen signature-list premise from the modeled
+scriptCode result; it does not show that Core supplies the scan premise or
+that ECDSA verifies against the real transaction sighashes.
 Lean also checks the literal signature flags: all 150 final dummy signatures
 end in `SIGHASH_SINGLE` (`0x03`), while the fixed final nonce ends in
 `SIGHASH_ALL` (`0x01`). The dummy signatures use the constant SINGLE message

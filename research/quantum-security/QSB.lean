@@ -38,6 +38,7 @@ import QSB.FinalBonusIndices
 import QSB.ScriptCodeSelection
 import QSB.EncodedScript
 import QSB.FindAndDelete
+import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.DERHeaderBound
 import QSB.Attack
@@ -588,6 +589,12 @@ import QSB.Reduction
 #print axioms QSB.FindAndDelete.literal_many_delete
 #print axioms QSB.FindAndDelete.selected_patterns_subset
 #print axioms QSB.FindAndDelete.final_scriptCode_scan
+#print axioms QSB.FinalScriptCode.reached_signatures_exact
+#print axioms QSB.FinalScriptCode.expected_signatures_perm
+#print axioms QSB.FinalScriptCode.expected_signature_flags
+#print axioms QSB.FinalScriptCode.reached_signature_flags
+#print axioms QSB.FinalScriptCode.reached_scriptCode
+#print axioms QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
