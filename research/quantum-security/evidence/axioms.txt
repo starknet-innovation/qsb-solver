@@ -51,6 +51,9 @@
 'QSB.Layout.matched_external_fails_second_index' depends on axioms: [propext]
 'QSB.Layout.last_bonus_overshoot_selects_commitment' depends on axioms: [propext]
 'QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
+'QSB.FirstBonus.first_bonus_overshoot_selects_commitment' depends on axioms: [propext]
+'QSB.FirstBonus.first_bonus_overshoot_reaches_signature_slot' depends on axioms: [propext]
+'QSB.FirstBonus.first_bonus_overshoot_symbolic_trace_accepts' depends on axioms: [propext]
 'QSB.Bonus.canonical_region_matches_generated_program' depends on axioms: [propext]
 'QSB.Bonus.region_cell' depends on axioms: [propext]
 'QSB.Bonus.region_length' does not depend on any axioms

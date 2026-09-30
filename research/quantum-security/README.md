@@ -69,9 +69,11 @@ isolated native checks confirm non-push-only stack handoff and independent
 `evidence/bare-script-boundary.json`. The formal composition still assumes
 Core's lock execution refines the byte model.
 
-A later bonus-index probe reaches a locking-script HORS commitment. In a
-deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as
-a bonus signature when it is DER-shaped and paired with a recovered public key.
+Either final-round bonus index can reach a locking-script HORS commitment
+after canonical signed selections. `QSB/FirstBonus.lean` checks the first
+bonus symbolic path. In a deliberately altered, puzzle-relaxed lock, Core
+accepts that 20-byte value in either bonus signature slot when it is DER-shaped
+and paired with a recovered public key.
 The crafted value was not generated from a HORS secret, so this is a concrete
 source-extraction edge case rather than a valid production-vault forgery. See
 `evidence/bonus-overshoot.json`.

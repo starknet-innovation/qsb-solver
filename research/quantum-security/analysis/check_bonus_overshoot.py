@@ -1,4 +1,4 @@
-"""Probe last-bonus out-of-pool selection on a SYNTHETIC altered lock.
+"""Probe final-round bonus out-of-pool selection on a SYNTHETIC altered lock.
 
 One round-2 HORS commitment is replaced with a hand-crafted 20-byte DER
 signature, so this lock does NOT satisfy the normal HASH160(random secret)
@@ -79,19 +79,19 @@ def main():
             lock[i] = 0x6d  # OP_2DROP, while pinning remains checked.
         return exact, bytes(lock)
 
-    def witness(lock, c7, overshoot):
+    def witness(lock, c7, overshoot_slot):
         w = bytearray()
         for ri in (1, 0):
             selected = [builder.dummy_sigs[ri][j] for j in subsets[ri]]
-            if ri == 1 and overshoot:
-                selected[8] = c7
+            if ri == 1 and overshoot_slot is not None:
+                selected[overshoot_slot] = c7
             sc = bt.find_and_delete(lock, nonces[ri])
             for sig in selected:
                 sc = bt.find_and_delete(sc, sig)
             kn = recover(nonces[ri], tx.sighash(1, sc, 1))
             pubs = []
             for j, sig in enumerate(selected):
-                if ri == 1 and overshoot and j == 8 and c7 == natural_c7:
+                if ri == 1 and overshoot_slot == j and c7 == natural_c7:
                     pubs.append(ec.compress_pubkey(ec.G))
                 else:
                     pubs.append(recover(sig, tx.sighash(1, sc, sig[-1])))
@@ -101,8 +101,12 @@ def main():
             for j in range((7 if ri else 8) - 1, -1, -1):
                 w += bt.push_data(builder.hors_secrets[ri][subsets[ri][j]])
             iv = list(indices[ri])
-            if ri == 1 and overshoot:
-                iv[8] = 152
+            if ri == 1 and overshoot_slot is not None:
+                iv[overshoot_slot] = 152
+                if overshoot_slot == 7:
+                    # After the first bonus takes C7, depth 11 (rather than
+                    # canonical depth 10) selects the remaining dummy j8.
+                    iv[8] = 11
             for value in reversed(iv):
                 w += bt.push_number(value)
         pin_key = recover(pin, tx.sighash(1, bt.find_and_delete(lock, pin), 1))
@@ -110,14 +114,16 @@ def main():
         return bytes(w)
 
     results = []
-    for name, c7, overshoot, expected in (
-        ("natural_c7_canonical", natural_c7, False, True),
-        ("natural_c7_overshoot", natural_c7, True, False),
-        ("crafted_der20_canonical", crafted_c7, False, True),
-        ("crafted_der20_overshoot", crafted_c7, True, True),
+    for name, c7, overshoot_slot, expected in (
+        ("natural_c7_canonical", natural_c7, None, True),
+        ("natural_c7_overshoot", natural_c7, 8, False),
+        ("crafted_der20_canonical", crafted_c7, None, True),
+        ("crafted_der20_overshoot", crafted_c7, 8, True),
+        ("natural_c7_first_bonus_overshoot", natural_c7, 7, False),
+        ("crafted_der20_first_bonus_overshoot", crafted_c7, 7, True),
     ):
         exact, lock = make_lock(c7)
-        tx.inputs[1].script_sig = witness(lock, c7, overshoot)
+        tx.inputs[1].script_sig = witness(lock, c7, overshoot_slot)
         payload = f"{tx.serialize().hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
         result = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
@@ -131,12 +137,16 @@ def main():
         accepted = result.returncode == 0 and result.stdout.strip() == "core-27.2-api2-all-inputs-valid"
         assert accepted == expected, (name, result)
         results.append({"name": name, "accepted": accepted, "expected": expected,
+                        "overshoot_slot": overshoot_slot,
+                        "final_bonus_indices": [152, 11] if overshoot_slot == 7 else
+                            [10, 152] if overshoot_slot == 8 else [10, 10],
                         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
                         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
                         "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest()})
 
     report = {
         "scope": "SYNTHETIC altered commitment and relaxed puzzle checks; not a production-vault forgery",
+        "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
         "source_revision": subprocess.check_output(
             ["git", "-C", str(a.app_root), "rev-parse", "HEAD"], text=True).strip(),
         "natural_commitment_hex": natural_c7.hex(),

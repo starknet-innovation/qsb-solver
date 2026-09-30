@@ -87,11 +87,12 @@ used.
    push-only. This removes a canonical scriptSig-shape premise from the
    modeled first-origin statement, but does not prove Core's lock execution
    refines the byte model or settle later selections.
-4. A last-bonus index of 152 selects a locking-script HORS commitment rather
-   than a dummy signature in the generated stack trace. On a deliberately
-   altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
-   Core's actual final `CHECKMULTISIG` with a recovered public key; the natural
-   commitment rejects this overshoot. The crafted commitment does **not**
+4. Either final-round bonus index can select a locking-script HORS commitment
+   at 152 rather than a dummy signature after canonical signed selections.
+   Lean checks both symbolic paths. On a deliberately altered 20-byte
+   DER-shaped commitment, the puzzle-relaxed full lock passes Core's actual
+   final `CHECKMULTISIG` with a recovered public key in either slot; the natural
+   commitment rejects both overshoots. The crafted commitment does **not**
    equal `HASH160` of its generated HORS secret. This is a source-extraction
    edge case and a possible bad-setup condition, not a production-vault
    forgery or a solved real hash puzzle.
@@ -113,7 +114,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 306 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 309 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

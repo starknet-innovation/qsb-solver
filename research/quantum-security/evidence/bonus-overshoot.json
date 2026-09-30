@@ -1,5 +1,6 @@
 {
   "scope": "SYNTHETIC altered commitment and relaxed puzzle checks; not a production-vault forgery",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
   "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "natural_commitment_hex": "80169aaf992ee7cafff83baf465499fab47262e7",
   "crafted_der20_commitment_hex": "3011020101020c01000000000000000000001103",
@@ -13,6 +14,11 @@
       "name": "natural_c7_canonical",
       "accepted": true,
       "expected": true,
+      "overshoot_slot": null,
+      "final_bonus_indices": [
+        10,
+        10
+      ],
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
       "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
       "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
@@ -21,6 +27,11 @@
       "name": "natural_c7_overshoot",
       "accepted": false,
       "expected": false,
+      "overshoot_slot": 8,
+      "final_bonus_indices": [
+        10,
+        152
+      ],
       "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
       "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
       "transaction_sha256": "070c0488c4a9f843512fbd14469df750960af568f789375a3dd0d470bc1331cc"
@@ -29,6 +40,11 @@
       "name": "crafted_der20_canonical",
       "accepted": true,
       "expected": true,
+      "overshoot_slot": null,
+      "final_bonus_indices": [
+        10,
+        10
+      ],
       "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
       "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
       "transaction_sha256": "2ac98877baded9d2e565a5817aa023cc38f3a2ddecfb755e621cab4d21bde67f"
@@ -37,9 +53,40 @@
       "name": "crafted_der20_overshoot",
       "accepted": true,
       "expected": true,
+      "overshoot_slot": 8,
+      "final_bonus_indices": [
+        10,
+        152
+      ],
       "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
       "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
       "transaction_sha256": "493b59057811ff72610952b07bf3d6533a6d5a702938788646126fec18bfbdcf"
+    },
+    {
+      "name": "natural_c7_first_bonus_overshoot",
+      "accepted": false,
+      "expected": false,
+      "overshoot_slot": 7,
+      "final_bonus_indices": [
+        152,
+        11
+      ],
+      "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+      "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+      "transaction_sha256": "01690db541e1228cb1adf5df030841d282a8b4940d70216e5c008fd0e2e5175b"
+    },
+    {
+      "name": "crafted_der20_first_bonus_overshoot",
+      "accepted": true,
+      "expected": true,
+      "overshoot_slot": 7,
+      "final_bonus_indices": [
+        152,
+        11
+      ],
+      "exact_lock_sha256": "dc37e3f5499f2ce002f2cb0641414486ff448ec8e498f855bb172503bae44450",
+      "test_lock_sha256": "13342e1d6cf7115a7944b0b7c4a03ddb0971057c16c510fc8038d1606325f0c3",
+      "transaction_sha256": "67c36454f12fcdc7e6404f31f278afc3982be82c3530f08d5c4a47fc8d9bb0ec"
     }
   ]
 }

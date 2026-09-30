@@ -1,5 +1,5 @@
 {
-  "theorem_count": 306,
+  "theorem_count": 309,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -286,6 +286,15 @@
     "QSB.FirstAcceptedOrigin.successful_selection_after_three": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstBonus.first_bonus_overshoot_reaches_signature_slot": [
+      "propext"
+    ],
+    "QSB.FirstBonus.first_bonus_overshoot_selects_commitment": [
+      "propext"
+    ],
+    "QSB.FirstBonus.first_bonus_overshoot_symbolic_trace_accepts": [
       "propext"
     ],
     "QSB.FirstIndexMap.commitment_cells_are_twenty_bytes": [

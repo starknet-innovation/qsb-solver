@@ -6,6 +6,7 @@ import QSB.Parameters
 import QSB.Selection
 import QSB.Layout
 import QSB.Bonus
+import QSB.FirstBonus
 import QSB.ByteIndex
 import QSB.Multisig
 import QSB.KeyRolls
@@ -78,6 +79,9 @@ import QSB.Reduction
 #print axioms QSB.Layout.matched_external_fails_second_index
 #print axioms QSB.Layout.last_bonus_overshoot_selects_commitment
 #print axioms QSB.Layout.last_bonus_overshoot_symbolic_trace_accepts
+#print axioms QSB.FirstBonus.first_bonus_overshoot_selects_commitment
+#print axioms QSB.FirstBonus.first_bonus_overshoot_reaches_signature_slot
+#print axioms QSB.FirstBonus.first_bonus_overshoot_symbolic_trace_accepts
 #print axioms QSB.Bonus.canonical_region_matches_generated_program
 #print axioms QSB.Bonus.region_cell
 #print axioms QSB.Bonus.region_length
