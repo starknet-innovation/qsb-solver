@@ -214,6 +214,7 @@ import QSB.Reduction
 #print axioms QSB.FirstOvershoot.oversized_all_capacity_tails_rejected
 #print axioms QSB.FirstOvershoot.oversized_initial_tail_rejected
 #print axioms QSB.FirstOvershoot.oversized_first_index_rejected_given_pinning
+#print axioms QSB.FirstOvershoot.accepted_first_index_below_152
 #print axioms QSB.FirstIndexMap.shallow_cells_are_not_twenty_bytes
 #print axioms QSB.FirstIndexMap.commitment_cells_are_twenty_bytes
 #print axioms QSB.FirstIndexMap.first_pool_window_covers_region

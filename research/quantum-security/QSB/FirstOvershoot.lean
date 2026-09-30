@@ -1390,4 +1390,22 @@ theorem oversized_first_index_rejected_given_pinning (hashes : Hashes)
   · exact oversized_initial_tail_rejected hashes nonce puzzle raw tail
       outcomes (by omega)
 
+/-- Contrapositive interface for later source extraction: any successful
+modeled run with the stated top-stack pinning layout and a parsable first
+index has first-index value below 152. -/
+theorem accepted_first_index_below_152 (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (value : Int)
+    (tail : List Bytes) (outcomes : List Bool) (final : State)
+    (parsed : ByteIndex.parseScriptNum raw = some value)
+    (accepted : run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = some final) :
+    value < 152 := by
+  by_contra notBelow
+  have large : 152 ≤ value := by omega
+  have rejected := oversized_first_index_rejected_given_pinning hashes
+    nonce puzzle raw value tail outcomes parsed large
+  rw [accepted] at rejected
+  contradiction
+
 end QSB.FirstOvershoot

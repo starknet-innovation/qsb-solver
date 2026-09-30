@@ -1,5 +1,5 @@
 {
-  "theorem_count": 221,
+  "theorem_count": 222,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -160,6 +160,11 @@
       "propext"
     ],
     "QSB.FirstIndexMap.signed_window_roll_has_lock_origin": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstOvershoot.accepted_first_index_below_152": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
