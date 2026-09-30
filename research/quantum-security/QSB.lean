@@ -464,6 +464,8 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedLoop.accepted_signed_cap_add_shape
 #print axioms QSB.FinalSignedLoop.generated_initial_pool_shape
 #print axioms QSB.FinalSignedLoop.generated_initial_pool_alignment
+#print axioms QSB.FinalSignedLoop.generated_dummy_pool_nodup
+#print axioms QSB.FinalSignedLoop.generatedDummyAt_injective
 #print axioms QSB.FinalSignedLoop.paired_erasure_preserves_alignment
 #print axioms QSB.FinalSignedLoop.aligned_pair_at
 #print axioms QSB.FinalSignedLoop.paired_draw_preserves_pool_shape
@@ -546,6 +548,7 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
 #print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
 #print axioms QSB.FinalBonusIndices.two_bonus_ids_extend_seven
+#print axioms QSB.FinalBonusIndices.nine_dummy_bytes_distinct
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_der
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all

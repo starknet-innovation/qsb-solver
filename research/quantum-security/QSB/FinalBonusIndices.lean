@@ -64,6 +64,15 @@ theorem two_bonus_ids_extend_seven
     simp [traceLength]
   exact ⟨aNeB, aNotTrace, bNotTrace, distinct, count⟩
 
+/-- For the literal lock, nine distinct original positions also give nine
+distinct generated dummy-signature byte strings. This does not assert that
+the same byte pattern occurs nowhere else in the locking script. -/
+theorem nine_dummy_bytes_distinct
+    (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+    (indices : (a :: b :: trace.map Prod.fst).Nodup) :
+    ((a :: b :: trace.map Prod.fst).map generatedDummyAt).Nodup :=
+  indices.map generatedDummyAt_injective
+
 /-- Under an explicit successful ten-pair final match and a syntax predicate
 excluding the literal commitment bytes, an accepted byte-model run uses nine
 distinct original HORS positions: seven signed openings and two bonus dummy

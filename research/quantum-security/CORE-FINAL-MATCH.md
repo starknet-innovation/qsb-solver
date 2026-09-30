@@ -36,6 +36,11 @@ to all ten reached signatures before checking any pair. The selected final
 dummy signatures therefore affect the legacy sighash and the recovered nonce
 key. A search game cannot replace this with a subset hash that ignores exact
 byte serialization, duplicate pushes, or noncanonical encodings.
+For the one literal lock, Lean proves that all 150 generated final dummy
+signature bytes are pairwise distinct, so the nine selected dummy signatures
+in the conditional full-run theorem are distinct. The full script may still
+contain the same serialized byte pattern elsewhere; exact FindAndDelete output
+has not been derived from this fact alone.
 
 ## Native differential evidence
 

@@ -1,4 +1,5 @@
-ℹ [8521/8522] Built QSB (15s)
+✔ [8520/8522] Built QSB.FinalRoundWitness (5.7s)
+ℹ [8521/8522] Built QSB (9.9s)
 info: QSB.lean:44:0: 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:45:0: 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:46:0: 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -506,143 +507,146 @@ info: QSB.lean:463:0: 'QSB.FinalSignedLoop.signed_commitment_depth_extract_raw' 
 info: QSB.lean:464:0: 'QSB.FinalSignedLoop.accepted_signed_cap_add_shape' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:465:0: 'QSB.FinalSignedLoop.generated_initial_pool_shape' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:466:0: 'QSB.FinalSignedLoop.generated_initial_pool_alignment' depends on axioms: [propext]
-info: QSB.lean:467:0: 'QSB.FinalSignedLoop.paired_erasure_preserves_alignment' depends on axioms: [propext]
-info: QSB.lean:468:0: 'QSB.FinalSignedLoop.aligned_pair_at' depends on axioms: [propext]
-info: QSB.lean:469:0: 'QSB.FinalSignedLoop.paired_draw_preserves_pool_shape' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:470:0: 'QSB.FinalSignedLoop.successful_roll_from_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:471:0: 'QSB.FinalSignedLoop.accepted_push_roll_tail_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:472:0: 'QSB.FinalSignedLoop.accepted_hash_pair_shape' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:473:0: 'QSB.FinalSignedLoop.successful_target_matches_hash160_at' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:474:0: 'QSB.FinalSignedLoop.accepted_roll_step_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:475:0: 'QSB.FinalSignedLoop.signed_prefix_length' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:476:0: 'QSB.FinalSignedLoop.signed_prefix_wrong_width' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:477:0: 'QSB.FinalSignedLoop.shallow_signed_source_wrong_width' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:478:0: 'QSB.FinalSignedLoop.signed_commitment_source' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:479:0: 'QSB.FinalSignedLoop.capped_signed_source_is_prior' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:480:0: 'QSB.FinalSignedLoop.commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:481:0: 'QSB.FinalSignedLoop.paired_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:482:0: 'QSB.FinalSignedLoop.preimage_front_length' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:483:0: 'QSB.FinalSignedLoop.preimage_roll_tail_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:484:0: 'QSB.FinalSignedLoop.accepted_preimage_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:485:0: 'QSB.FinalSignedLoop.next_raw_front_length' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:486:0: 'QSB.FinalSignedLoop.fixed_raw_roll_tail_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:487:0: 'QSB.FinalSignedLoop.accepted_fixed_raw_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:488:0: 'QSB.FinalSignedLoop.inrange_paired_roll_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:489:0: 'QSB.FinalSignedLoop.accepted_postadd_commitment_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:490:0: 'QSB.FinalSignedLoop.accepted_inrange_signed_suffix_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:491:0: 'QSB.FinalSignedLoop.accepted_signed_round_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:492:0: 'QSB.FinalSignedLoop.accepted_signed_block_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:493:0: 'QSB.FinalSignedChain.generated_all_signed_blocks' does not depend on any axioms
-info: QSB.lean:494:0: 'QSB.FinalSignedChain.generated_blocks_ordered' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:495:0: 'QSB.FinalSignedChain.accepted_ordered_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:496:0: 'QSB.FinalSignedChain.accepted_all_signed_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:497:0: 'QSB.FinalSignedChain.generated_whole_signed_boundary' does not depend on any axioms
-info: QSB.lean:498:0: 'QSB.FinalSignedChain.accepted_whole_program_final_signed_openings' depends on axioms: [propext,
+info: QSB.lean:467:0: 'QSB.FinalSignedLoop.generated_dummy_pool_nodup' depends on axioms: [propext]
+info: QSB.lean:468:0: 'QSB.FinalSignedLoop.generatedDummyAt_injective' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:469:0: 'QSB.FinalSignedLoop.paired_erasure_preserves_alignment' depends on axioms: [propext]
+info: QSB.lean:470:0: 'QSB.FinalSignedLoop.aligned_pair_at' depends on axioms: [propext]
+info: QSB.lean:471:0: 'QSB.FinalSignedLoop.paired_draw_preserves_pool_shape' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:472:0: 'QSB.FinalSignedLoop.successful_roll_from_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:473:0: 'QSB.FinalSignedLoop.accepted_push_roll_tail_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:474:0: 'QSB.FinalSignedLoop.accepted_hash_pair_shape' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:475:0: 'QSB.FinalSignedLoop.successful_target_matches_hash160_at' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:476:0: 'QSB.FinalSignedLoop.accepted_roll_step_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:477:0: 'QSB.FinalSignedLoop.signed_prefix_length' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:478:0: 'QSB.FinalSignedLoop.signed_prefix_wrong_width' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:479:0: 'QSB.FinalSignedLoop.shallow_signed_source_wrong_width' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:480:0: 'QSB.FinalSignedLoop.signed_commitment_source' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:481:0: 'QSB.FinalSignedLoop.capped_signed_source_is_prior' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:482:0: 'QSB.FinalSignedLoop.commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:483:0: 'QSB.FinalSignedLoop.paired_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:484:0: 'QSB.FinalSignedLoop.preimage_front_length' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:485:0: 'QSB.FinalSignedLoop.preimage_roll_tail_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:486:0: 'QSB.FinalSignedLoop.accepted_preimage_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:487:0: 'QSB.FinalSignedLoop.next_raw_front_length' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:488:0: 'QSB.FinalSignedLoop.fixed_raw_roll_tail_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:489:0: 'QSB.FinalSignedLoop.accepted_fixed_raw_pair_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:490:0: 'QSB.FinalSignedLoop.inrange_paired_roll_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:491:0: 'QSB.FinalSignedLoop.accepted_postadd_commitment_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:492:0: 'QSB.FinalSignedLoop.accepted_inrange_signed_suffix_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:493:0: 'QSB.FinalSignedLoop.accepted_signed_round_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:494:0: 'QSB.FinalSignedLoop.accepted_signed_block_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:495:0: 'QSB.FinalSignedChain.generated_all_signed_blocks' does not depend on any axioms
+info: QSB.lean:496:0: 'QSB.FinalSignedChain.generated_blocks_ordered' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:497:0: 'QSB.FinalSignedChain.accepted_ordered_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:498:0: 'QSB.FinalSignedChain.accepted_all_signed_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:499:0: 'QSB.FinalSignedChain.generated_whole_signed_boundary' does not depend on any axioms
+info: QSB.lean:500:0: 'QSB.FinalSignedChain.accepted_whole_program_final_signed_openings' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:499:0: 'QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:500:0: 'QSB.FinalBonusAccepted.generated_first_bonus_prelude' does not depend on any axioms
-info: QSB.lean:501:0: 'QSB.FinalBonusAccepted.generated_bonus_suffix' does not depend on any axioms
-info: QSB.lean:502:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_fixed_raw_pair_shape' depends on axioms: [propext,
+info: QSB.lean:501:0: 'QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:502:0: 'QSB.FinalBonusAccepted.generated_first_bonus_prelude' does not depend on any axioms
+info: QSB.lean:503:0: 'QSB.FinalBonusAccepted.generated_bonus_suffix' does not depend on any axioms
+info: QSB.lean:504:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_fixed_raw_pair_shape' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:503:0: 'QSB.FinalBonusAccepted.first_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:504:0: 'QSB.FinalBonusAccepted.first_bonus_source_width' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:505:0: 'QSB.FinalBonusAccepted.accepted_cap_pair_stack' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:506:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:507:0: 'QSB.FinalBonusAccepted.accepted_cap_pair_encoding' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:508:0: 'QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:509:0: 'QSB.FinalBonusAccepted.accepted_roll_index' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:510:0: 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:511:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:512:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:513:0: 'QSB.FinalBonusAccepted.accepted_between_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:514:0: 'QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:515:0: 'QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds' depends on axioms: [propext,
+info: QSB.lean:505:0: 'QSB.FinalBonusAccepted.first_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:506:0: 'QSB.FinalBonusAccepted.first_bonus_source_width' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:507:0: 'QSB.FinalBonusAccepted.accepted_cap_pair_stack' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:508:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:509:0: 'QSB.FinalBonusAccepted.accepted_cap_pair_encoding' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:510:0: 'QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:511:0: 'QSB.FinalBonusAccepted.accepted_roll_index' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:512:0: 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:513:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:514:0: 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:515:0: 'QSB.FinalBonusAccepted.accepted_between_cap_index_le_152' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:516:0: 'QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:517:0: 'QSB.FinalBonusAccepted.accepted_whole_program_signed_and_bonus_bounds' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:516:0: 'QSB.FinalBonusSecond.first_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:517:0: 'QSB.FinalBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:518:0: 'QSB.FinalBonusSecond.generated_bonus_op_segments' does not depend on any axioms
-info: QSB.lean:519:0: 'QSB.FinalBonusSecond.generated_to_bonus_prefix' does not depend on any axioms
-info: QSB.lean:520:0: 'QSB.FinalBonusSecond.generated_through_both_bonuses' does not depend on any axioms
-info: QSB.lean:521:0: 'QSB.FinalBonusSecond.generated_after_both_bonuses' does not depend on any axioms
-info: QSB.lean:522:0: 'QSB.FinalBonusSecond.generated_precheck_prefix' does not depend on any axioms
-info: QSB.lean:523:0: 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:524:0: 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:525:0: 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:526:0: 'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:527:0: 'QSB.FinalBonusSecond.accepted_roll_shallow_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:528:0: 'QSB.FinalBonusSecond.accepted_second_bonus_preserves_shallow' depends on axioms: [propext,
+info: QSB.lean:518:0: 'QSB.FinalBonusSecond.first_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:519:0: 'QSB.FinalBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:520:0: 'QSB.FinalBonusSecond.generated_bonus_op_segments' does not depend on any axioms
+info: QSB.lean:521:0: 'QSB.FinalBonusSecond.generated_to_bonus_prefix' does not depend on any axioms
+info: QSB.lean:522:0: 'QSB.FinalBonusSecond.generated_through_both_bonuses' does not depend on any axioms
+info: QSB.lean:523:0: 'QSB.FinalBonusSecond.generated_after_both_bonuses' does not depend on any axioms
+info: QSB.lean:524:0: 'QSB.FinalBonusSecond.generated_precheck_prefix' does not depend on any axioms
+info: QSB.lean:525:0: 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:526:0: 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:527:0: 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:528:0: 'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:529:0: 'QSB.FinalBonusSecond.accepted_roll_shallow_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:530:0: 'QSB.FinalBonusSecond.accepted_second_bonus_preserves_shallow' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:529:0: 'QSB.FinalBonusSecond.accepted_bonus_two_roll_shallow_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:530:0: 'QSB.FinalBonusSecond.signed_front_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:531:0: 'QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:532:0: 'QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace' depends on axioms: [propext,
+info: QSB.lean:531:0: 'QSB.FinalBonusSecond.accepted_bonus_two_roll_shallow_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:532:0: 'QSB.FinalBonusSecond.signed_front_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:533:0: 'QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:534:0: 'QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:533:0: 'QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
+info: QSB.lean:535:0: 'QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:534:0: 'QSB.FinalBonusSecond.first_remaining_commitment_unopened' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:535:0: 'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
+info: QSB.lean:536:0: 'QSB.FinalBonusSecond.first_remaining_commitment_unopened' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:537:0: 'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:536:0: 'QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax' depends on axioms: [propext,
+info: QSB.lean:538:0: 'QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:537:0: 'QSB.FinalBonusSecond.matched_final_signature_has_syntax' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:538:0: 'QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier' depends on axioms: [propext,
+info: QSB.lean:539:0: 'QSB.FinalBonusSecond.matched_final_signature_has_syntax' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:540:0: 'QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:539:0: 'QSB.DERSyntax.valid_twenty_byte_lengths' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:540:0: 'QSB.DERSyntax.valid_twenty_byte_ranges' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:541:0: 'QSB.DERSyntax.valid_twenty_byte_header' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:542:0: 'QSB.DERSyntax.crafted_twenty_byte_signature_valid' depends on axioms: [propext]
-info: QSB.lean:543:0: 'QSB.DERSyntax.wrong_sequence_length_rejected' depends on axioms: [propext]
-info: QSB.lean:544:0: 'QSB.DERSyntax.verifyAllEncoding_empty' depends on axioms: [propext]
-info: QSB.lean:545:0: 'QSB.DERSyntax.verifyAllEncoding_nonempty' depends on axioms: [propext]
-info: QSB.lean:546:0: 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
-info: QSB.lean:547:0: 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:548:0: 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:549:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:550:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions_der' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:551:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all' depends on axioms: [propext,
+info: QSB.lean:541:0: 'QSB.DERSyntax.valid_twenty_byte_lengths' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:542:0: 'QSB.DERSyntax.valid_twenty_byte_ranges' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:543:0: 'QSB.DERSyntax.valid_twenty_byte_header' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:544:0: 'QSB.DERSyntax.crafted_twenty_byte_signature_valid' depends on axioms: [propext]
+info: QSB.lean:545:0: 'QSB.DERSyntax.wrong_sequence_length_rejected' depends on axioms: [propext]
+info: QSB.lean:546:0: 'QSB.DERSyntax.verifyAllEncoding_empty' depends on axioms: [propext]
+info: QSB.lean:547:0: 'QSB.DERSyntax.verifyAllEncoding_nonempty' depends on axioms: [propext]
+info: QSB.lean:548:0: 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
+info: QSB.lean:549:0: 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:550:0: 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:551:0: 'QSB.FinalBonusIndices.nine_dummy_bytes_distinct' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:552:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:553:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions_der' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:554:0: 'QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:552:0: 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
-info: QSB.lean:553:0: 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:554:0: 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:555:0: 'QSB.FinalRoundWitness.matched_run_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:556:0: 'QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all' depends on axioms: [propext,
+info: QSB.lean:555:0: 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
+info: QSB.lean:556:0: 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:557:0: 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:558:0: 'QSB.FinalRoundWitness.matched_run_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:559:0: 'QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:557:0: 'QSB.DERHeaderBound.byte_ofFn' depends on axioms: [propext]
-info: QSB.lean:558:0: 'QSB.DERHeaderBound.target_header' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:559:0: 'QSB.DERHeaderBound.encode_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:560:0: 'QSB.DERHeaderBound.rChoices_card' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:561:0: 'QSB.DERHeaderBound.target_second_header' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:562:0: 'QSB.DERHeaderBound.encodeTight_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:563:0: 'QSB.DERHeaderBound.target_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:564:0: 'QSB.DERHeaderBound.target_card_tight_le' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:565:0: 'QSB.DERHeaderBound.output_space_card' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:566:0: 'QSB.DERHeaderBound.target_density_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:567:0: 'QSB.DERHeaderBound.target_density_tight_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:568:0: 'QSB.DERHeaderBound.bounded_target_setup_union_count' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:569:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:570:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:571:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:572:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:573:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
-info: QSB.lean:574:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:575:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:576:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:577:0: 'QSB.unauthorized_not_released' does not depend on any axioms
-info: QSB.lean:578:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:579:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:580:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:581:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:582:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:583:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:560:0: 'QSB.DERHeaderBound.byte_ofFn' depends on axioms: [propext]
+info: QSB.lean:561:0: 'QSB.DERHeaderBound.target_header' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:562:0: 'QSB.DERHeaderBound.encode_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:563:0: 'QSB.DERHeaderBound.rChoices_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:564:0: 'QSB.DERHeaderBound.target_second_header' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:565:0: 'QSB.DERHeaderBound.encodeTight_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:566:0: 'QSB.DERHeaderBound.target_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:567:0: 'QSB.DERHeaderBound.target_card_tight_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:568:0: 'QSB.DERHeaderBound.output_space_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:569:0: 'QSB.DERHeaderBound.target_density_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:570:0: 'QSB.DERHeaderBound.target_density_tight_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:571:0: 'QSB.DERHeaderBound.bounded_target_setup_union_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:572:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:573:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:574:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:575:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:576:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
+info: QSB.lean:577:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:578:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:579:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:580:0: 'QSB.unauthorized_not_released' does not depend on any axioms
+info: QSB.lean:581:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:582:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:583:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:584:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:585:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:586:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 Build completed successfully (8522 jobs).

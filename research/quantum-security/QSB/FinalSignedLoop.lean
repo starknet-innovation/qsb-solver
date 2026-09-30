@@ -392,6 +392,16 @@ def generatedDummyAt (i : Fin 150) : Bytes :=
     rw [generated_dummy_pool_length]
     exact i.isLt)
 
+/-- The literal generated lock uses distinct dummy-signature byte strings at
+all 150 original positions. This is a fixture fact, independent of HASH160
+commitment collisions; other generated setups need their own proof. -/
+theorem generated_dummy_pool_nodup : finalDummyPool.Nodup := by decide
+
+theorem generatedDummyAt_injective : Function.Injective generatedDummyAt := by
+  intro i j same
+  apply Fin.ext
+  exact (generated_dummy_pool_nodup.getElem_inj_iff).mp same
+
 def generatedCommitmentAt (i : Fin 150) : Bytes :=
   finalCommitmentPool[i.val]'(by
     rw [generated_commitment_pool_length]

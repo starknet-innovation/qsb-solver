@@ -1,5 +1,5 @@
 {
-  "theorem_count": 540,
+  "theorem_count": 543,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -540,6 +540,10 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusIndices.nine_dummy_bytes_distinct": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusIndices.two_bonus_ids_extend_seven": [
       "Classical.choice",
       "Quot.sound",
@@ -950,6 +954,13 @@
     "QSB.FinalSignedLoop.fixed_raw_roll_tail_source": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generatedDummyAt_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_dummy_pool_nodup": [
       "propext"
     ],
     "QSB.FinalSignedLoop.generated_fixed_raw_index_decodes": [

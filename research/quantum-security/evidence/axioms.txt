@@ -505,6 +505,8 @@
 'QSB.FinalSignedLoop.accepted_signed_cap_add_shape' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedLoop.generated_initial_pool_shape' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedLoop.generated_initial_pool_alignment' depends on axioms: [propext]
+'QSB.FinalSignedLoop.generated_dummy_pool_nodup' depends on axioms: [propext]
+'QSB.FinalSignedLoop.generatedDummyAt_injective' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedLoop.paired_erasure_preserves_alignment' depends on axioms: [propext]
 'QSB.FinalSignedLoop.aligned_pair_at' depends on axioms: [propext]
 'QSB.FinalSignedLoop.paired_draw_preserves_pool_shape' depends on axioms: [propext, Quot.sound]
@@ -605,6 +607,7 @@
 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusIndices.nine_dummy_bytes_distinct' depends on axioms: [propext, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions_der' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions_verify_all' depends on axioms: [propext,

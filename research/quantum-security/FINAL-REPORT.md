@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 540 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 543 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -315,6 +315,11 @@ nonce slot and empty NULLDUMMY cell. This
 full-run statement still assumes the successful DER-sound ten-pair scan;
 the byte interpreter's supplied final signature Boolean does not establish
 that premise, and Core refinement remains open.
+Lean also checks that the 150 literal generated dummy signatures are pairwise
+distinct as byte strings. The nine selected original positions therefore
+yield nine distinct dummy-signature bytes. This does not exclude another
+occurrence of one of those byte patterns elsewhere in the locking script, so
+it does not resolve the full FindAndDelete scriptCode calculation.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. Its key is
