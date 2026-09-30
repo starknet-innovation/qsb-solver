@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 508 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 510 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -254,6 +254,12 @@ uses 150 second-round commitments: if each has actual parser-syntax marginal
 at most `390405/2^65`, the probability that any is syntax-valid is at most
 `150·390405/2^65`. The marginal and exact Core parser/count correspondence
 remain external. This term does not bound the other extraction or puzzle gaps.
+The Core-shaped matching-loop composition sharpens the syntax premise: if the
+reached final ten-signature/ten-key scan succeeds under a pair verifier whose
+success implies `sigSyntax`, then each bonus signature slot satisfies that
+predicate. The checked theorem combines this with the unopened-commitment
+origin to exclude bonus overshoots under the no-commitment condition. Matching
+the pair verifier and scan result to actual Core execution remains open.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

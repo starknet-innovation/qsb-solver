@@ -977,4 +977,86 @@ theorem no_bonus_commitment_of_signature_syntax (hashes : Hashes)
   exact ⟨firstIndex, lastIndex, firstLower, firstShallow,
     lastLower, lastShallow⟩
 
+/-- With ten signatures and ten keys present, success of the Core-shaped
+matching loop forces the syntax predicate on each corresponding signature,
+provided every successful pair verification implies that predicate. This
+does not assert that the supplied verifier is Bitcoin Core's verifier. -/
+theorem matched_final_signature_has_syntax
+    (verify : Bytes → Bytes → Bool) (sigSyntax : Bytes → Prop)
+    (verifySound : ∀ sig key, verify sig key = true → sigSyntax sig)
+    (stack : List Bytes) (enough : 22 ≤ stack.length)
+    (matched : Multisig.matchSigs verify
+      ((stack.drop 12).take 10) ((stack.drop 1).take 10) = true)
+    (p : Nat) (within : p < 10) :
+    ∀ sig, stack[p + 12]? = some sig → sigSyntax sig := by
+  have sigLength : ((stack.drop 12).take 10).length = 10 := by
+    simp [List.length_take, List.length_drop]
+    omega
+  have keyLength : ((stack.drop 1).take 10).length = 10 := by
+    simp [List.length_take]
+    omega
+  have pairs :=
+    (Multisig.equal_counts_success_iff_pairs verify
+      (by rw [sigLength, keyLength])).mp matched
+  intro sig atSlot
+  have atMatched : ((stack.drop 12).take 10)[p]? = some sig := by
+    rw [List.getElem?_take, if_pos within, List.getElem?_drop]
+    simpa [Nat.add_comm] using atSlot
+  have sigWithin : p < ((stack.drop 12).take 10).length := by omega
+  have keyWithin : p < ((stack.drop 1).take 10).length := by omega
+  have same : ((stack.drop 12).take 10)[p] = sig :=
+    Option.some.inj
+      ((List.getElem?_eq_getElem sigWithin).symm.trans atMatched)
+  have checked := pairs.get sigWithin keyWithin
+  change verify ((stack.drop 12).take 10)[p]
+    ((stack.drop 1).take 10)[p] = true at checked
+  rw [same] at checked
+  exact verifySound sig _ checked
+
+/-- A second conditional interface isolates what Core refinement must supply:
+the reached final CHECKMULTISIG must behave like a successful ten-pair scan,
+and successful pair checks must imply the chosen signature syntax. The byte
+model itself still supplies only Boolean signature outcomes. -/
+theorem no_bonus_commitment_of_matching_verifier (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify : Bytes → Bytes → Bool) (sigSyntax : Bytes → Prop)
+    (verifySound : ∀ sig key, verify sig key = true → sigSyntax sig)
+    (noCommitmentSyntax :
+      ∀ id : Fin 150, ¬ sigSyntax (generatedCommitmentAt id))
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true) :
+    ∃ firstIndex lastIndex : Nat,
+      9 ≤ firstIndex ∧ firstIndex < 152 ∧
+      10 ≤ lastIndex ∧ lastIndex < 152 := by
+  obtain ⟨result, gathered, dummies, commitments, tail,
+    outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
+    postFirst, postLast, beforeCheck,
+    _prefixRun, _through, beforePrefix, _pool, _traceCount, _distinct,
+    _hits, _aligned, _tracePerm, _candidateSource, _candidateUnopened,
+    _firstLower, _firstUpper, _lastLower, _lastUpper,
+    _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
+    _gatheredSlots, _nonceSlot, dummySlot,
+    _firstException, _lastException⟩ :=
+      accepted_whole_program_final_signature_origins
+        hashes initial final accepted
+  have enough : 22 ≤ beforeCheck.stack.length := by
+    obtain ⟨h, _⟩ := List.getElem?_eq_some_iff.mp dummySlot
+    omega
+  apply no_bonus_commitment_of_signature_syntax hashes initial final
+    accepted sigSyntax noCommitmentSyntax
+  intro reached reachedPrefix
+  have same : reached = beforeCheck :=
+    Option.some.inj (reachedPrefix.symm.trans beforePrefix)
+  subst reached
+  have success := matched beforeCheck beforePrefix
+  constructor
+  · exact matched_final_signature_has_syntax verify sigSyntax
+      verifySound beforeCheck.stack enough success 0 (by omega)
+  · exact matched_final_signature_has_syntax verify sigSyntax
+      verifySound beforeCheck.stack enough success 1 (by omega)
+
 end QSB.FinalBonusSecond

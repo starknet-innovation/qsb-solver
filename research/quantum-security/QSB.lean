@@ -529,6 +529,8 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.first_remaining_commitment_unopened
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax
+#print axioms QSB.FinalBonusSecond.matched_final_signature_has_syntax
+#print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

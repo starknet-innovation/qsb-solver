@@ -591,6 +591,10 @@
 'QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FinalBonusSecond.matched_final_signature_has_syntax' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -166,6 +166,10 @@ reached signature slots satisfy a supplied syntax predicate and no generated
 second-round commitment does. The syntax premise is not inferred from the
 model's supplied CHECKMULTISIG Boolean; Core parsing and verification remain
 to be connected.
+The Core-shaped equal-count matching-loop theorem provides a narrower
+interface: a successful ten-pair scan and a per-pair verifier sound for syntax
+imply that the reached bonus slots satisfy the syntax predicate. Equality of
+that abstract scan with the actual Core check remains an external obligation.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's

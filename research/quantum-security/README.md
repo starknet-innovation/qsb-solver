@@ -184,6 +184,9 @@ separate obligations.
 The checked final-bonus setup union bound charges only the 150 second-round
 commitments, conditional on an actual parser-syntax marginal of
 `390405/2^65` per commitment. It does not supply that marginal or bound a spend.
+The conditional matching-loop theorem also derives bonus-slot syntax from a
+successful ten-pair scan when each successful pair check implies that syntax.
+Equating this scan and verifier with Core execution is still required.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

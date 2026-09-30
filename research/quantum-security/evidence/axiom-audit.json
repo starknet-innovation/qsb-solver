@@ -1,5 +1,5 @@
 {
-  "theorem_count": 508,
+  "theorem_count": 510,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -494,6 +494,16 @@
     "QSB.FinalBonusSecond.generated_precheck_prefix": [],
     "QSB.FinalBonusSecond.generated_through_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_to_bonus_prefix": [],
+    "QSB.FinalBonusSecond.matched_final_signature_has_syntax": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax": [
       "Classical.choice",
       "Quot.sound",
