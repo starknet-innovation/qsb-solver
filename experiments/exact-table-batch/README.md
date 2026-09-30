@@ -83,8 +83,8 @@ A result JSON proves nothing about the sanitizer verdict without successful
 process exit and the full sanitizer report. A timeout is incomplete, not pass.
 Run each invocation under a separate
 operator-enforced outer timeout, retain tool error exit codes and complete logs,
-and do not mistake an incomplete/partial JSON for a passed gate. Native GPU
-correctness/performance remains unverified until those executions complete.
+and do not mistake an incomplete/partial JSON for a passed gate. The recorded native result below covers only its stated geometry and inputs.
+Other configurations remain unverified.
 Local CPU tests verify the algebraic product-tree specification, zero/p boundary
 handling, source binding, patch isolation and complete geometry mapping; they do
 not prove native execution of arbitrary synthetic denominator values.
@@ -130,3 +130,28 @@ fail closed. Zero measured kernel duration is inconclusive for ratios and is
 also rejected. The summary retains every paired time ratio plus median/range;
 it explicitly grants neither solver speedup nor range credit. All input files
 are hashed in the receipt, while raw GPU UUIDs remain private operational data.
+
+## Native result, 30 September 2026
+
+On one NVIDIA A10G, all four complete mixed15 table comparisons passed, with
+1,048,576 records per table, 30 exceptional inputs and 252 independent OpenSSL
+samples per normal table. Memcheck, racecheck and synccheck completed with clean
+reports before timing. [Raw samples](evidence/normal.json), sanitizer reports and
+[the bound summary](evidence/summary.json) retain the public evidence.
+
+Across seven alternating pairs on that GPU, kernel time decreased by a median
+7.49% (individual decreases 6.76–8.22%), saving about 0.229 ms per table.
+Instrumented construction time decreased by only 0.10% at the median; individual
+pairs ranged from 0.67% slower to 0.75% faster. These are observed paired ranges,
+not confidence intervals. This single-host run establishes a kernel-level benefit,
+but no convincing construction-level benefit or solver throughput improvement.
+
+Recommendation: keep the change experimental. Do not integrate or promote it on
+throughput grounds from these measurements. The construction measurement includes
+CPU preparation, OpenSSL checks, copies and harness instrumentation; it is not
+a production initialization benchmark. Coverage excludes mixed14, arbitrary
+inputs and end-to-end search. Production source and release identities are unchanged.
+
+The host, recorded root volume and all scoped temporary resources were independently
+verified removed at 20:17:40 UTC. This new USD100 campaign retains a USD5 conservative
+charge for the allocation; that amount is not an observed invoice charge.
