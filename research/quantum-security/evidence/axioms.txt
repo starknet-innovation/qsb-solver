@@ -563,12 +563,26 @@
 'QSB.FinalBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.generated_bonus_op_segments' does not depend on any axioms
 'QSB.FinalBonusSecond.generated_to_bonus_prefix' does not depend on any axioms
+'QSB.FinalBonusSecond.generated_through_both_bonuses' does not depend on any axioms
+'QSB.FinalBonusSecond.generated_after_both_bonuses' does not depend on any axioms
 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.accepted_roll_shallow_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.accepted_second_bonus_preserves_shallow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalBonusSecond.accepted_bonus_two_roll_shallow_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.signed_front_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]

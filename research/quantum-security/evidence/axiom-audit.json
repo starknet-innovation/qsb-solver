@@ -1,5 +1,5 @@
 {
-  "theorem_count": 496,
+  "theorem_count": 504,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -439,12 +439,37 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusSecond.accepted_bonus_two_roll_shallow_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.accepted_roll_shallow_cell": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.accepted_second_bonus_preserves_shallow": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.accepted_second_bonus_source_role": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -459,7 +484,9 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusSecond.generated_after_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_bonus_op_segments": [],
+    "QSB.FinalBonusSecond.generated_through_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_to_bonus_prefix": [],
     "QSB.FinalBonusSecond.second_bonus_source_map": [
       "Classical.choice",
@@ -471,6 +498,11 @@
       "propext"
     ],
     "QSB.FinalBonusSecond.second_source_after_first_dummy": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusSecond.signed_front_origins": [
       "Classical.choice",
       "Quot.sound",
       "propext"

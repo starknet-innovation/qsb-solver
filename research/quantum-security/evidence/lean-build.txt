@@ -1,4 +1,4 @@
-✔ [2999/3001] Built QSB.FinalBonusSecond (6.4s)
+✔ [2999/3001] Built QSB.FinalBonusSecond (9.5s)
 ℹ [3000/3001] Built QSB (3.2s)
 info: QSB.lean:39:0: 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 info: QSB.lean:40:0: 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
@@ -565,27 +565,41 @@ info: QSB.lean:510:0: 'QSB.FinalBonusSecond.first_dummy_roll_shape' depends on a
 info: QSB.lean:511:0: 'QSB.FinalBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
 info: QSB.lean:512:0: 'QSB.FinalBonusSecond.generated_bonus_op_segments' does not depend on any axioms
 info: QSB.lean:513:0: 'QSB.FinalBonusSecond.generated_to_bonus_prefix' does not depend on any axioms
-info: QSB.lean:514:0: 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:515:0: 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
-info: QSB.lean:516:0: 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:517:0: 'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:518:0: 'QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:519:0: 'QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace' depends on axioms: [propext,
+info: QSB.lean:514:0: 'QSB.FinalBonusSecond.generated_through_both_bonuses' does not depend on any axioms
+info: QSB.lean:515:0: 'QSB.FinalBonusSecond.generated_after_both_bonuses' does not depend on any axioms
+info: QSB.lean:516:0: 'QSB.FinalBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:517:0: 'QSB.FinalBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
+info: QSB.lean:518:0: 'QSB.FinalBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:519:0: 'QSB.FinalBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:520:0: 'QSB.FinalBonusSecond.accepted_roll_shallow_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:521:0: 'QSB.FinalBonusSecond.accepted_second_bonus_preserves_shallow' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-info: QSB.lean:520:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:521:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:522:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:523:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:524:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
-info: QSB.lean:525:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:526:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:527:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:528:0: 'QSB.unauthorized_not_released' does not depend on any axioms
-info: QSB.lean:529:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:530:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:531:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:532:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:533:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
-info: QSB.lean:534:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:522:0: 'QSB.FinalBonusSecond.accepted_bonus_two_roll_shallow_origin' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:523:0: 'QSB.FinalBonusSecond.signed_front_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:524:0: 'QSB.FinalBonusSecond.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:525:0: 'QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: QSB.lean:526:0: 'QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: QSB.lean:527:0: 'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: QSB.lean:528:0: 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:529:0: 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:530:0: 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:531:0: 'QSB.novel_two_puzzle_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:532:0: 'QSB.Game.changed_outputs_unauthorized' does not depend on any axioms
+info: QSB.lean:533:0: 'QSB.Game.disclosedAt_append' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:534:0: 'QSB.Game.disclosedAt_card_le_history' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:535:0: 'QSB.Game.disclosedAt_card_le_min' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:536:0: 'QSB.unauthorized_not_released' does not depend on any axioms
+info: QSB.lean:537:0: 'QSB.gap_with_no_extractor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:538:0: 'QSB.unauthorized_under_source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:539:0: 'QSB.unauthorized_with_explicit_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:540:0: 'QSB.unauthorized_measure_bound_with_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:541:0: 'QSB.two_puzzle_failure_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: QSB.lean:542:0: 'QSB.unauthorized_measure_bound_with_key_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 Build completed successfully (3001 jobs).
