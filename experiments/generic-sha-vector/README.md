@@ -5,3 +5,7 @@ This patch changes only generic cached-tail schedule loads, preserving eight SHA
 Host extracted-function gate: 170,000 comparisons, clang address/undefined sanitizers, passed. Native gate compares both CUDA functions against a separate CPU round loop, including every intermediate block, zero/all-one/random schedules and 1,024 random states. Expected 174,080 comparisons. Compile with CUDA12.8 and `-O3 -arch=sm_86 -std=c++17`, run normally and under compute-sanitizer memcheck. Retain compiler flags, binary hash and outputs.
 
 This is not full-solver certification or a performance result. Follow with full-transaction differentials, all tail alignments, and interleaved same-GPU complete-solver timing before adoption. Two uint4 expressions do not guarantee faster machine code; inspect emitted SASS and register usage. No release publication or activation is implied.
+
+## 30 September native attempt
+
+A single g5.xlarge launch in eu-west-1c returned explicit `InsufficientInstanceCapacity`. No instance was allocated and no native gate ran. Independent post-check confirmed zero instances for the request token and removal of its security group, cleanup schedule/function, roles and instance profile. Native correctness and performance remain pending; host results above are unchanged. The experiment controller/gate commit was `5292e651b58957918abaded5235a343105a75f4f`. Retry requires a fresh execution state and another capacity/price/watchdog preflight.
