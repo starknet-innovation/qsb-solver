@@ -13,6 +13,7 @@ import QSB.ByteTrace
 import QSB.ByteWitness
 import QSB.FirstOvershoot
 import QSB.FirstIndexMap
+import QSB.FirstNumericRange
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -231,6 +232,19 @@ import QSB.Reduction
 #print axioms QSB.FirstIndexMap.signed_window_roll_has_lock_origin
 #print axioms QSB.FirstIndexMap.shallow_window_cannot_match_hash160
 #print axioms QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin
+#print axioms QSB.FirstNumericRange.canonical_index_roundtrip
+#print axioms QSB.FirstNumericRange.signed_offset_roundtrip
+#print axioms QSB.FirstNumericRange.encode_canonical_index
+#print axioms QSB.FirstNumericRange.parse_canonical_index
+#print axioms QSB.FirstNumericRange.encode_signed_offset
+#print axioms QSB.FirstNumericRange.parse_signed_offset
+#print axioms QSB.FirstNumericRange.canonical_index_small
+#print axioms QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin
+#print axioms QSB.FirstNumericRange.inrange_index_min_step
+#print axioms QSB.FirstNumericRange.inrange_index_add_step
+#print axioms QSB.FirstNumericRange.inrange_index_roll_step
+#print axioms QSB.FirstNumericRange.inrange_first_index_prefix
+#print axioms QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

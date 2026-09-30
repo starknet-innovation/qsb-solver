@@ -59,8 +59,11 @@ used.
    indices every accepted scriptSig can supply. A further Lean lemma says that
    any matching HASH160 lookup with a roll index at most 302 and a retained
    cell no longer than four bytes must identify one of those 150 commitments.
-   Successful modeled `OP_ADD` guarantees that width for its operand; the
-   full runtime index relation is still unproved.
+   For every nonnegative first-index value below 152, Lean now checks the
+   ScriptNum encodings and proves that the byte-model `OP_ADD` yields roll
+   depth `151+n`. A modeled hash-matching first roll therefore requires
+   `n=2+i` and selects fixed commitment `152+i`, for `i<150`.
+   Negative indices and the arbitrary accepted-scriptSig path remain open.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
    altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
@@ -87,7 +90,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 229 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 242 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

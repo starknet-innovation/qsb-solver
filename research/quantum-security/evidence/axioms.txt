@@ -230,6 +230,23 @@
 'QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FirstNumericRange.canonical_index_roundtrip' depends on axioms: [propext]
+'QSB.FirstNumericRange.signed_offset_roundtrip' depends on axioms: [propext]
+'QSB.FirstNumericRange.encode_canonical_index' does not depend on any axioms
+'QSB.FirstNumericRange.parse_canonical_index' depends on axioms: [propext]
+'QSB.FirstNumericRange.encode_signed_offset' does not depend on any axioms
+'QSB.FirstNumericRange.parse_signed_offset' depends on axioms: [propext]
+'QSB.FirstNumericRange.canonical_index_small' does not depend on any axioms
+'QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FirstNumericRange.inrange_index_min_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNumericRange.inrange_index_add_step' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNumericRange.inrange_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNumericRange.inrange_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

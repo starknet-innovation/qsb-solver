@@ -37,6 +37,13 @@ lock cell has another length. For a first signed roll at depth `153 + i`,
 `0 ≤ i < 150`, the selected cell comes from that fixed commitment window,
 independent of the lower witness stack. This is a local origin fact; the
 parser-to-roll-index and later selection obligations remain open.
+`QSB/FirstNumericRange.lean` closes that parser-to-roll-index link for all
+nonnegative first-index values below 152 in the byte model: `OP_ADD` produces
+offset `151+n`, and a matching `HASH160` result from the first signed roll
+implies `n=2+i` and lock commitment `152+i` for some `i<150`. The first-index
+prefix theorem allows arbitrary lower cells within the modeled stack limit.
+Negative indices, arbitrary-scriptSig extraction, later selections, and Core
+refinement remain open.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as

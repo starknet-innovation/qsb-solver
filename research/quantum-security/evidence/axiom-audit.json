@@ -1,5 +1,5 @@
 {
-  "theorem_count": 229,
+  "theorem_count": 242,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -161,6 +161,50 @@
     ],
     "QSB.FirstIndexMap.signed_window_roll_has_lock_origin": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.canonical_index_roundtrip": [
+      "propext"
+    ],
+    "QSB.FirstNumericRange.canonical_index_small": [],
+    "QSB.FirstNumericRange.encode_canonical_index": [],
+    "QSB.FirstNumericRange.encode_signed_offset": [],
+    "QSB.FirstNumericRange.inrange_first_index_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_index_add_step": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_index_min_step": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_index_roll_step": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNumericRange.parse_canonical_index": [
+      "propext"
+    ],
+    "QSB.FirstNumericRange.parse_signed_offset": [
+      "propext"
+    ],
+    "QSB.FirstNumericRange.signed_offset_roundtrip": [
       "propext"
     ],
     "QSB.FirstOvershoot.accepted_first_index_below_152": [
