@@ -492,10 +492,16 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty
 #print axioms QSB.FinalBonusAccepted.generated_first_bonus_prelude
 #print axioms QSB.FinalBonusAccepted.generated_bonus_suffix
+#print axioms QSB.FinalBonusAccepted.accepted_first_bonus_fixed_raw_pair_shape
+#print axioms QSB.FinalBonusAccepted.first_bonus_source_map
+#print axioms QSB.FinalBonusAccepted.first_bonus_source_width
 #print axioms QSB.FinalBonusAccepted.accepted_cap_pair_stack
+#print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_exact
 #print axioms QSB.FinalBonusAccepted.accepted_cap_pair_encoding
 #print axioms QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152
 #print axioms QSB.FinalBonusAccepted.accepted_roll_index
+#print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
+#print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources
 #print axioms QSB.FinalBonusAccepted.accepted_between_cap_index_le_152
 #print axioms QSB.FinalBonusAccepted.accepted_bonus_suffix_index_bounds

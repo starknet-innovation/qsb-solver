@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 480 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 486 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -212,6 +212,13 @@ depths 9 and 10 immediately before the bonus prefix. The bonus theorem carries
 those bytes through the fixed deep roll and cap to establish both lower
 bounds. It also proves the two upper bounds from the generated `OP_MIN`
 caps, while leaving deeper source roles unresolved.
+The next local reached-roll theorem identifies the first bonus source within
+that range. Depths 9–151 select a surviving 9-byte generated dummy; capped
+depth 152 selects the first surviving 20-byte HORS commitment, with no access
+to the arbitrary earlier tail. The theorem also identifies the selected byte
+on top after the actual modeled roll. This makes the commitment-as-signature
+setup exception explicit, but does not determine whether Bitcoin Core accepts
+that commitment as a signature or classify the second bonus source.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

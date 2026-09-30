@@ -27,6 +27,108 @@ theorem generated_bonus_suffix :
         ([.roll] ++ (ByteBonusBetween.betweenOps ++
           ([.roll] ++ ByteLayout.program.drop 850))) := by decide
 
+/-- The generated fixed 579-roll before the first bonus fetches a raw index
+from earlier tail cell 283 after all seven signed draws. -/
+theorem accepted_first_bonus_fixed_raw_pair_shape (hashes : Hashes)
+    (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (accepted : run hashes [.push [0x43, 0x02], .roll]
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) = some after) :
+    ∃ enough : 283 < tail.length,
+      after = State.mk
+        (tail[283] :: nextRawFront prior gathered dummies commitments ++
+          tail.eraseIdx 283) outcomes (cost + 1) := by
+  have frontLength := next_raw_front_length prior gathered dummies
+    commitments shape
+  have depthNat :
+      (nextRawFront prior gathered dummies commitments).length + 283 =
+        579 := by
+    rw [frontLength, seven]
+  have parsed : ByteIndex.parseScriptNum [0x43, 0x02] =
+      some (Int.ofNat
+        ((nextRawFront prior gathered dummies commitments).length + 283)) := by
+    simpa only [depthNat] using
+      ByteBonusBetween.between_roll_index_decode
+  exact accepted_push_roll_tail_shape hashes [0x43, 0x02]
+    (nextRawFront prior gathered dummies commitments) tail
+    outcomes cost after 283 parsed accepted
+
+/-- With seven signed dummies gathered, the first bonus's reachable depth
+range splits exactly into unused dummy cells 9–151 and the first surviving
+HORS commitment at depth 152. The arbitrary earlier tail is unreachable. -/
+theorem first_bonus_source_map (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (n : Nat) (lower : 9 ≤ n) (upper : n ≤ 152) :
+    (nextRawFront prior gathered dummies commitments ++ tail)[n]? =
+      if n < 152 then dummies[n - 9]?
+      else commitments[0]? := by
+  have dummyLength : dummies.length = 143 := by
+    have total := shape.poolCount
+    omega
+  have commitmentLength : commitments.length = 143 := by
+    rw [shape.commitmentCount, dummyLength]
+  have frontLength : (gathered ++ [finalNonce, []]).length = 9 := by
+    simp [seven]
+  have layout : nextRawFront prior gathered dummies commitments ++ tail =
+      (gathered ++ [finalNonce, []]) ++
+        (dummies ++ (commitments ++ (prior :: tail))) := by
+    simp [nextRawFront, List.append_assoc]
+  rw [layout, List.getElem?_append_right (by omega)]
+  have offset : n - (gathered ++ [finalNonce, []]).length = n - 9 := by
+    rw [frontLength]
+  rw [offset]
+  by_cases isDummy : n < 152
+  · rw [if_pos isDummy, List.getElem?_append_left (by omega)]
+  · have capped : n = 152 := by omega
+    subst n
+    rw [if_neg (by omega)]
+    rw [List.getElem?_append_right (by omega)]
+    simp [dummyLength]
+    rw [List.getElem_append_left (by omega)]
+    exact (List.getElem?_eq_getElem (by omega : 0 < commitments.length)).symm
+
+/-- The first bonus's in-range source has generated dummy width below the
+commitment boundary and HASH160 commitment width exactly at that boundary. -/
+theorem first_bonus_source_width (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (n : Nat) (lower : 9 ≤ n) (upper : n ≤ 152)
+    (selected : Bytes)
+    (atSource :
+      (nextRawFront prior gathered dummies commitments ++ tail)[n]? =
+        some selected) :
+    if n < 152 then selected.length = 9 else selected.length = 20 := by
+  have mapped := first_bonus_source_map prior gathered dummies
+    commitments tail shape seven n lower upper
+  rw [atSource] at mapped
+  by_cases dummy : n < 152
+  · rw [if_pos dummy] at mapped ⊢
+    have within : n - 9 < dummies.length := by
+      have total := shape.poolCount
+      omega
+    rw [List.getElem?_eq_getElem within] at mapped
+    have same : selected = dummies[n - 9] := by
+      exact Option.some.inj mapped
+    rw [same]
+    exact shape.dummyWidth _ (List.getElem_mem within)
+  · rw [if_neg dummy] at mapped ⊢
+    have within : 0 < commitments.length := by
+      rw [shape.commitmentCount]
+      have total := shape.poolCount
+      omega
+    rw [List.getElem?_eq_getElem within] at mapped
+    have same : selected = commitments[0] := by
+      exact Option.some.inj mapped
+    rw [same]
+    exact shape.commitmentWidth _ (List.getElem_mem within)
+
 /-- A successful generated cap pair replaces only the raw top index. -/
 theorem accepted_cap_pair_stack (hashes : Hashes)
     (raw : Bytes) (tail : List Bytes)
@@ -50,6 +152,42 @@ theorem accepted_cap_pair_stack (hashes : Hashes)
   simp [run] at finished
   cases finished
   exact ⟨retained, shape⟩
+
+/-- The exact first bonus prelude removes only its earlier-tail raw index
+before leaving the capped index above the unchanged generated pools. -/
+theorem accepted_first_bonus_prelude_exact (hashes : Hashes)
+    (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (accepted : run hashes firstBonusPrelude
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) = some after) :
+    ∃ retained : Bytes,
+      after.stack = retained ::
+        (nextRawFront prior gathered dummies commitments ++
+          tail.eraseIdx 283) := by
+  rw [generated_first_bonus_prelude] at accepted
+  have split : ([.push [0x43, 0x02], .roll,
+      .push [0x98, 0x00], .min] : List Op) =
+      [.push [0x43, 0x02], .roll] ++
+        [.push [0x98, 0x00], .min] := rfl
+  rw [split, run_append] at accepted
+  cases fixedRun : run hashes [.push [0x43, 0x02], .roll]
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) with
+  | none => simp [fixedRun] at accepted
+  | some afterFixed =>
+      obtain ⟨enough, fixedShape⟩ :=
+        accepted_first_bonus_fixed_raw_pair_shape hashes prior gathered
+          dummies commitments tail shape seven outcomes cost afterFixed
+          fixedRun
+      simp only [fixedRun, Option.bind_some] at accepted
+      rw [fixedShape] at accepted
+      exact accepted_cap_pair_stack hashes tail[283]
+        (nextRawFront prior gathered dummies commitments ++
+          tail.eraseIdx 283) outcomes (cost + 1) after accepted
 
 /-- Successful bonus OP_MIN records the actual parsed raw value and the
 ScriptNum encoding of its cap, including nonminimal raw encodings. -/
@@ -141,7 +279,87 @@ theorem accepted_roll_index (hashes : Hashes)
         by_cases negative : value < 0
         · simp [parsed, negative] at rollStep
         · refine ⟨value.toNat, ?_⟩
-          simpa [Int.toNat_of_nonneg (by omega : 0 ≤ value)] using parsed
+          simp [Int.toNat_of_nonneg (by omega : 0 ≤ value)]
+
+/-- A successful modeled roll puts the actual selected source byte on top. -/
+theorem accepted_roll_selected_source (hashes : Hashes)
+    (raw : Bytes) (region : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (n : Nat)
+    (parsed : ByteIndex.parseScriptNum raw = some (Int.ofNat n))
+    (accepted : run hashes [.roll]
+      (State.mk (raw :: region) outcomes cost) = some after) :
+    ∃ selected : Bytes,
+      region[n]? = some selected ∧ after.stack.head? = some selected := by
+  obtain ⟨next, rollStep, _, finished⟩ :=
+    run_cons_success hashes .roll []
+      (State.mk (raw :: region) outcomes cost) after accepted
+  have budget := roll_success_budget hashes raw region outcomes cost
+    next rollStep
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes raw n region
+    outcomes cost parsed budget] at rollStep
+  cases cell : region[n]? with
+  | none =>
+      have absent : KeyRolls.rollAt n region = none := by
+        simp [KeyRolls.rollAt, cell]
+      simp [absent] at rollStep
+  | some selected =>
+      have moved : KeyRolls.rollAt n region =
+          some (selected :: region.eraseIdx n) := by
+        simp [KeyRolls.rollAt, cell]
+      rw [moved] at rollStep
+      simp at rollStep
+      cases rollStep
+      simp [run] at finished
+      cases finished
+      exact ⟨selected, rfl, rfl⟩
+
+/-- At the reached first bonus roll, every bounded decoded choice either
+selects an unused generated dummy (depth 9–151) or the first surviving HORS
+commitment (depth 152). The post-roll top cell is the actual selected byte. -/
+theorem accepted_first_bonus_source_role (hashes : Hashes)
+    (prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (seven : gathered.length = 7)
+    (outcomes : List Bool) (cost : Nat)
+    (beforeFirst postFirst : State)
+    (prelude : run hashes firstBonusPrelude
+      (State.mk (nextRawFront prior gathered dummies commitments ++ tail)
+        outcomes cost) = some beforeFirst)
+    (rawFirst : Bytes) (regionFirst : List Bytes)
+    (firstShape : beforeFirst.stack = rawFirst :: regionFirst)
+    (n : Nat) (lower : 9 ≤ n) (upper : n ≤ 152)
+    (parsed : ByteIndex.parseScriptNum rawFirst = some (Int.ofNat n))
+    (firstRoll : run hashes [.roll] beforeFirst = some postFirst) :
+    postFirst.stack.head? =
+      if n < 152 then dummies[n - 9]?
+      else commitments[0]? := by
+  obtain ⟨retained, exactShape⟩ :=
+    accepted_first_bonus_prelude_exact hashes prior gathered dummies
+      commitments tail shape seven outcomes cost beforeFirst prelude
+  have same : rawFirst :: regionFirst =
+      retained ::
+        (nextRawFront prior gathered dummies commitments ++
+          tail.eraseIdx 283) := firstShape.symm.trans exactShape
+  have rawEq : rawFirst = retained := by
+    injection same with h _
+  have regionEq : regionFirst =
+      nextRawFront prior gathered dummies commitments ++
+        tail.eraseIdx 283 := by
+    injection same with _ h
+  cases beforeFirst with
+  | mk firstStack firstOutcomes firstCost =>
+      change firstStack = rawFirst :: regionFirst at firstShape
+      subst firstStack
+      obtain ⟨selected, source, top⟩ :=
+        accepted_roll_selected_source hashes rawFirst regionFirst
+          firstOutcomes firstCost postFirst n parsed firstRoll
+      rw [regionEq] at source
+      have mapped := first_bonus_source_map prior gathered dummies
+        commitments (tail.eraseIdx 283) shape seven n lower upper
+      rw [source] at mapped
+      exact top.trans mapped
 
 /-- The fixed deep roll and cap before the first bonus roll leave the two
 post-signed shallow dummy-source cells at region depths nine and ten. -/

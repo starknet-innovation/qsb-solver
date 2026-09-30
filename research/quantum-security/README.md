@@ -158,8 +158,12 @@ initial byte stack and supplied signature outcomes.
 `QSB/FinalBonusAccepted.lean` carries the resulting nonempty shallow dummy
 cells through the exact bonus prefix and final NULLDUMMY check. Every
 successful full byte-model run therefore has decoded bonus depths in 9–152
-and 10–152. Classifying the deeper bonus and final signature sources, then
+and 10–152. Classifying the second bonus and final signature sources, then
 refining the model to Core, remain open.
+The reached first-bonus roll has a checked source map: depths 9–151 move an
+unused 9-byte dummy, while depth 152 moves the first surviving 20-byte HORS
+commitment. This is the commitment-as-signature setup exception in the byte
+model; its Core validity and the second bonus source remain unresolved.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
