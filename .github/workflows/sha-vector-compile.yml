@@ -27,7 +27,7 @@ jobs:
         run: |
           image=nvidia/cuda:12.8.1-devel-ubuntu22.04@sha256:6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7
           docker pull "$image"
-          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+          docker run --rm --user "$(id -u):$(id -g)" --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
             --tmpfs /tmp:rw,exec,nosuid,nodev,size=512m \
             --mount "type=bind,src=$PWD/gate,dst=/gate,readonly" \
             --mount "type=bind,src=$PWD/results,dst=/results" \
