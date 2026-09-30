@@ -87,3 +87,20 @@ deadline. Terminate immediately when the prepared gate finishes or fails. Existi
 25-minute receipts retain their original deadlines. A longer lifetime is not an
 advance capacity reservation and does not change the 12-minute outer compute limit
 or authorize additional paid experiments after an allocated attempt.
+
+## Large public validation results
+
+The adapter also accepts a single `QSB_PUBLIC_RESULT_META` line binding the byte
+length and SHA256 of `/var/tmp/qsb-a10g-results/public-result.b64`. It reads at most
+2 MB of encoded output in 18 KB SSM chunks, checks command/instance identities,
+then verifies the assembled checksum before decoding at most 8 MB of flat text
+files. Every read submission has a durable intent. An uncertain send is never
+retried automatically. Collection must leave two minutes before host shutdown;
+collection failure retains raw terminal evidence and still requests termination.
+These transport checks do not validate solver output or grant range credit.
+
+The pinned CUDA development base lacks Python. The validation-only Dockerfile at
+`experiments/generic-sha-vector/Dockerfile.validation` adds the interpreter needed
+by the Python runners. A build is not an approved runtime: record and verify its
+immutable registry digest, dependency checks and host handoff before allocation.
+Do not replace the frozen solver binaries with artifacts built in that image.
