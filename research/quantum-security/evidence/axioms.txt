@@ -530,6 +530,15 @@
 'QSB.FinalSignedLoop.accepted_inrange_signed_suffix_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedLoop.accepted_signed_round_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedLoop.accepted_signed_block_transition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedChain.generated_all_signed_blocks' does not depend on any axioms
+'QSB.FinalSignedChain.generated_blocks_ordered' depends on axioms: [propext, Quot.sound]
+'QSB.FinalSignedChain.accepted_ordered_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedChain.accepted_all_signed_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSignedChain.generated_whole_signed_boundary' does not depend on any axioms
+'QSB.FinalSignedChain.accepted_whole_program_final_signed_openings' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty' depends on axioms: [propext, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

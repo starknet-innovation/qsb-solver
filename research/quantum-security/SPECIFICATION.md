@@ -140,9 +140,10 @@ cells below a new top index. Consequently, when pre-first-bonus source cells
 successful modeled suffix; the last bonus index must also be at least 10.
 The generated initialization pushes 150 nonempty dummy bytes, and seven
 selections confined to that pool leave the two premises true regardless of
-selection order. The first signed selection is now constrained by every
-successful byte-model run; the remaining six and Bitcoin Core refinement
-remain unproved.
+selection order. The checked full-program byte-model theorem now confines all
+seven signed selections to that pool and records their distinct original HORS
+positions. Transporting the bonus conclusion through its reached suffix and
+Bitcoin Core refinement remain unproved.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
@@ -157,8 +158,11 @@ blocks. For any reached block with the current pool shape and original-index
 alignment, successful byte-model execution forces an in-range current
 commitment, equates it with the actual opening's HASH160, and removes that
 commitment and its matching dummy. The two pool invariants survive for the
-next block. The starting premises and seven-block composition from an
-arbitrary accepted full run, followed by Core refinement, are still required.
+next block. `QSB/FinalSignedChain.lean` establishes the starting premises and
+composes all seven blocks from an arbitrary successful full generated
+byte-model run. Its trace contains seven distinct original commitment
+positions, each matched to the HASH160 of the opening consumed at that block.
+Core refinement and actual signature verification remain required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 463,
+  "theorem_count": 470,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -552,6 +552,31 @@
     ],
     "QSB.FinalSignedBoundary.wrong_width_target_rejects_comparison": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedChain.accepted_all_signed_blocks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedChain.accepted_ordered_blocks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedChain.accepted_whole_program_final_signed_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedChain.generated_all_signed_blocks": [],
+    "QSB.FinalSignedChain.generated_blocks_ordered": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedChain.generated_whole_signed_boundary": [],
+    "QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty": [
       "Quot.sound",
       "propext"
     ],

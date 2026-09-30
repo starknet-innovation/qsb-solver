@@ -29,6 +29,7 @@ import QSB.PoolRollInvariant
 import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
+import QSB.FinalSignedChain
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -481,6 +482,13 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedLoop.accepted_inrange_signed_suffix_shape
 #print axioms QSB.FinalSignedLoop.accepted_signed_round_transition
 #print axioms QSB.FinalSignedLoop.accepted_signed_block_transition
+#print axioms QSB.FinalSignedChain.generated_all_signed_blocks
+#print axioms QSB.FinalSignedChain.generated_blocks_ordered
+#print axioms QSB.FinalSignedChain.accepted_ordered_blocks
+#print axioms QSB.FinalSignedChain.accepted_all_signed_blocks
+#print axioms QSB.FinalSignedChain.generated_whole_signed_boundary
+#print axioms QSB.FinalSignedChain.accepted_whole_program_final_signed_openings
+#print axioms QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
