@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 418 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 439 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -182,6 +182,19 @@ the generated commitment at `i` equals the HASH160 of the actual opening.
 This holds for arbitrary initial byte stacks and supplied signature outcomes.
 The six later signed selections, actual signature checking, and Core refinement
 remain open.
+
+Lean also checks the literal 11-opcode schema and fixed raw-index pair for all
+seven final-round signed blocks. A conditional pool theorem shows that an
+in-range commitment roll at current pool position `j` is paired with the
+following dummy-signature roll at that same position. Removing both cells
+preserves the count and width invariant for the next selection. A common list
+of original generated indices also proves that paired erasures keep the two
+pools positionally aligned. In the same
+pool shape, the generated preimage roll reaches earlier tail offset `291-k`
+and the next fixed raw-index roll reaches tail offset 283, with `k` signatures
+already gathered. These theorems do not yet extract the paired transitions
+from every successful byte run for selections two through seven; this is the
+immediate loop-induction task.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

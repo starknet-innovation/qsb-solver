@@ -28,6 +28,7 @@ import QSB.ByteBonusBetween
 import QSB.PoolRollInvariant
 import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
+import QSB.FinalSignedLoop
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -435,6 +436,27 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedAccepted.generated_first_round_check_boundary
 #print axioms QSB.FinalSignedAccepted.accepted_whole_program_first_final_commitment_origin
 #print axioms QSB.FinalSignedAccepted.accepted_whole_program_first_final_index_below_cap
+#print axioms QSB.FinalSignedLoop.generated_signed_round_ops
+#print axioms QSB.FinalSignedLoop.generated_fixed_raw_index_pairs
+#print axioms QSB.FinalSignedLoop.generated_signed_gap_decodes
+#print axioms QSB.FinalSignedLoop.generated_preimage_index_decodes
+#print axioms QSB.FinalSignedLoop.generated_initial_pool_shape
+#print axioms QSB.FinalSignedLoop.generated_initial_pool_alignment
+#print axioms QSB.FinalSignedLoop.paired_erasure_preserves_alignment
+#print axioms QSB.FinalSignedLoop.aligned_pair_at
+#print axioms QSB.FinalSignedLoop.paired_draw_preserves_pool_shape
+#print axioms QSB.FinalSignedLoop.signed_prefix_length
+#print axioms QSB.FinalSignedLoop.signed_prefix_wrong_width
+#print axioms QSB.FinalSignedLoop.shallow_signed_source_wrong_width
+#print axioms QSB.FinalSignedLoop.signed_commitment_source
+#print axioms QSB.FinalSignedLoop.capped_signed_source_is_prior
+#print axioms QSB.FinalSignedLoop.commitment_roll_shape
+#print axioms QSB.FinalSignedLoop.paired_dummy_roll_shape
+#print axioms QSB.FinalSignedLoop.preimage_front_length
+#print axioms QSB.FinalSignedLoop.preimage_roll_tail_source
+#print axioms QSB.FinalSignedLoop.next_raw_front_length
+#print axioms QSB.FinalSignedLoop.fixed_raw_roll_tail_source
+#print axioms QSB.FinalSignedLoop.inrange_paired_roll_transition
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

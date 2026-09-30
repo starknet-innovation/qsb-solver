@@ -143,7 +143,11 @@ comparison tail rejects that capped case and shallow non-20-byte targets.
 `QSB/FinalSignedAccepted.lean` derives that stack from any successful full
 byte-model run, so the first final-round signed index must parse as `2+i`
 for some `i<150`, and commitment `i` matches HASH160 of the actual opening.
-The other six selections and Core refinement remain open.
+`QSB/FinalSignedLoop.lean` checks the literal opcode schema for all seven
+blocks and proves that a conditional commitment/dummy pair of rolls preserves
+the current pool counts, widths, and original-index alignment. Deriving that
+paired transition from successful execution for the other six selections and
+Core refinement remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

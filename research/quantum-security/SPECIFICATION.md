@@ -140,8 +140,9 @@ cells below a new top index. Consequently, when pre-first-bonus source cells
 successful modeled suffix; the last bonus index must also be at least 10.
 The generated initialization pushes 150 nonempty dummy bytes, and seven
 selections confined to that pool leave the two premises true regardless of
-selection order. Whether every successful signed selection is confined to
-that pool, and the Bitcoin Core refinement, remain unproved.
+selection order. The first signed selection is now constrained by every
+successful byte-model run; the remaining six and Bitcoin Core refinement
+remain unproved.
 At the first signed selection of the final round, the generated lookup map
 has a sharper local boundary: indices 0–1 point to 9-byte dummy signatures,
 2–151 to the 150 20-byte HORS commitments, and capped 152 to the prior round's
@@ -150,8 +151,12 @@ the capped case and low indices because HASH160 outputs 20 bytes. A successful
 full byte-model execution now forces the first final-round signed raw index
 to parse as `2+i` for `i<150`, with generated commitment `i` equal to the
 HASH160 of the actual opening. This includes all negative raw values and
-nonminimal encodings in the exclusion argument. Extending the map through
-the remaining signed selections and refining the model to Core are still required.
+nonminimal encodings in the exclusion argument. Lean checks the repeated
+11-opcode schema for all seven signed blocks and proves a conditional paired
+roll invariant: a commitment and its matching dummy at the same current pool
+position are removed together, preserving pool lengths and byte widths.
+Deriving those transitions from accepted byte runs for the remaining six
+selections and refining the model to Core are still required.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

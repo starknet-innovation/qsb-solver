@@ -1,5 +1,5 @@
 {
-  "theorem_count": 418,
+  "theorem_count": 439,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -552,6 +552,85 @@
     ],
     "QSB.FinalSignedBoundary.wrong_width_target_rejects_comparison": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.aligned_pair_at": [
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.capped_signed_source_is_prior": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.commitment_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.fixed_raw_roll_tail_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_fixed_raw_index_pairs": [],
+    "QSB.FinalSignedLoop.generated_initial_pool_alignment": [
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_initial_pool_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_preimage_index_decodes": [
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_signed_gap_decodes": [
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.generated_signed_round_ops": [],
+    "QSB.FinalSignedLoop.inrange_paired_roll_transition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.next_raw_front_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.paired_draw_preserves_pool_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.paired_dummy_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.paired_erasure_preserves_alignment": [
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.preimage_front_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.preimage_roll_tail_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.shallow_signed_source_wrong_width": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.signed_commitment_source": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.signed_prefix_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedLoop.signed_prefix_wrong_width": [
       "Quot.sound",
       "propext"
     ],
