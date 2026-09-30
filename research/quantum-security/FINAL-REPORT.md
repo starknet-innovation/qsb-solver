@@ -71,8 +71,11 @@ used.
    accepted-scriptSig path remains open. Combining the cases, any parsed
    first index below 152 whose reached byte-model `OP_MIN`, `OP_ADD`, and
    signed `OP_ROLL` leave an opening's HASH160 output on top must be `2+i`
-   and identify fixed commitment `152+i`, for `i<150`. The full accepted-run
-   bridge and later selections remain to be proved.
+   and identify fixed commitment `152+i`, for `i<150`. Lean now derives those
+   local steps and the first `HASH160; EQUALVERIFY` from every successful
+   full 880-op byte-model run with the stated top-stack layout and granted
+   pinning outcomes. Arbitrary `scriptSig` extraction, later selections,
+   signature semantics, and Core refinement remain open.
 4. A last-bonus index of 152 selects a locking-script HORS commitment rather
    than a dummy signature in the generated stack trace. On a deliberately
    altered 20-byte DER-shaped commitment, the puzzle-relaxed full lock passes
@@ -99,7 +102,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 272 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 285 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

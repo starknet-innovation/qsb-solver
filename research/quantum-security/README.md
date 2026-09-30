@@ -51,8 +51,11 @@ parsed first index, conditional on the actual `OP_MIN`, `OP_ADD`, and
 selections, and Core refinement remain open.
 Together, the byte-model local-step theorem says that any parsed first index
 below 152 whose first signed roll leaves an opening's `HASH160` value on top
-must equal `2+i` for a fixed commitment `152+i`, with `i<150`. This does not
-yet derive the reached steps and hash comparison from every accepted full run.
+must equal `2+i` for a fixed commitment `152+i`, with `i<150`.
+`QSB/FirstAcceptedOrigin.lean` derives these steps and the first hash
+comparison from every successful run of the full 880-op byte program under
+the specified top-stack layout and granted pinning outcomes. Arbitrary
+`scriptSig` extraction, later selections, and Core refinement remain open.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as

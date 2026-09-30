@@ -92,4 +92,408 @@ theorem first_selection_success_small (hashes : Hashes)
   rw [fixed_region_length] at accepted
   omega
 
+theorem successful_selection_after_three (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    run hashes
+      [.min, .dup, .push [0x97, 0x00], .add, .roll,
+        .push [0x37, 0x01], .roll, .hash160, .equalverify]
+      (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+        outcomes 6) = some final := by
+  have small := first_selection_success_small hashes raw tail outcomes
+    final accepted
+  rw [first_selection_split_three, run_append,
+    first_three_run hashes raw tail outcomes small] at accepted
+  simpa using accepted
+
+theorem successful_min_has_retained (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (next : State)
+    (success : step hashes .min
+      (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+        outcomes 6) = some next) :
+    ∃ retained,
+      next = State.mk (retained :: (fixedRegion ++ tail)) outcomes 7 := by
+  unfold step at success
+  simp [ByteIndex.positive_152] at success
+  cases parsed : ByteIndex.parseScriptNum raw with
+  | none => simp [parsed] at success
+  | some value =>
+      simp [parsed] at success
+      cases encoded : ByteIndex.encodeScriptNum (min 152 value) with
+      | none => simp [encoded] at success
+      | some retained =>
+          simp [encoded] at success
+          cases success
+          exact ⟨retained, rfl⟩
+
+theorem successful_selection_after_min (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    ∃ retained,
+      step hashes .min
+        (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+          outcomes 6) =
+        some (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) ∧
+      run hashes
+        [.dup, .push [0x97, 0x00], .add, .roll,
+          .push [0x37, 0x01], .roll, .hash160, .equalverify]
+        (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) =
+        some final := by
+  have afterThree := successful_selection_after_three hashes raw tail
+    outcomes final accepted
+  obtain ⟨next, minStep, _size, afterMin⟩ :=
+    run_cons_success hashes .min
+      [.dup, .push [0x97, 0x00], .add, .roll,
+        .push [0x37, 0x01], .roll, .hash160, .equalverify]
+      (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+        outcomes 6) final afterThree
+  obtain ⟨retained, rfl⟩ :=
+    successful_min_has_retained hashes raw tail outcomes next minStep
+  exact ⟨retained, minStep, afterMin⟩
+
+theorem successful_selection_after_dup_push (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    ∃ retained,
+      step hashes .min
+        (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+          outcomes 6) =
+        some (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) ∧
+      run hashes
+        [.add, .roll, .push [0x37, 0x01], .roll,
+          .hash160, .equalverify]
+        (State.mk
+          ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) = some final := by
+  obtain ⟨retained, minStep, afterMin⟩ :=
+    successful_selection_after_min hashes raw tail outcomes final accepted
+  obtain ⟨nextDup, dupStep, _dupSize, afterDup⟩ :=
+    run_cons_success hashes .dup
+      [.push [0x97, 0x00], .add, .roll, .push [0x37, 0x01],
+        .roll, .hash160, .equalverify]
+      (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7)
+      final afterMin
+  have dupState : nextDup =
+      State.mk (retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8 := by
+    have exactStep : step hashes .dup
+        (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) =
+        some (State.mk (retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) := by
+      unfold step
+      simp
+    rw [exactStep] at dupStep
+    simpa using dupStep.symm
+  subst nextDup
+  obtain ⟨nextPush, pushStep, _pushSize, afterPush⟩ :=
+    run_cons_success hashes (.push [0x97, 0x00])
+      [.add, .roll, .push [0x37, 0x01], .roll,
+        .hash160, .equalverify]
+      (State.mk (retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8) final afterDup
+  have pushState : nextPush =
+      State.mk
+        ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8 := by
+    have exactStep : step hashes (.push [0x97, 0x00])
+        (State.mk (retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) =
+        some (State.mk
+          ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) := by
+      unfold step
+      simp
+    rw [exactStep] at pushStep
+    simpa using pushStep.symm
+  subst nextPush
+  exact ⟨retained, minStep, afterPush⟩
+
+theorem successful_add_has_offset (hashes : Hashes)
+    (retained : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (next : State)
+    (success : step hashes .add
+      (State.mk
+        ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8) = some next) :
+    ∃ offset,
+      next = State.mk (offset :: retained :: (fixedRegion ++ tail))
+        outcomes 9 := by
+  unfold step at success
+  simp [parse_151] at success
+  cases parsed : ByteIndex.parseScriptNum retained with
+  | none => simp [parsed] at success
+  | some value =>
+      simp [parsed] at success
+      cases encoded : ByteIndex.encodeScriptNum (151 + value) with
+      | none => simp [encoded] at success
+      | some offset =>
+          simp [encoded] at success
+          cases success
+          exact ⟨offset, rfl⟩
+
+theorem successful_selection_after_add (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    ∃ retained offset,
+      step hashes .min
+        (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+          outcomes 6) =
+        some (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) ∧
+      step hashes .add
+        (State.mk
+          ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) =
+        some (State.mk (offset :: retained :: (fixedRegion ++ tail)) outcomes 9) ∧
+      run hashes
+        [.roll, .push [0x37, 0x01], .roll,
+          .hash160, .equalverify]
+        (State.mk (offset :: retained :: (fixedRegion ++ tail))
+          outcomes 9) = some final := by
+  obtain ⟨retained, minStep, afterPush⟩ :=
+    successful_selection_after_dup_push hashes raw tail outcomes final accepted
+  obtain ⟨next, addStep, _size, afterAdd⟩ :=
+    run_cons_success hashes .add
+      [.roll, .push [0x37, 0x01], .roll,
+        .hash160, .equalverify]
+      (State.mk
+        ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+        outcomes 8) final afterPush
+  obtain ⟨offset, rfl⟩ :=
+    successful_add_has_offset hashes retained tail outcomes next addStep
+  exact ⟨retained, offset, minStep, addStep, afterAdd⟩
+
+theorem successful_roll_has_top (hashes : Hashes)
+    (offset : Bytes) (stack : List Bytes) (outcomes : List Bool)
+    (cost : Nat) (next : State)
+    (success : step hashes .roll
+      (State.mk (offset :: stack) outcomes cost) = some next) :
+    ∃ selected rest,
+      next = State.mk (selected :: rest) outcomes (cost + 1) := by
+  unfold step at success
+  by_cases exceeded : cost + 1 > 201
+  · simp [exceeded] at success
+  · simp [exceeded] at success
+    cases parsed : ByteIndex.parseScriptNum offset with
+    | none => simp [parsed] at success
+    | some index =>
+        simp [parsed] at success
+        rcases success with ⟨_nonnegative, selectedEq⟩
+        cases selected : stack[index.toNat]? with
+        | none => simp [selected] at selectedEq
+        | some cell =>
+            simp [selected] at selectedEq
+            cases selectedEq
+            exact ⟨cell, stack.eraseIdx index.toNat, rfl⟩
+
+theorem successful_selection_after_first_roll (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    ∃ retained offset selected rest,
+      step hashes .min
+        (State.mk ([0x98, 0x00] :: raw :: (fixedRegion ++ tail))
+          outcomes 6) =
+        some (State.mk (retained :: (fixedRegion ++ tail)) outcomes 7) ∧
+      step hashes .add
+        (State.mk
+          ([0x97, 0x00] :: retained :: retained :: (fixedRegion ++ tail))
+          outcomes 8) =
+        some (State.mk (offset :: retained :: (fixedRegion ++ tail)) outcomes 9) ∧
+      step hashes .roll
+        (State.mk (offset :: retained :: (fixedRegion ++ tail))
+          outcomes 9) =
+        some (State.mk (selected :: rest) outcomes 10) ∧
+      run hashes
+        [.push [0x37, 0x01], .roll, .hash160, .equalverify]
+        (State.mk (selected :: rest) outcomes 10) = some final := by
+  obtain ⟨retained, offset, minStep, addStep, afterAdd⟩ :=
+    successful_selection_after_add hashes raw tail outcomes final accepted
+  obtain ⟨next, rollStep, _size, afterRoll⟩ :=
+    run_cons_success hashes .roll
+      [.push [0x37, 0x01], .roll, .hash160, .equalverify]
+      (State.mk (offset :: retained :: (fixedRegion ++ tail)) outcomes 9)
+      final afterAdd
+  obtain ⟨selected, rest, rfl⟩ :=
+    successful_roll_has_top hashes offset
+      (retained :: (fixedRegion ++ tail)) outcomes 9 next rollStep
+  exact ⟨retained, offset, selected, rest,
+    minStep, addStep, rollStep, afterRoll⟩
+
+theorem successful_opening_roll_preserves_selected (hashes : Hashes)
+    (selected : Bytes) (rest : List Bytes) (outcomes : List Bool)
+    (next : State)
+    (success : step hashes .roll
+      (State.mk ([0x37, 0x01] :: selected :: rest) outcomes 10) =
+      some next) :
+    ∃ opening suffix,
+      next = State.mk (opening :: selected :: suffix) outcomes 11 := by
+  rw [byte_roll_matches_list_roll hashes [0x37, 0x01] 311
+    (selected :: rest) outcomes 10 parse_311 (by omega)] at success
+  unfold KeyRolls.rollAt at success
+  cases picked : (selected :: rest)[311]? with
+  | none => simp [picked] at success
+  | some opening =>
+      simp [picked] at success
+      cases success
+      exact ⟨opening, rest.eraseIdx 310, rfl⟩
+
+theorem successful_comparison_suffix_matches (hashes : Hashes)
+    (selected : Bytes) (rest : List Bytes) (outcomes : List Bool)
+    (final : State)
+    (accepted : run hashes
+      [.push [0x37, 0x01], .roll, .hash160, .equalverify]
+      (State.mk (selected :: rest) outcomes 10) = some final) :
+    ∃ opening, selected = hashes.h160 opening := by
+  obtain ⟨nextPush, pushStep, _pushSize, afterPush⟩ :=
+    run_cons_success hashes (.push [0x37, 0x01])
+      [.roll, .hash160, .equalverify]
+      (State.mk (selected :: rest) outcomes 10) final accepted
+  have pushState : nextPush =
+      State.mk ([0x37, 0x01] :: selected :: rest) outcomes 10 := by
+    have exactStep : step hashes (.push [0x37, 0x01])
+        (State.mk (selected :: rest) outcomes 10) =
+        some (State.mk ([0x37, 0x01] :: selected :: rest)
+          outcomes 10) := by
+      unfold step
+      simp
+    rw [exactStep] at pushStep
+    simpa using pushStep.symm
+  subst nextPush
+  obtain ⟨nextRoll, rollStep, _rollSize, afterRoll⟩ :=
+    run_cons_success hashes .roll [.hash160, .equalverify]
+      (State.mk ([0x37, 0x01] :: selected :: rest) outcomes 10)
+      final afterPush
+  obtain ⟨opening, suffix, rfl⟩ :=
+    successful_opening_roll_preserves_selected hashes selected rest outcomes
+      nextRoll rollStep
+  have equal := successful_hash_comparison hashes opening selected suffix
+    outcomes 11 [] (by simp [afterRoll])
+  exact ⟨opening, equal.symm⟩
+
+/-- A successful first 12-op selection prefix with a parsed below-cap raw
+index necessarily compares an opening against one of the 150 fixed HORS
+commitments. This derives the local MIN/ADD/roll premises and equality check
+from the executed generated opcodes. -/
+theorem successful_first_selection_prefix_origin (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (outcomes : List Bool)
+    (final : State) (source : Int)
+    (parsedRaw : ByteIndex.parseScriptNum raw = some source)
+    (below : source < 152)
+    (accepted : run hashes firstSelectionPrefix
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5) = some final) :
+    ∃ i : Fin 150,
+      source = Int.ofNat (2 + i.val) ∧
+      ∃ opening,
+        fixedRegion[152 + i.val]? = some (hashes.h160 opening) := by
+  obtain ⟨retained, offset, selected, rest,
+      minStep, addStep, rollStep, afterRoll⟩ :=
+    successful_selection_after_first_roll hashes raw tail outcomes
+      final accepted
+  obtain ⟨opening, selectedEq⟩ :=
+    successful_comparison_suffix_matches hashes selected rest outcomes
+      final afterRoll
+  rw [selectedEq] at rollStep
+  obtain ⟨i, index, cell⟩ :=
+    FirstNegativeAll.below_cap_first_roll_has_commitment_origin hashes
+      raw retained offset opening tail rest source outcomes
+      parsedRaw below minStep addStep rollStep
+  exact ⟨i, index, opening, cell⟩
+
+theorem accepted_postindex_tail_small (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (final : State)
+    (accepted : run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = some final) :
+    tail.length ≤ 696 := by
+  by_contra tooLong
+  by_cases huge : 996 ≤ tail.length
+  · have rejected := oversized_initial_tail_rejected hashes
+      nonce puzzle raw tail outcomes huge
+    rw [accepted] at rejected
+    contradiction
+  by_cases long : 698 ≤ tail.length
+  · have rejected := long_postindex_tail_rejected hashes
+      nonce puzzle raw tail outcomes long (by omega)
+    rw [accepted] at rejected
+    contradiction
+  have saturated : tail.length = 697 := by omega
+  have rejected := saturated_postindex_tail_rejected hashes
+    nonce puzzle raw tail outcomes saturated
+  rw [accepted] at rejected
+  contradiction
+
+/-- Under the specified two-pinning-key top-stack layout and granted true
+pinning checks, every successful full generated byte-model run derives its
+first signed HASH160 equality from a lock-pushed HORS commitment. This is
+still not arbitrary-scriptSig or Bitcoin Core extraction. -/
+theorem accepted_first_signed_commitment_origin (hashes : Hashes)
+    (nonce puzzle raw : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (final : State)
+    (accepted : run hashes ByteLayout.program
+      (State.mk (nonce :: puzzle :: raw :: tail)
+        (true :: true :: outcomes) 0) = some final) :
+    ∃ i : Fin 150, ∃ opening : Bytes,
+      ByteIndex.parseScriptNum raw = some (Int.ofNat (2 + i.val)) ∧
+      fixedRegion[152 + i.val]? = some (hashes.h160 opening) := by
+  obtain ⟨source, parsedRaw⟩ :=
+    accepted_first_index_parses hashes nonce puzzle raw tail outcomes
+      final accepted
+  have below := accepted_first_index_below_152 hashes nonce puzzle raw
+    source tail outcomes final parsedRaw accepted
+  have small := accepted_postindex_tail_small hashes nonce puzzle raw tail
+    outcomes final accepted
+  have pinning :
+      run hashes (ByteLayout.program.take 6)
+        (State.mk (nonce :: puzzle :: raw :: tail)
+          (true :: true :: outcomes) 0) =
+        some (State.mk (raw :: tail) outcomes 5) := by
+    apply modeled_pinning_consumes_two_keys
+    simp only [List.length_cons]
+    omega
+  have prefixState := generated_prefix_after_pinning hashes
+    (State.mk (nonce :: puzzle :: raw :: tail)
+      (true :: true :: outcomes) 0)
+    (raw :: tail) outcomes pinning (by
+      simp only [List.length_cons]
+      omega)
+  have programShape : ByteLayout.program =
+      ByteLayout.program.take 308 ++ firstSelectionPrefix ++
+        (forcedFailureSuffix ++ ByteLayout.program.drop 325) := by
+    calc
+      ByteLayout.program =
+          ByteLayout.program.take 308 ++ FirstOvershoot.segment ++
+            ByteLayout.program.drop 325 := generated_program_split
+      _ = ByteLayout.program.take 308 ++ firstSelectionPrefix ++
+          (forcedFailureSuffix ++ ByteLayout.program.drop 325) := by
+          rw [segment_split]
+          simp only [List.append_assoc]
+  rw [programShape, List.append_assoc] at accepted
+  rw [run_append hashes (ByteLayout.program.take 308)
+    (firstSelectionPrefix ++
+      (forcedFailureSuffix ++ ByteLayout.program.drop 325)),
+    prefixState] at accepted
+  simp only [Option.bind_some] at accepted
+  obtain ⟨middle, prefixAccepted⟩ :=
+    successful_prefix hashes firstSelectionPrefix
+      (forcedFailureSuffix ++ ByteLayout.program.drop 325)
+      (State.mk (fixedRegion ++ raw :: tail) outcomes 5)
+      final accepted
+  obtain ⟨i, index, opening, cell⟩ :=
+    successful_first_selection_prefix_origin hashes raw tail outcomes
+      middle source parsedRaw below prefixAccepted
+  refine ⟨i, opening, ?_, cell⟩
+  rw [index] at parsedRaw
+  exact parsedRaw
+
 end QSB.FirstAcceptedOrigin
