@@ -130,6 +130,10 @@ the hash of the actual opening bytes to the bytes immediately below them.
 This has not been lifted to an arbitrary accepted Bitcoin witness: the
 commitment cell's origin and the signature-check outcomes still require a
 whole-program stack invariant and Core refinement.
+A generated disposable witness executes the complete byte fixture and reaches
+all 15 comparisons, conditional on a lookup-table HASH160 and externally
+supplied signature results. That single run does not discharge the
+arbitrary-witness obligation.
 The formal disclosure and extracted-witness records expose HORS values only at
 their declared opened positions; no total secret array is included in the
 attacker transcript type.

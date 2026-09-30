@@ -10,6 +10,7 @@ import QSB.ByteIndex
 import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
+import QSB.ByteWitness
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -112,6 +113,10 @@ import QSB.Reduction
 #print axioms QSB.ByteLayout.fifteen_hors_comparisons
 #print axioms QSB.ByteLayout.comparisons_follow_hash160
 #print axioms QSB.ByteTrace.forget_trace
+#print axioms QSB.ByteWitness.witness_length
+#print axioms QSB.ByteWitness.canonical_byte_run
+#print axioms QSB.ByteWitness.first_round_boolean_ignored
+#print axioms QSB.ByteWitness.all_fifteen_comparisons_reached
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 111,
+  "theorem_count": 115,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -96,6 +96,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteWitness.all_fifteen_comparisons_reached": [
+      "propext"
+    ],
+    "QSB.ByteWitness.canonical_byte_run": [
+      "propext"
+    ],
+    "QSB.ByteWitness.first_round_boolean_ignored": [
+      "propext"
+    ],
+    "QSB.ByteWitness.witness_length": [],
     "QSB.Game.changed_outputs_unauthorized": [],
     "QSB.Game.disclosedAt_append": [
       "Classical.choice",

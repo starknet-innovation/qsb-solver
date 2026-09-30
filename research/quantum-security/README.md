@@ -60,6 +60,14 @@ the actual opening bytes hash to the compared commitment bytes. This local
 result does not identify where the commitment came from. `QSB/ByteTrace.lean`
 records equality pairs and proves that erasing the record recovers the modeled
 execution; the whole-lock arbitrary-witness source invariant is still open.
+`QSB/ByteWitness.lean` executes one disposable 57-cell witness through all 880
+byte opcodes, records 15 successful comparisons, and checks the final modeled
+truth, 201-op count and 569-cell stack. It also confirms that the first-round
+multisignature Boolean does not affect final truth in this byte fixture. Its
+HASH160 is a lookup table for the 15 generated opening/commitment pairs, its
+SHA256 is an arbitrary 32-byte function, and signature results are supplied
+Boolean values. This is a model
+consistency check, not Core acceptance or a hash/puzzle solution.
 
 Read:
 
@@ -92,11 +100,14 @@ same pinned builder and checked with:
 
 ```sh
 python3 analysis/generate_byte_layout.py --app-root /path/to/qsb-app --check
+python3 analysis/generate_byte_witness.py --app-root /path/to/qsb-app --check
 ```
 
-Omit `--check` to regenerate `QSB/ByteLayout.lean` and
-`evidence/byte-layout-map.json` after deliberately updating the pinned source.
-Both generators cross-check the existing script hash in `evidence/layout-map.json`.
+Omit `--check` to regenerate their respective Lean fixtures after deliberately
+updating the pinned source. The byte layout generator also writes
+`evidence/byte-layout-map.json`. Both byte generators cross-check the pinned
+source hash; the layout generator also checks the exact script hash in
+`evidence/layout-map.json`.
 
 The probability lemmas use arbitrary measures, not rational approximations of
 quantum terminal distributions. They are mathematical union bounds, with
