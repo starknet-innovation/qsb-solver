@@ -5,7 +5,7 @@ stage=$1
 image=$2
 deadline=$3
 receipt_sha=$4
-[[ "$image" =~ ^ghcr.io/starknet-innovation/qsb-solver-validation@sha256:[0-9a-f]{64}$ ]]
+[[ "$image" =~ ^ghcr.io/starknet-innovation/qsb-solver@sha256:[0-9a-f]{64}$ ]]
 [[ "$deadline" =~ ^[0-9]{10}$ && "$receipt_sha" =~ ^[0-9a-f]{64}$ ]]
 case "$stage" in
   ranges) runner=run_ranges.py ;;
