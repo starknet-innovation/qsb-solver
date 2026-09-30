@@ -42,8 +42,10 @@ nonnegative first-index values below 152 in the byte model: `OP_ADD` produces
 offset `151+n`, and a matching `HASH160` result from the first signed roll
 implies `n=2+i` and lock commitment `152+i` for some `i<150`. The first-index
 prefix theorem allows arbitrary lower cells within the modeled stack limit.
-Negative indices, arbitrary-scriptSig extraction, later selections, and Core
-refinement remain open.
+`QSB/FirstNegativeRange.lean` additionally covers parsed values −1 through
+−151: their computed roll depths are 150 down to 0, and none can produce a
+matching `HASH160` output. More-negative values, arbitrary-scriptSig
+extraction, later selections, and Core refinement remain open.
 
 A later bonus-index probe reaches a locking-script HORS commitment. In a
 deliberately altered, puzzle-relaxed lock, Core accepts that 20-byte value as

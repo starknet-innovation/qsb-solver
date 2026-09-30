@@ -14,6 +14,7 @@ import QSB.ByteWitness
 import QSB.FirstOvershoot
 import QSB.FirstIndexMap
 import QSB.FirstNumericRange
+import QSB.FirstNegativeRange
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -245,6 +246,18 @@ import QSB.Reduction
 #print axioms QSB.FirstNumericRange.inrange_index_roll_step
 #print axioms QSB.FirstNumericRange.inrange_first_index_prefix
 #print axioms QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin
+#print axioms QSB.FirstNegativeRange.negative_roundtrip
+#print axioms QSB.FirstNegativeRange.negative_encode
+#print axioms QSB.FirstNegativeRange.depth_roundtrip
+#print axioms QSB.FirstNegativeRange.depth_encode
+#print axioms QSB.FirstNegativeRange.negative_arithmetic
+#print axioms QSB.FirstNegativeRange.negative_canonical_small
+#print axioms QSB.FirstNegativeRange.negative_index_min_step
+#print axioms QSB.FirstNegativeRange.negative_index_add_step
+#print axioms QSB.FirstNegativeRange.negative_index_roll_step
+#print axioms QSB.FirstNegativeRange.negative_first_index_prefix
+#print axioms QSB.FirstNegativeRange.negative_roll_cannot_hash_match
+#print axioms QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

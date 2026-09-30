@@ -247,6 +247,18 @@
 'QSB.FirstNumericRange.inrange_roll_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FirstNegativeRange.negative_roundtrip' depends on axioms: [propext]
+'QSB.FirstNegativeRange.negative_encode' does not depend on any axioms
+'QSB.FirstNegativeRange.depth_roundtrip' depends on axioms: [propext]
+'QSB.FirstNegativeRange.depth_encode' does not depend on any axioms
+'QSB.FirstNegativeRange.negative_arithmetic' does not depend on any axioms
+'QSB.FirstNegativeRange.negative_canonical_small' does not depend on any axioms
+'QSB.FirstNegativeRange.negative_index_min_step' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeRange.negative_index_add_step' depends on axioms: [propext, Quot.sound]
+'QSB.FirstNegativeRange.negative_index_roll_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNegativeRange.negative_first_index_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNegativeRange.negative_roll_cannot_hash_match' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

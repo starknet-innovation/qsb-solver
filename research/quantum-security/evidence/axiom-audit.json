@@ -1,5 +1,5 @@
 {
-  "theorem_count": 242,
+  "theorem_count": 254,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -161,6 +161,44 @@
     ],
     "QSB.FirstIndexMap.signed_window_roll_has_lock_origin": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.depth_encode": [],
+    "QSB.FirstNegativeRange.depth_roundtrip": [
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_arithmetic": [],
+    "QSB.FirstNegativeRange.negative_canonical_small": [],
+    "QSB.FirstNegativeRange.negative_encode": [],
+    "QSB.FirstNegativeRange.negative_first_index_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_index_add_step": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_index_min_step": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_index_roll_step": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_roll_cannot_hash_match": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_roll_step_cannot_yield_hash": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstNegativeRange.negative_roundtrip": [
       "propext"
     ],
     "QSB.FirstNumericRange.canonical_index_roundtrip": [
