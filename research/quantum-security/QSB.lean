@@ -37,6 +37,7 @@ import QSB.FinalBonusDER
 import QSB.FinalBonusIndices
 import QSB.ScriptCodeSelection
 import QSB.EncodedScript
+import QSB.FindAndDelete
 import QSB.FinalRoundWitness
 import QSB.DERHeaderBound
 import QSB.Attack
@@ -566,6 +567,7 @@ import QSB.Reduction
 #print axioms QSB.EncodedLayout.script_length
 #print axioms QSB.EncodedScript.literal_chunks_decode
 #print axioms QSB.EncodedScript.literal_parse_chunks
+#print axioms QSB.EncodedScript.no_code_separator
 #print axioms QSB.EncodedScript.final_patterns_direct
 #print axioms QSB.EncodedScript.final_patterns_nodup
 #print axioms QSB.EncodedScript.final_pattern_one_chunk
@@ -575,6 +577,17 @@ import QSB.Reduction
 #print axioms QSB.EncodedScript.generated_dummy_pattern_mem
 #print axioms QSB.EncodedScript.selected_signature_one_chunk
 #print axioms QSB.EncodedScript.finalEncodedScriptCode_perm
+#print axioms QSB.FindAndDelete.simple_chunk_stable
+#print axioms QSB.FindAndDelete.scan_eq_chunk_filter
+#print axioms QSB.FindAndDelete.literal_simple_chunks
+#print axioms QSB.FindAndDelete.literal_stable_chunks
+#print axioms QSB.FindAndDelete.literal_rigid_chunks
+#print axioms QSB.FindAndDelete.literal_single_delete
+#print axioms QSB.FindAndDelete.scanMany_eq_chunk_filter
+#print axioms QSB.FindAndDelete.literal_rigid_final_pattern
+#print axioms QSB.FindAndDelete.literal_many_delete
+#print axioms QSB.FindAndDelete.selected_patterns_subset
+#print axioms QSB.FindAndDelete.final_scriptCode_scan
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings

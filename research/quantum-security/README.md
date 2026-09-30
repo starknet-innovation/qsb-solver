@@ -225,6 +225,9 @@ its 15 `OP_EQUALVERIFY` instructions immediately follows `OP_HASH160`.
 them back to `ByteLayout.program`, and checks the 151 final signature-push
 patterns. This proves internal fixture alignment, not equivalence with Core's
 `GetOp` or `FindAndDelete`.
+`QSB/FindAndDelete.lean` proves the sequential deletion result for the
+source-shaped Lean byte loop and every selected final-signature list. It does
+not replace a Core C++ refinement or transaction-level extraction proof.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

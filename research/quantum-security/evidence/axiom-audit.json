@@ -1,5 +1,5 @@
 {
-  "theorem_count": 564,
+  "theorem_count": 576,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -439,6 +439,7 @@
     "QSB.EncodedScript.literal_parse_chunks": [
       "propext"
     ],
+    "QSB.EncodedScript.no_code_separator": [],
     "QSB.EncodedScript.selected_boundary_match_complete": [
       "propext"
     ],
@@ -1085,6 +1086,53 @@
       "propext"
     ],
     "QSB.FinalSignedLoop.successful_target_matches_hash160_at": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.final_scriptCode_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.literal_many_delete": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.literal_rigid_chunks": [
+      "propext"
+    ],
+    "QSB.FindAndDelete.literal_rigid_final_pattern": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.literal_simple_chunks": [],
+    "QSB.FindAndDelete.literal_single_delete": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.literal_stable_chunks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.scanMany_eq_chunk_filter": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.scan_eq_chunk_filter": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.selected_patterns_subset": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FindAndDelete.simple_chunk_stable": [
       "Classical.choice",
       "Quot.sound",
       "propext"

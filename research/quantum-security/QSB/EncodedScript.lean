@@ -89,6 +89,12 @@ theorem literal_parse_chunks :
     parseChunks 880 EncodedLayout.chunks.flatten =
       some EncodedLayout.chunks := by decide
 
+/-- No parsed opcode is OP_CODESEPARATOR (0xab), so legacy scriptCode for the
+literal lock starts with the whole locking script before signature deletion. -/
+theorem no_code_separator :
+    EncodedLayout.chunks.all (fun chunk => chunk.head? != some 0xab) = true := by
+  decide
+
 def finalPatterns : List Bytes :=
   (PoolRollInvariant.finalDummyPool ++ [PoolRollInvariant.finalNonce]).map
     directPushPattern

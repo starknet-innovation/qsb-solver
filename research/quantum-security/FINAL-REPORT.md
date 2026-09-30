@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 564 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 576 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -342,6 +342,14 @@ opcode boundary consumes exactly that complete chunk, for any following
 bytes. The generator checks the script hash externally. Equivalence to
 Core's `GetOp` and sequential `FindAndDelete`, and arbitrary-witness source
 selection, are still open.
+`QSB/FindAndDelete.lean` now models repeated byte-pattern deletion at opcode
+boundaries followed by parsing the next opcode. For every ordered list of
+selected final dummy signatures and the fixed nonce, Lean proves that this
+loop returns the exact serialized-chunk filter of the literal lock, including
+repeated patterns. The proof uses checked simple-opcode and complete-match
+properties; the literal script also has no `OP_CODESEPARATOR` opcode. It is
+still a Lean model of Core's loop, not a C++ refinement theorem or a full
+scriptSig and transaction extractor.
 Lean also checks the literal signature flags: all 150 final dummy signatures
 end in `SIGHASH_SINGLE` (`0x03`), while the fixed final nonce ends in
 `SIGHASH_ALL` (`0x01`). The dummy signatures use the constant SINGLE message

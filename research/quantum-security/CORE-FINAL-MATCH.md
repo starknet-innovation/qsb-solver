@@ -55,6 +55,15 @@ selected chunk-filter scriptCode is order-independent. Its boundary-match
 theorem shows that a selected pattern found at any of those opcode boundaries
 consumes the complete chunk, for arbitrary following bytes. Equivalence of the
 Lean parser and filter to Core's C++ implementation is still open.
+`QSB/FindAndDelete.lean` further proves that a source-shaped loop which
+retries deletion at the current byte boundary and otherwise advances with
+the Lean opcode parser returns that filter for **any ordered list** of these
+151 patterns, including duplicates. Every literal chunk is checked to be a
+complete direct push or a one-byte non-push opcode, so prior deletions do not
+change how a surviving chunk parses. Lean also checks that no parsed opcode
+is `OP_CODESEPARATOR`. The remaining link is the C++ parser/delete loop and
+the identification of Core's reached ten signature bytes with these selected
+patterns for every accepted witness.
 
 ## Native differential evidence
 
