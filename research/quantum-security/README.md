@@ -125,6 +125,13 @@ the generated suffix supplies its cells 0–9 as the final signatures and its
 empty cell 10 as NULLDUMMY. This is independent of the earlier witness stack
 shape, but it does not classify the signed/bonus selections that filled those
 slots or prove Core's signature-verification result.
+`QSB/FinalBonusBoundary.lean` then identifies the only two possible pre-roll
+sources of that empty dummy: depth 10 when the last bonus index is below 10,
+and depth 9 otherwise. `QSB/ByteBonusBetween.lean` transports shallow cells
+through the fixed deep roll and cap between bonus choices. If the two relevant
+pre-first-bonus source cells are nonempty, it proves that a first bonus index
+below 9 cannot complete the modeled suffix. Those source-cell premises and
+the earlier signed-selection invariant remain open for arbitrary witnesses.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of

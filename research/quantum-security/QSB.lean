@@ -24,6 +24,7 @@ import QSB.PinningShape
 import QSB.BareBoundary
 import QSB.ByteFinalCounts
 import QSB.ByteLatePuzzle
+import QSB.ByteBonusBetween
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -351,6 +352,21 @@ import QSB.Reduction
 #print axioms QSB.ByteLatePuzzle.generated_late_final_check_split
 #print axioms QSB.ByteLatePuzzle.accepted_generated_final_witness_origins
 #print axioms QSB.ByteLatePuzzle.accepted_generated_postbonus_dummy_empty
+#print axioms QSB.FinalBonusBoundary.shallow_roll_tenth_source
+#print axioms QSB.FinalBonusBoundary.deep_roll_ninth_source
+#print axioms QSB.FinalBonusBoundary.modeled_shallow_bonus_tenth_source
+#print axioms QSB.FinalBonusBoundary.modeled_deep_bonus_tenth_source
+#print axioms QSB.FinalBonusBoundary.successful_bonus_empty_source_dichotomy
+#print axioms QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject
+#print axioms QSB.FinalBonusBoundary.successful_bonus_requires_depth_at_least_ten
+#print axioms QSB.ByteBonusBetween.generated_between_ops
+#print axioms QSB.ByteBonusBetween.between_roll_index_decode
+#print axioms QSB.ByteBonusBetween.successful_cap_min_tail
+#print axioms QSB.ByteBonusBetween.accepted_cap_min_preserves_tail
+#print axioms QSB.ByteBonusBetween.accepted_between_preserves_shallow
+#print axioms QSB.ByteBonusBetween.shallow_first_roll_ninth_source
+#print axioms QSB.ByteBonusBetween.modeled_shallow_first_ninth_source
+#print axioms QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape

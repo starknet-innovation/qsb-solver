@@ -1,5 +1,5 @@
 {
-  "theorem_count": 338,
+  "theorem_count": 353,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -47,6 +47,38 @@
       "propext"
     ],
     "QSB.Bonus.region_length": [],
+    "QSB.ByteBonusBetween.accepted_between_preserves_shallow": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.accepted_cap_min_preserves_tail": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.between_roll_index_decode": [
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.generated_between_ops": [],
+    "QSB.ByteBonusBetween.modeled_shallow_first_ninth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.shallow_first_roll_ninth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.successful_cap_min_tail": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteBonusBetween.successful_two_bonus_requires_first_depth_nine": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteFinalCounts.accepted_final_setup_count_operands": [
       "Classical.choice",
       "Quot.sound",
@@ -293,6 +325,41 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FinalBonusBoundary.deep_roll_ninth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.modeled_deep_bonus_tenth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.modeled_shallow_bonus_tenth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.shallow_roll_tenth_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.successful_bonus_empty_source_dichotomy": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.successful_bonus_requires_depth_at_least_ten": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusBoundary.two_nonempty_dummy_sources_reject": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin": [
       "Classical.choice",
       "Quot.sound",
