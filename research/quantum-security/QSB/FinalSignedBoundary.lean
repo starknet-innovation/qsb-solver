@@ -164,7 +164,7 @@ from top to depth one. A target shorter than 20 bytes cannot then pass the
 HASH160 comparison, regardless of the supplied opening. -/
 theorem short_target_rejects_comparison (hashes : Hashes)
     (target : Bytes) (rest : List Bytes) (outcomes : List Bool)
-    (cost : Nat) (final : State) (short : target.length ≤ 1)
+    (cost : Nat) (final : State) (short : target.length < 20)
     (accepted : run hashes
       [.push [0x53, 0x02], .roll, .hash160, .equalverify]
       (State.mk (target :: rest) outcomes cost) = some final) : False := by
@@ -197,6 +197,39 @@ theorem short_target_rejects_comparison (hashes : Hashes)
                   have width := hashes.h160_width opening
                   rw [equalHash] at width
                   omega
+
+/-- The first final-round signed selection cannot use numeric raw index 0
+or 1: its signed roll selects a generated nine-byte dummy, which fails the
+HASH160 comparison. The earlier stack tail and the raw offset encoding are
+arbitrary. -/
+theorem low_first_signed_comparison_rejects (hashes : Hashes)
+    (offset retained prior : Bytes) (tail : List Bytes)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (n : Nat) (low : n < 2)
+    (parsed : ByteIndex.parseScriptNum offset = some (Int.ofNat (151 + n)))
+    (accepted : run hashes ((ByteLayout.program.drop 756).take 5)
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) = some final) : False := by
+  rw [generated_first_signed_comparison_tail] at accepted
+  obtain ⟨afterRoll, rolled, _, suffix⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .roll
+      [.push [0x53, 0x02], .roll, .hash160, .equalverify]
+      (State.mk (offset :: lookupRegion retained prior tail)
+        outcomes cost) final accepted
+  have budget := ByteFinalCounts.roll_success_budget hashes offset
+    (lookupRegion retained prior tail) outcomes cost afterRoll rolled
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes offset
+    (151 + n) (lookupRegion retained prior tail)
+    outcomes cost parsed budget] at rolled
+  obtain ⟨chosen, source, width⟩ :=
+    low_index_source_is_dummy retained prior tail n low
+  unfold KeyRolls.rollAt at rolled
+  rw [source] at rolled
+  simp at rolled
+  cases rolled
+  exact short_target_rejects_comparison hashes chosen
+    ((lookupRegion retained prior tail).eraseIdx (151 + n))
+    outcomes (cost + 1) final (by omega) suffix
 
 /-- With the exact five-opcode generated tail, a capped first signed choice
 of 152 cannot pass the HORS comparison when the prior round left its ordinary

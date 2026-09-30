@@ -401,6 +401,7 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedBoundary.capped_offset_encoding
 #print axioms QSB.FinalSignedBoundary.preimage_roll_index_decode
 #print axioms QSB.FinalSignedBoundary.short_target_rejects_comparison
+#print axioms QSB.FinalSignedBoundary.low_first_signed_comparison_rejects
 #print axioms QSB.FinalSignedBoundary.capped_first_signed_comparison_rejects
 #print axioms QSB.FinalSignedAccepted.generated_cap_add_ops
 #print axioms QSB.FinalSignedAccepted.generated_first_comparison_ops
@@ -415,8 +416,10 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedAccepted.fixed_index_roll_requires_tail
 #print axioms QSB.FinalSignedAccepted.accepted_fixed_index_shape
 #print axioms QSB.FinalSignedAccepted.oversized_cap_add_shape
+#print axioms QSB.FinalSignedAccepted.inrange_cap_add_shape
 #print axioms QSB.FinalSignedAccepted.accepted_cap_add_parses_raw
 #print axioms QSB.FinalSignedAccepted.oversized_first_comparison_rejected
+#print axioms QSB.FinalSignedAccepted.inrange_low_first_comparison_rejected
 #print axioms QSB.FinalSignedAccepted.generated_first_final_round_prefix
 #print axioms QSB.FinalSignedAccepted.accepted_first_final_signed_below_cap
 #print axioms QSB.FinalSignedAccepted.successful_checkmultisig_result_shape

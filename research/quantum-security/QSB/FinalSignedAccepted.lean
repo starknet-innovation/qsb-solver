@@ -1,4 +1,5 @@
 import QSB.FinalSignedBoundary
+import QSB.FirstNumericRange
 
 /-!
 Execution bridge for the first signed selection in the generated final
@@ -264,6 +265,94 @@ theorem oversized_cap_add_shape (hashes : Hashes)
   cases finished
   rfl
 
+/-- A parsed nonnegative value below the cap is canonicalized by MIN and
+shifted to its exact signed-roll offset by ADD, regardless of the raw
+ScriptNum encoding or the preceding stack. -/
+theorem inrange_cap_add_shape (hashes : Hashes)
+    (raw prior : Bytes) (tail : List Bytes) (n : Fin 152)
+    (outcomes : List Bool) (cost : Nat) (middle : State)
+    (parsed : ByteIndex.parseScriptNum raw = some (Int.ofNat n.val))
+    (accepted : run hashes capAddOps
+      (State.mk (raw :: baseRegion prior tail) outcomes cost) = some middle) :
+    middle = State.mk
+      (FirstNumericRange.signedOffset n ::
+        lookupRegion (FirstNumericRange.canonicalIndex n) prior tail)
+      outcomes (cost + 3) := by
+  rw [generated_cap_add_ops] at accepted
+  obtain ⟨afterPush, pushed, _, afterPushRun⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes (.push [0x98, 0x00])
+      [.min, .dup, .push [0x97, 0x00], .add]
+      (State.mk (raw :: baseRegion prior tail) outcomes cost)
+      middle accepted
+  have pushShape := ByteFinalCounts.push_success_shape hashes
+    [0x98, 0x00] (raw :: baseRegion prior tail) outcomes cost
+    afterPush pushed
+  subst afterPush
+  obtain ⟨afterMin, minStep, _, afterMinRun⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .min
+      [.dup, .push [0x97, 0x00], .add]
+      (State.mk ([0x98, 0x00] :: raw :: baseRegion prior tail)
+        outcomes cost) middle afterPushRun
+  have minBudget : cost + 1 ≤ 201 := by
+    by_contra exceeded
+    have tooHigh : cost + 1 > 201 := by omega
+    unfold step at minStep
+    simp [tooHigh] at minStep
+  have minExact := FirstNumericRange.inrange_index_min_step hashes
+    raw n (baseRegion prior tail) outcomes cost parsed minBudget
+  rw [minExact] at minStep
+  cases minStep
+  obtain ⟨afterDup, dupStep, _, afterDupRun⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .dup
+      [.push [0x97, 0x00], .add]
+      (State.mk (FirstNumericRange.canonicalIndex n ::
+        baseRegion prior tail) outcomes (cost + 1)) middle afterMinRun
+  have dupBudget : cost + 2 ≤ 201 := by
+    by_contra exceeded
+    have tooHigh : cost + 2 > 201 := by omega
+    unfold step at dupStep
+    simp [tooHigh] at dupStep
+  have dupExact : step hashes .dup
+      (State.mk (FirstNumericRange.canonicalIndex n ::
+        baseRegion prior tail) outcomes (cost + 1)) =
+      some (State.mk (FirstNumericRange.canonicalIndex n ::
+        FirstNumericRange.canonicalIndex n :: baseRegion prior tail)
+        outcomes (cost + 2)) := by
+    unfold step
+    simp [show ¬cost + 2 > 201 by omega]
+  rw [dupExact] at dupStep
+  cases dupStep
+  obtain ⟨afterGap, gapStep, _, afterGapRun⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes (.push [0x97, 0x00])
+      [.add]
+      (State.mk (FirstNumericRange.canonicalIndex n ::
+        FirstNumericRange.canonicalIndex n :: baseRegion prior tail)
+        outcomes (cost + 2)) middle afterDupRun
+  have gapShape := ByteFinalCounts.push_success_shape hashes
+    [0x97, 0x00]
+    (FirstNumericRange.canonicalIndex n ::
+      FirstNumericRange.canonicalIndex n :: baseRegion prior tail)
+    outcomes (cost + 2) afterGap gapStep
+  subst afterGap
+  obtain ⟨afterAdd, addStep, _, finished⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .add []
+      (State.mk ([0x97, 0x00] :: FirstNumericRange.canonicalIndex n ::
+        FirstNumericRange.canonicalIndex n :: baseRegion prior tail)
+        outcomes (cost + 2)) middle afterGapRun
+  have addBudget : cost + 3 ≤ 201 := by
+    by_contra exceeded
+    have tooHigh : cost + 3 > 201 := by omega
+    unfold step at addStep
+    simp [tooHigh] at addStep
+  have addExact := FirstNumericRange.inrange_index_add_step hashes n
+    (FirstNumericRange.canonicalIndex n :: baseRegion prior tail)
+    outcomes (cost + 2) addBudget
+  rw [addExact] at addStep
+  cases addStep
+  simp [run] at finished
+  cases finished
+  rfl
+
 theorem accepted_cap_add_parses_raw (hashes : Hashes)
     (raw : Bytes) (region : List Bytes) (outcomes : List Bool)
     (cost : Nat) (final : State)
@@ -316,6 +405,33 @@ theorem oversized_first_comparison_rejected (hashes : Hashes)
       exact capped_first_signed_comparison_rejects hashes
         [0x98, 0x00] tail result outcomes (cost + 3) final accepted
 
+/-- A raw nonnegative first final-round index of 0 or 1 cannot survive the
+generated comparison, even when its ScriptNum encoding is nonminimal. -/
+theorem inrange_low_first_comparison_rejected (hashes : Hashes)
+    (raw : Bytes) (tail : List Bytes) (result : Bool)
+    (n : Fin 152) (low : n.val < 2)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (parsed : ByteIndex.parseScriptNum raw = some (Int.ofNat n.val))
+    (accepted : run hashes firstComparisonOps
+      (State.mk (raw :: baseRegion (ByteMachine.boolBytes result) tail)
+        outcomes cost) = some final) : False := by
+  rw [generated_first_comparison_ops, run_append] at accepted
+  cases first : run hashes capAddOps
+      (State.mk (raw :: baseRegion (ByteMachine.boolBytes result) tail)
+        outcomes cost) with
+  | none => simp [first] at accepted
+  | some middle =>
+      have shape := inrange_cap_add_shape hashes raw
+        (ByteMachine.boolBytes result) tail n outcomes cost middle
+        parsed first
+      subst middle
+      simp only [first, Option.bind_some] at accepted
+      exact low_first_signed_comparison_rejects hashes
+        (FirstNumericRange.signedOffset n)
+        (FirstNumericRange.canonicalIndex n)
+        (ByteMachine.boolBytes result) tail outcomes (cost + 3) final
+        n.val low (FirstNumericRange.parse_signed_offset n) accepted
+
 def firstFinalRoundPrefix : List Op :=
   ByteLayout.program.drop 447 |>.take 314
 
@@ -324,9 +440,9 @@ theorem generated_first_final_round_prefix : firstFinalRoundPrefix =
 
 /-- In the byte interpreter, every successful first final-round signed
 comparison starting after the prior CHECKMULTISIG Boolean has a parseable
-raw index strictly below 152. This covers arbitrary earlier stack tails,
-hash functions, and nonminimal ScriptNum encodings; it does not yet classify
-the index as an intended HORS opening or cover the other six selections. -/
+raw index strictly below 152, excluding nonnegative values 0 and 1. This
+covers arbitrary earlier stack tails, hash functions, and nonminimal
+ScriptNum encodings; negative values and later selections remain open. -/
 theorem accepted_first_final_signed_below_cap (hashes : Hashes)
     (result : Bool) (tail : List Bytes) (outcomes : List Bool)
     (cost : Nat) (final : State)
@@ -334,7 +450,8 @@ theorem accepted_first_final_signed_below_cap (hashes : Hashes)
       (State.mk (ByteMachine.boolBytes result :: tail) outcomes cost) =
         some final) :
     ∃ raw : Bytes, ∃ value : Int,
-      ByteIndex.parseScriptNum raw = some value ∧ value < 152 := by
+      ByteIndex.parseScriptNum raw = some value ∧ value < 152 ∧
+      (value < 0 ∨ 2 ≤ value) := by
   rw [generated_first_final_round_prefix, List.append_assoc,
     run_append] at accepted
   cases init : run hashes finalRoundAllOps
@@ -379,7 +496,25 @@ theorem accepted_first_final_signed_below_cap (hashes : Hashes)
                 exact oversized_first_comparison_rejected hashes raw
                   (tail.eraseIdx 283) result value outcomes (cost + 1)
                   final parsed large complete
-              exact ⟨raw, value, parsed, below⟩
+              have notLow : value < 0 ∨ 2 ≤ value := by
+                by_contra neither
+                have zeroOrOne : value = 0 ∨ value = 1 := by omega
+                have complete : run hashes firstComparisonOps
+                    (State.mk (raw :: baseRegion
+                      (ByteMachine.boolBytes result) (tail.eraseIdx 283))
+                      outcomes (cost + 1)) = some final := by
+                  rw [generated_first_comparison_ops, run_append]
+                  simpa [cap] using accepted
+                rcases zeroOrOne with zero | one
+                · exact inrange_low_first_comparison_rejected hashes raw
+                    (tail.eraseIdx 283) result ⟨0, by decide⟩
+                    (by decide) outcomes (cost + 1) final
+                    (by simpa [zero] using parsed) complete
+                · exact inrange_low_first_comparison_rejected hashes raw
+                    (tail.eraseIdx 283) result ⟨1, by decide⟩
+                    (by decide) outcomes (cost + 1) final
+                    (by simpa [one] using parsed) complete
+              exact ⟨raw, value, parsed, below, notLow⟩
 
 theorem successful_checkmultisig_result_shape (hashes : Hashes)
     (before after : State)
@@ -451,7 +586,7 @@ theorem generated_first_round_check_boundary :
 
 /-- Every successful execution of the whole generated *byte model*, from
 any initial byte stack and any supplied signature outcomes, forces the first
-final-round signed index to parse below 152. The proof derives the prior
+final-round signed index to parse below 152 and exclude 0 and 1. The proof derives the prior
 round's Boolean result from the preceding CHECKMULTISIG, reconstructs all
 302 second-round pushes, fetches the index through the fixed 586-roll, and
 uses the exact generated comparison. Core refinement and the later six
@@ -460,7 +595,8 @@ theorem accepted_whole_program_first_final_index_below_cap (hashes : Hashes)
     (initial final : State)
     (accepted : run hashes ByteLayout.program initial = some final) :
     ∃ raw : Bytes, ∃ value : Int,
-      ByteIndex.parseScriptNum raw = some value ∧ value < 152 := by
+      ByteIndex.parseScriptNum raw = some value ∧ value < 152 ∧
+      (value < 0 ∨ 2 ≤ value) := by
   rw [generated_first_round_check_boundary, run_append] at accepted
   cases first : run hashes (ByteLayout.program.take 446) initial with
   | none => simp [first] at accepted

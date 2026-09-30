@@ -141,8 +141,8 @@ dummies, 2–151 select 20-byte commitments, and capped 152 selects the prior
 round's Boolean CHECKMULTISIG result. Lean checks that the generated five-op
 comparison tail rejects that capped case from the stated post-ADD stack.
 `QSB/FinalSignedAccepted.lean` derives that stack from any successful full
-byte-model run, so the first final-round signed index must parse below 152.
-Negative and 0–1 values, the other six selections, and Core refinement remain
+byte-model run, so the first final-round signed index must parse below 152
+and cannot be 0 or 1. Negative values, the other six selections, and Core refinement remain
 open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It

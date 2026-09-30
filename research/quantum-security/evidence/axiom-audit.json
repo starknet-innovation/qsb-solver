@@ -1,5 +1,5 @@
 {
-  "theorem_count": 405,
+  "theorem_count": 408,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -415,6 +415,16 @@
     "QSB.FinalSignedAccepted.generated_first_final_round_prefix": [],
     "QSB.FinalSignedAccepted.generated_first_round_check_boundary": [],
     "QSB.FinalSignedAccepted.generated_fixed_index_pair": [],
+    "QSB.FinalSignedAccepted.inrange_cap_add_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSignedAccepted.inrange_low_first_comparison_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedAccepted.lookup_region_is_retained_base": [
       "propext"
     ],
@@ -473,6 +483,11 @@
       "propext"
     ],
     "QSB.FinalSignedBoundary.generated_first_signed_comparison_tail": [],
+    "QSB.FinalSignedBoundary.low_first_signed_comparison_rejects": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedBoundary.low_index_cannot_match_hash160": [
       "Quot.sound",
       "propext"
