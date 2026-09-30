@@ -50,4 +50,18 @@ The Python-capable CUDA validation runtime was published by CI run 36745858082 f
 
 Diagnostic native traces now passed independent CPU/full-transaction verification: 20 cases, 3,116 candidates and 6,232 recovery hashes. The CPU receipt is preserved in `evidence/native-trace-cpu.json`; its native input hash binds the retained raw trace. The diagnostic derivative remains distinct from the exact candidate. The trace host, disk and temporary resources were independently confirmed removed.
 
-Matched same-GPU timing remains pending. The `timing` mode of `stage_full.py` and `host-full.sh` stages the exact same binaries and immutable runtime with the completed compression, range and CPU-trace receipts. `run_pair.py` checks their frozen hashes before any GPU process, and records those hashes in the timing result. Its existing 24 interleaved samples and 600-second deadline remain unchanged. There is no speedup, fresh withdrawal, release enrollment or mainnet-readiness claim. The PR remains a draft.
+Matched same-GPU timing is complete; see the adoption decision below. The `timing` mode of `stage_full.py` and `host-full.sh` stages the exact same binaries and immutable runtime with the completed compression, range and CPU-trace receipts. `run_pair.py` checks their frozen hashes before any GPU process, and records those hashes in the timing result. Its existing 24 interleaved samples and 600-second deadline remain unchanged. There is no demonstrated speedup, fresh withdrawal, release enrollment or mainnet-readiness claim. The PR remains a draft.
+
+
+## Matched timing result and adoption decision
+
+The final bounded A10G experiment completed all 24 interleaved samples with the frozen baseline/candidate and the three hash-bound correctness receipts. Full output is in `evidence/native-timing.json`; its SHA256 is `c96670925fbb9d60294b57689cf8033b864094348c7dfe0acf993073e5adfe58`. Execution controller: `b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`; solver source remains `aa898b66326706d24e56688eef907ea97bd66f41`.
+
+| Context | Candidate median throughput change |
+| --- | ---: |
+| Taproot round 1 | -0.108% |
+| Taproot round 2 | -0.286% |
+| SegWit round 1 | -0.051% |
+| SegWit round 2 | -0.364% |
+
+**Do not promote this optimization on these results.** Correctness checks passed, but there is no measured throughput benefit. Three startup-inclusive pairs per context are insufficient to establish that these small negative differences are statistically significant regressions. The first baseline sample includes a visible startup outlier; the table uses the predeclared median calculation, with no samples dropped. Maximum-sample full-range projections remain below the worker limit, but those are estimates, not measured full-range executions. The PR stays draft; no release or production enrollment is authorized by this experiment.
