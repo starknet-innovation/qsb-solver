@@ -31,3 +31,7 @@ Five local tests cover source preparation and timing acceptance/rejection; CI ru
 The timing runner now refuses to start unless `BUNDLE/regression.json` reports completion, contains every expected successful sample and matches both binary hashes and the fixture hash. It records the regression receipt hash. These checks bind local evidence; they are not remote attestation. Seven local tests pass, including incomplete inventory, wrong rank/count, failed process, unexpected hit and shortened completion rejection. Neither the sampled native regression nor timing has run on a GPU yet.
 
 Keep correctness and timing in separately bounded scopes if the remaining host deadline cannot accommodate both. The 25-minute cleanup deadline must never be extended to finish timing.
+
+## Diagnostic CPU differential preparation
+
+The pair build also emits `candidate-trace`, `candidate-trace.diff` and `trace-receipt.json`. Instrumentation accepts only the frozen vector source hash and adds a single recovered-key hash print before predicate selection. The receipt binds the diagnostic source, patch, flags and binary to the separately preserved unmodified candidate. This allows subsequent public full-transaction CPU checks; diagnostic execution is not execution attestation for the unmodified candidate. Neither predicates nor the measured candidate artifact are changed. Eleven local tests pass, including rejection of baseline, modified or already-instrumented source. Diagnostic GPU execution and CPU verification remain pending.
