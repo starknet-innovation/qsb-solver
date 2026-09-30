@@ -1,5 +1,5 @@
 {
-  "theorem_count": 267,
+  "theorem_count": 272,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -149,6 +149,25 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.FirstAcceptedOrigin.first_selection_split_three": [],
+    "QSB.FirstAcceptedOrigin.first_selection_success_small": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstAcceptedOrigin.first_three_run": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstAcceptedOrigin.run_cons_success": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FirstAcceptedOrigin.successful_prefix": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstIndexMap.commitment_cells_are_twenty_bytes": [
       "propext"
     ],

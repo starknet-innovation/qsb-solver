@@ -276,6 +276,11 @@
 'QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.FirstAcceptedOrigin.run_cons_success' depends on axioms: [propext, Quot.sound]
+'QSB.FirstAcceptedOrigin.successful_prefix' depends on axioms: [propext, Quot.sound]
+'QSB.FirstAcceptedOrigin.first_selection_split_three' does not depend on any axioms
+'QSB.FirstAcceptedOrigin.first_three_run' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FirstAcceptedOrigin.first_selection_success_small' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

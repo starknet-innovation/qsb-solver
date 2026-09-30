@@ -17,6 +17,7 @@ import QSB.FirstNumericRange
 import QSB.FirstNegativeRange
 import QSB.ByteIndexSign
 import QSB.FirstNegativeAll
+import QSB.FirstAcceptedOrigin
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
@@ -273,6 +274,11 @@ import QSB.Reduction
 #print axioms QSB.FirstNegativeAll.rolled_hash_has_source
 #print axioms QSB.FirstNegativeAll.negative_first_roll_cannot_yield_hash
 #print axioms QSB.FirstNegativeAll.below_cap_first_roll_has_commitment_origin
+#print axioms QSB.FirstAcceptedOrigin.run_cons_success
+#print axioms QSB.FirstAcceptedOrigin.successful_prefix
+#print axioms QSB.FirstAcceptedOrigin.first_selection_split_three
+#print axioms QSB.FirstAcceptedOrigin.first_three_run
+#print axioms QSB.FirstAcceptedOrigin.first_selection_success_small
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
