@@ -327,10 +327,12 @@ import QSB.Reduction
 #print axioms QSB.LegacySighashWireFixture.changed_first_output_changes_all_preimage
 #print axioms QSB.JointSourceChecks.legacyDigest_all
 #print axioms QSB.JointSourceChecks.legacyDigest_single_bug
+#print axioms QSB.JointSourceChecks.legacyDigest_single_bug_ignores_outputs
 #print axioms QSB.JointSourceChecks.legacyDigest_single_same_selected_output
 #print axioms QSB.JointSourceChecks.legacyDigest_some_cases
 #print axioms QSB.JointSourceChecks.checker_all
 #print axioms QSB.JointSourceChecks.checker_single_bug
+#print axioms QSB.JointSourceChecks.checker_single_bug_ignores_outputs
 #print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint
 #print axioms QSB.JointSourceChecks.necessary_checks_fixed_all_joint
 #print axioms QSB.DERIntegerCount.positiveHead_card

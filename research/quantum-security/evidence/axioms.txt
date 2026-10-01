@@ -238,12 +238,16 @@
  Quot.sound]
 'QSB.JointSourceChecks.legacyDigest_all' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.legacyDigest_single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.legacyDigest_single_bug_ignores_outputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.JointSourceChecks.legacyDigest_single_same_selected_output' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.JointSourceChecks.legacyDigest_some_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.checker_all' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.checker_single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.checker_single_bug_ignores_outputs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.successful_hash_puzzle_joint' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.necessary_checks_fixed_all_joint' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DERIntegerCount.positiveHead_card' depends on axioms: [propext, Classical.choice, Quot.sound]

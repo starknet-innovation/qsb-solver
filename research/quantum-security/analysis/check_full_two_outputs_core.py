@@ -1,10 +1,11 @@
-"""Probe a two-output withdrawal shape against the pinned Core 27.2 adapter.
+"""Probe disposable full-lock layouts against pinned Core 27.2.
 
 Three hash-to-signature puzzle CHECKSIGVERIFY sites are changed to OP_2DROP.
 Pinning, all 15 HORS comparisons, and both CHECKMULTISIGs remain real. All
 secrets and signatures are disposable public test data; no transaction is
-broadcast or funded. This is a finite consensus-interpreter experiment, not
-an actual QSB spend or a universal Core-to-Lean refinement theorem.
+broadcast or funded. The original two-input wrapper and a test-only variable-
+input adapter call the same pinned library. This is a finite consensus-
+interpreter experiment, not an actual QSB spend or a universal refinement.
 """
 
 import argparse
@@ -98,10 +99,13 @@ def main() -> None:
     subsets = {0: list(range(9)), 1: list(range(9))}
     indices = builder.compute_witness_indices(subsets)
 
-    def transaction(two_outputs: bool) -> bt.Transaction:
+    def transaction(two_outputs: bool, input_count: int = 2) -> bt.Transaction:
+        assert input_count in (2, 3)
         tx = bt.Transaction(version=1, locktime=1234567)
         tx.add_input(bt.TxIn(b"\x11" * 32, 0, b"", 0xfffffffe))
         tx.add_input(bt.TxIn(b"\x22" * 32, 0, b"", 0x80000000))
+        if input_count == 3:
+            tx.add_input(bt.TxIn(b"\x44" * 32, 0, b"", 0xfffffffd))
         tx.add_output(bt.TxOut(90000, b"\x00\x14" + b"\x33" * 20))
         if two_outputs:
             tx.add_output(bt.TxOut(1000, b"\x51"))
@@ -113,6 +117,9 @@ def main() -> None:
     code0 = bt.find_and_delete(lock, nonces[0])
     for sig in builder.dummy_sigs[0][:9]:
         code0 = bt.find_and_delete(code0, sig)
+    code1 = bt.find_and_delete(lock, nonces[1])
+    for sig in builder.dummy_sigs[1][:9]:
+        code1 = bt.find_and_delete(code1, sig)
     bug_digest = one_output.sighash(1, code0, selected0[-1])
     in_range_digest = two_outputs.sighash(1, code0, selected0[-1])
     assert bug_digest == 1 << 248
@@ -138,7 +145,7 @@ def main() -> None:
         return canonical_index(round_index, position, value)
 
     def witness(tx: bt.Transaction, dummy_context: bt.Transaction,
-                index_encoder=canonical_index) -> bytes:
+                index_encoder=canonical_index, spending_index: int = 1) -> bytes:
         script_sig = bytearray()
         for round_index in (1, 0):
             selected = [builder.dummy_sigs[round_index][j]
@@ -147,9 +154,9 @@ def main() -> None:
             for sig in selected:
                 script_code = bt.find_and_delete(script_code, sig)
             nonce_key = recover(nonces[round_index],
-                                tx.sighash(1, script_code, 1))
+                                tx.sighash(spending_index, script_code, 1))
             pubkeys = [recover(sig, dummy_context.sighash(
-                1, script_code, sig[-1])) for sig in selected]
+                spending_index, script_code, sig[-1])) for sig in selected]
             script_sig += bt.push_data(ec.compress_pubkey(ec.G))
             script_sig += bt.push_data(nonce_key)
             for key in reversed(pubkeys):
@@ -161,7 +168,7 @@ def main() -> None:
                 value = indices[round_index][position]
                 script_sig += index_encoder(round_index, position, value)
         pin_key = recover(pin, tx.sighash(
-            1, bt.find_and_delete(lock, pin), 1))
+            spending_index, bt.find_and_delete(lock, pin), 1))
         script_sig += bt.push_data(ec.compress_pubkey(ec.G))
         script_sig += bt.push_data(pin_key)
         return bytes(script_sig)
@@ -180,6 +187,34 @@ def main() -> None:
         return (process.returncode == 0 and
                 process.stdout.strip() == "core-27.2-api2-all-inputs-valid")
 
+    variable_adapter = Path(__file__).with_name(
+        "core_variable_inputs_adapter.py").resolve()
+    variable_adapter_sha = hashlib.sha256(variable_adapter.read_bytes()).hexdigest()
+
+    def variable_core_result(tx: bt.Transaction, spending_index: int) -> dict:
+        spent = [{"script_pubkey_hex": "51", "value": 1000}
+                 for _ in tx.inputs]
+        spent[spending_index] = {
+            "script_pubkey_hex": lock.hex(), "value": 100000}
+        payload = json.dumps({"transaction_hex": tx.serialize().hex(),
+                              "spent_outputs": spent}) + "\n"
+        process = subprocess.run([
+            "docker", "run", "--rm", "--network", "none", "--read-only",
+            "--cap-drop=ALL", "--security-opt=no-new-privileges",
+            "--platform=linux/arm64", "-i",
+            "-v", f"{native_root}:/native:ro",
+            "-v", f"{variable_adapter}:/adapter.py:ro", args.image,
+            "python3", "/adapter.py"], input=payload, text=True,
+            capture_output=True, timeout=30)
+        if process.returncode:
+            raise RuntimeError(
+                f"Pinned variable-input adapter failed: {process.stderr}")
+        result = json.loads(process.stdout)
+        assert result["api_version"] == 2
+        assert result["flags"] == 134677
+        assert len(result["inputs"]) == len(tx.inputs)
+        return result
+
     cases = []
 
     def check(name: str, tx: bt.Transaction, expected: bool) -> None:
@@ -191,6 +226,28 @@ def main() -> None:
             "expected": expected,
             "output_count": len(tx.outputs),
             "script_sig_length": len(tx.inputs[1].script_sig),
+            "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
+        })
+
+    def check_variable(name: str, tx: bt.Transaction,
+                       spending_index: int, expected: bool) -> None:
+        result = variable_core_result(tx, spending_index)
+        accepted = all(item == {"valid": True, "error": 0}
+                       for item in result["inputs"])
+        assert accepted == expected, (name, result, expected)
+        cases.append({
+            "name": name,
+            "accepted": accepted,
+            "expected": expected,
+            "input_count": len(tx.inputs),
+            "spending_index": spending_index,
+            "input_results": result["inputs"],
+            "output_count": len(tx.outputs),
+            "round0_single_message_scalar_hex":
+                f"{tx.sighash(spending_index, code0, selected0[-1]):064x}",
+            "round1_single_message_scalar_hex":
+                f"{tx.sighash(spending_index, code1, builder.dummy_sigs[1][0][-1]):064x}",
+            "script_sig_length": len(tx.inputs[spending_index].script_sig),
             "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
         })
 
@@ -251,13 +308,59 @@ def main() -> None:
     two_outputs.inputs[1].script_sig = witness(two_outputs, transaction(True))
     check("two_outputs_changed_first_value_same_dummy_keys", two_outputs, True)
 
+    # Cross-check the ctypes ABI against the original two-input wrapper before
+    # using it for layouts that wrapper intentionally refuses to represent.
+    baseline = transaction(True)
+    baseline.inputs[1].script_sig = witness(baseline, baseline)
+    assert core_accepts(baseline)
+    check_variable("variable_adapter_two_input_positive_control",
+                   baseline, 1, True)
+    rejected = transaction(True)
+    rejected.inputs[1].script_sig = witness(rejected, rejected)
+    rejected.outputs[1] = bt.TxOut(1001, b"\x51")
+    assert not core_accepts(rejected)
+    check_variable("variable_adapter_two_input_negative_control",
+                   rejected, 1, False)
+
+    # Extra input after the QSB input leaves SINGLE in range. Moving the QSB
+    # input to index 2 with only two outputs makes SINGLE use the fixed bug
+    # digest again. Both cases keep the same complete puzzle-relaxed lock.
+    three_index_one = transaction(True, input_count=3)
+    three_index_one.inputs[1].script_sig = witness(
+        three_index_one, three_index_one)
+    assert three_index_one.sighash(1, code0, selected0[-1]) != bug_digest
+    check_variable("three_inputs_qsb_index_one_single_in_range",
+                   three_index_one, 1, True)
+
+    three_index_two = transaction(True, input_count=3)
+    three_index_two.inputs[2].script_sig = witness(
+        three_index_two, three_index_two, spending_index=2)
+    assert three_index_two.sighash(2, code0, selected0[-1]) == bug_digest
+    assert three_index_two.sighash(
+        2, code1, builder.dummy_sigs[1][0][-1]) == bug_digest
+    check_variable("three_inputs_qsb_index_two_single_bug", three_index_two,
+                   2, True)
+    original_three = transaction(True, input_count=3)
+    three_index_two.outputs[0] = bt.TxOut(90001, b"\x00\x14" + b"\x33" * 20)
+    three_index_two.outputs[1] = bt.TxOut(1001, b"\x51")
+    check_variable("three_inputs_qsb_index_two_changed_outputs_old_all_keys_rejected",
+                   three_index_two, 2, False)
+    three_index_two.inputs[2].script_sig = witness(
+        three_index_two, original_three, spending_index=2)
+    assert three_index_two.sighash(2, code0, selected0[-1]) == bug_digest
+    assert three_index_two.sighash(
+        2, code1, builder.dummy_sigs[1][0][-1]) == bug_digest
+    check_variable("three_inputs_qsb_index_two_changed_both_outputs_same_dummy_keys",
+                   three_index_two, 2, True)
+
     report = {
-        "scope": "Two-input disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Input 1 uses in-range SIGHASH_SINGLE when two outputs exist. Not a full QSB spend or universal Core refinement.",
+        "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Not a full QSB spend or universal Core refinement.",
         "builder_sha256": source_sha,
         "helper_files_sha256": helper_hashes,
         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
         "native_files_sha256": native_hashes,
+        "variable_adapter_sha256": variable_adapter_sha,
         "image": args.image,
         "bug_message_scalar_hex": f"{bug_digest:064x}",
         "in_range_message_scalar_hex": f"{in_range_digest:064x}",

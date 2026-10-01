@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1149,
+  "theorem_count": 1151,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3624,12 +3624,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointSourceChecks.checker_single_bug_ignores_outputs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointSourceChecks.legacyDigest_all": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.JointSourceChecks.legacyDigest_single_bug": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.legacyDigest_single_bug_ignores_outputs": [
       "Classical.choice",
       "Quot.sound",
       "propext"

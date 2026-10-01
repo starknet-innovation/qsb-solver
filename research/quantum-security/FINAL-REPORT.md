@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,149 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,151 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -575,8 +575,8 @@ An additional isolated 10-of-10 multisignature experiment places all 151
 fixture signature pushes in a nonexecuted branch. Core accepts keys recovered
 against the shared scriptCode after ten selected deletions, and rejects 12
 wrong-code controls, including one that retains each selected push in turn.
-The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
-`SIGHASH_ALL`. A `CHECKMULTISIG; DROP; TRUE` variant accepts an empty
+The two-input, two-output transaction exercises in-range `SIGHASH_SINGLE`
+as well as `SIGHASH_ALL`. A `CHECKMULTISIG; DROP; TRUE` variant accepts an empty
 first-scanned signature but rejects a malformed nonempty one, consistent with
 the source encoding gate. The adapter does not expose the error code. These
 22 cases are native evidence for selected
@@ -993,8 +993,22 @@ accepts while reusing the in-range SINGLE dummy keys. Lean proves the
 corresponding source-shaped preimage and joint-digest invariance for any
 unselected output changes that retain the selected output. All 15
 HORS comparisons, pinning, and both CHECKMULTISIGs remain active. This is a
-two-input component experiment, not acceptance of the unmodified QSB lock,
-arbitrary transaction layouts, or an unauthorized spend.
+two-input component experiment, not acceptance of the unmodified QSB lock
+or an unauthorized spend.
+A test-only variable-input adapter calling the same pinned Core library agrees
+with the original wrapper on one accepted and one rejected two-input control.
+The complete puzzle-relaxed lock then accepts two three-input, two-output
+layouts: QSB at input 1 uses in-range SINGLE, while QSB at input 2 uses the
+out-of-range constant SINGLE digest despite the two outputs. At input 2 a
+change to both output values rejects with the old fixed ALL keys, then accepts
+with those keys rederived while the original final-round nine dummy keys stay.
+The recorded per-input Core results and message scalars make the distinction
+reproducible.
+`JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and
+`checker_single_bug_ignores_outputs` prove the corresponding source-shaped
+invariance for any output replacement that leaves the selected input past
+the last output. These tests do not solve the three real hash puzzles or prove
+universal Core-to-Lean extraction.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. The earlier

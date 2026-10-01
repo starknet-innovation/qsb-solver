@@ -177,6 +177,14 @@ outputs, and locktime. It also proves that input-script preparation preserves
 those committed input fields. One 139-byte Lean fixture matches the pinned
 app's baseline preimage used in the Core probe. The actual Core serializer
 and ledger resolution remain separate refinement obligations.
+`QSB/JointSourceChecks.lean` also proves that an out-of-range SINGLE checker
+call keeps the raw constant digest after any output-list replacement that
+leaves the selected input past the last output. A cross-checked test adapter
+using the same pinned Core library accepts a three-input, two-output
+puzzle-relaxed full lock with QSB at input 2. That layout reuses its final nine
+dummy keys after both outputs change, provided the fixed ALL keys are
+rederived. See `evidence/full-two-outputs-core.json`; this is finite evidence,
+not an unmodified-lock spend or a Core-to-Lean proof.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
@@ -487,6 +495,12 @@ python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --na
 python3 analysis/check_ecdsa_replay_targets.py --app-root /path/to/qsb-app --output evidence/ecdsa-replay-targets.json
 python3 analysis/check_four_recovery_points_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/four-recovery-points-core.json
 ```
+
+The full-lock command also runs `analysis/core_variable_inputs_adapter.py`
+inside the same pinned container to call Core's API for every spent output in
+the three-input cases. Its two-input positive and negative controls are
+cross-checked against the original native wrapper; the evidence records the
+adapter source hash and per-input Core results.
 
 The recorded source inventory identifies exactly the files analyzed. The app
 checkout was clean at capture. The solver baseline was

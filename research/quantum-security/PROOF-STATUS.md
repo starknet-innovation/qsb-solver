@@ -35,6 +35,7 @@ The build and dependency outputs are retained under `evidence/`.
 | Source-shaped complete ALL preimage parser | For every valid source-shaped wire transaction, a full parser recovers version, prepared ordered inputs, ordered outputs, locktime, and the appended ALL word. The serializer is injective on those valid fields. BASE/ALL preparation blanks original input scripts and substitutes the selected scriptCode; a second theorem proves that this preparation preserves the ordered prevout and sequence fields. Thus even with different scriptSigs, selected inputs, and scriptCodes, equal source-shaped preimages imply equal version, ordered outpoints and sequences, outputs, and locktime. One 139-byte Lean encoding matches the pinned app's baseline preimage; a second fixture checks the prepared result with different original scriptSigs. | `QSB/SighashAllWire.lean` and `QSB/SighashAllWireFixture.lean` prove this on the finite-width wire domain. A fixed ledger-resolution function maps the committed outpoints to previous outputs, so equal preimages also imply equal `Game.Projection` in that same ledger context. The Core C++ serializer, selected `scriptCode` from arbitrary accepted witnesses, and actual ledger resolution have not been refined to this model. |
 | Source-shaped legacy hash-type serializer | The Lean serializer branches on the low five hash-type bits and ANYONECANPAY flag: NONE omits outputs, SINGLE writes null outputs before the signed index, other input sequences become zero in those branches, and ANYONECANPAY retains only the selected input. The out-of-range SINGLE branch has no preimage and its raw `uint256::ONE` digest bytes are recorded separately. Type `0x01` provably equals the earlier ALL preimage. For in-range SINGLE, replacing any unselected outputs while retaining the selected output leaves the preimage and the joint SHA256d digest unchanged; a checked fixture changes output 0 while input 1 signs output 1, and contrasts the changed ALL preimage. Five exact Lean byte fixtures cover ALL, NONE, in-range SINGLE, SINGLE with ANYONECANPAY, and an unknown-base ALL-like type with ANYONECANPAY. | `QSB/LegacySighashWire.lean`, `QSB/JointSourceChecks.lean`, and the fixture cover the source-shaped wire semantics, not compiled Core C++ or actual ECDSA. The fixture uses an independent Python serializer separately checked against all 500 pinned Core 27.2 published vectors (467 ALL-like, 16 NONE, 17 in-range SINGLE; 229 ANYONECANPAY); no published vector exercises the out-of-range SINGLE exception, which has separate isolated native evidence. `scriptCode` after FindAndDelete and CODESEPARATOR removal, valid transaction fields, and actual consensus checker linkage remain external. |
 | Conditional ALL authorization binding | An attempted transaction outside the authorized semantic-projection set has a distinct source-shaped ALL preimage from every approved release in the same fixed ledger context, including forbidden changes to prevouts, sequences, version, locktime, outputs, or the fee induced by those prevouts. Under explicit admitted-recovery-point, digest-reduction, and fixed-key verification premises, its unsigned digest lies in a target set of at most eight values. | `QSB/SighashAllWire.unauthorized_sourceAll_distinct_preimage` and `QSB/SighashBinding.source_all_forbidden_projection_wire_digest_target` extend the earlier changed-output statements. This is finite target accounting, not a query-success bound. Core preimage identity, actual key verification and recovery points, ledger binding, and a joint-oracle quantum bound remain external. It does not prove universal old-key rejection. |
+| Out-of-range SINGLE under arbitrary layouts | For any existing selected input whose index is at least both the old and replacement output counts, a `SIGHASH_SINGLE` source checker receives the same raw constant digest before and after arbitrary output-list replacement. The statement holds for the same signature, key, and reached scriptCode without assuming a two-input transaction. | `QSB/JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and `checker_single_bug_ignores_outputs` prove this source-shaped property. The cross-checked pinned Core test in `evidence/full-two-outputs-core.json` accepts a three-input, two-output puzzle-relaxed lock at input 2 and its changed-output case after rederiving the fixed ALL keys; the unchanged ALL keys fail. Native cases do not prove universal C++ serializer or key-verifier refinement, and the unmodified lock's puzzles remain unsolved. |
 | Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
@@ -217,10 +218,10 @@ The same ALL digest and key also pass with the corresponding strict-DER high-S
 variant of the signature, consistent with Core's low-S normalization before
 ECDSA verification. The previous ten outcomes remain byte-identical.
 The SINGLE-bug signature continues to verify after destination and amount change.
-Adding a second output makes the spending input's SINGLE sighash in range:
+Adding a second output makes this input-1 fixture's SINGLE sighash in range:
 the old recovered key then fails and a key publicly recovered for the new
 message passes. The isolated test shows that the constant-message shortcut
-cannot be assumed for arbitrary transaction layouts, and that changing the
+depends on the selected input index and output count, and that changing the
 supplied key can restore verification for this fixed signature.
 These are component facts, not an accepted QSB forgery.
 
@@ -235,9 +236,9 @@ rederiving only the fixed ALL verification keys. With the same valid
 two-output witness it also accepts an extra bottom-stack value computed by a
 non-push scriptSig prefix and an extra 520-byte bottom-stack element. Pinning,
 all 15 HORS comparisons and
-both CHECKMULTISIGs remain real. This still fixes two inputs and relaxes the
-three hash puzzles; it is neither an accepted unmodified QSB spend nor a
-general compiled-Core extraction refinement.
+both CHECKMULTISIGs remain real. These original cases fix two inputs and relax
+the three hash puzzles; they are neither an accepted unmodified QSB spend nor
+a general compiled-Core extraction refinement.
 Three additional cases on that same two-output witness accept all 18 indices
 as nonminimal four-byte ScriptNums, accept PUSHDATA1 pushes of those same
 four bytes, and reject a five-byte first index. The transaction hashes and
@@ -248,6 +249,17 @@ negative case alone does not expose its rejecting opcode through the adapter.
 A separate truncated-lock before/after pair in `selection-prefix.json`
 isolates the first `OP_MIN` for the same five-byte value, with earlier
 pinning and the relaxed early puzzle unchanged.
+Six variable-input cases use a test-only ctypes adapter for the same pinned
+Core library and `VERIFY_ALL` flags. Positive and negative two-input controls
+match the original wrapper. With three inputs and two outputs, a QSB spend at
+input 1 passes with in-range SINGLE keys, while a QSB spend at input 2 passes
+with the out-of-range constant SINGLE digest. Changing both output values
+first rejects with the old fixed ALL keys, then passes when those keys are
+rederived; the final nine dummy SINGLE keys are reused. The report records
+all input results, raw error codes, selected input index, transaction hashes,
+and both rounds' dummy SINGLE message scalars. The adapter does not expose
+intermediate Core stacks;
+these are finite full-path tests with the same three puzzle opcodes relaxed.
 
 `bare-script-boundary.json` records fifteen isolated native tests of the
 `scriptSig`/bare-output boundary. A non-push-only `OP_1 OP_1 OP_ADD` scriptSig
@@ -322,7 +334,8 @@ exact refinement contract is in `CORE-FINAL-MATCH.md`.
 
 `ten-signature-find-and-delete.json` checks one isolated 10-of-10 bare
 multisignature lock containing all 151 final fixture signature pushes in a
-nonexecuted branch. With two outputs, both SINGLE and ALL sighashes depend on
+nonexecuted branch. With its QSB input at index 1 and two outputs, both SINGLE
+and ALL sighashes depend on
 the transaction and shared scriptCode. The pinned Core adapter accepts the
 keys recovered after deleting all ten selected pushes, rejects a wrong SINGLE
 key and a wrong ALL key, and rejects ten full-key controls that retain one

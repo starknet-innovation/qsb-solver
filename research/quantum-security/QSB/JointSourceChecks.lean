@@ -59,6 +59,26 @@ theorem legacyDigest_single_bug (functions : Functions)
     LegacySighashWire.single_out_of_range tx selected scriptCode
       hashType inputValid single outputMissing]
 
+/-- For any existing selected input past the last output, SINGLE returns the
+same raw bug digest after *arbitrary* output-list replacement. This covers a
+third QSB input with two outputs, not only the app's two-input layout. -/
+theorem legacyDigest_single_bug_ignores_outputs (functions : Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes) (hashType : Nat)
+    (replacement : List Game.Output)
+    (inputValid : selected < tx.inputs.length)
+    (single : LegacySighashWire.baseType hashType = 3)
+    (oldMissing : tx.outputs.length ≤ selected)
+    (newMissing : replacement.length ≤ selected) :
+    legacyDigest functions {tx with outputs := replacement} selected
+      scriptCode hashType =
+    legacyDigest functions tx selected scriptCode hashType := by
+  rw [legacyDigest_single_bug functions
+    {tx with outputs := replacement} selected scriptCode hashType
+    (by simpa using inputValid) single (by simpa using newMissing)]
+  rw [legacyDigest_single_bug functions tx selected scriptCode hashType
+    inputValid single oldMissing]
+
 /-- In-range SINGLE retains the same joint SHA256d digest when only
 unselected outputs change. A changed output list therefore need not create
 a fresh-message target for a SINGLE signature. -/
@@ -149,6 +169,26 @@ theorem checker_single_bug (functions : Functions)
       ecdsa sig key LegacySighashWire.singleBugDigest := by
   simp [checker, legacyDigest_single_bug functions tx selected scriptCode
     hashType.toNat inputValid single outputMissing]
+
+/-- The supplied ECDSA check for the same SINGLE signature and key sees the
+same digest after arbitrary output changes that leave the selected input
+out of range. Fixed ALL signatures still commit to the outputs. -/
+theorem checker_single_bug_ignores_outputs (functions : Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (sig key scriptCode : Bytes) (hashType : UInt8)
+    (replacement : List Game.Output)
+    (inputValid : selected < tx.inputs.length)
+    (single : LegacySighashWire.baseType hashType.toNat = 3)
+    (oldMissing : tx.outputs.length ≤ selected)
+    (newMissing : replacement.length ≤ selected) :
+    checker functions {tx with outputs := replacement} selected ecdsa
+      sig key scriptCode hashType =
+    checker functions tx selected ecdsa sig key scriptCode hashType := by
+  simp only [checker]
+  rw [legacyDigest_single_bug_ignores_outputs functions tx selected
+    scriptCode hashType.toNat replacement inputValid single
+    oldMissing newMissing]
 
 /-- Either reached SHA256-derived CHECKSIGVERIFY puzzle is bound to its
 actual last-byte hash type and the digest produced by the same H used in its

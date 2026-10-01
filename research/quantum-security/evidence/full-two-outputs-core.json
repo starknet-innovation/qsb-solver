@@ -145,6 +145,154 @@
       "output_count": 2,
       "script_sig_length": 1149,
       "transaction_sha256": "c34aa0fcf52d02bba9cd88de978ab3c4bccdb3a558a2f3030c7e432e186b364e"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 2,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "variable_adapter_two_input_positive_control",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "effcae200eac4f9c2bc4d558539df47d5b7a6bc6cc58c5f8fc2aee74929da353",
+      "round1_single_message_scalar_hex": "2679a330f207dc38ba365a4d80b0710726d44e7903b45fa749b20ec07b518a1e",
+      "script_sig_length": 1149,
+      "spending_index": 1,
+      "transaction_sha256": "c63e8ef63e3c5228a6196cc959b5d9b8431d9772ee816feb97172a03ec41e679"
+    },
+    {
+      "accepted": false,
+      "expected": false,
+      "input_count": 2,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": false
+        }
+      ],
+      "name": "variable_adapter_two_input_negative_control",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "aa71217906c0ef9a0d96197029eca98ec6d39098470a4a23ec31a9014d08b94c",
+      "round1_single_message_scalar_hex": "93441596b25957cb0f9490b80aa681fb2fc8f500943484b0fabefe56865801c6",
+      "script_sig_length": 1149,
+      "spending_index": 1,
+      "transaction_sha256": "611ed7f3f00337526b186b36b2f8ae0a47182b40ae31ef6f2a8579754ea19904"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_one_single_in_range",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "3a0f03c59e915aa2ee1901e95577e1750f2406377201aeac7e616938afd46cb6",
+      "round1_single_message_scalar_hex": "4902cdddc69715a6a6893b590a9e65a60cd113e8c737297cc56c6d1c831f2e39",
+      "script_sig_length": 1149,
+      "spending_index": 1,
+      "transaction_sha256": "e23cb45755b2a9eb90a5752d41d457d908f9b4fb2939225c0baea17b9c66b318"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_two_single_bug",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_sha256": "cb3afeb261229c40fb1ede8aea882a8c2ee0f94c544c7f4e1b6bc1c75a1715eb"
+    },
+    {
+      "accepted": false,
+      "expected": false,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": false
+        }
+      ],
+      "name": "three_inputs_qsb_index_two_changed_outputs_old_all_keys_rejected",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_sha256": "b2fbec056978c0776d32eef97fff7ee8a6a7b725bd7efe00912c311fef7f55cc"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_two_changed_both_outputs_same_dummy_keys",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_sha256": "55a5e1af52b8235d239b7829ab909e5dfc24f014152c9a5e39ae4a8d8fcc57bb"
     }
   ],
   "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
@@ -158,6 +306,7 @@
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd"
   },
-  "scope": "Two-input disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Input 1 uses in-range SIGHASH_SINGLE when two outputs exist. Not a full QSB spend or universal Core refinement.",
-  "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f"
+  "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Not a full QSB spend or universal Core refinement.",
+  "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
+  "variable_adapter_sha256": "40590ee53a0067a1ea16998e5bc5923b070af985d6f8b11a160396eb9adcb351"
 }
