@@ -118,7 +118,8 @@ positions; otherwise the corresponding extraction gap remains possible.
 Within the literal byte model, `FinalSignedChain.extractWholeFinal` now
 computes the seven signed positions and actual openings from any successful
 full run, including arbitrary initial byte stacks and supplied signature
-outcomes. It does not consume transaction bytes or establish that Core
+outcomes; `extractWholeRemaining` computes their ordered residual pool.
+Neither consumes transaction bytes or establishes that Core
 acceptance supplies such a run; extracting the two bonus positions and nonce
 key into the game witness remains separate.
 One final-suffix invariant is now proved for arbitrary underlying stacks:

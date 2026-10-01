@@ -657,7 +657,9 @@ acceptance to Bitcoin Core. Separately, `extractWholeFinal` now executes the
 literal prefix and reads each subsequent raw ScriptNum and opening from the
 reached stack. Lean proves it returns seven distinct original positions and
 actual opening bytes for every successful full byte-model run, with each
-opening hashing to its generated commitment. This result needs no assumption
+opening hashing to its generated commitment. A second executable function
+returns the ordered 143-position residual pool, and Lean proves selected plus
+residual positions permute the original 150. These results need no assumption
 that public commitment bytes are distinct. Its input is still a modeled stack
 with supplied signature outcomes, not an adversarial transaction or Core
 acceptance proof; equality with the independent byte-opening trace remains

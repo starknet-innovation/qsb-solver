@@ -41,6 +41,22 @@ def extractOrdered : List (Fin 7) → List (Fin 150) → Nat → List Bytes →
           ((tail.eraseIdx 283).eraseIdx (291 - gatheredLength))
         some ((id, opening) :: later)
 
+/-- The same public raw-index replay, retaining the ordered pool positions
+left after all signed draws for the two bonus selections. -/
+def extractRemaining : List (Fin 7) → List (Fin 150) → Nat → List Bytes →
+    Option (List (Fin 150))
+  | [], ids, _, _ => some ids
+  | _ :: rest, ids, gatheredLength, tail => do
+      let raw ← tail[283]?
+      let parsed ← ByteIndex.parseScriptNum raw
+      if parsed < Int.ofNat (gatheredLength + 2) then none else do
+        let j := parsed.toNat - (gatheredLength + 2)
+        let _ ← ids[j]?
+        let _ ← (tail.eraseIdx 283)[291 - gatheredLength]?
+        extractRemaining rest (ids.eraseIdx j)
+          (gatheredLength + 1)
+          ((tail.eraseIdx 283).eraseIdx (291 - gatheredLength))
+
 theorem generated_all_signed_blocks :
     allSignedBlocks = (ByteLayout.program.drop 749).take 91 := by decide
 
@@ -74,6 +90,7 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
       gathered'.length = start + ks.length ∧
       trace.length = ks.length ∧
       extractOrdered ks ids gathered.length tail = some trace ∧
+      extractRemaining ks ids gathered.length tail = some ids' ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       List.Perm (trace.map Prod.fst ++ ids') ids ∧
       gathered' = (trace.map (fun p => generatedDummyAt p.1)).reverse ++
@@ -84,7 +101,7 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
       simp [blockProgram, run] at accepted
       subst final
       refine ⟨ids, gathered, dummies, commitments, tail, [], ?_, shape,
-        aligned, ?_, rfl, rfl, ?_, ?_, ?_⟩
+        aligned, ?_, rfl, rfl, rfl, ?_, ?_, ?_⟩
       · simp
       · exact count
       · simp
@@ -132,7 +149,8 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
           rw [middleShape] at accepted
           obtain ⟨ids', gathered', dummies', commitments', tail',
               restTrace, finalShape, finalPool, finalAligned,
-              finalCount, traceCount, restExtract, traceHits, tracePerm,
+              finalCount, traceCount, restExtract, restRemaining,
+              traceHits, tracePerm,
               gatheredTrace⟩ :=
             ih (start + 1) restOrdered
               (ids.eraseIdx j) (dummies[j]'dummyWithin :: gathered)
@@ -142,7 +160,7 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
               outcomes (cost + 9) final accepted
           refine ⟨ids', gathered', dummies', commitments', tail',
             (id, opening) :: restTrace, ?_, finalPool, finalAligned,
-            ?_, ?_, ?_, ?_, ?_, ?_⟩
+            ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
           · simpa [List.length_cons, Nat.mul_add, Nat.add_assoc,
               Nat.add_comm, Nat.add_left_comm] using finalShape
           · simp only [List.length_cons]
@@ -184,6 +202,32 @@ theorem accepted_ordered_blocks (hashes : Hashes) (result : Bool)
             simp [extractOrdered, rawSource, parsedRaw, selectedOpening]
             simp only [computedIndex', selectedId,
               restExtract', Option.bind_some]
+          · have selectedId : ids[j]? = some id :=
+              List.getElem?_eq_getElem idWithin
+            have computedIndex' :
+                ((↑gathered.length : Int) + 2 + ↑j).toNat -
+                  (gathered.length + 2) = j := by
+              have castAdd :
+                  (↑gathered.length : Int) + 2 + ↑j =
+                    Int.ofNat (gathered.length + 2 + j) := by
+                norm_cast
+              rw [castAdd]
+              have castBack :
+                  (Int.ofNat (gathered.length + 2 + j)).toNat =
+                    gathered.length + 2 + j :=
+                Int.toNat_natCast (gathered.length + 2 + j)
+              rw [castBack]
+              omega
+            have restRemaining' :
+                extractRemaining rest (ids.eraseIdx j)
+                  (gathered.length + 1)
+                  ((tail.eraseIdx 283).eraseIdx
+                    (291 - gathered.length)) = some ids' := by
+              simpa only [List.length_cons] using restRemaining
+            simp [extractRemaining, rawSource, parsedRaw,
+              openingSource]
+            simp only [computedIndex', selectedId,
+              restRemaining', Option.bind_some]
           · intro p hp
             rcases List.mem_cons.mp hp with rfl | later
             · exact originalHit
@@ -218,6 +262,8 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
       trace.length = 7 ∧
       extractOrdered (List.finRange 7) (List.finRange 150) 0 tail =
         some trace ∧
+      extractRemaining (List.finRange 7) (List.finRange 150) 0 tail =
+        some ids' ∧
       (trace.map Prod.fst).Nodup ∧
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       List.Perm (trace.map Prod.fst ++ ids') (List.finRange 150) ∧
@@ -232,7 +278,8 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
   rw [startShape] at accepted
   obtain ⟨ids', gathered', dummies', commitments', tail', trace,
       finalShape, shape, aligned, gatheredCount, traceCount,
-      traceExtract, traceHits, tracePerm, gatheredTrace⟩ :=
+      traceExtract, traceRemaining, traceHits, tracePerm,
+      gatheredTrace⟩ :=
     accepted_ordered_blocks hashes result (List.finRange 7) 0
       generated_blocks_ordered (List.finRange 150) []
       finalDummyPool finalCommitmentPool tail
@@ -243,12 +290,13 @@ theorem accepted_all_signed_blocks (hashes : Hashes) (result : Bool)
     have combined := tracePerm.nodup_iff.mpr allNodup
     exact (List.nodup_append.mp combined).1
   refine ⟨ids', gathered', dummies', commitments', tail', trace,
-    ?_, shape, aligned, ?_, ?_, ?_, noDuplicates, traceHits,
+    ?_, shape, aligned, ?_, ?_, ?_, ?_, noDuplicates, traceHits,
     tracePerm, ?_⟩
   · simpa using finalShape
   · simpa using gatheredCount
   · simpa using traceCount
   · simpa using traceExtract
+  · simpa using traceRemaining
   · simpa using gatheredTrace
 
 theorem generated_whole_signed_boundary :
@@ -286,6 +334,12 @@ def extractWholeFinal (hashes : Hashes) (initial : State) :
   extractOrdered (List.finRange 7) (List.finRange 150) 0
     (beforeSigned.stack.drop 303)
 
+def extractWholeRemaining (hashes : Hashes) (initial : State) :
+    Option (List (Fin 150)) := do
+  let beforeSigned ← run hashes (ByteLayout.program.take 749) initial
+  extractRemaining (List.finRange 7) (List.finRange 150) 0
+    (beforeSigned.stack.drop 303)
+
 /-- An arbitrary successful full generated byte-model execution must consume
 seven HASH160 openings against seven distinct original second-round HORS
 commitment positions. It assumes only the byte model's supplied signature
@@ -294,11 +348,16 @@ execution and valid signatures remains open. -/
 theorem accepted_whole_program_final_signed_openings (hashes : Hashes)
     (initial final : State)
     (accepted : run hashes ByteLayout.program initial = some final) :
-    ∃ trace : List (Fin 150 × Bytes),
+    ∃ (trace : List (Fin 150 × Bytes))
+      (remainingIds : List (Fin 150)),
       extractWholeFinal hashes initial = some trace ∧
+      extractWholeRemaining hashes initial = some remainingIds ∧
       trace.length = 7 ∧
       (trace.map Prod.fst).Nodup ∧
-      ∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1 := by
+      (∀ p ∈ trace,
+        hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
+      List.Perm (trace.map Prod.fst ++ remainingIds)
+        (List.finRange 150) := by
   rw [generated_whole_signed_boundary, run_append] at accepted
   cases preRun : run hashes (ByteLayout.program.take 446) initial with
   | none => simp [preRun] at accepted
@@ -346,8 +405,9 @@ theorem accepted_whole_program_final_signed_openings (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, finalShape, shape, aligned, gatheredCount,
-                    traceCount, traceExtract, noDuplicates, traceHits,
-                    _tracePerm⟩ :=
+                    traceCount, traceExtract, remainingExtract,
+                    noDuplicates, traceHits,
+                    tracePerm⟩ :=
                     accepted_all_signed_blocks hashes result tail
                       checkOutcomes checkCost afterSigned signed
                   have prefixRun : run hashes
@@ -358,17 +418,22 @@ theorem accepted_whole_program_final_signed_openings (hashes : Hashes)
                     rw [run_append]
                     simp only [checkRun, Option.bind_some]
                     simpa [initShape] using init
+                  have afterDrop : afterInit.stack.drop 303 = tail := by
+                    rw [initShape]
+                    change (FinalSignedAccepted.baseRegion
+                      (boolBytes result) tail).drop 303 = tail
+                    exact baseRegion_drop_tail (boolBytes result) tail
                   have computed : extractWholeFinal hashes initial =
                       some trace := by
-                    have afterDrop : afterInit.stack.drop 303 = tail := by
-                      rw [initShape]
-                      change (FinalSignedAccepted.baseRegion
-                        (boolBytes result) tail).drop 303 = tail
-                      exact baseRegion_drop_tail (boolBytes result) tail
                     simp [extractWholeFinal, prefixRun, afterDrop,
                       traceExtract]
-                  exact ⟨trace, computed, traceCount,
-                    noDuplicates, traceHits⟩
+                  have computedRemaining :
+                      extractWholeRemaining hashes initial =
+                        some ids' := by
+                    simp [extractWholeRemaining, prefixRun, afterDrop,
+                      remainingExtract]
+                  exact ⟨trace, ids', computed, computedRemaining,
+                    traceCount, noDuplicates, traceHits, tracePerm.1⟩
 
 /-- After seven checked signed draws, source depths nine and ten are the
 first two surviving nonempty generated dummy signatures. -/
