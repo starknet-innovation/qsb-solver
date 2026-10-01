@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,248 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,253 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -504,6 +504,15 @@ events in that one sampled world. No coherent-query algorithm, shared query
 budget theorem, nontrivial `εjoint`, or Core extraction is supplied; the
 source ECDSA relations remain external. This interface avoids accidentally
 treating sampled oracle functions as constants of the terminal measure.
+`QSB/OracleDependentSelection.lean` isolates a further limit of that
+interface. Across four equally likely Boolean functions, a fixed input hits
+the target in two worlds, but an input selected after seeing one oracle value
+hits in three, even though the observed bit is uniform. The world-indexed
+selector has no query accounting; a causal implementation must charge the
+observation as a query or model it as correlated advice. This finite result
+does not refute the conditional reduction, attack QSB, or establish a quantum
+bound. It rules out substituting a fixed-input random-function density for
+the still-unknown adaptive `εjoint`.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required

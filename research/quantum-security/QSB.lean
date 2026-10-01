@@ -2,6 +2,7 @@ import QSB.Disclosure
 import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
+import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
 import QSB.WireIntegers
@@ -186,6 +187,11 @@ import QSB.Reduction
 #print axioms QSB.RandomOracleSetup.fixed_input_hit_count
 #print axioms QSB.RandomOracleSetup.independent_source_hit_count
 #print axioms QSB.RandomOracleSetup.shared_function_union_hit_count
+#print axioms QSB.OracleDependentSelection.disclosure_true_count
+#print axioms QSB.OracleDependentSelection.fixed_hit_count
+#print axioms QSB.OracleDependentSelection.inspected_hit_count
+#print axioms QSB.OracleDependentSelection.correlated_disclosure_hit_count
+#print axioms QSB.OracleDependentSelection.fixed_marginal_not_adaptive_bound
 #print axioms QSB.public_scalar_satisfies
 #print axioms QSB.fixed_recovery_point_message_unique
 #print axioms QSB.fixed_message_key_unique

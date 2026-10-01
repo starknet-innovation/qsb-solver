@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1248,
+  "theorem_count": 1253,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4159,6 +4159,31 @@
       "propext"
     ],
     "QSB.Multisig.too_many_signatures_fail": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.correlated_disclosure_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.disclosure_true_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.fixed_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.fixed_marginal_not_adaptive_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.inspected_hit_count": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -458,6 +458,14 @@ certificate and does not assign any probability to the event.
 world and uses one unsplit event bound. It does not yet specify a quantum
 algorithm or count coherent oracle calls; a query theorem must target that
 same world-indexed event.
+`QSB/OracleDependentSelection.lean` checks a finite warning about this gap:
+for a uniform Boolean function on two inputs, a fixed input hits a fixed target
+in two of four functions, but selecting an input after observing one function
+value hits in three of four. The observed bit itself has a uniform marginal.
+The observation would cost a query (or be correlated advice) in a causal game;
+the current arbitrary world-indexed output has no such accounting. This does
+not invalidate the conditional joint reduction or give a QSB attack. It shows
+why fixed-input setup densities cannot serve as its adaptive `εjoint` bound.
 
 The successful parameterized byte run also fixes the tenth final signature
 cell to the lock-pushed second-round nonce, regardless of the initial witness
