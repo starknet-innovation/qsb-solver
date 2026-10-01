@@ -20,6 +20,7 @@ import QSB.ByteIndexRange
 import QSB.CoreScriptNum
 import QSB.CoreNumericOps
 import QSB.CoreRoll
+import QSB.CoreOpcodeStep
 import QSB.CoreSerialize
 import QSB.Multisig
 import QSB.KeyRolls
@@ -98,6 +99,12 @@ import QSB.Reduction
 #print axioms QSB.WireIntegers.readLE_leBytes
 #print axioms QSB.WireIntegers.compactSize_roundtrip
 #print axioms QSB.WireIntegers.compact_252
+#print axioms QSB.CoreOpcodeStep.step_eq_byte
+#print axioms QSB.CoreOpcodeStep.run_eq_byte
+#print axioms QSB.CoreOpcodeStep.literal_partition
+#print axioms QSB.CoreOpcodeStep.literal_segments_supported
+#print axioms QSB.CoreOpcodeStep.supported_of_segment
+#print axioms QSB.CoreOpcodeStep.literal_segment_run_eq_byte
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.compact_65535
 #print axioms QSB.WireIntegers.compact_65536

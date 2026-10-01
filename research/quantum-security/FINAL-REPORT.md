@@ -135,6 +135,13 @@ used.
    includes negative, nonminimal, and overshoot inputs, with a wrong-byte
    control and five-byte rejection. Compiled Core interpreter refinement
    remains open.
+   A bottom-first source-shaped Lean interpreter now agrees with the existing
+   top-first byte interpreter over every non-signature segment of the exact
+   880-opcode lock, for arbitrary starting stacks and modeled resource limits.
+   Lean checks the six intervening signature-opcode positions and that the
+   partition reconstructs the whole program. This still needs a compiled-Core
+   interpreter relation and actual signature-checker refinement before it can
+   support arbitrary-witness extraction.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13
    boundary cases byte-for-byte, including the NULLDUMMY-slot rejection. The
    separate six-case overshoot report had mislabeled the canonical first

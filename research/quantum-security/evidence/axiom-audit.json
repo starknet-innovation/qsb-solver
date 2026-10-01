@@ -1,5 +1,5 @@
 {
-  "theorem_count": 747,
+  "theorem_count": 753,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -611,6 +611,29 @@
     ],
     "QSB.CoreNumericOps.parsed_add_fits_int64": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreOpcodeStep.literal_partition": [],
+    "QSB.CoreOpcodeStep.literal_segment_run_eq_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreOpcodeStep.literal_segments_supported": [
+      "propext"
+    ],
+    "QSB.CoreOpcodeStep.run_eq_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreOpcodeStep.step_eq_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreOpcodeStep.supported_of_segment": [
       "Quot.sound",
       "propext"
     ],
