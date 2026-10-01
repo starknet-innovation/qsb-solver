@@ -106,6 +106,7 @@ theorem accepted_wire_good_setup_nine_positions (hashes : Hashes)
     (noCommitmentDER : ∀ id : Fin 150,
       DERSyntax.valid (commitmentAt id) = false) :
     ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150),
+      DynamicWholeSource.extractTrace hashes priorOps initial = some trace ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = commitmentAt p.1) ∧
       (a :: b :: trace.map Prod.fst).Nodup ∧

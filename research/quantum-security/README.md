@@ -107,13 +107,18 @@ quantum unauthorized-spend bound remains open.
 `QSB/DynamicWholeSource.lean` composes any modeled initial stack and
 first-round opcode prefix with the parameterized final round. It derives the
 prior result's short width from the first `CHECKMULTISIG` transition and
-proves the good-setup nine-position consequence under a successful
+proves the good-setup nine-position consequence with an executable opening
+trace under a successful
 source-shaped final evaluator. Its full-program form specializes to the
 literal fixture; real builder and Core acceptance links remain open.
 `QSB/DynamicWireSource.lean` extends the source-shaped result to full
 serialized script bytes under an explicit, well-formed prior-chunk contract.
 The separately written GetOp parser recovers the exact modeled opcode list;
 the builder-output and compiled-Core links are still unproved.
+`analysis/audit_builder_parametric.py` checks the pinned Python source's
+byte-value flow: variable commitments, dummies, and nonce bytes enter
+`_emit_round` only through data pushes, while suffix depths use stack labels.
+It is a source audit, not a formal Python-to-Lean refinement.
 `QSB/DynamicSetupReduction.lean` gives the resulting conditional game
 inequality: `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.
 The fresh-opening and two puzzle-search terms are unproved joint-QROM event

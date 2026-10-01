@@ -81,7 +81,7 @@ theorem accepted_first_boundary (hashes : Hashes)
                 · simp [run, hStep, large] at one
                 · have same : next = afterFirst := by
                     simpa [run, hStep, large] using one
-                  simpa [same] using hStep
+                  simp [same]
           obtain ⟨result, tail, shape⟩ :=
             FinalSignedAccepted.successful_checkmultisig_result_shape
               hashes beforeCheck afterFirst stepped
@@ -94,6 +94,18 @@ theorem accepted_first_boundary (hashes : Hashes)
 theorem first_result_wrong_width (result : Bool) :
     (boolBytes result).length ≠ 20 := by
   cases result <;> decide
+
+/-- Read the seven signed opening pairs from the actual post-first-round
+modeled stack. The first-round prefix is executed, then the extractor uses
+the same fixed witness-tail offsets as the dynamic signed-chain proof. -/
+def extractTrace (hashes : Hashes) (priorOps : List Op)
+    (initial : State) : Option (List (Fin 150 × Bytes)) := do
+  let afterFirst ← run hashes (priorOps ++ [.checkmultisig]) initial
+  match afterFirst.stack with
+  | [] => none
+  | _ :: tail =>
+      FinalSignedChain.extractOrdered (List.finRange 7)
+        (List.finRange 150) 0 tail
 
 /-- With a successful source-shaped final ten-pair evaluation on the reached
 stack, every accepted byte-model full run from an arbitrary witness stack
@@ -116,6 +128,7 @@ theorem accepted_whole_good_setup_nine_positions (hashes : Hashes)
     (noCommitmentDER : ∀ id : Fin 150,
       DERSyntax.valid (commitmentAt id) = false) :
     ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150),
+      extractTrace hashes priorOps initial = some trace ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = commitmentAt p.1) ∧
       (a :: b :: trace.map Prod.fst).Nodup ∧
@@ -138,11 +151,14 @@ theorem accepted_whole_good_setup_nine_positions (hashes : Hashes)
     exact reached
   obtain ⟨trace, a, b, beforeCheck, _reached, _slotA, _slotB,
       _signed, _nonceSlot, _dummySlot, seven, hits,
-      _different, _freshA, _freshB, distinct, count, _extract⟩ :=
+      _different, _freshA, _freshB, distinct, count, traceExtract⟩ :=
     DynamicSourceGate.nine_positions_of_source_eval hashes nonce
       (boolBytes result) commitmentAt width
       (first_result_wrong_width result) tail outcomes cost final finalRun
       script checker gate noCommitmentDER
-  exact ⟨trace, a, b, seven, hits, distinct, count⟩
+  have extracted : extractTrace hashes priorOps initial = some trace := by
+    simp only [extractTrace, firstRun]
+    exact traceExtract
+  exact ⟨trace, a, b, extracted, seven, hits, distinct, count⟩
 
 end QSB.DynamicWholeSource

@@ -415,7 +415,9 @@ instruction is the first `CHECKMULTISIG`. The modeled first multisignature
 leaves `[]` or `[1]`, so the earlier non-20-byte prior-result premise follows
 from the run. On a good setup, a successful parameterized final round and
 successful source-shaped `finalTenEval` then give seven actual opening/hash
-equations and nine distinct original positions. Lean also proves that this
+equations and nine distinct original positions. The seven opening pairs are
+the result of executable `extractTrace`, computed from the modeled first-round
+post-check stack rather than selected existentially. Lean also proves that this
 full-program form specializes to the literal 880-op fixture. This removes a
 starting-stack restriction in the source-shaped model; it does not prove that
 every Python-built lock has that program or that consensus acceptance implies
@@ -429,6 +431,14 @@ to a successful source-shaped run of those parsed opcodes, with the final
 evaluator checking the same full wire bytes. The explicit prior-chunk contract
 has not been proved for every Python builder execution, and the premise is a
 Lean source-shaped run rather than compiled Core's consensus result.
+The pinned Python source audit in `analysis/audit_builder_parametric.py`
+checks that `_emit_round` reads commitment, dummy-signature and nonce byte
+values only as three `push_data` arguments; its later stack-depth calculations
+use token labels, while `push_data` branches on length alone. This supports
+value independence of the emitted suffix for fixed Config A parameters and
+short pushes. The audit is tied to the exact source hash and four disposable
+builder outputs. It is not a formal Python-semantics theorem equating every
+builder output to the Lean serialization or a Core consensus refinement.
 `QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`
 now composes that setup probability with the transaction-game reduction:
 `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.

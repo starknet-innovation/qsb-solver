@@ -1,0 +1,16 @@
+{
+  "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "byte_values_only_enter_emit_round_push_data": true,
+  "canonical_subset_uses_round_total": true,
+  "emit_round_data_push_inputs": [
+    "self.hors_commitments[R][p]",
+    "self.dummy_sigs[R][p]",
+    "sig_nonce_bytes"
+  ],
+  "emit_round_out_read_lines": [
+    608
+  ],
+  "push_data_conditions_use_only_length": true,
+  "scope": "Pinned Python AST source-shape audit; supports value-independent opcode suffix under fixed Config A parameters and short push lengths. Not a formal Python/Core refinement or a quantum spend bound.",
+  "stack_model_calls_have_no_byte_value_arguments": true
+}
