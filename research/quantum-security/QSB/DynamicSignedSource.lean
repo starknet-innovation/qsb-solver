@@ -129,11 +129,95 @@ theorem literal_first_comparison_program :
     firstComparisonProgram finalNonce generatedCommitmentAt =
       (ByteLayout.program.drop 447).take 314 := by decide
 
+/-- If the retained raw index can execute its later nonnegative `OP_ROLL`,
+the earlier MIN/ADD comparison depth is at least the generated gap. The
+serializer/reparser bounds matter here: the intermediate bytes need not be
+minimal, and a negative original raw value is not ruled out directly. -/
+theorem signed_offset_lower_of_nonnegative_retained (k : Fin 7)
+    (retained offset : Bytes) (source operand index : Int)
+    (retainedEncoded :
+      ByteIndex.encodeScriptNum (min (152 : Int) source) = some retained)
+    (retainedParsed : ByteIndex.parseScriptNum retained = some operand)
+    (operandNonnegative : 0 ≤ operand)
+    (offsetEncoded : ByteIndex.encodeScriptNum
+      (Int.ofNat (151 - k.val) + operand) = some offset)
+    (offsetParsed : ByteIndex.parseScriptNum offset = some index) :
+    Int.ofNat (151 - k.val) ≤ index := by
+  have operandBound := encoded_reparse_preserves_upper_bound
+    (min (152 : Int) source) operand 152 retained
+    (min_le_left _ _) (by omega) (by omega)
+    retainedEncoded retainedParsed
+  have gapNonnegative : 0 ≤ Int.ofNat (151 - k.val) :=
+    Int.natCast_nonneg _
+  have gapBound : Int.ofNat (151 - k.val) ≤ 151 := by
+    exact Int.ofNat_le.mpr (Nat.sub_le 151 k.val)
+  have sumNonnegative : 0 ≤ Int.ofNat (151 - k.val) + operand := by omega
+  have sumBound : Int.ofNat (151 - k.val) + operand ≤ 303 := by omega
+  have exact := encoded_nonnegative_reparse_exact
+    (Int.ofNat (151 - k.val) + operand) index offset
+    sumNonnegative sumBound offsetEncoded offsetParsed
+  omega
+
 theorem prefix_length (nonce retained : Bytes)
     (gathered dummies : List Bytes)
     (poolCount : gathered.length + dummies.length = 150) :
     (signedPrefixN nonce retained gathered dummies).length = 153 := by
   simp [signedPrefixN]
+  omega
+
+/-- Every shallow source at or after the two fixed nonce/zero cells is a
+nine-byte dummy. This does not constrain the nonce's width. -/
+theorem late_shallow_source_is_dummy (nonce retained prior : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (n : Nat) (late : gathered.length + 3 ≤ n)
+    (shallow : n < 153) :
+    ∃ j : Nat, j < dummies.length ∧
+      (region nonce retained prior gathered dummies commitments tail)[n]? =
+        dummies[j]? := by
+  let j := n - (gathered.length + 3)
+  have within : j < dummies.length := by
+    have count := shape.poolCount
+    dsimp [j]
+    omega
+  have frontLength :
+      ([retained] ++ gathered ++ [nonce, []]).length =
+        gathered.length + 3 := by simp
+  have position : n - ([retained] ++ gathered ++ [nonce, []]).length = j := by
+    rw [frontLength]
+  refine ⟨j, within, ?_⟩
+  have regionEq : region nonce retained prior gathered dummies
+      commitments tail =
+      ([retained] ++ gathered ++ [nonce, []]) ++
+        (dummies ++ (commitments ++ prior :: tail)) := by
+    simp [region, signedPrefixN, List.append_assoc]
+  rw [regionEq]
+  rw [List.getElem?_append_right (by rw [frontLength]; omega)]
+  rw [position]
+  exact List.getElem?_append_left within
+
+/-- For all seven generated signed rounds, any shallow depth at least 145
+lands in the dummy pool. A 20-byte HASH160 result cannot match it, even if
+the nonce signature itself is 20 bytes. -/
+theorem high_shallow_hash_match_impossible (hashes : Hashes)
+    (nonce retained prior opening : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (gatheredSmall : gathered.length ≤ 6)
+    (n : Nat) (high : 145 ≤ n) (shallow : n < 153)
+    (matched :
+      (region nonce retained prior gathered dummies commitments tail)[n]? =
+        some (hashes.h160 opening)) : False := by
+  have late : gathered.length + 3 ≤ n := by omega
+  obtain ⟨j, within, source⟩ :=
+    late_shallow_source_is_dummy nonce retained prior gathered dummies
+      commitments tail shape n late shallow
+  rw [source] at matched
+  have chosen : dummies[j] = hashes.h160 opening := by
+    simpa [List.getElem?_eq_getElem within] using matched
+  have width := shape.dummyWidth dummies[j] (List.getElem_mem within)
+  rw [chosen] at width
+  have hashWidth := hashes.h160_width opening
   omega
 
 theorem prefix_wrong_width (nonce retained : Bytes)
@@ -357,6 +441,96 @@ theorem bounded_hash_match_nonce_or_commitment (hashes : Hashes)
       have same : prior = hashes.h160 opening :=
         Option.some.inj (source.symm.trans matched)
       exact False.elim (priorWrong (same ▸ hashes.h160_width opening))
+
+/-- A parsed comparison depth in the generated signed-round high range
+cannot select the nonce, regardless of its byte width. With the capped
+upper bound, a matching 20-byte target must be a current commitment. -/
+theorem bounded_high_hash_match_is_commitment (hashes : Hashes)
+    (nonce retained prior opening : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (gatheredSmall : gathered.length ≤ 6)
+    (priorWrong : prior.length ≠ 20)
+    (n : Nat) (high : 145 ≤ n)
+    (bounded : n ≤ 303 - gathered.length)
+    (matched :
+      (region nonce retained prior gathered dummies commitments tail)[n]? =
+        some (hashes.h160 opening)) :
+    ∃ j : Nat, j < commitments.length ∧ n = 153 + j ∧
+      commitments[j]? = some (hashes.h160 opening) := by
+  by_cases shallow : n < 153
+  · exact False.elim <|
+      high_shallow_hash_match_impossible hashes nonce retained prior
+        opening gathered dummies commitments tail shape gatheredSmall n
+        high shallow matched
+  let j := n - 153
+  by_cases within : j < commitments.length
+  · have index : n = 153 + j := by omega
+    have source := commitment_source nonce retained prior gathered
+      dummies commitments tail shape.poolCount j within
+    rw [index] at matched
+    exact ⟨j, within, index, source.symm.trans matched⟩
+  · have capIndex : n = 303 - gathered.length := by
+      have count := shape.poolCount
+      have commitmentCount := shape.commitmentCount
+      omega
+    have source := capped_source_is_prior nonce retained prior gathered
+      dummies commitments tail shape
+    rw [capIndex] at matched
+    have same : prior = hashes.h160 opening :=
+      Option.some.inj (source.symm.trans matched)
+    exact False.elim (priorWrong (same ▸ hashes.h160_width opening))
+
+/-- The nonce-width exception disappears when the retained raw index has a
+nonnegative parsed value, as required by its later dummy `OP_ROLL`. This
+This theorem makes that parse condition explicit; a full-block run must
+derive it from the reached final roll. -/
+theorem matched_postadd_with_nonnegative_retained_is_commitment
+    (hashes : Hashes) (k : Fin 7)
+    (nonce retained prior offset opening : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (count : gathered.length = k.val)
+    (priorWrong : prior.length ≠ 20)
+    (source operand index : Int)
+    (retainedEncoded :
+      ByteIndex.encodeScriptNum (min (152 : Int) source) = some retained)
+    (retainedParsed : ByteIndex.parseScriptNum retained = some operand)
+    (operandNonnegative : 0 ≤ operand)
+    (offsetEncoded : ByteIndex.encodeScriptNum
+      (Int.ofNat (151 - k.val) + operand) = some offset)
+    (offsetParsed : ByteIndex.parseScriptNum offset = some index)
+    (indexNonnegative : 0 ≤ index)
+    (matched :
+      (region nonce retained prior gathered dummies commitments tail)[index.toNat]? =
+        some (hashes.h160 opening)) :
+    ∃ j : Nat, j < commitments.length ∧ index.toNat = 153 + j ∧
+      commitments[j]? = some (hashes.h160 opening) := by
+  have lower := signed_offset_lower_of_nonnegative_retained k
+    retained offset source operand index retainedEncoded retainedParsed
+    operandNonnegative offsetEncoded offsetParsed
+  have upper := signed_cap_add_index_bound k retained offset source
+    operand index retainedEncoded retainedParsed offsetEncoded offsetParsed
+  have indexEq : index = Int.ofNat index.toNat :=
+    Int.eq_natCast_toNat.mpr indexNonnegative
+  have high : 145 ≤ index.toNat := by
+    have small := k.isLt
+    have gapHigh : 145 ≤ 151 - k.val := by omega
+    rw [indexEq] at lower
+    have lowerNat := Int.ofNat_le.mp lower
+    omega
+  have bounded : index.toNat ≤ 303 - gathered.length := by
+    rw [indexEq] at upper
+    have upperNat := Int.ofNat_le.mp upper
+    rw [count]
+    exact upperNat
+  have gatheredSmall : gathered.length ≤ 6 := by
+    rw [count]
+    have small := k.isLt
+    omega
+  exact bounded_high_hash_match_is_commitment hashes nonce retained prior
+    opening gathered dummies commitments tail shape gatheredSmall priorWrong
+    index.toNat high bounded matched
 
 /-- Alignment turns the matched current commitment cell into its original
 HORS position. Equality of commitment bytes at different positions is allowed:

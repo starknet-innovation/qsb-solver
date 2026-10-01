@@ -341,8 +341,8 @@ message-specific recovered key and rejected both a wrong key and an altered
 ALL-signed output (`evidence/nonce20-core.json`). This confirms that Core
 signature validity alone does not remove the source exception. No matching
 HASH160 opening or QSB-lock spend was produced. A dynamic seven-block
-interpreter proof must carry this disjunction, and any security reduction must
-exclude or charge the nonce-hit event under the **joint** hash model.
+interpreter proof must settle this disjunction before a security reduction can
+decide whether the nonce-hit event needs a **joint** hash-oracle charge.
 The first comparison is now derived from one successful parameterized prefix
 run, beginning with arbitrary nonce/commitment data pushes above a prior-round
 result and adversarial tail. The fixed raw roll fetches tail cell 283; the
@@ -350,6 +350,14 @@ actual capped MIN/ADD depth and comparison yield a nonce hit or an
 original-position commitment opening. Lean checks that this prefix is the
 first 314 instructions of the literal final round. Carrying the result
 through the dummy roll and next six comparisons remains open.
+There is a stronger conditional source result for a *completed* signed block:
+if the retained raw index parses nonnegative at the later dummy `OP_ROLL`,
+Lean proves the earlier comparison depth is at least 145 in all seven rounds.
+Every shallow cell at that depth is a nine-byte dummy, regardless of nonce
+width. A successful 20-byte comparison under the cap must therefore select a
+current commitment. It remains to prove from each dynamic full-block run that
+the last `OP_ROLL` really consumes that retained index; until then the
+comparison-prefix nonce branch cannot be removed from the extraction claim.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required

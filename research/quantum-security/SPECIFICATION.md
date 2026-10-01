@@ -230,7 +230,13 @@ bounded parsed roll depth. A pinned-Core isolated `CHECKSIG` probe demonstrates
 that a 20-byte strict-DER `SIGHASH_ALL` nonce can verify for a recovered key;
 it does not demonstrate a matching hash opening or a QSB spend. The dynamic
 seven-comparison induction must propagate the nonce-or-commitment branch,
-then the joint-oracle event must account for the nonce-hit case.
+or prove that the later dummy roll rules out the nonce branch. Lean has now
+proved the relevant conditional arithmetic: when the retained index parses
+nonnegative, the earlier comparison depth is at least 145, where every
+shallow source is a nine-byte dummy; a matching bounded source must be a
+commitment, irrespective of nonce width. The dynamic full-block run has not
+yet been connected to that parse condition. Only if a nonce branch survives
+that connection would the joint-oracle event need to charge it.
 For the first signed selection, Lean now starts before the dynamic data pushes
 and proves the disjunction from a successful prefix run through the first
 comparison. It extracts the actual witness-tail raw index, applies the reached

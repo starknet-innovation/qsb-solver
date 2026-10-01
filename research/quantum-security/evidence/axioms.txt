@@ -819,6 +819,17 @@
 'QSB.DynamicSignedSource.accepted_first_comparison_nonce_or_original_position' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicSignedSource.signed_offset_lower_of_nonnegative_retained' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.late_shallow_source_is_dummy' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.high_shallow_hash_match_impossible' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.bounded_high_hash_match_is_commitment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.matched_postadd_with_nonnegative_retained_is_commitment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]

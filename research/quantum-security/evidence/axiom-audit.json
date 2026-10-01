@@ -1,5 +1,5 @@
 {
-  "theorem_count": 916,
+  "theorem_count": 921,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1237,12 +1237,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicSignedSource.bounded_high_hash_match_is_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSignedSource.capped_source_is_prior": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.commitment_source": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.high_shallow_hash_match_impossible": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.late_shallow_source_is_dummy": [
       "Quot.sound",
       "propext"
     ],
@@ -1253,6 +1266,11 @@
       "propext"
     ],
     "QSB.DynamicSignedSource.literal_region": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.matched_postadd_with_nonnegative_retained_is_commitment": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.next_raw_front_length": [
@@ -1276,6 +1294,11 @@
       "propext"
     ],
     "QSB.DynamicSignedSource.shallow_source_wrong_width": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.signed_offset_lower_of_nonnegative_retained": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
