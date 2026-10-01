@@ -60,6 +60,7 @@ import QSB.DynamicBonusChain
 import QSB.DynamicBonusDER
 import QSB.DynamicBonusIndices
 import QSB.DynamicBonusSetup
+import QSB.DynamicBonusProbability
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -845,6 +846,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicBonusIndices.matched_dynamic_nine_positions
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
+#print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

@@ -93,10 +93,11 @@ slots. Under an explicit matched DER-sound scan, an overshooting bonus draw
 requires an unopened DER-shaped commitment. With no such commitment, Lean
 extracts nine distinct original positions from the same run. For a shared
 uniform twenty-byte-output setup function independent of its 150 input choices,
-the excluded setup fraction is at most `150·12/256^6`; later modeled witnesses
-may depend on the sampled function. See `QSB/DynamicBonusSetup.lean`. Universal
-builder/Core refinement and the joint quantum unauthorized-spend bound remain
-open.
+the excluded setup probability is at most `150·12/256^6` under the uniform
+finite-space measure; later modeled witnesses may depend on the sampled
+function. See `QSB/DynamicBonusSetup.lean` and
+`QSB/DynamicBonusProbability.lean`. Universal builder/Core refinement and the
+joint quantum unauthorized-spend bound remain open.
 
 `QSB/Nonce.lean` models fixed-signature ECDSA recovery targets, including the
 possibility that opposite recovery points admit different message scalars for

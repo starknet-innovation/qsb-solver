@@ -898,6 +898,7 @@
 'QSB.DynamicBonusIndices.matched_dynamic_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusSetup.bad_der_setup_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusProbability.uniform_bad_der_probability' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]

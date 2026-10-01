@@ -391,7 +391,9 @@ this pointwise for an entire sampled twenty-byte-output setup function,
 allowing the modeled witness to depend on that function. Its companion
 `bad_der_setup_count` proves that the excluded setup fraction is at most
 `150·12/256^6` when that function is uniform and independent of the material
-selecting its 150 inputs. This is a setup-event guarantee under a modeled
+selecting its 150 inputs. `QSB/DynamicBonusProbability.lean` converts the
+finite count to the same bound for the uniform probability measure on a
+nonempty finite setup space. This is a setup-event guarantee under a modeled
 matched scan; it is not an unauthorized-spend or quantum-query bound.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted

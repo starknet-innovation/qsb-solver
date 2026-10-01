@@ -1,5 +1,5 @@
 {
-  "theorem_count": 969,
+  "theorem_count": 970,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1224,6 +1224,11 @@
       "propext"
     ],
     "QSB.DynamicBonusIndices.matched_dynamic_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusProbability.uniform_bad_der_probability": [
       "Classical.choice",
       "Quot.sound",
       "propext"
