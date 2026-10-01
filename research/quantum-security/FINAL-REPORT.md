@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,052 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,057 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -810,6 +810,14 @@ source ECDSA call uses `H(H(sourceAllPreimage))` for the selected transaction
 input and reached pin scriptCode. The key remains a scriptSig-supplied byte
 string, and the ALL premise is explicit because the parameterized lock
 accepts arbitrary pin bytes.
+For the complete parameterized Lean serialization with two 150-entry pools of
+20-byte commitments and three fixed signatures shorter than 76 bytes,
+`QSB/DynamicScriptLimits.lean` proves an exact length of
+`9756 + pin.length + nonce0.length + nonce1.length`. Its maximum, 9,981 bytes,
+is below the 10,000-byte script-size guard in the pinned Core 27.2 interpreter.
+This discharges that size check for the Lean serialization under those width
+premises; universal Python-builder equality and compiled-Core acceptance
+refinement are still separate obligations.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

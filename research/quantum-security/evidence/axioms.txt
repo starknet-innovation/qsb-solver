@@ -1,3 +1,8 @@
+'QSB.DynamicScriptLimits.short_push_length' depends on axioms: [propext]
+'QSB.DynamicScriptLimits.fixed_width_pushes_length' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicScriptLimits.commitment_pushes_length' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicScriptLimits.full_wire_length' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicScriptLimits.full_wire_below_core_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]

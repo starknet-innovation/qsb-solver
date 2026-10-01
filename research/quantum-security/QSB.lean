@@ -65,6 +65,7 @@ import QSB.DynamicWholeSource
 import QSB.DynamicWireSource
 import QSB.DynamicCoreStructural
 import QSB.DynamicFullSerialized
+import QSB.DynamicScriptLimits
 import QSB.DynamicCheckedCertificate
 import QSB.DynamicJointTransaction
 import QSB.DynamicBonusSetup
@@ -102,6 +103,12 @@ import QSB.DERHeaderBound
 import QSB.Attack
 import QSB.Game
 import QSB.Reduction
+
+#print axioms QSB.DynamicScriptLimits.short_push_length
+#print axioms QSB.DynamicScriptLimits.fixed_width_pushes_length
+#print axioms QSB.DynamicScriptLimits.commitment_pushes_length
+#print axioms QSB.DynamicScriptLimits.full_wire_length
+#print axioms QSB.DynamicScriptLimits.full_wire_below_core_limit
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same

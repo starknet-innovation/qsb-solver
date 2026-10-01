@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1052,
+  "theorem_count": 1057,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1504,6 +1504,26 @@
     "QSB.DynamicJointTransaction.search_two_key_joint_hit": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicScriptLimits.commitment_pushes_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicScriptLimits.fixed_width_pushes_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicScriptLimits.full_wire_below_core_limit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicScriptLimits.full_wire_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicScriptLimits.short_push_length": [
       "propext"
     ],
     "QSB.DynamicSerializedRound.chunks_decode": [

@@ -221,6 +221,12 @@ pinned-builder check corroborates push order and the unchanged post-data
 opcode suffix across two setups and a 20-byte final nonce. The seven signed
 selections and both bonus source traces have now been lifted through that
 parameterized suffix; universal builder-to-model correspondence remains open.
+For the complete Lean serialization, two 150-entry pools of 20-byte
+commitments and three fixed signatures shorter than 76 bytes give exact script
+length `9756 + pin.length + nonce0.length + nonce1.length`, at most 9,981.
+This meets the pinned Core 27.2 10,000-byte legacy-script size guard under the
+stated premises. It does not establish universal Python-builder equality or
+that Core accepts an execution of this script.
 At one reached signed comparison, the parameterized source classifier gives a
 current commitment with its original pool position whenever the nonce bytes
 are not 20 bytes. Without that width premise, a shallow selection can instead
