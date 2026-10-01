@@ -146,6 +146,7 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigSourceScan.skipped_malformed_returns_false
 #print axioms QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal
 #print axioms QSB.CoreMultisigSourceScan.long_push_deletion_counterexample
+#print axioms QSB.CoreChecksigEval.evalBaseVerifyAll_eq_core
 #print axioms QSB.CoreSourceExtraction.necessary_checks_first_round_scan
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253

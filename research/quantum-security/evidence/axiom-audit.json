@@ -1,5 +1,5 @@
 {
-  "theorem_count": 841,
+  "theorem_count": 842,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -373,6 +373,11 @@
       "propext"
     ],
     "QSB.CoreChecksigEval.accepted_pinning_source_checks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreChecksigEval.evalBaseVerifyAll_eq_core": [
       "Classical.choice",
       "Quot.sound",
       "propext"

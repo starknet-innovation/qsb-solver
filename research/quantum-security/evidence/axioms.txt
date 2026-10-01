@@ -69,6 +69,7 @@
 'QSB.CoreMultisigSourceScan.skipped_malformed_returns_false' depends on axioms: [propext]
 'QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal' depends on axioms: [propext]
 'QSB.CoreMultisigSourceScan.long_push_deletion_counterexample' depends on axioms: [propext]
+'QSB.CoreChecksigEval.evalBaseVerifyAll_eq_core' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.necessary_checks_first_round_scan' depends on axioms: [propext]
 'QSB.PinPuzzleScriptCode.successful_puzzle_gate' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_253' depends on axioms: [propext, Classical.choice, Quot.sound]

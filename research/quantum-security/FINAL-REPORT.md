@@ -554,6 +554,13 @@ the older final-round evaluator. The premise follows for any successful
 ten-of-ten final scan from strict DER, as checked by
 `finalTenEval_success_generic_scan`. This repairs the source certificate but
 does not establish a compiled-Core refinement for arbitrary witnesses.
+The analogous generic `CHECKSIGVERIFY` shortcut is now checked separately:
+`CoreChecksigEval.evalBaseVerifyAll_eq_core` proves its returned `Option Bool`
+equals a version using full Core push serialization for every input. Under
+the pinned DERSIG gate, long signatures are fatal regardless of their
+intermediate deletion pattern; any nonfatal signature is short enough for
+the direct form. This result does not apply to the first multisignature,
+where a long signature can be skipped after affecting the shared scriptCode.
 `QSB/JointSourceChecks.lean` now instantiates these source checks with one
 shared H256 function `H` and one R160 function `R`: the reached pin and final
 fixed signatures verify against `H(H(sourceAllPreimage))`, and the seven

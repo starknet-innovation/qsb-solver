@@ -1,4 +1,5 @@
 import QSB.PinPuzzleScriptCode
+import QSB.CorePushSerialize
 
 /-!
 A source-shaped BASE `EvalChecksigPreTapscript` model for the pinned Core
@@ -32,6 +33,46 @@ def evalBaseVerifyAll (fuel : Nat) (script sig key : Bytes)
     | some hashType =>
         some (validKey key && verify sig.dropLast key scriptCode hashType)
   else none
+
+/-- The literal source-order variant uses Core's full `CScript() << sig`
+serialization, including PUSHDATA1/2 for long signatures. -/
+def evalBaseVerifyAllCore (fuel : Nat) (script sig key : Bytes)
+    (validKey : Bytes → Bool) (verify : VerifyECDSA) : Option Bool :=
+  let scriptCode := CoreFindAndDelete.run fuel script
+    (CorePushSerialize.pushPattern sig)
+  if DERSyntax.verifyAllEncoding sig then
+    match sig.getLast? with
+    | none => some false
+    | some hashType =>
+        some (validKey key && verify sig.dropLast key scriptCode hashType)
+  else none
+
+/-- Long signatures fail the pinned DERSIG gate, so the old direct-only
+deletion shortcut and the full Core push serializer have the same *result*
+under VERIFY_ALL, even though they can compute different intermediate
+scriptCodes before that fatal gate. -/
+theorem evalBaseVerifyAll_eq_core (fuel : Nat) (script sig key : Bytes)
+    (validKey : Bytes → Bool) (verify : VerifyECDSA) :
+    evalBaseVerifyAll fuel script sig key validKey verify =
+      evalBaseVerifyAllCore fuel script sig key validKey verify := by
+  by_cases short : sig.length < 76
+  · simp [evalBaseVerifyAll, evalBaseVerifyAllCore,
+      CorePushSerialize.pushPattern_direct sig short]
+  · have nonempty : sig ≠ [] := by
+      intro empty
+      subst sig
+      simp at short
+    have invalid : DERSyntax.valid sig = false := by
+      cases der : DERSyntax.valid sig with
+      | false => rfl
+      | true => exact False.elim (short
+          (DERSyntax.valid_direct_push_width sig der))
+    have gate : DERSyntax.verifyAllEncoding sig = false := by
+      cases sig with
+      | nil => exact False.elim (nonempty rfl)
+      | cons b rest => simp [DERSyntax.verifyAllEncoding] at invalid ⊢
+                       exact invalid
+    simp [evalBaseVerifyAll, evalBaseVerifyAllCore, gate]
 
 /-- A successful source-shaped CHECKSIGVERIFY evaluation exposes the actual
 last-byte sighash type, strict-DER signature, key-validity result, and the
