@@ -21,10 +21,15 @@
  Classical.choice,
  Quot.sound]
 'QSB.DynamicRetarget.findRelease_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.findRelease_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.findRelease_none_no_match' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.double_hash_collision_yields_hash_collision' does not depend on any axioms
 'QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicRetarget.classify_checked_call' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.search_pin_final_history_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.search_good_setup_joint_history_event' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]

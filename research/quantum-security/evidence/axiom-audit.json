@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1071,
+  "theorem_count": 1076,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1552,7 +1552,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRetarget.classify_checked_call": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.double_hash_collision_yields_hash_collision": [],
+    "QSB.DynamicRetarget.findRelease_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.findRelease_none_no_match": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.findRelease_sound": [
       "Classical.choice",
       "Quot.sound",
@@ -1564,6 +1579,16 @@
       "propext"
     ],
     "QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.search_good_setup_joint_history_event": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.search_pin_final_history_cases": [
       "Classical.choice",
       "Quot.sound",
       "propext"

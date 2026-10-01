@@ -434,6 +434,18 @@ distinct ALL preimage; `QSB/DynamicRetarget.lean` splits the result into an
 equal-digest collision or a hit on at most seven alternative digest values.
 Lean reduces the equal-digest case to a collision in the same H, using either
 the two distinct ALL preimages or their distinct first H outputs.
+The source certificate now has a finer deterministic classification against
+a supplied list of approved fixed-signature/key ALL calls: each reached pin
+and final pair either has no exact signature/key match in that list and is a
+DER-shaped verifying call on a preimage outside every valid owner-approved
+source ALL preimage, or has a match and yields the collision or
+seven-alternative-target event. A key seen under another signature is not
+an exact match. This list must be complete before its unmatched branch can
+be read as absent from the actual disclosure transcript; no causal quantum
+transcript bound follows from the list lookup alone.
+On a good setup, `QSB/DynamicRetarget.search_good_setup_joint_history_event`
+combines both cases with seven reached `R(H(opening))` equations and two
+distinct bonus positions from that same modeled certificate and shared H/R.
 This still needs a causal adaptive-transcript game and quantum bounds for
 both branches. Merely counting eight targets does not make them independent
 of the shared oracle.

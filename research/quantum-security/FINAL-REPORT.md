@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,071 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,076 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -840,6 +840,18 @@ not a quantum collision or search bound. A further checked lemma turns the
 equal-digest case into an explicit collision for that *same* H: if the first
 hashes agree, the distinct ALL preimages collide; otherwise their distinct
 first hashes collide under the second H application.
+`QSB/DynamicRetarget.search_pin_final_history_cases` now classifies both
+reached source checks against a list of approved fixed-signature/key ALL
+calls. Each is either an unmatched DER-shaped verifying call on a preimage
+outside all valid owner-approved source ALL preimages, or a matching approved
+pair with the collision/alternative-target event. Lookup matches
+both signature and key bytes: an unmatched pair need not have a fresh key,
+and the list must contain all relevant approvals before it can represent a
+complete disclosure transcript. The result is deterministic; causal
+transcript modeling and a shared-query quantum bound are still missing.
+On a good setup, `search_good_setup_joint_history_event` places those two
+cases alongside the seven reached `R(H(opening))` equations and two distinct
+bonus positions from the same source certificate and the same H and R.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
 signature for any initial stack on which the modeled prefix succeeds. Strict

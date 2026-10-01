@@ -123,8 +123,13 @@ import QSB.Reduction
 #print axioms QSB.DynamicDisclosureEvent.search_fresh_key_or_known_digest_targets
 #print axioms QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative
 #print axioms QSB.DynamicRetarget.findRelease_sound
+#print axioms QSB.DynamicRetarget.findRelease_mem
+#print axioms QSB.DynamicRetarget.findRelease_none_no_match
 #print axioms QSB.DynamicRetarget.double_hash_collision_yields_hash_collision
 #print axioms QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative
+#print axioms QSB.DynamicRetarget.classify_checked_call
+#print axioms QSB.DynamicRetarget.search_pin_final_history_cases
+#print axioms QSB.DynamicRetarget.search_good_setup_joint_history_event
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same
