@@ -317,6 +317,16 @@ hits by `150·12/256^6`, without treating the outputs as independent. An
 arbitrary bad event covered by this hit event inherits the count. The required
 dynamic-lock execution/alignment and compiled-Core scan bridge are still
 premises, and this setup term is not a bound on unauthorized spending.
+`QSB/DynamicFinalInit.lean` now models the actual second-round data-push block
+with arbitrary commitment and nonce bytes. Lean proves its successful stack
+effect, 150-position initial alignment, paired-erasure preservation, and
+equality with the literal block when specialized to the disposable fixture.
+Two disposable executions of the pinned builder independently confirm that
+the commitment pushes reverse the original indices, the second-round dummy
+signatures are identical across setups, and the suffix after instruction 749
+is byte-identical (`evidence/dynamic-final-data.json`). The full dynamic
+signed-loop invariant and universal builder-to-model correspondence are still
+unproved; this evidence does not establish Core acceptance or a spend bound.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 888,
+  "theorem_count": 897,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1165,6 +1165,36 @@
       "propext"
     ],
     "QSB.DERSyntax.wrong_sequence_length_rejected": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.accepted_data_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.accepted_final_round_init": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.commitmentPool_length": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.dataOps_length": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.initial_alignment": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.initial_pool_shape": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.literal_data_ops": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.literal_final_round_program": [
+      "propext"
+    ],
+    "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
       "propext"
     ],
     "QSB.EncodedLayout.chunks_length": [],

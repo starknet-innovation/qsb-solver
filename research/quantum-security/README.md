@@ -404,6 +404,7 @@ python3 analysis/check_ten_signature_findanddelete.py --app-root /path/to/qsb-ap
 python3 analysis/check_literal_findanddelete.py --app-root /path/to/qsb-app --output evidence/literal-find-and-delete.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json
+python3 analysis/check_dynamic_final_data.py --app-root /path/to/qsb-app --output evidence/dynamic-final-data.json
 python3 analysis/check_scriptnum_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/scriptnum-core.json
 python3 analysis/check_min_add_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/min-add-core.json
 python3 analysis/check_roll_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/roll-core.json

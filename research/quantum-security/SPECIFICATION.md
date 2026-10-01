@@ -212,6 +212,13 @@ the material selecting its 150 inputs, a checked shared-function count bounds
 the DER setup-hit fraction by `150·12/256^6`. A dynamic script execution must
 still supply that aligned boundary, and Core acceptance must still imply its
 matched signature scan; neither is supplied by the count theorem.
+The parameterized second-round data block in `DynamicFinalInit` supplies the
+first such execution boundary for arbitrary commitment and nonce bytes: every
+successful modeled block has the intended stack order and initially aligned
+pools. The literal block is its exact specialization. A two-setup pinned-builder
+check corroborates push order and the unchanged post-data opcode suffix, but
+the seven signed selections and bonus-source trace have not yet been lifted
+through that parameterized suffix.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

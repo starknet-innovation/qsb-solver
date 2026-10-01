@@ -49,6 +49,7 @@ import QSB.PoolRollInvariant
 import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
+import QSB.DynamicFinalInit
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -753,6 +754,15 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusAccepted.accepted_cap_pair_encoding
 #print axioms QSB.FinalBonusAccepted.accepted_bonus_cap_index_le_152
 #print axioms QSB.FinalBonusAccepted.accepted_roll_index
+#print axioms QSB.DynamicFinalInit.commitmentPool_length
+#print axioms QSB.DynamicFinalInit.dataOps_length
+#print axioms QSB.DynamicFinalInit.accepted_data_shape
+#print axioms QSB.DynamicFinalInit.literal_data_ops
+#print axioms QSB.DynamicFinalInit.literal_final_round_program
+#print axioms QSB.DynamicFinalInit.initial_alignment
+#print axioms QSB.DynamicFinalInit.paired_erasure_preserves_alignment
+#print axioms QSB.DynamicFinalInit.initial_pool_shape
+#print axioms QSB.DynamicFinalInit.accepted_final_round_init
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

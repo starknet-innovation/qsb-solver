@@ -1,0 +1,16 @@
+{
+  "alternate_script_sha256": "ab57f73d5dcad167e3786613f676f5b16cc2249fc64102a97456b1c422d375ba",
+  "base_script_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "commitments_differ_across_setups": true,
+  "dummy_bytes_equal_across_setups": true,
+  "final_commitment_pushes_reverse_indexed": true,
+  "final_data_instruction_range": [
+    447,
+    749
+  ],
+  "final_dummy_pushes_reverse_indexed": true,
+  "instruction_count": 880,
+  "scope": "Two disposable builder executions; not a universal source or Core proof.",
+  "suffix_from_instruction_749_equal": true
+}
