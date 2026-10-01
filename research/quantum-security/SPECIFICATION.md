@@ -198,7 +198,12 @@ For the one literal disposable lock in the Lean byte model, all 150
 second-round commitments fail a source-shaped strict DER predicate. Under a
 successful DER-sound ten-pair scan, neither final bonus index can reach a
 commitment in that lock. The claim does not quantify over other generated
-setups or replace compiled-Core refinement.
+setups or replace compiled-Core refinement. The checked alternative says that
+any matched modeled bonus overshoot identifies an unopened original commitment
+that passes the same signature-syntax predicate. Specializing to strict DER
+produces a dummy-bonus-or-unopened-DER-commitment disjunction. Its bad-setup
+branch still needs dynamic-lock bytes and a Core parser bridge before it can
+be charged to a setup probability.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

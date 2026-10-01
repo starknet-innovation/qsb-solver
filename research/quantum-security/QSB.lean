@@ -781,6 +781,7 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax
 #print axioms QSB.FinalBonusSecond.matched_final_signature_has_syntax
+#print axioms QSB.FinalBonusSecond.matched_bonus_overshoot_has_unopened_syntax
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier
 #print axioms QSB.DERSyntax.valid_twenty_byte_lengths
 #print axioms QSB.DERSyntax.valid_twenty_byte_ranges
@@ -791,6 +792,7 @@ import QSB.Reduction
 #print axioms QSB.DERSyntax.verifyAllEncoding_nonempty
 #print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
 #print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
+#print axioms QSB.FinalBonusDER.bonus_dummies_or_unopened_der
 #print axioms QSB.FinalBonusIndices.two_bonus_ids_extend_seven
 #print axioms QSB.FinalBonusIndices.nine_dummy_bytes_distinct
 #print axioms QSB.FinalBonusIndices.matched_full_run_nine_positions

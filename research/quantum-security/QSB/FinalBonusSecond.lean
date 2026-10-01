@@ -1055,6 +1055,67 @@ theorem matched_final_signature_has_syntax
   rw [same] at checked
   exact verifySound sig _ checked
 
+/-- A matched final scan can use a commitment in a bonus signature slot only
+if the first still-unopened generated commitment itself passes the supplied
+signature syntax. The witness identifies its original pool position and the
+two executable signed-pool extractions. This is the explicit bad-setup branch
+for the literal byte model; dynamic setup and Core refinement remain separate. -/
+theorem matched_bonus_overshoot_has_unopened_syntax (hashes : Hashes)
+    (initial final : State)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (verify : Bytes → Bytes → Bool) (sigSyntax : Bytes → Prop)
+    (verifySound : ∀ sig key, verify sig key = true → sigSyntax sig)
+    (matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true) :
+    ∃ (trace : List (Fin 150 × Bytes))
+      (remainingIds : List (Fin 150)) (candidate : Fin 150)
+      (firstIndex lastIndex : Nat),
+      trace.length = 7 ∧
+      candidate ∉ trace.map Prod.fst ∧
+      9 ≤ firstIndex ∧ firstIndex ≤ 152 ∧
+      10 ≤ lastIndex ∧ lastIndex ≤ 152 ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace ∧
+      FinalSignedChain.extractWholeRemaining hashes initial =
+        some remainingIds ∧
+      (firstIndex = 152 ∨ lastIndex = 152 →
+        sigSyntax (generatedCommitmentAt candidate)) := by
+  obtain ⟨result, gathered, dummies, commitments, tail,
+    outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
+    postFirst, postLast, beforeCheck,
+    _prefixRun, _through, beforePrefix, _pool, traceCount, _distinct,
+    _hits, _aligned, _tracePerm, _gatheredTrace,
+    _candidateSource, candidateUnopened,
+    firstLower, firstUpper, lastLower, lastUpper,
+    _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
+    _gatheredSlots, _nonceSlot, dummySlot,
+    firstException, lastException, traceComputed,
+    remainingComputed⟩ :=
+      accepted_whole_program_final_signature_origins
+        hashes initial final accepted
+  have enough : 22 ≤ beforeCheck.stack.length := by
+    obtain ⟨h, _⟩ := List.getElem?_eq_some_iff.mp dummySlot
+    omega
+  have success := matched beforeCheck beforePrefix
+  have firstSyntax :=
+    matched_final_signature_has_syntax verify sigSyntax verifySound
+      beforeCheck.stack enough success 1 (by omega)
+  have lastSyntax :=
+    matched_final_signature_has_syntax verify sigSyntax verifySound
+      beforeCheck.stack enough success 0 (by omega)
+  refine ⟨trace, remainingIds, candidate, firstIndex, lastIndex,
+    traceCount, candidateUnopened, firstLower, firstUpper,
+    lastLower, lastUpper, traceComputed, remainingComputed, ?_⟩
+  intro overshoot
+  rcases overshoot with firstCap | lastCap
+  · exact firstSyntax _ (firstException firstCap)
+  · by_cases firstShallow : firstIndex < 152
+    · exact lastSyntax _ (lastException ⟨firstShallow, lastCap⟩)
+    · have firstCap : firstIndex = 152 := by omega
+      exact firstSyntax _ (firstException firstCap)
+
 /-- A second conditional interface isolates what Core refinement must supply:
 the reached final CHECKMULTISIG must behave like a successful ten-pair scan,
 and successful pair checks must imply the chosen signature syntax. The byte

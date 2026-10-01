@@ -821,6 +821,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.FinalBonusSecond.matched_final_signature_has_syntax' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.matched_bonus_overshoot_has_unopened_syntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -833,6 +836,7 @@
 'QSB.DERSyntax.verifyAllEncoding_nonempty' depends on axioms: [propext]
 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusDER.bonus_dummies_or_unopened_der' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.nine_dummy_bytes_distinct' depends on axioms: [propext, Quot.sound]
 'QSB.FinalBonusIndices.matched_full_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
