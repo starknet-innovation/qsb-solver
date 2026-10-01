@@ -56,9 +56,14 @@
 'QSB.CoreFinalChecksigEval.successful_byte_run_final_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.reached_slots' depends on axioms: [propext, Quot.sound]
 'QSB.CorePushSerialize.pushPattern_direct' depends on axioms: [propext]
+'QSB.CorePushSerialize.pushPattern_nonempty' depends on axioms: [propext]
+'QSB.CorePushSerialize.long_head' depends on axioms: [propext, Quot.sound]
 'QSB.CorePushSerialize.boundary_prefixes' does not depend on any axioms
 'QSB.CorePushSerialize.direct_pattern_wrong_at_76' does not depend on any axioms
 'QSB.CoreMultisigSourceScan.deletedScript_ten' depends on axioms: [propext, Quot.sound]
+'QSB.CorePushFindAndDelete.literal_push_rigid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CorePushFindAndDelete.literal_many_pushes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.deletedScript_literal' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.scanAtStack_finalTen' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.scanAtStack_some' depends on axioms: [propext, Quot.sound]
 'QSB.DERSyntax.valid_direct_push_width' depends on axioms: [propext, Quot.sound]

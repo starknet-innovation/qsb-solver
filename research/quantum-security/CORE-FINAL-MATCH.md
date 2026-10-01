@@ -124,6 +124,12 @@ every signature in a true ten-of-ten result is strict DER and below 76 bytes,
 and `finalTenEval_success_generic_scan` connects that success to the generic
 serializer. The pinned native evidence is in
 `evidence/multisig-push-serialization.json`.
+`QSB/CorePushFindAndDelete.literal_many_pushes` also proves that any ordered
+list of these canonical patterns removes only complete original chunks of
+this particular 880-opcode lock, including patterns for skipped signatures.
+Consequently the fuel of 880 used by the Lean deletion loop suffices after
+each removal. This is a literal-lock source-model theorem, not a C++
+refinement or a statement about arbitrary generated QSB setups.
 For the one literal lock, Lean proves that all 150 generated final dummy
 signature bytes are pairwise distinct, so the nine selected dummy signatures
 in the conditional full-run theorem are distinct. Lean alone does not rule out

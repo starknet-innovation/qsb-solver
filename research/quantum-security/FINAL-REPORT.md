@@ -554,6 +554,13 @@ the older final-round evaluator. The premise follows for any successful
 ten-of-ten final scan from strict DER, as checked by
 `finalTenEval_success_generic_scan`. This repairs the source certificate but
 does not establish a compiled-Core refinement for arbitrary witnesses.
+The separate `QSB/CorePushFindAndDelete.lean` theorem now proves, for any
+signature list on this fixed literal lock, that each canonical push pattern
+can match only a complete original opcode chunk. Repeated deletion therefore
+equals filtering those chunks, even with long, duplicate, malformed, or
+subsequently skipped signatures. This discharges the 880-step fuel obligation
+for the source-shaped first-round scriptCode; it does not generalize to an
+unrelated lock with different encoded chunks.
 The analogous generic `CHECKSIGVERIFY` shortcut is now checked separately:
 `CoreChecksigEval.evalBaseVerifyAll_eq_core` proves its returned `Option Bool`
 equals a version using full Core push serialization for every input. Under

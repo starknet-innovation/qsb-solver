@@ -24,11 +24,25 @@ def pushPattern (data : Bytes) : Bytes :=
     [0x4e, UInt8.ofNat n, UInt8.ofNat (n / 256),
       UInt8.ofNat (n / 65536), UInt8.ofNat (n / 16777216)] ++ data
 
+theorem pushPattern_nonempty (data : Bytes) : pushPattern data ≠ [] := by
+  dsimp [pushPattern]
+  split_ifs <;> simp
+
 /-- The existing direct-push model is exact precisely on its declared
 short-signature domain, including the empty vector and length 75. -/
 theorem pushPattern_direct (data : Bytes) (short : data.length < 76) :
     pushPattern data = ScriptCodeSelection.directPushPattern data := by
   simp [pushPattern, short, ScriptCodeSelection.directPushPattern]
+
+/-- A longer signature's canonical push starts with one of the PUSHDATA
+opcodes. The precise branch is determined by its byte length. -/
+theorem long_head (data : Bytes) (long : 76 ≤ data.length) :
+    (pushPattern data).head? = some 0x4c ∨
+    (pushPattern data).head? = some 0x4d ∨
+    (pushPattern data).head? = some 0x4e := by
+  have notShort : ¬ data.length < 76 := by omega
+  simp [pushPattern, notShort]
+  split_ifs <;> simp
 
 /-- The three consensus-reachable encoding thresholds use Core's direct,
 PUSHDATA1, and PUSHDATA2 length prefixes. -/

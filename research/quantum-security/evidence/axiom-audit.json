@@ -1,5 +1,5 @@
 {
-  "theorem_count": 842,
+  "theorem_count": 847,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -591,6 +591,11 @@
     "QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal": [
       "propext"
     ],
+    "QSB.CoreMultisigSourceScan.deletedScript_literal": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreMultisigSourceScan.deletedScript_ten": [
       "Quot.sound",
       "propext"
@@ -770,9 +775,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CorePushFindAndDelete.literal_many_pushes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushFindAndDelete.literal_push_rigid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CorePushSerialize.boundary_prefixes": [],
     "QSB.CorePushSerialize.direct_pattern_wrong_at_76": [],
+    "QSB.CorePushSerialize.long_head": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CorePushSerialize.pushPattern_direct": [
+      "propext"
+    ],
+    "QSB.CorePushSerialize.pushPattern_nonempty": [
       "propext"
     ],
     "QSB.CoreRoll.byteRollTop_eq_step_stack": [

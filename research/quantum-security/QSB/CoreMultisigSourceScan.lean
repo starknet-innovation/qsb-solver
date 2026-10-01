@@ -1,5 +1,6 @@
 import QSB.CoreMultisigCleanup
 import QSB.CorePushSerialize
+import QSB.CorePushFindAndDelete
 
 /-!
 The source-shaped pair scan at an arbitrary reached `OP_CHECKMULTISIG` stack.
@@ -29,6 +30,17 @@ def deletedScript (script : Bytes) (top : List Bytes)
   CoreFindAndDelete.runMany 880 script
     ((reachedSignatures top nKeys nSigs).map
       CorePushSerialize.pushPattern)
+
+/-- On the literal lock, 880 iterations suffice for any reached signature
+list: every canonical push pattern removes whole original opcode chunks, so
+the resulting scriptCode is the corresponding chunk filter. -/
+theorem deletedScript_literal (top : List Bytes) (nKeys nSigs : Nat) :
+    deletedScript EncodedLayout.chunks.flatten top nKeys nSigs =
+      ScriptCodeSelection.stripEncodedChunks
+        ((reachedSignatures top nKeys nSigs).map
+          CorePushSerialize.pushPattern) EncodedLayout.chunks := by
+  exact CorePushFindAndDelete.literal_many_pushes
+    (reachedSignatures top nKeys nSigs)
 
 /-- The generic source deletion specializes to the existing final model if
 each reached signature is short enough for a direct push. This premise must

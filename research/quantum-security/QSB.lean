@@ -65,6 +65,7 @@ import QSB.CoreMultisigStack
 import QSB.CoreMultisigEval
 import QSB.CoreMultisigCleanup
 import QSB.CorePushSerialize
+import QSB.CorePushFindAndDelete
 import QSB.CoreMultisigSourceScan
 import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
@@ -135,9 +136,14 @@ import QSB.Reduction
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_final_flags
 #print axioms QSB.CoreMultisigSourceScan.reached_slots
 #print axioms QSB.CorePushSerialize.pushPattern_direct
+#print axioms QSB.CorePushSerialize.pushPattern_nonempty
+#print axioms QSB.CorePushSerialize.long_head
 #print axioms QSB.CorePushSerialize.boundary_prefixes
 #print axioms QSB.CorePushSerialize.direct_pattern_wrong_at_76
 #print axioms QSB.CoreMultisigSourceScan.deletedScript_ten
+#print axioms QSB.CorePushFindAndDelete.literal_push_rigid
+#print axioms QSB.CorePushFindAndDelete.literal_many_pushes
+#print axioms QSB.CoreMultisigSourceScan.deletedScript_literal
 #print axioms QSB.CoreMultisigSourceScan.scanAtStack_finalTen
 #print axioms QSB.CoreMultisigSourceScan.scanAtStack_some
 #print axioms QSB.DERSyntax.valid_direct_push_width

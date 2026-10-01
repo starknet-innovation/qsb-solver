@@ -298,6 +298,9 @@ requires it to match the supplied structural outcome, which may be false.
 `QSB/CorePushSerialize.lean` supplies Core's direct/PUSHDATA1/PUSHDATA2
 signature-push encoding for this arbitrary-witness scan; the direct-only
 pattern used by the final fixture is invalid at 76 bytes and above.
+`QSB/CorePushFindAndDelete.lean` proves that any such canonical pattern
+deletes only whole original chunks of the fixed lock, so 880 source-loop
+steps suffice after any sequence of reached-signature deletions.
 The checked theorem extracts the pin key and a
 seven-plus-two final-round witness, then exposes both fixed signatures'
 `SIGHASH_ALL` checker calls and their reached scriptCodes. The first-round
