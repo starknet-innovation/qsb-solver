@@ -1291,6 +1291,14 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedStep.checkedChecksig_reached_call
 #print axioms QSB.CoreCheckedStep.checkedMultisig_sound
 #print axioms QSB.CoreCheckedStep.checkedMultisig_ten_pairs
+#print axioms QSB.CoreCheckedStep.run_append
+#print axioms QSB.CoreCheckedStep.ordinary_outcome_frame
+#print axioms QSB.CoreCheckedStep.checksig_outcome_frame
+#print axioms QSB.CoreCheckedStep.multisig_outcome_frame
+#print axioms QSB.CoreCheckedStep.checked_step_frames
+#print axioms QSB.CoreCheckedStep.checked_run_frames
+#print axioms QSB.CoreCheckedStep.checked_run_refines_byte
+#print axioms QSB.CoreCheckedStep.literal_checked_run_seven_openings
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

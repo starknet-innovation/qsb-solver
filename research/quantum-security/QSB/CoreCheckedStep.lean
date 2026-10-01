@@ -1,6 +1,7 @@
 import QSB.CoreStructuralRun
 import QSB.CoreMultisigSourceScan
 import QSB.CoreFinalChecksigEval
+import QSB.FinalSignedChain
 
 /-!
 Source-shaped execution of one BASE lock opcode with signature outcomes
@@ -76,11 +77,111 @@ def run (hashes : Hashes) (script : Bytes)
       let (final, later) ← run hashes script validKey verify rest next
       some (final, record.toList ++ later)
 
+/-- The checked interpreter composes across program boundaries while
+concatenating its computed signature-result records in execution order. -/
+theorem run_append (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (before after : List Op) (s : State) :
+    run hashes script validKey verify (before ++ after) s = (do
+      let (middle, first) ← run hashes script validKey verify before s
+      let (final, later) ← run hashes script validKey verify after middle
+      some (final, first ++ later)) := by
+  induction before generalizing s with
+  | nil => simp [run]
+  | cons op rest ih =>
+      simp only [List.cons_append, run]
+      cases hstep : step hashes script validKey verify op s with
+      | none => simp
+      | some pair =>
+          obtain ⟨next, record⟩ := pair
+          by_cases large : next.stack.length > 1000
+          · simp [large]
+          · simp [large]
+            rw [ih next]
+            cases hbefore : run hashes script validKey verify rest next with
+            | none => simp
+            | some pair =>
+                obtain ⟨middle, first⟩ := pair
+                cases hafter : run hashes script validKey verify after middle with
+                | none => simp [hafter]
+                | some pair =>
+                    obtain ⟨final, later⟩ := pair
+                    simp [hafter, List.append_assoc]
+
 def signatureSites : List Op → Nat
   | [] => 0
   | .checksigverify :: rest => 1 + signatureSites rest
   | .checkmultisig :: rest => 1 + signatureSites rest
   | _ :: rest => signatureSites rest
+
+def lift (s : State) (outcomes : List Bool) : CoreOpcodeStep.State :=
+  ⟨s.stack, outcomes, s.ops⟩
+
+/-- A non-signature source step is parametric in an untouched outcome tail. -/
+theorem ordinary_outcome_frame (hashes : Hashes) (op : Op)
+    (s : State) (tail : List Bool)
+    (ordinary : CoreOpcodeStep.supported op = true) :
+    CoreOpcodeStep.step hashes op (lift s tail) =
+      (CoreOpcodeStep.step hashes op (lift s [])).map
+        (fun next => ⟨next.stack, tail, next.ops⟩) := by
+  cases s with
+  | mk stack ops =>
+      cases op <;> simp [CoreOpcodeStep.supported] at ordinary
+      all_goals
+        cases hstack : stack.reverse with
+        | nil =>
+            simp [CoreOpcodeStep.step, lift, hstack] <;>
+              split_ifs <;> simp_all
+        | cons x xs =>
+            cases xs with
+            | nil =>
+                simp [CoreOpcodeStep.step, lift, hstack] <;>
+                  split_ifs <;> simp_all
+            | cons y ys =>
+                simp [CoreOpcodeStep.step, lift, hstack];
+                  split_ifs <;> simp_all
+
+/-- A successful CHECKSIGVERIFY consumes exactly its leading true outcome;
+the later outcome tail is not inspected. -/
+theorem checksig_outcome_frame (s : State) (tail : List Bool) :
+    CoreChecksigStep.step (lift s (true :: tail)) =
+      (CoreChecksigStep.step (lift s [true])).map
+        (fun next => ⟨next.stack, tail, next.ops⟩) := by
+  cases s with
+  | mk stack ops =>
+      simp [CoreChecksigStep.step, lift];
+        split_ifs <;> simp_all
+
+/-- CHECKMULTISIG consumes its computed scan result and leaves any later
+outcomes untouched, for either true or false. -/
+theorem multisig_outcome_frame (s : State) (result : Bool)
+    (tail : List Bool) :
+    CoreMultisigStep.step (lift s (result :: tail)) =
+      (CoreMultisigStep.step (lift s [result])).map
+        (fun next => ⟨next.stack, tail, next.ops⟩) := by
+  cases s with
+  | mk stack ops =>
+      simp [CoreMultisigStep.step, lift];
+        split_ifs <;> simp_all
+      cases hn : CoreMultisigCleanup.parseSourceCount stack 1 with
+      | none => simp
+      | some n =>
+          by_cases badN : n < 0 ∨ n > 20 ∨ ops + 1 + n.toNat > 201
+          · simp [badN]
+          · by_cases short : stack.length < n.toNat + 2
+            · simp [badN, short]
+            · cases hm : CoreMultisigCleanup.parseSourceCount stack
+                  (n.toNat + 2) with
+              | none => simp [badN, short, hm]
+              | some m =>
+                  by_cases badM : m < 0 ∨ m > n
+                  · simp [badN, short, hm, badM]
+                  · cases hc : CoreMultisigCleanup.cleanup stack n.toNat
+                        m.toNat result with
+                    | none => simp [badN, short, hm, badM, hc]
+                    | some cleaned =>
+                        simp [badN, short, hm, badM, hc]
 
 theorem step_record_length (hashes : Hashes) (script : Bytes)
     (validKey : Bytes → Bool)
@@ -288,6 +389,204 @@ theorem checkedMultisig_sound (script : Bytes)
               subst next
               subst result
               exact ⟨rfl, reached, stepEq, rfl⟩
+
+private theorem ordinary_map_frames (hashes : Hashes) (op : Op)
+    (s next : State) (record : Option Bool) (tail : List Bool)
+    (ordinary : CoreOpcodeStep.supported op = true)
+    (success :
+      (CoreOpcodeStep.step hashes op (lift s [])).map
+        (fun reached =>
+          (⟨reached.stack, reached.ops⟩, none)) =
+        some (next, record)) :
+    CoreStructuralRun.step hashes op
+      (lift s (record.toList ++ tail)) = some (lift next tail) := by
+  cases hsource : CoreOpcodeStep.step hashes op (lift s []) with
+  | none => simp [hsource] at success
+  | some reached =>
+      have output : (next, record) =
+          (⟨reached.stack, reached.ops⟩, none) := by
+        simpa [hsource] using success.symm
+      have nextEq := (Prod.mk.inj output).1
+      have recordEq := (Prod.mk.inj output).2
+      subst next
+      subst record
+      have ordinaryStep : CoreStructuralRun.step hashes op (lift s tail) =
+          CoreOpcodeStep.step hashes op (lift s tail) := by
+        cases op <;> simp [CoreOpcodeStep.supported,
+          CoreStructuralRun.step] at ordinary ⊢
+      simp only [Option.toList_none, List.nil_append]
+      rw [ordinaryStep, ordinary_outcome_frame hashes op s tail ordinary,
+        hsource]
+      rfl
+
+/-- One computed signature-site record is exactly the outcome consumed by
+the older structural transition. Ordinary opcodes preserve the still-future
+record list. This is a Lean-to-Lean step simulation, not compiled Core. -/
+theorem checked_step_frames (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (op : Op) (s next : State) (record : Option Bool)
+    (success : step hashes script validKey verify op s =
+      some (next, record)) (tail : List Bool) :
+    CoreStructuralRun.step hashes op
+      (lift s (record.toList ++ tail)) = some (lift next tail) := by
+  cases op <;> simp only [step] at success
+  case checksigverify =>
+    cases hcheck : checkedChecksig script validKey verify s with
+    | none => simp [hcheck] at success
+    | some reached =>
+        have pair : (next, record) = (reached, some true) := by
+          simpa [hcheck] using success.symm
+        have nextEq := (Prod.mk.inj pair).1
+        have recordEq := (Prod.mk.inj pair).2
+        subst next
+        subst record
+        obtain ⟨_, _, _, _, _, sourceAfter, sourceStep, resultEq⟩ :=
+          checkedChecksig_sound script validKey verify s reached hcheck
+        simp only [CoreStructuralRun.step, Option.toList_some,
+          List.singleton_append]
+        rw [checksig_outcome_frame s tail]
+        change CoreChecksigStep.step (lift s [true]) =
+          some sourceAfter at sourceStep
+        rw [sourceStep]
+        simp [lift, resultEq]
+  case checkmultisig =>
+    cases hcheck : checkedMultisig script validKey verify s with
+    | none => simp [hcheck] at success
+    | some pair =>
+        obtain ⟨reached, scanResult⟩ := pair
+        have output : (next, record) =
+            (reached, some scanResult) := by
+          simpa [hcheck] using success.symm
+        have nextEq := (Prod.mk.inj output).1
+        have recordEq := (Prod.mk.inj output).2
+        subst next
+        subst record
+        obtain ⟨_, sourceAfter, sourceStep, resultEq⟩ :=
+          checkedMultisig_sound script validKey verify s reached
+            scanResult hcheck
+        simp only [CoreStructuralRun.step, Option.toList_some,
+          List.singleton_append]
+        rw [multisig_outcome_frame s scanResult tail]
+        change CoreMultisigStep.step (lift s [scanResult]) =
+          some sourceAfter at sourceStep
+        rw [sourceStep]
+        simp [lift, resultEq]
+  all_goals
+    exact ordinary_map_frames hashes _ s next record tail
+      (by rfl) (by simpa [lift] using success)
+
+/-- Every successful checker-derived run replays in the existing structural
+interpreter with precisely its recorded site results in opcode order. No
+caller-supplied outcome list is needed to obtain that run. -/
+theorem checked_run_frames (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (ops : List Op) (initial final : State) (records tail : List Bool)
+    (success : run hashes script validKey verify ops initial =
+      some (final, records)) :
+    CoreStructuralRun.run hashes ops (lift initial (records ++ tail)) =
+      some (lift final tail) := by
+  induction ops generalizing initial final records with
+  | nil =>
+      simp [run] at success
+      rcases success with ⟨rfl, rfl⟩
+      rfl
+  | cons op rest ih =>
+      simp only [run] at success
+      cases hstep : step hashes script validKey verify op initial with
+      | none => simp [hstep] at success
+      | some pair =>
+          obtain ⟨next, record⟩ := pair
+          by_cases large : next.stack.length > 1000
+          · simp [hstep, large] at success
+          · cases hrest : run hashes script validKey verify rest next with
+            | none => simp [hstep, large, hrest] at success
+            | some pair =>
+                obtain ⟨after, later⟩ := pair
+                have output : final = after ∧
+                    records = record.toList ++ later := by
+                  simpa [hstep, large, hrest] using success.symm
+                rw [output.1, output.2]
+                have first := checked_step_frames hashes script validKey
+                  verify op initial next record hstep (later ++ tail)
+                have remaining := ih next after later hrest
+                simp only [List.append_assoc, CoreStructuralRun.run]
+                rw [first]
+                have within : ¬(lift next (later ++ tail)).stack.length >
+                    1000 := by simpa [lift] using large
+                simp [within, remaining]
+
+/-- The checker-derived run projects to the existing top-first byte machine
+with exactly the computed records and no remaining signature outcomes. This
+lets the arbitrary-stack byte extraction theorems consume the new run. -/
+theorem checked_run_refines_byte (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (ops : List Op) (initial final : State) (records : List Bool)
+    (success : run hashes script validKey verify ops initial =
+      some (final, records)) :
+    ByteMachine.run hashes ops
+      ⟨initial.stack.reverse, records, initial.ops⟩ =
+        some ⟨final.stack.reverse, [], final.ops⟩ := by
+  have sourceRun := checked_run_frames hashes script validKey verify
+    ops initial final records [] success
+  have start : lift initial records =
+      CoreOpcodeStep.ofByte
+        ⟨initial.stack.reverse, records, initial.ops⟩ := by
+    cases initial
+    simp [lift, CoreOpcodeStep.ofByte]
+  rw [List.append_nil, start] at sourceRun
+  obtain ⟨byteFinal, byteRun, resultEq⟩ :=
+    CoreStructuralRun.run_refines_byte hashes ops
+      ⟨initial.stack.reverse, records, initial.ops⟩
+      (lift final []) sourceRun
+  have byteEq : byteFinal =
+      (⟨final.stack.reverse, [], final.ops⟩ : ByteMachine.State) := by
+    have projected := congrArg
+      (fun source : CoreOpcodeStep.State =>
+        (⟨source.stack.reverse, source.outcomes, source.ops⟩ :
+          ByteMachine.State)) resultEq
+    have components : byteFinal.stack = final.stack.reverse ∧
+        byteFinal.outcomes = [] ∧ byteFinal.ops = final.ops := by
+      simpa [lift, CoreOpcodeStep.ofByte] using projected.symm
+    cases byteFinal with
+    | mk stack outcomes ops =>
+        rcases components with ⟨stackEq, outcomesEq, opsEq⟩
+        cases stackEq
+        cases outcomesEq
+        cases opsEq
+        rfl
+  rw [byteEq] at byteRun
+  exact byteRun
+
+/-- A successful checker-derived run of the literal lock computes seven
+distinct final-round HORS opening positions from the actual initial stack.
+Unlike the older byte theorem, its six signature results are returned by the
+source-shaped checker run. This remains a Lean source model, not Core. -/
+theorem literal_checked_run_seven_openings (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records)) :
+    ∃ (trace : List (Fin 150 × Bytes))
+      (remainingIds : List (Fin 150)),
+      FinalSignedChain.extractWholeFinal hashes
+        ⟨initial.stack.reverse, records, initial.ops⟩ = some trace ∧
+      FinalSignedChain.extractWholeRemaining hashes
+        ⟨initial.stack.reverse, records, initial.ops⟩ =
+          some remainingIds ∧
+      trace.length = 7 ∧
+      (trace.map Prod.fst).Nodup ∧
+      (∀ p ∈ trace,
+        hashes.h160 p.2 = FinalSignedLoop.generatedCommitmentAt p.1) ∧
+      List.Perm (trace.map Prod.fst ++ remainingIds)
+        (List.finRange 150) := by
+  exact FinalSignedChain.accepted_whole_program_final_signed_openings
+    hashes _ _ (checked_run_refines_byte hashes
+      EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+      initial final records success)
 
 /-- At the reached ten-of-ten final layout, a computed true multisignature
 result exposes all ten source-addressed strict-DER successful checker pairs.

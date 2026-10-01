@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1204,
+  "theorem_count": 1212,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -561,7 +561,32 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreCheckedStep.checked_run_frames": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checked_run_refines_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checked_step_frames": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checksig_outcome_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreCheckedStep.false_multisig_result_can_continue": [
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_seven_openings": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedStep.literal_run_six_records": [
@@ -569,6 +594,20 @@
       "propext"
     ],
     "QSB.CoreCheckedStep.literal_signature_sites": [
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.multisig_outcome_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.ordinary_outcome_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.run_append": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedStep.run_record_length": [
