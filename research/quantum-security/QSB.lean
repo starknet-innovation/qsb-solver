@@ -274,6 +274,7 @@ import QSB.Reduction
 #print axioms QSB.CorePushFindAndDelete.literal_many_pushes
 #print axioms QSB.CoreMultisigSourceScan.deletedScript_literal
 #print axioms QSB.CoreMultisigSourceScan.scanAtStack_finalTen
+#print axioms QSB.CoreMultisigSourceScan.scanAtStack_finalTen_true_all_short
 #print axioms QSB.CoreMultisigSourceScan.scanAtStack_some
 #print axioms QSB.DERSyntax.valid_direct_push_width
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_all_short
@@ -1299,6 +1300,17 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedStep.checked_run_frames
 #print axioms QSB.CoreCheckedStep.checked_run_refines_byte
 #print axioms QSB.CoreCheckedStep.literal_checked_run_seven_openings
+#print axioms QSB.CoreCheckedStep.checkedMultisig_final_cell
+#print axioms QSB.CoreCheckedStep.checkedMultisig_true_of_final_truth
+#print axioms QSB.CoreCheckedStep.checked_run_refines_byte_tail
+#print axioms QSB.CoreCheckedStep.checked_run_ending_multisig_true
+#print axioms QSB.CoreCheckedStep.literal_checked_run_final_truth
+#print axioms QSB.CoreCheckedStep.literal_checked_run_final_scan_true
+#print axioms QSB.CoreCheckedStep.literal_checked_run_final_source_layout
+#print axioms QSB.CoreCheckedStep.checkedMultisig_final_ten_eval
+#print axioms QSB.CoreCheckedStep.literal_checked_run_final_ten_pairs
+#print axioms QSB.CoreCheckedStep.literal_checked_run_nine_positions
+#print axioms QSB.CoreCheckedStep.literal_checked_run_extract_witness
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

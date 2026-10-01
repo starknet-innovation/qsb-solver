@@ -2,6 +2,9 @@ import QSB.CoreStructuralRun
 import QSB.CoreMultisigSourceScan
 import QSB.CoreFinalChecksigEval
 import QSB.FinalSignedChain
+import QSB.CoreFinalTruth
+import QSB.FinalBonusIndices
+import QSB.FinalRoundWitness
 
 /-!
 Source-shaped execution of one BASE lock opcode with signature outcomes
@@ -390,6 +393,58 @@ theorem checkedMultisig_sound (script : Bytes)
               subst result
               exact ⟨rfl, reached, stepEq, rfl⟩
 
+/-- The Boolean computed by a successful checked multisignature step is the
+canonical cell pushed on the final stack, even when that Boolean is false. -/
+theorem checkedMultisig_final_cell (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (s next : State) (result : Bool)
+    (success : checkedMultisig script validKey verify s =
+      some (next, result)) :
+    ∃ tail, next.stack.reverse = boolBytes result :: tail := by
+  obtain ⟨_, reached, sourceStep, nextEq⟩ :=
+    checkedMultisig_sound script validKey verify s next result success
+  have start : (⟨s.stack, [result], s.ops⟩ : CoreOpcodeStep.State) =
+      CoreOpcodeStep.ofByte ⟨s.stack.reverse, [result], s.ops⟩ := by
+    cases s
+    simp [CoreOpcodeStep.ofByte]
+  rw [start] at sourceStep
+  obtain ⟨byteAfter, byteStep, sourceAfter⟩ :=
+    CoreMultisigStep.successful_source_step_refines_byte hashes
+      ⟨s.stack.reverse, [result], s.ops⟩ reached sourceStep
+  obtain ⟨n, m, actual, _, _, cleanup, consumed, _⟩ :=
+    CoreMultisigCleanup.successful_byte_multisig_source_cells hashes
+      ⟨s.stack.reverse, [result], s.ops⟩ byteAfter byteStep
+  have actualEq : actual = result := by
+    simp at consumed
+    exact consumed.1.symm
+  obtain ⟨_, shape⟩ := CoreMultisigCleanup.cleanup_success
+    s.stack.reverse n.toNat m.toNat actual byteAfter.stack.reverse cleanup
+  refine ⟨s.stack.reverse.drop
+    (CoreMultisigStack.sourceArgumentDepth n.toNat m.toNat), ?_⟩
+  have byteShape := congrArg List.reverse shape
+  have nextStack : next.stack.reverse = byteAfter.stack := by
+    rw [nextEq, sourceAfter]
+    simp [CoreOpcodeStep.ofByte]
+  rw [nextStack]
+  simpa [actualEq] using byteShape
+
+/-- A truthy top after a checked multisignature step forces the computed
+source-shaped signature scan to have returned true. -/
+theorem checkedMultisig_true_of_final_truth (hashes : Hashes)
+    (script : Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (s next : State) (result : Bool)
+    (success : checkedMultisig script validKey verify s =
+      some (next, result))
+    (truth : ByteMachine.finalTruth
+      ⟨next.stack.reverse, [], next.ops⟩ = true) :
+    result = true := by
+  obtain ⟨tail, shape⟩ := checkedMultisig_final_cell hashes script
+    validKey verify s next result success
+  cases result <;>
+    simp [ByteMachine.finalTruth, shape, boolBytes] at truth ⊢
+
 private theorem ordinary_map_frames (hashes : Hashes) (op : Op)
     (s next : State) (record : Option Bool) (tail : List Bool)
     (ordinary : CoreOpcodeStep.supported op = true)
@@ -518,37 +573,37 @@ theorem checked_run_frames (hashes : Hashes) (script : Bytes)
                 simp [within, remaining]
 
 /-- The checker-derived run projects to the existing top-first byte machine
-with exactly the computed records and no remaining signature outcomes. This
-lets the arbitrary-stack byte extraction theorems consume the new run. -/
-theorem checked_run_refines_byte (hashes : Hashes) (script : Bytes)
+with exactly the computed records before any untouched future outcome tail. -/
+theorem checked_run_refines_byte_tail (hashes : Hashes) (script : Bytes)
     (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA)
-    (ops : List Op) (initial final : State) (records : List Bool)
+    (ops : List Op) (initial final : State)
+    (records tail : List Bool)
     (success : run hashes script validKey verify ops initial =
       some (final, records)) :
     ByteMachine.run hashes ops
-      ⟨initial.stack.reverse, records, initial.ops⟩ =
-        some ⟨final.stack.reverse, [], final.ops⟩ := by
+      ⟨initial.stack.reverse, records ++ tail, initial.ops⟩ =
+        some ⟨final.stack.reverse, tail, final.ops⟩ := by
   have sourceRun := checked_run_frames hashes script validKey verify
-    ops initial final records [] success
-  have start : lift initial records =
+    ops initial final records tail success
+  have start : lift initial (records ++ tail) =
       CoreOpcodeStep.ofByte
-        ⟨initial.stack.reverse, records, initial.ops⟩ := by
+        ⟨initial.stack.reverse, records ++ tail, initial.ops⟩ := by
     cases initial
     simp [lift, CoreOpcodeStep.ofByte]
-  rw [List.append_nil, start] at sourceRun
+  rw [start] at sourceRun
   obtain ⟨byteFinal, byteRun, resultEq⟩ :=
     CoreStructuralRun.run_refines_byte hashes ops
-      ⟨initial.stack.reverse, records, initial.ops⟩
-      (lift final []) sourceRun
+      ⟨initial.stack.reverse, records ++ tail, initial.ops⟩
+      (lift final tail) sourceRun
   have byteEq : byteFinal =
-      (⟨final.stack.reverse, [], final.ops⟩ : ByteMachine.State) := by
+      (⟨final.stack.reverse, tail, final.ops⟩ : ByteMachine.State) := by
     have projected := congrArg
       (fun source : CoreOpcodeStep.State =>
         (⟨source.stack.reverse, source.outcomes, source.ops⟩ :
           ByteMachine.State)) resultEq
     have components : byteFinal.stack = final.stack.reverse ∧
-        byteFinal.outcomes = [] ∧ byteFinal.ops = final.ops := by
+        byteFinal.outcomes = tail ∧ byteFinal.ops = final.ops := by
       simpa [lift, CoreOpcodeStep.ofByte] using projected.symm
     cases byteFinal with
     | mk stack outcomes ops =>
@@ -559,6 +614,185 @@ theorem checked_run_refines_byte (hashes : Hashes) (script : Bytes)
         rfl
   rw [byteEq] at byteRun
   exact byteRun
+
+/-- A complete checked run needs no caller-supplied signature outcomes:
+its own computed records replay in the byte interpreter and are consumed. -/
+theorem checked_run_refines_byte (hashes : Hashes) (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (ops : List Op) (initial final : State) (records : List Bool)
+    (success : run hashes script validKey verify ops initial =
+      some (final, records)) :
+    ByteMachine.run hashes ops
+      ⟨initial.stack.reverse, records, initial.ops⟩ =
+        some ⟨final.stack.reverse, [], final.ops⟩ := by
+  simpa using checked_run_refines_byte_tail hashes script validKey verify
+    ops initial final records [] success
+
+/-- An accepted checked run ending in CHECKMULTISIG computes a true final
+scan. Its result is not a Boolean chosen by the caller. -/
+theorem checked_run_ending_multisig_true (hashes : Hashes)
+    (script : Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (ops : List Op) (initial final : State) (records : List Bool)
+    (success : run hashes script validKey verify
+      (ops ++ [.checkmultisig]) initial = some (final, records))
+    (truth : ByteMachine.finalTruth
+      ⟨final.stack.reverse, [], final.ops⟩ = true) :
+    ∃ before previous,
+      run hashes script validKey verify ops initial =
+        some (before, previous) ∧
+      checkedMultisig script validKey verify before =
+        some (final, true) ∧
+      records = previous ++ [true] := by
+  rw [run_append] at success
+  cases hprefix : run hashes script validKey verify ops initial with
+  | none => simp [hprefix] at success
+  | some pair =>
+      obtain ⟨before, previous⟩ := pair
+      simp [hprefix] at success
+      cases last : checkedMultisig script validKey verify before with
+      | none => simp [run, step, last] at success
+      | some pair =>
+          obtain ⟨next, result⟩ := pair
+          by_cases capacity : next.stack.length > 1000
+          · simp [run, step, last, capacity] at success
+          · have lastRun : run hashes script validKey verify
+                [.checkmultisig] before = some (next, [result]) := by
+              simp [run, step, last, capacity]
+            rw [lastRun] at success
+            have output : (final, records) =
+                (next, previous ++ [result]) := by
+              simpa using success.symm
+            have finalEq : final = next := (Prod.mk.inj output).1
+            have recordsEq : records = previous ++ [result] :=
+              (Prod.mk.inj output).2
+            have finalTrue := checkedMultisig_true_of_final_truth
+              hashes script validKey verify before next result last
+              (by simpa [finalEq] using truth)
+            subst result
+            subst final
+            exact ⟨before, previous, rfl, last, recordsEq⟩
+
+/-- Source-shaped CastToBool of the complete checked run's final cell agrees
+with the byte model's final truth test. This is a Lean-to-Lean relation. -/
+theorem literal_checked_run_final_truth (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records)) :
+    CoreFinalTruth.castToBool (final.stack.getLast?.getD []) =
+      ByteMachine.finalTruth ⟨final.stack.reverse, [], final.ops⟩ := by
+  have sourceRun := checked_run_frames hashes EncodedLayout.chunks.flatten
+    validKey verify ByteLayout.program initial final records [] success
+  have start : lift initial records =
+      CoreOpcodeStep.ofByte
+        ⟨initial.stack.reverse, records, initial.ops⟩ := by
+    cases initial
+    simp [lift, CoreOpcodeStep.ofByte]
+  rw [List.append_nil, start] at sourceRun
+  have connected := CoreFinalTruth.source_full_run_final_truth hashes
+    ⟨initial.stack.reverse, records, initial.ops⟩ (lift final []) sourceRun
+  simpa [CoreFinalTruth.coreFinalTruth, lift] using connected
+
+/-- Any truthy complete checked execution of the literal lock computes a
+true final source-shaped multisignature scan at its actually reached stack.
+The six signature-site results are produced by the checker, not supplied. -/
+theorem literal_checked_run_final_scan_true (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records))
+    (accepted : CoreFinalTruth.castToBool
+      (final.stack.getLast?.getD []) = true) :
+    ∃ before previous,
+      run hashes EncodedLayout.chunks.flatten validKey verify
+        (ByteLayout.program.take 879) initial = some (before, previous) ∧
+      checkedMultisig EncodedLayout.chunks.flatten validKey verify before =
+        some (final, true) ∧
+      records = previous ++ [true] := by
+  have truth : ByteMachine.finalTruth
+      ⟨final.stack.reverse, [], final.ops⟩ = true := by
+    rw [← literal_checked_run_final_truth hashes validKey verify
+      initial final records success]
+    exact accepted
+  have split : ByteLayout.program =
+      ByteLayout.program.take 879 ++ [.checkmultisig] := by decide
+  rw [split] at success
+  exact checked_run_ending_multisig_true hashes
+    EncodedLayout.chunks.flatten validKey verify _ initial final
+    records success truth
+
+/-- The checked final scan reads the generated ten-key, ten-signature, and
+NULLDUMMY cells at its actual reached stack. The byte layout facts are
+transported back through the checked-run simulation with the final true
+record left as the outcome tail for the prefix. -/
+theorem literal_checked_run_final_source_layout (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records))
+    (accepted : CoreFinalTruth.castToBool
+      (final.stack.getLast?.getD []) = true) :
+    ∃ before previous,
+      run hashes EncodedLayout.chunks.flatten validKey verify
+        (ByteLayout.program.take 879) initial = some (before, previous) ∧
+      checkedMultisig EncodedLayout.chunks.flatten validKey verify before =
+        some (final, true) ∧
+      records = previous ++ [true] ∧
+      23 ≤ before.stack.length ∧
+      before.stack.reverse[0]? = some [0x0a] ∧
+      before.stack.reverse[11]? = some [0x0a] ∧
+      before.stack.reverse[22]? = some [] := by
+  have truth : ByteMachine.finalTruth
+      ⟨final.stack.reverse, [], final.ops⟩ = true := by
+    rw [← literal_checked_run_final_truth hashes validKey verify
+      initial final records success]
+    exact accepted
+  have fullByte := checked_run_refines_byte hashes
+    EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+    initial final records success
+  obtain ⟨beforeByte, bytePrefix, enough, key, sig, dummy, _⟩ :=
+    CoreMultisigStack.accepted_whole_byte_run_source_layout hashes
+      ⟨initial.stack.reverse, records, initial.ops⟩
+      ⟨final.stack.reverse, [], final.ops⟩ fullByte truth
+  obtain ⟨before, previous, checkedPrefix, checkedFinal, recorded⟩ :=
+    literal_checked_run_final_scan_true hashes validKey verify
+      initial final records success accepted
+  have projected := checked_run_refines_byte_tail hashes
+    EncodedLayout.chunks.flatten validKey verify
+    (ByteLayout.program.take 879) initial before previous [true]
+    checkedPrefix
+  rw [recorded] at bytePrefix
+  have aligned : beforeByte =
+      (⟨before.stack.reverse, [true], before.ops⟩ : ByteMachine.State) :=
+    Option.some.inj (bytePrefix.symm.trans projected)
+  subst beforeByte
+  simp only [List.reverse_reverse, List.length_reverse]
+    at enough key sig dummy
+  have keyTop : before.stack.reverse[0]? = some [0x0a] := by
+    have h : CoreMultisigStack.stacktopNeg before.stack 1 =
+        before.stack.reverse[0]? := by
+      simpa using CoreMultisigStack.stacktopNeg_reverse
+        before.stack.reverse 1 (by simp; omega)
+    exact h.symm.trans key
+  have sigTop : before.stack.reverse[11]? = some [0x0a] := by
+    have h : CoreMultisigStack.stacktopNeg before.stack 12 =
+        before.stack.reverse[11]? := by
+      simpa using CoreMultisigStack.stacktopNeg_reverse
+        before.stack.reverse 12 (by simp; omega)
+    exact h.symm.trans sig
+  have dummyTop : before.stack.reverse[22]? = some [] := by
+    have h : CoreMultisigStack.stacktopNeg before.stack 23 =
+        before.stack.reverse[22]? := by
+      simpa using CoreMultisigStack.stacktopNeg_reverse
+        before.stack.reverse 23 (by simp; omega)
+    exact h.symm.trans dummy
+  exact ⟨before, previous, checkedPrefix, checkedFinal, recorded,
+    enough, keyTop, sigTop, dummyTop⟩
 
 /-- A successful checker-derived run of the literal lock computes seven
 distinct final-round HORS opening positions from the actual initial stack.
@@ -588,11 +822,41 @@ theorem literal_checked_run_seven_openings (hashes : Hashes)
       EncodedLayout.chunks.flatten validKey verify ByteLayout.program
       initial final records success)
 
+/-- At the reached ten-of-ten final layout, a true generic scan equals the
+specialized final evaluator. Short pushes are derived from the successful
+generic scan, so no signature-length premise is supplied by the caller. -/
+theorem checkedMultisig_final_ten_eval (script : Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (s next : State)
+    (keys : s.stack.reverse[0]? = some [0x0a])
+    (sigs : s.stack.reverse[11]? = some [0x0a])
+    (dummy : s.stack.reverse[22]? = some [])
+    (enough : 23 ≤ s.stack.length)
+    (success : checkedMultisig script validKey verify s =
+      some (next, true)) :
+    CoreMultisigEval.finalTenEval script
+      (CoreFinalChecksigEval.checker validKey verify)
+      s.stack.reverse = some true := by
+  have scanned := (checkedMultisig_sound script validKey verify
+    s next true success).1
+  have short : ∀ sig ∈ CoreMultisigSourceScan.reachedSignatures
+      s.stack.reverse 10 10, sig.length < 76 := by
+    apply CoreMultisigSourceScan.scanAtStack_finalTen_true_all_short
+      script (CoreFinalChecksigEval.checker validKey verify)
+      s.stack.reverse keys sigs (by simpa using enough)
+    simpa using scanned
+  have sourceEq := CoreMultisigSourceScan.scanAtStack_finalTen
+    script (CoreFinalChecksigEval.checker validKey verify)
+    s.stack.reverse keys sigs dummy (by simpa using enough) short
+  simp only [List.reverse_reverse] at sourceEq
+  rw [sourceEq] at scanned
+  exact scanned
+
 /-- At the reached ten-of-ten final layout, a computed true multisignature
 result exposes all ten source-addressed strict-DER successful checker pairs.
-Short pushes are stated explicitly to connect the generic Core serializer to
-the specialized final-ten evaluator; the full-lock source theorem establishes
-this premise separately from its generated signature origins. -/
+Every reached signature is short because a true ten-of-ten generic scan must
+attempt and accept each nonempty strict-DER signature. -/
 theorem checkedMultisig_ten_pairs (script : Bytes)
     (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA)
@@ -601,8 +865,6 @@ theorem checkedMultisig_ten_pairs (script : Bytes)
     (sigs : s.stack.reverse[11]? = some [0x0a])
     (dummy : s.stack.reverse[22]? = some [])
     (enough : 23 ≤ s.stack.length)
-    (short : ∀ sig ∈ CoreMultisigSourceScan.reachedSignatures
-      s.stack.reverse 10 10, sig.length < 76)
     (success : checkedMultisig script validKey verify s =
       some (next, true))
     (j : Fin 10) :
@@ -612,16 +874,181 @@ theorem checkedMultisig_ten_pairs (script : Bytes)
       CoreDEREncoding.valid sig = true ∧
       CoreFinalChecksigEval.checker validKey verify sig key
         (CoreMultisigEval.deletedScript script s.stack.reverse) = true := by
-  have scanned := (checkedMultisig_sound script validKey verify
-    s next true success).1
-  have sourceEq := CoreMultisigSourceScan.scanAtStack_finalTen
-    script (CoreFinalChecksigEval.checker validKey verify)
-    s.stack.reverse keys sigs dummy (by simpa using enough) short
-  simp only [List.reverse_reverse] at sourceEq
-  rw [sourceEq] at scanned
+  have scanned := checkedMultisig_final_ten_eval script validKey verify
+    s next keys sigs dummy enough success
   simpa only [List.reverse_reverse] using
     CoreMultisigEval.finalTenEval_success_pairs
     script (CoreFinalChecksigEval.checker validKey verify)
     s.stack.reverse scanned j
+
+/-- A truthy complete checked execution of the literal lock reaches ten
+source-addressed successful final signature/key checks, all strict DER and
+using one common FindAndDelete scriptCode computed from the reached stack.
+This is conditional on the external checker and source-model execution. -/
+theorem literal_checked_run_final_ten_pairs (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records))
+    (accepted : CoreFinalTruth.castToBool
+      (final.stack.getLast?.getD []) = true) :
+    ∃ before previous,
+      run hashes EncodedLayout.chunks.flatten validKey verify
+        (ByteLayout.program.take 879) initial = some (before, previous) ∧
+      checkedMultisig EncodedLayout.chunks.flatten validKey verify before =
+        some (final, true) ∧
+      records = previous ++ [true] ∧
+      ∀ j : Fin 10, ∃ sig key,
+        CoreMultisigStack.signatureAt before.stack 10 j.val = some sig ∧
+        CoreMultisigStack.keyAt before.stack j.val = some key ∧
+        CoreDEREncoding.valid sig = true ∧
+        CoreFinalChecksigEval.checker validKey verify sig key
+          (CoreMultisigEval.deletedScript
+            EncodedLayout.chunks.flatten before.stack.reverse) = true := by
+  obtain ⟨before, previous, checkedPrefix, finalCheck, recorded,
+    enough, keys, sigs, dummy⟩ :=
+    literal_checked_run_final_source_layout hashes validKey verify
+      initial final records success accepted
+  refine ⟨before, previous, checkedPrefix, finalCheck, recorded, ?_⟩
+  intro j
+  exact checkedMultisig_ten_pairs EncodedLayout.chunks.flatten
+    validKey verify before final keys sigs dummy
+    (by simpa using enough) finalCheck j
+
+/-- In the one literal generated lock, a truthy checked execution fixes nine
+distinct second-round pool positions: seven signed openings and two bonus
+dummy signatures. No separate successful final-scan or DER premise is needed;
+they follow from the computed checked scan. This fixture-specific theorem does
+not remove the DER-shaped commitment setup exception for other vaults. -/
+theorem literal_checked_run_nine_positions (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records))
+    (accepted : CoreFinalTruth.castToBool
+      (final.stack.getLast?.getD []) = true) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : ByteMachine.State),
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨initial.stack.reverse, records, initial.ops⟩ = some beforeCheck ∧
+      beforeCheck.stack[13]? = some (FinalSignedLoop.generatedDummyAt a) ∧
+      beforeCheck.stack[12]? = some (FinalSignedLoop.generatedDummyAt b) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p =>
+          FinalSignedLoop.generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some PoolRollInvariant.finalNonce ∧
+      beforeCheck.stack[22]? = some [] ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace,
+        hashes.h160 p.2 = FinalSignedLoop.generatedCommitmentAt p.1) ∧
+      a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      FinalSignedChain.extractWholeFinal hashes
+        ⟨initial.stack.reverse, records, initial.ops⟩ = some trace := by
+  obtain ⟨before, previous, checkedPrefix, finalCheck, recorded,
+    enough, keys, sigs, dummy⟩ :=
+    literal_checked_run_final_source_layout hashes validKey verify
+      initial final records success accepted
+  have fullByte := checked_run_refines_byte hashes
+    EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+    initial final records success
+  have projected := checked_run_refines_byte_tail hashes
+    EncodedLayout.chunks.flatten validKey verify
+    (ByteLayout.program.take 879) initial before previous [true]
+    checkedPrefix
+  have beforeByte : ByteMachine.run hashes
+      (ByteLayout.program.take 879)
+      ⟨initial.stack.reverse, records, initial.ops⟩ =
+        some ⟨before.stack.reverse, [true], before.ops⟩ := by
+    simpa [recorded] using projected
+  have finalEval := checkedMultisig_final_ten_eval
+    EncodedLayout.chunks.flatten validKey verify before final
+    keys sigs dummy enough finalCheck
+  let pairVerify : Bytes → Bytes → Bool := fun sig key =>
+    DERSyntax.verifyAllEncoding sig &&
+      CoreMultisigEval.nonemptyVerify
+        (CoreFinalChecksigEval.checker validKey verify)
+        (CoreMultisigEval.deletedScript
+          EncodedLayout.chunks.flatten before.stack.reverse) sig key
+  have verifySound : ∀ sig key, pairVerify sig key = true →
+      DERSyntax.valid sig = true := by
+    intro sig key hit
+    have strict := (CoreMultisigEval.checkedPair_der
+      EncodedLayout.chunks.flatten
+      (CoreFinalChecksigEval.checker validKey verify)
+      before.stack.reverse sig key hit).1
+    rw [CoreDEREncoding.valid_eq_model] at strict
+    exact strict
+  have matched : ∀ beforeCheck : ByteMachine.State,
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨initial.stack.reverse, records, initial.ops⟩ =
+          some beforeCheck →
+      Multisig.matchSigs pairVerify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true := by
+    intro beforeCheck reached
+    have aligned : beforeCheck =
+        (⟨before.stack.reverse, [true], before.ops⟩ :
+          ByteMachine.State) := Option.some.inj
+      (reached.symm.trans beforeByte)
+    subst beforeCheck
+    have pairs := CoreMultisigEval.finalTenEval_success_match
+      EncodedLayout.chunks.flatten
+      (CoreFinalChecksigEval.checker validKey verify)
+      before.stack.reverse finalEval
+    simpa [pairVerify, FinalScriptCode.reachedSignatures] using pairs
+  exact FinalBonusIndices.matched_full_run_nine_positions_der
+    hashes ⟨initial.stack.reverse, records, initial.ops⟩
+    ⟨final.stack.reverse, [], final.ops⟩ fullByte
+    pairVerify verifySound matched
+
+/-- The concrete byte-model witness extractor succeeds on every truthy
+checked literal run and returns seven valid openings plus two disjoint bonus
+positions. Its key is read from the reached final stack; transaction-level
+authorization and compiled-Core refinement remain separate. -/
+theorem literal_checked_run_extract_witness (hashes : Hashes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (initial final : State) (records : List Bool)
+    (success : run hashes EncodedLayout.chunks.flatten validKey verify
+      ByteLayout.program initial = some (final, records))
+    (accepted : CoreFinalTruth.castToBool
+      (final.stack.getLast?.getD []) = true) :
+    ∃ w : RoundWitness (Fin 150) Bytes Bytes,
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨initial.stack.reverse, records, initial.ops⟩ = some w ∧
+      FinalRoundShape w ∧
+      OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
+        w.signed w.opening ∧
+      ∃ beforeCheck : ByteMachine.State,
+        ByteMachine.run hashes (ByteLayout.program.take 879)
+          ⟨initial.stack.reverse, records, initial.ops⟩ =
+            some beforeCheck ∧
+        beforeCheck.stack[10]? = some w.key := by
+  obtain ⟨trace, a, b, beforeCheck, reached, firstSlot, lastSlot,
+    _signedSlots, nonceSlot, _dummySlot, seven, hits,
+    _different, _aUnopened, _bUnopened, distinct, _nine,
+    traceComputed⟩ := literal_checked_run_nine_positions
+      hashes validKey verify initial final records success accepted
+  have keyIn : 10 < beforeCheck.stack.length := by
+    have nonceIn := (List.getElem?_eq_some_iff.mp nonceSlot).choose
+    omega
+  let key := beforeCheck.stack[10]
+  have keyAt : beforeCheck.stack[10]? = some key :=
+    List.getElem?_eq_getElem keyIn
+  have extracted : FinalRoundWitness.extractMatchedWitness hashes
+      ⟨initial.stack.reverse, records, initial.ops⟩ =
+        some (FinalRoundWitness.witnessFromTrace trace a b key) := by
+    simp [FinalRoundWitness.extractMatchedWitness, traceComputed,
+      reached, firstSlot, lastSlot, FinalRoundWitness.findDummy_exact,
+      keyAt]
+  obtain ⟨shape, openings⟩ :=
+    FinalRoundWitness.witnessFromTrace_shape_and_openings
+      hashes trace a b key seven distinct hits
+  exact ⟨FinalRoundWitness.witnessFromTrace trace a b key,
+    extracted, shape, openings, beforeCheck, reached, keyAt⟩
 
 end QSB.CoreCheckedStep

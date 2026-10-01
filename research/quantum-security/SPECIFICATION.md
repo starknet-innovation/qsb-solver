@@ -133,6 +133,18 @@ scan and signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
 computes a complete modeled `RoundWitness` from this trace, the two reached
 bonus signature bytes, and the last reached key. The game extractor still
 needs an actual transaction and Core-acceptance refinement.
+`QSB.CoreCheckedStep` now computes signature-site outcomes from reached stacks
+in a separate source-shaped run. A successful checked run replays in the
+structural and byte models with exactly those outcomes. If the literal run's
+final CastToBool is true, Lean derives a true final ten-of-ten scan and all ten
+strict-DER source-addressed checker pairs without a caller-supplied scan or
+short-push premise. For the one literal fixture, the checked run also yields
+nine distinct second-round positions because none of its generated second-round
+commitments is strict DER. The executable `extractMatchedWitness` returns a
+modeled round witness whose key comes from the reached final stack. These
+source-model results retain external hash, key-parser, transaction-digest, and
+ECDSA functions; they do not prove
+compiled-Core acceptance or a quantum success bound.
 `QSB.DynamicCoreFinalTruth` extends the final-truth bridge to every
 parameterized Lean Config A lock. A source-shaped accepted run with all
 reached signature-site checks enters the executable two-candidate search;

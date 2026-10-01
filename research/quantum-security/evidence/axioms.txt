@@ -168,6 +168,9 @@
 'QSB.CorePushFindAndDelete.literal_many_pushes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.deletedScript_literal' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.scanAtStack_finalTen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.scanAtStack_finalTen_true_all_short' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreMultisigSourceScan.scanAtStack_some' depends on axioms: [propext, Quot.sound]
 'QSB.DERSyntax.valid_direct_push_width' depends on axioms: [propext, Quot.sound]
 'QSB.CoreMultisigEval.finalTenEval_success_all_short' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1419,6 +1422,17 @@
 'QSB.CoreCheckedStep.checked_run_frames' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedStep.checked_run_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedStep.literal_checked_run_seven_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checkedMultisig_final_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checkedMultisig_true_of_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checked_run_refines_byte_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checked_run_ending_multisig_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_final_scan_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_final_source_layout' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checkedMultisig_final_ten_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_final_ten_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.literal_checked_run_extract_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

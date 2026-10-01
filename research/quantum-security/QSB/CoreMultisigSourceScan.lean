@@ -151,6 +151,74 @@ theorem scanAtStack_finalTen (script : Bytes)
     deletedScript_ten script top short, reachedSignatures, reachedKeys,
     FinalScriptCode.reachedSignatures]
 
+/-- A true ten-of-ten generic scan necessarily attempts every signature.
+Each reached signature is nonempty and strict DER, so its Core push pattern
+is short; this is derived from the scan rather than assumed from the stack. -/
+theorem scanAtStack_finalTen_true_all_short (script : Bytes)
+    (checker : Bytes → Bytes → Bytes → Bool) (top : List Bytes)
+    (keys : top[0]? = some [0x0a])
+    (sigs : top[11]? = some [0x0a])
+    (enough : 23 ≤ top.length)
+    (success : scanAtStack script checker top.reverse = some true) :
+    ∀ sig ∈ reachedSignatures top 10 10, sig.length < 76 := by
+  obtain ⟨keyAddress, sigAddress, _, _⟩ :=
+    CoreMultisigStack.final_source_layout top enough
+  have parsed : CoreScriptNum.coreSetVch [0x0a] = some 10 := by decide
+  have parsedKeys : CoreMultisigCleanup.parseSourceCount top.reverse 1 =
+      some 10 := by
+    simp [CoreMultisigCleanup.parseSourceCount, keyAddress, keys, parsed]
+  have parsedSigs : CoreMultisigCleanup.parseSourceCount top.reverse 12 =
+      some 10 := by
+    simp [CoreMultisigCleanup.parseSourceCount, sigAddress, sigs, parsed]
+  have capacity : ¬ 10 + 10 + 3 > top.length := by omega
+  have scanTrue : CoreMultisigEval.scan DERSyntax.verifyAllEncoding
+      (CoreMultisigEval.nonemptyVerify checker
+        (deletedScript script top 10 10))
+      (reachedSignatures top 10 10) (reachedKeys top 10) =
+        some true := by
+    simpa [scanAtStack, parsedKeys, parsedSigs, capacity] using success
+  have sigLength : (reachedSignatures top 10 10).length = 10 := by
+    simp [reachedSignatures, List.length_take, List.length_drop]
+    omega
+  have keyLength : (reachedKeys top 10).length = 10 := by
+    simp [reachedKeys, List.length_take]
+    omega
+  have matched := CoreMultisigEval.scan_success_match
+    DERSyntax.verifyAllEncoding
+    (CoreMultisigEval.nonemptyVerify checker
+      (deletedScript script top 10 10))
+    (reachedSignatures top 10 10) (reachedKeys top 10) scanTrue
+  have pairs := (Multisig.equal_counts_success_iff_pairs
+    (fun sig key => DERSyntax.verifyAllEncoding sig &&
+      CoreMultisigEval.nonemptyVerify checker
+        (deletedScript script top 10 10) sig key)
+    (by omega : (reachedSignatures top 10 10).length =
+      (reachedKeys top 10).length)).mp matched
+  have allShort (ss ks : List Bytes)
+      (joined : List.Forall₂ (fun sig key =>
+        (DERSyntax.verifyAllEncoding sig &&
+          CoreMultisigEval.nonemptyVerify checker
+            (deletedScript script top 10 10) sig key) = true) ss ks) :
+      ∀ target ∈ ss, target.length < 76 := by
+    induction joined with
+    | nil => simp
+    | @cons sig key restSigs restKeys pair more ih =>
+        intro target member
+        simp only [List.mem_cons] at member
+        rcases member with rfl | remaining
+        · have flags : DERSyntax.verifyAllEncoding target = true ∧
+              CoreMultisigEval.nonemptyVerify checker
+                (deletedScript script top 10 10) target key = true := by
+            simpa only [Bool.and_eq_true_eq_eq_true_and_eq_true] using pair
+          have nonempty := (CoreMultisigEval.nonemptyVerify_sound
+            checker (deletedScript script top 10 10) target key flags.2).1
+          have valid : DERSyntax.valid target = true := by
+            rw [← DERSyntax.verifyAllEncoding_nonempty target nonempty]
+            exact flags.1
+          exact DERSyntax.valid_direct_push_width target valid
+        · exact ih target remaining
+  exact allShort _ _ pairs
+
 /-- The specialized final evaluator's true result is also a true result of
 the generic scanner using Core's full push serialization. The short-pattern
 premise follows from strict DER; it is not assumed for an arbitrary stack. -/

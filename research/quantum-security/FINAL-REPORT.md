@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,212 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,224 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -791,17 +791,33 @@ ordered scan before source-shaped cleanup. Lean proves that any successful
 literal run records six signature-site results, that each successful checked
 CHECKSIGVERIFY exposes its actual hash-type and verifier call, and that a
 computed true final ten-pair result exposes all ten source-addressed strict-DER
-pairs under the stated short-push premise. Lean now also proves that every
-successful checked run replays in the older structural interpreter using
+pairs. The generic true scan itself forces all ten signatures to be nonempty
+strict DER and short enough for direct pushes; no short-push premise is needed
+at this boundary. Lean also proves that every successful checked run replays
+in the older structural interpreter using
 exactly its computed signature results, then projects to the byte machine.
 For the literal lock, any successful checked run therefore yields the seven
-distinct final HORS opening positions and their commitment equations. This
-removes caller-chosen signature Booleans from this *new source model*; the
-converse simulation, connection to the checked certificate search, and
+distinct final HORS opening positions and their commitment equations. If its
+final CastToBool is true, the actual checked final scan is true and all ten
+reached signature/key pairs pass the source-shaped checker against one common
+deleted scriptCode. For this one literal fixture, where no generated final
+commitment is strict DER, the run then identifies nine distinct second-round
+positions: seven signed openings and two bonus dummies. The executable
+`FinalRoundWitness.extractMatchedWitness` consequently returns a modeled
+round witness with valid opening equations and its key read from the actual
+reached final stack. This removes caller-chosen signature Booleans from this
+*new source model*; the converse simulation, connection to the checked
+certificate search, and
 compiled-Core refinement remain unproved. The key parser, ECDSA, transaction
 digest, and hash functions remain external inputs. A small checked-run theorem
 also demonstrates a computed false non-VERIFY multisignature followed by a
 truthy push; it is an isolated model case, not a QSB spend.
+The pinned local Core adapter's three early-exit cases and 22 isolated
+ten-signature cases were rerun; their outputs matched the committed
+`evidence/multisig-early-exit.json` and
+`evidence/ten-signature-find-and-delete.json` byte for byte. These finite
+probes corroborate the relevant source behavior but do not refine every
+compiled-Core execution to the Lean interpreter.
 `QSB/CoreCheckedCertificate.lean` searches the two possible first-round
 multisignature outcomes and verifies the full reached source-model certificate
 before returning a result. It additionally recomputes the reached first-round

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1212,
+  "theorem_count": 1224,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -552,11 +552,31 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreCheckedStep.checkedMultisig_final_cell": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedMultisig_final_ten_eval": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreCheckedStep.checkedMultisig_sound": [
       "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedStep.checkedMultisig_ten_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedMultisig_true_of_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checked_run_ending_multisig_true": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -567,6 +587,11 @@
       "propext"
     ],
     "QSB.CoreCheckedStep.checked_run_refines_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checked_run_refines_byte_tail": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -582,6 +607,36 @@
       "propext"
     ],
     "QSB.CoreCheckedStep.false_multisig_result_can_continue": [
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_extract_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_final_scan_true": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_final_source_layout": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_final_ten_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_checked_run_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedStep.literal_checked_run_seven_openings": [
@@ -913,6 +968,11 @@
       "propext"
     ],
     "QSB.CoreMultisigSourceScan.scanAtStack_finalTen": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.scanAtStack_finalTen_true_all_short": [
       "Classical.choice",
       "Quot.sound",
       "propext"
