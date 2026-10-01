@@ -107,7 +107,11 @@ prove concrete CompactSize, nonnegative eight-byte amount, and ordered-output
 round trips on their valid wire domains. A pinned 13-case Core probe checks
 selected output, input, and `scriptSig` changes;
 see [the sighash boundary](CORE-SIGHASH-ALL.md). The general transaction
-parser/refinement and quantum target-hit bounds are still open.
+Core refinement and quantum target-hit bounds are still open.
+`QSB/SighashAllWire.lean` now proves that a complete source-shaped ALL
+preimage reveals ordered outputs even with varying prepared input scripts,
+version, input count, and locktime. One 139-byte Lean fixture matches the
+pinned app's baseline preimage used in the Core probe.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that

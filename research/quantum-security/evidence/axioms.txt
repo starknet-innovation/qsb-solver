@@ -37,6 +37,11 @@
 'QSB.WireIntegers.amount_90000' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireOutputs.decode_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireOutputs.encode_injective_on' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.decodeOutputs_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.changed_outputs_distinct_preimages' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWireFixture.fixture_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWireFixture.fixture_preimage_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWireFixture.fixture_outputs_parsed' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes' depends on axioms: [propext,
@@ -45,6 +50,9 @@
 'QSB.SighashBinding.changed_outputs_any_context_distinct_preimages' does not depend on any axioms
 'QSB.SighashBinding.changed_outputs_same_key_requires_target' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_any_context_same_key_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.SighashBinding.source_shaped_all_changed_outputs_same_key_target' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms

@@ -2,6 +2,7 @@ import QSB.Game
 import QSB.Nonce
 import QSB.OutputCodec
 import QSB.WireOutputs
+import QSB.SighashAllWire
 
 /-!
 The authorization-to-sighash bridge for a legacy SIGHASH_ALL check. In the
@@ -151,5 +152,25 @@ theorem changed_outputs_any_context_same_key_target
     serialize outputs parseOutputs roundtrip changed, ?_⟩
   obtain ⟨R, present, equation⟩ := verified
   exact recovery_in_messageTargets r s key _ R points present equation
+
+/-- For the complete source-shaped ALL preimage, the parser premise above is
+proved for valid wire transactions, even when their prepared input scripts,
+version, input count, and locktime differ. The Core C++ serializer and actual
+ECDSA verification remain external to this theorem. -/
+theorem source_shaped_all_changed_outputs_same_key_target
+    {F G : Type*} [Field F] [AddCommGroup G] [Module F G] [DecidableEq G]
+    (hash : Bytes → G) (r s : F) (key : G) (points : Finset G)
+    {released attempted : { tx : SighashAllWire.TxFields // SighashAllWire.valid tx }}
+    (changed : attempted.val.outputs ≠ released.val.outputs)
+    (verified : ∃ R ∈ points,
+      RecoveryEquation r s R (hash (SighashAllWire.encode attempted.val)) key) :
+    SighashAllWire.encode attempted.val ≠ SighashAllWire.encode released.val ∧
+      hash (SighashAllWire.encode attempted.val) ∈ messageTargets r s key points := by
+  exact changed_outputs_any_context_same_key_target
+    (fun tx : { tx : SighashAllWire.TxFields // SighashAllWire.valid tx } =>
+      SighashAllWire.encode tx.val)
+    (fun tx => tx.val.outputs) SighashAllWire.decodeOutputs
+    (fun tx => SighashAllWire.decodeOutputs_encode tx.val tx.property)
+    hash r s key points changed verified
 
 end QSB.SighashBinding

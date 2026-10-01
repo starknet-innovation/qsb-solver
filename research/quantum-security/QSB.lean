@@ -6,6 +6,8 @@ import QSB.Nonce
 import QSB.OutputCodec
 import QSB.WireIntegers
 import QSB.WireOutputs
+import QSB.SighashAllWire
+import QSB.SighashAllWireFixture
 import QSB.SighashBinding
 import QSB.RecoveryCandidates
 import QSB.Parameters
@@ -91,12 +93,18 @@ import QSB.Reduction
 #print axioms QSB.WireIntegers.amount_90000
 #print axioms QSB.WireOutputs.decode_encode
 #print axioms QSB.WireOutputs.encode_injective_on
+#print axioms QSB.SighashAllWire.decodeOutputs_encode
+#print axioms QSB.SighashAllWire.changed_outputs_distinct_preimages
+#print axioms QSB.SighashAllWireFixture.fixture_valid
+#print axioms QSB.SighashAllWireFixture.fixture_preimage_bytes
+#print axioms QSB.SighashAllWireFixture.fixture_outputs_parsed
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes
 #print axioms QSB.SighashBinding.changed_outputs_any_context_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_same_key_requires_target
 #print axioms QSB.SighashBinding.changed_outputs_any_context_same_key_target
+#print axioms QSB.SighashBinding.source_shaped_all_changed_outputs_same_key_target
 #print axioms QSB.RecoveryCandidates.secp_prime_lt_twice_order
 #print axioms QSB.RecoveryCandidates.x_coordinate_candidates
 #print axioms QSB.RecoveryCandidates.recovery_points_card_le_four

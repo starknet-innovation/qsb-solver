@@ -20,6 +20,35 @@ structure PrefixCodec (α : Type*) where
   roundtrip : ∀ value, valid value → ∀ tail,
     decode (encode value ++ tail) = some (value, tail)
 
+/-- Fixed-length raw bytes, used for an input's 32-byte previous txid. -/
+def fixedBytesCodec (width : Nat) : PrefixCodec Bytes where
+  valid := fun payload => payload.length = width
+  encode := id
+  decode := fun bytes =>
+    if width ≤ bytes.length then
+      some (bytes.take width, bytes.drop width)
+    else
+      none
+  roundtrip := by
+    intro payload valid tail
+    simp [valid]
+
+/-- Consecutive self-delimiting fields remain self-delimiting. -/
+def productCodec {α β : Type} (first : PrefixCodec α)
+    (second : PrefixCodec β) : PrefixCodec (α × β) where
+  valid := fun pair => first.valid pair.1 ∧ second.valid pair.2
+  encode := fun pair => first.encode pair.1 ++ second.encode pair.2
+  decode := fun bytes => do
+    let (a, rest) ← first.decode bytes
+    let (b, tail) ← second.decode rest
+    return ((a, b), tail)
+  roundtrip := by
+    intro pair valid tail
+    cases pair with
+    | mk a b =>
+      simp [List.append_assoc, first.roundtrip _ valid.1,
+        second.roundtrip _ valid.2]
+
 /-- Bitcoin script byte vectors use a CompactSize length followed by exactly
 that many bytes. This construction only assumes a correct count codec; it
 proves the framing and payload round trip for arbitrary script bytes. -/

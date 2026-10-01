@@ -1,5 +1,5 @@
 {
-  "theorem_count": 628,
+  "theorem_count": 634,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2106,6 +2106,31 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SighashAllWire.changed_outputs_distinct_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.decodeOutputs_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWireFixture.fixture_outputs_parsed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWireFixture.fixture_preimage_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWireFixture.fixture_valid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SighashBinding.changed_outputs_any_context_distinct_preimages": [],
     "QSB.SighashBinding.changed_outputs_any_context_same_key_target": [
       "Classical.choice",
@@ -2126,6 +2151,11 @@
       "propext"
     ],
     "QSB.SighashBinding.changed_outputs_same_key_requires_target": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.source_shaped_all_changed_outputs_same_key_target": [
       "Classical.choice",
       "Quot.sound",
       "propext"

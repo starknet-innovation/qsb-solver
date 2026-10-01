@@ -32,9 +32,14 @@ CompactSize encoder branches with valid-domain round trips;
 `QSB/WireOutputs.lean` therefore proves ordered-output byte injectivity when
 the amount is nonnegative and below `2^63` and count/script lengths are below
 `2^64`. Equality with Core's C++ byte writers and the consensus monetary
-domain still needs refinement. A second conditional theorem handles varying
-other fields and scriptCode if an output parser round-trips all relevant ALL
-preimages. Both versions combine same-key verification with the
+domain still needs refinement. `QSB/SighashAllWire.lean` then parses the
+ordered outputs from a complete source-shaped ALL preimage with variable
+version, prepared input scripts, input count, and locktime. The parser round
+trip is proved on its valid wire domain; a generated 139-byte fixture in
+`QSB/SighashAllWireFixture.lean` equals the pinned app's baseline preimage.
+The remaining step is to identify Core's C++ preimage for every accepted
+transaction with this source-shaped encoding, including its reached
+FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the
 finite-recovery-point theorem: the new hash group element must land in the
 key's admissible message-target set. The wire and Core-to-Lean ECDSA/hash
 premises remain explicit. Neither theorem collapses this event to a collision

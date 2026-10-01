@@ -302,11 +302,12 @@ unchanged-preimage controls retained the old key. Lean proves a fixed-context
 ordered-output preimage distinction under an explicit injective wire-encoding
 premise and maps any same-key verification of the new message to an admissible
 ECDSA recovery target. A second Lean theorem permits other fields and
-scriptCode to vary under an explicit output-parser round-trip premise. A
-source-shaped codec theorem now proves valid-domain output-list injectivity with concrete
-CompactSize and nonnegative eight-byte amount encodings. Lean-checked branch
+scriptCode to vary: the full source-shaped ALL preimage parser now recovers
+ordered outputs for every valid encoded transaction, and a 139-byte Lean
+fixture equals the pinned app's baseline preimage. Concrete CompactSize and
+nonnegative eight-byte amount encodings are included. Lean-checked branch
 vectors match the pinned app, and two 253-boundary transactions passed Core.
-The complete C++ serializer equivalence remains open.
+The C++ serializer and reached-scriptCode equivalence remain open.
 [The source contract](CORE-SIGHASH-ALL.md) explains why this is not universal
 same-key rejection or an arbitrary-witness QSB theorem:
 the full parser/refinement bridge and quantum hash-target bound remain open.
