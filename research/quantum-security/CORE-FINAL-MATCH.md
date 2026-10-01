@@ -41,6 +41,19 @@ an arbitrary initial stack yields seven HORS opening matches, two distinct
 bonus positions, and the selected scriptCode for those positions. Its
 successful-evaluation premise remains separate from actual Core acceptance;
 the model does not implement Core's transaction checker or secp256k1.
+`QSB/CoreChecksigEval.lean` makes the BASE `CHECKSIGVERIFY` success path
+explicit: FindAndDelete precedes the DER gate, the signature's actual last
+byte becomes `nHashType`, and the parsed-key and ECDSA/sighash checks remain
+external functions. Its arbitrary-stack run theorems reach the fixed pinning
+pair and both SHA256-derived puzzle signatures. The fixed pin signature uses
+`SIGHASH_ALL`; neither hash-derived puzzle is constrained to that type.
+`QSB/CoreFinalChecksigEval.lean` applies the same typed external checker to
+the final ten-pair source evaluator. Conditional on one successful modeled
+run and final evaluator, every source-addressed pair exposes its actual
+hash-type byte, key-validity condition, and checker call on the selected
+shared scriptCode. Under the same premise, the first nine reached signatures
+are `SIGHASH_SINGLE` and the tenth is the fixed `SIGHASH_ALL` nonce. This
+still leaves Core's transaction hash and ECDSA behavior unrefined.
 
 Core's [`CheckSignatureEncoding`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L200-L228) allows the empty signature as an
 invalid-check placeholder. Every nonempty signature must satisfy strict DER
