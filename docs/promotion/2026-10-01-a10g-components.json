@@ -1,0 +1,94 @@
+{
+  "status": "component-gates-passed-on-two-replicas",
+  "controllerCommit": "353cfad0328640aa7c6e62fcf1fa3297f2de2c97",
+  "candidateTag": "candidate-sm86-20261001-1",
+  "candidateCommit": "40b5d9f9f741eeac498c55ba98f52db08c288170",
+  "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48",
+  "binarySha256": {
+    "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+    "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+  },
+  "memoryToolingImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:90dedfe09bc8e3ff506dbd2a8c9ef616bfff5635354efa0a68bab2b936964522",
+  "auditBundle": {
+    "controllerCommit": "353cfad0328640aa7c6e62fcf1fa3297f2de2c97",
+    "sha256": "6456b900aac5f9b285384b43524d89d5ab8e9661a65c47f3735cc7b16a571644",
+    "manifestSha256": "2fb6658347591b7563d79f8550652896e75e32814486056c4210064d0e041693",
+    "url": "https://github.com/starknet-innovation/qsb-solver/releases/download/candidate-sm86-20261001-1/validation-sm86-components-353cfad.tar.gz",
+    "diagnosticBuildCommit": "963147b0969f74e5d638d3fafef2c3c7f7d3e6e6"
+  },
+  "comparedWith": "docs/promotion/2026-09-25-a10g-components-v3.json: every phase and count identical on both replicas (pinning-host 34 faults PASS; curve 11256 points, 4 infinity, 504 table checks, 0 errors; 7 memory cases; 156 exception branches; 7 capacity cases)",
+  "replicas": {
+    "r1": {
+      "resultSha256": "80af506c4c24b96a5d819b7b7fd44957e83ec1db0b35a6013ded7259c6c5529d",
+      "publicResultSha256": "a7e764560ff1a550fcb7af060d05ca7c9533f9b45111431b9c255c9ca50c9b31",
+      "gpu": "NVIDIA A10G, driver 595.91.07",
+      "status": "native-components-completed-awaiting-cpu-review",
+      "exitCode": "0",
+      "cpu": {
+        "exceptionBranchesMatched": 156,
+        "pinningCpuVerdict": {
+          "valid": true,
+          "sequence": 2147507508,
+          "locktime": 1497688167
+        },
+        "capacityCases": 7
+      },
+      "cleanup": {
+        "verifiedAt": "2026-10-01T19:07:25.298285+00:00",
+        "instanceState": "terminated",
+        "volumesRemaining": 0,
+        "securityGroupsRemaining": 0,
+        "schedulesRemaining": 0,
+        "functionsRemaining": 0,
+        "rolesRemaining": 0,
+        "instanceProfilesRemaining": 0
+      }
+    },
+    "r2": {
+      "resultSha256": "7c9c3fe6cd087d78c74dfb96e0146c643dd7b8407dfda1ac1669fe1f0e081bbc",
+      "publicResultSha256": "7be05e4acf8aabc540dfe2be5352c5adffeeae57aa06af66f37fdb00b9b61b2f",
+      "gpu": "NVIDIA A10G, driver 595.91.07",
+      "status": "native-components-completed-awaiting-cpu-review",
+      "exitCode": "0",
+      "cpu": {
+        "exceptionBranchesMatched": 156,
+        "pinningCpuVerdict": {
+          "valid": true,
+          "sequence": 2147507508,
+          "locktime": 1497688167
+        },
+        "capacityCases": 7
+      },
+      "cleanup": {
+        "verifiedAt": "2026-10-01T19:07:31.536623+00:00",
+        "instanceState": "terminated",
+        "volumesRemaining": 0,
+        "securityGroupsRemaining": 0,
+        "schedulesRemaining": 0,
+        "functionsRemaining": 0,
+        "rolesRemaining": 0,
+        "instanceProfilesRemaining": 0
+      }
+    }
+  },
+  "cost": {
+    "instances": 2,
+    "instanceType": "g5.xlarge",
+    "region": "eu-west-1",
+    "onDemandUsdPerHour": 1.123,
+    "runtimeMinutesEach": 4.9,
+    "estimatedComputeUsd": 0.18,
+    "billingIsEstimate": true
+  },
+  "limits": [
+    "Diagnostic derivatives are distinct from release binaries; the release binaries are byte-identical to the September release",
+    "Historical single-pin replay is not fresh search",
+    "Not matched performance: binaries unchanged, runtime libraries patched",
+    "No live Batch certification, external miner certification or mainnet activation"
+  ],
+  "publicEvidence": {
+    "directory": "evidence/a10g-components-20261001",
+    "manifestSha256": "f1159c3441033384c17908c3e5fbe30b3a5e260dd6ae5f245d008da87ee2aa73",
+    "redacted": true
+  }
+}

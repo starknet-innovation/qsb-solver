@@ -1,0 +1,29 @@
+{
+  "format": "qsb-public-evidence-redaction-v1",
+  "redaction": {
+    "pattern": "GPU-[a-f0-9-]+",
+    "replacement": "GPU-REDACTED",
+    "scope": "Only device UUID strings; numerical results and binary identities unchanged"
+  },
+  "replicas": {
+    "r1": {
+      "originalResultSha256": "80af506c4c24b96a5d819b7b7fd44957e83ec1db0b35a6013ded7259c6c5529d",
+      "occurrences": 18,
+      "files": {
+        "r1/result.redacted.json": "a7e764560ff1a550fcb7af060d05ca7c9533f9b45111431b9c255c9ca50c9b31",
+        "r1/cpu-results.json": "0137f13621e01ccaefcdd1b86a0072cc6002a36a7f48d0f313aec9762e2f874d"
+      }
+    },
+    "r2": {
+      "originalResultSha256": "7c9c3fe6cd087d78c74dfb96e0146c643dd7b8407dfda1ac1669fe1f0e081bbc",
+      "occurrences": 18,
+      "files": {
+        "r2/result.redacted.json": "7be05e4acf8aabc540dfe2be5352c5adffeeae57aa06af66f37fdb00b9b61b2f",
+        "r2/cpu-results.json": "4310b2db655acb3966583dcb84702562ea98ae93a09a7f790065cb741f2963d3"
+      }
+    }
+  },
+  "files": {
+    "cpu-reference-binding.json": "d0e9d7baf12ad125956c8b955f82a5be7b727d5ad1dcece9a9eb927b0155988b"
+  }
+}
