@@ -1,0 +1,120 @@
+import QSB.DynamicBonusDER
+import QSB.FinalBonusIndices
+
+/-!
+Nine original second-round positions under an explicit good-setup premise.
+The seven signed openings and two bonus dummy signatures are extracted from
+one successful parameterized byte-model run and a matched DER-sound scan.
+-/
+namespace QSB.DynamicBonusIndices
+open ByteMachine
+open FinalSignedLoop
+set_option maxRecDepth 20000
+set_option maxHeartbeats 10000000
+
+theorem matched_dynamic_nine_positions (hashes : Hashes)
+    (nonce prior : Bytes) (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (priorWrong : prior.length ≠ 20)
+    (tail : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (final : State)
+    (accepted : run hashes
+      (DynamicFinalInit.finalRoundProgram nonce commitmentAt)
+      (State.mk (prior :: tail) outcomes cost) = some final)
+    (verify : Bytes → Bytes → Bool)
+    (verifySound : ∀ sig key, verify sig key = true →
+      DERSyntax.valid sig = true)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (commitmentAt id) = false)
+    (matched : ∀ beforeCheck : State,
+      run hashes (DynamicBonusChain.finalCheckPrefix nonce commitmentAt)
+        (State.mk (prior :: tail) outcomes cost) = some beforeCheck →
+      Multisig.matchSigs verify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : State),
+      run hashes (DynamicBonusChain.finalCheckPrefix nonce commitmentAt)
+        (State.mk (prior :: tail) outcomes cost) = some beforeCheck ∧
+      beforeCheck.stack[13]? = some (generatedDummyAt a) ∧
+      beforeCheck.stack[12]? = some (generatedDummyAt b) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some nonce ∧
+      beforeCheck.stack[22]? = some [] ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace, hashes.h160 p.2 = commitmentAt p.1) ∧
+      a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      FinalSignedChain.extractOrdered (List.finRange 7)
+        (List.finRange 150) 0 tail = some trace := by
+  obtain ⟨trace, remainingIds, gathered, dummies, commitments,
+      candidate, firstIndex, lastIndex, beforeCheck, checkRun,
+      aligned, permutation, traceCount, _distinct, hits, traceExtract,
+      gatheredTrace, _unopened, _candidateSource,
+      firstLower, firstUpper, lastLower, lastUpper,
+      lastSlot, firstSlot, gatheredSlots, nonceSlot, dummySlot,
+      firstCap, lastCap⟩ :=
+    DynamicBonusChain.accepted_data_signed_final_signature_origins
+      hashes nonce prior commitmentAt width priorWrong tail outcomes cost
+      final accepted
+  have enough : 22 ≤ beforeCheck.stack.length := by
+    obtain ⟨within, _⟩ := List.getElem?_eq_some_iff.mp dummySlot
+    omega
+  have success := matched beforeCheck checkRun
+  have firstSyntax :=
+    FinalBonusSecond.matched_final_signature_has_syntax verify
+      (fun sig => DERSyntax.valid sig = true) verifySound
+      beforeCheck.stack enough success 1 (by omega)
+  have lastSyntax :=
+    FinalBonusSecond.matched_final_signature_has_syntax verify
+      (fun sig => DERSyntax.valid sig = true) verifySound
+      beforeCheck.stack enough success 0 (by omega)
+  have firstShallow : firstIndex < 152 := by
+    by_contra h
+    have atCap : firstIndex = 152 := by omega
+    have valid := firstSyntax _ (firstCap atCap)
+    simp [noCommitmentDER candidate] at valid
+  have lastShallow : lastIndex < 152 := by
+    by_contra h
+    have atCap : lastIndex = 152 := by omega
+    have valid := lastSyntax _ (lastCap ⟨firstShallow, atCap⟩)
+    simp [noCommitmentDER candidate] at valid
+  have idsLength : remainingIds.length = 143 := by
+    have count := permutation.length_eq
+    simp [List.length_append, traceCount] at count
+    omega
+  have firstWithin : firstIndex - 9 < remainingIds.length := by omega
+  have erasedLength :
+      (remainingIds.eraseIdx (firstIndex - 9)).length = 142 := by
+    rw [List.length_eraseIdx_of_lt firstWithin, idsLength]
+  have secondWithin : lastIndex - 10 <
+      (remainingIds.eraseIdx (firstIndex - 9)).length := by omega
+  have two := FinalBonusIndices.two_bonus_ids_extend_seven trace
+    remainingIds traceCount permutation (firstIndex - 9)
+    (lastIndex - 10) firstWithin secondWithin
+  let a := remainingIds[firstIndex - 9]
+  let b := (remainingIds.eraseIdx (firstIndex - 9))[lastIndex - 10]
+  have firstAt : beforeCheck.stack[13]? =
+      some (generatedDummyAt a) := by
+    rw [firstSlot]
+    simp [firstShallow, aligned.dummyMap, a, firstWithin]
+  have lastAt : beforeCheck.stack[12]? =
+      some (generatedDummyAt b) := by
+    rw [lastSlot]
+    simp [firstShallow, lastShallow, aligned.dummyMap,
+      List.eraseIdx_map, b, secondWithin]
+  have signedSlots : ∀ j : Nat, j < 7 →
+      beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => generatedDummyAt p.1)).reverse[j]? := by
+    intro j within
+    rw [gatheredSlots j within, gatheredTrace]
+  dsimp only at two
+  exact ⟨trace, a, b, beforeCheck, checkRun, firstAt, lastAt,
+    signedSlots, nonceSlot, dummySlot,
+    traceCount, hits, two.1, two.2.1,
+    two.2.2.1, two.2.2.2.1, two.2.2.2.2,
+    traceExtract⟩
+
+end QSB.DynamicBonusIndices

@@ -58,6 +58,8 @@ import QSB.DynamicBonusSecond
 import QSB.DynamicBonusTrace
 import QSB.DynamicBonusChain
 import QSB.DynamicBonusDER
+import QSB.DynamicBonusIndices
+import QSB.DynamicBonusSetup
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -840,6 +842,9 @@ import QSB.Reduction
 #print axioms QSB.DynamicBonusChain.accepted_postbonus_final_signature_origins
 #print axioms QSB.DynamicBonusChain.accepted_data_signed_final_signature_origins
 #print axioms QSB.DynamicBonusDER.accepted_dynamic_bonus_der_alternative
+#print axioms QSB.DynamicBonusIndices.matched_dynamic_nine_positions
+#print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
+#print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

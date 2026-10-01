@@ -1,5 +1,5 @@
 {
-  "theorem_count": 966,
+  "theorem_count": 969,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1223,6 +1223,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicBonusIndices.matched_dynamic_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicBonusSecond.accepted_bonus_two_roll_shallow_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -1262,6 +1267,16 @@
       "propext"
     ],
     "QSB.DynamicBonusSecond.signed_front_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSetup.bad_der_setup_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSetup.good_setup_nine_positions": [
       "Classical.choice",
       "Quot.sound",
       "propext"

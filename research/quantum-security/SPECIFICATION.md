@@ -259,6 +259,15 @@ in the dummy region or an unopened commitment passes DER syntax. The latter
 is a setup exception, not a quantum spend bound. Compiled-Core acceptance,
 checker refinement, universal builder correspondence, and transaction-level
 extraction remain open.
+Under the complementary premise that all 150 second-round commitments fail
+strict DER syntax, `DynamicBonusIndices` proves that the two reached bonus
+signature bytes are surviving dummies at distinct original positions outside
+the seven signed openings. `DynamicBonusSetup` lifts this pointwise result to
+one shared sampled twenty-byte-output setup function: later witness choices
+may depend on that function, while the material choosing its 150 setup inputs
+is independent of it. The excluded DER-shaped-commitment setup fraction is
+bounded by `150·12/256^6`. This count is classical uniform-function setup
+analysis, not a coherent-query or unauthorized-spend bound.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

@@ -87,6 +87,17 @@ on a formal correspondence between that target set and Core's parser. This
 does not bound adaptive quantum searches or the chance of an unauthorized
 spend.
 
+The parameterized final-round byte-model proof now carries seven distinct
+second-round openings through both bonus draws and the final signature-source
+slots. Under an explicit matched DER-sound scan, an overshooting bonus draw
+requires an unopened DER-shaped commitment. With no such commitment, Lean
+extracts nine distinct original positions from the same run. For a shared
+uniform twenty-byte-output setup function independent of its 150 input choices,
+the excluded setup fraction is at most `150·12/256^6`; later modeled witnesses
+may depend on the sampled function. See `QSB/DynamicBonusSetup.lean`. Universal
+builder/Core refinement and the joint quantum unauthorized-spend bound remain
+open.
+
 `QSB/Nonce.lean` models fixed-signature ECDSA recovery targets, including the
 possibility that opposite recovery points admit different message scalars for
 one signature and key. `QSB/RecoveryCandidates.lean` proves `p < 2n` for

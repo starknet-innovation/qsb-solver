@@ -383,6 +383,16 @@ whose bytes pass DER syntax. This is a deterministic setup exception, not a
 quantum probability bound. Universal builder-to-model correspondence,
 compiled-Core acceptance and final checker refinement, transaction-level
 extraction, and the joint quantum-oracle bound remain open.
+`QSB/DynamicBonusIndices.matched_dynamic_nine_positions` discharges the
+good-setup branch: if no second-round commitment is DER-shaped, the seven
+signed openings and two reached bonus dummy signatures occupy nine distinct
+original positions. `QSB/DynamicBonusSetup.good_setup_nine_positions` states
+this pointwise for an entire sampled twenty-byte-output setup function,
+allowing the modeled witness to depend on that function. Its companion
+`bad_der_setup_count` proves that the excluded setup fraction is at most
+`150·12/256^6` when that function is uniform and independent of the material
+selecting its 150 inputs. This is a setup-event guarantee under a modeled
+matched scan; it is not an unauthorized-spend or quantum-query bound.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
