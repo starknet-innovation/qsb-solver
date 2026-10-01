@@ -119,9 +119,15 @@ still supplies no ECDSA or real transaction-sighash relation for that key.
 
 ## Native differential evidence
 
-`analysis/check_der20_parser.py` evaluates Lean's strict-DER and `VERIFY_ALL`
-encoding predicates, then runs 73 isolated `CHECKSIG; DROP; TRUE` transactions
-through the pinned Core adapter. All 73 outcomes match. The `DROP` discards
+`QSB/CoreDEREncoding.lean` separately translates the 14 ordered checks in
+Core's `IsValidSignatureEncoding`, including its bitwise sign tests. Lean proves
+this source-shaped model equals `DERSyntax.valid` for every byte list and
+proves the accepted-path byte indices are in bounds. This does not establish
+compiled-C++ equivalence or actual ECDSA acceptance.
+
+`analysis/check_der20_parser.py` evaluates both Lean strict-DER models and the
+`VERIFY_ALL` encoding predicate, then runs 73 isolated `CHECKSIG; DROP; TRUE`
+transactions through the pinned Core adapter. All 73 outcomes match. The `DROP` discards
 the ECDSA Boolean so the test isolates parser aborts, including the empty
 exception. This is a finite corpus, not a proof of predicate equivalence.
 

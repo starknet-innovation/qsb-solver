@@ -141,7 +141,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 719 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 723 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -290,7 +290,10 @@ the pair verifier and scan result to actual Core execution remains open.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
-six-byte header/length shape. The crafted overshoot signature is accepted by
+six-byte header/length shape. `QSB/CoreDEREncoding.lean` separately lists
+Core's 14 checks in early-return order with bitwise sign tests. Lean proves
+the two source-shaped predicates agree on every byte list and that accepted
+checks read only in-bounds bytes. The crafted overshoot signature is accepted by
 this predicate. A proof that this Lean predicate equals Core's compiled parser
 for every byte string, and a count of its entire 20-byte accepted set, remain
 open; the earlier `390405/2^65` figure is still conditional on that count

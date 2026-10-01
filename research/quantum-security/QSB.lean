@@ -44,6 +44,7 @@ import QSB.FinalSignedChain
 import QSB.FinalBonusAccepted
 import QSB.FinalBonusSecond
 import QSB.DERSyntax
+import QSB.CoreDEREncoding
 import QSB.FinalBonusDER
 import QSB.FinalBonusIndices
 import QSB.ScriptCodeSelection
@@ -736,6 +737,10 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigStack.matched_source_pair
 #print axioms QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout
 #print axioms QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs
+#print axioms QSB.CoreDEREncoding.bit80_eq_ge
+#print axioms QSB.CoreDEREncoding.failFast_eq_all
+#print axioms QSB.CoreDEREncoding.valid_eq_model
+#print axioms QSB.CoreDEREncoding.accepted_indices_in_bounds
 #print axioms QSB.PinningScriptCode.accepted_pinning_reached_bytes
 #print axioms QSB.PinningScriptCode.matched_run_pinning_der_puzzle
 #print axioms QSB.FinalScriptCode.reached_signatures_exact

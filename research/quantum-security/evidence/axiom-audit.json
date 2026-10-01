@@ -1,5 +1,5 @@
 {
-  "theorem_count": 719,
+  "theorem_count": 723,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,21 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreDEREncoding.accepted_indices_in_bounds": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreDEREncoding.bit80_eq_ge": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreDEREncoding.failFast_eq_all": [
+      "propext"
+    ],
+    "QSB.CoreDEREncoding.valid_eq_model": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreFindAndDelete.final_scriptCode_run": [
       "Classical.choice",
       "Quot.sound",

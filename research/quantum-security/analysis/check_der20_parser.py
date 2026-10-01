@@ -1,4 +1,4 @@
-"""Differentially test Lean's DER predicate against pinned Core 27.2.
+"""Differentially test two Lean DER predicates against pinned Core 27.2.
 
 The isolated bare lock is CHECKSIG; DROP; TRUE. Under the recorded VERIFY_ALL
 flags, a malformed nonempty signature aborts CHECKSIG, while an ECDSA failure
@@ -80,9 +80,11 @@ def corpus() -> list[tuple[str, bytes]]:
     return cases
 
 
-def lean_results(cases: list[tuple[str, bytes]]) -> list[tuple[bool, bool]]:
-    source = "import QSB.DERSyntax\n" + "".join(
+def lean_results(cases: list[tuple[str, bytes]]) -> list[tuple[bool, bool, bool]]:
+    source = "import QSB.CoreDEREncoding\n" + "".join(
         "#eval QSB.DERSyntax.valid [" + ", ".join(str(b) for b in sig) +
+        "]\n#eval QSB.CoreDEREncoding.valid [" +
+        ", ".join(str(b) for b in sig) +
         "]\n#eval QSB.DERSyntax.verifyAllEncoding [" +
         ", ".join(str(b) for b in sig) + "]\n" for _, sig in cases)
     with tempfile.NamedTemporaryFile("w", suffix=".lean", dir=ROOT,
@@ -94,10 +96,11 @@ def lean_results(cases: list[tuple[str, bytes]]) -> list[tuple[bool, bool]]:
     if run.returncode:
         raise RuntimeError(run.stdout + run.stderr)
     lines = run.stdout.splitlines()
-    if len(lines) != 2 * len(cases) or any(line not in ("true", "false")
+    if len(lines) != 3 * len(cases) or any(line not in ("true", "false")
                                       for line in lines):
         raise RuntimeError(f"unexpected Lean output: {run.stdout!r}")
-    return [(lines[2 * i] == "true", lines[2 * i + 1] == "true")
+    return [(lines[3 * i] == "true", lines[3 * i + 1] == "true",
+             lines[3 * i + 2] == "true")
             for i in range(len(cases))]
 
 
@@ -122,8 +125,11 @@ def main() -> None:
     lock = bytes((0xAC, 0x75, 0x51))  # CHECKSIG; DROP; TRUE
     native = args.native_root.resolve()
     observed = []
-    for (name, sig), (syntax_valid, encoding_valid) in zip(
+    for (name, sig), (syntax_valid, core_order_valid,
+                      encoding_valid) in zip(
             cases, lean, strict=True):
+        if syntax_valid != core_order_valid:
+            raise AssertionError(f"Lean DER models differ for {name}")
         tx.inputs[1].script_sig = bt.push_data(sig) + bt.push_data(pubkey)
         raw_tx = tx.serialize()
         payload = f"{raw_tx.hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
@@ -140,6 +146,7 @@ def main() -> None:
         expected = encoding_valid
         observed.append({"name": name, "signature_hex": sig.hex(),
                          "lean_valid": syntax_valid,
+                         "lean_core_order_valid": core_order_valid,
                          "lean_verify_all_encoding": encoding_valid,
                          "core_accepted": accepted,
                          "expected": expected,
