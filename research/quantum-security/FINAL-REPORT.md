@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,057 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,059 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -781,6 +781,12 @@ selected legacy hash type or the raw out-of-range SINGLE constant; a valid
 input index is necessary. This is conditional on finding the source
 certificate with the supplied key parser and ECDSA predicate. It is not a
 compiled-Core acceptance implication or a quantum success bound.
+`QSB/DynamicCheckedCertificate.search_complete` proves the other direction
+of the executable certificate boundary: if either first-round Boolean has a
+truthy structural run satisfying the reached source checks, the two-candidate
+search returns a certificate. This removes an internal search-completeness
+obligation, while the implication from an arbitrary Core-accepted transaction
+to those source conditions remains unproved.
 The same certificate fixes the tenth final signature to the lock-pushed
 second-round nonce for every successful modeled run with 20-byte second-round
 commitments. The source-addressed stack theorem transfers this exact byte
@@ -815,6 +821,9 @@ For the complete parameterized Lean serialization with two 150-entry pools of
 `QSB/DynamicScriptLimits.lean` proves an exact length of
 `9756 + pin.length + nonce0.length + nonce1.length`. Its maximum, 9,981 bytes,
 is below the 10,000-byte script-size guard in the pinned Core 27.2 interpreter.
+Isolated pinned-Core bare scripts with bounded pushes and drops accept at
+9,981 and 10,000 bytes and reject at 10,001 bytes
+(`evidence/bare-script-boundary.json`).
 This discharges that size check for the Lean serialization under those width
 premises; universal Python-builder equality and compiled-Core acceptance
 refinement are still separate obligations.
@@ -845,6 +854,9 @@ test runs the complete two-round stack path with the three puzzle checks
 relaxed to `OP_2DROP`: one output accepts with the SINGLE-bug recovery keys;
 two outputs reject those old dummy keys and accept keys recovered for the
 in-range message; changing the selected second output's value then rejects.
+The same accepted two-output witness remains accepted with either a non-push
+scriptSig prefix computing an extra bottom-stack value or an extra 520-byte
+bottom-stack element.
 Changing only the unselected first output and rederiving the fixed ALL keys
 accepts while reusing the in-range SINGLE dummy keys. Lean proves the
 corresponding source-shaped preimage and joint-digest invariance for any

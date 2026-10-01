@@ -109,6 +109,8 @@ import QSB.Reduction
 #print axioms QSB.DynamicScriptLimits.commitment_pushes_length
 #print axioms QSB.DynamicScriptLimits.full_wire_length
 #print axioms QSB.DynamicScriptLimits.full_wire_below_core_limit
+#print axioms QSB.DynamicCheckedCertificate.candidate_complete
+#print axioms QSB.DynamicCheckedCertificate.search_complete
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same

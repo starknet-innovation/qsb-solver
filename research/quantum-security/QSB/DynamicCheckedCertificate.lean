@@ -496,6 +496,51 @@ theorem candidate_sound (hashes : Hashes) (lock : Lock)
       exact ⟨rfl, conditions.1.1, conditions.1.2,
         conditions.2⟩
 
+/-- Every complete checked source run is returned by its corresponding
+first-round candidate. The first CHECKMULTISIG may be either true or false. -/
+theorem candidate_complete (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (runEq : CoreStructuralRun.run hashes (program lock)
+      (initial stack firstRound) = some final)
+    (truth : ByteMachine.finalTruth
+      ⟨final.stack.reverse, final.outcomes, final.ops⟩ = true)
+    (sites : sourceSites hashes lock stack validKey verify
+      firstRound = true)
+    (last : finalChecked hashes lock stack validKey verify
+      firstRound = true) :
+    candidate hashes lock stack validKey verify firstRound =
+      some final := by
+  simp [candidate, runEq, truth, sites, last]
+
+/-- Search exhausts the two possible first-round scan outcomes. An available
+checked source run therefore yields some returned certificate, although the
+search may select the false candidate when both candidates work. -/
+theorem search_complete (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (available : ∃ firstRound final,
+      CoreStructuralRun.run hashes (program lock)
+        (initial stack firstRound) = some final ∧
+      ByteMachine.finalTruth
+        ⟨final.stack.reverse, final.outcomes, final.ops⟩ = true ∧
+      sourceSites hashes lock stack validKey verify firstRound = true ∧
+      finalChecked hashes lock stack validKey verify firstRound = true) :
+    ∃ firstRound final,
+      search hashes lock stack validKey verify =
+        some (firstRound, final) := by
+  obtain ⟨firstRound, final, runEq, truth, sites, last⟩ := available
+  have hit := candidate_complete hashes lock stack validKey verify
+    firstRound final runEq truth sites last
+  cases firstRound with
+  | false => exact ⟨false, final, by simp [search, hit]⟩
+  | true =>
+      cases other : candidate hashes lock stack validKey verify false with
+      | none => exact ⟨true, final, by simp [search, other, hit]⟩
+      | some otherFinal =>
+          exact ⟨false, otherFinal, by simp [search, other]⟩
+
 theorem search_sound (hashes : Hashes) (lock : Lock)
     (stack : List Bytes) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA)

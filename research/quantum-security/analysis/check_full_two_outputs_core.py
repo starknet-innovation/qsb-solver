@@ -19,6 +19,10 @@ from check_round_results import opcodes
 
 
 PINNED_BUILDER_SHA256 = "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c"
+PINNED_HELPER_SHA256 = {
+    "worker/cpu/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "worker/cpu/qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+}
 PINNED_NATIVE_SHA256 = {
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
@@ -37,6 +41,11 @@ def main() -> None:
     source_sha = hashlib.sha256(
         (app_root / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
     assert source_sha == PINNED_BUILDER_SHA256
+    helper_hashes = {
+        name: hashlib.sha256((app_root / name).read_bytes()).hexdigest()
+        for name in PINNED_HELPER_SHA256
+    }
+    assert helper_hashes == PINNED_HELPER_SHA256
     native_hashes = {
         name: hashlib.sha256((native_root / name).read_bytes()).hexdigest()
         for name in PINNED_NATIVE_SHA256
@@ -169,6 +178,16 @@ def main() -> None:
     check("two_outputs_old_dummy_keys", two_outputs, False)
     two_outputs.inputs[1].script_sig = witness(two_outputs, two_outputs)
     check("two_outputs_recovered_keys", two_outputs, True)
+    canonical_witness = two_outputs.inputs[1].script_sig
+    # The lock's fixed roll depths address cells above these additional
+    # bottom-stack values. A non-push scriptSig prefix is consensus-admitted
+    # for this bare output, and a 520-byte push reaches the element limit.
+    two_outputs.inputs[1].script_sig = b"\x51\x51\x93" + canonical_witness
+    check("two_outputs_nonpush_bottom_prefix", two_outputs, True)
+    two_outputs.inputs[1].script_sig = (
+        bt.push_data(b"\x5a" * 520) + canonical_witness)
+    check("two_outputs_max_element_bottom_prefix", two_outputs, True)
+    two_outputs.inputs[1].script_sig = canonical_witness
     two_outputs.outputs[1] = bt.TxOut(1001, b"\x51")
     check("two_outputs_changed_second_value", two_outputs, False)
     two_outputs.outputs[1] = bt.TxOut(1000, b"\x51")
@@ -181,6 +200,7 @@ def main() -> None:
     report = {
         "scope": "Two-input disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Input 1 uses in-range SIGHASH_SINGLE when two outputs exist. Not a full QSB spend or universal Core refinement.",
         "builder_sha256": source_sha,
+        "helper_files_sha256": helper_hashes,
         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
         "native_files_sha256": native_hashes,

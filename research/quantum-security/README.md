@@ -479,7 +479,10 @@ checkout was clean at capture. The solver baseline was
 experiment use `3eef7c39ecbe897ac55251841e9f2ec3764e04ad`. The app advanced
 from the initially inspected `231973b0b7187416f25cc755d1c2abf5f1a954fd`
 only in custody documentation; all inspected executable source-file hashes are
-unchanged. The solver was not modified to alter
+unchanged. The later eight-case bare-script boundary rerun records app checkout
+`4389e25077d48354dd85347391b6ca6a47888bd5` and asserts the same pinned
+`worker/cpu/bitcoin_tx.py` SHA-256. It uses the recorded Core library and
+adapter hashes. The solver was not modified to alter
 spending or GPU behavior. This directory adds research artifacts only.
 
 The recorded Core library SHA-256 is

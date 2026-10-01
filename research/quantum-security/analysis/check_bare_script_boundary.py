@@ -11,6 +11,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+PINNED_BUILDER_SHA256 = "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c"
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -19,6 +21,9 @@ def main():
     parser.add_argument("--image", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    builder_hash = hashlib.sha256(
+        (args.app_root / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
+    assert builder_hash == PINNED_BUILDER_SHA256
     sys.path.insert(0, str(args.app_root / "worker/cpu"))
     import bitcoin_tx as bt
 
@@ -67,6 +72,24 @@ def main():
     check("bare_lock_202_opcodes_rejected", b"\x61" * 201,
           b"\x61" * 202 + b"\x51", False)
 
+    # Each data push is at most 499 bytes and is immediately dropped. These
+    # truthy scripts use only 20 counted OP_DROP instructions, so the size
+    # limit is isolated from element, stack, and opcode-count limits.
+    def truthy_lock_of_size(size):
+        base = (bt.push_data(b"\x00" * 499) + b"\x75") * 19
+        tail_size = size - len(base) - 1
+        tail_data = b"\x00" * (tail_size - 4)
+        lock = base + bt.push_data(tail_data) + b"\x75\x51"
+        assert len(tail_data) <= 520 and len(lock) == size
+        return lock
+
+    check("bare_lock_9981_bytes_accepted", b"",
+          truthy_lock_of_size(9981), True)
+    check("bare_lock_10000_bytes_accepted", b"",
+          truthy_lock_of_size(10000), True)
+    check("bare_lock_10001_bytes_rejected", b"",
+          truthy_lock_of_size(10001), False)
+
     report = {
         "scope": "isolated bare legacy scripts; not a full QSB spend or formal refinement",
         "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
@@ -74,6 +97,7 @@ def main():
         "source_revision": subprocess.check_output(
             ["git", "-C", str(args.app_root), "rev-parse", "HEAD"],
             text=True).strip(),
+        "builder_sha256": builder_hash,
         "native_executable_sha256": hashlib.sha256(
             (native / "qsb-consensus").read_bytes()).hexdigest(),
         "native_library_sha256": hashlib.sha256(
