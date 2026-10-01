@@ -72,3 +72,10 @@ jobs:
       - name: Offline AWS transport checks
         if: matrix.transport == 'aws'
         run: python3 worker/promotion/test_aws_image.py qsb-combined:ci
+      - name: Scan combined image (fails on critical findings with a fix)
+        run: python3 scripts/image_scan.py docker:qsb-combined:ci image-scan
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() }}
+        with:
+          name: image-scan-${{ matrix.transport }}-sm${{ matrix.cuda_arch }}
+          path: image-scan/

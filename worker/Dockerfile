@@ -8,7 +8,12 @@ RUN python3 /src/worker/prepare_kernels.py
 RUN nvcc -O3 -arch=sm_${CUDA_ARCH} -DQSB_SLOTPIPE=0 -o /pinning /src/worker/build/pinning/pinning.cu -lcrypto -lm
 RUN nvcc -O3 -arch=sm_${CUDA_ARCH} -DZLAB_TRIM=0 -DZLAB_K2S=0 -o /subset /src/worker/build/subset/subset.cu -lcrypto -lm
 FROM nvidia/cuda:12.8.1-runtime-ubuntu22.04@sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip libssl3 && rm -rf /var/lib/apt/lists/*
+# NVIDIA does not rebuild this tag. Apply current Ubuntu updates from Ubuntu's archives only;
+# excluding NVIDIA's apt source keeps the pinned CUDA user-space packages unchanged.
+RUN apt-get -o Dir::Etc::SourceParts=/nonexistent update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -o Dir::Etc::SourceParts=/nonexistent upgrade -y \
+ && apt-get -o Dir::Etc::SourceParts=/nonexistent install -y --no-install-recommends python3 python3-pip libssl3 \
+ && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/qsb
 COPY --from=build /pinning /subset ./
 COPY --from=build /src/worker/build /opt/qsb/source
