@@ -80,6 +80,24 @@ worker image or claiming cheaper transactions or complete-pipeline improvement.
 
 ## Native results, 30 September
 
+### First-valid verification scheduling experiment
+
+`ordered_verdicts.py` is a separate experimental adapter for independent pure
+verification checks. Unlike the all-cases diagnostic verifier, it selects the
+first accepted verdict in input order, preserves all-DER-only rejection, and
+propagates errors only before acceptance. It caps outstanding checks at the
+chosen worker count (one to four), cancels queued checks on exit, and joins
+running workers. Callers must still enforce an outer process deadline; running
+checks can delay shutdown after early acceptance.
+
+Seven control-flow tests cover these cases, bounded prefetch and resource
+limits. A separate local comparison with the unchanged qsb-app public handler,
+using stub exports and verdicts, matches four cases at one, two and four workers.
+Those stubs do not establish cryptographic correctness or production integration.
+The adapter is not wired into qsb-app or a worker image. It needs isolated public
+reference initialization and matched representative workload measurements before
+adoption; extra work after early acceptance can outweigh parallelism.
+
 ### Saved trace replay on Linux
 
 `evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the
