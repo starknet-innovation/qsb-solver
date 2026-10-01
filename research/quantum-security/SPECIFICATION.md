@@ -153,6 +153,13 @@ compiled-Core acceptance or a quantum success bound.
 parameterized Lean Config A lock. A source-shaped accepted run with all
 reached signature-site checks enters the executable two-candidate search;
 compiled-Core acceptance still does not supply those premises.
+`QSB.CoreCheckedDynamic` starts instead from a checker-derived run of that
+parameterized program. Its truthy final result forces the reached source scan
+true, and the fixed ten/ten count and NULLDUMMY layout converts that scan into
+the ten-pair evaluator on the same stack. For any 20-byte second-round pool,
+the run then yields either a DER-shaped setup commitment or seven matching
+openings and nine distinct positions. The theorem does not yet connect that
+run to the parameterized two-candidate search or to compiled Core.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

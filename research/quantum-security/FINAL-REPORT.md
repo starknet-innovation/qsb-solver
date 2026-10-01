@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,232 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,238 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -819,6 +819,17 @@ remain unproved. The key parser, ECDSA, transaction digest, and hash functions
 remain external inputs. A small checked-run theorem
 also demonstrates a computed false non-VERIFY multisignature followed by a
 truthy push; it is an isolated model case, not a QSB spend.
+`QSB/CoreCheckedDynamic.lean` lifts the checked-run final extraction to
+parameterized Lean Config A locks. From a truthy checker-derived run, it proves
+that the computed final scan is true; a byte-level ten/ten count and NULLDUMMY
+layout then turns that scan into the source-shaped ten-pair evaluator on the
+same reached stack. If all second-round commitments are 20 bytes, the run
+either exposes an explicitly DER-shaped setup commitment or computes seven
+matching openings and nine distinct second-round positions. This no longer
+requires a separately postulated final-scan result for the parameterized Lean
+run. The arbitrary transaction-to-checked-run implication, parameterized
+six-site certificate bridge, builder equivalence, real checker semantics, and
+joint quantum bound remain unproved.
 The pinned local Core adapter's three early-exit cases and 22 isolated
 ten-signature cases were rerun; their outputs matched the committed
 `evidence/multisig-early-exit.json` and

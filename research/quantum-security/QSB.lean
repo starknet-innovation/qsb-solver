@@ -112,6 +112,7 @@ import QSB.CoreFinalChecksigEval
 import QSB.CoreSourceExtraction
 import QSB.CoreCheckedCertificate
 import QSB.CoreCheckedRunCertificate
+import QSB.CoreCheckedDynamic
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1320,6 +1321,12 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedRunCertificate.literal_run_search_succeeds
 #print axioms QSB.CoreCheckedRunCertificate.literal_run_extract_pin_and_final
 #print axioms QSB.CoreCheckedRunCertificate.literal_run_fixed_all_calls
+#print axioms QSB.CoreCheckedDynamic.program_final_split
+#print axioms QSB.CoreCheckedDynamic.checked_run_final_scan_true
+#print axioms QSB.CoreCheckedDynamic.byte_final_layout
+#print axioms QSB.CoreCheckedDynamic.checked_run_final_ten_eval
+#print axioms QSB.CoreCheckedDynamic.checked_run_good_setup_nine_positions
+#print axioms QSB.CoreCheckedDynamic.checked_run_der_exception_or_nine_positions
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

@@ -419,6 +419,13 @@ a certificate, and the pin/final extraction theorem exposes the fixed
 `SIGHASH_ALL` checker calls. The key parser, ECDSA and transaction digest
 remain external functions; compiled-Core refinement and the shared-budget
 quantum bound are still open.
+`QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
+every parameterized Lean Config A lock. A truthy checked run reaches the
+ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final
+ten-pair source scan. With 20-byte second-round commitments, it either exposes
+a DER-shaped commitment in the setup or extracts seven matching openings and
+nine distinct second-round positions. The external checker and the missing
+compiled-Core and builder refinements still prevent a consensus-level claim.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

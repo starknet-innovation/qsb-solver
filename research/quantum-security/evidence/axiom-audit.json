@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1232,
+  "theorem_count": 1238,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -540,6 +540,34 @@
     ],
     "QSB.CoreCheckedCertificate.search_sound": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.byte_final_layout": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_der_exception_or_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_final_scan_true": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_final_ten_eval": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.program_final_split": [
       "propext"
     ],
     "QSB.CoreCheckedRunCertificate.literal_run_candidate": [
