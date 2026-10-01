@@ -1,5 +1,5 @@
 {
-  "theorem_count": 706,
+  "theorem_count": 719,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -445,6 +445,59 @@
     ],
     "QSB.CoreGetOp.simple_chunk_width": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.count_cells_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.final_argument_depth": [],
+    "QSB.CoreMultisigStack.final_key_slot": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.final_pair_slots": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.final_signature_slot": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.final_source_layout": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.keyAt_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.matched_source_pair": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.reached_check_source_layout": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.signatureAt_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStack.stacktopNeg_reverse": [
       "Quot.sound",
       "propext"
     ],

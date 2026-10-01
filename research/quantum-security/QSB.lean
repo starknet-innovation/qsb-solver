@@ -51,6 +51,7 @@ import QSB.EncodedScript
 import QSB.FindAndDelete
 import QSB.CoreGetOp
 import QSB.CoreFindAndDelete
+import QSB.CoreMultisigStack
 import QSB.PinningScriptCode
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
@@ -722,6 +723,19 @@ import QSB.Reduction
 #print axioms QSB.CoreFindAndDelete.runMany_eq_model_scanMany
 #print axioms QSB.CoreFindAndDelete.final_scriptCode_run
 #print axioms QSB.CoreFindAndDelete.pin_scriptCode_run
+#print axioms QSB.CoreMultisigStack.stacktopNeg_reverse
+#print axioms QSB.CoreMultisigStack.keyAt_reverse
+#print axioms QSB.CoreMultisigStack.signatureAt_reverse
+#print axioms QSB.CoreMultisigStack.count_cells_reverse
+#print axioms QSB.CoreMultisigStack.final_key_slot
+#print axioms QSB.CoreMultisigStack.final_signature_slot
+#print axioms QSB.CoreMultisigStack.final_pair_slots
+#print axioms QSB.CoreMultisigStack.final_argument_depth
+#print axioms QSB.CoreMultisigStack.final_source_layout
+#print axioms QSB.CoreMultisigStack.reached_check_source_layout
+#print axioms QSB.CoreMultisigStack.matched_source_pair
+#print axioms QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout
+#print axioms QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs
 #print axioms QSB.PinningScriptCode.accepted_pinning_reached_bytes
 #print axioms QSB.PinningScriptCode.matched_run_pinning_der_puzzle
 #print axioms QSB.FinalScriptCode.reached_signatures_exact

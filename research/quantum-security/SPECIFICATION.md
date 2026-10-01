@@ -176,6 +176,10 @@ Core's sequential opcode-boundary FindAndDelete before its ten-pair scan. Eight
 isolated pinned-Core differential cases corroborate the app's FindAndDelete
 behavior on canonical, repeated, embedded-pattern, and noncanonical PUSHDATA1/2/4 pushes;
 they do not determine the full QSB scriptCode for arbitrary witnesses.
+`QSB/CoreMultisigStack.lean` separately proves that Core's bottom-first
+one-based stack addresses correspond to the byte model's ten reached final
+signature/key slots and NULLDUMMY cell in every truthy full byte-model run.
+It leaves the actual Core pair-verification outcome as an explicit premise.
 The pinned Core encoding gate permits an empty signature, even though an empty
 signature cannot make an ECDSA pair check succeed. The refined Lean interface
 therefore states nonemptiness and encoding acceptance separately for every
