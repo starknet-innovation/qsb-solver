@@ -793,8 +793,14 @@ the selected scriptCode and transaction fields. A sound final-round extractor
 must distinguish these per-signature messages.
 The pinned Core adapter verifies an isolated fixed SINGLE signature with a
 newly recovered key when a second output makes the sighash in range; the
-out-of-range recovery key fails on that same transaction. This does not
-establish full-lock acceptance with an alternate transaction layout.
+out-of-range recovery key fails on that same transaction. A further disposable
+test runs the complete two-round stack path with the three puzzle checks
+relaxed to `OP_2DROP`: one output accepts with the SINGLE-bug recovery keys;
+two outputs reject those old dummy keys and accept keys recovered for the
+in-range message; changing the second output's value then rejects. All 15
+HORS comparisons, pinning, and both CHECKMULTISIGs remain active. This is a
+two-input component experiment, not acceptance of the unmodified QSB lock,
+arbitrary transaction layouts, or an unauthorized spend.
 `QSB/FinalRoundWitness.lean` maps the recorded opening pairs into the abstract
 round-witness interface using an executable lookup. Lean checks the seven-plus-two
 shape and the opening hash equalities for the constructed witness. The earlier

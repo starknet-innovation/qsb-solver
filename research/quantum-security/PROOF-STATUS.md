@@ -207,6 +207,16 @@ cannot be assumed for arbitrary transaction layouts, and that changing the
 supplied key can restore verification for this fixed signature.
 These are component facts, not an accepted QSB forgery.
 
+`full-two-outputs-core.json` checks the complete two-round stack path with
+three puzzle CHECKSIGVERIFY opcodes replaced by OP_2DROP. The pinned Core 27.2
+adapter accepts the one-output disposable witness with SINGLE-bug keys,
+rejects a two-output witness retaining those old dummy keys, accepts one with
+all dummy keys recovered for the in-range SINGLE message, and rejects a
+subsequent second-output value change. Pinning, all 15 HORS comparisons and
+both CHECKMULTISIGs remain real. This still fixes two inputs and relaxes the
+three hash puzzles; it is neither an accepted unmodified QSB spend nor a
+general compiled-Core extraction refinement.
+
 `bare-script-boundary.json` records five isolated native tests of the
 `scriptSig`/bare-output boundary. A non-push-only `OP_1 OP_1 OP_ADD` scriptSig
 passes a value of 2 to `OP_2 OP_EQUAL`, and each script can separately use

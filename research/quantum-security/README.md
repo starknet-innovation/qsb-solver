@@ -465,6 +465,7 @@ python3 analysis/check_scriptnum_core.py --app-root /path/to/qsb-app --native-ro
 python3 analysis/check_min_add_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/min-add-core.json
 python3 analysis/check_roll_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/roll-core.json
 python3 analysis/check_final_signed_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/final-signed-boundary.json
+python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/full-two-outputs-core.json
 python3 analysis/check_ecdsa_replay_targets.py --app-root /path/to/qsb-app --output evidence/ecdsa-replay-targets.json
 ```
 
