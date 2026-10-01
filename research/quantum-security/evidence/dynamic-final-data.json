@@ -3,6 +3,9 @@
   "base_script_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
   "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
   "commitments_differ_across_setups": true,
+  "crafted_der20_commitment_hex": "3011020101020c01000000000000000000001103",
+  "crafted_der20_script_sha256": "79c6027873c30406f44355840eef28f28c54a5332d09d17e44780da597cfc6a3",
+  "crafted_final_segment_equals_direct_pushes_plus_fixed_suffix": true,
   "dummy_bytes_equal_across_setups": true,
   "final_commitment_pushes_reverse_indexed": true,
   "final_data_instruction_range": [
@@ -14,6 +17,6 @@
   "nonce20_script_sha256": "870e86a781f9deefd069d2cff7b9f304e4043a45d571cd75b1d4849a21e22dfb",
   "nonce20_signature_hex": "3011020101020c01000000000000000000001101",
   "nonce20_suffix_from_instruction_749_equal": true,
-  "scope": "Three disposable builder executions; not a universal source or Core proof.",
+  "scope": "Four disposable builder executions, including a crafted non-HORS DER-shaped commitment; not a universal source or Core proof.",
   "suffix_from_instruction_749_equal": true
 }

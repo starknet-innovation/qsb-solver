@@ -98,11 +98,34 @@ def main():
         op[3] for op in first[2][447:597]]
     assert short_nonce_script[short_nonce_ops[749][0] :] == first_suffix
 
+    # Structural serialization check with a deliberately DER-shaped value in
+    # the commitment pool. This is not a sampled HORS commitment or a spend.
+    crafted_der20 = bytes.fromhex("3011020101020c01000000000000000000001103")
+    assert len(crafted_der20) == 20
+    first[0].hors_commitments[1][7] = crafted_der20
+    crafted_script = first[0].build_full_script(nonces[0], nonces[1], nonce20)
+    crafted_ops = decode(crafted_script)
+    assert len(crafted_ops) == 880
+    expected_data = b"".join(
+        bt.push_data(value)
+        for value in (
+            list(reversed(first[0].hors_commitments[1]))
+            + list(reversed(first[0].dummy_sigs[1]))
+            + [b"", nonce20]
+        )
+    )
+    final_begin = crafted_ops[447][0]
+    assert crafted_script[final_begin:] == expected_data + first_suffix
+    assert crafted_ops[447 + 149 - 7][3] == crafted_der20
+    assert crafted_script[:final_begin] == first[1][:first[2][447][0]]
+
     report = {
         "builder_sha256": source_hash,
         "base_script_sha256": hashlib.sha256(first[1]).hexdigest(),
         "alternate_script_sha256": hashlib.sha256(second[1]).hexdigest(),
         "nonce20_script_sha256": hashlib.sha256(short_nonce_script).hexdigest(),
+        "crafted_der20_script_sha256": hashlib.sha256(crafted_script).hexdigest(),
+        "crafted_der20_commitment_hex": crafted_der20.hex(),
         "nonce20_signature_hex": nonce20.hex(),
         "instruction_count": 880,
         "final_data_instruction_range": [447, 749],
@@ -112,11 +135,12 @@ def main():
         "commitments_differ_across_setups": True,
         "suffix_from_instruction_749_equal": True,
         "nonce20_suffix_from_instruction_749_equal": True,
-        "scope": "Three disposable builder executions; not a universal source or Core proof.",
+        "crafted_final_segment_equals_direct_pushes_plus_fixed_suffix": True,
+        "scope": "Four disposable builder executions, including a crafted non-HORS DER-shaped commitment; not a universal source or Core proof.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
-    print("Checked three disposable dynamic final data blocks and suffixes.")
+    print("Checked four disposable dynamic final data blocks and suffixes.")
 
 
 if __name__ == "__main__":

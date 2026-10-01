@@ -395,6 +395,20 @@ selecting its 150 inputs. `QSB/DynamicBonusProbability.lean` converts the
 finite count to the same bound for the uniform probability measure on a
 nonempty finite setup space. This is a setup-event guarantee under a modeled
 matched scan; it is not an unauthorized-spend or quantum-query bound.
+
+`QSB/DynamicSerializedRound.serialized_final_round_core_decodes` now gives a
+byte-to-opcode bridge for arbitrary 20-byte second-round commitments and a
+nonce shorter than 76 bytes. It serializes the 302 varying data pushes with
+the canonical push-prefix model, appends the fixed generated suffix, and
+proves that the separate Core-shaped GetOp parser decodes precisely the
+parameterized final-round program. A fourth disposable execution of the
+pinned Python builder inserts a deliberately DER-shaped, non-HORS commitment
+and checks the exact final-segment bytes, including a 20-byte nonce. This is
+finite builder corroboration, not a universal theorem about the Python source
+or compiled Core. `QSB/DynamicSourceGate.nine_positions_of_source_eval` also
+discharges the abstract matched-scan/DER-sound premises when the separate
+source-shaped `finalTenEval` succeeds at the reached stack; its checker and
+the compiled-Core-to-evaluator link are still unproved.
 `QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`
 now composes that setup probability with the transaction-game reduction:
 `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.

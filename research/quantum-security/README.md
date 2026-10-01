@@ -96,8 +96,14 @@ uniform twenty-byte-output setup function independent of its 150 input choices,
 the excluded setup probability is at most `150·12/256^6` under the uniform
 finite-space measure; later modeled witnesses may depend on the sampled
 function. See `QSB/DynamicBonusSetup.lean` and
-`QSB/DynamicBonusProbability.lean`. Universal builder/Core refinement and the
-joint quantum unauthorized-spend bound remain open.
+`QSB/DynamicBonusProbability.lean`. `QSB/DynamicSerializedRound.lean` proves
+that canonical serialization of arbitrary 20-byte final commitments and a
+short nonce parses to this parameterized byte program under the Lean
+Core-shaped GetOp model. `QSB/DynamicSourceGate.lean` derives the matched DER
+gate from a successful source-shaped final ten-pair evaluator. A four-run
+disposable builder check includes a crafted DER-shaped commitment, but
+universal Python-builder and compiled-Core refinement remain open. The joint
+quantum unauthorized-spend bound remains open.
 `QSB/DynamicSetupReduction.lean` gives the resulting conditional game
 inequality: `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.
 The fresh-opening and two puzzle-search terms are unproved joint-QROM event

@@ -59,6 +59,8 @@ import QSB.DynamicBonusTrace
 import QSB.DynamicBonusChain
 import QSB.DynamicBonusDER
 import QSB.DynamicBonusIndices
+import QSB.DynamicSerializedRound
+import QSB.DynamicSourceGate
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -845,6 +847,22 @@ import QSB.Reduction
 #print axioms QSB.DynamicBonusChain.accepted_data_signed_final_signature_origins
 #print axioms QSB.DynamicBonusDER.accepted_dynamic_bonus_der_alternative
 #print axioms QSB.DynamicBonusIndices.matched_dynamic_nine_positions
+#print axioms QSB.DynamicSerializedRound.dataValues_length
+#print axioms QSB.DynamicSerializedRound.dataValues_map
+#print axioms QSB.DynamicSerializedRound.dataValue_short
+#print axioms QSB.DynamicSerializedRound.short_push_decodes
+#print axioms QSB.DynamicSerializedRound.short_push_simple
+#print axioms QSB.DynamicSerializedRound.chunks_decode
+#print axioms QSB.DynamicSerializedRound.chunks_simple
+#print axioms QSB.DynamicSerializedRound.parse_simple_chunks
+#print axioms QSB.DynamicSerializedRound.serialized_final_round_parses
+#print axioms QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks
+#print axioms QSB.DynamicSerializedRound.parseCoreOps_eq_parseOps
+#print axioms QSB.DynamicSerializedRound.serialized_final_round_decodes
+#print axioms QSB.DynamicSerializedRound.serialized_final_round_core_decodes
+#print axioms QSB.DynamicSourceGate.checkedPair_der
+#print axioms QSB.DynamicSourceGate.source_eval_success_match
+#print axioms QSB.DynamicSourceGate.nine_positions_of_source_eval
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability

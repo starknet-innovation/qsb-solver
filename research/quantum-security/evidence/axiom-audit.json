@@ -1,5 +1,5 @@
 {
-  "theorem_count": 973,
+  "theorem_count": 989,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1321,6 +1321,67 @@
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
       "propext"
     ],
+    "QSB.DynamicSerializedRound.chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.dataValue_short": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.dataValues_length": [
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.dataValues_map": [
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.parseCoreOps_eq_parseOps": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.parse_simple_chunks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.serialized_final_round_core_decodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.serialized_final_round_decodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.serialized_final_round_parses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.short_push_decodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.short_push_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases": [
       "Classical.choice",
       "Quot.sound",
@@ -1544,6 +1605,19 @@
       "propext"
     ],
     "QSB.DynamicSignedTransition.preimage_front_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGate.checkedPair_der": [
+      "propext"
+    ],
+    "QSB.DynamicSourceGate.nine_positions_of_source_eval": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGate.source_eval_success_match": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
