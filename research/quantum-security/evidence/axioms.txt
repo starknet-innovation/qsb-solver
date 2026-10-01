@@ -1257,6 +1257,13 @@
 'QSB.CoreStructuralEquiv.run_eq_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreStructuralEquiv.run_bottom_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreStructuralEquiv.run_bottom_overflow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.castToBool_boolBytes' does not depend on any axioms
+'QSB.CoreFinalTruth.byte_multisig_final_boolean' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.byte_run_ending_multisig_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.byte_full_run_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.source_run_ending_multisig_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.source_full_run_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreFinalTruth.source_truth_of_castToBool' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSerialize.magnitudeBytes_eq_model' depends on axioms: [propext]
 'QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos' depends on axioms: [propext, Quot.sound]
 'QSB.CoreSerialize.coreSerialize_eq_model' depends on axioms: [propext]

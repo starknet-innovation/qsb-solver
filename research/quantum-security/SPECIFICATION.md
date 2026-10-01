@@ -125,8 +125,11 @@ proves that the bottom-first Core-shaped and top-first byte structural models
 have exactly the same success or failure for arbitrary initial stacks and
 supplied signature outcomes, including a false first-round multisignature
 result. The compiled Core interpreter and actual checker outcomes still need
-refinement. Under the later source-shaped final scan and
-signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
+refinement. `QSB.CoreFinalTruth.source_truth_of_castToBool` additionally
+connects Core's source-shaped final truth test to the byte-model truth premise
+for every successful literal-lock structural run, because the last
+CHECKMULTISIG pushes a canonical Boolean. Under the later source-shaped final
+scan and signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
 computes a complete modeled `RoundWitness` from this trace, the two reached
 bonus signature bytes, and the last reached key. The game extractor still
 needs an actual transaction and Core-acceptance refinement.

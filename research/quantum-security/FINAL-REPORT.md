@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,117 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,124 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -714,6 +714,16 @@ supplied signature outcomes. It also lifts the lower-stack suffix frame and
 overflow results to the source-shaped structural run. Both interpreters still
 take signature-scan outcomes as inputs, so this does not refine compiled Core
 or its DER, FindAndDelete, sighash, key parsing, and ECDSA checks.
+`QSB/CoreFinalTruth.lean` models Core's final `CastToBool` test and proves that
+it equals the byte model's `[1]` truth test after any successful modeled
+program ending in `CHECKMULTISIG`, including the exact 880-opcode lock. The
+final structural step pushes only `[1]` or an empty cell, so arbitrary
+scriptSig-supplied noncanonical truthy bytes cannot occupy that top slot.
+The theorem converts a source-shaped final `CastToBool` success into the
+`finalTruth` premise of the extraction results. Pinned Core 27.2 accepts or
+rejects seven isolated final-stack byte cases as this model predicts,
+including negative zero. Actual compiled-Core-to-model execution and
+signature-checker results remain separate obligations.
 `QSB/CoreSourceExtraction.lean` lifts this composition to a truthy full
 source-shaped structural run. Its executable `necessarySignatureChecks`
 examines the reached source stacks at all six signature opcodes: the fixed pin,

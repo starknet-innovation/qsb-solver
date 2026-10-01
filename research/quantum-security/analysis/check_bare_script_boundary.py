@@ -24,6 +24,11 @@ def main():
     builder_hash = hashlib.sha256(
         (args.app_root / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
     assert builder_hash == PINNED_BUILDER_SHA256
+    pinned_native = json.loads((Path(__file__).resolve().parents[1] /
+        "evidence/round-results.json").read_text())
+    assert args.image == pinned_native["image"]
+    for name, expected_hash in pinned_native["native_files_sha256"].items():
+        assert hashlib.sha256((args.native_root / name).read_bytes()).hexdigest() == expected_hash
     sys.path.insert(0, str(args.app_root / "worker/cpu"))
     import bitcoin_tx as bt
 
@@ -89,6 +94,20 @@ def main():
           truthy_lock_of_size(10000), True)
     check("bare_lock_10001_bytes_rejected", b"",
           truthy_lock_of_size(10001), False)
+
+    # VerifyScript applies Core's CastToBool to the top cell after the bare
+    # script. OP_NOP leaves the scriptSig-supplied bytes untouched. Negative
+    # zero is false only when 0x80 is the last byte after zero bytes.
+    for name, value, expected in (
+        ("empty_false", b"", False),
+        ("zero_false", b"\x00", False),
+        ("negative_zero_false", b"\x80", False),
+        ("padded_negative_zero_false", b"\x00\x80", False),
+        ("nonfinal_high_bit_true", b"\x80\x00", True),
+        ("one_true", b"\x01", True),
+        ("padded_one_true", b"\x00\x01", True),
+    ):
+        check(f"final_cast_to_bool_{name}", bt.push_data(value), b"\x61", expected)
 
     report = {
         "scope": "isolated bare legacy scripts; not a full QSB spend or formal refinement",

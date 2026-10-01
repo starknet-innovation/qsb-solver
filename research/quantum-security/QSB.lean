@@ -29,6 +29,7 @@ import QSB.CoreChecksigStep
 import QSB.CoreMultisigStep
 import QSB.CoreStructuralRun
 import QSB.CoreStructuralEquiv
+import QSB.CoreFinalTruth
 import QSB.CoreSerialize
 import QSB.Multisig
 import QSB.KeyRolls
@@ -1154,6 +1155,13 @@ import QSB.Reduction
 #print axioms QSB.CoreStructuralEquiv.run_eq_byte
 #print axioms QSB.CoreStructuralEquiv.run_bottom_frame
 #print axioms QSB.CoreStructuralEquiv.run_bottom_overflow
+#print axioms QSB.CoreFinalTruth.castToBool_boolBytes
+#print axioms QSB.CoreFinalTruth.byte_multisig_final_boolean
+#print axioms QSB.CoreFinalTruth.byte_run_ending_multisig_final_truth
+#print axioms QSB.CoreFinalTruth.byte_full_run_final_truth
+#print axioms QSB.CoreFinalTruth.source_run_ending_multisig_final_truth
+#print axioms QSB.CoreFinalTruth.source_full_run_final_truth
+#print axioms QSB.CoreFinalTruth.source_truth_of_castToBool
 #print axioms QSB.CoreSerialize.magnitudeBytes_eq_model
 #print axioms QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos
 #print axioms QSB.CoreSerialize.coreSerialize_eq_model

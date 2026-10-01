@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1117,
+  "theorem_count": 1124,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -599,6 +599,37 @@
       "propext"
     ],
     "QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.byte_full_run_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.byte_multisig_final_boolean": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.byte_run_ending_multisig_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.castToBool_boolBytes": [],
+    "QSB.CoreFinalTruth.source_full_run_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.source_run_ending_multisig_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFinalTruth.source_truth_of_castToBool": [
       "Classical.choice",
       "Quot.sound",
       "propext"

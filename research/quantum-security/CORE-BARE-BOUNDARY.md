@@ -68,13 +68,24 @@ the depth boundary, negative-zero and nonminimal encodings, and rejection of
 negative, out-of-range, and five-byte indices. It does not cover every stack
 or the full QSB lock.
 
-`analysis/check_bare_script_boundary.py` reproduces five isolated cases with
+`analysis/check_bare_script_boundary.py` reproduces fifteen isolated cases with
 the pinned native adapter; results are in `evidence/bare-script-boundary.json`.
 In particular, non-push-only `OP_1 OP_1 OP_ADD` leaves `2` for a bare
 `OP_2 OP_EQUAL` lock, and 201 `OP_NOP`s in each of `scriptSig` and the bare lock
 are accepted. A 202nd counted opcode in either script is rejected. These are
 source corroboration and boundary tests, **not** full QSB acceptance or a
 formal interpreter equivalence proof.
+
+Seven of those isolated cases leave scriptSig-supplied bytes on top through a
+bare `OP_NOP` lock and check [Core's final `CastToBool`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L32-L45)
+decision, including empty, zero, negative-zero, and noncanonical truthy
+encodings. `QSB/CoreFinalTruth.lean` models that source loop and proves a
+general bridge: after any successful modeled program ending in
+`CHECKMULTISIG`, the top cell is its canonical Boolean, so source-shaped
+`CastToBool` equals the byte model's final truth check. The exact 880-opcode
+lock satisfies that ending. This removes a final-result predicate mismatch
+*inside the Lean models*; compiled-Core execution and signature outcomes
+remain outside the theorem.
 
 `analysis/check_scriptnum_core.py` adds a finite differential check of
 `OP_1ADD` on 2,384 selected zero- to four-byte encodings, including every
