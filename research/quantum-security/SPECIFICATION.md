@@ -368,9 +368,14 @@ roles, and attacker-selected preimage lengths must be accounted for.
 
 `QSB/JointSourceChecks.lean` instantiates the deterministic source checks
 with exactly this shared `H256 = H`, `SHA256d = H ∘ H`, and `HASH160 = R ∘ H`
-structure. It has no random-oracle sampling or quantum-query semantics; the
-query-success theorem still needs a game over those same functions and their
-adaptive disclosures.
+structure. `QSB/DynamicJointTransaction.lean` now instantiates all ten
+reached final source checks for a selected transaction input: each successful
+external ECDSA call uses that signature's actual hash type, one common
+Core-shaped deleted scriptCode, and either `H(H(legacy preimage))` or the
+out-of-range SINGLE constant. The certificate and checker remain source-model
+premises. These modules have no random-oracle sampling or quantum-query
+semantics; the query-success theorem still needs a game over those same
+functions and their adaptive disclosures.
 
 Use **one shared adversary budget `q`** for coherent queries to the tagged
 oracle that evaluates either H256 or R160. A query controlled by a

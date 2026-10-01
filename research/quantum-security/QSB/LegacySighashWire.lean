@@ -104,6 +104,22 @@ theorem single_out_of_range (tx : TxFields) (selected : Nat)
   simp [sourcePreimage, Nat.not_le.mpr inputValid,
     single, outputMissing]
 
+/-- Once the selected input exists, the only source-preimage failure is
+Core's historical out-of-range SINGLE branch. -/
+theorem missing_preimage_for_valid_input (tx : TxFields)
+    (selected : Nat) (scriptCode : Bytes) (hashType : Nat)
+    (inputValid : selected < tx.inputs.length)
+    (missing : sourcePreimage tx selected scriptCode hashType = none) :
+    baseType hashType = 3 ∧ tx.outputs.length ≤ selected := by
+  have inputCheck : ¬selected ≥ tx.inputs.length := Nat.not_le.mpr inputValid
+  have bug : (baseType hashType == 3 && selected ≥ tx.outputs.length) = true := by
+    by_contra notBug
+    simp [sourcePreimage, inputCheck, notBug] at missing
+  have parts : (baseType hashType == 3) = true ∧
+      decide (selected ≥ tx.outputs.length) = true := by
+    simpa only [Bool.and_eq_true_eq_eq_true_and_eq_true] using bug
+  exact ⟨of_decide_eq_true parts.1, of_decide_eq_true parts.2⟩
+
 /-- An in-range SINGLE preimage sees only the output at the signed input's
 index. Changing earlier or later outputs, or appending outputs, leaves the
 preimage unchanged as long as that indexed output remains present and equal.

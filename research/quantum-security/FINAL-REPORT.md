@@ -771,6 +771,16 @@ actual last-byte hash type and permits the out-of-range SINGLE constant
 digest. This is a deterministic source-model connection, not a sampled joint
 oracle game or a quantum query-success theorem; the ECDSA checker and Core
 acceptance remain external.
+`QSB/DynamicJointTransaction.lean` specializes the complete parameterized
+checked-source certificate to a selected transaction input and that same
+joint `H`/`R` pair. For each of the ten reached final signatures, it exposes
+the actual DER bytes, key bytes, last-byte sighash flag, and successful
+external ECDSA call on a digest computed against one common Core-shaped
+FindAndDelete scriptCode. Every digest is either `H(H(preimage))` for the
+selected legacy hash type or the raw out-of-range SINGLE constant; a valid
+input index is necessary. This is conditional on finding the source
+certificate with the supplied key parser and ECDSA predicate. It is not a
+compiled-Core acceptance implication or a quantum success bound.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

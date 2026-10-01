@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1024,
+  "theorem_count": 1027,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1414,6 +1414,11 @@
       "propext"
     ],
     "QSB.DynamicFullSerialized.static_chunks_simple": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_reached_final_joint_calls": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -3200,6 +3205,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointSourceChecks.legacyDigest_some_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointSourceChecks.necessary_checks_fixed_all_joint": [
       "Classical.choice",
       "Quot.sound",
@@ -3314,6 +3324,11 @@
       "propext"
     ],
     "QSB.LegacySighashWire.all_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWire.missing_preimage_for_valid_input": [
       "Classical.choice",
       "Quot.sound",
       "propext"

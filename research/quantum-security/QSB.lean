@@ -66,6 +66,7 @@ import QSB.DynamicWireSource
 import QSB.DynamicCoreStructural
 import QSB.DynamicFullSerialized
 import QSB.DynamicCheckedCertificate
+import QSB.DynamicJointTransaction
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -217,6 +218,7 @@ import QSB.Reduction
 #print axioms QSB.SighashAllWireFixture.raw_fixture_preimage
 #print axioms QSB.LegacySighashWire.preparedInputsAt_all
 #print axioms QSB.LegacySighashWire.single_out_of_range
+#print axioms QSB.LegacySighashWire.missing_preimage_for_valid_input
 #print axioms QSB.LegacySighashWire.single_same_selected_output_preimage
 #print axioms QSB.LegacySighashWire.all_preimage
 #print axioms QSB.LegacySighashWireFixture.all_branch
@@ -231,6 +233,7 @@ import QSB.Reduction
 #print axioms QSB.JointSourceChecks.legacyDigest_all
 #print axioms QSB.JointSourceChecks.legacyDigest_single_bug
 #print axioms QSB.JointSourceChecks.legacyDigest_single_same_selected_output
+#print axioms QSB.JointSourceChecks.legacyDigest_some_cases
 #print axioms QSB.JointSourceChecks.checker_all
 #print axioms QSB.JointSourceChecks.checker_single_bug
 #print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint
@@ -903,6 +906,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicCheckedCertificate.candidate_sound
 #print axioms QSB.DynamicCheckedCertificate.search_sound
 #print axioms QSB.DynamicCheckedCertificate.search_good_setup_nine_positions
+#print axioms QSB.DynamicJointTransaction.search_reached_final_joint_calls
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability

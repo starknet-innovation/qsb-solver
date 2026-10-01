@@ -123,6 +123,7 @@
 'QSB.SighashAllWireFixture.raw_fixture_preimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWire.preparedInputsAt_all' depends on axioms: [propext]
 'QSB.LegacySighashWire.single_out_of_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LegacySighashWire.missing_preimage_for_valid_input' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWire.single_same_selected_output_preimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWire.all_preimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWireFixture.all_branch' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -143,6 +144,7 @@
 'QSB.JointSourceChecks.legacyDigest_single_same_selected_output' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.JointSourceChecks.legacyDigest_some_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.checker_all' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.checker_single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointSourceChecks.successful_hash_puzzle_joint' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -963,6 +965,9 @@
 'QSB.DynamicCheckedCertificate.candidate_sound' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicCheckedCertificate.search_sound' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicCheckedCertificate.search_good_setup_nine_positions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicJointTransaction.search_reached_final_joint_calls' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]

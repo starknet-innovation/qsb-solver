@@ -81,6 +81,43 @@ theorem legacyDigest_single_same_selected_output (functions : Functions)
     scriptCode hashType replacement inputValid oldInRange newInRange
     single sameOutput]
 
+/-- Every successful source digest uses the same H twice on a concrete
+legacy preimage, or is the raw out-of-range SINGLE constant. This leaves no
+third, independent hash oracle for ECDSA messages in the source model. -/
+theorem legacyDigest_some_cases (functions : Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes) (hashType : Nat) (digest : Bytes)
+    (found : legacyDigest functions tx selected scriptCode hashType =
+      some digest) :
+    selected < tx.inputs.length ∧
+      ((∃ preimage,
+          LegacySighashWire.sourcePreimage tx selected scriptCode hashType =
+            some preimage ∧
+          digest = functions.H (functions.H preimage)) ∨
+        (LegacySighashWire.sourcePreimage tx selected scriptCode hashType =
+            none ∧
+          LegacySighashWire.baseType hashType = 3 ∧
+          tx.outputs.length ≤ selected ∧
+          digest = LegacySighashWire.singleBugDigest)) := by
+  unfold legacyDigest at found
+  by_cases valid : selected < tx.inputs.length
+  · have inRange : ¬selected ≥ tx.inputs.length := Nat.not_le.mpr valid
+    simp only [inRange, ↓reduceIte] at found
+    cases preimageEq : LegacySighashWire.sourcePreimage tx selected
+        scriptCode hashType with
+    | none =>
+        simp only [preimageEq] at found
+        have single := LegacySighashWire.missing_preimage_for_valid_input
+          tx selected scriptCode hashType valid preimageEq
+        exact ⟨valid, Or.inr ⟨rfl, single.1, single.2,
+          (Option.some.inj found).symm⟩⟩
+    | some preimage =>
+        simp only [preimageEq] at found
+        exact ⟨valid, Or.inl ⟨preimage, rfl,
+          (Option.some.inj found).symm⟩⟩
+  · have outOfRange : selected ≥ tx.inputs.length := Nat.le_of_not_gt valid
+    simp [outOfRange] at found
+
 /-- The ECDSA predicate is supplied externally. CoreChecksigEval separately
 checks key validity and DER encoding before calling this function. -/
 def checker (functions : Functions) (tx : SighashAllWire.TxFields)
