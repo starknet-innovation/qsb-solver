@@ -1,8 +1,8 @@
-"""Compare the source-shaped legacy ALL serializer with Core 27.2 test vectors.
+"""Compare all legacy hash-type branches with pinned Core 27.2 vectors.
 
-Only vectors taking the ALL output branch without ANYONECANPAY are selected.
-Core's published corpus has no literal hashType=1, so this is differential
-evidence for the branch, not a proof for every transaction or witness.
+The preimage is built from independently parsed raw transaction fields rather
+than the app's serializer. This is differential evidence, not a proof of C++
+refinement or of behavior for every transaction and scriptCode.
 """
 
 import argparse
@@ -66,21 +66,34 @@ def parse_legacy_tx(raw: bytes):
 
 
 def source_shaped_preimage(fields, input_index: int, script_code: bytes,
-                           hash_type: int) -> bytes:
-    """Write Core's BASE ALL branch directly from independently parsed fields."""
+                           hash_type: int) -> bytes | None:
+    """Write Core's legacy branches, returning None for the SINGLE bug."""
     version, inputs, outputs, locktime = fields
     if not 0 <= input_index < len(inputs):
         raise ValueError("invalid signed input index")
-    if (hash_type & 31) in (2, 3) or (hash_type & 128):
-        raise ValueError("not the full-input/full-output ALL branch")
-    data = struct.pack("<I", version) + compact_size(len(inputs))
-    for i, (txid, vout, _, sequence) in enumerate(inputs):
-        script = script_code if i == input_index else b""
+    base = hash_type & 31
+    if base == 3 and input_index >= len(outputs):
+        return None
+    chosen = [inputs[input_index]] if hash_type & 128 else inputs
+    data = struct.pack("<I", version) + compact_size(len(chosen))
+    for i, (txid, vout, _, sequence) in enumerate(chosen):
+        original_index = input_index if hash_type & 128 else i
+        script = script_code if original_index == input_index else b""
+        if original_index != input_index and base in (2, 3):
+            sequence = 0
         data += txid + struct.pack("<I", vout)
         data += compact_size(len(script)) + script + struct.pack("<I", sequence)
-    data += compact_size(len(outputs))
-    for amount, script in outputs:
+    if base == 2:
+        data += compact_size(0)
+    elif base == 3:
+        data += compact_size(input_index + 1)
+        data += (b"\xff" * 8 + b"\x00") * input_index
+        amount, script = outputs[input_index]
         data += amount + compact_size(len(script)) + script
+    else:
+        data += compact_size(len(outputs))
+        for amount, script in outputs:
+            data += amount + compact_size(len(script)) + script
     return data + struct.pack("<II", locktime, hash_type)
 
 
@@ -113,14 +126,14 @@ def main() -> None:
     rows = json.loads(vector_bytes)
     assert rows[0] == ["raw_transaction, script, input_index, hashType, signature_hash (result)"]
     assert len(rows) == 501
-    selected = []
+    checked = []
     script_with_separator = 0
+    branches = {"all_like": 0, "none": 0, "single": 0, "single_bug": 0}
+    anyone_can_pay = 0
     for index, row in enumerate(rows[1:], 1):
         assert len(row) == 5
         raw_hex, script_hex, input_index, signed_hash_type, expected_hex = row
         hash_type = signed_hash_type & 0xffffffff
-        if (hash_type & 31) in (2, 3) or (hash_type & 128):
-            continue
         fields = parse_legacy_tx(bytes.fromhex(raw_hex))
         script = bytes.fromhex(script_hex)
         # RandomScript in this pinned Core corpus emits only these one-byte
@@ -130,7 +143,8 @@ def main() -> None:
         script_code = script.replace(b"\xab", b"")
         script_with_separator += b"\xab" in script
         preimage = source_shaped_preimage(fields, input_index, script_code, hash_type)
-        digest = hashlib.sha256(hashlib.sha256(preimage).digest()).digest()
+        digest = (b"\x01" + b"\x00" * 31) if preimage is None else hashlib.sha256(
+            hashlib.sha256(preimage).digest()).digest()
         # uint256::GetHex prints the digest's internal bytes in reverse order.
         assert digest[::-1].hex() == expected_hex, (index, digest.hex(), expected_hex)
 
@@ -142,35 +156,41 @@ def main() -> None:
             tx.add_output(bt.TxOut(int.from_bytes(amount, "little", signed=True), output_script))
         assert tx.serialize().hex() == raw_hex
         assert tx.sighash(input_index, script_code, hash_type) == int.from_bytes(digest, "big")
-        selected.append({"core_index": index, "hash_type_u32": hash_type,
+        base = hash_type & 31
+        branch = "single_bug" if preimage is None else (
+            "none" if base == 2 else "single" if base == 3 else "all_like")
+        branches[branch] += 1
+        anyone_can_pay += bool(hash_type & 128)
+        checked.append({"core_index": index, "hash_type_u32": hash_type,
                          "input_count": len(inputs), "output_count": len(outputs),
                          "script_has_codeseparator": b"\xab" in script,
-                         "preimage_sha256": hashlib.sha256(preimage).hexdigest()})
+                         "branch": branch, "anyone_can_pay": bool(hash_type & 128),
+                         "preimage_sha256": None if preimage is None else hashlib.sha256(preimage).hexdigest()})
 
-    assert selected
+    assert len(checked) == 500
     report = {
-        "scope": "Core 27.2 BASE ALL serialization branch without ANYONECANPAY; no literal hashType=1 vector",
+        "scope": "Core 27.2 legacy hash types in the pinned 500-vector corpus; source-shaped independent preimages and pinned app",
         "core_source_url": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/data/sighash.json",
         "core_harness_url": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/sighash_tests.cpp",
         "core_vectors_sha256": CORE_VECTORS_SHA256,
         "app_revision": pinned["revision"],
         "app_serializer_sha256": app_hash,
         "total_vectors": len(rows) - 1,
-        "selected_vectors": len(selected),
+        "checked_vectors": len(checked),
+        "branches": branches,
+        "anyone_can_pay_vectors": anyone_can_pay,
         "literal_hash_type_one_vectors": sum(row[3] == 1 for row in rows[1:]),
-        "selected_with_codeseparator": script_with_separator,
-        "selected_with_multiple_inputs": sum(row["input_count"] > 1 for row in selected),
-        "selected_with_multiple_outputs": sum(row["output_count"] > 1 for row in selected),
-        "selected_indices_sha256": hashlib.sha256(
-            ",".join(str(row["core_index"]) for row in selected).encode()).hexdigest(),
-        "first_selected": selected[:5],
-        "last_selected": selected[-5:],
-        "result": "all selected Core expected digests match independent source-shaped bytes and pinned app sighash",
+        "with_codeseparator": script_with_separator,
+        "with_multiple_inputs": sum(row["input_count"] > 1 for row in checked),
+        "with_multiple_outputs": sum(row["output_count"] > 1 for row in checked),
+        "first_checked": checked[:5],
+        "last_checked": checked[-5:],
+        "result": "all 500 Core expected digests match independent source-shaped bytes and pinned app sighash",
     }
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({key: report[key] for key in (
-        "total_vectors", "selected_vectors", "selected_with_codeseparator",
-        "selected_with_multiple_inputs", "selected_with_multiple_outputs", "result")}, indent=2))
+        "total_vectors", "checked_vectors", "branches", "anyone_can_pay_vectors",
+        "with_codeseparator", "result")}, indent=2))
 
 
 if __name__ == "__main__":

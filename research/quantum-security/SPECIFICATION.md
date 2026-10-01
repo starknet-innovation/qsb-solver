@@ -272,9 +272,14 @@ uses with independent oracles without a domain-separation argument. The code
 does not add domain-separation tags. Public-key encodings, hash inputs of other
 roles, and attacker-selected preimage lengths must be accounted for.
 
-Count q256 and q160 separately, including coherent queries, preprocessing,
-multi-vault work, and attacker queries before disclosures. The honest setup and
-signing computations condition the oracle transcript and must be modeled.
+Use **one shared adversary budget `q`** for coherent queries to the tagged
+oracle that evaluates either H256 or R160. A query controlled by a
+superposition of primitive tags consumes one query, so a proposed bound may
+not assign a fresh `q` to each primitive, each SHA256d/HASH160 composition,
+each vault, or each disclosure phase. Honest setup and classical signing can
+evaluate the same functions without being charged as adversary queries, but
+their published, oracle-correlated values must be included in the game.
+Preprocessing and attacker queries before disclosures count toward `q`.
 `QSB/Probability.lean` checks finite multi-vault union accounting without any
 independence assumption; it does not license assigning a separate full query
 budget to each vault when stating the per-vault primitive bounds.

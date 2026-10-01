@@ -125,14 +125,27 @@ generates 500 random cases and checks the new implementation against the old
 one before printing the vectors; its data test compares the published digest
 against `SignatureHash` in base sigversion.
 
-The [differential report](evidence/core-sighash-vectors.json) selects all 253
-vectors whose hash type takes the full-input/full-output ALL branch without
-ANYONECANPAY. All 253 expected digests matched both source-shaped calculations.
-Among these, 114 scripts contain an opcode-boundary `OP_CODESEPARATOR`, 181
-have multiple inputs, and 181 have multiple outputs. In this corpus the
+The [differential report](evidence/core-sighash-vectors.json) now checks all
+500 vectors: 467 ALL-like, 16 NONE, and 17 in-range SINGLE cases, including
+229 with ANYONECANPAY. All Core expected digests match independently built
+source-shaped preimages and the pinned app serializer. Of the scripts, 210
+contain an opcode-boundary `OP_CODESEPARATOR`. In this corpus the
 `scriptCode` generator emits only one-byte opcodes, so removing `0xab` is
 unambiguously opcode removal. No published vector uses the literal hash type
 `0x01`; its separate 13-case native fixture above exercises that exact value.
+The corpus also has no out-of-range SINGLE case. The separate native
+`core-semantics.json` probe exercises that constant-message exception.
+
+`QSB/LegacySighashWire.lean` models the source-shaped serializer for all
+32-bit hash types, including the NONE/SINGLE output branches, zeroed other
+sequences, ANYONECANPAY's selected-input reduction, and the out-of-range
+SINGLE exception. It proves that type `0x01` reduces to the earlier ALL
+preimage and that the out-of-range SINGLE preimage is absent. Five exact
+preimage fixtures generated from the independent serializer are checked in
+Lean, alongside the exception's raw `uint256::ONE` bytes. This does not prove
+that Core's C++ implementation refines the Lean function for arbitrary
+transactions, that arbitrary reached `scriptCode` is correct, or that the
+exception yields a QSB spend.
 The report pins the upstream JSON SHA-256 and the app source hash. Reproduce it
 from the repository root after downloading the linked JSON:
 
@@ -143,7 +156,7 @@ python3 research/quantum-security/analysis/check_core_sighash_vectors.py \
   --output research/quantum-security/evidence/core-sighash-vectors.json
 ```
 
-These are finite checks of the serializer branch. They do not refine arbitrary
+These are finite checks of the serializer branches. They do not refine arbitrary
 Core transactions or prove that an accepted QSB witness reaches the modeled
 final nonce check with the selected `scriptCode`.
 

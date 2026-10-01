@@ -409,12 +409,16 @@ The source-shaped model now also performs BASE/ALL input-script preparation;
 a second fixture starts with different scriptSig bytes and checks that
 replacement and blanking yield the same 139-byte preimage. This remains a
 model of the source branch, not a C++ equivalence theorem.
-Core 27.2's published sighash corpus supplies an additional 253 ALL-branch
-cases with varied inputs, outputs, signed hash-type words, and simple
-opcode-boundary `OP_CODESEPARATOR` removal; all expected digests match both
-an independent source-shaped preimage calculation and the pinned app. The
-corpus contains no literal `0x01` hash type, which is covered by the separate
-native fixture. These checks are finite differential evidence.
+The source-shaped Lean legacy serializer now covers every 32-bit hash-type
+branch, including NONE, SINGLE, ANYONECANPAY, and the out-of-range SINGLE
+constant-message exception. It proves that type `0x01` equals the earlier
+ALL model; five exact byte fixtures tie the Lean code to an independent
+Python serializer. Core 27.2's published corpus supplies 500 varied cases:
+467 ALL-like, 16 NONE, 17 in-range SINGLE, and 229 ANYONECANPAY. Every
+expected digest matches independent preimage hashing and the pinned app;
+210 scripts contain simple opcode-boundary `OP_CODESEPARATOR` removal. The
+corpus has neither literal `0x01` nor out-of-range SINGLE, which have separate
+native probes. These are finite differential checks.
 The C++ serializer and reached-scriptCode equivalence remain open.
 [The source contract](CORE-SIGHASH-ALL.md) explains why this is not universal
 same-key rejection or an arbitrary-witness QSB theorem:

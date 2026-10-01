@@ -1,24 +1,32 @@
 {
-  "scope": "Core 27.2 BASE ALL serialization branch without ANYONECANPAY; no literal hashType=1 vector",
+  "scope": "Core 27.2 legacy hash types in the pinned 500-vector corpus; source-shaped independent preimages and pinned app",
   "core_source_url": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/data/sighash.json",
   "core_harness_url": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/sighash_tests.cpp",
   "core_vectors_sha256": "52cf23c2076e7f129c71d5508631d3e5ae3be1b1cb0585c0e23bbb4bb373e924",
   "app_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "app_serializer_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
   "total_vectors": 500,
-  "selected_vectors": 253,
+  "checked_vectors": 500,
+  "branches": {
+    "all_like": 467,
+    "none": 16,
+    "single": 17,
+    "single_bug": 0
+  },
+  "anyone_can_pay_vectors": 229,
   "literal_hash_type_one_vectors": 0,
-  "selected_with_codeseparator": 114,
-  "selected_with_multiple_inputs": 181,
-  "selected_with_multiple_outputs": 181,
-  "selected_indices_sha256": "bb71a5feaccc59acc199abc27b178068669da5a64983255ee799a3735454bd28",
-  "first_selected": [
+  "with_codeseparator": 210,
+  "with_multiple_inputs": 377,
+  "with_multiple_outputs": 360,
+  "first_checked": [
     {
       "core_index": 1,
       "hash_type_u32": 1864164639,
       "input_count": 3,
       "output_count": 2,
       "script_has_codeseparator": false,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "53730274f133dd1ce2bba16b97322ac2530a051c94f1ea1d20b6e9ea05ca670f"
     },
     {
@@ -27,6 +35,8 @@
       "input_count": 4,
       "output_count": 4,
       "script_has_codeseparator": false,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "26c4c35dc8b064e9f22f32667818501b5ab18b8377ed8d887ee6ef63a74bed43"
     },
     {
@@ -35,7 +45,19 @@
       "input_count": 4,
       "output_count": 4,
       "script_has_codeseparator": true,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "2a8c7e0223027f4b69f5979302d00ce53ebb937cc2d086926f729e79069ea513"
+    },
+    {
+      "core_index": 4,
+      "hash_type_u32": 1190874345,
+      "input_count": 2,
+      "output_count": 1,
+      "script_has_codeseparator": false,
+      "branch": "all_like",
+      "anyone_can_pay": true,
+      "preimage_sha256": "550b6d92920d951d8753e467561f984ef6ecf914f4555a05fd34403c859b0c34"
     },
     {
       "core_index": 5,
@@ -43,33 +65,31 @@
       "input_count": 2,
       "output_count": 4,
       "script_has_codeseparator": true,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "ccc84ac9977aee5fc0a28ba133e8e05d83e958e7b3785adb7745423914a0e738"
-    },
-    {
-      "core_index": 6,
-      "hash_type_u32": 946795545,
-      "input_count": 1,
-      "output_count": 2,
-      "script_has_codeseparator": false,
-      "preimage_sha256": "b39cef9d46d56e70cf6fcb0a9c2e3c20b97a1580d8e75c54d55df38708abd546"
     }
   ],
-  "last_selected": [
+  "last_checked": [
     {
-      "core_index": 491,
-      "hash_type_u32": 2968756790,
-      "input_count": 4,
+      "core_index": 496,
+      "hash_type_u32": 3341239955,
+      "input_count": 1,
       "output_count": 4,
       "script_has_codeseparator": true,
-      "preimage_sha256": "660359dac40b7b7f0d3343a8e8317853500fe0dc4dbd361babc79ff4d8aace81"
+      "branch": "all_like",
+      "anyone_can_pay": true,
+      "preimage_sha256": "9d5104efebced2d953840ee8f1ff77dafef13343b2e7e0ba77f861272fd7fc90"
     },
     {
-      "core_index": 495,
-      "hash_type_u32": 1033685559,
-      "input_count": 1,
-      "output_count": 3,
+      "core_index": 497,
+      "hash_type_u32": 1035865506,
+      "input_count": 4,
+      "output_count": 4,
       "script_has_codeseparator": false,
-      "preimage_sha256": "ecf6a9e6e386467fd11d4645170b30a232e5c5d5338606a8fa0134a8706a3f7a"
+      "branch": "none",
+      "anyone_can_pay": true,
+      "preimage_sha256": "9fa8e2ee300ae07495c276db7233e403b58a1389765479fe2bbd36866ca96358"
     },
     {
       "core_index": 498,
@@ -77,6 +97,8 @@
       "input_count": 1,
       "output_count": 3,
       "script_has_codeseparator": true,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "019954b2b716ed40dac030bd5e5e56b74f88414b4eadb4f832a265ecf363c8a3"
     },
     {
@@ -85,6 +107,8 @@
       "input_count": 4,
       "output_count": 2,
       "script_has_codeseparator": false,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "b982f7e2fdc50761005db443d78dc96bac11dd93b782db5a1de9106591628a3f"
     },
     {
@@ -93,8 +117,10 @@
       "input_count": 1,
       "output_count": 1,
       "script_has_codeseparator": false,
+      "branch": "all_like",
+      "anyone_can_pay": false,
       "preimage_sha256": "15f6b7a38ea004cf423377f1e9dfb36ca4b5a088c778504018a791fb571a6f8e"
     }
   ],
-  "result": "all selected Core expected digests match independent source-shaped bytes and pinned app sighash"
+  "result": "all 500 Core expected digests match independent source-shaped bytes and pinned app sighash"
 }

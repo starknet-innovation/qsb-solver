@@ -1,5 +1,5 @@
 {
-  "theorem_count": 798,
+  "theorem_count": 808,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2402,6 +2402,50 @@
       "propext"
     ],
     "QSB.Layout.matched_external_passes_first_comparison": [
+      "propext"
+    ],
+    "QSB.LegacySighashWire.all_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWire.preparedInputsAt_all": [
+      "propext"
+    ],
+    "QSB.LegacySighashWire.single_out_of_range": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.all_branch": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.none_branch": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.single_anyone": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.single_branch": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.single_bug": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.single_bug_raw_digest": [],
+    "QSB.LegacySighashWireFixture.unknown_all_anyone": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.Multisig.equal_counts_success_iff_pairs": [
