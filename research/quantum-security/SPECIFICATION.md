@@ -120,7 +120,12 @@ computes the seven signed positions and actual openings from any successful
 full run, including arbitrary initial byte stacks and supplied signature
 outcomes; `extractWholeRemaining` computes their ordered residual pool.
 Neither consumes transaction bytes or establishes that Core
-acceptance supplies such a run. Under the later source-shaped final scan and
+acceptance supplies such a run. `QSB.CoreStructuralEquiv.run_eq_byte` now
+proves that the bottom-first Core-shaped and top-first byte structural models
+have exactly the same success or failure for arbitrary initial stacks and
+supplied signature outcomes, including a false first-round multisignature
+result. The compiled Core interpreter and actual checker outcomes still need
+refinement. Under the later source-shaped final scan and
 signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
 computes a complete modeled `RoundWitness` from this trace, the two reached
 bonus signature bytes, and the last reached key. The game extractor still

@@ -129,3 +129,11 @@ cases with nonempty lower cells: 385 distinct 20-byte values pass, 386 fail,
 and 384 empty cells plus a 520-byte value pass. Their scriptSigs are 9,234,
 9,255, and 2,056 bytes respectively. These cases corroborate the modeled
 boundary for specific witnesses, not the universal compiled-Core bridge.
+
+`QSB.CoreStructuralEquiv.run_eq_byte` proves exact agreement between the
+bottom-first Core-shaped and top-first byte *Lean* interpreters for arbitrary
+initial stacks and supplied signature outcomes, including rejection paths and
+the false first-round multisignature result. Its lower-stack frame and overflow
+corollaries also agree. This removes a one-way model-composition gap, but the
+source-shaped interpreter is still a mathematical translation of inspected
+Core cases, not a proof about the compiled C++ interpreter or ECDSA outcomes.

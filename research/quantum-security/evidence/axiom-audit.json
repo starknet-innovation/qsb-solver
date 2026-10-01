@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1110,
+  "theorem_count": 1117,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1118,6 +1118,41 @@
       "propext"
     ],
     "QSB.CoreSourceExtraction.necessary_checks_fixed_all_calls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.checksig_byte_success_to_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.multisig_byte_success_to_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.run_bottom_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.run_bottom_overflow": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.run_eq_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.step_byte_success_to_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralEquiv.step_eq_byte": [
       "Classical.choice",
       "Quot.sound",
       "propext"
