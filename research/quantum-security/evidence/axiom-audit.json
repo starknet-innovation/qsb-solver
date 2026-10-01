@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1158,
+  "theorem_count": 1161,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4190,6 +4190,21 @@
       "propext"
     ],
     "QSB.ScriptNumExtensional.source_roll_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SegwitTxWire.decode_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SegwitTxWire.legacyDigestOfRaw_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SegwitTxWire.legacyDigestOfRaw_witness_change": [
       "Classical.choice",
       "Quot.sound",
       "propext"

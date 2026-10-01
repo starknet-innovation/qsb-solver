@@ -243,6 +243,114 @@
       "transaction_sha256": "cb3afeb261229c40fb1ede8aea882a8c2ee0f94c544c7f4e1b6bc1c75a1715eb"
     },
     {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_1_mixed_p2wsh",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "3a0f03c59e915aa2ee1901e95577e1750f2406377201aeac7e616938afd46cb6",
+      "round1_single_message_scalar_hex": "4902cdddc69715a6a6893b590a9e65a60cd113e8c737297cc56c6d1c831f2e39",
+      "script_sig_length": 1149,
+      "spending_index": 1,
+      "transaction_encoding": "segwit_marker_flag_and_witness",
+      "transaction_sha256": "3312ac4d3f2431bd330c71a99230f2cf2f6a58a94b6120d43eab48660005cc0b"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_2_mixed_p2wsh",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_encoding": "segwit_marker_flag_and_witness",
+      "transaction_sha256": "84744067d03fcdb2231ad8b421a280686bfc967b2fe41e0f2dc4dbc0048b59ff"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_two_changed_only_p2wsh_witness",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_encoding": "segwit_marker_flag_and_witness",
+      "transaction_sha256": "8933b37160c1bc7e070196750be90d688072dbf8ce26d766306b21ce878463dc"
+    },
+    {
+      "accepted": false,
+      "expected": false,
+      "input_count": 3,
+      "input_results": [
+        {
+          "error": 0,
+          "valid": false
+        },
+        {
+          "error": 0,
+          "valid": true
+        },
+        {
+          "error": 0,
+          "valid": true
+        }
+      ],
+      "name": "three_inputs_qsb_index_two_bad_p2wsh_witness",
+      "output_count": 2,
+      "round0_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "round1_single_message_scalar_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "script_sig_length": 1149,
+      "spending_index": 2,
+      "transaction_encoding": "segwit_marker_flag_and_witness",
+      "transaction_sha256": "91539271f273e4ad90510fa8d1a35aa6f65e46965eb88cc44c66c5068e564264"
+    },
+    {
       "accepted": false,
       "expected": false,
       "input_count": 3,
@@ -306,7 +414,7 @@
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd"
   },
-  "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Not a full QSB spend or universal Core refinement.",
+  "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Mixed SegWit cases add a P2WSH companion input, a valid witness-only mutation, and a wrong-witness control. Not a full QSB spend or universal Core refinement.",
   "test_lock_sha256": "0f635f137ca6bf6f188ea31a7c73d518ba482c23dc378c0f18d7ef2e6d027e1f",
   "variable_adapter_sha256": "40590ee53a0067a1ea16998e5bc5923b070af985d6f8b11a160396eb9adcb351"
 }

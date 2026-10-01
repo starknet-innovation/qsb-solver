@@ -11,6 +11,7 @@ import QSB.SighashAllWireFixture
 import QSB.LegacySighashWire
 import QSB.LegacySighashWireFixture
 import QSB.JointSourceChecks
+import QSB.SegwitTxWire
 import QSB.DERIntegerCount
 import QSB.SighashBinding
 import QSB.RecoveryCandidates
@@ -335,6 +336,9 @@ import QSB.Reduction
 #print axioms QSB.JointSourceChecks.checker_single_bug_ignores_outputs
 #print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint
 #print axioms QSB.JointSourceChecks.necessary_checks_fixed_all_joint
+#print axioms QSB.SegwitTxWire.decode_encode
+#print axioms QSB.SegwitTxWire.legacyDigestOfRaw_encode
+#print axioms QSB.SegwitTxWire.legacyDigestOfRaw_witness_change
 #print axioms QSB.DERIntegerCount.positiveHead_card
 #print axioms QSB.DERIntegerCount.protectedHead_card
 #print axioms QSB.DERIntegerCount.validShort_card

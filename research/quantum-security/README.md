@@ -191,6 +191,11 @@ puzzle-relaxed full lock with QSB at input 2. That layout reuses its final nine
 dummy keys after both outputs change, provided the fixed ALL keys are
 rederived. See `evidence/full-two-outputs-core.json`; this is finite evidence,
 not an unmodified-lock spend or a Core-to-Lean proof.
+The same adapter accepts the puzzle-relaxed QSB input alongside a P2WSH
+companion input in SegWit transaction serialization. `QSB/SegwitTxWire.lean`
+parses and round-trips that canonical envelope and proves its source-shaped
+legacy digest ignores witness-only changes. Complete Core transaction parsing
+and arbitrary-witness extraction remain open.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that

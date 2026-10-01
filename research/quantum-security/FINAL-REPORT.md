@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,158 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,161 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -1020,6 +1020,17 @@ change to both output values rejects with the old fixed ALL keys, then accepts
 with those keys rederived while the original final-round nine dummy keys stay.
 The recorded per-input Core results and message scalars make the distinction
 reproducible.
+The same pinned adapter also accepts these two QSB input positions inside a
+SegWit-serialized transaction whose separate input spends a valid P2WSH
+`OP_DROP OP_TRUE` script. Changing only the consumed P2WSH witness datum
+preserves acceptance with the same QSB unlocking script; replacing its witness
+script with the wrong bytes rejects input 0 while the bare QSB input still
+verifies. Thus a raw-byte
+extractor cannot assume the app's legacy-only transaction serialization.
+`QSB/SegwitTxWire.lean` now round-trips a canonical marker/flag `00 01`
+envelope and its witness stacks and proves that changing only those stacks
+leaves its *source-shaped* legacy digest unchanged. It does not prove full
+Core transaction parsing or that the unmodified QSB lock can be spent.
 `JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and
 `checker_single_bug_ignores_outputs` prove the corresponding source-shaped
 invariance for any output replacement that leaves the selected input past

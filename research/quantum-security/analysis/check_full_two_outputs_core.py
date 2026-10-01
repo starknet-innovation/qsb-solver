@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import random
+import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -191,12 +192,15 @@ def main() -> None:
         "core_variable_inputs_adapter.py").resolve()
     variable_adapter_sha = hashlib.sha256(variable_adapter.read_bytes()).hexdigest()
 
-    def variable_core_result(tx: bt.Transaction, spending_index: int) -> dict:
-        spent = [{"script_pubkey_hex": "51", "value": 1000}
-                 for _ in tx.inputs]
-        spent[spending_index] = {
-            "script_pubkey_hex": lock.hex(), "value": 100000}
-        payload = json.dumps({"transaction_hex": tx.serialize().hex(),
+    def variable_core_result(tx: bt.Transaction, spending_index: int,
+                             raw_tx: bytes | None = None,
+                             spent: list[dict] | None = None) -> dict:
+        if spent is None:
+            spent = [{"script_pubkey_hex": "51", "value": 1000}
+                     for _ in tx.inputs]
+            spent[spending_index] = {
+                "script_pubkey_hex": lock.hex(), "value": 100000}
+        payload = json.dumps({"transaction_hex": (raw_tx or tx.serialize()).hex(),
                               "spent_outputs": spent}) + "\n"
         process = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
@@ -230,12 +234,14 @@ def main() -> None:
         })
 
     def check_variable(name: str, tx: bt.Transaction,
-                       spending_index: int, expected: bool) -> None:
-        result = variable_core_result(tx, spending_index)
+                       spending_index: int, expected: bool,
+                       raw_tx: bytes | None = None,
+                       spent: list[dict] | None = None) -> None:
+        result = variable_core_result(tx, spending_index, raw_tx, spent)
         accepted = all(item == {"valid": True, "error": 0}
                        for item in result["inputs"])
         assert accepted == expected, (name, result, expected)
-        cases.append({
+        record = {
             "name": name,
             "accepted": accepted,
             "expected": expected,
@@ -248,8 +254,27 @@ def main() -> None:
             "round1_single_message_scalar_hex":
                 f"{tx.sighash(spending_index, code1, builder.dummy_sigs[1][0][-1]):064x}",
             "script_sig_length": len(tx.inputs[spending_index].script_sig),
-            "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
-        })
+            "transaction_sha256": hashlib.sha256(
+                raw_tx or tx.serialize()).hexdigest(),
+        }
+        if raw_tx is not None:
+            record["transaction_encoding"] = "segwit_marker_flag_and_witness"
+        cases.append(record)
+
+    def serialize_segwit(tx: bt.Transaction,
+                         witnesses: list[list[bytes]]) -> bytes:
+        assert len(witnesses) == len(tx.inputs)
+        return (
+            struct.pack("<I", tx.version) + b"\x00\x01" +
+            bt.serialize_varint(len(tx.inputs)) +
+            b"".join(inp.serialize() for inp in tx.inputs) +
+            bt.serialize_varint(len(tx.outputs)) +
+            b"".join(out.serialize() for out in tx.outputs) +
+            b"".join(bt.serialize_varint(len(witness)) +
+                     b"".join(bt.serialize_varint(len(item)) + item
+                              for item in witness)
+                     for witness in witnesses) +
+            struct.pack("<I", tx.locktime))
 
     one_output.inputs[1].script_sig = witness(one_output, one_output)
     check("one_output_bug_digest", one_output, True)
@@ -340,6 +365,37 @@ def main() -> None:
         2, code1, builder.dummy_sigs[1][0][-1]) == bug_digest
     check_variable("three_inputs_qsb_index_two_single_bug", three_index_two,
                    2, True)
+
+    # A bare legacy QSB input can coexist with a SegWit-serialized companion
+    # input. The QSB legacy sighash omits the witness envelope; the P2WSH
+    # input's witness is nevertheless checked under VERIFY_ALL. This tests a
+    # transaction-byte extraction case outside the app's legacy serializer.
+    witness_script = b"\x75\x51"  # OP_DROP; OP_TRUE
+    p2wsh = b"\x00\x20" + hashlib.sha256(witness_script).digest()
+    for spending_index, tx in ((1, three_index_one), (2, three_index_two)):
+        spent = [{"script_pubkey_hex": "51", "value": 1000}
+                 for _ in tx.inputs]
+        spent[0] = {"script_pubkey_hex": p2wsh.hex(), "value": 1000}
+        spent[spending_index] = {
+            "script_pubkey_hex": lock.hex(), "value": 100000}
+        witnesses = [[b"a", witness_script]] + [[] for _ in tx.inputs[1:]]
+        raw_tx = serialize_segwit(tx, witnesses)
+        assert raw_tx != tx.serialize()
+        check_variable(f"three_inputs_qsb_index_{spending_index}_mixed_p2wsh",
+                       tx, spending_index, True, raw_tx, spent)
+        if spending_index == 2:
+            changed_witnesses = [[b"b", witness_script]] + [
+                [] for _ in tx.inputs[1:]]
+            check_variable(
+                "three_inputs_qsb_index_two_changed_only_p2wsh_witness",
+                tx, spending_index, True,
+                serialize_segwit(tx, changed_witnesses), spent)
+            bad_witnesses = [[b"a", b"\x00"]] + [
+                [] for _ in tx.inputs[1:]]
+            check_variable("three_inputs_qsb_index_two_bad_p2wsh_witness",
+                           tx, spending_index, False,
+                           serialize_segwit(tx, bad_witnesses), spent)
+
     original_three = transaction(True, input_count=3)
     three_index_two.outputs[0] = bt.TxOut(90001, b"\x00\x14" + b"\x33" * 20)
     three_index_two.outputs[1] = bt.TxOut(1001, b"\x51")
@@ -354,7 +410,7 @@ def main() -> None:
                    three_index_two, 2, True)
 
     report = {
-        "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Not a full QSB spend or universal Core refinement.",
+        "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Mixed SegWit cases add a P2WSH companion input, a valid witness-only mutation, and a wrong-witness control. Not a full QSB spend or universal Core refinement.",
         "builder_sha256": source_sha,
         "helper_files_sha256": helper_hashes,
         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
