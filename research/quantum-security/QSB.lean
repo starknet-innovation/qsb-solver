@@ -64,6 +64,7 @@ import QSB.CoreFindAndDelete
 import QSB.CoreMultisigStack
 import QSB.CoreMultisigEval
 import QSB.CoreMultisigCleanup
+import QSB.CoreMultisigSourceScan
 import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
 import QSB.CoreChecksigEval
@@ -131,6 +132,12 @@ import QSB.Reduction
 #print axioms QSB.CoreFinalChecksigEval.checker_success
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_final_flags
+#print axioms QSB.CoreMultisigSourceScan.reached_slots
+#print axioms QSB.CoreMultisigSourceScan.deletedScript_ten
+#print axioms QSB.CoreMultisigSourceScan.scanAtStack_finalTen
+#print axioms QSB.CoreMultisigSourceScan.skipped_malformed_returns_false
+#print axioms QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal
+#print axioms QSB.CoreSourceExtraction.necessary_checks_first_round_scan
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.compact_65535

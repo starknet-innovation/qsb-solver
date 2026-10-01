@@ -291,8 +291,11 @@ and `QSB/CoreChecksigStep.lean` provide those signature-site transitions;
 their cryptographic outcomes remain supplied Booleans. Compiled Core and
 real checker/sighash refinement remain open.
 `QSB/CoreSourceExtraction.lean` combines one truthy source-shaped run with
-source-shaped checks of the four reached signature sites that matter to the
-enforced final witness. Its checked theorem extracts the pin key and a
+source-shaped checks of all five reached signature sites, including the
+first-round multisignature at its actual stack. `QSB/CoreMultisigSourceScan.lean`
+computes that site's source-shaped Boolean after shared FindAndDelete and
+requires it to match the supplied structural outcome, which may be false.
+The checked theorem extracts the pin key and a
 seven-plus-two final-round witness, then exposes both fixed signatures'
 `SIGHASH_ALL` checker calls and their reached scriptCodes. The first-round
 multisignature is still allowed to return false. This is a source-model

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 827,
+  "theorem_count": 833,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -578,6 +578,24 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal": [
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.deletedScript_ten": [
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.reached_slots": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.scanAtStack_finalTen": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.skipped_malformed_returns_false": [
+      "propext"
+    ],
     "QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout": [
       "Classical.choice",
       "Quot.sound",
@@ -848,6 +866,9 @@
     "QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSourceExtraction.necessary_checks_first_round_scan": [
       "propext"
     ],
     "QSB.CoreSourceExtraction.necessary_checks_fixed_all_calls": [

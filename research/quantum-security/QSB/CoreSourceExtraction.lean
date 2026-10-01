@@ -1,11 +1,12 @@
 import QSB.CoreStructuralRun
 import QSB.SourceWitness
 import QSB.CoreFinalChecksigEval
+import QSB.CoreMultisigSourceScan
 
 /-!
-One-run extraction from the bottom-first source-shaped interpreter. The three
-signature-check premises refer to reached source stacks: the pinning pair,
-the late puzzle pair, and the final ten-pair scan. The structural run still
+One-run extraction from the bottom-first source-shaped interpreter. The
+signature checks refer to reached source stacks, including the first-round
+multisignature scan, which may validly return false. The structural run still
 uses supplied Booleans. A compiled-Core refinement must establish both that
 run and these checker premises from a consensus-accepted transaction.
 -/
@@ -25,12 +26,25 @@ private def finalPairChecked (validKey : Bytes → Bool)
     CoreMultisigEval.nonemptyVerify
       (CoreFinalChecksigEval.checker validKey verify) scriptCode sig key
 
-/-- Executable necessary signature-site conditions for a source-shaped run.
-The four checked sites are the fixed pin, early hash puzzle, late hash puzzle,
-and enforcing final multisignature. The first-round multisignature can return
-false and remains overapproximated here; its fatal encoding errors still need
-Core refinement. This predicate alone is not Script acceptance. -/
-def necessarySignatureChecks (hashes : Hashes)
+/-- The first multisignature result in the structural run must equal the
+source-shaped count, FindAndDelete, encoding, and key-scan result at its
+reached stack. `none` is fatal, while `some false` is a valid result. -/
+def firstRoundSignatureCheck (hashes : Hashes)
+    (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) : Bool :=
+  match CoreStructuralRun.run hashes (ByteLayout.program.take 446) initial with
+  | none => false
+  | some first =>
+      match CoreMultisigSourceScan.scanAtStack
+          EncodedLayout.chunks.flatten
+          (CoreFinalChecksigEval.checker validKey verify) first.stack,
+          first.outcomes.head? with
+      | some actual, some supplied => actual == supplied
+      | _, _ => false
+
+/-- The other four necessary reached signature-site conditions: fixed pin,
+early and late hash puzzles, and enforcing final multisignature. -/
+def otherSignatureChecks (hashes : Hashes)
     (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA) : Bool :=
   match CoreStructuralRun.run hashes (ByteLayout.program.take 2) initial,
@@ -58,6 +72,54 @@ def necessarySignatureChecks (hashes : Hashes)
           (CoreFinalChecksigEval.checker validKey verify)
           final.stack.reverse = some true)
   | _, _, _, _ => false
+
+/-- Executable necessary signature-site conditions for a source-shaped run.
+The first-round scan is checked even when false; an attempted malformed
+signature or missing supplied outcome makes the certificate fail. This
+predicate alone is not compiled Bitcoin Core Script acceptance. -/
+def necessarySignatureChecks (hashes : Hashes)
+    (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) : Bool :=
+  otherSignatureChecks hashes initial validKey verify &&
+    firstRoundSignatureCheck hashes initial validKey verify
+
+/-- A successful certificate identifies a reached first-round source stack
+and a concrete scan Boolean equal to the structural outcome. No premise
+forces that Boolean to be true. -/
+theorem necessary_checks_first_round_scan (hashes : Hashes)
+    (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (checks : necessarySignatureChecks hashes initial validKey verify = true) :
+    ∃ first actual,
+      CoreStructuralRun.run hashes (ByteLayout.program.take 446) initial =
+        some first ∧
+      CoreMultisigSourceScan.scanAtStack
+        EncodedLayout.chunks.flatten
+        (CoreFinalChecksigEval.checker validKey verify) first.stack =
+          some actual ∧
+      first.outcomes.head? = some actual := by
+  have parts : otherSignatureChecks hashes initial validKey verify = true ∧
+      firstRoundSignatureCheck hashes initial validKey verify = true := by
+    simpa only [necessarySignatureChecks,
+      Bool.and_eq_true_eq_eq_true_and_eq_true] using checks
+  have firstCheck := parts.2
+  unfold firstRoundSignatureCheck at firstCheck
+  cases reached : CoreStructuralRun.run hashes
+      (ByteLayout.program.take 446) initial with
+  | none => simp [reached] at firstCheck
+  | some first =>
+      cases scanned : CoreMultisigSourceScan.scanAtStack
+          EncodedLayout.chunks.flatten
+          (CoreFinalChecksigEval.checker validKey verify) first.stack with
+      | none => simp [reached, scanned] at firstCheck
+      | some actual =>
+          cases supplied : first.outcomes.head? with
+          | none => simp [reached, scanned, supplied] at firstCheck
+          | some result =>
+              have same : actual = result := by
+                simpa [reached, scanned, supplied] using firstCheck
+              subst result
+              exact ⟨first, actual, rfl, scanned, supplied⟩
 
 /-- A single successful source-shaped structural execution and its reached
 source-shaped signature checks yield the pin and enforced final-round
@@ -505,28 +567,40 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
         PoolRollInvariant.finalNonce w.key
         (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
           sourceBeforeCheck.stack.reverse) = true := by
+  have otherChecks : otherSignatureChecks hashes
+      (CoreOpcodeStep.ofByte ⟨stack, outcomes, 0⟩)
+      validKey verify = true := by
+    have parts : otherSignatureChecks hashes
+        (CoreOpcodeStep.ofByte ⟨stack, outcomes, 0⟩)
+        validKey verify = true ∧
+        firstRoundSignatureCheck hashes
+          (CoreOpcodeStep.ofByte ⟨stack, outcomes, 0⟩)
+          validKey verify = true := by
+      simpa only [necessarySignatureChecks,
+        Bool.and_eq_true_eq_eq_true_and_eq_true] using checks
+    exact parts.1
   let initial : CoreOpcodeStep.State :=
     CoreOpcodeStep.ofByte ⟨stack, outcomes, 0⟩
   cases hPin : CoreStructuralRun.run hashes
       (ByteLayout.program.take 2) initial with
-  | none => simp [necessarySignatureChecks, initial, hPin] at checks
+  | none => simp [otherSignatureChecks, initial, hPin] at otherChecks
   | some pin =>
       cases hEarly : CoreStructuralRun.run hashes
           (ByteLayout.program.take 5) initial with
       | none =>
-          simp [necessarySignatureChecks, initial, hPin, hEarly] at checks
+          simp [otherSignatureChecks, initial, hPin, hEarly] at otherChecks
       | some early =>
           cases hLate : CoreStructuralRun.run hashes
               (ByteLayout.program.take 856) initial with
           | none =>
-              simp [necessarySignatureChecks, initial, hPin,
-                hEarly, hLate] at checks
+              simp [otherSignatureChecks, initial, hPin,
+                hEarly, hLate] at otherChecks
           | some late =>
               cases hFinal : CoreStructuralRun.run hashes
                   (ByteLayout.program.take 879) initial with
               | none =>
-                  simp [necessarySignatureChecks, initial, hPin,
-                    hEarly, hLate, hFinal] at checks
+                  simp [otherSignatureChecks, initial, hPin,
+                    hEarly, hLate, hFinal] at otherChecks
               | some beforeCheck =>
                   have facts :
                       CoreChecksigEval.evalBaseVerifyAll 880
@@ -548,8 +622,8 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
                         EncodedLayout.chunks.flatten
                         (CoreFinalChecksigEval.checker validKey verify)
                         beforeCheck.stack.reverse = some true := by
-                    simpa [necessarySignatureChecks, initial,
-                      hPin, hEarly, hLate, hFinal] using checks
+                    simpa [otherSignatureChecks, initial,
+                      hPin, hEarly, hLate, hFinal] using otherChecks
                   obtain ⟨pinKey, puzzleKey, raw, tail, w,
                     stackShape, fixed, pinDER, roundShape,
                     openings, finalDER, finalOutcome, nonce⟩ :=

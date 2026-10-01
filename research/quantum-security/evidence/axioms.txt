@@ -54,6 +54,12 @@
  Classical.choice,
  Quot.sound]
 'QSB.CoreFinalChecksigEval.successful_byte_run_final_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.reached_slots' depends on axioms: [propext, Quot.sound]
+'QSB.CoreMultisigSourceScan.deletedScript_ten' depends on axioms: [propext]
+'QSB.CoreMultisigSourceScan.scanAtStack_finalTen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.skipped_malformed_returns_false' depends on axioms: [propext]
+'QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal' depends on axioms: [propext]
+'QSB.CoreSourceExtraction.necessary_checks_first_round_scan' depends on axioms: [propext]
 'QSB.PinPuzzleScriptCode.successful_puzzle_gate' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_253' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_65535' depends on axioms: [propext, Classical.choice, Quot.sound]

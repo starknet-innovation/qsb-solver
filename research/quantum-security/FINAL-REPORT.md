@@ -401,8 +401,9 @@ the actual generated final multisignature path, but the three puzzle
    malformed lower signature when the first failed comparison makes it
    unreachable and the false result is dropped; it rejects both the undropped
    false result and a malformed signature that is actually attempted. This
-   does not supply the still-missing first-round checker/outcome bridge for
-   the full lock.
+   does not itself establish the first-round checker/outcome bridge for a
+   Core-accepted full-lock spend. The Lean source certificate below now
+   states that bridge explicitly at the reached stack.
 An isolated fixed-signature `SIGHASH_ALL` probe now records the complete
 source-shaped preimages and SHA256d digests for ten committed-field changes
 and two `scriptSig`-only controls. In all ten changed-preimage cases, pinned
@@ -527,12 +528,17 @@ dynamic-setup parameterization, and a joint quantum hash bound.
 `QSB/CoreSourceExtraction.lean` lifts this composition to a truthy full
 source-shaped structural run. Its executable `necessarySignatureChecks`
 examines the reached source stacks at the fixed pin check, both hash-puzzle
-checks, and the enforcing final multisignature. Under those source-model
+checks, the first-round multisignature, and the enforcing final multisignature.
+The generic first-round scanner reads actual count and pair slots and deletes
+all reached signatures before matching. It must return a Boolean equal to
+the structural run's supplied outcome; a false result is permitted, while a
+fatal attempted encoding failure fails the certificate. Under those source-model
 premises, Lean extracts the same seven-plus-two final witness and exposes the
 fixed pin and final nonce's actual `SIGHASH_ALL` calls on their source-shaped
 scriptCodes. The earlier multisignature may still return false. This is not
-compiled Core acceptance: signature Booleans, exact transaction sighashes,
-ECDSA, and the source-to-Core relation remain external.
+compiled Core acceptance: deriving the source checker outcomes from the
+compiled interpreter, exact transaction sighashes, ECDSA, and the
+source-to-Core relation remain external.
 `QSB/JointSourceChecks.lean` now instantiates these source checks with one
 shared H256 function `H` and one R160 function `R`: the reached pin and final
 fixed signatures verify against `H(H(sourceAllPreimage))`, and the seven
