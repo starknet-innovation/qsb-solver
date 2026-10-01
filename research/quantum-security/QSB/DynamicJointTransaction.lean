@@ -256,4 +256,73 @@ theorem search_reached_final_joint_calls
         by simpa using keyAt, der, last, keyValid, digestEq, verified,
         digestCases.1, digestCases.2⟩
 
+/-- The tenth reached final CHECKMULTISIG pair checks the lock-pushed nonce
+under the selected transaction's exact ALL preimage whenever that nonce ends
+in the builder's `0x01` flag. The key and ECDSA verdict still come from the
+external checker, and the source certificate is not compiled-Core acceptance.
+-/
+theorem search_fixed_final_nonce_all_call
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (nonceAll : lock.nonce1.getLast? = some 0x01) :
+    ∃ (beforeCheck : CoreOpcodeStep.State) (key : Bytes),
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        some lock.nonce1 ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some key ∧
+      CoreDEREncoding.valid lock.nonce1 = true ∧
+      validKey key = true ∧
+      selected < tx.inputs.length ∧
+      ecdsa lock.nonce1.dropLast key
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (CoreMultisigSourceScan.deletedScript
+              (DynamicCheckedCertificate.wire lock)
+              beforeCheck.stack.reverse 10 10)))) = true := by
+  obtain ⟨beforeCheck, reached, pairs⟩ :=
+    search_reached_final_joint_calls functions tx selected lock stack
+      validKey ecdsa firstRound final found
+  obtain ⟨beforeFixed, fixedReached, fixedSlot⟩ :=
+    DynamicCheckedCertificate.search_final_fixed_nonce_slot
+      (JointSourceChecks.hashes functions) lock secondWidth stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found
+  have same : beforeFixed = beforeCheck :=
+    Option.some.inj (fixedReached.symm.trans reached)
+  subst beforeFixed
+  obtain ⟨sig, key, hashType, digest, sigAt, keyAt, der, last,
+    keyValid, digestEq, verified, inputValid, _digestCases⟩ :=
+    pairs ⟨9, by omega⟩
+  have sigEq : sig = lock.nonce1 :=
+    Option.some.inj (sigAt.symm.trans fixedSlot)
+  subst sig
+  have flag : hashType = 0x01 :=
+    Option.some.inj (last.symm.trans nonceAll)
+  subst hashType
+  have digestEq' : JointSourceChecks.legacyDigest functions tx selected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicCheckedCertificate.wire lock)
+        beforeCheck.stack.reverse 10 10) 1 = some digest := by
+    simpa using digestEq
+  rw [JointSourceChecks.legacyDigest_all functions tx selected
+    (CoreMultisigSourceScan.deletedScript
+      (DynamicCheckedCertificate.wire lock)
+      beforeCheck.stack.reverse 10 10) inputValid] at digestEq'
+  have sameDigest := Option.some.inj digestEq'
+  rw [← sameDigest] at verified
+  exact ⟨beforeCheck, key, reached, fixedSlot, keyAt, der,
+    keyValid, inputValid, verified⟩
+
 end QSB.DynamicJointTransaction

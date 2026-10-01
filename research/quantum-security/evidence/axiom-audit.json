@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1034,
+  "theorem_count": 1037,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1306,6 +1306,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicCheckedCertificate.search_final_fixed_nonce_slot": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicCheckedCertificate.search_good_setup_nine_positions": [
       "Classical.choice",
       "Quot.sound",
@@ -1425,6 +1430,11 @@
       "propext"
     ],
     "QSB.DynamicFullSerialized.static_chunks_simple": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -1748,6 +1758,11 @@
       "propext"
     ],
     "QSB.DynamicWholeSource.accepted_first_boundary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWholeSource.accepted_whole_final_nonce_slot": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -305,6 +305,58 @@ theorem search_sound (hashes : Hashes) (lock : Lock)
           exact candidate_sound hashes lock stack validKey verify true reached
             trueResult
 
+/-- The source-addressed tenth final signature is the exact nonce bytes
+pushed by the parameterized lock. The arbitrary scriptSig may change earlier
+stack contents, but not this reached slot on a successful certificate. -/
+theorem search_final_fixed_nonce_slot (hashes : Hashes) (lock : Lock)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : search hashes lock stack validKey verify =
+      some (firstRound, final)) :
+    ∃ beforeCheck : CoreOpcodeStep.State,
+      CoreStructuralRun.run hashes (beforeFinalProgram lock)
+        (initial stack firstRound) = some beforeCheck ∧
+      CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        some lock.nonce1 := by
+  obtain ⟨fullRun, _truth, _sites, checked⟩ :=
+    search_sound hashes lock stack validKey verify firstRound final found
+  obtain ⟨beforeCheck, reached, _finalEval⟩ :=
+    final_checked_sound hashes lock stack validKey verify firstRound checked
+  let initialByte : State :=
+    ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩
+  obtain ⟨byteFinal, byteAccepted, _finalShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (program lock)
+      initialByte final (by simpa [initial, initialByte] using fullRun)
+  obtain ⟨byteBefore, byteReached, sourceBeforeShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (beforeFinalProgram lock)
+      initialByte beforeCheck (by simpa [initial, initialByte] using reached)
+  obtain ⟨modelBefore, modelReached, nonceSlot⟩ :=
+    DynamicWholeSource.accepted_whole_final_nonce_slot hashes
+      (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+        lock.firstCommitment) lock.nonce1 lock.secondCommitment
+      secondWidth initialByte byteFinal
+      (by simpa [program] using byteAccepted)
+  have same : modelBefore = byteBefore :=
+    Option.some.inj (modelReached.symm.trans
+      (by simpa [beforeFinalProgram] using byteReached))
+  subst modelBefore
+  have topSlot : beforeCheck.stack.reverse[21]? = some lock.nonce1 := by
+    rw [sourceBeforeShape]
+    simpa [CoreOpcodeStep.ofByte] using nonceSlot
+  obtain ⟨within, _⟩ := List.getElem?_eq_some_iff.mp topSlot
+  have enough : 13 + 9 ≤ beforeCheck.stack.reverse.length := by omega
+  refine ⟨beforeCheck, reached, ?_⟩
+  calc
+    CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        CoreMultisigStack.signatureAt
+          (beforeCheck.stack.reverse).reverse 10 9 := by simp
+    _ = beforeCheck.stack.reverse[12 + 9]? :=
+      CoreMultisigStack.final_signature_slot
+        beforeCheck.stack.reverse 9 enough
+    _ = some lock.nonce1 := by simpa using topSlot
+
 /-- A returned certificate yields the checked nine-position shape for the
 complete parameterized Lean serialization. Its source-level ECDSA verifier
 still needs exact transaction/Core refinement, and no QROM bound follows. -/

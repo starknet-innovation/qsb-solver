@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 798 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,037 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -781,6 +781,13 @@ selected legacy hash type or the raw out-of-range SINGLE constant; a valid
 input index is necessary. This is conditional on finding the source
 certificate with the supplied key parser and ECDSA predicate. It is not a
 compiled-Core acceptance implication or a quantum success bound.
+The same certificate fixes the tenth final signature to the lock-pushed
+second-round nonce for every successful modeled run with 20-byte second-round
+commitments. The source-addressed stack theorem transfers this exact byte
+identity through reversal. When the parameterized nonce ends in `0x01`, its
+reached ECDSA call is therefore on `H(H(sourceAllPreimage))` with the common
+final FindAndDelete scriptCode. The arbitrary-lock `0x01` condition is an
+explicit premise; the source checker and compiled-Core bridge remain open.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
 signature for any initial stack on which the modeled prefix succeeds. Strict

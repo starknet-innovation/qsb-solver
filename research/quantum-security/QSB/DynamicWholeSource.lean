@@ -95,6 +95,36 @@ theorem first_result_wrong_width (result : Bool) :
     (boolBytes result).length ≠ 20 := by
   cases result <;> decide
 
+/-- The tenth signature cell of the reached final multisignature is the
+lock-pushed nonce for every successful parameterized byte run. This uses no
+DER or signature-checker premise: it is a stack-origin fact. -/
+theorem accepted_whole_final_nonce_slot (hashes : Hashes)
+    (priorOps : List Op) (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (initial final : State)
+    (accepted : run hashes (fullProgram priorOps nonce commitmentAt)
+      initial = some final) :
+    ∃ beforeCheck : State,
+      run hashes (beforeFinalCheckProgram priorOps nonce commitmentAt)
+        initial = some beforeCheck ∧
+      beforeCheck.stack[21]? = some nonce := by
+  obtain ⟨result, tail, outcomes, cost, firstRun, finalRun⟩ :=
+    accepted_first_boundary hashes priorOps nonce commitmentAt initial final
+      accepted
+  obtain ⟨_, _, _, _, _, _, _, _, beforeCheck, prefixRun,
+      _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, nonceSlot,
+      _, _, _⟩ :=
+    DynamicBonusChain.accepted_data_signed_final_signature_origins
+      hashes nonce (boolBytes result) commitmentAt width
+      (first_result_wrong_width result) tail outcomes cost final finalRun
+  refine ⟨beforeCheck, ?_, nonceSlot⟩
+  change run hashes ((priorOps ++ [.checkmultisig]) ++
+    DynamicBonusChain.finalCheckPrefix nonce commitmentAt) initial =
+      some beforeCheck
+  rw [run_append, firstRun]
+  exact prefixRun
+
 /-- Read the seven signed opening pairs from the actual post-first-round
 modeled stack. The first-round prefix is executed, then the extractor uses
 the same fixed witness-tail offsets as the dynamic signed-chain proof. -/

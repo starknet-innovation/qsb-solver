@@ -881,6 +881,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicWholeSource.literal_full_program
 #print axioms QSB.DynamicWholeSource.accepted_first_boundary
 #print axioms QSB.DynamicWholeSource.first_result_wrong_width
+#print axioms QSB.DynamicWholeSource.accepted_whole_final_nonce_slot
 #print axioms QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions
 #print axioms QSB.DynamicWireSource.full_chunks_simple
 #print axioms QSB.DynamicWireSource.full_chunks_decode
@@ -910,10 +911,12 @@ import QSB.Reduction
 #print axioms QSB.DynamicCheckedCertificate.final_checked_sound
 #print axioms QSB.DynamicCheckedCertificate.candidate_sound
 #print axioms QSB.DynamicCheckedCertificate.search_sound
+#print axioms QSB.DynamicCheckedCertificate.search_final_fixed_nonce_slot
 #print axioms QSB.DynamicCheckedCertificate.search_good_setup_nine_positions
 #print axioms QSB.DynamicJointTransaction.search_reached_pin_joint_call
 #print axioms QSB.DynamicJointTransaction.search_fixed_pin_all_call
 #print axioms QSB.DynamicJointTransaction.search_reached_final_joint_calls
+#print axioms QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability

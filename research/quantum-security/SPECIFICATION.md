@@ -380,6 +380,19 @@ premises. These modules have no random-oracle sampling or quantum-query
 semantics; the query-success theorem still needs a game over those same
 functions and their adaptive disclosures.
 
+The successful parameterized byte run also fixes the tenth final signature
+cell to the lock-pushed second-round nonce, regardless of the initial witness
+stack. Source-stack reversal preserves that identity at Core's tenth
+signature address. With 20-byte second-round commitments and an explicit
+`0x01` final-nonce suffix, the returned source certificate therefore makes
+the external ECDSA checker accept that exact nonce against
+`H(H(sourceAllPreimage))` using the common final FindAndDelete scriptCode.
+`QSB/DynamicWholeSource.accepted_whole_final_nonce_slot`,
+`QSB/DynamicCheckedCertificate.search_final_fixed_nonce_slot`, and
+`QSB/DynamicJointTransaction.search_fixed_final_nonce_all_call` check these
+links. This does not establish a compiled-Core acceptance implication or a
+quantum bound.
+
 Use **one shared adversary budget `q`** for coherent queries to the tagged
 oracle that evaluates either H256 or R160. A query controlled by a
 superposition of primitive tags consumes one query, so a proposed bound may
