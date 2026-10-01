@@ -118,7 +118,11 @@ used.
    now equals the parser for every allowed byte string. Compiled-Core
    whole-interpreter refinement remains open. A separate Lean range theorem
    shows that the modeled serializer cannot fail on `OP_ADD` or `OP_MIN`
-   results from two successfully parsed operands.
+   results from two successfully parsed operands. A source-shaped
+   bottom-first `OP_ROLL` model also agrees with the top-first Lean byte step
+   for every raw index and stack, subject to its opcode budget. Eleven isolated
+   pinned-Core cases corroborate the modeled depth and parsing boundaries;
+   compiled-Core trace refinement is still required.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13
    boundary cases byte-for-byte, including the NULLDUMMY-slot rejection. The
    separate six-case overshoot report had mislabeled the canonical first

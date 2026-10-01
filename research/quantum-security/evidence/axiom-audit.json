@@ -1,5 +1,5 @@
 {
-  "theorem_count": 673,
+  "theorem_count": 679,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,32 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreRoll.byteRollTop_eq_step_stack": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreRoll.coreRollWithRaw_reverse": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreRoll.coreRoll_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreRoll.eraseIdx_reverse_of_lt": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreRoll.getElem_reverse_at_depth": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreRoll.source_roll_matches_byte_step": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreScriptNum.byte_sign_test": [
       "Quot.sound",
       "propext"

@@ -51,6 +51,16 @@ whole opcode trace still need refinement to Lean.
 `QSB/ByteIndexRange.lean` also proves that the optional Lean serializer is
 defined for the sum and minimum of any two successfully parsed operands;
 this removes a model-only failure branch from `OP_ADD` and `OP_MIN`.
+`QSB/CoreRoll.lean` proves that the source-shaped bottom-first `OP_ROLL`
+select/erase/append operation, including raw-index parsing, is the reverse
+of the top-first `ByteMachine.step .roll` stack result when its opcode budget
+passes. It quantifies over arbitrary byte stacks and encodings. The theorem
+does not yet show that compiled Core executes that Lean operation at each
+reached instruction of the generated lock. An 11-case pinned-Core bare-script
+probe in `analysis/check_roll_core.py` and `evidence/roll-core.json` corroborates
+the depth boundary, negative-zero and nonminimal encodings, and rejection of
+negative, out-of-range, and five-byte indices. It does not cover every stack
+or the full QSB lock.
 
 `analysis/check_bare_script_boundary.py` reproduces five isolated cases with
 the pinned native adapter; results are in `evidence/bare-script-boundary.json`.

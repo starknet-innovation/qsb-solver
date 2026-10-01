@@ -1,0 +1,114 @@
+{
+  "scope": "finite OP_ROLL probe on a disposable two-input bare-script transaction",
+  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "source_file_sha256": {
+    "worker/cpu/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "consensus/verify.cpp": "54ddb7c6049a21f4aaad23ef1a5e1fe15249eb2ade1cb5082ef15f90c2847fee"
+  },
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "cases": [
+    {
+      "name": "top_zero",
+      "cell_count": 3,
+      "raw_index_hex": "",
+      "expected_top_hex": "c3",
+      "accepted": true,
+      "transaction_sha256": "62cc52a1ca1e674eeac76d23e76f97f3d069bb44332d0eca33d0f954d3c9be2e",
+      "test_lock_sha256": "4227c077e517ea2077a6ff4aa5e3b1e7a0429b79aae2bf3c5af3456ee573255e"
+    },
+    {
+      "name": "top_negative_zero",
+      "cell_count": 3,
+      "raw_index_hex": "80",
+      "expected_top_hex": "c3",
+      "accepted": true,
+      "transaction_sha256": "9c89744aaf73668e6422896001827255b2889f97ba24386e3e9338e5232b03a4",
+      "test_lock_sha256": "4227c077e517ea2077a6ff4aa5e3b1e7a0429b79aae2bf3c5af3456ee573255e"
+    },
+    {
+      "name": "middle_one",
+      "cell_count": 3,
+      "raw_index_hex": "01",
+      "expected_top_hex": "b2",
+      "accepted": true,
+      "transaction_sha256": "939b01e946e8dce64acda30daaf0a8ecc103758b69fb22461f30812b14d5d003",
+      "test_lock_sha256": "e1f7985db878b53c8d48e32e71b0ace3cac3c156b671d573e7cc8f88cb75eec6"
+    },
+    {
+      "name": "middle_one_nonminimal",
+      "cell_count": 3,
+      "raw_index_hex": "0100",
+      "expected_top_hex": "b2",
+      "accepted": true,
+      "transaction_sha256": "8b055824311d626f964f20271ed119bf8ddc618452d8711a432770e335ca6f30",
+      "test_lock_sha256": "e1f7985db878b53c8d48e32e71b0ace3cac3c156b671d573e7cc8f88cb75eec6"
+    },
+    {
+      "name": "bottom_two",
+      "cell_count": 3,
+      "raw_index_hex": "02",
+      "expected_top_hex": "a1",
+      "accepted": true,
+      "transaction_sha256": "9e4a95290fd229323d10cee5296aa343ca8031b936e4697aad7cb8f261c44170",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "negative_one",
+      "cell_count": 3,
+      "raw_index_hex": "81",
+      "expected_top_hex": "a1",
+      "accepted": false,
+      "transaction_sha256": "bac60ac140c6198d212f202c693f371df260757ff1b5fa4fc4d0ffdce3c0beaf",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "past_bottom_three",
+      "cell_count": 3,
+      "raw_index_hex": "03",
+      "expected_top_hex": "a1",
+      "accepted": false,
+      "transaction_sha256": "c9a7a1439fb4831b30bed534dc201d45c6e6d5a642587d73e991d53560f7ab57",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "deep_152",
+      "cell_count": 153,
+      "raw_index_hex": "9800",
+      "expected_top_hex": "a1",
+      "accepted": true,
+      "transaction_sha256": "2fdf260f4c28496fd91b7a8fe0d3c07d55900ef6393b26d074634592af5fd76b",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "deep_152_nonminimal",
+      "cell_count": 153,
+      "raw_index_hex": "98000000",
+      "expected_top_hex": "a1",
+      "accepted": true,
+      "transaction_sha256": "59aa4b32181031b0654e927e0e021b1a5bf8f957202b4ee6d1766e775efe6e6c",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "max_positive_out_of_range",
+      "cell_count": 3,
+      "raw_index_hex": "ffffff7f",
+      "expected_top_hex": "a1",
+      "accepted": false,
+      "transaction_sha256": "774337e79e53b8b964208395fd1c17294de484a6a0e71443dc00dfb2a2d0ec70",
+      "test_lock_sha256": "4ccdb31a65985ee1a482bcb677ee34cd059c9fa28278d78a1e8f2fc7ec7f8b2a"
+    },
+    {
+      "name": "five_byte_operand",
+      "cell_count": 3,
+      "raw_index_hex": "0100000000",
+      "expected_top_hex": "b2",
+      "accepted": false,
+      "transaction_sha256": "b875f47cec97fba0e93cf15e52cca32898caf1ee3363354e647675a673fcbd57",
+      "test_lock_sha256": "e1f7985db878b53c8d48e32e71b0ace3cac3c156b671d573e7cc8f88cb75eec6"
+    }
+  ]
+}

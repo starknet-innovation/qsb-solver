@@ -18,6 +18,7 @@ import QSB.FirstBonus
 import QSB.ByteIndex
 import QSB.ByteIndexRange
 import QSB.CoreScriptNum
+import QSB.CoreRoll
 import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
@@ -202,6 +203,12 @@ import QSB.Reduction
 #print axioms QSB.CoreScriptNum.byte_sign_test
 #print axioms QSB.CoreScriptNum.core64_negative_magnitude
 #print axioms QSB.CoreScriptNum.coreSetVch_eq_parseScriptNum
+#print axioms QSB.CoreRoll.eraseIdx_reverse_of_lt
+#print axioms QSB.CoreRoll.getElem_reverse_at_depth
+#print axioms QSB.CoreRoll.coreRoll_reverse
+#print axioms QSB.CoreRoll.coreRollWithRaw_reverse
+#print axioms QSB.CoreRoll.byteRollTop_eq_step_stack
+#print axioms QSB.CoreRoll.source_roll_matches_byte_step
 #print axioms QSB.ByteIndex.empty_is_zero
 #print axioms QSB.ByteIndex.negative_zero_is_zero
 #print axioms QSB.ByteIndex.nonminimal_ten
