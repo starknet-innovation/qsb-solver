@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,059 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,065 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -807,6 +807,17 @@ calls, allowing the pin and final keys to coincide. It does not establish a
 quantum query bound; Core/builder refinement and an adaptive disclosure model
 remain open. The nonce ECDSA call by itself is not a fresh hash target because a
 public key can be recovered for a chosen digest.
+`QSB/DynamicDisclosureEvent.lean` now makes the adaptive-disclosure case split
+explicit for any terminal set of freely disclosed key bytes. In one checked
+source certificate on an owner-forbidden projection, either a reached pin or
+final key outside that set has strict-DER `H(key)`, or both keys are in the set
+and both fixed `SIGHASH_ALL` checks verify on preimages outside *every* valid
+owner-approved release preimage. This includes equal pin/final keys and keeps
+one shared `H`; it does not assume the disclosed set is independent of the
+oracle. Generic source-shaped FindAndDelete length lemmas and the checked
+9,981-byte Lean wire limit establish that both reached scriptCodes fit the
+ALL serializer's length domain. This deterministic split has no QROM
+probability estimate or compiled-Core acceptance implication.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
 signature for any initial stack on which the modeled prefix succeeds. Strict

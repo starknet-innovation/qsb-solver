@@ -413,6 +413,14 @@ the reached fixed pin key, and forces those bytes to be strict DER.
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a
 coherent-query success bound or compiled-Core acceptance bridge.
+`QSB/DynamicDisclosureEvent.search_fresh_key_or_known_all_retarget` further
+splits this one certificate relative to any terminal set of freely disclosed
+key bytes. A key outside the set must give a strict-DER `H(key)` hit; if both
+keys are in the set, both ALL calls use preimages distinct from every valid
+owner-approved release preimage in the same ledger context. The disclosed
+set can depend on the shared oracle and earlier signing transcripts. This is
+a deterministic event definition, not a quantum search bound for either
+branch, and key-byte equality is not assumed or excluded.
 Public-key recovery means the nonce ECDSA condition alone is not a hash-search
 event; treating it as independent of the DER condition would misstate the
 problem.

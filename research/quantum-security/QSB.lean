@@ -68,6 +68,7 @@ import QSB.DynamicFullSerialized
 import QSB.DynamicScriptLimits
 import QSB.DynamicCheckedCertificate
 import QSB.DynamicJointTransaction
+import QSB.DynamicDisclosureEvent
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -111,6 +112,12 @@ import QSB.Reduction
 #print axioms QSB.DynamicScriptLimits.full_wire_below_core_limit
 #print axioms QSB.DynamicCheckedCertificate.candidate_complete
 #print axioms QSB.DynamicCheckedCertificate.search_complete
+#print axioms QSB.CoreGetOp.parse_split
+#print axioms QSB.CoreGetOp.scan_length_le
+#print axioms QSB.CoreFindAndDelete.run_length_le
+#print axioms QSB.CoreFindAndDelete.runMany_length_le
+#print axioms QSB.DynamicDisclosureEvent.forbidden_all_preimage_fresh
+#print axioms QSB.DynamicDisclosureEvent.search_fresh_key_or_known_all_retarget
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same

@@ -73,6 +73,16 @@ oracle-dependent and may contain already-valid puzzle inputs. Liu's inversion
 bounds do not directly address QSB's joint pinning/subset/sighash relation; they
 identify the kind of advice accounting a new reduction must make explicit.
 
+Minki Hhan and Aaram Yun,
+[*Oracle Recording for Non-Uniform Random Oracles, and its Applications*](https://eprint.iacr.org/2023/1371.pdf),
+prove an `O(p q²)` search-success bound for an independently sampled Bernoulli
+oracle with marked-output probability `p`. This is a candidate tool for the
+fresh-key branch isolated by `QSB/DynamicDisclosureEvent.lean`, not a bound
+already applicable to QSB: the complete game reveals oracle-dependent good
+keys, and the same multi-bit `H` also computes sighashes and HASH160 inputs.
+Any reduction must preserve that shared oracle, count all relevant coherent
+queries, and handle the known-key retarget branch separately.
+
 ## Elliptic-curve threat
 
 Peter Shor,

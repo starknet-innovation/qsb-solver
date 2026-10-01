@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1059,
+  "theorem_count": 1065,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -524,12 +524,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreFindAndDelete.runMany_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreFindAndDelete.run_eq_model_scan": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.CoreFindAndDelete.run_eq_scan": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreFindAndDelete.run_length_le": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -563,6 +573,9 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreGetOp.parse_split": [
+      "propext"
+    ],
     "QSB.CoreGetOp.pin_scriptCode_scan": [
       "Classical.choice",
       "Quot.sound",
@@ -574,6 +587,11 @@
       "propext"
     ],
     "QSB.CoreGetOp.scan_eq_model_scan_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.scan_length_le": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -1375,6 +1393,16 @@
       "propext"
     ],
     "QSB.DynamicCoreStructural.full_program_final_check_split": [
+      "propext"
+    ],
+    "QSB.DynamicDisclosureEvent.forbidden_all_preimage_fresh": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicDisclosureEvent.search_fresh_key_or_known_all_retarget": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicFinalInit.accepted_data_shape": [

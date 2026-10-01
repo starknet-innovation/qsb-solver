@@ -197,6 +197,49 @@ def scan : Nat → Bytes → Bytes → Bytes
         | some (chunk, rest) => chunk ++ scan fuel rest pattern
         | none => script
 
+/-- A successfully parsed opcode partitions the original byte string. -/
+theorem parse_split (script chunk rest : Bytes)
+    (parsed : parse script = some (chunk, rest)) :
+    chunk ++ rest = script := by
+  unfold parse at parsed
+  cases hwidth : width script with
+  | none => simp [hwidth] at parsed
+  | some count =>
+      have pair : (script.take count, script.drop count) =
+          (chunk, rest) := by simpa [hwidth] using parsed
+      have hc : chunk = script.take count := (Prod.mk.inj pair).1.symm
+      have hr : rest = script.drop count := (Prod.mk.inj pair).2.symm
+      subst chunk
+      subst rest
+      exact List.take_append_drop count script
+
+/-- Source-shaped FindAndDelete never increases script byte length, even
+for malformed scripts, empty patterns, or insufficient loop fuel. -/
+theorem scan_length_le (fuel : Nat) (script pattern : Bytes) :
+    (scan fuel script pattern).length ≤ script.length := by
+  induction fuel generalizing script with
+  | zero => rfl
+  | succ fuel ih =>
+      by_cases empty : script = []
+      · simp [scan, empty]
+      · by_cases hit : script.take pattern.length = pattern
+        · have h := ih (script.drop pattern.length)
+          simp only [scan, empty, ↓reduceIte, hit]
+          have dropLe : (script.drop pattern.length).length ≤
+              script.length := by simp
+          exact h.trans dropLe
+        · cases parsed : parse script with
+          | none => simp [scan, empty, hit, parsed]
+          | some pair =>
+              obtain ⟨chunk, rest⟩ := pair
+              have split := parse_split script chunk rest parsed
+              have h := ih rest
+              simp only [scan, empty, hit, ↓reduceIte, parsed,
+                List.length_append]
+              have lengths := congrArg List.length split
+              simp only [List.length_append] at lengths
+              omega
+
 /-- The two deletion loops agree on every byte string and pattern, with no
 well-formed-script or complete-chunk premise. The theorem concerns the two
 Lean source models; C++ semantic correspondence is still external. -/

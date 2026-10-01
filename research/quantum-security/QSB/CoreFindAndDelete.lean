@@ -140,6 +140,12 @@ theorem run_eq_scan (fuel : Nat) (script pattern : Bytes) :
               simpa [outcome, original] using bytes.symm
             simp [run, empty, outcome, scanned]
 
+/-- The Core-shaped delayed-copy deletion model cannot grow a scriptCode. -/
+theorem run_length_le (fuel : Nat) (script pattern : Bytes) :
+    (run fuel script pattern).length ≤ script.length := by
+  rw [run_eq_scan]
+  exact CoreGetOp.scan_length_le fuel script pattern
+
 theorem run_eq_model_scan (fuel : Nat) (script pattern : Bytes) :
     run fuel script pattern = FindAndDelete.scan fuel script pattern :=
   (run_eq_scan fuel script pattern).trans
@@ -148,6 +154,15 @@ theorem run_eq_model_scan (fuel : Nat) (script pattern : Bytes) :
 def runMany (fuel : Nat) (script : Bytes) : List Bytes → Bytes
   | [] => script
   | pattern :: rest => runMany fuel (run fuel script pattern) rest
+
+theorem runMany_length_le (fuel : Nat) (script : Bytes)
+    (patterns : List Bytes) :
+    (runMany fuel script patterns).length ≤ script.length := by
+  induction patterns generalizing script with
+  | nil => rfl
+  | cons pattern rest ih =>
+      exact (ih (run fuel script pattern)).trans
+        (run_length_le fuel script pattern)
 
 theorem runMany_eq_model_scanMany (fuel : Nat) (script : Bytes)
     (patterns : List Bytes) :
