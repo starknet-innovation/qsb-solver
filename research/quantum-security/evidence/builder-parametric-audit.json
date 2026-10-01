@@ -10,6 +10,8 @@
   "emit_round_out_read_lines": [
     608
   ],
+  "full_builder_signatures_only_enter_expected_calls": true,
+  "pin_signature_only_enters_pinning_push_data": true,
   "push_data_conditions_use_only_length": true,
   "scope": "Pinned Python AST source-shape audit; supports value-independent opcode suffix under fixed Config A parameters and short push lengths. Not a formal Python/Core refinement or a quantum spend bound.",
   "stack_model_calls_have_no_byte_value_arguments": true

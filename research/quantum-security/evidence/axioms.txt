@@ -931,6 +931,24 @@
 'QSB.DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicFullSerialized.static_chunks_decode' depends on axioms: [propext]
+'QSB.DynamicFullSerialized.static_chunks_simple' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicFullSerialized.commitment_pushes_short' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicFullSerialized.commitment_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.commitment_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.pin_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.pin_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.first_data_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.first_data_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.prior_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.prior_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.literal_prior_chunks' depends on axioms: [propext]
+'QSB.DynamicFullSerialized.literal_prior_ops' depends on axioms: [propext]
+'QSB.DynamicFullSerialized.full_wire_decodes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.full_wire_decodes_der' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicFullSerialized.accepted_full_structural_good_setup_nine_positions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusSetup.bad_der_setup_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusProbability.uniform_bad_der_probability' depends on axioms: [propext, Classical.choice, Quot.sound]

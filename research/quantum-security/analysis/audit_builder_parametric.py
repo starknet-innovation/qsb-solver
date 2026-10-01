@@ -49,6 +49,7 @@ def main():
     )
     emit = function(builder.body, "_emit_round")
     build = function(builder.body, "build_full_script")
+    pinning = function(builder.body, "build_pinning_script")
     canonical = function(builder.body, "_canonical_subset")
     push = function(tree.body, "push_data")
 
@@ -120,6 +121,19 @@ def main():
         if isinstance(test, ast.If)
     )
     assert ast.unparse(canonical.body[-1]) == "return list(range(t_total))"
+    pin_pushes = calls(pinning, "push_data")
+    assert len(pin_pushes) == 1
+    assert ast.unparse(pin_pushes[0].args[0]) == "sig_nonce_bytes"
+    assert [
+        n.lineno for n in ast.walk(pinning)
+        if isinstance(n, ast.Name) and n.id == "sig_nonce_bytes"
+        and isinstance(n.ctx, ast.Load)
+    ] == [pin_pushes[0].lineno]
+    assert all(
+        not any(isinstance(n, ast.Name) and n.id == "sig_nonce_bytes"
+                for n in ast.walk(test.test))
+        for test in ast.walk(pinning) if isinstance(test, ast.If)
+    )
     single_hash_branch = next(n for n in build.body if isinstance(n, ast.If))
     assert ast.unparse(single_hash_branch.test) == (
         "self.hash_mode in ('ripemd160', 'sha256')"
@@ -135,6 +149,18 @@ def main():
         "self._emit_round(m, 0, round1_sig, self._canonical_subset(0))",
         "self._emit_round(m, 1, round2_sig, self._canonical_subset(1))",
     ]
+    assert [
+        ast.unparse(n) for n in ast.walk(single_hash_branch)
+        if isinstance(n, ast.Call)
+        and isinstance(n.func, ast.Attribute)
+        and n.func.attr == "build_pinning_script"
+    ] == ["self.build_pinning_script(pin_sig)"]
+    for name in ("pin_sig", "round1_sig", "round2_sig"):
+        assert len([
+            n for n in ast.walk(single_hash_branch)
+            if isinstance(n, ast.Name) and n.id == name
+            and isinstance(n.ctx, ast.Load)
+        ]) == 1
     assert all(
         not isinstance(n, ast.Attribute)
         or n.attr not in {"hors_commitments", "dummy_sigs"}
@@ -150,6 +176,8 @@ def main():
         "stack_model_calls_have_no_byte_value_arguments": True,
         "push_data_conditions_use_only_length": True,
         "canonical_subset_uses_round_total": True,
+        "pin_signature_only_enters_pinning_push_data": True,
+        "full_builder_signatures_only_enter_expected_calls": True,
         "scope": (
             "Pinned Python AST source-shape audit; supports value-independent "
             "opcode suffix under fixed Config A parameters and short push lengths. "

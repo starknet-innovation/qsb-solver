@@ -119,6 +119,12 @@ the builder-output and compiled-Core links are still unproved.
 single successful bottom-first source-shaped run of those parsed opcodes and
 checks the final source evaluator at that run's reached pre-check stack.
 Its signature Booleans and ECDSA/sighash checker remain external inputs.
+`QSB/DynamicFullSerialized.lean` supplies the earlier chunks for arbitrary
+20-byte commitments in both rounds and short pin/nonce pushes, so the complete
+Lean wire lock parses without an arbitrary-prior-chunk premise. Its first
+446 chunks match the literal fixture. `analysis/check_dynamic_full_data.py`
+checks four complete pinned-builder outputs against that parameterized layout;
+the Python-to-Lean universal equality remains open.
 `analysis/audit_builder_parametric.py` checks the pinned Python source's
 byte-value flow: variable commitments, dummies, and nonce bytes enter
 `_emit_round` only through data pushes, while suffix depths use stack labels.
@@ -449,6 +455,8 @@ python3 analysis/check_literal_findanddelete.py --app-root /path/to/qsb-app --ou
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json
 python3 analysis/check_dynamic_final_data.py --app-root /path/to/qsb-app --output evidence/dynamic-final-data.json
+python3 analysis/check_dynamic_full_data.py --app-root /path/to/qsb-app --output evidence/dynamic-full-data.json
+python3 analysis/audit_builder_parametric.py --app-root /path/to/qsb-app --output evidence/builder-parametric-audit.json
 python3 analysis/check_scriptnum_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/scriptnum-core.json
 python3 analysis/check_min_add_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/min-add-core.json
 python3 analysis/check_roll_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/roll-core.json

@@ -441,12 +441,25 @@ that source-level statement. The structural run still takes signature-scan
 Booleans as inputs, and the evaluator still delegates actual sighash/ECDSA
 verification to a supplied checker. No compiled-Core acceptance implication
 follows.
+`QSB/DynamicFullSerialized.lean` now constructs the entire 880-chunk Lean
+wire lock from arbitrary 20-byte commitment pools in both rounds and arbitrary
+short pin/nonce pushes. Lean proves that the full Core-shaped parser model
+recovers its intended opcode program, that strict-DER source syntax supplies
+the short-push conditions, and that its first 446 chunks specialize to the
+literal fixture. This discharges the earlier arbitrary-prior-chunk contract
+for the **Lean serialization** and feeds its full wire bytes to the structural
+nine-position extraction theorem. The expanded pinned AST audit checks the pin
+argument's only data use and all three signature arguments' call sites. Four
+disposable full-lock builder runs match the parameterized chunk fixture,
+including empty and 75-byte pushes. These are source audit and finite
+differential evidence, not a formal theorem about every Python execution or
+compiled Core.
 The pinned Python source audit in `analysis/audit_builder_parametric.py`
 checks that `_emit_round` reads commitment, dummy-signature and nonce byte
 values only as three `push_data` arguments; its later stack-depth calculations
 use token labels, while `push_data` branches on length alone. This supports
 value independence of the emitted suffix for fixed Config A parameters and
-short pushes. The audit is tied to the exact source hash and four disposable
+short pushes. The audit is tied to the exact source hash and disposable
 builder outputs. It is not a formal Python-semantics theorem equating every
 builder output to the Lean serialization or a Core consensus refinement.
 `QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`

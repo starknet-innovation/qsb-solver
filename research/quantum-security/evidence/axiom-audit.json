@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1000,
+  "theorem_count": 1016,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1327,6 +1327,78 @@
       "propext"
     ],
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.accepted_full_structural_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.commitment_chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.commitment_chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.commitment_pushes_short": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.first_data_chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.first_data_chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.full_wire_decodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.full_wire_decodes_der": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.literal_prior_chunks": [
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.literal_prior_ops": [
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.pin_chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.pin_chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.prior_chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.prior_chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.static_chunks_decode": [
+      "propext"
+    ],
+    "QSB.DynamicFullSerialized.static_chunks_simple": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSerializedRound.chunks_decode": [
