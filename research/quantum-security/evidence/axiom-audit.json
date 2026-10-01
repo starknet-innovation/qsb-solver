@@ -1,5 +1,5 @@
 {
-  "theorem_count": 857,
+  "theorem_count": 867,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -353,7 +353,45 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteTrace.accepted_literal_has_fifteen_openings": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.finalSevenOpenings_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.forget_openings": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteTrace.forget_trace": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.literal_hash_count": [
+      "propext"
+    ],
+    "QSB.ByteTrace.literal_hashes_paired": [
+      "propext"
+    ],
+    "QSB.ByteTrace.runOpenings_append": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.runOpenings_cons_success": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.runOpenings_head_of_record": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.runOpenings_length_of_paired": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.successful_pair_records_opening": [
       "Quot.sound",
       "propext"
     ],

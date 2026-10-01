@@ -376,6 +376,16 @@ import QSB.Reduction
 #print axioms QSB.ByteLayout.fifteen_hors_comparisons
 #print axioms QSB.ByteLayout.comparisons_follow_hash160
 #print axioms QSB.ByteLayout.hash_comparison_positions_valid
+#print axioms QSB.ByteTrace.forget_openings
+#print axioms QSB.ByteTrace.runOpenings_append
+#print axioms QSB.ByteTrace.runOpenings_head_of_record
+#print axioms QSB.ByteTrace.successful_pair_records_opening
+#print axioms QSB.ByteTrace.runOpenings_cons_success
+#print axioms QSB.ByteTrace.literal_hashes_paired
+#print axioms QSB.ByteTrace.literal_hash_count
+#print axioms QSB.ByteTrace.runOpenings_length_of_paired
+#print axioms QSB.ByteTrace.accepted_literal_has_fifteen_openings
+#print axioms QSB.ByteTrace.finalSevenOpenings_length
 #print axioms QSB.ByteTrace.forget_trace
 #print axioms QSB.ByteWitness.witness_length
 #print axioms QSB.ByteWitness.canonical_byte_run

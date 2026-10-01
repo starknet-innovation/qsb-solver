@@ -647,10 +647,13 @@ lock. Lean checks its 880 opcodes and the adjacency of all 15
 `HASH160; EQUALVERIFY` comparisons. An intermediate byte interpreter proves
 that any reached pair on an accepting modeled suffix compares an actual
 opening's hash with the next stack item, for arbitrary hash functions, stack
-tails and suffixes. This advances local HORS extraction but does not identify
-that stack item as an intended commitment in every witness or refine signature
-outcomes to Bitcoin Core.
-The result also composes with any executable program prefix, so a future
+tails and suffixes. An executable opening trace preserves the interpreter's
+result; a successful run of the literal lock has exactly 15 matched records,
+and dropping the first eight computes a seven-record suffix. This advances
+local HORS extraction but does not identify the compared stack item as an
+intended commitment in every witness, label the suffix with source indices,
+or refine signature outcomes and transaction acceptance to Bitcoin Core.
+The trace also composes with any executable program prefix, so a future
 provenance invariant can apply it at each of the 15 concrete comparison sites.
 
 A disposable byte witness also completes all 880 modeled instructions and all

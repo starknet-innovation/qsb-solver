@@ -317,6 +317,16 @@
 'QSB.ByteLayout.fifteen_hors_comparisons' does not depend on any axioms
 'QSB.ByteLayout.comparisons_follow_hash160' does not depend on any axioms
 'QSB.ByteLayout.hash_comparison_positions_valid' depends on axioms: [propext]
+'QSB.ByteTrace.forget_openings' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.runOpenings_append' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.runOpenings_head_of_record' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.successful_pair_records_opening' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.runOpenings_cons_success' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.literal_hashes_paired' depends on axioms: [propext]
+'QSB.ByteTrace.literal_hash_count' depends on axioms: [propext]
+'QSB.ByteTrace.runOpenings_length_of_paired' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.accepted_literal_has_fifteen_openings' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.finalSevenOpenings_length' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
 'QSB.ByteWitness.witness_length' does not depend on any axioms
 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]
