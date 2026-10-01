@@ -71,17 +71,23 @@ them yields exactly the byte-machine program. It also checks each of the 151
 selected patterns has exactly one complete encoded chunk and proves the
 selected chunk-filter scriptCode is order-independent. Its boundary-match
 theorem shows that a selected pattern found at any of those opcode boundaries
-consumes the complete chunk, for arbitrary following bytes. Equivalence of the
-Lean parser and filter to Core's C++ implementation is still open.
+consumes the complete chunk, for arbitrary following bytes.
 `QSB/FindAndDelete.lean` further proves that a source-shaped loop which
 retries deletion at the current byte boundary and otherwise advances with
 the Lean opcode parser returns that filter for **any ordered list** of these
 151 patterns, including duplicates. Every literal chunk is checked to be a
 complete direct push or a one-byte non-push opcode, so prior deletions do not
 change how a surviving chunk parses. Lean also checks that no parsed opcode
-is `OP_CODESEPARATOR`. The remaining link is the C++ parser/delete loop and
-the identification of Core's reached ten signature bytes with these selected
-patterns for every accepted witness.
+is `OP_CODESEPARATOR`. `QSB/CoreGetOp.lean` separately models the iterator
+advance in Core v27.2's
+[`GetScriptOp`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.cpp#L289-L340).
+It proves that model consumes the same complete chunk as the prior parser for
+every literal opcode and arbitrary following bytes, including after complete
+chunk deletions. The two source-shaped FindAndDelete loops therefore agree for
+any ordered list of selected signatures and for the fixed pin signature.
+Compiled-C++ refinement and the identification of Core's reached ten
+signature bytes with these selected patterns for every accepted witness remain
+open.
 Within the full byte model, `QSB/FinalScriptCode.lean` now makes that
 identification conditional on a successful, encoding-sound final ten-pair
 scan: the reached stack slots contain exactly nine selected dummy signatures

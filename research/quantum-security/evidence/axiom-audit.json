@@ -1,5 +1,5 @@
 {
-  "theorem_count": 689,
+  "theorem_count": 698,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,51 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreGetOp.final_scriptCode_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.literal_parse_stable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.literal_selected_delete": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.parse_matches_model_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.parse_simple_chunk": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.pin_scriptCode_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.scanMany_eq_model_scanMany": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.scan_eq_model_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.simple_chunk_width": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreRoll.byteRollTop_eq_step_stack": [
       "Quot.sound",
       "propext"

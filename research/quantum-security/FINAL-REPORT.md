@@ -141,7 +141,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 654 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 698 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -401,18 +401,20 @@ orders. Lean now parses the generated 9,923 serialized bytes into precisely
 exactly once, and proves the chosen chunk-filter scriptCode is independent of
 index order. It also proves that a selected pattern matching at any generated
 opcode boundary consumes exactly that complete chunk, for any following
-bytes. The generator checks the script hash externally. Equivalence to
-Core's `GetOp` and sequential `FindAndDelete`, and arbitrary-witness source
-selection, are still open.
+bytes. The generator checks the script hash externally.
 `QSB/FindAndDelete.lean` now models repeated byte-pattern deletion at opcode
 boundaries followed by parsing the next opcode. For every ordered list of
 selected final dummy signatures and the fixed nonce, Lean proves that this
 loop returns the exact serialized-chunk filter of the literal lock, including
 repeated patterns. The proof uses checked simple-opcode and complete-match
-properties; the literal script also has no `OP_CODESEPARATOR` opcode. It is
-still a Lean model of Core's loop, not a C++ refinement theorem or a full
-scriptSig and transaction extractor. It now proves the analogous one-push result
-for the literal fixed pinning signature. The source fixture confirms that
+properties; the literal script also has no `OP_CODESEPARATOR` opcode.
+`QSB/CoreGetOp.lean` adds a separate source-shaped model of Core v27.2's
+opcode iterator advance. Lean proves it parses every surviving literal chunk
+identically to the prior parser for any following bytes, and that its
+sequential deletion loop gives the same final scriptCode for any chosen final
+signature index list. It also proves the one-push pinning result. These are
+source-level model theorems, not compiled-C++ refinement or a full arbitrary
+scriptSig and transaction extractor. The source fixture confirms that
 the pinning push occurs only once at byte offset zero; the fifth isolated
 Core case corroborates deletion for those signature bytes.
 
