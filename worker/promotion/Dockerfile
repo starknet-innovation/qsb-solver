@@ -28,13 +28,8 @@ COPY worker/handler.py /opt/qsb/historical_handler.py
 COPY worker/promotion/handler.py worker/promotion/bind.py /opt/qsb/
 RUN CUDA_ARCH=${CUDA_ARCH} python3 /opt/qsb/bind.py && rm /opt/qsb/bind.py
 ENV PYTHONDONTWRITEBYTECODE=1
-CMD ["python3", "handler.py"]
 
-# Select the matching historical base transport in the build command. Both targets
-# retain the same repaired pinning and optimized subset from the candidate stage.
+# HISTORICAL_IMAGE must be the aws target of worker/Dockerfile, which provides the Batch entrypoint.
 FROM candidate AS aws
 RUN python3 -c 'import boto3, aws_entrypoint'
 CMD ["python3", "aws_entrypoint.py"]
-FROM candidate AS runpod
-RUN python3 -c 'import runpod'
-CMD ["python3", "handler.py"]

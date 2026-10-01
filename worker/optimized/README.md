@@ -5,14 +5,13 @@ From a clean checkout, with Docker on a native x86_64 Linux build host:
 ```sh
 docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:local .
 python3 worker/optimized/test_image.py qsb-optimized:local
-docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target queue -t qsb-optimized-queue:local .
 ```
 
-Compilation needs CPU, disk and network downloads, **not a GPU or Runpod account**. Docker Desktop x86 emulation on Apple Silicon may crash NVIDIA's compiler (observed exit139); use a native x86_64 builder for the compilation gate. Running the solver successfully still needs a compatible NVIDIA GPU/driver.
+Compilation needs CPU, disk and network downloads, **not a GPU or cloud account**. Docker Desktop x86 emulation on Apple Silicon may crash NVIDIA's compiler (observed exit139); use a native x86_64 builder for the compilation gate. Running the solver successfully still needs a compatible NVIDIA GPU/driver.
 
 The multi-stage Dockerfile compiles `research/optimized-subset/subset/subset.cu` with CUDA12.8.1 and the exact generic sm89 flags recorded in `source-lock.json`. It rejects missing, additional or changed solver files. Both NVIDIA base images are pinned to public linux/amd64 manifest digests. No private ECR base, supplied solver binary, historical archive, developer workspace, wallet material or fixture is a build input.
 
-The runtime target includes the newly compiled subset binary, guarded compute adapter; the independent public CPU reference stays in qsb-app. It accepts one JSON request per process. The queue target adds Runpod SDK1.7.13, its version- and wheel-hash-locked Python dependency environment and the bounded queue adapter. It does not create an endpoint. The original `worker/Dockerfile` remains the historical baseline.
+The runtime target includes the newly compiled subset binary, guarded compute adapter; the independent public CPU reference stays in qsb-app. It accepts one JSON request per process. The former Runpod queue target and its lock file were retired on 1 October 2026. `queue_handler.py` and `candidate/range_adapter.py` keep their inert Runpod entry points: `runtime-binding.json` and `candidate/release.json` hash them, and no image installs the Runpod SDK. Removing them changes this runtime identity, so it is left to the next deliberate subset rebuild. The original `worker/Dockerfile` remains the historical baseline.
 
 `/opt/qsb-validation/build-receipt.json` records compiler version, flags, source lock, installed compiler/OpenSSL package versions and **new** binary/release/runtime hashes. `candidate/release.json` and `runtime-binding.json` bind the actual outputs. An operator must obtain the built image's immutable registry digest separately after publishing it; no image digest is fabricated inside the image.
 
@@ -24,4 +23,4 @@ The optimized source retains Apache-2.0 in research/optimized-subset/LICENSE.
 
 The migration regenerated source-lock.json for the actual imported sources; historical-source-lock.json preserves the previous stale lock, which differs in pair_shared.cuh and tree.cu. New hashes do not retroactively validate the changed code.
 
-The ordinary `v*`/`aws-v*` release workflow builds the historical worker. Combined candidates use a separate workflow and descriptor publication path; see [the publication guide](../../docs/promotion/COMBINED-RELEASE.md). A new standalone build is not automatically released or enrolled.
+The `aws-v*` release workflow builds the historical worker. Combined candidates use a separate workflow and descriptor publication path; see [the publication guide](../../docs/promotion/COMBINED-RELEASE.md). A new standalone build is not automatically released or enrolled.

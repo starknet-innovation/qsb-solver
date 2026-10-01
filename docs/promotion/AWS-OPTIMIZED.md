@@ -29,7 +29,8 @@ change. The historical release workflow and default remain unchanged.
 ## AWS transport integration
 
 The combined worker includes main's AWS transport and license packaging.
-Combined candidates use explicit `aws` and `runpod` Docker targets. The AWS target
+Combined candidates use the explicit `aws` Docker target (the `runpod` target was
+retired on 1 October 2026). The AWS target
 starts `aws_entrypoint.py`, uses the same combined handler and release binding,
 and keeps the public-only S3 input digest and immutable output protocol. CI runs
 an offline fake-S3 transport test through the actual container handler for all

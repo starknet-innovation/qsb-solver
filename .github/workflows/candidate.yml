@@ -1,7 +1,7 @@
 name: Publish combined validation candidate
 on:
   push:
-    tags: ['candidate-*']
+    tags: ['candidate-sm86-*']
 permissions:
   contents: read
 jobs:
@@ -27,7 +27,7 @@ jobs:
         run: |
           case "$GITHUB_REF_NAME" in
             candidate-sm86-*) echo "CUDA_ARCH=86" >> "$GITHUB_ENV"; echo "TRANSPORT=aws" >> "$GITHUB_ENV" ;;
-            *) echo "CUDA_ARCH=89" >> "$GITHUB_ENV"; echo "TRANSPORT=runpod" >> "$GITHUB_ENV" ;;
+            *) echo "Only candidate-sm86-* tags build a candidate (AWS A10G)." >&2; exit 1 ;;
           esac
       - name: Compile and bind both stages
         env:

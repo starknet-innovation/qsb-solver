@@ -25,6 +25,3 @@ FROM runtime AS aws
 RUN python3 -m pip install --no-cache-dir boto3==1.42.0
 COPY worker/aws/entrypoint.py /opt/qsb/aws_entrypoint.py
 CMD ["python3", "aws_entrypoint.py"]
-FROM runtime AS runpod
-RUN python3 -m pip install --no-cache-dir runpod==1.7.13
-CMD ["python3", "handler.py"]

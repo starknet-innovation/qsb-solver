@@ -12,9 +12,9 @@ against the generated pipeline binding. This detects local inconsistency, not a
 malicious provider. The app must still verify every hit independently and pin the
 published image digest. No CPU verifier or wallet material is copied into this image.
 
-`candidate-*` tags compile on native Linux, run offline no-GPU checks, publish an
+`candidate-sm86-*` tags compile on native Linux, run offline no-GPU checks, publish an
 attested image and HOLD prerelease with actual binary hashes and compiler receipt.
-They never emit an app release descriptor. The existing `v*` release workflow
+They never emit an app release descriptor. The `aws-v*` release workflow
 continues to publish the historical baseline, so a candidate cannot silently
 replace it.
 

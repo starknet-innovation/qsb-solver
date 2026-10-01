@@ -2,7 +2,7 @@
 
 Status: **published on 26 September 2026; descriptor enrollment verified 1 October**. See [verified status](../README.md) and [the publication record](2026-09-26-publication.md). Live deployment was not verified by this audit. The preparation commands below are retained for provenance review, not instructions to republish this release.
 
-A normal version tag currently triggers `release.yml`, which compiles the historical
+An `aws-v*` tag triggers `release.yml`, which compiles the historical
 solver. It must not be used to claim publication of the optimized candidate.
 Rebuilding a combined image would also create a new binary/image identity needing
 its own final-image evidence. Promotion should publish a descriptor referencing
