@@ -64,6 +64,7 @@ import QSB.CoreFindAndDelete
 import QSB.CoreMultisigStack
 import QSB.CoreMultisigEval
 import QSB.CoreMultisigCleanup
+import QSB.CorePushSerialize
 import QSB.CoreMultisigSourceScan
 import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
@@ -133,10 +134,18 @@ import QSB.Reduction
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_final_flags
 #print axioms QSB.CoreMultisigSourceScan.reached_slots
+#print axioms QSB.CorePushSerialize.pushPattern_direct
+#print axioms QSB.CorePushSerialize.boundary_prefixes
+#print axioms QSB.CorePushSerialize.direct_pattern_wrong_at_76
 #print axioms QSB.CoreMultisigSourceScan.deletedScript_ten
 #print axioms QSB.CoreMultisigSourceScan.scanAtStack_finalTen
+#print axioms QSB.CoreMultisigSourceScan.scanAtStack_some
+#print axioms QSB.DERSyntax.valid_direct_push_width
+#print axioms QSB.CoreMultisigEval.finalTenEval_success_all_short
+#print axioms QSB.CoreMultisigSourceScan.finalTenEval_success_generic_scan
 #print axioms QSB.CoreMultisigSourceScan.skipped_malformed_returns_false
 #print axioms QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal
+#print axioms QSB.CoreMultisigSourceScan.long_push_deletion_counterexample
 #print axioms QSB.CoreSourceExtraction.necessary_checks_first_round_scan
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253

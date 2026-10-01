@@ -295,6 +295,9 @@ source-shaped checks of all five reached signature sites, including the
 first-round multisignature at its actual stack. `QSB/CoreMultisigSourceScan.lean`
 computes that site's source-shaped Boolean after shared FindAndDelete and
 requires it to match the supplied structural outcome, which may be false.
+`QSB/CorePushSerialize.lean` supplies Core's direct/PUSHDATA1/PUSHDATA2
+signature-push encoding for this arbitrary-witness scan; the direct-only
+pattern used by the final fixture is invalid at 76 bytes and above.
 The checked theorem extracts the pin key and a
 seven-plus-two final-round witness, then exposes both fixed signatures'
 `SIGHASH_ALL` checker calls and their reached scriptCodes. The first-round
@@ -391,6 +394,7 @@ python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_der20_parser.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/der20-parser.json
 python3 analysis/check_multisig_early_exit.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/multisig-early-exit.json
+python3 analysis/check_multisig_push_serialization.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/multisig-push-serialization.json
 python3 analysis/check_find_and_delete_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/find-and-delete-boundary.json
 python3 analysis/check_pin_puzzle_scriptcode_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/pin-puzzle-scriptcode-core.json
 python3 analysis/check_ten_signature_findanddelete.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/ten-signature-find-and-delete.json

@@ -539,6 +539,21 @@ scriptCodes. The earlier multisignature may still return false. This is not
 compiled Core acceptance: deriving the source checker outcomes from the
 compiled interpreter, exact transaction sighashes, ECDSA, and the
 source-to-Core relation remain external.
+The first version of this generic scanner reused the final-round
+`directPushPattern`, which only serializes signatures shorter than 76 bytes.
+That was unsound for arbitrary first-round witnesses: Core constructs
+`CScript() << vchSig` with PUSHDATA1 at 76–255 bytes and PUSHDATA2 at
+256–520 bytes, and it deletes even signatures the pair loop will skip.
+`QSB/CorePushSerialize.lean` now models those prefixes; the first-round
+scanner uses it for every reached signature. A Lean theorem shows the old
+pattern differs at 76 bytes. Five isolated pinned-Core cases at the 75, 76,
+255, 256, and 520-byte boundaries confirm that the skipped signature's push
+is deleted before the earlier checker call. `scanAtStack_finalTen` now states
+its short-signature premise explicitly when relating the generic scanner to
+the older final-round evaluator. The premise follows for any successful
+ten-of-ten final scan from strict DER, as checked by
+`finalTenEval_success_generic_scan`. This repairs the source certificate but
+does not establish a compiled-Core refinement for arbitrary witnesses.
 `QSB/JointSourceChecks.lean` now instantiates these source checks with one
 shared H256 function `H` and one R160 function `R`: the reached pin and final
 fixed signatures verify against `H(H(sourceAllPreimage))`, and the seven

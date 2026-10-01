@@ -193,6 +193,35 @@ theorem finalTenEval_success_pairs (script : Bytes)
     checkedPair_der script checker top sig key pair
   exact ⟨sig, key, sigAt, keyAt, strict, verified⟩
 
+/-- A true ten-of-ten result checks every reached signature, so each is
+strict DER and therefore short enough for Core's direct-push encoding.
+This justifies the direct pattern in the specialized successful final path;
+it does not justify that pattern for a false first-round scan. -/
+theorem finalTenEval_success_all_short (script : Bytes)
+    (checker : Bytes → Bytes → Bytes → Bool) (top : List Bytes)
+    (success : finalTenEval script checker top = some true) :
+    ∀ sig ∈ FinalScriptCode.reachedSignatures top, sig.length < 76 := by
+  intro sig present
+  obtain ⟨i, atSlot⟩ := List.mem_iff_getElem?.mp present
+  have enough := (finalTenEval_success_layout script checker top success).2.2.2
+  have length : (FinalScriptCode.reachedSignatures top).length = 10 := by
+    simp [FinalScriptCode.reachedSignatures, List.length_take]
+    omega
+  have index : i < 10 := by
+    have bound := (List.getElem?_eq_some_iff.mp atSlot).choose
+    omega
+  let j : Fin 10 := ⟨i, index⟩
+  obtain ⟨found, key, sigAt, _keyAt, strict, _verified⟩ :=
+    finalTenEval_success_pairs script checker top success j
+  have sourceAt := (CoreMultisigStack.final_pair_slots top
+    (by omega) j).2
+  have reachedAt : (FinalScriptCode.reachedSignatures top)[i]? =
+      some found := sourceAt.symm.trans sigAt
+  have same : sig = found := Option.some.inj (atSlot.symm.trans reachedAt)
+  subst found
+  rw [CoreDEREncoding.valid_eq_model] at strict
+  exact DERSyntax.valid_direct_push_width sig strict
+
 /-- The source-shaped deletion loop equals the previously checked selected
 scriptCode whenever the reached slots are those of a seven-plus-two trace. -/
 theorem deletedScript_selected (top : List Bytes)

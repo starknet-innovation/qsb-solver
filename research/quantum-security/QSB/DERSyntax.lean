@@ -35,6 +35,14 @@ def valid (sig : Bytes) : Bool :=
     (lenS ≤ 1 ∨ byte sig (lenR + 6) ≠ 0 ∨
       128 ≤ byte sig (lenR + 7)))
 
+/-- Every strict-DER signature accepted by this source predicate is short
+enough that `CScript() << sig` uses a direct push. -/
+theorem valid_direct_push_width (sig : Bytes)
+    (accepted : valid sig = true) : sig.length < 76 := by
+  unfold valid at accepted
+  simp only [decide_eq_true_eq] at accepted
+  omega
+
 /-- Source-shaped `CheckSignatureEncoding` under the pinned adapter's
 `VERIFY_ALL` flags: Core permits an empty signature as an invalid-check
 placeholder, while a nonempty signature must satisfy strict DER. Actual

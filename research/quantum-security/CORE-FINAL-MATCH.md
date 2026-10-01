@@ -113,6 +113,17 @@ to all ten reached signatures before checking any pair. The selected final
 dummy signatures therefore affect the legacy sighash and the recovered nonce
 key. A search game cannot replace this with a subset hash that ignores exact
 byte serialization, duplicate pushes, or noncanonical encodings.
+The [Core 27.2 `CScript() << valtype` overload](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.h#L431-L457)
+uses direct pushes only below 76 bytes, then PUSHDATA1 through 255 and
+PUSHDATA2 through the 520-byte stack-element limit. The first-round scan may
+return false without examining a malformed long signature, but its push is
+still deleted before the pair scan. `QSB/CorePushSerialize.lean` models those
+prefixes and the first-round scanner now uses them. The specialized final
+model retains direct patterns: `finalTenEval_success_all_short` proves that
+every signature in a true ten-of-ten result is strict DER and below 76 bytes,
+and `finalTenEval_success_generic_scan` connects that success to the generic
+serializer. The pinned native evidence is in
+`evidence/multisig-push-serialization.json`.
 For the one literal lock, Lean proves that all 150 generated final dummy
 signature bytes are pairwise distinct, so the nine selected dummy signatures
 in the conditional full-run theorem are distinct. Lean alone does not rule out

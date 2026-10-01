@@ -55,10 +55,20 @@
  Quot.sound]
 'QSB.CoreFinalChecksigEval.successful_byte_run_final_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigSourceScan.reached_slots' depends on axioms: [propext, Quot.sound]
-'QSB.CoreMultisigSourceScan.deletedScript_ten' depends on axioms: [propext]
+'QSB.CorePushSerialize.pushPattern_direct' depends on axioms: [propext]
+'QSB.CorePushSerialize.boundary_prefixes' does not depend on any axioms
+'QSB.CorePushSerialize.direct_pattern_wrong_at_76' does not depend on any axioms
+'QSB.CoreMultisigSourceScan.deletedScript_ten' depends on axioms: [propext, Quot.sound]
 'QSB.CoreMultisigSourceScan.scanAtStack_finalTen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.scanAtStack_some' depends on axioms: [propext, Quot.sound]
+'QSB.DERSyntax.valid_direct_push_width' depends on axioms: [propext, Quot.sound]
+'QSB.CoreMultisigEval.finalTenEval_success_all_short' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigSourceScan.finalTenEval_success_generic_scan' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreMultisigSourceScan.skipped_malformed_returns_false' depends on axioms: [propext]
 'QSB.CoreMultisigSourceScan.attempted_malformed_is_fatal' depends on axioms: [propext]
+'QSB.CoreMultisigSourceScan.long_push_deletion_counterexample' depends on axioms: [propext]
 'QSB.CoreSourceExtraction.necessary_checks_first_round_scan' depends on axioms: [propext]
 'QSB.PinPuzzleScriptCode.successful_puzzle_gate' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_253' depends on axioms: [propext, Classical.choice, Quot.sound]

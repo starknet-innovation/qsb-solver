@@ -1,5 +1,5 @@
 {
-  "theorem_count": 833,
+  "theorem_count": 841,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -544,6 +544,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreMultisigEval.finalTenEval_success_all_short": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreMultisigEval.finalTenEval_success_layout": [
       "Quot.sound",
       "propext"
@@ -582,6 +587,15 @@
       "propext"
     ],
     "QSB.CoreMultisigSourceScan.deletedScript_ten": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.finalTenEval_success_generic_scan": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.long_push_deletion_counterexample": [
       "propext"
     ],
     "QSB.CoreMultisigSourceScan.reached_slots": [
@@ -590,6 +604,10 @@
     ],
     "QSB.CoreMultisigSourceScan.scanAtStack_finalTen": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigSourceScan.scanAtStack_some": [
       "Quot.sound",
       "propext"
     ],
@@ -745,6 +763,11 @@
     ],
     "QSB.CoreOpcodeStep.supported_of_segment": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushSerialize.boundary_prefixes": [],
+    "QSB.CorePushSerialize.direct_pattern_wrong_at_76": [],
+    "QSB.CorePushSerialize.pushPattern_direct": [
       "propext"
     ],
     "QSB.CoreRoll.byteRollTop_eq_step_stack": [
@@ -1002,6 +1025,10 @@
       "propext"
     ],
     "QSB.DERSyntax.crafted_twenty_byte_signature_valid": [
+      "propext"
+    ],
+    "QSB.DERSyntax.valid_direct_push_width": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.DERSyntax.valid_twenty_byte_header": [
