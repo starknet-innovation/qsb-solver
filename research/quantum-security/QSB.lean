@@ -115,6 +115,7 @@ import QSB.CoreCheckedCertificate
 import QSB.CoreCheckedRunCertificate
 import QSB.CoreCheckedDynamic
 import QSB.CoreCheckedJointTransaction
+import QSB.CoreCheckedWire
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1344,6 +1345,10 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedDynamic.checked_run_search_succeeds
 #print axioms QSB.CoreCheckedJointTransaction.checked_run_two_key_joint_hit
 #print axioms QSB.CoreCheckedJointTransaction.checked_run_good_setup_joint_final_event
+#print axioms QSB.CoreCheckedWire.run_eq_model
+#print axioms QSB.CoreCheckedWire.run_search_succeeds
+#print axioms QSB.CoreCheckedWire.run_two_key_joint_hit
+#print axioms QSB.CoreCheckedWire.run_good_setup_joint_final_event
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

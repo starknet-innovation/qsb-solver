@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1253,
+  "theorem_count": 1257,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -786,6 +786,26 @@
       "propext"
     ],
     "QSB.CoreCheckedStep.step_record_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.run_eq_model": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.run_good_setup_joint_final_event": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.run_search_succeeds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.run_two_key_joint_hit": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

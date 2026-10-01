@@ -1478,6 +1478,10 @@
 'QSB.CoreCheckedJointTransaction.checked_run_good_setup_joint_final_event' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.CoreCheckedWire.run_eq_model' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedWire.run_search_succeeds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedWire.run_two_key_joint_hit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedWire.run_good_setup_joint_final_event' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,
