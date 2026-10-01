@@ -517,6 +517,14 @@ fixed pin and final nonce's actual `SIGHASH_ALL` calls on their source-shaped
 scriptCodes. The earlier multisignature may still return false. This is not
 compiled Core acceptance: signature Booleans, exact transaction sighashes,
 ECDSA, and the source-to-Core relation remain external.
+`QSB/JointSourceChecks.lean` now instantiates these source checks with one
+shared H256 function `H` and one R160 function `R`: the reached pin and final
+fixed signatures verify against `H(H(sourceAllPreimage))`, and the seven
+opening equations use `R(H(opening))`. The puzzle-signature lemma retains its
+actual last-byte hash type and permits the out-of-range SINGLE constant
+digest. This is a deterministic source-model connection, not a sampled joint
+oracle game or a quantum query-success theorem; the ECDSA checker and Core
+acceptance remain external.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

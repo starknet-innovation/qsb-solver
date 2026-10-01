@@ -10,6 +10,7 @@ import QSB.SighashAllWire
 import QSB.SighashAllWireFixture
 import QSB.LegacySighashWire
 import QSB.LegacySighashWireFixture
+import QSB.JointSourceChecks
 import QSB.SighashBinding
 import QSB.RecoveryCandidates
 import QSB.Parameters
@@ -168,6 +169,12 @@ import QSB.Reduction
 #print axioms QSB.LegacySighashWireFixture.unknown_all_anyone
 #print axioms QSB.LegacySighashWireFixture.single_bug
 #print axioms QSB.LegacySighashWireFixture.single_bug_raw_digest
+#print axioms QSB.JointSourceChecks.legacyDigest_all
+#print axioms QSB.JointSourceChecks.legacyDigest_single_bug
+#print axioms QSB.JointSourceChecks.checker_all
+#print axioms QSB.JointSourceChecks.checker_single_bug
+#print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint
+#print axioms QSB.JointSourceChecks.necessary_checks_fixed_all_joint
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes

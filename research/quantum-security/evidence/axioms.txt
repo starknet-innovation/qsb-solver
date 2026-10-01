@@ -99,6 +99,12 @@
 'QSB.LegacySighashWireFixture.unknown_all_anyone' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWireFixture.single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LegacySighashWireFixture.single_bug_raw_digest' does not depend on any axioms
+'QSB.JointSourceChecks.legacyDigest_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.legacyDigest_single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.checker_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.checker_single_bug' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.successful_hash_puzzle_joint' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointSourceChecks.necessary_checks_fixed_all_joint' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes' depends on axioms: [propext,

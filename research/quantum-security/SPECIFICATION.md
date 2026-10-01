@@ -272,6 +272,12 @@ uses with independent oracles without a domain-separation argument. The code
 does not add domain-separation tags. Public-key encodings, hash inputs of other
 roles, and attacker-selected preimage lengths must be accounted for.
 
+`QSB/JointSourceChecks.lean` instantiates the deterministic source checks
+with exactly this shared `H256 = H`, `SHA256d = H ∘ H`, and `HASH160 = R ∘ H`
+structure. It has no random-oracle sampling or quantum-query semantics; the
+query-success theorem still needs a game over those same functions and their
+adaptive disclosures.
+
 Use **one shared adversary budget `q`** for coherent queries to the tagged
 oracle that evaluates either H256 or R160. A query controlled by a
 superposition of primitive tags consumes one query, so a proposed bound may

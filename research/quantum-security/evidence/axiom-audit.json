@@ -1,5 +1,5 @@
 {
-  "theorem_count": 808,
+  "theorem_count": 814,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2297,6 +2297,36 @@
       "propext"
     ],
     "QSB.Game.disclosedAt_card_le_min": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.checker_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.checker_single_bug": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.legacyDigest_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.legacyDigest_single_bug": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.necessary_checks_fixed_all_joint": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointSourceChecks.successful_hash_puzzle_joint": [
       "Classical.choice",
       "Quot.sound",
       "propext"
