@@ -28,6 +28,42 @@ structure ReleasedAllCall
     (functions.H (functions.H
       (SighashAllWire.sourceAllPreimage tx selected scriptCode))) = true
 
+/-- Search only the records for this exact signature byte string and public
+key encoding. A key disclosed for another role does not silently count as a
+matching approved verification for this signature. -/
+def findRelease
+    {functions : JointSourceChecks.Functions}
+    {ecdsa : Bytes → Bytes → Bytes → Bool}
+    {ledger : Game.Outpoint → Game.Output}
+    {authorized : Set Game.Projection} :
+    List (ReleasedAllCall functions ecdsa ledger authorized) →
+      Bytes → Bytes →
+      Option (ReleasedAllCall functions ecdsa ledger authorized)
+  | [], _, _ => none
+  | release :: rest, sig, key =>
+      if release.sig = sig ∧ release.key = key then some release
+      else findRelease rest sig key
+
+theorem findRelease_sound
+    {functions : JointSourceChecks.Functions}
+    {ecdsa : Bytes → Bytes → Bytes → Bool}
+    {ledger : Game.Outpoint → Game.Output}
+    {authorized : Set Game.Projection}
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (sig key : Bytes)
+    (release : ReleasedAllCall functions ecdsa ledger authorized)
+    (found : findRelease history sig key = some release) :
+    release.sig = sig ∧ release.key = key := by
+  induction history with
+  | nil => simp [findRelease] at found
+  | cons head rest ih =>
+      by_cases matchPair : head.sig = sig ∧ head.key = key
+      · simp [findRelease, matchPair] at found
+        subst release
+        exact matchPair
+      · simp [findRelease, matchPair] at found
+        exact ih found
+
 /-- A collision of `H ∘ H` on distinct inputs yields a collision of that
 same H, either on the original inputs or on their distinct first outputs. -/
 theorem double_hash_collision_yields_hash_collision

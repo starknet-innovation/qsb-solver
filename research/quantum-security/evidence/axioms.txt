@@ -20,6 +20,7 @@
 'QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicRetarget.findRelease_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.double_hash_collision_yields_hash_collision' does not depend on any axioms
 'QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative' depends on axioms: [propext,
  Classical.choice,

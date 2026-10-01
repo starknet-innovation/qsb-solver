@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1070,
+  "theorem_count": 1071,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1553,6 +1553,11 @@
       "propext"
     ],
     "QSB.DynamicRetarget.double_hash_collision_yields_hash_collision": [],
+    "QSB.DynamicRetarget.findRelease_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative": [
       "Classical.choice",
       "Quot.sound",
