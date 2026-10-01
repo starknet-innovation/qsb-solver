@@ -1,5 +1,5 @@
 {
-  "theorem_count": 731,
+  "theorem_count": 737,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -546,6 +546,36 @@
       "propext"
     ],
     "QSB.CoreMultisigStack.stacktopNeg_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreAdd_eq_model_of_result_small": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreMin_eq_model_of_result_small": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.first_add_capped_eq_model": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.first_min_nonnegative_eq_model": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.inrange_first_add_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.inrange_first_min_bytes": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

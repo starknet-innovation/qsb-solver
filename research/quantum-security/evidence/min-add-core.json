@@ -1,0 +1,103 @@
+{
+  "scope": "isolated first signed MIN 152; ADD 151 path, not full QSB",
+  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+  "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+  "case_count": 13,
+  "cases": [
+    {
+      "name": "empty_zero",
+      "raw_hex": "",
+      "parsed": 0,
+      "expected_hex": "9700"
+    },
+    {
+      "name": "one_byte_zero",
+      "raw_hex": "00",
+      "parsed": 0,
+      "expected_hex": "9700"
+    },
+    {
+      "name": "negative_zero",
+      "raw_hex": "80",
+      "parsed": 0,
+      "expected_hex": "9700"
+    },
+    {
+      "name": "one",
+      "raw_hex": "01",
+      "parsed": 1,
+      "expected_hex": "9800"
+    },
+    {
+      "name": "two",
+      "raw_hex": "02",
+      "parsed": 2,
+      "expected_hex": "9900"
+    },
+    {
+      "name": "nonminimal_ten",
+      "raw_hex": "0a00",
+      "parsed": 10,
+      "expected_hex": "a100"
+    },
+    {
+      "name": "below_cap",
+      "raw_hex": "9700",
+      "parsed": 151,
+      "expected_hex": "2e01"
+    },
+    {
+      "name": "at_cap",
+      "raw_hex": "9800",
+      "parsed": 152,
+      "expected_hex": "2f01"
+    },
+    {
+      "name": "nonminimal_cap",
+      "raw_hex": "980000",
+      "parsed": 152,
+      "expected_hex": "2f01"
+    },
+    {
+      "name": "above_cap",
+      "raw_hex": "9900",
+      "parsed": 153,
+      "expected_hex": "2f01"
+    },
+    {
+      "name": "one_byte_127",
+      "raw_hex": "7f",
+      "parsed": 127,
+      "expected_hex": "1601"
+    },
+    {
+      "name": "two_byte_32767",
+      "raw_hex": "ff7f",
+      "parsed": 32767,
+      "expected_hex": "2f01"
+    },
+    {
+      "name": "four_byte_max",
+      "raw_hex": "ffffff7f",
+      "parsed": 2147483647,
+      "expected_hex": "2f01"
+    }
+  ],
+  "valid_path": {
+    "accepted": true,
+    "transaction_sha256": "a0d9766e24f6f0c9ceecdf0e91f7df8534fc803e97a6633eeddc20efc1d76305",
+    "lock_sha256": "a0df3609a004c6fdd89010f3edd932210678d55f326e6a82f2062af8d58597e8"
+  },
+  "wrong_expected_control": {
+    "accepted": false,
+    "transaction_sha256": "a0d9766e24f6f0c9ceecdf0e91f7df8534fc803e97a6633eeddc20efc1d76305",
+    "lock_sha256": "672b3597f485aaf59813786ed1547b9137825983112ffd2d147293b6d1d1b1a8"
+  },
+  "five_byte_rejection": {
+    "accepted": false,
+    "transaction_sha256": "1116115a346f2ba25c53d09e70f137273dfeeef0c348a992e77029c8aaf435a6",
+    "lock_sha256": "928d91735869093ac6b30994210be775ca9cad3e6a1c9838043bc80053217924"
+  }
+}

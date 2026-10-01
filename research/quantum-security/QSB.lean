@@ -18,6 +18,7 @@ import QSB.FirstBonus
 import QSB.ByteIndex
 import QSB.ByteIndexRange
 import QSB.CoreScriptNum
+import QSB.CoreNumericOps
 import QSB.CoreRoll
 import QSB.CoreSerialize
 import QSB.Multisig
@@ -746,6 +747,12 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_pairs
 #print axioms QSB.CoreMultisigEval.deletedScript_selected
 #print axioms QSB.CoreMultisigEval.successful_byte_run_source_check
+#print axioms QSB.CoreNumericOps.coreMin_eq_model_of_result_small
+#print axioms QSB.CoreNumericOps.coreAdd_eq_model_of_result_small
+#print axioms QSB.CoreNumericOps.first_min_nonnegative_eq_model
+#print axioms QSB.CoreNumericOps.first_add_capped_eq_model
+#print axioms QSB.CoreNumericOps.inrange_first_min_bytes
+#print axioms QSB.CoreNumericOps.inrange_first_add_bytes
 #print axioms QSB.CoreDEREncoding.bit80_eq_ge
 #print axioms QSB.CoreDEREncoding.failFast_eq_all
 #print axioms QSB.CoreDEREncoding.valid_eq_model
