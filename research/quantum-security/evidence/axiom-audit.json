@@ -1,5 +1,5 @@
 {
-  "theorem_count": 930,
+  "theorem_count": 944,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1197,6 +1197,24 @@
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
       "propext"
     ],
+    "QSB.DynamicSignedChain.accepted_all_signed_blocks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedChain.accepted_data_and_signed_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedChain.accepted_ordered_blocks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedChain.literal_data_and_signed_program": [
+      "propext"
+    ],
     "QSB.DynamicSignedSource.accepted_comparison_matches_source": [
       "Classical.choice",
       "Quot.sound",
@@ -1342,6 +1360,51 @@
     ],
     "QSB.DynamicSignedSource.signed_offset_lower_of_nonnegative_retained": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.accepted_inrange_signed_suffix_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.accepted_preimage_pair_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.accepted_signed_block_transition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.accepted_signed_round_transition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.aligned_pair_at": [
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.commitment_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.inrange_paired_roll_transition": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.literal_preimage_front": [
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.paired_dummy_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedTransition.preimage_front_length": [
       "Quot.sound",
       "propext"
     ],

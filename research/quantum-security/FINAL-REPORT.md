@@ -356,8 +356,16 @@ rounds. Every shallow cell at that depth is a nine-byte dummy, regardless of
 nonce width, forcing any 20-byte match to be a current commitment. The first
 complete dynamic block, including its data pushes, is checked as the first
 315 literal final-round instructions and yields an original-position HORS
-opening. Carrying exact pool erasure and alignment through the remaining six
-blocks, and refining Core acceptance to this byte model, remain open.
+opening. `QSB/DynamicSignedTransition.lean` now proves the exact next stack
+and paired pool erasures for each generated block with arbitrary nonce and
+commitment bytes. `QSB/DynamicSignedChain.lean` composes all seven blocks:
+from the parameterized data pushes through the signed suffix, every successful
+byte-model run yields seven distinct original-position openings and an aligned
+residual pool, with the same executable raw-index/opening extractors used by
+the literal proof. Specialization to the fixture is exactly the first 393
+instructions of the literal final round. Dynamic bonus extraction, the
+universal builder-to-model correspondence, compiled-Core acceptance, and the
+joint quantum-oracle bound remain open.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required

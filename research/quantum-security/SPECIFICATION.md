@@ -217,9 +217,9 @@ first such execution boundary for arbitrary commitment and nonce bytes: every
 successful modeled block has the intended stack order and initially aligned
 pools. The literal block is its exact specialization. A three-build
 pinned-builder check corroborates push order and the unchanged post-data
-opcode suffix across two setups and a 20-byte final nonce, but
-the seven signed selections and bonus-source trace have not yet been lifted
-through that parameterized suffix.
+opcode suffix across two setups and a 20-byte final nonce. The seven signed
+selections have now been lifted through that parameterized suffix; the bonus
+source trace and universal builder-to-model correspondence remain open.
 At one reached signed comparison, the parameterized source classifier gives a
 current commitment with its original pool position whenever the nonce bytes
 are not 20 bytes. Without that width premise, a shallow selection can instead
@@ -243,8 +243,11 @@ branch occurs. This prefix is exactly the literal final round's first 314
 instructions under the fixture specialization. A second checked theorem
 carries the first full block through the paired dummy roll: from the data
 pushes to the first 315 literal instructions, success forces an
-original-position commitment opening even with a 20-byte nonce. The remaining
-six comparisons still need an exact dynamic pool-transition induction.
+original-position commitment opening even with a 20-byte nonce. The exact
+dynamic pool-transition induction now covers all seven blocks and returns the
+same executable opening and residual-position traces as the literal proof.
+It has not yet been carried through the bonus, puzzle, and multisignature
+suffix or refined to compiled Core acceptance.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

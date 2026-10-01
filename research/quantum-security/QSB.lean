@@ -51,6 +51,8 @@ import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
 import QSB.DynamicFinalInit
 import QSB.DynamicSignedSource
+import QSB.DynamicSignedTransition
+import QSB.DynamicSignedChain
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -797,6 +799,20 @@ import QSB.Reduction
 #print axioms QSB.DynamicSignedSource.accepted_signed_round_original_position
 #print axioms QSB.DynamicSignedSource.literal_first_block_program
 #print axioms QSB.DynamicSignedSource.accepted_first_full_block_original_position
+#print axioms QSB.DynamicSignedTransition.aligned_pair_at
+#print axioms QSB.DynamicSignedTransition.literal_preimage_front
+#print axioms QSB.DynamicSignedTransition.commitment_roll_shape
+#print axioms QSB.DynamicSignedTransition.paired_dummy_roll_shape
+#print axioms QSB.DynamicSignedTransition.preimage_front_length
+#print axioms QSB.DynamicSignedTransition.accepted_preimage_pair_shape
+#print axioms QSB.DynamicSignedTransition.inrange_paired_roll_transition
+#print axioms QSB.DynamicSignedTransition.accepted_inrange_signed_suffix_shape
+#print axioms QSB.DynamicSignedTransition.accepted_signed_round_transition
+#print axioms QSB.DynamicSignedTransition.accepted_signed_block_transition
+#print axioms QSB.DynamicSignedChain.accepted_ordered_blocks
+#print axioms QSB.DynamicSignedChain.accepted_all_signed_blocks
+#print axioms QSB.DynamicSignedChain.literal_data_and_signed_program
+#print axioms QSB.DynamicSignedChain.accepted_data_and_signed_openings
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources
