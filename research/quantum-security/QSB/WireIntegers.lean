@@ -136,6 +136,11 @@ theorem fixedLE_decode_sound (width : Nat) (raw : Bytes)
         rw [← hValue, leBytes_readLE (raw.take width) width
           (List.length_take_of_le enough), hTail]
 
+theorem fixedLECodec_decodeSound (width : Nat) :
+    DecodeSound (fixedLECodec width) := by
+  intro raw value tail parsed
+  exact (fixedLE_decode_sound width raw value tail parsed).2
+
 /-- The entire nonnegative signed-64 range has a distinct eight-byte encoding.
 Consensus imposes a tighter monetary range; this theorem does not model it. -/
 def nonnegativeAmountCodec : PrefixCodec Nat where
@@ -148,6 +153,10 @@ def nonnegativeAmountCodec : PrefixCodec Nat where
       change value < 256 ^ 8
       norm_num at valid ⊢
       omega) tail
+
+theorem nonnegativeAmountCodec_decodeSound :
+    DecodeSound nonnegativeAmountCodec := by
+  exact fixedLECodec_decodeSound 8
 
 /-- The four canonical CompactSize encoder branches. The valid domain is the
 uint64 range; decoding rejects an overlong representation as Core does. -/
@@ -339,6 +348,10 @@ def compactSizeCodec : PrefixCodec Nat where
   encode := compactSizeEncode
   decode := compactSizeDecode
   roundtrip := compactSize_roundtrip
+
+theorem compactSizeCodec_decodeSound : DecodeSound compactSizeCodec := by
+  intro raw value tail parsed
+  exact (compactSizeDecode_sound raw value tail parsed).2
 
 theorem compact_252 : compactSizeEncode 252 = [252] := by decide
 theorem compact_253 : compactSizeEncode 253 = [253, 253, 0] := by decide

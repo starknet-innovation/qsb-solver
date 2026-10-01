@@ -194,6 +194,12 @@ import QSB.Reduction
 #print axioms QSB.recovery_in_messageTargets
 #print axioms QSB.normalized_recovery_in_messageTargets
 #print axioms QSB.OutputCodec.decodeItems_encodeItems
+#print axioms QSB.OutputCodec.fixedBytesCodec_decodeSound
+#print axioms QSB.OutputCodec.productCodec_decodeSound
+#print axioms QSB.OutputCodec.lengthPrefixedBytesCodec_decodeSound
+#print axioms QSB.OutputCodec.outputCodec_decodeSound
+#print axioms QSB.OutputCodec.decodeItems_sound
+#print axioms QSB.OutputCodec.decodeOutputs_sound
 #print axioms QSB.OutputCodec.decodeOutputs_encodeOutputs
 #print axioms QSB.OutputCodec.encodeOutputs_injective_on
 #print axioms QSB.OutputCodec.sourceShapedOutputs_injective_on
@@ -288,6 +294,9 @@ import QSB.Reduction
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.fixedLE_decode_sound
+#print axioms QSB.WireIntegers.fixedLECodec_decodeSound
+#print axioms QSB.WireIntegers.nonnegativeAmountCodec_decodeSound
+#print axioms QSB.WireIntegers.compactSizeCodec_decodeSound
 #print axioms QSB.WireIntegers.compactSizeDecode_sound
 #print axioms QSB.WireIntegers.compact_noncanonical_16_rejected
 #print axioms QSB.WireIntegers.compact_noncanonical_32_rejected
@@ -296,7 +305,9 @@ import QSB.Reduction
 #print axioms QSB.WireIntegers.compact_2pow32
 #print axioms QSB.WireIntegers.amount_90000
 #print axioms QSB.WireOutputs.decode_encode
+#print axioms QSB.WireOutputs.decode_sound
 #print axioms QSB.WireOutputs.encode_injective_on
+#print axioms QSB.SighashAllWire.inputCodec_decodeSound
 #print axioms QSB.SighashAllWire.decodeOutputs_encode
 #print axioms QSB.SighashAllWire.decodeFull_encode
 #print axioms QSB.SighashAllWire.encode_injective_on
@@ -343,9 +354,13 @@ import QSB.Reduction
 #print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint
 #print axioms QSB.JointSourceChecks.necessary_checks_fixed_all_joint
 #print axioms QSB.SegwitTxWire.decode_encode
+#print axioms QSB.SegwitTxWire.witnessItemCodec_decodeSound
+#print axioms QSB.SegwitTxWire.witnessStackCodec_decodeSound
+#print axioms QSB.SegwitTxWire.decode_sound
 #print axioms QSB.SegwitTxWire.legacyDigestOfRaw_encode
 #print axioms QSB.SegwitTxWire.legacyDigestOfRaw_witness_change
 #print axioms QSB.LegacyTxWire.decode_encode
+#print axioms QSB.LegacyTxWire.decode_sound
 #print axioms QSB.LegacyTxWire.legacyDigestOfRaw_encode
 #print axioms QSB.LegacyTxWire.legacy_segwit_same_digest
 #print axioms QSB.LegacyTxWireFixture.fixture_valid

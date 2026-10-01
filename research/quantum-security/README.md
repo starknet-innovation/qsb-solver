@@ -201,6 +201,10 @@ parse consumed the shortest encoding; the SegWit envelope parser now rejects
 all-empty witness records. Nine pinned Core framing cases are recorded in
 `evidence/tx-framing-core.json`. The source model still lacks Core's complete
 parser, resource bounds, and transaction-consensus validation.
+The generic prefix-codec converse proofs now show that **every successful
+Lean parse** of a raw legacy or SegWit transaction re-encodes to exactly its
+returned fields and any trailing bytes. This does not establish that all
+Core-accepted raw transactions are parsed by Lean.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that

@@ -33,6 +33,22 @@ theorem decode_encode (outputs : List Game.Output) (tail : Bytes)
       (lengthPrefixedBytesCodec WireIntegers.compactSizeCodec))
     outputs tail valid.1 valid.2
 
+theorem decode_sound (raw : Bytes) (outputs : List Game.Output)
+    (tail : Bytes) (parsed : decode raw = some (outputs, tail)) :
+    raw = encode outputs ++ tail := by
+  exact OutputCodec.decodeOutputs_sound WireIntegers.compactSizeCodec
+    (outputCodec WireIntegers.nonnegativeAmountCodec
+      (lengthPrefixedBytesCodec WireIntegers.compactSizeCodec))
+    WireIntegers.compactSizeCodec_decodeSound
+    (OutputCodec.outputCodec_decodeSound
+      WireIntegers.nonnegativeAmountCodec
+      (lengthPrefixedBytesCodec WireIntegers.compactSizeCodec)
+      WireIntegers.nonnegativeAmountCodec_decodeSound
+      (OutputCodec.lengthPrefixedBytesCodec_decodeSound
+        WireIntegers.compactSizeCodec
+        WireIntegers.compactSizeCodec_decodeSound))
+    raw outputs tail parsed
+
 theorem encode_injective_on {left right : List Game.Output}
     (leftValid : validOutputs left) (rightValid : validOutputs right)
     (equal : encode left = encode right) : left = right := by

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1171,
+  "theorem_count": 1186,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3871,6 +3871,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.LegacyTxWire.decode_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LegacyTxWire.legacyDigestOfRaw_encode": [
       "Classical.choice",
       "Quot.sound",
@@ -3910,11 +3915,34 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.OutputCodec.decodeItems_sound": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.OutputCodec.decodeOutputs_encodeOutputs": [
       "Quot.sound",
       "propext"
     ],
+    "QSB.OutputCodec.decodeOutputs_sound": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.OutputCodec.encodeOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.fixedBytesCodec_decodeSound": [
+      "propext"
+    ],
+    "QSB.OutputCodec.lengthPrefixedBytesCodec_decodeSound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.outputCodec_decodeSound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.productCodec_decodeSound": [
       "Quot.sound",
       "propext"
     ],
@@ -4229,12 +4257,27 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SegwitTxWire.decode_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SegwitTxWire.legacyDigestOfRaw_encode": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.SegwitTxWire.legacyDigestOfRaw_witness_change": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SegwitTxWire.witnessItemCodec_decodeSound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SegwitTxWire.witnessStackCodec_decodeSound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4283,6 +4326,11 @@
       "propext"
     ],
     "QSB.SighashAllWire.equal_sourceAllPreimage_projectionWithLedger": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.inputCodec_decodeSound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4398,6 +4446,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireIntegers.compactSizeCodec_decodeSound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.compactSizeDecode_sound": [
       "Classical.choice",
       "Quot.sound",
@@ -4446,6 +4499,11 @@
     "QSB.WireIntegers.coreSingleBug_rawDigest_readBE": [
       "propext"
     ],
+    "QSB.WireIntegers.fixedLECodec_decodeSound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.fixedLE_decode_sound": [
       "Classical.choice",
       "Quot.sound",
@@ -4457,6 +4515,11 @@
       "propext"
     ],
     "QSB.WireIntegers.leBytes_readLE": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.nonnegativeAmountCodec_decodeSound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4482,6 +4545,11 @@
       "propext"
     ],
     "QSB.WireOutputs.decode_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireOutputs.decode_sound": [
       "Classical.choice",
       "Quot.sound",
       "propext"

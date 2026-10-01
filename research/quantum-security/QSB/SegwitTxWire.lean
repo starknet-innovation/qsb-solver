@@ -37,6 +37,32 @@ def witnessStackCodec : PrefixCodec (List Bytes) where
     rw [WireIntegers.compactSizeCodec.roundtrip _ valid.1]
     exact decodeItems_encodeItems witnessItemCodec items tail valid.2
 
+theorem witnessItemCodec_decodeSound : DecodeSound witnessItemCodec := by
+  exact lengthPrefixedBytesCodec_decodeSound
+    WireIntegers.compactSizeCodec
+    WireIntegers.compactSizeCodec_decodeSound
+
+theorem witnessStackCodec_decodeSound : DecodeSound witnessStackCodec := by
+  intro raw items tail parsed
+  cases countEq : WireIntegers.compactSizeCodec.decode raw with
+  | none => simp [witnessStackCodec, countEq] at parsed
+  | some countPair =>
+    rcases countPair with ⟨count, rest⟩
+    have itemsEq : decodeItems witnessItemCodec count rest =
+        some (items, tail) := by
+      simpa [witnessStackCodec, countEq] using parsed
+    obtain ⟨hLength, hItems⟩ := decodeItems_sound witnessItemCodec
+      witnessItemCodec_decodeSound count rest items tail itemsEq
+    have hCount := WireIntegers.compactSizeCodec_decodeSound
+      raw count rest countEq
+    change raw = WireIntegers.compactSizeCodec.encode items.length ++
+      encodeItems witnessItemCodec items ++ tail
+    calc
+      raw = WireIntegers.compactSizeCodec.encode count ++ rest := hCount
+      _ = WireIntegers.compactSizeCodec.encode items.length ++
+          encodeItems witnessItemCodec items ++ tail := by
+        rw [hLength, hItems, List.append_assoc]
+
 /-- Core's SegWit envelope requires at least one nonempty witness stack;
 otherwise it rejects the serialization as a superfluous witness record. -/
 def hasWitness (witnesses : List (List Bytes)) : Bool :=
@@ -159,6 +185,139 @@ theorem decode_encode (tx : SighashAllWire.TxFields)
   simp only [List.append_nil] at hLocktime
   rw [hLocktime]
   rfl
+
+/-- A successful source-model SegWit parse consumes exactly the canonical
+marker/flag envelope, including all witness stacks, followed by the returned
+tail. Equality with compiled Core deserialization remains external. -/
+theorem decode_sound (raw : Bytes) (tx : SighashAllWire.TxFields)
+    (witnesses : List (List Bytes)) (tail : Bytes)
+    (parsed : decode raw = some (tx, witnesses, tail)) :
+    raw = encode tx witnesses ++ tail := by
+  cases versionEq : (WireIntegers.fixedLECodec 4).decode raw with
+  | none => simp [decode, versionEq] at parsed
+  | some versionPair =>
+    rcases versionPair with ⟨version, afterVersion⟩
+    cases flagEq : (fixedBytesCodec 2).decode afterVersion with
+    | none => simp [decode, versionEq, flagEq] at parsed
+    | some flagPair =>
+      rcases flagPair with ⟨flag, afterFlag⟩
+      by_cases correctFlag : flag = [0x00, 0x01]
+      · cases countEq : WireIntegers.compactSizeCodec.decode afterFlag with
+        | none =>
+            simp [decode, versionEq, flagEq, correctFlag, countEq] at parsed
+        | some countPair =>
+          rcases countPair with ⟨count, afterCount⟩
+          cases inputsEq : decodeItems SighashAllWire.inputCodec count
+              afterCount with
+          | none =>
+              simp [decode, versionEq, flagEq, correctFlag,
+                countEq, inputsEq] at parsed
+          | some inputsPair =>
+            rcases inputsPair with ⟨inputs, afterInputs⟩
+            cases outputsEq : WireOutputs.decode afterInputs with
+            | none =>
+                simp [decode, versionEq, flagEq, correctFlag,
+                  countEq, inputsEq, outputsEq] at parsed
+            | some outputsPair =>
+              rcases outputsPair with ⟨outputs, afterOutputs⟩
+              cases witnessesEq : decodeItems witnessStackCodec count
+                  afterOutputs with
+              | none =>
+                  simp [decode, versionEq, flagEq, correctFlag,
+                    countEq, inputsEq, outputsEq, witnessesEq] at parsed
+              | some witnessesPair =>
+                rcases witnessesPair with ⟨parsedWitnesses, afterWitnesses⟩
+                cases hasEq : hasWitness parsedWitnesses with
+                | false =>
+                    simp [decode, versionEq, flagEq, correctFlag, countEq,
+                      inputsEq, outputsEq, witnessesEq, hasEq] at parsed
+                | true =>
+                  cases locktimeEq : (WireIntegers.fixedLECodec 4).decode
+                      afterWitnesses with
+                  | none =>
+                      simp [decode, versionEq, flagEq, correctFlag, countEq,
+                        inputsEq, outputsEq, witnessesEq, hasEq,
+                        locktimeEq] at parsed
+                  | some locktimePair =>
+                    rcases locktimePair with ⟨locktime, afterLocktime⟩
+                    have result :
+                        (⟨version, inputs, outputs, locktime⟩,
+                          parsedWitnesses, afterLocktime) =
+                          (tx, witnesses, tail) := by
+                      exact Option.some.inj (by
+                        simpa [decode, versionEq, flagEq, correctFlag,
+                          countEq, inputsEq, outputsEq, witnessesEq, hasEq,
+                          locktimeEq] using parsed)
+                    have hTx : (⟨version, inputs, outputs, locktime⟩ :
+                        SighashAllWire.TxFields) = tx := by
+                      simpa using congrArg Prod.fst result
+                    have hWitnesses : parsedWitnesses = witnesses := by
+                      simpa using congrArg (fun p => p.2.1) result
+                    have hTail : afterLocktime = tail := by
+                      simpa using congrArg (fun p => p.2.2) result
+                    have hVersion := WireIntegers.fixedLECodec_decodeSound 4
+                      raw version afterVersion versionEq
+                    have hFlag := fixedBytesCodec_decodeSound 2
+                      afterVersion flag afterFlag flagEq
+                    have hCount := WireIntegers.compactSizeCodec_decodeSound
+                      afterFlag count afterCount countEq
+                    obtain ⟨hInputLength, hInputs⟩ := decodeItems_sound
+                      SighashAllWire.inputCodec
+                      SighashAllWire.inputCodec_decodeSound
+                      count afterCount inputs afterInputs inputsEq
+                    have hOutputs := WireOutputs.decode_sound
+                      afterInputs outputs afterOutputs outputsEq
+                    obtain ⟨_, hWitnessBytes⟩ := decodeItems_sound
+                      witnessStackCodec witnessStackCodec_decodeSound
+                      count afterOutputs parsedWitnesses afterWitnesses
+                      witnessesEq
+                    have hLocktime := WireIntegers.fixedLECodec_decodeSound 4
+                      afterWitnesses locktime afterLocktime locktimeEq
+                    calc
+                      raw = (WireIntegers.fixedLECodec 4).encode version ++
+                          afterVersion := hVersion
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ afterFlag := by
+                            rw [hFlag]
+                            simp [fixedBytesCodec, List.append_assoc]
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ WireIntegers.compactSizeCodec.encode count ++
+                          afterCount := by
+                            rw [hCount]
+                            simp only [List.append_assoc]
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ WireIntegers.compactSizeCodec.encode count ++
+                          encodeItems SighashAllWire.inputCodec inputs ++
+                          afterInputs := by
+                            rw [hInputs]
+                            simp only [List.append_assoc]
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ WireIntegers.compactSizeCodec.encode count ++
+                          encodeItems SighashAllWire.inputCodec inputs ++
+                          WireOutputs.encode outputs ++ afterOutputs := by
+                            rw [hOutputs]
+                            simp only [List.append_assoc]
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ WireIntegers.compactSizeCodec.encode count ++
+                          encodeItems SighashAllWire.inputCodec inputs ++
+                          WireOutputs.encode outputs ++
+                          encodeItems witnessStackCodec parsedWitnesses ++
+                          afterWitnesses := by
+                            rw [hWitnessBytes]
+                            simp only [List.append_assoc]
+                      _ = (WireIntegers.fixedLECodec 4).encode version ++
+                          flag ++ WireIntegers.compactSizeCodec.encode count ++
+                          encodeItems SighashAllWire.inputCodec inputs ++
+                          WireOutputs.encode outputs ++
+                          encodeItems witnessStackCodec parsedWitnesses ++
+                          (WireIntegers.fixedLECodec 4).encode locktime ++
+                          afterLocktime := by
+                            rw [hLocktime]
+                            simp only [List.append_assoc]
+                      _ = encode tx witnesses ++ tail := by
+                            rw [← hTx, ← hWitnesses, ← hTail, correctFlag]
+                            simp [encode, ← hInputLength, List.append_assoc]
+      · simp [decode, versionEq, flagEq, correctFlag] at parsed
 
 /-- A source-model legacy sighash computed from canonical SegWit bytes is
 unaffected by changing only witness stacks. Its equality to compiled Core's

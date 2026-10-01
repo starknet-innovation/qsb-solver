@@ -25,6 +25,18 @@ def inputCodec : PrefixCodec InputFields :=
       (productCodec (lengthPrefixedBytesCodec WireIntegers.compactSizeCodec)
         (WireIntegers.fixedLECodec 4)))
 
+theorem inputCodec_decodeSound : DecodeSound inputCodec := by
+  unfold inputCodec
+  apply productCodec_decodeSound
+  · exact fixedBytesCodec_decodeSound 32
+  · apply productCodec_decodeSound
+    · exact WireIntegers.fixedLECodec_decodeSound 4
+    · apply productCodec_decodeSound
+      · exact lengthPrefixedBytesCodec_decodeSound
+          WireIntegers.compactSizeCodec
+          WireIntegers.compactSizeCodec_decodeSound
+      · exact WireIntegers.fixedLECodec_decodeSound 4
+
 /- `version` stores its 32-bit wire pattern as a Nat, so even a semantically
 negative C++ int32 version can be represented after conversion. The input
 fields likewise carry the raw previous txid and unsigned wire indices. -/

@@ -20,6 +20,12 @@ structure PrefixCodec (α : Type*) where
   roundtrip : ∀ value, valid value → ∀ tail,
     decode (encode value ++ tail) = some (value, tail)
 
+/-- The converse of a valid-domain round trip: every successful parse uses
+exactly the codec's canonical bytes for its returned value. -/
+def DecodeSound {α : Type*} (codec : PrefixCodec α) : Prop :=
+  ∀ raw value tail, codec.decode raw = some (value, tail) →
+    raw = codec.encode value ++ tail
+
 /-- Fixed-length raw bytes, used for an input's 32-byte previous txid. -/
 def fixedBytesCodec (width : Nat) : PrefixCodec Bytes where
   valid := fun payload => payload.length = width
@@ -32,6 +38,24 @@ def fixedBytesCodec (width : Nat) : PrefixCodec Bytes where
   roundtrip := by
     intro payload valid tail
     simp [valid]
+
+theorem fixedBytesCodec_decodeSound (width : Nat) :
+    DecodeSound (fixedBytesCodec width) := by
+  intro raw value tail parsed
+  have enough : width ≤ raw.length := by
+    by_contra short
+    simp [fixedBytesCodec, short] at parsed
+  have pair : (raw.take width, raw.drop width) = (value, tail) := by
+    exact Option.some.inj (by simpa [fixedBytesCodec, enough] using parsed)
+  have hValue : raw.take width = value := by
+    simpa using congrArg Prod.fst pair
+  have hTail : raw.drop width = tail := by
+    simpa using congrArg Prod.snd pair
+  change raw = value ++ tail
+  calc
+    raw = raw.take width ++ raw.drop width :=
+      (List.take_append_drop width raw).symm
+    _ = value ++ tail := by rw [hValue, hTail]
 
 /-- Consecutive self-delimiting fields remain self-delimiting. -/
 def productCodec {α β : Type} (first : PrefixCodec α)
@@ -48,6 +72,32 @@ def productCodec {α β : Type} (first : PrefixCodec α)
     | mk a b =>
       simp [List.append_assoc, first.roundtrip _ valid.1,
         second.roundtrip _ valid.2]
+
+theorem productCodec_decodeSound {α β : Type}
+    (first : PrefixCodec α) (second : PrefixCodec β)
+    (firstSound : DecodeSound first) (secondSound : DecodeSound second) :
+    DecodeSound (productCodec first second) := by
+  intro raw value tail parsed
+  cases firstEq : first.decode raw with
+  | none => simp [productCodec, firstEq] at parsed
+  | some firstPair =>
+    rcases firstPair with ⟨a, rest⟩
+    cases secondEq : second.decode rest with
+    | none => simp [productCodec, firstEq, secondEq] at parsed
+    | some secondPair =>
+      rcases secondPair with ⟨b, after⟩
+      have result : ((a, b), after) = (value, tail) := by
+        exact Option.some.inj (by
+          simpa [productCodec, firstEq, secondEq] using parsed)
+      have hValue : (a, b) = value := by
+        simpa using congrArg Prod.fst result
+      have hTail : after = tail := by
+        simpa using congrArg Prod.snd result
+      have left := firstSound raw a rest firstEq
+      have right := secondSound rest b after secondEq
+      rw [← hValue, ← hTail]
+      change raw = first.encode a ++ second.encode b ++ after
+      rw [left, right, List.append_assoc]
 
 /-- Bitcoin script byte vectors use a CompactSize length followed by exactly
 that many bytes. This construction only assumes a correct count codec; it
@@ -74,6 +124,34 @@ def lengthPrefixedBytesCodec (count : PrefixCodec Nat) : PrefixCodec Bytes where
     rw [count.roundtrip _ valid]
     simp
 
+theorem lengthPrefixedBytesCodec_decodeSound (count : PrefixCodec Nat)
+    (countSound : DecodeSound count) :
+    DecodeSound (lengthPrefixedBytesCodec count) := by
+  intro raw value tail parsed
+  cases countEq : count.decode raw with
+  | none => simp [lengthPrefixedBytesCodec, countEq] at parsed
+  | some countPair =>
+    rcases countPair with ⟨n, rest⟩
+    have enough : n ≤ rest.length := by
+      by_contra short
+      simp [lengthPrefixedBytesCodec, countEq, short] at parsed
+    have result : (rest.take n, rest.drop n) = (value, tail) := by
+      exact Option.some.inj (by
+        simpa [lengthPrefixedBytesCodec, countEq, enough] using parsed)
+    have hValue : rest.take n = value := by
+      simpa using congrArg Prod.fst result
+    have hTail : rest.drop n = tail := by
+      simpa using congrArg Prod.snd result
+    have hCount : value.length = n := by
+      rw [← hValue, List.length_take_of_le enough]
+    have hRaw := countSound raw n rest countEq
+    change raw = count.encode value.length ++ value ++ tail
+    calc
+      raw = count.encode n ++ rest := hRaw
+      _ = count.encode value.length ++ value ++ tail := by
+        rw [hCount, ← hValue, ← hTail,
+          List.append_assoc, List.take_append_drop n rest]
+
 def outputCodec (amount : PrefixCodec Nat) (script : PrefixCodec Bytes) :
     PrefixCodec Game.Output where
   valid := fun out => amount.valid out.value ∧ script.valid out.script
@@ -92,6 +170,33 @@ def outputCodec (amount : PrefixCodec Nat) (script : PrefixCodec Bytes) :
       return ({ value := value, script := scriptBytes }, finalTail)) =
       some (out, tail)
     simp [amount.roundtrip _ valid.1, script.roundtrip _ valid.2]
+
+theorem outputCodec_decodeSound (amount : PrefixCodec Nat)
+    (script : PrefixCodec Bytes)
+    (amountSound : DecodeSound amount) (scriptSound : DecodeSound script) :
+    DecodeSound (outputCodec amount script) := by
+  intro raw value tail parsed
+  cases amountEq : amount.decode raw with
+  | none => simp [outputCodec, amountEq] at parsed
+  | some amountPair =>
+    rcases amountPair with ⟨n, rest⟩
+    cases scriptEq : script.decode rest with
+    | none => simp [outputCodec, amountEq, scriptEq] at parsed
+    | some scriptPair =>
+      rcases scriptPair with ⟨bytes, after⟩
+      have result : ({ value := n, script := bytes }, after) =
+          (value, tail) := by
+        exact Option.some.inj (by
+          simpa [outputCodec, amountEq, scriptEq] using parsed)
+      have hValue : ({ value := n, script := bytes } : Game.Output) = value := by
+        simpa using congrArg Prod.fst result
+      have hTail : after = tail := by
+        simpa using congrArg Prod.snd result
+      have left := amountSound raw n rest amountEq
+      have right := scriptSound rest bytes after scriptEq
+      rw [← hValue, ← hTail]
+      change raw = amount.encode n ++ script.encode bytes ++ after
+      rw [left, right, List.append_assoc]
 
 def encodeItems {α : Type*} (item : PrefixCodec α) : List α → Bytes
   | [] => []
@@ -121,6 +226,44 @@ theorem decodeItems_encodeItems {α : Type*} (item : PrefixCodec α)
       simp [encodeItems, decodeItems, List.append_assoc,
         item.roundtrip _ head, ih tailValid]
 
+theorem decodeItems_sound {α : Type*} (item : PrefixCodec α)
+    (itemSound : DecodeSound item) (count : Nat) (raw : Bytes)
+    (items : List α) (tail : Bytes)
+    (parsed : decodeItems item count raw = some (items, tail)) :
+    items.length = count ∧ raw = encodeItems item items ++ tail := by
+  induction count generalizing raw items tail with
+  | zero =>
+      have result : ([], raw) = (items, tail) := by
+        exact Option.some.inj (by simpa [decodeItems] using parsed)
+      have hItems : ([] : List α) = items := by
+        simpa using congrArg Prod.fst result
+      have hTail : raw = tail := by
+        simpa using congrArg Prod.snd result
+      subst items
+      simp [encodeItems, hTail]
+  | succ n ih =>
+      cases itemEq : item.decode raw with
+      | none => simp [decodeItems, itemEq] at parsed
+      | some firstPair =>
+        rcases firstPair with ⟨head, rest⟩
+        cases restEq : decodeItems item n rest with
+        | none => simp [decodeItems, itemEq, restEq] at parsed
+        | some restPair =>
+          rcases restPair with ⟨remaining, after⟩
+          have result : (head :: remaining, after) = (items, tail) := by
+            exact Option.some.inj (by
+              simpa [decodeItems, itemEq, restEq] using parsed)
+          have hItems : head :: remaining = items := by
+            simpa using congrArg Prod.fst result
+          have hTail : after = tail := by
+            simpa using congrArg Prod.snd result
+          obtain ⟨hLength, hRest⟩ := ih rest remaining after restEq
+          have hHead := itemSound raw head rest itemEq
+          rw [← hItems, ← hTail]
+          constructor
+          · simp [hLength]
+          · simp [encodeItems, hHead, hRest, List.append_assoc]
+
 def encodeOutputs (count : PrefixCodec Nat) (item : PrefixCodec Game.Output)
     (outputs : List Game.Output) : Bytes :=
   count.encode outputs.length ++ encodeItems item outputs
@@ -139,6 +282,27 @@ theorem decodeOutputs_encodeOutputs (count : PrefixCodec Nat)
       some (outputs, tail) := by
   simp [decodeOutputs, encodeOutputs, List.append_assoc,
     count.roundtrip _ validCount, decodeItems_encodeItems _ _ _ validItems]
+
+theorem decodeOutputs_sound (count : PrefixCodec Nat)
+    (item : PrefixCodec Game.Output)
+    (countSound : DecodeSound count) (itemSound : DecodeSound item)
+    (raw : Bytes) (outputs : List Game.Output) (tail : Bytes)
+    (parsed : decodeOutputs count item raw = some (outputs, tail)) :
+    raw = encodeOutputs count item outputs ++ tail := by
+  cases countEq : count.decode raw with
+  | none => simp [decodeOutputs, countEq] at parsed
+  | some countPair =>
+    rcases countPair with ⟨n, rest⟩
+    have itemsEq : decodeItems item n rest = some (outputs, tail) := by
+      simpa [decodeOutputs, countEq] using parsed
+    obtain ⟨hLength, hItems⟩ :=
+      decodeItems_sound item itemSound n rest outputs tail itemsEq
+    have hCount := countSound raw n rest countEq
+    unfold encodeOutputs
+    calc
+      raw = count.encode n ++ rest := hCount
+      _ = count.encode outputs.length ++ encodeItems item outputs ++ tail := by
+        rw [hLength, hItems, List.append_assoc]
 
 theorem encodeOutputs_injective_on (count : PrefixCodec Nat)
     (item : PrefixCodec Game.Output)
