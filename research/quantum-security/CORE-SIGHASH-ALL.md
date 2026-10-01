@@ -49,6 +49,11 @@ finite-recovery-point theorem: the new hash group element must land in the
 key's admissible message-target set. The wire and Core-to-Lean ECDSA/hash
 premises remain explicit. Neither theorem collapses this event to a collision
 with the released digest.
+`QSB/RecoveryCandidates.lean` now bounds the raw 256-bit digest target set by
+eight under its stated recovery-point and Core conversion premises: at most
+four message residues, each with at most two representatives modulo the
+secp256k1 order. This is a count of possible values, not a probability bound
+for SHA256d under quantum queries.
 
 For arbitrary accepted QSB witnesses, scriptCode may vary with the selected
 final dummy signatures, and other transaction fields may vary too. The

@@ -117,6 +117,12 @@ import QSB.Reduction
 #print axioms QSB.RecoveryCandidates.recovery_points_card_le_four
 #print axioms QSB.RecoveryCandidates.secp_recovery_points_card_le_four
 #print axioms QSB.RecoveryCandidates.secp_messageTargets_card_le_four
+#print axioms QSB.RecoveryCandidates.secp_digest_lt_twice_order
+#print axioms QSB.RecoveryCandidates.digestCandidates_card_le_two
+#print axioms QSB.RecoveryCandidates.secp_digest_in_candidates
+#print axioms QSB.RecoveryCandidates.digestTargets_card_le_twice
+#print axioms QSB.RecoveryCandidates.secp_digestTargets_card_le_eight
+#print axioms QSB.RecoveryCandidates.secp_digest_in_targetSet
 #print axioms QSB.configA_round1_bonus_choices
 #print axioms QSB.configA_round2_bonus_choices
 #print axioms QSB.configA_pool_choices

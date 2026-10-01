@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 641 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 647 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -498,6 +498,12 @@ prime and subgroup order. Under an explicit at-most-two-points-per-x premise,
 it bounds admissible recovery points and their message group-element targets
 by four. The curve-fiber premise and its connection to Core's accepted keys
 are not proved.
+Lean also proves `2^256 < 2n`: each message residue modulo the secp256k1
+order has at most two unsigned 256-bit digest representatives. Combined with
+the conditional four-recovery-point bound, a fixed signature/key has at most
+eight possible wire digest targets. This is finite target accounting, not a
+SHA256d quantum hit bound; the Core digest-to-residue bridge, point parser,
+and oracle correlations remain unresolved.
 The pinned app's `ecdsa_recover` helper considers only x=`r`. A second public
 algebraic fixture uses x=`r+n`: the app's ECDSA verifier accepts its signature
 and key at scalar message zero, but neither helper parity reconstructs that

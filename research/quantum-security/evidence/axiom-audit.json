@@ -1,5 +1,5 @@
 {
-  "theorem_count": 641,
+  "theorem_count": 647,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2058,9 +2058,37 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.RecoveryCandidates.digestCandidates_card_le_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.digestTargets_card_le_twice": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.RecoveryCandidates.recovery_points_card_le_four": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_digestTargets_card_le_eight": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_digest_in_candidates": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_digest_in_targetSet": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.secp_digest_lt_twice_order": [
       "propext"
     ],
     "QSB.RecoveryCandidates.secp_messageTargets_card_le_four": [
