@@ -1,0 +1,130 @@
+import QSB.OutputCodec
+import Mathlib.Data.Nat.Digits.Lemmas
+import Mathlib.Tactic.NormNum
+
+/-!
+Fixed-width little-endian natural-number bytes. Bitcoin writes a nonnegative
+output amount as eight little-endian bytes. The codec below proves a
+valid-domain prefix round trip; equivalence with Core's signed CAmount writer
+and the exact consensus monetary bound remain separate source obligations.
+-/
+namespace QSB.WireIntegers
+
+open QSB.OutputCodec
+
+def leBytes (width value : Nat) : Bytes :=
+  (Nat.digitsAppend 256 width value).map UInt8.ofNat
+
+def readLE (bytes : Bytes) : Nat :=
+  Nat.ofDigits 256 (bytes.map UInt8.toNat)
+
+theorem leBytes_length (width value : Nat) (valid : value < 256 ^ width) :
+    (leBytes width value).length = width := by
+  simpa [leBytes] using Nat.length_digitsAppend (by norm_num : 1 < 256) width valid
+
+theorem readLE_leBytes (width value : Nat) :
+    readLE (leBytes width value) = value := by
+  have mapped : ((Nat.digitsAppend 256 width value).map UInt8.ofNat).map
+      UInt8.toNat = Nat.digitsAppend 256 width value := by
+    simp only [List.map_map]
+    simpa only [List.map_id] using
+      (List.map_congr_left (l := Nat.digitsAppend 256 width value)
+        (f := UInt8.toNat ∘ UInt8.ofNat) (g := id) (by
+          intro digit member
+          exact UInt8.toNat_ofNat_of_lt (by
+            simpa [UInt8.size] using
+              (Nat.lt_of_mem_digitsAppend (by norm_num : 1 < 256)
+                width digit member))))
+  change Nat.ofDigits 256
+    (((Nat.digitsAppend 256 width value).map UInt8.ofNat).map UInt8.toNat) = value
+  rw [mapped]
+  rw [Nat.digitsAppend, Nat.ofDigits_append_replicate_zero]
+  exact Nat.ofDigits_digits 256 value
+
+def fixedLECodec (width : Nat) : PrefixCodec Nat where
+  valid := fun value => value < 256 ^ width
+  encode := leBytes width
+  decode := fun bytes =>
+    if width ≤ bytes.length then
+      some (readLE (bytes.take width), bytes.drop width)
+    else
+      none
+  roundtrip := by
+    intro value valid tail
+    have len := leBytes_length width value valid
+    simp [leBytes_length width value valid, readLE_leBytes width value]
+
+/-- The entire nonnegative signed-64 range has a distinct eight-byte encoding.
+Consensus imposes a tighter monetary range; this theorem does not model it. -/
+def nonnegativeAmountCodec : PrefixCodec Nat where
+  valid := fun value => value < 2 ^ 63
+  encode := (fixedLECodec 8).encode
+  decode := (fixedLECodec 8).decode
+  roundtrip := by
+    intro value valid tail
+    exact (fixedLECodec 8).roundtrip value (by
+      change value < 256 ^ 8
+      norm_num at valid ⊢
+      omega) tail
+
+/-- The four canonical CompactSize encoder branches. The valid domain is the
+uint64 range; the decoder need only round-trip encoded values here. -/
+def compactSizeEncode (value : Nat) : Bytes :=
+  if value < 253 then
+    [UInt8.ofNat value]
+  else if value < 256 ^ 2 then
+    UInt8.ofNat 253 :: leBytes 2 value
+  else if value < 256 ^ 4 then
+    UInt8.ofNat 254 :: leBytes 4 value
+  else
+    UInt8.ofNat 255 :: leBytes 8 value
+
+def compactSizeDecode : Bytes → Option (Nat × Bytes)
+  | [] => none
+  | tag :: rest =>
+      if tag.toNat < 253 then
+        some (tag.toNat, rest)
+      else if tag.toNat = 253 then
+        (fixedLECodec 2).decode rest
+      else if tag.toNat = 254 then
+        (fixedLECodec 4).decode rest
+      else
+        (fixedLECodec 8).decode rest
+
+theorem compactSize_roundtrip (value : Nat) (valid : value < 256 ^ 8)
+    (tail : Bytes) :
+    compactSizeDecode (compactSizeEncode value ++ tail) =
+      some (value, tail) := by
+  by_cases small : value < 253
+  · have byte : (UInt8.ofNat value).toNat = value := by
+      apply UInt8.toNat_ofNat_of_lt
+      change value < 256
+      omega
+    simp [compactSizeEncode, compactSizeDecode, small, byte]
+  · by_cases medium : value < 256 ^ 2
+    · simp only [compactSizeEncode, if_neg small, if_pos medium]
+      simp [compactSizeDecode]
+      exact (fixedLECodec 2).roundtrip value medium tail
+    · by_cases large : value < 256 ^ 4
+      · simp only [compactSizeEncode, if_neg small, if_neg medium, if_pos large]
+        simp [compactSizeDecode]
+        exact (fixedLECodec 4).roundtrip value large tail
+      · simp only [compactSizeEncode, if_neg small, if_neg medium, if_neg large]
+        simp [compactSizeDecode]
+        exact (fixedLECodec 8).roundtrip value valid tail
+
+def compactSizeCodec : PrefixCodec Nat where
+  valid := fun value => value < 256 ^ 8
+  encode := compactSizeEncode
+  decode := compactSizeDecode
+  roundtrip := compactSize_roundtrip
+
+theorem compact_252 : compactSizeEncode 252 = [252] := by decide
+theorem compact_253 : compactSizeEncode 253 = [253, 253, 0] := by decide
+theorem compact_65535 : compactSizeEncode 65535 = [253, 255, 255] := by decide
+theorem compact_65536 : compactSizeEncode 65536 = [254, 0, 0, 1, 0] := by decide
+theorem compact_2pow32 : compactSizeEncode (2 ^ 32) =
+    [255, 0, 0, 0, 0, 1, 0, 0, 0] := by decide
+theorem amount_90000 : leBytes 8 90000 = [144, 95, 1, 0, 0, 0, 0, 0] := by decide
+
+end QSB.WireIntegers

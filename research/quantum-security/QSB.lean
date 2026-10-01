@@ -4,6 +4,8 @@ import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.Nonce
 import QSB.OutputCodec
+import QSB.WireIntegers
+import QSB.WireOutputs
 import QSB.SighashBinding
 import QSB.RecoveryCandidates
 import QSB.Parameters
@@ -78,8 +80,20 @@ import QSB.Reduction
 #print axioms QSB.OutputCodec.decodeOutputs_encodeOutputs
 #print axioms QSB.OutputCodec.encodeOutputs_injective_on
 #print axioms QSB.OutputCodec.sourceShapedOutputs_injective_on
+#print axioms QSB.WireIntegers.leBytes_length
+#print axioms QSB.WireIntegers.readLE_leBytes
+#print axioms QSB.WireIntegers.compactSize_roundtrip
+#print axioms QSB.WireIntegers.compact_252
+#print axioms QSB.WireIntegers.compact_253
+#print axioms QSB.WireIntegers.compact_65535
+#print axioms QSB.WireIntegers.compact_65536
+#print axioms QSB.WireIntegers.compact_2pow32
+#print axioms QSB.WireIntegers.amount_90000
+#print axioms QSB.WireOutputs.decode_encode
+#print axioms QSB.WireOutputs.encode_injective_on
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs
+#print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes
 #print axioms QSB.SighashBinding.changed_outputs_any_context_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_same_key_requires_target
 #print axioms QSB.SighashBinding.changed_outputs_any_context_same_key_target

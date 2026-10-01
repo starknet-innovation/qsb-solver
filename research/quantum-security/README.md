@@ -102,9 +102,10 @@ the test uses message scalar zero and supplies no Bitcoin transaction preimage.
 `QSB/SighashBinding.lean` isolates the legacy `SIGHASH_ALL` output-binding
 step under an explicit wire-encoding or output-parser premise and maps a
 changed-output same-key verification to an admissible ECDSA message target.
-`QSB/OutputCodec.lean` proves the source-shaped output-list encoding is
-injective on valid values if the count and amount field codecs round-trip. A
-pinned 11-case Core probe checks selected output, input, and `scriptSig` changes;
+`QSB/OutputCodec.lean`, `QSB/WireIntegers.lean`, and `QSB/WireOutputs.lean`
+prove concrete CompactSize, nonnegative eight-byte amount, and ordered-output
+round trips on their valid wire domains. A pinned 13-case Core probe checks
+selected output, input, and `scriptSig` changes;
 see [the sighash boundary](CORE-SIGHASH-ALL.md). The general transaction
 parser/refinement and quantum target-hit bounds are still open.
 

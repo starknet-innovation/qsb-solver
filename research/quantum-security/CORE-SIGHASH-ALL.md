@@ -16,17 +16,25 @@ hashing in [`SignatureHash`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/s
 Each [output serialization](https://github.com/bitcoin/bitcoin/blob/v27.2/src/primitives/transaction.h#L1308-L1329)
 contains its value and scriptPubKey. This is a statement about the bytes
 Core hashes, not about whether one fixed ECDSA key can verify only one hash.
+Core's [`WriteCompactSize`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/serialize.h#L309-L344)
+uses one, three, five, or nine bytes, and its integer writers use little-endian
+16-, 32-, and 64-bit words. Core's decoder additionally rejects noncanonical
+encodings and oversized vectors; the Lean decoder below is a left inverse for
+canonical encoded values and is not claimed equivalent on arbitrary bytes.
 
 The app's pinned `Transaction.sighash` implements the corresponding byte
 layout for `SIGHASH_ALL`. `QSB/SighashBinding.lean` proves that, **for fixed
 non-output bytes**, injective encoding of ordered outputs makes changed
 outputs produce distinct preimages. `QSB/OutputCodec.lean` proves that output
-count, value, length-prefixed script, and list encodings compose injectively
-on valid values when the count and amount field codecs round-trip; their
-concrete Core byte encodings still need refinement. A second conditional
-theorem handles varying other fields and scriptCode if an output parser
-round-trips all
-relevant ALL preimages. Both versions combine same-key verification with the
+count, value, length-prefixed script, and list encodings compose injectively.
+`QSB/WireIntegers.lean` supplies concrete little-endian amount and all four
+CompactSize encoder branches with valid-domain round trips;
+`QSB/WireOutputs.lean` therefore proves ordered-output byte injectivity when
+the amount is nonnegative and below `2^63` and count/script lengths are below
+`2^64`. Equality with Core's C++ byte writers and the consensus monetary
+domain still needs refinement. A second conditional theorem handles varying
+other fields and scriptCode if an output parser round-trips all relevant ALL
+preimages. Both versions combine same-key verification with the
 finite-recovery-point theorem: the new hash group element must land in the
 key's admissible message-target set. The wire and Core-to-Lean ECDSA/hash
 premises remain explicit. Neither theorem collapses this event to a collision
@@ -49,16 +57,23 @@ publicly recovers the corresponding key, and asks the pinned Core 27.2 adapter
 to verify. The [evidence](evidence/all-sighash-commitments.json) records the
 preimage, digest, key, transaction bytes, and Core result for every case.
 
-Eight single-field changes (output amount, output script, output order,
-output count, signed-input prevout, another input's sequence, version, and
-locktime) gave distinct preimages and digests in this fixture. Core rejected
-the baseline key in all eight cases and accepted each freshly recovered key.
+Ten changes (output amount, output script, output order, output count,
+253-byte output script, 253 outputs, signed-input prevout, another input's
+sequence, version, and locktime) gave distinct preimages and digests in this
+fixture. Core rejected the baseline key in all ten cases and accepted each
+freshly recovered key.
 Two `scriptSig`-only changes gave the same preimage and digest; Core accepted
-the baseline key. These are 11 finite cases, with all 11 fresh-key controls
+the baseline key. These are 13 finite cases, with all 13 fresh-key controls
 accepted. They do not establish a universal rejection theorem for the old
 key: distinct digests can still be ECDSA-valid for one key through different
 recovery points, and a digest collision is also possible. The isolated lock
 does not execute either QSB puzzle or its final multisignature.
+
+`analysis/check_wire_vectors.py` compares the pinned app's field serialization
+against the Lean-checked CompactSize boundary examples at 252, 253, 65,535,
+65,536, and `2^32`, plus the eight-byte value 90,000. The exact finite results
+are in [wire-vectors.json](evidence/wire-vectors.json). The two 253-boundary
+transaction cases above additionally passed the pinned Core adapter.
 
 Run the probe with the pinned app, native adapter, and image recorded in the
 evidence file:

@@ -129,6 +129,14 @@ def main() -> None:
     t.add_output(bt.TxOut(5, b"\x51"))
     record("output_count", t, True)
     t = copy.deepcopy(tx)
+    t.outputs[0].script_pubkey = b"\x51" * 253
+    record("output_script_compactsize_253", t, True)
+    t = copy.deepcopy(tx)
+    for _ in range(251):
+        t.add_output(bt.TxOut(0, b""))
+    assert len(t.outputs) == 253
+    record("output_count_compactsize_253", t, True)
+    t = copy.deepcopy(tx)
     t.inputs[1].txid = b"\x56" * 32
     record("signed_input_prevout", t, True)
     t = copy.deepcopy(tx)

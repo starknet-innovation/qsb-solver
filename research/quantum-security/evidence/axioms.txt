@@ -26,8 +26,22 @@
 'QSB.OutputCodec.decodeOutputs_encodeOutputs' depends on axioms: [propext, Quot.sound]
 'QSB.OutputCodec.encodeOutputs_injective_on' depends on axioms: [propext, Quot.sound]
 'QSB.OutputCodec.sourceShapedOutputs_injective_on' depends on axioms: [propext, Quot.sound]
+'QSB.WireIntegers.leBytes_length' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.readLE_leBytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compactSize_roundtrip' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compact_252' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compact_253' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compact_65535' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compact_65536' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.compact_2pow32' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireIntegers.amount_90000' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireOutputs.decode_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WireOutputs.encode_injective_on' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs' depends on axioms: [propext, Quot.sound]
+'QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.SighashBinding.changed_outputs_any_context_distinct_preimages' does not depend on any axioms
 'QSB.SighashBinding.changed_outputs_same_key_requires_target' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_any_context_same_key_target' depends on axioms: [propext,

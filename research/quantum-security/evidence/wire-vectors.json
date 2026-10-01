@@ -1,0 +1,13 @@
+{
+  "scope": "finite pinned-app field vectors matching checked Lean examples",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "source_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "compactsize_hex": {
+    "252": "fc",
+    "253": "fdfd00",
+    "65535": "fdffff",
+    "65536": "fe00000100",
+    "4294967296": "ff0000000001000000"
+  },
+  "nonnegative_amount_90000_le64_hex": "905f010000000000"
+}

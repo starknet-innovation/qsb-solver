@@ -1,6 +1,7 @@
 import QSB.Game
 import QSB.Nonce
 import QSB.OutputCodec
+import QSB.WireOutputs
 
 /-!
 The authorization-to-sighash bridge for a legacy SIGHASH_ALL check. In the
@@ -66,6 +67,22 @@ theorem changed_outputs_distinct_preimages_of_codecs
   have encoded := List.append_cancel_left (List.append_cancel_right equal)
   exact changed (OutputCodec.sourceShapedOutputs_injective_on count amount
     attemptedCount releasedCount attemptedValues releasedValues encoded)
+
+/-- All output-field byte encodings are now concrete. The only serializer
+premise left outside this theorem is that Core's actual legacy ALL preimage
+contains this output segment with unchanged surrounding bytes. -/
+theorem changed_outputs_distinct_preimages_of_wire_bytes
+    (contextBefore suffix : Bytes)
+    {released attempted : List Game.Output}
+    (releasedValid : WireOutputs.validOutputs released)
+    (attemptedValid : WireOutputs.validOutputs attempted)
+    (changed : attempted ≠ released) :
+    allPreimage contextBefore suffix WireOutputs.encode attempted ≠
+      allPreimage contextBefore suffix WireOutputs.encode released := by
+  intro equal
+  unfold allPreimage at equal
+  have encoded := List.append_cancel_left (List.append_cancel_right equal)
+  exact changed (WireOutputs.encode_injective_on attemptedValid releasedValid encoded)
 
 /-- The parser contract needed when other transaction fields or selected
 scriptCode vary. If the ordered output projection can be decoded from every

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 616,
+  "theorem_count": 628,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2120,12 +2120,72 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SighashBinding.changed_outputs_same_key_requires_target": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.amount_90000": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compactSize_roundtrip": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_252": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_253": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_2pow32": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_65535": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_65536": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.leBytes_length": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.readLE_leBytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireOutputs.decode_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireOutputs.encode_injective_on": [
       "Classical.choice",
       "Quot.sound",
       "propext"
