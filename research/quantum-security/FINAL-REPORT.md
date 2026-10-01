@@ -125,14 +125,16 @@ used.
    pinned-Core cases corroborate the modeled depth and parsing boundaries;
    compiled-Core trace refinement is still required.
    A source-shaped Core magnitude-byte loop now has a universal decode and
-   fuel-stability proof. Its signed serialization equals the byte model and
-   reparses correctly for every integer from −1023 through 1023; an
-   all-values byte equality and a full Core trace range invariant remain open.
-   Lean also proves exact source-shaped `OP_MIN 152; OP_ADD 151` byte agreement
-   for every nonnegative parsed first index, including nonminimal encodings
-   and overshoots. A 13-case pinned-Core bare-script differential matches
-   those bytes, with a wrong-byte control and five-byte rejection. The negative
-   path and whole-interpreter refinement remain open.
+   fuel-stability proof. The byte model was revised to use the same low-byte
+   loop; Lean proves the two source-shaped serializers agree for every integer,
+   including their common five-byte magnitude guard.
+   Every parsed four-byte operand pair has a defined `OP_MIN` and `OP_ADD`
+   result, and the source-shaped numeric transitions match `ByteMachine.step`
+   under its opcode budget. Lean also excludes signed 64-bit overflow when
+   adding two parsed operands. A 17-case pinned-Core bare-script differential
+   includes negative, nonminimal, and overshoot inputs, with a wrong-byte
+   control and five-byte rejection. Compiled Core interpreter refinement
+   remains open.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13
    boundary cases byte-for-byte, including the NULLDUMMY-slot rejection. The
    separate six-case overshoot report had mislabeled the canonical first
@@ -146,7 +148,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 737 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 747 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

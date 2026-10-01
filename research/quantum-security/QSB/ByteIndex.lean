@@ -172,18 +172,23 @@ theorem parsed_in_int32 (bytes : List UInt8) (value : Int)
       omega
   simp [parseScriptNum] at parsed
 
-/-- Ordinary QSB arithmetic starts from four-byte ScriptNum operands and only
-adds small lock constants, so five magnitude bytes suffice for its results.
-The explicit size guard prevents silent truncation outside that scope. -/
+/-- Core's low-byte/divide magnitude loop, with enough fuel for any addition
+of two valid four-byte ScriptNum operands. -/
+def magnitudeBytes : Nat → Nat → List UInt8
+  | 0, _ => []
+  | fuel + 1, magnitude =>
+      if magnitude = 0 then []
+      else UInt8.ofNat (magnitude % 256) ::
+        magnitudeBytes fuel (magnitude / 256)
+
+/-- Source-shaped sign-magnitude ScriptNum serialization. The five-byte
+magnitude guard covers all results of arithmetic on two parsed operands. -/
 def encodeScriptNum (value : Int) : Option (List UInt8) :=
   let magnitude := value.natAbs
   if magnitude ≥ 256 ^ 5 then none
   else if magnitude = 0 then some []
   else
-    let digits := ((List.range 5).map
-      (fun i => UInt8.ofNat ((magnitude / 256 ^ i) % 256))).reverse
-        |>.dropWhile (· == 0)
-        |>.reverse
+    let digits := magnitudeBytes 5 magnitude
     let high := (digits.getLast?.getD 0).toNat
     if high ≥ 128 then
       some (digits ++ [if value < 0 then 0x80 else 0x00])

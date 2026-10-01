@@ -747,6 +747,16 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_pairs
 #print axioms QSB.CoreMultisigEval.deletedScript_selected
 #print axioms QSB.CoreMultisigEval.successful_byte_run_source_check
+#print axioms QSB.CoreSerialize.magnitudeBytes_eq_model
+#print axioms QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos
+#print axioms QSB.CoreSerialize.coreSerialize_eq_model
+#print axioms QSB.CoreNumericOps.coreMin_eq_model
+#print axioms QSB.CoreNumericOps.coreAdd_eq_model
+#print axioms QSB.CoreNumericOps.coreMin_defined_of_parsed
+#print axioms QSB.CoreNumericOps.coreAdd_defined_of_parsed
+#print axioms QSB.CoreNumericOps.parsed_add_fits_int64
+#print axioms QSB.CoreNumericOps.min_step_source
+#print axioms QSB.CoreNumericOps.add_step_source
 #print axioms QSB.CoreNumericOps.coreMin_eq_model_of_result_small
 #print axioms QSB.CoreNumericOps.coreAdd_eq_model_of_result_small
 #print axioms QSB.CoreNumericOps.first_min_nonnegative_eq_model

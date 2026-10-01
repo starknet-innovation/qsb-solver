@@ -1,5 +1,5 @@
 {
-  "theorem_count": 737,
+  "theorem_count": 747,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -549,7 +549,32 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreNumericOps.add_step_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreAdd_defined_of_parsed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreAdd_eq_model": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreNumericOps.coreAdd_eq_model_of_result_small": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreMin_defined_of_parsed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.coreMin_eq_model": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -575,6 +600,16 @@
       "propext"
     ],
     "QSB.CoreNumericOps.inrange_first_min_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.min_step_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreNumericOps.parsed_add_fits_int64": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -647,6 +682,9 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreSerialize.coreSerialize_eq_model": [
+      "propext"
+    ],
     "QSB.CoreSerialize.coreSerialize_eq_model_small": [
       "Quot.sound",
       "propext"
@@ -663,11 +701,18 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreSerialize.magnitudeBytes_eq_model": [
+      "propext"
+    ],
     "QSB.CoreSerialize.magnitudeBytes_fuel_stable": [
       "Quot.sound",
       "propext"
     ],
     "QSB.CoreSerialize.magnitudeBytes_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos": [
       "Quot.sound",
       "propext"
     ],

@@ -31,6 +31,10 @@ def corpus() -> list[tuple[str, bytes]]:
         ("one_byte_127", b"\x7f"),
         ("two_byte_32767", b"\xff\x7f"),
         ("four_byte_max", b"\xff\xff\xff\x7f"),
+        ("negative_one", b"\x81"),
+        ("nonminimal_negative_one", b"\x01\x80"),
+        ("negative_152", b"\x98\x80"),
+        ("four_byte_negative_max", b"\xff\xff\xff\xff"),
     ]
 
 
@@ -56,7 +60,7 @@ def main() -> None:
         assert hashlib.sha256((native / name).read_bytes()).hexdigest() == digest
 
     rows = corpus()
-    assert all(0 <= scriptnum(raw) for _, raw in rows)
+    assert all(len(raw) <= 4 for _, raw in rows)
     tx = bt.Transaction(version=1, locktime=0)
     tx.add_input(bt.TxIn(b"\x11" * 32, 0, bytes([bt.OP_1])))
     tx.add_input(bt.TxIn(b"\x22" * 32, 0,

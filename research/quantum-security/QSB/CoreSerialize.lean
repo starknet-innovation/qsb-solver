@@ -5,11 +5,10 @@ Bitcoin Core v27.2 `CScriptNum::serialize` emits little-endian magnitude bytes
 by repeatedly taking the low byte and dividing by 256, then adds a sign byte
 or sign bit. `magnitudeBytes` models that loop with finite fuel. For magnitudes
 below `256^fuel`, Lean proves the emitted bytes decode to the original
-magnitude and extra fuel changes nothing. `coreSerialize` is a source-shaped
-serializer on the model's five-digit domain. Kernel-checked finite theorems
-compare it with the existing `ByteIndex.encodeScriptNum` for each signed
-integer from -1023 through 1023. A universal byte-for-byte equivalence with
-compiled C++ remains open.
+magnitude and extra fuel changes nothing. `ByteIndex.encodeScriptNum` now
+uses the same source-shaped low-byte loop. Lean proves the two source-shaped
+serializers agree for every integer, including their five-digit-domain guard.
+Equality with compiled C++ remains open.
 -/
 
 namespace QSB.CoreSerialize
@@ -51,6 +50,16 @@ theorem unsignedLE_magnitudeBytes (fuel magnitude : Nat)
         simp
       simp [magnitudeBytes, hz, unsignedLE, digit, ih _ qbound]
       omega
+
+/-- The source's `result.back()` read is defined after the magnitude loop
+whenever the nonzero magnitude fits in the chosen fuel. -/
+theorem magnitudeBytes_nonempty_of_pos (fuel magnitude : Nat)
+    (bound : magnitude < 256 ^ fuel) (positive : 0 < magnitude) :
+    magnitudeBytes fuel magnitude ≠ [] := by
+  intro empty
+  have decoded := unsignedLE_magnitudeBytes fuel magnitude bound
+  simp [empty, unsignedLE] at decoded
+  omega
 
 end QSB.CoreSerialize
 
@@ -96,6 +105,24 @@ def coreSerialize (value : Int) : Option (List UInt8) :=
     else if value < 0 then
       some (digits.dropLast ++ [UInt8.ofNat (high + 128)])
     else some digits
+
+theorem magnitudeBytes_eq_model (fuel magnitude : Nat) :
+    magnitudeBytes fuel magnitude =
+      ByteIndex.magnitudeBytes fuel magnitude := by
+  induction fuel generalizing magnitude with
+  | zero => rfl
+  | succ fuel ih =>
+      simp only [magnitudeBytes, ByteIndex.magnitudeBytes]
+      split
+      · rfl
+      · simp [ih]
+
+/-- The byte model now uses Core's repeated-low-byte serializer directly, so
+the two source-shaped encoders agree for every modeled integer. This remains
+source translation, not compiled-C++ refinement. -/
+theorem coreSerialize_eq_model (value : Int) :
+    coreSerialize value = ByteIndex.encodeScriptNum value := by
+  simp [coreSerialize, ByteIndex.encodeScriptNum, magnitudeBytes_eq_model]
 
 theorem coreSerialize_eq_model_small_positive :
     ∀ n : Fin 1024,

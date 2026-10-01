@@ -4,7 +4,7 @@
   "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
   "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
   "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
-  "case_count": 13,
+  "case_count": 17,
   "cases": [
     {
       "name": "empty_zero",
@@ -83,17 +83,41 @@
       "raw_hex": "ffffff7f",
       "parsed": 2147483647,
       "expected_hex": "2f01"
+    },
+    {
+      "name": "negative_one",
+      "raw_hex": "81",
+      "parsed": -1,
+      "expected_hex": "9600"
+    },
+    {
+      "name": "nonminimal_negative_one",
+      "raw_hex": "0180",
+      "parsed": -1,
+      "expected_hex": "9600"
+    },
+    {
+      "name": "negative_152",
+      "raw_hex": "9880",
+      "parsed": -152,
+      "expected_hex": "81"
+    },
+    {
+      "name": "four_byte_negative_max",
+      "raw_hex": "ffffffff",
+      "parsed": -2147483647,
+      "expected_hex": "68ffffff"
     }
   ],
   "valid_path": {
     "accepted": true,
-    "transaction_sha256": "a0d9766e24f6f0c9ceecdf0e91f7df8534fc803e97a6633eeddc20efc1d76305",
-    "lock_sha256": "a0df3609a004c6fdd89010f3edd932210678d55f326e6a82f2062af8d58597e8"
+    "transaction_sha256": "4e6b5a29ddcfe984a7019b29d5d5f40851e139a210af024a884377753b8f3ae8",
+    "lock_sha256": "c5ad2ad748f207d32ee97d991f38c33ef69b1db2f75242cc26b6dd62cc0a262c"
   },
   "wrong_expected_control": {
     "accepted": false,
-    "transaction_sha256": "a0d9766e24f6f0c9ceecdf0e91f7df8534fc803e97a6633eeddc20efc1d76305",
-    "lock_sha256": "672b3597f485aaf59813786ed1547b9137825983112ffd2d147293b6d1d1b1a8"
+    "transaction_sha256": "4e6b5a29ddcfe984a7019b29d5d5f40851e139a210af024a884377753b8f3ae8",
+    "lock_sha256": "dec776fc72abe01f12410617113e024d03bf957de81a22ea5617eabd066a0057"
   },
   "five_byte_rejection": {
     "accepted": false,
