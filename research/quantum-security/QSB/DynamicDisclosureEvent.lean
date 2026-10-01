@@ -21,6 +21,29 @@ def approvedAllPreimages
       SighashAllWire.projectionWithLedger ledger released ∈ authorized ∧
       preimage = SighashAllWire.sourceAllPreimage released selected scriptCode }
 
+/-- An explicit bridge from a concrete ECDSA verifier to finite *wire digest*
+targets. Its soundness and eight-target bound must eventually be established
+for Core's key parser, signature parser, scalar reduction, and verifier.
+`RecoveryCandidates.lean` proves the underlying conditional curve count. -/
+structure ECDSATargets (ecdsa : Bytes → Bytes → Bytes → Bool) where
+  targets : Bytes → Bytes → Finset Bytes
+  sound : ∀ sig key digest,
+    ecdsa sig key digest = true → digest ∈ targets sig key
+  card_le_eight : ∀ sig key, (targets sig key).card ≤ 8
+
+theorem two_target_sets_card_le_sixteen
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : ECDSATargets ecdsa)
+    (pinSig pinKey finalSig finalKey : Bytes) :
+    ((contract.targets pinSig pinKey) ∪
+      (contract.targets finalSig finalKey)).card ≤ 16 := by
+  have union := Finset.card_union_le
+    (contract.targets pinSig pinKey)
+    (contract.targets finalSig finalKey)
+  have pinBound := contract.card_le_eight pinSig pinKey
+  have finalBound := contract.card_le_eight finalSig finalKey
+  omega
+
 /-- Source-shaped ALL binding excludes every owner-approved release preimage,
 regardless of which selected input or scriptCode that release used. -/
 theorem forbidden_all_preimage_fresh
@@ -145,5 +168,77 @@ theorem search_fresh_key_or_known_all_retarget
         finalFresh, pinVerified, finalVerified⟩)
     · exact Or.inr (Or.inl ⟨finalKnown, finalDER⟩)
   · exact Or.inl ⟨pinKnown, pinDER⟩
+
+/-- With an explicit Core-ECDSA-to-finite-target contract, the known-key
+branch becomes two SHA256d target memberships, each in a set of at most eight
+wire digest values. This is still a shared-H, adaptive-advice event, not a
+QROM success bound. -/
+theorem search_fresh_key_or_known_digest_targets
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (pinShort : lock.pin.length < 76)
+    (nonce0Short : lock.nonce0.length < 76)
+    (nonce1Short : lock.nonce1.length < 76)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : ECDSATargets ecdsa)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (pinAll : lock.pin.getLast? = some 0x01)
+    (nonceAll : lock.nonce1.getLast? = some 0x01)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    (knownKeys : Set Bytes)
+    (txValid : SighashAllWire.valid tx)
+    (forbidden : SighashAllWire.projectionWithLedger ledger tx ∉
+      authorized) :
+    ∃ (pinKey finalKey : Bytes)
+      (beforePin beforeCheck : CoreOpcodeStep.State),
+      DynamicJointTransaction.reachedPinKey beforePin = pinKey ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some finalKey ∧
+      (let pinPreimage := SighashAllWire.sourceAllPreimage tx selected
+          (DynamicJointTransaction.reachedPinScriptCode lock beforePin)
+       let finalPreimage := SighashAllWire.sourceAllPreimage tx selected
+          (CoreMultisigSourceScan.deletedScript
+            (DynamicCheckedCertificate.wire lock)
+            beforeCheck.stack.reverse 10 10)
+       (pinKey ∉ knownKeys ∧
+          DERSyntax.valid (functions.H pinKey) = true) ∨
+       (finalKey ∉ knownKeys ∧
+          DERSyntax.valid (functions.H finalKey) = true) ∨
+       (pinKey ∈ knownKeys ∧ finalKey ∈ knownKeys ∧
+          pinPreimage ∉ approvedAllPreimages ledger authorized ∧
+          finalPreimage ∉ approvedAllPreimages ledger authorized ∧
+          functions.H (functions.H pinPreimage) ∈
+            contract.targets lock.pin.dropLast pinKey ∧
+          functions.H (functions.H finalPreimage) ∈
+            contract.targets lock.nonce1.dropLast finalKey ∧
+          (contract.targets lock.pin.dropLast pinKey).card ≤ 8 ∧
+          (contract.targets lock.nonce1.dropLast finalKey).card ≤ 8)) := by
+  obtain ⟨pinKey, finalKey, beforePin, beforeCheck,
+    pinKeyAt, finalKeyAt, event⟩ :=
+    search_fresh_key_or_known_all_retarget functions tx selected lock
+      firstWidth secondWidth pinShort nonce0Short nonce1Short
+      stack validKey ecdsa firstRound final found pinAll nonceAll
+      ledger authorized knownKeys txValid forbidden
+  refine ⟨pinKey, finalKey, beforePin, beforeCheck,
+    pinKeyAt, finalKeyAt, ?_⟩
+  dsimp at event ⊢
+  rcases event with freshPin | freshFinal | known
+  · exact Or.inl freshPin
+  · exact Or.inr (Or.inl freshFinal)
+  · rcases known with ⟨pinKnown, finalKnown, pinNew, finalNew,
+      pinChecked, finalChecked⟩
+    exact Or.inr (Or.inr ⟨pinKnown, finalKnown, pinNew, finalNew,
+      contract.sound lock.pin.dropLast pinKey _ pinChecked,
+      contract.sound lock.nonce1.dropLast finalKey _ finalChecked,
+      contract.card_le_eight lock.pin.dropLast pinKey,
+      contract.card_le_eight lock.nonce1.dropLast finalKey⟩)
 
 end QSB.DynamicDisclosureEvent

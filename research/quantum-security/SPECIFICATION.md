@@ -421,6 +421,22 @@ owner-approved release preimage in the same ledger context. The disclosed
 set can depend on the shared oracle and earlier signing transcripts. This is
 a deterministic event definition, not a quantum search bound for either
 branch, and key-byte equality is not assumed or excluded.
+Given the explicit `ECDSATargets` premise that Core's verifier maps each
+fixed signature/key to at most eight admissible *wire digest* values, the
+known-key branch becomes two target memberships for `H(H(ALL preimage))`.
+Lean bounds the union of those two target sets by 16 without treating their
+hits as independent. The Core verifier-to-target premise and a shared-H QROM
+bound for the fresh preimages remain open.
+For a key/signature pair actually disclosed in an owner-approved verification,
+the approved ALL digest is already one member of its target set. On an
+owner-forbidden projection, any new verification with that same pair has a
+distinct ALL preimage; `QSB/DynamicRetarget.lean` splits the result into an
+equal-digest collision or a hit on at most seven alternative digest values.
+Lean reduces the equal-digest case to a collision in the same H, using either
+the two distinct ALL preimages or their distinct first H outputs.
+This still needs a causal adaptive-transcript game and quantum bounds for
+both branches. Merely counting eight targets does not make them independent
+of the shared oracle.
 Public-key recovery means the nonce ECDSA condition alone is not a hash-search
 event; treating it as independent of the DER condition would misstate the
 problem.

@@ -69,6 +69,7 @@ import QSB.DynamicScriptLimits
 import QSB.DynamicCheckedCertificate
 import QSB.DynamicJointTransaction
 import QSB.DynamicDisclosureEvent
+import QSB.DynamicRetarget
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -118,6 +119,11 @@ import QSB.Reduction
 #print axioms QSB.CoreFindAndDelete.runMany_length_le
 #print axioms QSB.DynamicDisclosureEvent.forbidden_all_preimage_fresh
 #print axioms QSB.DynamicDisclosureEvent.search_fresh_key_or_known_all_retarget
+#print axioms QSB.DynamicDisclosureEvent.two_target_sets_card_le_sixteen
+#print axioms QSB.DynamicDisclosureEvent.search_fresh_key_or_known_digest_targets
+#print axioms QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative
+#print axioms QSB.DynamicRetarget.double_hash_collision_yields_hash_collision
+#print axioms QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same

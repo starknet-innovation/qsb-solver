@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1065,
+  "theorem_count": 1070,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1405,6 +1405,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicDisclosureEvent.search_fresh_key_or_known_digest_targets": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicDisclosureEvent.two_target_sets_card_le_sixteen": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicFinalInit.accepted_data_shape": [
       "Quot.sound",
       "propext"
@@ -1538,6 +1548,17 @@
       "propext"
     ],
     "QSB.DynamicJointTransaction.search_two_key_joint_hit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.double_hash_collision_yields_hash_collision": [],
+    "QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -13,6 +13,17 @@
 'QSB.DynamicDisclosureEvent.search_fresh_key_or_known_all_retarget' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicDisclosureEvent.two_target_sets_card_le_sixteen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicDisclosureEvent.search_fresh_key_or_known_digest_targets' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicRetarget.double_hash_collision_yields_hash_collision' does not depend on any axioms
+'QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
 'QSB.one_disclosure_fresh_or_same' depends on axioms: [propext, Quot.sound]
 'QSB.insufficient_disclosure_requires_fresh' depends on axioms: [propext, Classical.choice, Quot.sound]

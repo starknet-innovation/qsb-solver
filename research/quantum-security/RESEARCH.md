@@ -82,6 +82,12 @@ already applicable to QSB: the complete game reveals oracle-dependent good
 keys, and the same multi-bit `H` also computes sighashes and HASH160 inputs.
 Any reduction must preserve that shared oracle, count all relevant coherent
 queries, and handle the known-key retarget branch separately.
+The same paper re-proves an `O(q³/2^n)` collision-success bound for a uniform
+`n`-bit random oracle. `QSB/DynamicRetarget.lean` now supplies a collision in
+the same H whenever a reused fixed signature/key verifies on a distinct ALL
+preimage with the approved `SHA256d` digest. Applying a collision theorem to
+the complete QSB game still requires accounting for how the approved call
+and disclosure transcript were generated, as well as Core refinement.
 
 ## Elliptic-curve threat
 

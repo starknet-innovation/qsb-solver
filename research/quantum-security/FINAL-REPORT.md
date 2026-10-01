@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,065 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,070 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -818,6 +818,28 @@ oracle. Generic source-shaped FindAndDelete length lemmas and the checked
 9,981-byte Lean wire limit establish that both reached scriptCodes fit the
 ALL serializer's length domain. This deterministic split has no QROM
 probability estimate or compiled-Core acceptance implication.
+The known-key branch now has a more precise finite-target interface:
+`QSB/DynamicDisclosureEvent.ECDSATargets` explicitly requires every true
+external ECDSA check to land in a wire-digest set of at most eight values for
+that fixed signature and key. Under this still-unproved Core-verifier bridge,
+Lean derives two `H(H(ALL preimage))` target memberships from the same
+certificate; their target-set union has at most 16 values even if the two
+keys coincide. `RecoveryCandidates.secp_digestTargets_card_le_eight` proves
+the abstract curve-count component under its stated premises. Neither that
+count nor the source reduction bounds a coherent-query search on the shared H
+with oracle-dependent disclosed keys.
+An approved disclosure of a *matching fixed signature and key* supplies one
+oracle-dependent digest already inside that target set. The new
+`QSB/DynamicRetarget.lean` theorem shows that an owner-forbidden verification
+with the same signature/key must use a distinct ALL preimage and either
+collide with the approved `H(H(preimage))` digest or hit one of at most seven
+other wire-digest targets. This prevents treating the whole eight-target set
+as fixed independently of the oracle. It is conditional on a recorded
+matching approved call and the still-external ECDSA target contract; it is
+not a quantum collision or search bound. A further checked lemma turns the
+equal-digest case into an explicit collision for that *same* H: if the first
+hashes agree, the distinct ALL preimages collide; otherwise their distinct
+first hashes collide under the second H application.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
 signature for any initial stack on which the modeled prefix succeeds. Strict
