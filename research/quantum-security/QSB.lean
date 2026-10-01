@@ -34,6 +34,7 @@ import QSB.KeyRolls
 import QSB.ByteTrace
 import QSB.ByteWitness
 import QSB.BytePrefixCapacity
+import QSB.ByteStackFrame
 import QSB.FirstOvershoot
 import QSB.FirstIndexMap
 import QSB.FirstNumericRange
@@ -180,6 +181,22 @@ import QSB.Reduction
 #print axioms QSB.BytePrefixCapacity.extra_386_over_limit
 #print axioms QSB.BytePrefixCapacity.extra_386_capacity_failure
 #print axioms QSB.BytePrefixCapacity.extra_386_byte_run_rejects
+#print axioms QSB.ByteStackFrame.push_frame
+#print axioms QSB.ByteStackFrame.dup_frame
+#print axioms QSB.ByteStackFrame.over_frame
+#print axioms QSB.ByteStackFrame.min_frame
+#print axioms QSB.ByteStackFrame.swap_frame
+#print axioms QSB.ByteStackFrame.hash160_frame
+#print axioms QSB.ByteStackFrame.sha256_frame
+#print axioms QSB.ByteStackFrame.equalverify_frame
+#print axioms QSB.ByteStackFrame.checksigverify_frame
+#print axioms QSB.ByteStackFrame.add_frame
+#print axioms QSB.ByteStackFrame.roll_frame
+#print axioms QSB.ByteStackFrame.checkmultisig_frame
+#print axioms QSB.ByteStackFrame.step_frame
+#print axioms QSB.ByteStackFrame.runPeak_frame
+#print axioms QSB.ByteStackFrame.finalTruth_frame
+#print axioms QSB.ByteStackFrame.canonical_arbitrary_bottom_tail
 #print axioms QSB.WireIntegers.compactSize_roundtrip
 #print axioms QSB.WireIntegers.compact_252
 #print axioms QSB.CoreOpcodeStep.step_eq_byte

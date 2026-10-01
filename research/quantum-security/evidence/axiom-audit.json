@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1091,
+  "theorem_count": 1107,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -375,6 +375,68 @@
     ],
     "QSB.BytePrefixCapacity.forget_peak": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.add_frame": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.canonical_arbitrary_bottom_tail": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.checkmultisig_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.checksigverify_frame": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.dup_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.equalverify_frame": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.finalTruth_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.hash160_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.min_frame": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.over_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.push_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.roll_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.runPeak_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.sha256_frame": [
+      "propext"
+    ],
+    "QSB.ByteStackFrame.step_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.swap_frame": [
       "propext"
     ],
     "QSB.ByteTrace.accepted_literal_has_fifteen_openings": [
