@@ -3,6 +3,8 @@
 Checked 1 October 2026. This page describes the solver `main` documentation and
 its published combined release. Research branches and their experiment receipts
 must be assessed separately; their code is not automatically included in this image.
+AWS Batch is the only transport built or published; the Runpod transport was retired
+on 1 October 2026 and its earlier releases remain immutable records.
 
 ## Published and enrolled artifact
 

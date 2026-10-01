@@ -1,4 +1,4 @@
-"""Runpod research worker: public-data-only production search adapter.
+"""Research worker: public-data-only production search adapter, run by aws_entrypoint.py.
 
 This image is intentionally not enabled by the web application's release gate.
 Each request runs a bounded process and returns public candidates for independent
@@ -81,7 +81,3 @@ def handler(event):
                 'candidates':hits,'verified':False,'kernelCommit':PINNED_KERNEL,
                 'workRange':unit,
                 'checkpoint':'range-complete' if status=='completed' else 'requires-verification-or-resume'}
-
-if __name__ == '__main__':
-    import runpod
-    runpod.serverless.start({'handler': handler})

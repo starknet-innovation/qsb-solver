@@ -15,8 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - target: runpod
-            arch: 89
           - target: aws
             arch: 86
     runs-on: ubuntu-24.04
@@ -52,8 +50,6 @@ jobs:
         include:
           - cuda_arch: 86
             transport: aws
-          - cuda_arch: 89
-            transport: runpod
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
