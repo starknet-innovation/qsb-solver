@@ -53,6 +53,7 @@
 'QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.CoreFinalChecksigEval.successful_byte_run_final_flags' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.PinPuzzleScriptCode.successful_puzzle_gate' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_253' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_65535' depends on axioms: [propext, Classical.choice, Quot.sound]

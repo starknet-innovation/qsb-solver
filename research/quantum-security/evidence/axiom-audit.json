@@ -1,5 +1,5 @@
 {
-  "theorem_count": 767,
+  "theorem_count": 768,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -401,6 +401,11 @@
       "propext"
     ],
     "QSB.CoreFinalChecksigEval.checker_success": [
+      "propext"
+    ],
+    "QSB.CoreFinalChecksigEval.successful_byte_run_final_flags": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs": [

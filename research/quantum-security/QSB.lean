@@ -121,6 +121,7 @@ import QSB.Reduction
 #print axioms QSB.CoreChecksigEval.accepted_late_source_check
 #print axioms QSB.CoreFinalChecksigEval.checker_success
 #print axioms QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs
+#print axioms QSB.CoreFinalChecksigEval.successful_byte_run_final_flags
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.compact_65535

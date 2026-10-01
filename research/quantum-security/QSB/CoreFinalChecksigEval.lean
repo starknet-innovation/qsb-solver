@@ -89,4 +89,68 @@ theorem successful_byte_run_typed_final_pairs (hashes : Hashes)
   exact ⟨sig, key, hashType, sigAt, keyAt, der,
     last, keyValid, verified⟩
 
+/-- The *same* successful final source evaluator rules out the branch in
+which a DER-shaped commitment replaces a generated dummy signature. Hence
+the first nine reached signature bytes end in SINGLE and the tenth is the
+fixed ALL nonce. This is conditional on the evaluator rather than compiled
+Core acceptance. -/
+theorem successful_byte_run_final_flags (hashes : Hashes)
+    (initial final : State)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (accepted : run hashes ByteLayout.program initial = some final)
+    (source : ∃ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
+      CoreMultisigEval.finalTenEval EncodedLayout.chunks.flatten
+        (checker validKey verify) beforeCheck.stack = some true) :
+    ∃ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial = some beforeCheck ∧
+      ((FinalScriptCode.reachedSignatures beforeCheck.stack).take 9).all
+        (fun sig => sig.getLast? == some 0x03) = true ∧
+      (FinalScriptCode.reachedSignatures beforeCheck.stack)[9]? =
+        some PoolRollInvariant.finalNonce := by
+  obtain ⟨pre, reached, checked⟩ := source
+  let pairVerify : Bytes → Bytes → Bool := fun sig key =>
+    DERSyntax.verifyAllEncoding sig &&
+      CoreMultisigEval.nonemptyVerify (checker validKey verify)
+        (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
+          pre.stack) sig key
+  have nonempty : ∀ sig key, pairVerify sig key = true → sig ≠ [] := by
+    intro sig key pair
+    have parts : DERSyntax.verifyAllEncoding sig = true ∧
+        CoreMultisigEval.nonemptyVerify (checker validKey verify)
+          (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
+            pre.stack) sig key = true := by
+      simpa only [pairVerify,
+        Bool.and_eq_true_eq_eq_true_and_eq_true] using pair
+    exact (CoreMultisigEval.nonemptyVerify_sound _ _ _ _ parts.2).1
+  have encoded : ∀ sig key, pairVerify sig key = true →
+      DERSyntax.verifyAllEncoding sig = true := by
+    intro sig key pair
+    have parts : DERSyntax.verifyAllEncoding sig = true ∧
+        CoreMultisigEval.nonemptyVerify (checker validKey verify)
+          (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
+            pre.stack) sig key = true := by
+      simpa only [pairVerify,
+        Bool.and_eq_true_eq_eq_true_and_eq_true] using pair
+    exact parts.1
+  have matched : ∀ beforeCheck : State,
+      run hashes (ByteLayout.program.take 879) initial =
+        some beforeCheck →
+      Multisig.matchSigs pairVerify
+        ((beforeCheck.stack.drop 12).take 10)
+        ((beforeCheck.stack.drop 1).take 10) = true := by
+    intro beforeCheck runBefore
+    have same : beforeCheck = pre :=
+      Option.some.inj (runBefore.symm.trans reached)
+    subst beforeCheck
+    exact CoreMultisigEval.finalTenEval_success_match
+      EncodedLayout.chunks.flatten (checker validKey verify)
+      pre.stack checked
+  obtain ⟨_trace, _a, _b, beforeCheck, runBefore, _seven,
+    _distinct, singles, fixed, _code, _pairs, _nonce⟩ :=
+    FinalScriptCode.matched_run_reached_scriptCode_verify_all
+      hashes initial final accepted pairVerify nonempty encoded matched
+  exact ⟨beforeCheck, runBefore, singles, fixed⟩
+
 end QSB.CoreFinalChecksigEval
