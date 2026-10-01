@@ -1,0 +1,27 @@
+{
+  "status": "passed-native-linux-saved-trace-verification",
+  "sourceCommit": "f714d87c515fe4727a8d1b44cf95c12845a6e093",
+  "ciRun": 36849938167,
+  "ciUrl": "https://github.com/starknet-innovation/qsb-solver/actions/runs/36849938167",
+  "artifactId": 11155077653,
+  "artifactDigest": "sha256:24fc150ef6639b1cc74461de38473afb7cd8a6c113664994c477332ef728879d",
+  "receiptSha256": "650927daa8935bbd39cc83f3cb394f47fe196b919738d03652f5e356f822d17c",
+  "nativeTraceSha256": "8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04",
+  "cases": 20,
+  "candidates": 3116,
+  "hashes": 6232,
+  "runtime": "ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf",
+  "workers": 4,
+  "cpuQuota": 2,
+  "scope": "Portability and exact receipt equivalence for existing saved public diagnostic outputs; not a solver or full-pipeline performance measurement",
+  "performanceMeasured": false,
+  "newGpuExecutions": 0,
+  "newAwsSpendUsd": 0,
+  "workerImagePublicationEligible": false,
+  "priorFailure": {
+    "run": 36849341428,
+    "cause": "Output directory permission denied at final receipt write",
+    "passingReceipt": false,
+    "correction": "Map container UID/GID to runner and preflight output write access"
+  }
+}

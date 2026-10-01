@@ -96,7 +96,14 @@ The resulting receipt must match SHA256
 This checks native Linux portability only, not throughput or pipeline cost.
 Local amd64 emulation passed the scheduling unit tests but reached its separate
 300-second full-trace deadline without a receipt; that attempt was cleaned up
-and is inconclusive. CI success must be established from an actual run.
+and is inconclusive. Native Linux CI run `36849938167` subsequently passed all
+20 cases (3,116 candidates and 6,232 hashes), and the downloaded artifact receipt
+matched the expected hash byte-for-byte. See
+`evidence/parallel-cpu-verification-linux.json` for the committed source, runtime,
+artifact and failed-attempt identities. The first CI attempt failed at receipt
+writing due to output-directory permissions; mapping the container user to the
+runner owner and preflighting writes fixed that infrastructure issue. Neither CI
+run is a matched performance experiment.
 
 The extracted compression gate subsequently passed 174,080 independent native comparisons and compute-sanitizer reported zero errors. This is the extracted harness, not full-solver certification.
 
