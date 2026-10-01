@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1032,
+  "theorem_count": 1034,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3594,6 +3594,13 @@
     "QSB.RecoveryCandidates.digestTargets_card_le_twice": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.four_r_two_points_card": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RecoveryCandidates.four_r_two_points_curve_facts": [
       "propext"
     ],
     "QSB.RecoveryCandidates.recovery_points_card_le_four": [

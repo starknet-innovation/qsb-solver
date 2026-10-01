@@ -151,6 +151,9 @@ The pinned app recovery helper reconstructs only x=`r`; its choice does not
 restrict the recovery points relevant to a consensus attacker model. The same
 fixture file records an x=`r+n` algebraic verification that this helper omits;
 the test uses message scalar zero and supplies no Bitcoin transaction preimage.
+`evidence/four-recovery-points-core.json` separately records a disposable
+bare-script SHA256d transaction for which pinned Core accepts all four
+recovery-point keys for one fixed DER signature. It is not a QSB spend.
 
 `QSB/SighashBinding.lean` isolates the legacy `SIGHASH_ALL` binding
 step and maps a same-key verification on an owner-forbidden semantic
@@ -467,6 +470,7 @@ python3 analysis/check_roll_core.py --app-root /path/to/qsb-app --native-root /p
 python3 analysis/check_final_signed_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/final-signed-boundary.json
 python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/full-two-outputs-core.json
 python3 analysis/check_ecdsa_replay_targets.py --app-root /path/to/qsb-app --output evidence/ecdsa-replay-targets.json
+python3 analysis/check_four_recovery_points_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/four-recovery-points-core.json
 ```
 
 The recorded source inventory identifies exactly the files analyzed. The app

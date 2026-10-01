@@ -1,0 +1,57 @@
+{
+  "app_helper_recovers_x_equals_r_only": true,
+  "cases": [
+    {
+      "core_accepted": true,
+      "public_key_hex": "03936dbb8779242141bed728085a2c32de334e7b9202a4c326dc1d875ff93b4a39",
+      "recovery_branch": "r",
+      "recovery_x_hex": "0000000000000000000000000000000000000000000000000000000000000002",
+      "recovery_y_hex": "66fbe727b2ba09e09f5a98d70a5efce8424c5fa425bbda1c511f860657b8535e",
+      "recovery_y_parity": 0,
+      "transaction_sha256": "a980f0ca32742e288b0dc3671ca64a576e07302e5634e367aecea97d653c2683"
+    },
+    {
+      "core_accepted": true,
+      "public_key_hex": "03cc08f6d87fe81b326446e8918303cde075f20b6535a5eb75554b29d2fb146eeb",
+      "recovery_branch": "r",
+      "recovery_x_hex": "0000000000000000000000000000000000000000000000000000000000000002",
+      "recovery_y_hex": "990418d84d45f61f60a56728f5a10317bdb3a05bda4425e3aee079f8a847a8d1",
+      "recovery_y_parity": 1,
+      "transaction_sha256": "2e58f5fcf7dfc6a5051cfba3540ac3e32a650f074a6d329b9f59f8a38db7ff21"
+    },
+    {
+      "core_accepted": true,
+      "public_key_hex": "03456333d103a4ea0b14c2270959f7906b76321a4f05d5230339d1392aee9438c7",
+      "recovery_branch": "r_plus_n",
+      "recovery_x_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364143",
+      "recovery_y_hex": "c94e559d14883e68cfda34341568bf1127153254788dd974c6af9bb9cd962a5c",
+      "recovery_y_parity": 0,
+      "transaction_sha256": "436189fe8a4feefd6caba994774a38d84117900a89457f71f18f7184c77bfee3"
+    },
+    {
+      "core_accepted": true,
+      "public_key_hex": "022799aecbe77467429b862f257ab7528dab728368d6b756df6c1a5460400041cf",
+      "recovery_branch": "r_plus_n",
+      "recovery_x_hex": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364143",
+      "recovery_y_hex": "36b1aa62eb77c1973025cbcbea9740eed8eacdab8772268b395064453269d1d3",
+      "recovery_y_parity": 1,
+      "transaction_sha256": "8feb32a7fb1c07bc844d0ca2e0fd1f88130e843cc1a3aa723a266550b99252c0"
+    }
+  ],
+  "digest_hex": "f92848609a168155bdf0b381fd6ac72cf1ad833969d4f950c13d96fc9b1ad3c0",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_files_sha256": {
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd"
+  },
+  "scope": "Unfunded two-input bare OP_CHECKSIG experiment; four Core-accepted keys for one 9-byte DER signature and one SHA256d transaction message. Not a QSB lock spend or quantum bound.",
+  "sighash_preimage_hex": "020000000211111111111111111111111111111111111111111111111111111111111111110000000000feffffff22222222222222222222222222222222222222222222222222222222222222220100000001ac0000008002905f0100000000000151e803000000000000015187d6120001000000",
+  "signature_hex": "300602010202010101",
+  "source_files_sha256": {
+    "worker/cpu/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "worker/cpu/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece"
+  },
+  "wrong_key_core_accepted": false,
+  "wrong_key_hex": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+  "wrong_key_transaction_sha256": "3033e714512303d75269fbd7623ddc2eb112bd040d60dd02bc1e23a7b2497e98"
+}

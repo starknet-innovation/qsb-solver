@@ -197,6 +197,8 @@
  Classical.choice,
  Quot.sound]
 'QSB.RecoveryCandidates.secp_digest_in_targetSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.four_r_two_points_card' depends on axioms: [propext, Quot.sound]
+'QSB.RecoveryCandidates.four_r_two_points_curve_facts' depends on axioms: [propext]
 'QSB.configA_round1_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_round2_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_pool_choices' depends on axioms: [propext, Classical.choice, Quot.sound]

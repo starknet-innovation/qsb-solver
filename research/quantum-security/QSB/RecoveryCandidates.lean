@@ -280,4 +280,39 @@ theorem secp_digest_in_targetSet
   exact ⟨residueOf target, Finset.mem_image_of_mem _ targetAdmitted,
     secp_digest_in_candidates wire reduction⟩
 
+/-- Public affine roots for r=2. Both x=2 and x=2+n lie below the
+secp256k1 field prime and have two distinct y coordinates satisfying the
+modular curve equation. This makes the four-point coordinate count sharp.
+It does not prove prime-field or group implementation correctness, Core's
+ECDSA parser, or that four public keys verify a Bitcoin transaction;
+the latter is tested separately against the pinned adapter. -/
+def rTwoSmallY : Nat :=
+  0x990418D84D45F61F60A56728F5A10317BDB3A05BDA4425E3AEE079F8A847A8D1
+
+def rTwoHighY : Nat :=
+  0x36B1AA62EB77C1973025CBCBEA9740EED8EACDAB8772268B395064453269D1D3
+
+def fourRTwoPoints : Finset (Nat × Nat) :=
+  {(2, rTwoSmallY), (2, secpFieldPrime - rTwoSmallY),
+    (secpGroupOrder + 2, rTwoHighY),
+    (secpGroupOrder + 2, secpFieldPrime - rTwoHighY)}
+
+theorem four_r_two_points_card : fourRTwoPoints.card = 4 := by decide
+
+theorem four_r_two_points_curve_facts :
+    2 < secpFieldPrime ∧
+    secpGroupOrder + 2 < secpFieldPrime ∧
+    (secpGroupOrder + 2) % secpGroupOrder = 2 ∧
+    rTwoSmallY < secpFieldPrime ∧
+    rTwoHighY < secpFieldPrime ∧
+    (rTwoSmallY ^ 2) % secpFieldPrime =
+      (2 ^ 3 + 7) % secpFieldPrime ∧
+    ((secpFieldPrime - rTwoSmallY) ^ 2) % secpFieldPrime =
+      (2 ^ 3 + 7) % secpFieldPrime ∧
+    (rTwoHighY ^ 2) % secpFieldPrime =
+      ((secpGroupOrder + 2) ^ 3 + 7) % secpFieldPrime ∧
+    ((secpFieldPrime - rTwoHighY) ^ 2) % secpFieldPrime =
+      ((secpGroupOrder + 2) ^ 3 + 7) % secpFieldPrime := by
+  decide
+
 end QSB.RecoveryCandidates

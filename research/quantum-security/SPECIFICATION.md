@@ -424,6 +424,14 @@ is therefore a joint search-or-replay target, not
 necessarily two fresh independent DER hits. Bounding it must include the
 shared hash oracles, sighash correlations, all accepted public-key encodings,
 and adaptive disclosed subsets.
+For `r=2`, Lean checks four distinct `(x,y)` candidates satisfying the
+modular curve equation across `x=r` and
+`x=r+n`. A pinned-Core bare-`OP_CHECKSIG` experiment accepts four corresponding
+keys for one disposable SHA256d transaction digest and rejects a wrong key
+(`evidence/four-recovery-points-core.json`). The app helper recovers only the
+two `x=r` keys. This demonstrates that the four-point accounting can be tight
+for Core verification; it does not establish a QSB-lock spend or the universal
+curve/parser bridge.
 For the source-shaped legacy ALL serializer, Lean now proves that any
 owner-forbidden exact projection in one fixed ledger context has a different
 preimage from every approved release. The proof decodes the complete prepared

@@ -272,6 +272,8 @@ import QSB.Reduction
 #print axioms QSB.RecoveryCandidates.secp_digestTargets_card_le_eight
 #print axioms QSB.RecoveryCandidates.secp_digestTargets_card_le_eight_of_curve
 #print axioms QSB.RecoveryCandidates.secp_digest_in_targetSet
+#print axioms QSB.RecoveryCandidates.four_r_two_points_card
+#print axioms QSB.RecoveryCandidates.four_r_two_points_curve_facts
 #print axioms QSB.configA_round1_bonus_choices
 #print axioms QSB.configA_round2_bonus_choices
 #print axioms QSB.configA_pool_choices

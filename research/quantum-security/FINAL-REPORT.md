@@ -951,7 +951,15 @@ The pinned app's `ecdsa_recover` helper considers only x=`r`. A second public
 algebraic fixture uses x=`r+n`: the app's ECDSA verifier accepts its signature
 and key at scalar message zero, but neither helper parity reconstructs that
 key. This shows why the helper's candidate count is not an adversary bound.
-No SHA256d preimage, Core transaction, or QSB spend is exhibited.
+That earlier fixture has no SHA256d preimage. A separate disposable two-input
+bare-`OP_CHECKSIG` transaction fixes `(r,s)=(2,1)` and one `SIGHASH_ALL`
+preimage/digest. The pinned Core 27.2 adapter accepts four distinct compressed
+public keys recovered from the two curve solutions at `x=r` and the two at
+`x=r+n`; it rejects a wrong-key control. The app helper returns only the
+two `x=r` keys. Lean checks four distinct `(x,y)` candidates and their
+modular curve equations for this `r`, showing that the four-coordinate
+count can be attained. This is finite isolated Core evidence, not a QSB
+lock spend, universal Core-to-Lean ECDSA refinement, or quantum probability.
 
 The closed DER-32 *syntax count expression* has density
 `780555 / 2^65` (about `2^-45.426`), and the analogous DER-20 expression is
