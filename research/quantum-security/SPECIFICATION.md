@@ -143,7 +143,11 @@ nine distinct second-round positions because none of its generated second-round
 commitments is strict DER. The executable `extractMatchedWitness` returns a
 modeled round witness whose key comes from the reached final stack. These
 source-model results retain external hash, key-parser, transaction-digest, and
-ECDSA functions; they do not prove
+ECDSA functions. `QSB.CoreCheckedRunCertificate` further proves that the
+checked run satisfies the existing six-site certificate, computes its
+first-round candidate Boolean, and exposes the fixed pin and final
+`SIGHASH_ALL` checker calls on the reached scriptCodes. The literal
+two-candidate search succeeds for such a run. None of this proves
 compiled-Core acceptance or a quantum success bound.
 `QSB.DynamicCoreFinalTruth` extends the final-truth bridge to every
 parameterized Lean Config A lock. A source-shaped accepted run with all

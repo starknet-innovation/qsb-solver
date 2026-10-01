@@ -395,7 +395,7 @@ and `QSB/CoreChecksigStep.lean` provide those signature-site transitions;
 their cryptographic outcomes remain supplied Booleans. Compiled Core and
 real checker/sighash refinement remain open.
 `QSB/CoreSourceExtraction.lean` combines one truthy source-shaped run with
-source-shaped checks of all five reached signature sites, including the
+source-shaped checks of all six reached signature sites, including the
 first-round multisignature at its actual stack. `QSB/CoreMultisigSourceScan.lean`
 computes that site's source-shaped Boolean after shared FindAndDelete and
 requires it to match the supplied structural outcome, which may be false.
@@ -410,6 +410,15 @@ seven-plus-two final-round witness, then exposes both fixed signatures'
 `SIGHASH_ALL` checker calls and their reached scriptCodes. The first-round
 multisignature is still allowed to return false. This is a source-model
 certificate, not a theorem from compiled Core acceptance or a QROM bound.
+`QSB/CoreCheckedStep.lean` computes each reached signature result instead of
+accepting a caller-supplied Boolean. For a truthy full run of the literal
+lock, `QSB/CoreCheckedRunCertificate.lean` proves that its six computed
+results satisfy the source certificate and have shape
+`[true, true, true, firstRound, true, true]`. The two-candidate search finds
+a certificate, and the pin/final extraction theorem exposes the fixed
+`SIGHASH_ALL` checker calls. The key parser, ECDSA and transaction digest
+remain external functions; compiled-Core refinement and the shared-budget
+quantum bound are still open.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

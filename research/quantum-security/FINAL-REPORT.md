@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,224 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,232 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -794,8 +794,8 @@ computed true final ten-pair result exposes all ten source-addressed strict-DER
 pairs. The generic true scan itself forces all ten signatures to be nonempty
 strict DER and short enough for direct pushes; no short-push premise is needed
 at this boundary. Lean also proves that every successful checked run replays
-in the older structural interpreter using
-exactly its computed signature results, then projects to the byte machine.
+in the older structural interpreter using exactly its computed signature
+results, then projects to the byte machine.
 For the literal lock, any successful checked run therefore yields the seven
 distinct final HORS opening positions and their commitment equations. If its
 final CastToBool is true, the actual checked final scan is true and all ten
@@ -806,10 +806,17 @@ positions: seven signed openings and two bonus dummies. The executable
 `FinalRoundWitness.extractMatchedWitness` consequently returns a modeled
 round witness with valid opening equations and its key read from the actual
 reached final stack. This removes caller-chosen signature Booleans from this
-*new source model*; the converse simulation, connection to the checked
-certificate search, and
-compiled-Core refinement remain unproved. The key parser, ECDSA, transaction
-digest, and hash functions remain external inputs. A small checked-run theorem
+*new source model*. `QSB/CoreCheckedRunCertificate.lean` now proves that a
+truthy checked run also satisfies all six reached checks in the existing
+certificate. Its records have the exact shape
+`[true, true, true, firstRound, true, true]`; the actual first-round scan
+selects that Boolean, and the two-candidate certificate search finds a
+result. The prior source extraction consequently yields the pinning key,
+strict-DER hashes of the pin and final keys, and the two fixed
+`SIGHASH_ALL` calls on their reached scriptCodes without separately assuming
+the six checker results. The converse simulation and compiled-Core refinement
+remain unproved. The key parser, ECDSA, transaction digest, and hash functions
+remain external inputs. A small checked-run theorem
 also demonstrates a computed false non-VERIFY multisignature followed by a
 truthy push; it is an isolated model case, not a QSB spend.
 The pinned local Core adapter's three early-exit cases and 22 isolated

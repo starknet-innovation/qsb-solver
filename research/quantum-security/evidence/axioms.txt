@@ -1433,6 +1433,18 @@
 'QSB.CoreCheckedStep.literal_checked_run_final_ten_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedStep.literal_checked_run_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedStep.literal_checked_run_extract_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.reached_checksig_site' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.reached_multisig_site' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_necessary_signature_checks' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_record_pattern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_candidate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_search_succeeds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_extract_pin_and_final' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CoreCheckedRunCertificate.literal_run_fixed_all_calls' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,
