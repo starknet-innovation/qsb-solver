@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1027,
+  "theorem_count": 1032,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1298,6 +1298,14 @@
     "QSB.DynamicCheckedCertificate.final_checked_sound": [
       "propext"
     ],
+    "QSB.DynamicCheckedCertificate.first_two_opcodes": [
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.reached_pin_fixed_signature": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicCheckedCertificate.search_good_setup_nine_positions": [
       "Classical.choice",
       "Quot.sound",
@@ -1305,6 +1313,9 @@
     ],
     "QSB.DynamicCheckedCertificate.search_sound": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.source_sites_pin": [
       "propext"
     ],
     "QSB.DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions": [
@@ -1417,7 +1428,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicJointTransaction.search_fixed_pin_all_call": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicJointTransaction.search_reached_final_joint_calls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_reached_pin_joint_call": [
       "Classical.choice",
       "Quot.sound",
       "propext"

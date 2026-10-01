@@ -372,7 +372,10 @@ structure. `QSB/DynamicJointTransaction.lean` now instantiates all ten
 reached final source checks for a selected transaction input: each successful
 external ECDSA call uses that signature's actual hash type, one common
 Core-shaped deleted scriptCode, and either `H(H(legacy preimage))` or the
-out-of-range SINGLE constant. The certificate and checker remain source-model
+out-of-range SINGLE constant. The same certificate exposes the first pinning
+call on the lock-pushed signature; if that signature ends in `0x01`, its
+source ECDSA digest is `H(H(sourceAllPreimage))`. This hash-type condition is
+explicit for the parameterized lock. The certificate and checker remain source-model
 premises. These modules have no random-oracle sampling or quantum-query
 semantics; the query-success theorem still needs a game over those same
 functions and their adaptive disclosures.

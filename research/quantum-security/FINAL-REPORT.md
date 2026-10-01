@@ -781,6 +781,15 @@ selected legacy hash type or the raw out-of-range SINGLE constant; a valid
 input index is necessary. This is conditional on finding the source
 certificate with the supplied key parser and ECDSA predicate. It is not a
 compiled-Core acceptance implication or a quantum success bound.
+The same parameterized certificate also yields the reached first pinning
+CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
+signature for any initial stack on which the modeled prefix succeeds. Strict
+DER makes the reached signature's direct-push deletion equal Core's full
+push serialization. If the pin signature's last byte is `0x01`, the checked
+source ECDSA call uses `H(H(sourceAllPreimage))` for the selected transaction
+input and reached pin scriptCode. The key remains a scriptSig-supplied byte
+string, and the ALL premise is explicit because the parameterized lock
+accepts arbitrary pin bytes.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

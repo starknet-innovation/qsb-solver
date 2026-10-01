@@ -17,6 +17,147 @@ namespace QSB.DynamicJointTransaction
 
 open ByteMachine
 
+def reachedPinSignature (beforePin : CoreOpcodeStep.State) : Bytes :=
+  beforePin.stack.reverse[1]?.getD []
+
+def reachedPinKey (beforePin : CoreOpcodeStep.State) : Bytes :=
+  beforePin.stack.reverse[0]?.getD []
+
+def reachedPinScriptCode (lock : DynamicCheckedCertificate.Lock)
+    (beforePin : CoreOpcodeStep.State) : Bytes :=
+  CoreFindAndDelete.run 880 (DynamicCheckedCertificate.wire lock)
+    (CorePushSerialize.pushPattern (reachedPinSignature beforePin))
+
+/-- The same checked certificate forces a reached pinning signature call at
+the selected transaction input. Its signature, key, and scriptCode come from
+the actual pre-CHECKSIGVERIFY stack. Strict DER makes the source-model direct
+push deletion equal Core's full push serialization. -/
+theorem search_reached_pin_joint_call
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final)) :
+    ∃ beforePin : CoreOpcodeStep.State,
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 2)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforePin ∧
+      ∃ hashType digest,
+        (reachedPinSignature beforePin).getLast? = some hashType ∧
+        DERSyntax.valid (reachedPinSignature beforePin) = true ∧
+        validKey (reachedPinKey beforePin) = true ∧
+        JointSourceChecks.legacyDigest functions tx selected
+          (reachedPinScriptCode lock beforePin) hashType.toNat =
+            some digest ∧
+        ecdsa (reachedPinSignature beforePin).dropLast
+          (reachedPinKey beforePin) digest = true ∧
+        selected < tx.inputs.length ∧
+        ((∃ preimage,
+            LegacySighashWire.sourcePreimage tx selected
+              (reachedPinScriptCode lock beforePin) hashType.toNat =
+                some preimage ∧
+            digest = functions.H (functions.H preimage)) ∨
+          (LegacySighashWire.sourcePreimage tx selected
+              (reachedPinScriptCode lock beforePin) hashType.toNat = none ∧
+            LegacySighashWire.baseType hashType.toNat = 3 ∧
+            tx.outputs.length ≤ selected ∧
+            digest = LegacySighashWire.singleBugDigest)) := by
+  have sites :=
+    (DynamicCheckedCertificate.search_sound
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found).2.2.1
+  obtain ⟨beforePin, reached, checked⟩ :=
+    DynamicCheckedCertificate.source_sites_pin
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound sites
+  let sig := reachedPinSignature beforePin
+  let key := reachedPinKey beforePin
+  obtain ⟨hashType, last, der, keyValid, verified⟩ :=
+    CoreChecksigEval.successful_base_check 880
+      (DynamicCheckedCertificate.wire lock) sig key validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      (by simpa [sig, key, reachedPinSignature, reachedPinKey] using checked)
+  have short := DERSyntax.valid_direct_push_width sig der
+  have codeEq : reachedPinScriptCode lock beforePin =
+      CoreFindAndDelete.run 880 (DynamicCheckedCertificate.wire lock)
+        (ScriptCodeSelection.directPushPattern sig) := by
+    simp [reachedPinScriptCode, sig,
+      CorePushSerialize.pushPattern_direct sig short]
+  unfold JointSourceChecks.checker at verified
+  cases digestEq : JointSourceChecks.legacyDigest functions tx selected
+      (CoreFindAndDelete.run 880 (DynamicCheckedCertificate.wire lock)
+        (ScriptCodeSelection.directPushPattern sig)) hashType.toNat with
+  | none => simp [digestEq] at verified
+  | some digest =>
+      simp only [digestEq] at verified
+      rw [← codeEq] at digestEq
+      have cases := JointSourceChecks.legacyDigest_some_cases
+        functions tx selected (reachedPinScriptCode lock beforePin)
+        hashType.toNat digest digestEq
+      exact ⟨beforePin, reached, hashType, digest, last, der,
+        keyValid, digestEq, verified, cases.1, cases.2⟩
+
+/-- If the parameterized fixed pin signature ends in the builder's ALL flag,
+the returned source certificate checks that exact lock-pushed signature under
+SHA256d of the selected transaction's ALL preimage and its reached pin
+scriptCode. The public key is still drawn from the arbitrary scriptSig stack;
+its parsing and ECDSA result are external to this theorem. -/
+theorem search_fixed_pin_all_call
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (pinAll : lock.pin.getLast? = some 0x01) :
+    ∃ beforePin : CoreOpcodeStep.State,
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 2)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforePin ∧
+      reachedPinSignature beforePin = lock.pin ∧
+      DERSyntax.valid lock.pin = true ∧
+      validKey (reachedPinKey beforePin) = true ∧
+      ecdsa lock.pin.dropLast (reachedPinKey beforePin)
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (reachedPinScriptCode lock beforePin)))) = true := by
+  obtain ⟨beforePin, reached, hashType, digest, last, der,
+    keyValid, digestEq, verified, inputValid, _digestCases⟩ :=
+    search_reached_pin_joint_call functions tx selected lock stack
+      validKey ecdsa firstRound final found
+  have fixed : reachedPinSignature beforePin = lock.pin := by
+    have slot := DynamicCheckedCertificate.reached_pin_fixed_signature
+      (JointSourceChecks.hashes functions) lock stack firstRound
+      beforePin reached
+    simpa [reachedPinSignature] using
+      congrArg (fun value : Option Bytes => value.getD []) slot
+  rw [fixed] at last verified
+  have flag : hashType = 0x01 := Option.some.inj (last.symm.trans pinAll)
+  subst hashType
+  have allDigest := JointSourceChecks.legacyDigest_all functions tx selected
+    (reachedPinScriptCode lock beforePin) inputValid
+  have digestEq' : JointSourceChecks.legacyDigest functions tx selected
+      (reachedPinScriptCode lock beforePin) 1 = some digest := by
+    simpa using digestEq
+  rw [allDigest] at digestEq'
+  have sameDigest := Option.some.inj digestEq'
+  rw [← sameDigest] at verified
+  exact ⟨beforePin, reached, fixed, by simpa [fixed] using der,
+    keyValid, verified⟩
+
 theorem search_reached_final_joint_calls
     (functions : JointSourceChecks.Functions)
     (tx : SighashAllWire.TxFields) (selected : Nat)

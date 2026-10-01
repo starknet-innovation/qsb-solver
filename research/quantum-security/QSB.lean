@@ -902,10 +902,15 @@ import QSB.Reduction
 #print axioms QSB.DynamicFullSerialized.full_wire_decodes
 #print axioms QSB.DynamicFullSerialized.full_wire_decodes_der
 #print axioms QSB.DynamicFullSerialized.accepted_full_structural_good_setup_nine_positions
+#print axioms QSB.DynamicCheckedCertificate.first_two_opcodes
+#print axioms QSB.DynamicCheckedCertificate.reached_pin_fixed_signature
+#print axioms QSB.DynamicCheckedCertificate.source_sites_pin
 #print axioms QSB.DynamicCheckedCertificate.final_checked_sound
 #print axioms QSB.DynamicCheckedCertificate.candidate_sound
 #print axioms QSB.DynamicCheckedCertificate.search_sound
 #print axioms QSB.DynamicCheckedCertificate.search_good_setup_nine_positions
+#print axioms QSB.DynamicJointTransaction.search_reached_pin_joint_call
+#print axioms QSB.DynamicJointTransaction.search_fixed_pin_all_call
 #print axioms QSB.DynamicJointTransaction.search_reached_final_joint_calls
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count

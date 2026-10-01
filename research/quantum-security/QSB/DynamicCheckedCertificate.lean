@@ -39,6 +39,67 @@ def initial (stack : List Bytes) (firstRound : Bool) :
   CoreOpcodeStep.ofByte
     ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩
 
+theorem first_two_opcodes (lock : Lock) :
+    (program lock).take 2 = [.push lock.pin, .over] := by
+  have fixed : DynamicFullSerialized.staticOps 1 5 =
+      [.over, .checksigverify, .sha256, .swap, .checksigverify] := by
+    decide
+  simp [program, DynamicWholeSource.fullProgram,
+    DynamicFullSerialized.priorOps, DynamicFullSerialized.pinOps, fixed]
+
+/-- The first reached CHECKSIGVERIFY always reads the pin signature pushed
+by the parameterized lock, regardless of the scriptSig stack beneath it. -/
+theorem reached_pin_fixed_signature (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (firstRound : Bool)
+    (beforePin : CoreOpcodeStep.State)
+    (reached : CoreStructuralRun.run hashes ((program lock).take 2)
+      (initial stack firstRound) = some beforePin) :
+    beforePin.stack.reverse[1]? = some lock.pin := by
+  obtain ⟨byteAfter, byteRun, shape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes ((program lock).take 2)
+      ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩ beforePin
+      (by simpa [initial] using reached)
+  subst beforePin
+  rw [first_two_opcodes] at byteRun
+  cases stack with
+  | nil =>
+      have pushStep : ByteMachine.step hashes (.push lock.pin)
+          ⟨[], CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          if lock.pin.length > 520 then none else
+            some ⟨[lock.pin], CoreCheckedCertificate.outcomes firstRound,
+              0⟩ := by rfl
+      have overStep : ByteMachine.step hashes .over
+          ⟨[lock.pin], CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          none := by rfl
+      by_cases long : lock.pin.length > 520
+      · simp [ByteMachine.run, pushStep, long] at byteRun
+      · simp [ByteMachine.run, pushStep, overStep, long] at byteRun
+  | cons key tail =>
+      have pushStep : ByteMachine.step hashes (.push lock.pin)
+          ⟨key :: tail, CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          if lock.pin.length > 520 then none else
+            some ⟨lock.pin :: key :: tail,
+              CoreCheckedCertificate.outcomes firstRound, 0⟩ := by rfl
+      have overStep : ByteMachine.step hashes .over
+          ⟨lock.pin :: key :: tail,
+            CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          some ⟨key :: lock.pin :: key :: tail,
+            CoreCheckedCertificate.outcomes firstRound, 1⟩ := by rfl
+      by_cases long : lock.pin.length > 520
+      · simp [ByteMachine.run, pushStep, long] at byteRun
+      · by_cases cap1 : tail.length + 2 > 1000
+        · simp [ByteMachine.run, pushStep, long, cap1] at byteRun
+        · by_cases cap2 : tail.length + 3 > 1000
+          · simp [ByteMachine.run, pushStep, overStep,
+              long, cap1, cap2] at byteRun
+          · have same : byteAfter =
+                ⟨key :: lock.pin :: key :: tail,
+                  CoreCheckedCertificate.outcomes firstRound, 1⟩ := by
+              simpa [ByteMachine.run, pushStep, overStep,
+                long, cap1, cap2] using byteRun.symm
+            subst byteAfter
+            simp [CoreOpcodeStep.ofByte]
+
 /-- Check that the six signature sites retain their Config A opcode roles
 despite parameterized data bytes. The individual source evaluators below are
 then run on the stacks reached just before those opcode positions. -/
@@ -86,6 +147,54 @@ def sourceSites (hashes : Hashes) (lock : Lock) (stack : List Bytes)
           (CoreFinalChecksigEval.checker validKey verify)
           firstCheck.stack = some firstRound)
   | _, _, _, _, _ => false
+
+/-- A successful parameterized source-site check includes the actual reached
+pinning CHECKSIGVERIFY pair, even when the first multisignature later returns
+false. This is still a source-model check, not compiled-Core acceptance. -/
+theorem source_sites_pin (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) (firstRound : Bool)
+    (checked : sourceSites hashes lock stack validKey verify
+      firstRound = true) :
+    ∃ beforePin,
+      CoreStructuralRun.run hashes ((program lock).take 2)
+        (initial stack firstRound) = some beforePin ∧
+      CoreChecksigEval.evalBaseVerifyAll 880 (wire lock)
+        (beforePin.stack.reverse[1]?.getD [])
+        (beforePin.stack.reverse[0]?.getD [])
+        validKey verify = some true := by
+  unfold sourceSites at checked
+  cases pinEq : CoreStructuralRun.run hashes ((program lock).take 2)
+      (initial stack firstRound) with
+  | none => simp [pinEq] at checked
+  | some beforePin =>
+      cases earlyEq : CoreStructuralRun.run hashes ((program lock).take 5)
+          (initial stack firstRound) with
+      | none => simp [pinEq, earlyEq] at checked
+      | some early =>
+          cases firstPuzzleEq : CoreStructuralRun.run hashes
+              ((program lock).take 423) (initial stack firstRound) with
+          | none => simp [pinEq, earlyEq, firstPuzzleEq] at checked
+          | some firstPuzzle =>
+              cases firstCheckEq : CoreStructuralRun.run hashes
+                  ((program lock).take 446)
+                  (initial stack firstRound) with
+              | none =>
+                  simp [pinEq, earlyEq, firstPuzzleEq, firstCheckEq] at checked
+              | some firstCheck =>
+                  cases lateEq : CoreStructuralRun.run hashes
+                      ((program lock).take 856)
+                      (initial stack firstRound) with
+                  | none =>
+                      simp [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq] at checked
+                  | some late =>
+                      have all := checked
+                      simp only [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq,
+                        Bool.and_eq_true_eq_eq_true_and_eq_true,
+                        decide_eq_true_eq] at all
+                      exact ⟨beforePin, rfl, all.2.1⟩
 
 /-- The final source evaluator is checked on the very stack reached by the
 same structural prefix that precedes the final CHECKMULTISIG. -/
