@@ -40,6 +40,19 @@ The pair build also emits `candidate-trace`, `candidate-trace.diff` and `trace-r
 
 Independent verification: `verify_trace.py NATIVE_RESULT CPU_REFERENCE_ROOT experiments/generic-sha-vector/fixtures OUTPUT`. The external public CPU implementation is the three named modules under `worker/cpu` in qsb-app commit `b737fc6e6c1f4114fcd655b2f57f99224f79f280`; `cpu-reference-lock.json` checks each byte before import. The public synthetic state/parameter sidecars are included under `fixtures/` and separately hash-checked. The verifier reconstructs full transaction sighashes and compares recovered-key puzzle hashes, while requiring exact native case inventory and complete unmodified-binary range output. A one-candidate CPU-generated positive control and corrupted-hash rejection passed locally; this is verifier testing, not native evidence. Native Linux CI run 36696374308 built the trace successfully, and downloaded artifact hashes were checked. The unmodified candidate remains byte-identical; see `evidence/trace-build.json`.
 
+The verifier accepts optional `--workers 1..4` (default 1) for independent CPU
+case verification. This reuses the parallel-verification design in upstream
+`harness/verify.py` at `ff27a2b66990a3eb554a1d4453e896c0397337ba`, with a locally
+written scheduler. Unlike upstream's fork/all-CPU implementation, this offline
+tool spawns a bounded number of workers after copying hash-verified reference
+modules into a private temporary directory. No candidate process runs during
+verification. Ordered results and all checks are preserved; any worker failure
+prevents a passing receipt. Workers may finish already queued work before an
+error returns. Apply an outer process deadline when operating the verifier.
+This option does not change solver execution, reference arithmetic, fixtures,
+receipt contents, search coverage or image qualification. Scheduling tests are
+separate from native-trace equivalence and performance measurements.
+
 ## Native results, 30 September
 
 The extracted compression gate subsequently passed 174,080 independent native comparisons and compute-sanitizer reported zero errors. This is the extracted harness, not full-solver certification.

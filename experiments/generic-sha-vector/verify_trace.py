@@ -1,6 +1,9 @@
 """Separate CPU/full-transaction verification; accepts only frozen public references."""
 import hashlib
+import argparse
+from concurrent.futures import ProcessPoolExecutor
 import json
+import multiprocessing
 from pathlib import Path
 import sys
 import tempfile
@@ -41,8 +44,40 @@ def load_public(reference,fixtures):
     return data
 
 
+def init_reference(directory):
+    # Spawned workers receive only the parent's hash-verified import directory.
+    sys.path.insert(0, directory)
+    from gpu_emulator import emulate_digest_round
+    from bitcoin_tx import Transaction, TxIn, TxOut, find_and_delete
+    global _reference
+    _reference = (emulate_digest_round, Transaction, TxIn, TxOut, find_and_delete)
+
+
+def verify_job(job):
+    return check_case(*job, *_reference)
+
+
+def ordered_map(function, jobs, workers, initializer=None, initargs=()):
+    if not 1 <= workers <= 4:
+        raise ValueError('workers must be between 1 and 4')
+    if workers == 1:
+        if initializer is not None:
+            initializer(*initargs)
+        return [function(job) for job in jobs]
+    # Ordered map retains the serial receipt; any child failure prevents output.
+    with ProcessPoolExecutor(max_workers=workers,
+                             mp_context=multiprocessing.get_context('spawn'),
+                             initializer=initializer, initargs=initargs) as pool:
+        return list(pool.map(function, jobs))
+
+
 def main():
-    result_path,reference,fixtures,output=map(Path,sys.argv[1:5])
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('result', 'reference', 'fixtures', 'output'):
+        parser.add_argument(name, type=Path)
+    parser.add_argument('--workers', type=int, choices=range(1,5), default=1)
+    args = parser.parse_args()
+    result_path,reference,fixtures,output=args.result,args.reference,args.fixtures,args.output
     if output.exists():raise ValueError('output already exists')
     result_raw=result_path.read_bytes();result=json.loads(result_raw)
     if result.get('status')!='native-completed-awaiting-cpu-verification' or result.get('candidateSha256')!=SUB or result.get('fixtureSha256')!=FIXTURES:
@@ -57,15 +92,13 @@ def main():
         root=Path(directory)
         for name,raw in data.items():
             if name.startswith('reference/'):(root/Path(name).name).write_bytes(raw)
-        sys.path.insert(0,str(root))
-        from gpu_emulator import emulate_digest_round
-        from bitcoin_tx import Transaction,TxIn,TxOut,find_and_delete
-        rows=[]
+        jobs=[]
         for plan,row in zip(plans,result['ranges']):
             prefix='fixtures/'+plan['case']+'/'
             state=json.loads(data[prefix+'qsb_state.json'])
             params=json.loads(data[prefix+f"gpu_digest_r{plan['stage']}_params.json"])
-            rows.append(check_case(plan,row,state,params,emulate_digest_round,Transaction,TxIn,TxOut,find_and_delete))
+            jobs.append((plan,row,state,params))
+        rows=ordered_map(verify_job,jobs,args.workers,init_reference,(str(root),))
     summary=dict(status='passed',nativeResultSha256=hashlib.sha256(result_raw).hexdigest(),candidateSha256=SUB,
                  rows=rows,candidates=sum(r['candidates'] for r in rows),hashes=sum(r['hashes'] for r in rows),
                  freshWithdrawal=False,grantsRangeCredit=False,
