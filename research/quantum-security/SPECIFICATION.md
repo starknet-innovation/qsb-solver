@@ -424,6 +424,12 @@ branch, and key-byte equality is not assumed or excluded.
 Given the explicit `ECDSATargets` premise that Core's verifier maps each
 fixed signature/key to at most eight admissible *wire digest* values, the
 known-key branch becomes two target memberships for `H(H(ALL preimage))`.
+`QSB/WireECDSATargets.lean` now constructs that finite byte-target contract
+from a narrower explicit premise: every successful 32-byte digest maps to
+one of at most four admitted secp256k1 message residues. Its structural
+version obtains the four-residue count from the existing recovery-point
+fiber theorem. Actual Core verifier-to-recovery and digest-byte refinement
+remain unproved.
 Lean bounds the union of those two target sets by 16 without treating their
 hits as independent. The Core verifier-to-target premise and a shared-H QROM
 bound for the fresh preimages remain open.

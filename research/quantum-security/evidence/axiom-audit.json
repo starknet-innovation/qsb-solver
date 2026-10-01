@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1076,
+  "theorem_count": 1084,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4006,7 +4006,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireECDSATargets.checked_digest_mem_targets": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireECDSATargets.targets_card_le_eight": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.amount_90000": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.beBytes_readBE": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4041,12 +4056,35 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireIntegers.coreSingleBug_rawDigest_readBE": [
+      "propext"
+    ],
     "QSB.WireIntegers.leBytes_length": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireIntegers.leBytes_readLE": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.readBE_beBytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.readBE_lt": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.readLE_leBytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.readLE_lt": [
       "Classical.choice",
       "Quot.sound",
       "propext"

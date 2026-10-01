@@ -41,6 +41,62 @@ theorem readLE_leBytes (width value : Nat) :
   rw [Nat.digitsAppend, Nat.ofDigits_append_replicate_zero]
   exact Nat.ofDigits_digits 256 value
 
+/-- A fixed-width byte string is recovered from its little-endian value.
+Together with `readLE_leBytes`, this avoids silently dropping leading zero
+bytes when converting 32-byte ECDSA digests to integers and back. -/
+theorem leBytes_readLE (bytes : Bytes) (width : Nat)
+    (length : bytes.length = width) :
+    leBytes width (readLE bytes) = bytes := by
+  have digitsValid : (bytes.map UInt8.toNat).length = width ∧
+      ∀ digit ∈ bytes.map UInt8.toNat, digit < 256 := by
+    constructor
+    · simpa using length
+    · intro digit member
+      obtain ⟨byte, _, rfl⟩ := List.mem_map.mp member
+      exact byte.toNat_lt
+  have digitsRoundtrip :=
+    (Nat.setInvOn_digitsAppend_ofDigits
+      (by norm_num : 1 < 256) width).1 digitsValid
+  unfold leBytes readLE
+  rw [digitsRoundtrip]
+  have byteRoundtrip (byte : UInt8) : UInt8.ofNat byte.toNat = byte := by
+    apply UInt8.ext
+    exact UInt8.toNat_ofNat_of_lt byte.toNat_lt
+  simp [Function.comp_def, byteRoundtrip]
+
+theorem readLE_lt (bytes : Bytes) : readLE bytes < 256 ^ bytes.length := by
+  unfold readLE
+  simpa using Nat.ofDigits_lt_base_pow_length
+    (by norm_num : 1 < 256)
+    (l := bytes.map UInt8.toNat) (by
+      intro digit member
+      obtain ⟨byte, _, rfl⟩ := List.mem_map.mp member
+      exact byte.toNat_lt)
+
+def beBytes (width value : Nat) : Bytes := (leBytes width value).reverse
+
+def readBE (bytes : Bytes) : Nat := readLE bytes.reverse
+
+theorem readBE_beBytes (width value : Nat) :
+    readBE (beBytes width value) = value := by
+  simp [readBE, beBytes, readLE_leBytes]
+
+theorem beBytes_readBE (bytes : Bytes) (width : Nat)
+    (length : bytes.length = width) :
+    beBytes width (readBE bytes) = bytes := by
+  simp [beBytes, readBE, leBytes_readLE bytes.reverse width
+    (by simpa using length)]
+
+theorem readBE_lt (bytes : Bytes) : readBE bytes < 256 ^ bytes.length := by
+  simpa [readBE] using readLE_lt bytes.reverse
+
+/-- Core's out-of-range legacy SINGLE result is `uint256::ONE`: its raw
+buffer is 01 followed by 31 zero bytes. Interpreted by the ECDSA scalar
+parser as big-endian bytes, that buffer denotes 2^248, not 1. -/
+theorem coreSingleBug_rawDigest_readBE :
+    readBE ((1 : UInt8) :: List.replicate 31 (0 : UInt8)) = 2 ^ 248 := by
+  decide
+
 def fixedLECodec (width : Nat) : PrefixCodec Nat where
   valid := fun value => value < 256 ^ width
   encode := leBytes width

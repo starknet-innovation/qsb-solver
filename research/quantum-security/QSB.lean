@@ -70,6 +70,7 @@ import QSB.DynamicCheckedCertificate
 import QSB.DynamicJointTransaction
 import QSB.DynamicDisclosureEvent
 import QSB.DynamicRetarget
+import QSB.WireECDSATargets
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -163,6 +164,14 @@ import QSB.Reduction
 #print axioms QSB.OutputCodec.sourceShapedOutputs_injective_on
 #print axioms QSB.WireIntegers.leBytes_length
 #print axioms QSB.WireIntegers.readLE_leBytes
+#print axioms QSB.WireIntegers.leBytes_readLE
+#print axioms QSB.WireIntegers.readLE_lt
+#print axioms QSB.WireIntegers.readBE_beBytes
+#print axioms QSB.WireIntegers.beBytes_readBE
+#print axioms QSB.WireIntegers.readBE_lt
+#print axioms QSB.WireIntegers.coreSingleBug_rawDigest_readBE
+#print axioms QSB.WireECDSATargets.targets_card_le_eight
+#print axioms QSB.WireECDSATargets.checked_digest_mem_targets
 #print axioms QSB.WireIntegers.compactSize_roundtrip
 #print axioms QSB.WireIntegers.compact_252
 #print axioms QSB.CoreOpcodeStep.step_eq_byte

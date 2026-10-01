@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,076 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,084 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -1025,6 +1025,21 @@ the conditional four-recovery-point bound, a fixed signature/key has at most
 eight possible wire digest targets. This is finite target accounting, not a
 SHA256d quantum hit bound; the Core digest-to-residue bridge, point parser,
 and oracle correlations remain unresolved.
+`QSB/WireECDSATargets.lean` now turns that numeric count into actual 32-byte
+target strings. Lean proves fixed-width byte/natural round trips and builds
+the `ECDSATargets` contract from an explicit four-residue verifier contract;
+an alternative constructor derives its four-residue count from the checked
+recovery-point fiber theorem. The universal verifier-to-recovery relation and
+the mapping of Core's digest bytes to `readBE` remain premises, not results.
+Core 27.2 passes `hash.begin()` to libsecp256k1's scalar parser, whose pinned
+4x64 implementation reads its input with big-endian 64-bit loads
+([Core public-key verifier](https://github.com/bitcoin/bitcoin/blob/v27.2/src/pubkey.cpp#L267-L282),
+[secp256k1 scalar parser](https://github.com/bitcoin/bitcoin/blob/v27.2/src/secp256k1/src/scalar_4x64_impl.h#L150-L161)).
+The existing isolated native semantics fixture reproduced byte-for-byte in
+this run; it is finite corroboration, not a universal Core refinement. Lean
+also checks that Core's out-of-range SINGLE raw `uint256::ONE` buffer
+(`01` followed by 31 zero bytes) denotes `2^248` under this byte order,
+matching the pinned fixture's accepted recovery-key case.
 `QSB/SighashBinding.lean` composes this count with the source-shaped ALL
 serializer: an owner-forbidden semantic projection implies a distinct
 prepared preimage from any approved release in the same fixed ledger
