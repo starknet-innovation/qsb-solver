@@ -121,7 +121,8 @@ proof that each carried value comes from the adversary's transaction bytes.
 
 ## Native evidence
 
-`round-results.json` records seven cases through the app's actual Core adapter:
+`round-results.json` records 18 cases through the app's actual Core adapter.
+The original seven are:
 
 - Original synthetic witness against the **modified** lock: accepted.
 - Invalid round-1 dummy signature/key pair: accepted.
@@ -132,6 +133,15 @@ proof that each carried value comes from the adversary's transaction bytes.
 - Changed destination with the **old round-1 nonce key**: accepted. The
   independent CPU check confirms that old key no longer verifies the
   first-round nonce signature on the new transaction. Pinning and round 2 do.
+
+The eleven added cases use two outputs, so the signed input's nine final
+`SIGHASH_SINGLE` checks are in range. Core accepts the full disposable lock
+with all ten final keys recovered against one shared scriptCode. It rejects
+each of ten controls that changes one final key to one recovered after
+incorrectly retaining that key's own signature push in scriptCode. The
+independent EC check confirms each wrong key fails on the correct digest;
+the report records both scriptCode hashes and both sighash scalars. The
+seven earlier outcomes and their transaction hashes are unchanged.
 
 The lock has exactly three puzzle CHECKSIGVERIFY sites replaced by OP_2DROP.
 The pinning signature check, both CHECKMULTISIG instructions, and all HASH160

@@ -117,6 +117,16 @@ single-signature implementation passes all 151 cases; 35 distinct ten-
 signature sets also match whole-chunk filtering in forward, reverse, and
 shuffled orders. This is exact fixture/source reasoning and sampled app
 execution, not a Core binary equivalence theorem for every witness and setup.
+`analysis/check_round_results.py` also exercises the full 9,923-byte
+disposable lock with two outputs and the three hash-to-signature puzzle
+checks replaced by `OP_2DROP`. The pinned Core adapter accepts the witness
+whose nine in-range SINGLE keys and final ALL key use the one scriptCode
+after all ten selected pushes are deleted. It rejects ten otherwise matched
+controls, each with one key recovered from a scriptCode retaining its own
+signature push. CPU checks independently show that wrong key does not verify
+the correct digest. These full-lock negative controls strengthen the finite
+corroboration of shared deletion; they do not prove arbitrary-witness Core
+refinement or any spend of the unmodified lock.
 The matching Lean fixture and parser results are described above; the builder
 source-to-fixture SHA-256 comparison remains an external generator check.
 The rerun used app checkout `bb5dffcb3e429ea3680db4e0cb9d2c199edb5436`;

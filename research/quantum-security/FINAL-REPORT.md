@@ -294,6 +294,13 @@ wrong-code controls, including one that retains each selected push in turn.
 The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
 `SIGHASH_ALL`. This is native evidence for the shared deletion behavior, not
 full-lock acceptance or a proof of arbitrary-witness refinement.
+The full disposable 9,923-byte lock now has a separate two-output,
+puzzle-relaxed Core check: the shared-scriptCode witness accepts, while ten
+one-key controls retaining one reached final signature push in scriptCode
+all reject. The first seven native cases remain byte-identical. This tests
+the actual generated final multisignature path, but the three puzzle
+`CHECKSIGVERIFY` sites are still replaced by `OP_2DROP` and arbitrary
+accepted witnesses are not covered.
 An isolated fixed-signature `SIGHASH_ALL` probe now records the complete
 source-shaped preimages and SHA256d digests for ten committed-field changes
 and two `scriptSig`-only controls. In all ten changed-preimage cases, pinned

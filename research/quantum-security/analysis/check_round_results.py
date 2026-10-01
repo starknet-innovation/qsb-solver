@@ -38,6 +38,15 @@ def main():
     import bitcoin_tx as bt
     import secp256k1 as ec
     from qsb_pipeline import parse_der
+    root = Path(__file__).resolve().parents[1]
+    pinned = json.loads((root / "evidence/source-inventory.json").read_text())["app"]
+    for name in ("worker/cpu/bitcoin_tx.py", "worker/cpu/secp256k1.py",
+                 "worker/cpu/qsb_pipeline.py"):
+        assert hashlib.sha256((args.app_root / name).read_bytes()).hexdigest() == pinned["files"][name]
+    prior = json.loads((root / "evidence/round-results.json").read_text())
+    assert args.image == prior["image"]
+    for name, expected in prior["native_files_sha256"].items():
+        assert hashlib.sha256((args.native_root / name).read_bytes()).hexdigest() == expected
     rng = random.Random("QSB security analysis: PUBLIC DISPOSABLE TEST MATERIAL")
     builder = bt.QSBScriptBuilder(150, 8, 1, 7, 2, hash_mode="sha256")
     original_random = bt.os.urandom
@@ -85,9 +94,11 @@ def main():
             sc = bt.find_and_delete(sc, builder.dummy_sigs[0][j])
         return recover(nonces[0], tx.sighash(1, sc, 1))
     disclosed_nonce = first_round_nonce_key()
-    def witness(bad_round=None, bad_preimage=None, reuse_round1_nonce=False):
+    def witness(bad_round=None, bad_preimage=None, reuse_round1_nonce=False,
+                wrong_final_scriptcode_key=None):
         w = bytearray()
         checks = []
+        wrong_control = None
         for ri in (1, 0):
             sc = bt.find_and_delete(lock, nonces[ri])
             dummies = [builder.dummy_sigs[ri][j] for j in subsets[ri]]
@@ -95,13 +106,47 @@ def main():
                 sc = bt.find_and_delete(sc, ds)
             z = tx.sighash(1, sc, 1)
             kn = disclosed_nonce if ri == 0 and reuse_round1_nonce else recover(nonces[ri], z)
-            pubs = [recover(ds, 1 << 248) for ds in dummies]
+            single_z = tx.sighash(1, sc, 3)
+            pubs = [recover(ds, single_z) for ds in dummies]
+            if ri == 1 and wrong_final_scriptcode_key is not None:
+                # Retain exactly one reached final signature push while
+                # removing the other nine. The correct shared scriptCode
+                # removes all ten before any key is checked.
+                wrong_sc = lock
+                if wrong_final_scriptcode_key != 9:
+                    wrong_sc = bt.find_and_delete(wrong_sc, nonces[ri])
+                for j, ds in enumerate(dummies):
+                    if j != wrong_final_scriptcode_key:
+                        wrong_sc = bt.find_and_delete(wrong_sc, ds)
+                assert wrong_sc != sc
+                if wrong_final_scriptcode_key == 9:
+                    wrong_z = tx.sighash(1, wrong_sc, 1)
+                    kn = recover(nonces[ri], wrong_z)
+                    wrong_key_verifies = ec.ecdsa_verify(ec.decompress_pubkey(kn), z,
+                                                         *parse_der(nonces[ri]))
+                else:
+                    j = wrong_final_scriptcode_key
+                    wrong_z = tx.sighash(1, wrong_sc, 3)
+                    pubs[j] = recover(dummies[j], wrong_z)
+                    wrong_key_verifies = ec.ecdsa_verify(
+                        ec.decompress_pubkey(pubs[j]), single_z,
+                        *parse_der(dummies[j]))
+                assert wrong_z != (z if wrong_final_scriptcode_key == 9 else single_z)
+                assert not wrong_key_verifies
+                wrong_control = {
+                    "retained_final_signature_slot": wrong_final_scriptcode_key,
+                    "shared_scriptcode_sha256": hashlib.sha256(sc).hexdigest(),
+                    "retained_scriptcode_sha256": hashlib.sha256(wrong_sc).hexdigest(),
+                    "correct_sighash_scalar_hex": f"{(z if wrong_final_scriptcode_key == 9 else single_z):064x}",
+                    "retained_sighash_scalar_hex": f"{wrong_z:064x}",
+                    "wrong_key_verifies_correct_message": wrong_key_verifies,
+                }
             if ri == bad_round:
                 # Well-formed EC key; the nonempty DER signature stays unchanged.
                 pubs[0] = ec.compress_pubkey(ec.G)
             r, s = parse_der(dummies[0])
             checks.append({"round": ri + 1, "first_dummy_verifies":
-                           ec.ecdsa_verify(ec.decompress_pubkey(pubs[0]), 1 << 248, r, s),
+                           ec.ecdsa_verify(ec.decompress_pubkey(pubs[0]), single_z, r, s),
                            "nonce_verifies": ec.ecdsa_verify(ec.decompress_pubkey(kn), z, *parse_der(nonces[ri]))})
             w += bt.push_data(ec.compress_pubkey(ec.G)) + bt.push_data(kn)
             for pub in reversed(pubs):
@@ -116,10 +161,12 @@ def main():
                 w += bt.push_number(iv)
         kn = recover(pin, tx.sighash(1, bt.find_and_delete(lock, pin), 1))
         w += bt.push_data(ec.compress_pubkey(ec.G)) + bt.push_data(kn)
-        return bytes(w), checks
+        return bytes(w), checks, wrong_control
     cases = []
-    def run_case(name, expected, bad_round=None, bad_preimage=None, reuse_round1_nonce=False):
-        tx.inputs[1].script_sig, checks = witness(bad_round, bad_preimage, reuse_round1_nonce)
+    def run_case(name, expected, bad_round=None, bad_preimage=None,
+                 reuse_round1_nonce=False, wrong_final_scriptcode_key=None):
+        tx.inputs[1].script_sig, checks, wrong_control = witness(
+            bad_round, bad_preimage, reuse_round1_nonce, wrong_final_scriptcode_key)
         # Helper prevout is OP_TRUE. No signing key or actual UTXO is used.
         payload = f"{tx.serialize().hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
         result = subprocess.run([
@@ -131,10 +178,13 @@ def main():
         accepted = result.returncode == 0 and result.stdout.strip() == "core-27.2-api2-all-inputs-valid"
         if result.returncode not in (0, 1):
             raise RuntimeError(f"native verifier unavailable: {result.returncode}: {result.stderr}")
-        cases.append({"name": name, "accepted": accepted, "expected": expected,
-                      "exit_code": result.returncode, "stdout": result.stdout.strip(),
-                      "independent_dummy_checks": checks,
-                      "synthetic_transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest()})
+        case = {"name": name, "accepted": accepted, "expected": expected,
+                "exit_code": result.returncode, "stdout": result.stdout.strip(),
+                "independent_dummy_checks": checks,
+                "synthetic_transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest()}
+        if wrong_control is not None:
+            case["wrong_final_control"] = wrong_control
+        cases.append(case)
         assert accepted == expected, cases[-1]
         return checks
     run_case("honest_relaxed", True)
@@ -148,8 +198,16 @@ def main():
     checks = run_case("changed_destination_reused_round1_nonce", True, reuse_round1_nonce=True)
     assert not next(c for c in checks if c["round"] == 1)["nonce_verifies"]
     assert next(c for c in checks if c["round"] == 2)["nonce_verifies"]
+    # With two outputs the signed input's SINGLE hash is in range. All ten
+    # final signatures now depend on the shared FindAndDelete scriptCode.
+    tx.add_output(bt.TxOut(1000, b"\x51"))
+    assert tx.sighash(1, lock, 3) != 1 << 248
+    run_case("two_output_shared_scriptcode", True)
+    for j in range(10):
+        run_case(f"two_output_retained_final_push_{j}", False,
+                 wrong_final_scriptcode_key=j)
     report = {"scope": "MODIFIED lock; three puzzle CHECKSIGVERIFYs replaced with OP_2DROP; not a real-lock forgery",
-              "source_revision": subprocess.check_output(["git", "-C", str(args.app_root), "rev-parse", "HEAD"], text=True).strip(),
+              "source_revision": pinned["revision"],
               "exact_lock_sha256": hashlib.sha256(exact_lock).hexdigest(),
               "modified_lock_sha256": hashlib.sha256(lock).hexdigest(),
               "script_bytes": len(exact_lock), "runtime_ops": builder.count_opcodes_runtime(exact_lock)[0],
