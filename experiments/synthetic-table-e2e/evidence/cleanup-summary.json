@@ -1,0 +1,10 @@
+{
+  "verifiedAt": "2026-10-01T05:12:51.343394+00:00",
+  "instanceState": "terminated",
+  "volumesRemaining": 0,
+  "securityGroupsRemaining": 0,
+  "schedulesRemaining": 0,
+  "functionsRemaining": 0,
+  "rolesRemaining": 0,
+  "instanceProfilesRemaining": 0
+}
