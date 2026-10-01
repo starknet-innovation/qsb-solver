@@ -32,6 +32,16 @@ truthy successful full byte-model run reaches those addresses, and that an
 externally supplied successful ten-pair scan verifies each source-addressed
 pair. This does not prove that Core's real ECDSA checker produces that scan.
 
+`QSB/CoreMultisigEval.lean` models the final source loop's DER gate,
+nonempty signature requirement, key-skip behavior, shared ten-signature
+FindAndDelete scriptCode, and NULLDUMMY check. Lean proves that a successful
+source-shaped evaluation reaches ten DER-valid signature/key pairs against
+that one scriptCode. Composing it with any successful full byte-model run from
+an arbitrary initial stack yields seven HORS opening matches, two distinct
+bonus positions, and the selected scriptCode for those positions. Its
+successful-evaluation premise remains separate from actual Core acceptance;
+the model does not implement Core's transaction checker or secp256k1.
+
 Core's [`CheckSignatureEncoding`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L200-L228) allows the empty signature as an
 invalid-check placeholder. Every nonempty signature must satisfy strict DER
 under `DERSIG`. The [transaction ECDSA checker](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1648-L1667) returns false for an empty signature. Thus a successful pair check is both nonempty and DER-valid; the two facts are separate premises in
@@ -151,8 +161,13 @@ scriptCode after all ten deletions. The transaction has two outputs, making
 the nine `SIGHASH_SINGLE` checks in range. Core accepts the predicted shared
 code case, rejects separate wrong-key controls for a SINGLE and the ALL
 signature, and rejects ten controls whose keys were recovered after retaining
-one selected push. This is 13 native outcomes on a 1,560-byte isolated lock;
-it does not execute the full 9,923-byte QSB lock or prove Core/Lean equivalence.
+one selected push. The 1,560-byte base lock has 13 outcomes. Two further
+`CHECKMULTISIG; DROP; TRUE` cases accept an empty first-scanned
+signature after a false result and reject a malformed nonempty one at the DER
+gate as predicted by the source. The adapter reports only acceptance, so the
+specific error code is inferred from the pinned source. The 15 outcomes do
+not execute the full 9,923-byte QSB lock or prove
+Core/Lean equivalence.
 
 `analysis/check_literal_findanddelete.py` regenerates the exact disposable
 lock, checks its script SHA-256 against `ByteLayout` evidence, and inventories

@@ -141,7 +141,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 723 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 731 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -323,8 +323,20 @@ fixture signature pushes in a nonexecuted branch. Core accepts keys recovered
 against the shared scriptCode after ten selected deletions, and rejects 12
 wrong-code controls, including one that retains each selected push in turn.
 The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
-`SIGHASH_ALL`. This is native evidence for the shared deletion behavior, not
+`SIGHASH_ALL`. A `CHECKMULTISIG; DROP; TRUE` variant accepts an empty
+first-scanned signature but rejects a malformed nonempty one, consistent with
+the source encoding gate. The adapter does not expose the error code. These
+15 cases are native evidence for selected
+source behavior, not
 full-lock acceptance or a proof of arbitrary-witness refinement.
+The new source-shaped final evaluator checks the reached ten-count cells,
+strict-DER gate, nonempty signatures, key-skip scan, shared ten-signature
+FindAndDelete scriptCode, and NULLDUMMY. Lean now composes its successful
+result with an arbitrary-stack full byte-model run to obtain seven HORS
+opening matches, two distinct bonus positions, the selected scriptCode, and
+ten DER-valid successful pairs at Core-shaped stack addresses. The evaluator's
+success is an explicit premise; actual Core acceptance has not yet been
+refined to it, and the checker remains an abstract ECDSA predicate.
 The full disposable 9,923-byte lock now has a separate two-output,
 puzzle-relaxed Core check: the shared-scriptCode witness accepts, while ten
 one-key controls retaining one reached final signature push in scriptCode

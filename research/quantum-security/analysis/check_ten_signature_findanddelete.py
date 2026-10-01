@@ -114,14 +114,18 @@ def main() -> None:
     assert wrong_all != keys[-1]
     assert wrong_single != keys[0]
 
-    def check(label: str, key_list: list[bytes]) -> dict:
-        script_sig = (b"\x00" + b"".join(bt.push_data(sig) for sig in chosen) +
+    def check(label: str, key_list: list[bytes],
+              sig_list: list[bytes] | None = None,
+              lock_bytes: bytes | None = None) -> dict:
+        sig_list = chosen if sig_list is None else sig_list
+        lock_bytes = lock if lock_bytes is None else lock_bytes
+        script_sig = (b"\x00" + b"".join(bt.push_data(sig) for sig in sig_list) +
                       bt.push_number(10) +
                       b"".join(bt.push_data(key) for key in key_list) +
                       bt.push_number(10))
         tx.inputs[1].script_sig = script_sig
         raw = tx.serialize()
-        payload = f"{raw.hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
+        payload = f"{raw.hex()}\n2\n1000\n51\n100000\n{lock_bytes.hex()}\n"
         run = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
             "--cap-drop=ALL", "--security-opt=no-new-privileges",
@@ -133,6 +137,7 @@ def main() -> None:
         accepted = (run.returncode == 0 and
                     run.stdout.strip() == "core-27.2-api2-all-inputs-valid")
         return {"case": label, "accepted": accepted,
+                "lock_sha256": hashlib.sha256(lock_bytes).hexdigest(),
                 "transaction_sha256": hashlib.sha256(raw).hexdigest()}
 
     wrong_all_keys = keys.copy()
@@ -153,8 +158,22 @@ def main() -> None:
         cases.append(check(f"retain_selected_push_{omitted}", missing_one_keys))
     assert [case["accepted"] for case in cases] == [True] + [False] * 12, cases
 
+    # DROP; TRUE distinguishes a CHECKMULTISIG false result from an encoding
+    # abort. The last pushed signature is the first one scanned by Core.
+    lock_drop_true = lock + b"\x75\x51"
+    empty_first = chosen.copy()
+    empty_first[-1] = b""
+    malformed_first = chosen.copy()
+    malformed_first[-1] = b"\x31" + malformed_first[-1][1:]
+    cases.extend((
+        check("empty_first_drop_true", keys, empty_first, lock_drop_true),
+        check("malformed_first_drop_true", keys, malformed_first,
+              lock_drop_true),
+    ))
+    assert [case["accepted"] for case in cases[-2:]] == [True, False], cases
+
     report = {
-        "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, not full QSB acceptance",
+        "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, plus two DROP; TRUE encoding-gate cases; not full QSB acceptance",
         "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
         "source_revision": subprocess.check_output(
             ["git", "-C", str(app), "rev-parse", "HEAD"], text=True).strip(),
@@ -167,6 +186,7 @@ def main() -> None:
         "selected_dummy_ids": chosen_ids,
         "lock_bytes": len(lock),
         "lock_sha256": hashlib.sha256(lock).hexdigest(),
+        "parser_gate_lock_sha256": hashlib.sha256(lock_drop_true).hexdigest(),
         "shared_script_code_sha256": hashlib.sha256(code).hexdigest(),
         "both_sighash_types_in_range": True,
         "cases": cases,

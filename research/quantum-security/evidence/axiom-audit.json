@@ -1,5 +1,5 @@
 {
-  "theorem_count": 723,
+  "theorem_count": 731,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -459,6 +459,39 @@
       "propext"
     ],
     "QSB.CoreGetOp.simple_chunk_width": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.checkedPair_der": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.deletedScript_selected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.finalTenEval_success_layout": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.finalTenEval_success_match": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.finalTenEval_success_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.nonemptyVerify_sound": [
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.scan_success_match": [
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.successful_byte_run_source_check": [
       "Classical.choice",
       "Quot.sound",
       "propext"

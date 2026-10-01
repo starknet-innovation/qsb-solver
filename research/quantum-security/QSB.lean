@@ -53,6 +53,7 @@ import QSB.FindAndDelete
 import QSB.CoreGetOp
 import QSB.CoreFindAndDelete
 import QSB.CoreMultisigStack
+import QSB.CoreMultisigEval
 import QSB.PinningScriptCode
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
@@ -737,6 +738,14 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigStack.matched_source_pair
 #print axioms QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout
 #print axioms QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs
+#print axioms QSB.CoreMultisigEval.scan_success_match
+#print axioms QSB.CoreMultisigEval.nonemptyVerify_sound
+#print axioms QSB.CoreMultisigEval.finalTenEval_success_layout
+#print axioms QSB.CoreMultisigEval.finalTenEval_success_match
+#print axioms QSB.CoreMultisigEval.checkedPair_der
+#print axioms QSB.CoreMultisigEval.finalTenEval_success_pairs
+#print axioms QSB.CoreMultisigEval.deletedScript_selected
+#print axioms QSB.CoreMultisigEval.successful_byte_run_source_check
 #print axioms QSB.CoreDEREncoding.bit80_eq_ge
 #print axioms QSB.CoreDEREncoding.failFast_eq_all
 #print axioms QSB.CoreDEREncoding.valid_eq_model
