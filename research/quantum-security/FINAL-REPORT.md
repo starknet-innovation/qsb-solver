@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,155 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,158 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -839,6 +839,12 @@ commitment, the first nine actual source-addressed final signatures are
 generated `0x03` dummies. The transaction theorem then proves that whenever
 the selected input exists and its index is at least the output count, each of
 their nine external ECDSA calls receives the raw `01 00…00` SINGLE-bug digest.
+The complementary checked branch covers an input inside the output list:
+each of those calls instead receives `H(H(SINGLE preimage))` using the same
+reached final scriptCode. Thus the source result classifies both transaction
+layouts without relying on the app's two-input policy. Lean also proves all
+nine dummy pairs use one common digest in either branch; their messages cannot
+be treated as nine independent hash targets.
 This applies to the three-input/two-output layout observed in the pinned Core
 experiment, but remains a source-model implication. It does not remove the
 fixed nonce's separate ALL commitment or prove that a real arbitrary witness

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1155,
+  "theorem_count": 1158,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1732,7 +1732,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicJointTransaction.search_good_setup_nine_common_single_digest": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicJointTransaction.search_good_setup_nine_single_bug_calls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_good_setup_nine_single_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_good_setup_nine_single_in_range_calls": [
       "Classical.choice",
       "Quot.sound",
       "propext"

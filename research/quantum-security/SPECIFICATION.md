@@ -418,11 +418,14 @@ functions and their adaptive disclosures.
 On a good setup with no DER-shaped second-round commitment,
 `QSB/DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures`
 identifies the first nine *reached source-addressed signature cells* as
-generated `0x03` dummies. If the selected input index is past the final
-output, `QSB/DynamicJointTransaction.search_good_setup_nine_single_bug_calls`
-forces their nine external ECDSA calls to use the constant raw SINGLE-bug
-digest. This is conditional on the same returned source certificate and does
-not assign any probability to the event.
+generated `0x03` dummies.
+`QSB/DynamicJointTransaction.search_good_setup_nine_single_cases` covers every
+selected input/output-count relation: in-range SINGLE calls use
+`H(H(sourcePreimage))` with one reached deleted scriptCode, while out-of-range
+calls use the constant raw SINGLE-bug digest. The two branch corollaries make
+each case explicit. A further theorem proves that all nine calls share one
+digest in either branch. This is conditional on the same returned source
+certificate and does not assign any probability to the event.
 `QSB/JointOracleReduction.lean` places sampled `H` and `R` in each measured
 world and uses one unsplit event bound. It does not yet specify a quantum
 algorithm or count coherent oracle calls; a query theorem must target that

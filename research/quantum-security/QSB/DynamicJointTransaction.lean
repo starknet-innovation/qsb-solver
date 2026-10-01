@@ -256,6 +256,171 @@ theorem search_reached_final_joint_calls
         by simpa using keyAt, der, last, keyValid, digestEq, verified,
         digestCases.1, digestCases.2⟩
 
+/-- Complete transaction-layout split for the first nine reached final
+signature calls on a good setup. Every one is a generated SINGLE dummy; an
+in-range selected output gives `H(H(single preimage))`, while an out-of-range
+selection gives Core's raw constant digest. Both branches use the same
+reached final FindAndDelete scriptCode. This is a source-certificate theorem,
+not a compiled-Core acceptance implication. -/
+theorem search_good_setup_nine_single_cases
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false) :
+    ∃ beforeCheck : CoreOpcodeStep.State,
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      ∀ j : Fin 9, ∃ (id : Fin 150) (key : Bytes),
+        CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+          some (FinalSignedLoop.generatedDummyAt id) ∧
+        CoreMultisigStack.keyAt beforeCheck.stack j.val = some key ∧
+        CoreDEREncoding.valid (FinalSignedLoop.generatedDummyAt id) = true ∧
+        validKey key = true ∧
+        selected < tx.inputs.length ∧
+        ((selected < tx.outputs.length ∧
+          ∃ preimage,
+            LegacySighashWire.sourcePreimage tx selected
+              (CoreMultisigSourceScan.deletedScript
+                (DynamicCheckedCertificate.wire lock)
+                beforeCheck.stack.reverse 10 10) 3 = some preimage ∧
+            ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
+              (functions.H (functions.H preimage)) = true) ∨
+         (tx.outputs.length ≤ selected ∧
+          ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
+            LegacySighashWire.singleBugDigest = true)) := by
+  obtain ⟨beforeSlots, slotsReached, slots⟩ :=
+    DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found secondWidth noCommitmentDER
+  obtain ⟨beforeCalls, callsReached, calls⟩ :=
+    search_reached_final_joint_calls functions tx selected lock stack
+      validKey ecdsa firstRound final found
+  have same : beforeCalls = beforeSlots :=
+    Option.some.inj (callsReached.symm.trans slotsReached)
+  subst beforeCalls
+  refine ⟨beforeSlots, slotsReached, ?_⟩
+  intro j
+  obtain ⟨id, slot⟩ := slots j
+  obtain ⟨sig, key, hashType, digest, sigAt, keyAt, der, last,
+    keyValid, digestEq, verified, inputValid, digestCases⟩ :=
+    calls ⟨j.val, by omega⟩
+  have sigEq : sig = FinalSignedLoop.generatedDummyAt id :=
+    Option.some.inj (sigAt.symm.trans slot)
+  subst sig
+  have flag : hashType = 0x03 :=
+    Option.some.inj (last.symm.trans
+      (ScriptCodeSelection.generatedDummyAt_sighash_single id))
+  subst hashType
+  refine ⟨id, key, slot, keyAt, der, keyValid, inputValid, ?_⟩
+  by_cases inRange : selected < tx.outputs.length
+  · rcases digestCases with ⟨preimage, preimageEq, digestValue⟩ |
+        ⟨_missing, _single, outputMissing, _constant⟩
+    · refine Or.inl ⟨inRange, preimage, by simpa using preimageEq, ?_⟩
+      simpa [← digestValue] using verified
+    · omega
+  · have outputMissing : tx.outputs.length ≤ selected :=
+      Nat.le_of_not_gt inRange
+    have digestEq' : JointSourceChecks.legacyDigest functions tx selected
+        (CoreMultisigSourceScan.deletedScript
+          (DynamicCheckedCertificate.wire lock)
+          beforeSlots.stack.reverse 10 10) 3 = some digest := by
+      simpa using digestEq
+    rw [JointSourceChecks.legacyDigest_single_bug functions tx selected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicCheckedCertificate.wire lock)
+        beforeSlots.stack.reverse 10 10) 3 inputValid (by decide)
+      outputMissing] at digestEq'
+    have sameDigest : LegacySighashWire.singleBugDigest = digest :=
+      Option.some.inj digestEq'
+    exact Or.inr ⟨outputMissing, by simpa [sameDigest] using verified⟩
+
+/-- The nine generated dummy signatures are checked against one common
+transaction digest, not nine independently sampled messages. This holds for
+both in-range SINGLE and the out-of-range bug branch because the reached
+scriptCode, selected input, and `0x03` flag are shared by all nine calls. -/
+theorem search_good_setup_nine_common_single_digest
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false) :
+    ∃ (beforeCheck : CoreOpcodeStep.State) (digest : Bytes),
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      JointSourceChecks.legacyDigest functions tx selected
+        (CoreMultisigSourceScan.deletedScript
+          (DynamicCheckedCertificate.wire lock)
+          beforeCheck.stack.reverse 10 10) 3 = some digest ∧
+      ∀ j : Fin 9, ∃ (id : Fin 150) (key : Bytes),
+        CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+          some (FinalSignedLoop.generatedDummyAt id) ∧
+        CoreMultisigStack.keyAt beforeCheck.stack j.val = some key ∧
+        CoreDEREncoding.valid (FinalSignedLoop.generatedDummyAt id) = true ∧
+        validKey key = true ∧
+        ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
+          digest = true := by
+  obtain ⟨beforeCheck, reached, cases⟩ :=
+    search_good_setup_nine_single_cases functions tx selected lock stack
+      validKey ecdsa firstRound final found secondWidth noCommitmentDER
+  obtain ⟨_id0, _key0, _slot0, _keyAt0, _der0, _keyValid0,
+    inputValid, _verdict0⟩ := cases ⟨0, by omega⟩
+  let code := CoreMultisigSourceScan.deletedScript
+    (DynamicCheckedCertificate.wire lock) beforeCheck.stack.reverse 10 10
+  obtain ⟨digest, digestEq⟩ :
+      ∃ digest, JointSourceChecks.legacyDigest functions tx selected code 3 =
+        some digest := by
+    unfold JointSourceChecks.legacyDigest
+    simp only [show ¬selected ≥ tx.inputs.length from
+      Nat.not_le.mpr inputValid, ↓reduceIte]
+    cases preimageEq : LegacySighashWire.sourcePreimage tx selected code 3 with
+    | none => exact ⟨LegacySighashWire.singleBugDigest, by simp⟩
+    | some preimage =>
+        exact ⟨functions.H (functions.H preimage), by simp⟩
+  refine ⟨beforeCheck, digest, reached, digestEq, ?_⟩
+  intro j
+  obtain ⟨id, key, slot, keyAt, der, keyValid, _inputValid,
+    verdict⟩ := cases j
+  refine ⟨id, key, slot, keyAt, der, keyValid, ?_⟩
+  rcases verdict with ⟨_inRange, preimage, preimageEq, verified⟩ |
+      ⟨outputMissing, verified⟩
+  · have callDigest : JointSourceChecks.legacyDigest functions tx selected
+        code 3 = some (functions.H (functions.H preimage)) := by
+      have preimageAtCode :
+          LegacySighashWire.sourcePreimage tx selected code 3 =
+            some preimage := by simpa [code] using preimageEq
+      simp [JointSourceChecks.legacyDigest,
+        Nat.not_le.mpr inputValid, preimageAtCode]
+    have same : digest = functions.H (functions.H preimage) :=
+      Option.some.inj (digestEq.symm.trans callDigest)
+    simpa [same] using verified
+  · have callDigest := JointSourceChecks.legacyDigest_single_bug
+      functions tx selected code 3 inputValid (by decide) outputMissing
+    have same : digest = LegacySighashWire.singleBugDigest :=
+      Option.some.inj (digestEq.symm.trans callDigest)
+    simpa [same] using verified
+
 /-- Under the explicit no-DER-commitment setup condition, the first nine
 reached final multisignature pairs use generated `SIGHASH_SINGLE` dummy
 signatures. If the selected input is beyond the final output, all nine
@@ -291,44 +456,67 @@ theorem search_good_setup_nine_single_bug_calls
         selected < tx.inputs.length ∧
         ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
           LegacySighashWire.singleBugDigest = true := by
-  obtain ⟨beforeSlots, slotsReached, slots⟩ :=
-    DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures
-      (JointSourceChecks.hashes functions) lock stack validKey
-      (JointSourceChecks.checker functions tx selected ecdsa)
-      firstRound final found secondWidth noCommitmentDER
-  obtain ⟨beforeCalls, callsReached, calls⟩ :=
-    search_reached_final_joint_calls functions tx selected lock stack
-      validKey ecdsa firstRound final found
-  have same : beforeCalls = beforeSlots :=
-    Option.some.inj (callsReached.symm.trans slotsReached)
-  subst beforeCalls
-  refine ⟨beforeSlots, slotsReached, ?_⟩
+  obtain ⟨beforeCheck, reached, cases⟩ :=
+    search_good_setup_nine_single_cases functions tx selected lock stack
+      validKey ecdsa firstRound final found secondWidth noCommitmentDER
+  refine ⟨beforeCheck, reached, ?_⟩
   intro j
-  obtain ⟨id, slot⟩ := slots j
-  obtain ⟨sig, key, hashType, digest, sigAt, keyAt, der, last,
-    keyValid, digestEq, verified, inputValid, _digestCases⟩ :=
-    calls ⟨j.val, by omega⟩
-  have sigEq : sig = FinalSignedLoop.generatedDummyAt id :=
-    Option.some.inj (sigAt.symm.trans slot)
-  subst sig
-  have flag : hashType = 0x03 :=
-    Option.some.inj (last.symm.trans
-      (ScriptCodeSelection.generatedDummyAt_sighash_single id))
-  subst hashType
-  have digestEq' : JointSourceChecks.legacyDigest functions tx selected
-      (CoreMultisigSourceScan.deletedScript
-        (DynamicCheckedCertificate.wire lock)
-        beforeSlots.stack.reverse 10 10) 3 = some digest := by
-    simpa using digestEq
-  rw [JointSourceChecks.legacyDigest_single_bug functions tx selected
-    (CoreMultisigSourceScan.deletedScript
-      (DynamicCheckedCertificate.wire lock)
-      beforeSlots.stack.reverse 10 10) 3 inputValid (by decide)
-    outputMissing] at digestEq'
-  have sameDigest : LegacySighashWire.singleBugDigest = digest :=
-    Option.some.inj digestEq'
-  rw [← sameDigest] at verified
-  exact ⟨id, key, slot, keyAt, der, keyValid, inputValid, verified⟩
+  obtain ⟨id, key, slot, keyAt, der, keyValid, inputValid,
+    verdict⟩ := cases j
+  rcases verdict with ⟨inRange, _⟩ | ⟨_, verified⟩
+  · omega
+  · exact ⟨id, key, slot, keyAt, der, keyValid, inputValid,
+      verified⟩
+
+/-- In the complementary layout, each reached dummy checks SHA256d of an
+in-range SINGLE preimage against the same deleted scriptCode. That preimage
+contains the selected output, while the fixed nonce's ALL call remains the
+separate whole-transaction binding. -/
+theorem search_good_setup_nine_single_in_range_calls
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false)
+    (outputInRange : selected < tx.outputs.length) :
+    ∃ beforeCheck : CoreOpcodeStep.State,
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      ∀ j : Fin 9, ∃ (id : Fin 150) (key preimage : Bytes),
+        CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+          some (FinalSignedLoop.generatedDummyAt id) ∧
+        CoreMultisigStack.keyAt beforeCheck.stack j.val = some key ∧
+        CoreDEREncoding.valid (FinalSignedLoop.generatedDummyAt id) = true ∧
+        validKey key = true ∧
+        selected < tx.inputs.length ∧
+        LegacySighashWire.sourcePreimage tx selected
+          (CoreMultisigSourceScan.deletedScript
+            (DynamicCheckedCertificate.wire lock)
+            beforeCheck.stack.reverse 10 10) 3 = some preimage ∧
+        ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
+          (functions.H (functions.H preimage)) = true := by
+  obtain ⟨beforeCheck, reached, cases⟩ :=
+    search_good_setup_nine_single_cases functions tx selected lock stack
+      validKey ecdsa firstRound final found secondWidth noCommitmentDER
+  refine ⟨beforeCheck, reached, ?_⟩
+  intro j
+  obtain ⟨id, key, slot, keyAt, der, keyValid, inputValid,
+    verdict⟩ := cases j
+  rcases verdict with ⟨_, preimage, preimageEq, verified⟩ |
+      ⟨outputMissing, _⟩
+  · exact ⟨id, key, preimage, slot, keyAt, der, keyValid,
+      inputValid, preimageEq, verified⟩
+  · omega
 
 /-- The tenth reached final CHECKMULTISIG pair checks the lock-pushed nonce
 under the selected transaction's exact ALL preimage whenever that nonce ends

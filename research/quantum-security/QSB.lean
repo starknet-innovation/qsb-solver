@@ -1028,7 +1028,10 @@ import QSB.Reduction
 #print axioms QSB.DynamicJointTransaction.search_reached_pin_joint_call
 #print axioms QSB.DynamicJointTransaction.search_fixed_pin_all_call
 #print axioms QSB.DynamicJointTransaction.search_reached_final_joint_calls
+#print axioms QSB.DynamicJointTransaction.search_good_setup_nine_single_cases
+#print axioms QSB.DynamicJointTransaction.search_good_setup_nine_common_single_digest
 #print axioms QSB.DynamicJointTransaction.search_good_setup_nine_single_bug_calls
+#print axioms QSB.DynamicJointTransaction.search_good_setup_nine_single_in_range_calls
 #print axioms QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call
 #print axioms QSB.DynamicJointTransaction.search_final_nonce_joint_hit
 #print axioms QSB.DynamicJointTransaction.search_two_key_joint_hit
