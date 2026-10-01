@@ -205,6 +205,11 @@ The generic prefix-codec converse proofs now show that **every successful
 Lean parse** of a raw legacy or SegWit transaction re-encodes to exactly its
 returned fields and any trailing bytes. This does not establish that all
 Core-accepted raw transactions are parsed by Lean.
+`QSB/TransactionEnvelopeWire.lean` adds the initial-input-count branch and a
+strict combined parser for nonempty-input spends. A successful modeled raw
+legacy digest yields one canonical envelope and the shared-H SHA256d preimage
+or SINGLE-bug case. Compiled-Core parser and checker correspondence remain
+open.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that

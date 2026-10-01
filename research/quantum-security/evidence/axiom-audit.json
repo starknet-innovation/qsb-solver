@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1186,
+  "theorem_count": 1195,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4422,6 +4422,51 @@
       "propext"
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decodeStrict_legacy_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decodeStrict_nonempty_inputs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decodeStrict_segwit_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decodeStrict_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decode_legacy_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decode_nonempty_inputs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decode_segwit_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.decode_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TransactionEnvelopeWire.legacyDigestOfRaw_some_cases": [
       "Classical.choice",
       "Quot.sound",
       "propext"

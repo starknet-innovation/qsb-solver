@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,186 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,195 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -1053,6 +1053,20 @@ CompactSize, fixed-width fields, ordered inputs and outputs, and witness
 stack parsers. It does not show that every Core-accepted byte string is parsed
 by either Lean decoder, that the parsed fields satisfy transaction-consensus
 validity, or that Core's actual signature checker matches the source model.
+`QSB/TransactionEnvelopeWire.lean` now dispatches a complete raw transaction
+on the first parsed input-vector count. For nonempty valid source fields, it
+round-trips both the legacy form and the `00 01` SegWit form; every successful
+strict parse has nonempty inputs and exactly re-encodes to its raw bytes. A
+successful *modeled* legacy digest from those raw bytes is then either
+`H(H(preimage))` under the same supplied `H` or the historical out-of-range
+SINGLE constant. This is the source-model transaction-byte entry point for
+the later joint event. Core v27.2's
+[transaction reader](https://github.com/bitcoin/bitcoin/blob/v27.2/src/primitives/transaction.h)
+uses the empty initial input vector as the witness-marker branch, while
+[CheckTransaction](https://github.com/bitcoin/bitcoin/blob/v27.2/src/consensus/tx_check.cpp)
+rejects an empty input vector. These source-code observations do not prove
+compiled-Core parser equivalence, contextual transaction validity, or that
+the QSB lock's actual checker calls use this modeled digest.
 `JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and
 `checker_single_bug_ignores_outputs` prove the corresponding source-shaped
 invariance for any output replacement that leaves the selected input past
