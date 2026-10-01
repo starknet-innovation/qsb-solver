@@ -53,11 +53,10 @@ defined for the sum and minimum of any two successfully parsed operands;
 this removes a model-only failure branch from `OP_ADD` and `OP_MIN`.
 `QSB/CoreSerialize.lean` models Core's repeated low-byte/divide magnitude
 loop, proves its decoded value and fuel stability below the corresponding
-power of 256, and checks byte equality with the existing Lean serializer for
-every signed integer from −1023 to 1023. That interval includes the small
-generated arithmetic offsets, but an all-values serializer equivalence and
-the premise that every successful Core trace stays in the checked interval
-remain unproved.
+power of 256, and proves equality with the byte model's source-shaped
+serializer for every integer. The previous finite check from −1023 to 1023
+remains as a round-trip regression. Equality with compiled C++ and the full
+interpreter trace remain unproved.
 `QSB/CoreRoll.lean` proves that the source-shaped bottom-first `OP_ROLL`
 select/erase/append operation, including raw-index parsing, is the reverse
 of the top-first `ByteMachine.step .roll` stack result when its opcode budget

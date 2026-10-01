@@ -527,8 +527,11 @@ same modeled execution. It still lacks Core verifier/sighash equivalence,
 dynamic-setup parameterization, and a joint quantum hash bound.
 `QSB/CoreSourceExtraction.lean` lifts this composition to a truthy full
 source-shaped structural run. Its executable `necessarySignatureChecks`
-examines the reached source stacks at the fixed pin check, both hash-puzzle
-checks, the first-round multisignature, and the enforcing final multisignature.
+examines the reached source stacks at all six signature opcodes: the fixed pin,
+the early, first-round, and late SHA256-derived puzzle checks, and both
+multisignatures. An earlier version omitted the first-round
+`CHECKSIGVERIFY` at instruction 423, leaving its supplied `true` unchecked;
+`necessary_checks_first_puzzle` now exposes that source-shaped checker result.
 The generic first-round scanner reads actual count and pair slots and deletes
 all reached signatures before matching. It must return a Boolean equal to
 the structural run's supplied outcome; a false result is permitted, while a
@@ -539,6 +542,13 @@ scriptCodes. The earlier multisignature may still return false. This is not
 compiled Core acceptance: deriving the source checker outcomes from the
 compiled interpreter, exact transaction sighashes, ECDSA, and the
 source-to-Core relation remain external.
+`QSB/CoreCheckedCertificate.lean` searches the two possible first-round
+multisignature outcomes and verifies the full reached source-model certificate
+before returning a result. Lean proves this finite search sound and complete
+relative to those checked source-model candidates, then derives the fixed
+`SIGHASH_ALL` obligations from a returned certificate. Hash functions, key
+parsing, and ECDSA remain explicit inputs; this search is not a compiled-Core
+acceptance proof or a quantum query bound.
 The first version of this generic scanner reused the final-round
 `directPushPattern`, which only serializes signatures shorter than 76 bytes.
 That was unsound for arbitrary first-round witnesses: Core constructs

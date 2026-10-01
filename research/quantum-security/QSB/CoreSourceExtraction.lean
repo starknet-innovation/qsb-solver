@@ -42,16 +42,19 @@ def firstRoundSignatureCheck (hashes : Hashes)
       | some actual, some supplied => actual == supplied
       | _, _ => false
 
-/-- The other four necessary reached signature-site conditions: fixed pin,
-early and late hash puzzles, and enforcing final multisignature. -/
+/-- The other five necessary reached signature-site conditions: fixed pin,
+early, first-round, and late hash puzzles, plus enforcing final multisignature.
+The reached CHECKSIGVERIFY at instruction 423 is checked here; the structural
+interpreter's supplied `true` is not evidence of ECDSA success. -/
 def otherSignatureChecks (hashes : Hashes)
     (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA) : Bool :=
   match CoreStructuralRun.run hashes (ByteLayout.program.take 2) initial,
       CoreStructuralRun.run hashes (ByteLayout.program.take 5) initial,
+      CoreStructuralRun.run hashes (ByteLayout.program.take 423) initial,
       CoreStructuralRun.run hashes (ByteLayout.program.take 856) initial,
       CoreStructuralRun.run hashes (ByteLayout.program.take 879) initial with
-  | some pin, some early, some late, some final =>
+  | some pin, some early, some firstPuzzle, some late, some final =>
       decide (
         CoreChecksigEval.evalBaseVerifyAll 880
           PinPuzzleScriptCode.literalScript
@@ -65,13 +68,18 @@ def otherSignatureChecks (hashes : Hashes)
           validKey verify = some true ∧
         CoreChecksigEval.evalBaseVerifyAll 880
           PinPuzzleScriptCode.literalScript
+          (firstPuzzle.stack.reverse[1]?.getD [])
+          (firstPuzzle.stack.reverse[0]?.getD [])
+          validKey verify = some true ∧
+        CoreChecksigEval.evalBaseVerifyAll 880
+          PinPuzzleScriptCode.literalScript
           (late.stack.reverse[1]?.getD [])
           (late.stack.reverse[0]?.getD [])
           validKey verify = some true ∧
         CoreMultisigEval.finalTenEval EncodedLayout.chunks.flatten
           (CoreFinalChecksigEval.checker validKey verify)
           final.stack.reverse = some true)
-  | _, _, _, _ => false
+  | _, _, _, _, _ => false
 
 /-- Executable necessary signature-site conditions for a source-shaped run.
 The first-round scan is checked even when false; an attempted malformed
@@ -120,6 +128,81 @@ theorem necessary_checks_first_round_scan (hashes : Hashes)
                 simpa [reached, scanned, supplied] using firstCheck
               subst result
               exact ⟨first, actual, rfl, scanned, supplied⟩
+
+/-- The reached first-round puzzle CHECKSIGVERIFY is an actual source-shaped
+checker obligation, in addition to the four other necessary checks. The
+structural run alone would only consume a supplied `true` at this site. -/
+theorem necessary_checks_first_puzzle (hashes : Hashes)
+    (initial : CoreOpcodeStep.State) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (checks : necessarySignatureChecks hashes initial validKey verify = true) :
+    ∃ beforePuzzle,
+      CoreStructuralRun.run hashes (ByteLayout.program.take 423) initial =
+        some beforePuzzle ∧
+      CoreChecksigEval.evalBaseVerifyAll 880
+        PinPuzzleScriptCode.literalScript
+        (beforePuzzle.stack.reverse[1]?.getD [])
+        (beforePuzzle.stack.reverse[0]?.getD [])
+        validKey verify = some true := by
+  have other : otherSignatureChecks hashes initial validKey verify = true := by
+    have both : otherSignatureChecks hashes initial validKey verify = true ∧
+        firstRoundSignatureCheck hashes initial validKey verify = true := by
+      simpa only [necessarySignatureChecks,
+        Bool.and_eq_true_eq_eq_true_and_eq_true] using checks
+    exact both.1
+  cases hPin : CoreStructuralRun.run hashes
+      (ByteLayout.program.take 2) initial with
+  | none => simp [otherSignatureChecks, hPin] at other
+  | some pin =>
+      cases hEarly : CoreStructuralRun.run hashes
+          (ByteLayout.program.take 5) initial with
+      | none => simp [otherSignatureChecks, hPin, hEarly] at other
+      | some early =>
+          cases hFirst : CoreStructuralRun.run hashes
+              (ByteLayout.program.take 423) initial with
+          | none =>
+              simp [otherSignatureChecks, hPin, hEarly, hFirst] at other
+          | some beforePuzzle =>
+              cases hLate : CoreStructuralRun.run hashes
+                  (ByteLayout.program.take 856) initial with
+              | none =>
+                  simp [otherSignatureChecks, hPin, hEarly,
+                    hFirst, hLate] at other
+              | some late =>
+                  cases hFinal : CoreStructuralRun.run hashes
+                      (ByteLayout.program.take 879) initial with
+                  | none =>
+                      simp [otherSignatureChecks, hPin, hEarly,
+                        hFirst, hLate, hFinal] at other
+                  | some beforeFinal =>
+                      have facts :
+                          CoreChecksigEval.evalBaseVerifyAll 880
+                            PinPuzzleScriptCode.literalScript
+                            (pin.stack.reverse[1]?.getD [])
+                            (pin.stack.reverse[0]?.getD [])
+                            validKey verify = some true ∧
+                          CoreChecksigEval.evalBaseVerifyAll 880
+                            PinPuzzleScriptCode.literalScript
+                            (early.stack.reverse[1]?.getD [])
+                            (early.stack.reverse[0]?.getD [])
+                            validKey verify = some true ∧
+                          CoreChecksigEval.evalBaseVerifyAll 880
+                            PinPuzzleScriptCode.literalScript
+                            (beforePuzzle.stack.reverse[1]?.getD [])
+                            (beforePuzzle.stack.reverse[0]?.getD [])
+                            validKey verify = some true ∧
+                          CoreChecksigEval.evalBaseVerifyAll 880
+                            PinPuzzleScriptCode.literalScript
+                            (late.stack.reverse[1]?.getD [])
+                            (late.stack.reverse[0]?.getD [])
+                            validKey verify = some true ∧
+                          CoreMultisigEval.finalTenEval
+                            EncodedLayout.chunks.flatten
+                            (CoreFinalChecksigEval.checker validKey verify)
+                            beforeFinal.stack.reverse = some true := by
+                        simpa [otherSignatureChecks,
+                          hPin, hEarly, hFirst, hLate, hFinal] using other
+                      exact ⟨beforePuzzle, rfl, facts.2.2.1⟩
 
 /-- A single successful source-shaped structural execution and its reached
 source-shaped signature checks yield the pin and enforced final-round
@@ -590,18 +673,55 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
       | none =>
           simp [otherSignatureChecks, initial, hPin, hEarly] at otherChecks
       | some early =>
+          have ⟨firstPuzzle, hFirst⟩ :
+              ∃ firstPuzzle, CoreStructuralRun.run hashes
+                (ByteLayout.program.take 423) initial =
+                  some firstPuzzle := by
+            cases h : CoreStructuralRun.run hashes
+                (ByteLayout.program.take 423) initial with
+            | none =>
+                simp [otherSignatureChecks, initial, hPin, hEarly, h]
+                  at otherChecks
+            | some reached => exact ⟨reached, rfl⟩
           cases hLate : CoreStructuralRun.run hashes
               (ByteLayout.program.take 856) initial with
           | none =>
               simp [otherSignatureChecks, initial, hPin,
-                hEarly, hLate] at otherChecks
+                hEarly, hFirst, hLate] at otherChecks
           | some late =>
               cases hFinal : CoreStructuralRun.run hashes
                   (ByteLayout.program.take 879) initial with
               | none =>
                   simp [otherSignatureChecks, initial, hPin,
-                    hEarly, hLate, hFinal] at otherChecks
+                    hEarly, hFirst, hLate, hFinal] at otherChecks
               | some beforeCheck =>
+                  have allFacts :
+                      CoreChecksigEval.evalBaseVerifyAll 880
+                        PinPuzzleScriptCode.literalScript
+                        (pin.stack.reverse[1]?.getD [])
+                        (pin.stack.reverse[0]?.getD [])
+                        validKey verify = some true ∧
+                      CoreChecksigEval.evalBaseVerifyAll 880
+                        PinPuzzleScriptCode.literalScript
+                        (early.stack.reverse[1]?.getD [])
+                        (early.stack.reverse[0]?.getD [])
+                        validKey verify = some true ∧
+                      CoreChecksigEval.evalBaseVerifyAll 880
+                        PinPuzzleScriptCode.literalScript
+                        (firstPuzzle.stack.reverse[1]?.getD [])
+                        (firstPuzzle.stack.reverse[0]?.getD [])
+                        validKey verify = some true ∧
+                      CoreChecksigEval.evalBaseVerifyAll 880
+                        PinPuzzleScriptCode.literalScript
+                        (late.stack.reverse[1]?.getD [])
+                        (late.stack.reverse[0]?.getD [])
+                        validKey verify = some true ∧
+                      CoreMultisigEval.finalTenEval
+                        EncodedLayout.chunks.flatten
+                        (CoreFinalChecksigEval.checker validKey verify)
+                        beforeCheck.stack.reverse = some true := by
+                    simpa [otherSignatureChecks, initial,
+                      hPin, hEarly, hFirst, hLate, hFinal] using otherChecks
                   have facts :
                       CoreChecksigEval.evalBaseVerifyAll 880
                         PinPuzzleScriptCode.literalScript
@@ -622,8 +742,8 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
                         EncodedLayout.chunks.flatten
                         (CoreFinalChecksigEval.checker validKey verify)
                         beforeCheck.stack.reverse = some true := by
-                    simpa [otherSignatureChecks, initial,
-                      hPin, hEarly, hLate, hFinal] using otherChecks
+                    exact ⟨allFacts.1, allFacts.2.1,
+                      allFacts.2.2.2.1, allFacts.2.2.2.2⟩
                   obtain ⟨pinKey, puzzleKey, raw, tail, w,
                     stackShape, fixed, pinDER, roundShape,
                     openings, finalDER, finalOutcome, nonce⟩ :=

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 847,
+  "theorem_count": 854,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,31 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreCheckedCertificate.candidate_complete": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.candidate_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_complete": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_first_puzzle": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_fixed_all_calls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_sound": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreChecksigEval.accepted_late_source_check": [
       "Classical.choice",
       "Quot.sound",
@@ -916,6 +941,9 @@
     "QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSourceExtraction.necessary_checks_first_puzzle": [
       "propext"
     ],
     "QSB.CoreSourceExtraction.necessary_checks_first_round_scan": [
