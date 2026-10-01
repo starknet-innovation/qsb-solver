@@ -1,5 +1,5 @@
 {
-  "theorem_count": 607,
+  "theorem_count": 616,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1928,6 +1928,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.OutputCodec.decodeItems_encodeItems": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.decodeOutputs_encodeOutputs": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.encodeOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OutputCodec.sourceShapedOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.PinningScriptCode.accepted_pinning_reached_bytes": [
       "Classical.choice",
       "Quot.sound",
@@ -2087,6 +2103,25 @@
       "propext"
     ],
     "QSB.ScriptCodeSelection.stripSignaturePushes_perm": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.changed_outputs_any_context_distinct_preimages": [],
+    "QSB.SighashBinding.changed_outputs_any_context_same_key_target": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.changed_outputs_distinct_preimages": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.changed_outputs_same_key_requires_target": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

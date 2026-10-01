@@ -85,13 +85,14 @@ exception. This is a finite corpus, not a proof of predicate equivalence.
 
 `analysis/check_find_and_delete_boundary.py` uses the app's
 `bitcoin_tx.find_and_delete` to calculate a scriptCode and publicly recovers
-a verification key for its sighash. The pinned adapter accepts all four
+a verification key for its sighash. The pinned adapter accepts all five
 isolated cases: one canonical signature push, two canonical pushes, a
-signature-push byte pattern embedded inside another push, and a noncanonical
-`PUSHDATA1` push. For each case, a key recovered for a deliberately wrong
-scriptCode is rejected. The embedded and noncanonical pushes remain in the
-correct scriptCode; canonical boundary pushes are removed. These eight native
-outcomes test selected paths, not the whole generated QSB lock.
+signature-push byte pattern embedded inside another push, a noncanonical
+`PUSHDATA1` push, and the literal pinning signature in an isolated lock. For
+each case, a key recovered for a deliberately wrong scriptCode is rejected.
+The embedded and noncanonical pushes remain in the correct scriptCode;
+canonical boundary pushes are removed. These ten native outcomes test selected
+paths, not the whole generated QSB lock.
 
 `analysis/check_ten_signature_findanddelete.py` adds an isolated 10-of-10
 bare multisignature case. It places all 151 final signature pushes from the

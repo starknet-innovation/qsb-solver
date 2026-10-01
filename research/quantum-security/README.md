@@ -99,6 +99,15 @@ restrict the recovery points relevant to a consensus attacker model. The same
 fixture file records an x=`r+n` algebraic verification that this helper omits;
 the test uses message scalar zero and supplies no Bitcoin transaction preimage.
 
+`QSB/SighashBinding.lean` isolates the legacy `SIGHASH_ALL` output-binding
+step under an explicit wire-encoding or output-parser premise and maps a
+changed-output same-key verification to an admissible ECDSA message target.
+`QSB/OutputCodec.lean` proves the source-shaped output-list encoding is
+injective on valid values if the count and amount field codecs round-trip. A
+pinned 11-case Core probe checks selected output, input, and `scriptSig` changes;
+see [the sighash boundary](CORE-SIGHASH-ALL.md). The general transaction
+parser/refinement and quantum target-hit bounds are still open.
+
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
 indices 0–7 revisit gathered signatures, 8 selects the fixed nonce signature,

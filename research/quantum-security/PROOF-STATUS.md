@@ -28,6 +28,8 @@ The build and dependency outputs are retained under `evidence/`.
 | Nonce | In the fixed-recovery-scalar field model, one key can satisfy both fixed signatures exactly when their publicly computed recovered scalars coincide | Gives an explicit equality-case equation; real sighash correlations, alternate recovery points and key-byte encodings remain unproved. |
 | Nonce | For a fixed signature and key, each admissible recovery point determines one message group element; the finite set of message targets has cardinality at most the recovery-point set. Opposite points give distinct targets unless their scalar multiples are 2-torsion. | `QSB/Nonce.lean` proves the field-module algebra. It does not prove which secp256k1 points Core admits, how SHA256d digests reduce modulo the group order, or a quantum success bound. A public secp256k1 fixture checks that the same signature/key verifies two distinct scalars; no Bitcoin preimage or spend is shown. |
 | Recovery candidates | Since the secp256k1 field prime is below twice its group order, an admissible x-coordinate reducing to `r` is either `r` or `r+n`. If each x-coordinate has at most two admitted points, there are at most four recovery points and four message group-element targets. | `QSB/RecoveryCandidates.lean` proves the modulus arithmetic and conditional cardinality bound. The two-points-per-x curve/parser premise, infinity and invalid-point exclusions, and Core digest conversion are not formalized. This is a target-set size bound, not a quantum success bound. |
+| Source-shaped ordered-output encoding | Given valid-domain prefix decoders for output count and value, a count-prefixed script decoder and recursive output-list decoder round-trip. Thus the composed ordered-output bytes are injective on valid lists. | `QSB/OutputCodec.lean` proves field, script, and list composition; concrete Core CompactSize and signed 64-bit value codecs, their valid domains, and C++ equivalence remain open. The field premises cannot be replaced with total eight-byte encoders on unbounded `Nat`. |
+| Conditional ALL output binding | With fixed non-output bytes and injective ordered-output wire encoding, changed outputs yield distinct preimages; the valid-domain codec theorem above discharges the list-level injectivity premise. A second theorem permits arbitrary other fields if an output parser round-trips every relevant ALL preimage. Given same-key verification through an admitted recovery point, the new hash group element lies in the key's finite message-target set. | `QSB/SighashBinding.lean` keeps concrete field codecs or full parser round trip, preimage shape, admitted recovery point, hash-to-group conversion, and Core verifier refinement as explicit premises. It does not prove those Core premises, universal old-key rejection, or a quantum hit bound. |
 | Parameters | C(142,1)=142; C(143,2)=10153; C(150,9)=82947113349100 | Honest distinct-subset combinatorics only. Does not restrict malicious stack choices. |
 | Parameters | With `d` disclosed distinct final-round positions, the abstract covered-choice count `C(d,7)·C(143,2)` is monotone; it is 10,153 at `d=7` and 34,845,096 at `d=14` | Counts index pairs under the shaped pool model; neither option count nor the formula is a success probability. |
 | Parameters + Game | If each signing record releases at most seven positions, the covered-choice count after `r` records is at most `C(min(150,7r),7)·C(143,2)` | Conservative across all records, including unrelated vaults; assumes each record's asserted release cap and still gives no QROM success bound. |
@@ -163,6 +165,15 @@ and used the pinned Core consensus adapter. All 256 verified under its
 `VERIFY_ALL` consensus flags. This supports using 256 possibilities in the
 syntactic DER count for this pinned legacy context; it does not prove a
 uniformity or quantum query bound for SHA-256 outputs.
+
+`all-sighash-commitments.json` records an isolated fixed-signature ALL probe
+with two inputs and two outputs. Eight changes to output or other committed
+fields changed the source-shaped preimage and observed SHA256d digest; Core
+rejected the old key and accepted a freshly recovered key in every case. Two
+`scriptSig`-only changes kept that preimage and digest; Core accepted the old
+key. The source contract and exact limitations are in `CORE-SIGHASH-ALL.md`.
+This finite result does not prove universal old-key rejection, output-wire
+injectivity for arbitrary transactions, or QSB full-lock acceptance.
 
 `der20-parser.json` records 73 isolated Core 27.2 `CHECKSIG; DROP; TRUE`
 cases against the same pinned consensus library and `VERIFY_ALL` flags. The
@@ -339,6 +350,13 @@ scoped external assumption, or a counterexample:
    theorem must account for the corresponding rare-event condition.
 3. Bitcoin byte parsing, ScriptNum semantics, integer ranges, resource limits,
    FindAndDelete, sighash serialization, and ALL binding to authorization.
+   The fixed-context ALL theorem isolates ordered-output encoder injectivity;
+   a second conditional theorem handles varying contexts given a full output
+   parser round trip. `CORE-SIGHASH-ALL.md` maps the source and records finite
+   Core checks. Arbitrary accepted QSB witnesses still need that
+   parser/refinement premise proved. Same-key verification
+   of a new message must be charged against all admissible ECDSA recovery
+   targets, not merely SHA256d collisions.
    The new byte interpreter is an intermediate model with explicit hash
    functions and Boolean signature outcomes. For the bare output, Core's
    `scriptSig` can be abstracted as an arbitrary initial byte stack with a

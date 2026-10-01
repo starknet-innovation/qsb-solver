@@ -22,6 +22,17 @@
 'QSB.opposite_points_distinct_messages' depends on axioms: [propext, Quot.sound]
 'QSB.messageTargets_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.recovery_in_messageTargets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.OutputCodec.decodeItems_encodeItems' depends on axioms: [propext, Quot.sound]
+'QSB.OutputCodec.decodeOutputs_encodeOutputs' depends on axioms: [propext, Quot.sound]
+'QSB.OutputCodec.encodeOutputs_injective_on' depends on axioms: [propext, Quot.sound]
+'QSB.OutputCodec.sourceShapedOutputs_injective_on' depends on axioms: [propext, Quot.sound]
+'QSB.SighashBinding.changed_outputs_distinct_preimages' depends on axioms: [propext, Quot.sound]
+'QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs' depends on axioms: [propext, Quot.sound]
+'QSB.SighashBinding.changed_outputs_any_context_distinct_preimages' does not depend on any axioms
+'QSB.SighashBinding.changed_outputs_same_key_requires_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashBinding.changed_outputs_any_context_same_key_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms
 'QSB.RecoveryCandidates.x_coordinate_candidates' depends on axioms: [propext, Quot.sound]
 'QSB.RecoveryCandidates.recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]

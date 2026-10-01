@@ -3,6 +3,8 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.Nonce
+import QSB.OutputCodec
+import QSB.SighashBinding
 import QSB.RecoveryCandidates
 import QSB.Parameters
 import QSB.Selection
@@ -72,6 +74,15 @@ import QSB.Reduction
 #print axioms QSB.opposite_points_distinct_messages
 #print axioms QSB.messageTargets_card_le
 #print axioms QSB.recovery_in_messageTargets
+#print axioms QSB.OutputCodec.decodeItems_encodeItems
+#print axioms QSB.OutputCodec.decodeOutputs_encodeOutputs
+#print axioms QSB.OutputCodec.encodeOutputs_injective_on
+#print axioms QSB.OutputCodec.sourceShapedOutputs_injective_on
+#print axioms QSB.SighashBinding.changed_outputs_distinct_preimages
+#print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs
+#print axioms QSB.SighashBinding.changed_outputs_any_context_distinct_preimages
+#print axioms QSB.SighashBinding.changed_outputs_same_key_requires_target
+#print axioms QSB.SighashBinding.changed_outputs_any_context_same_key_target
 #print axioms QSB.RecoveryCandidates.secp_prime_lt_twice_order
 #print axioms QSB.RecoveryCandidates.x_coordinate_candidates
 #print axioms QSB.RecoveryCandidates.recovery_points_card_le_four

@@ -294,6 +294,20 @@ wrong-code controls, including one that retains each selected push in turn.
 The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
 `SIGHASH_ALL`. This is native evidence for the shared deletion behavior, not
 full-lock acceptance or a proof of arbitrary-witness refinement.
+An isolated fixed-signature `SIGHASH_ALL` probe now records the complete
+source-shaped preimages and SHA256d digests for eight committed-field changes
+and two `scriptSig`-only controls. In all eight changed-preimage cases, pinned
+Core rejected the old key and accepted a freshly recovered key; the two
+unchanged-preimage controls retained the old key. Lean proves a fixed-context
+ordered-output preimage distinction under an explicit injective wire-encoding
+premise and maps any same-key verification of the new message to an admissible
+ECDSA recovery target. A second Lean theorem permits other fields and
+scriptCode to vary under an explicit output-parser round-trip premise. A source-shaped
+codec theorem proves valid-domain output-list injectivity from field-codec
+round trips; concrete CompactSize/value bytes and Core equivalence remain open.
+[The source contract](CORE-SIGHASH-ALL.md) explains why this is not universal
+same-key rejection or an arbitrary-witness QSB theorem:
+the full parser/refinement bridge and quantum hash-target bound remain open.
 An independent conservative count now avoids that exact-count premise for the
 Lean predicate: among all `256^20` twenty-byte strings, at most
 `12·256^14` can satisfy the required header, R-length, S-tag, and S-length
