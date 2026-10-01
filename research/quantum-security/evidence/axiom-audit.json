@@ -1,5 +1,5 @@
 {
-  "theorem_count": 908,
+  "theorem_count": 910,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1195,6 +1195,16 @@
       "propext"
     ],
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_comparison_nonce_or_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_comparison_nonce_or_original_position": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.bounded_hash_match_has_original_position": [

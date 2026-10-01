@@ -775,6 +775,8 @@ import QSB.Reduction
 #print axioms QSB.DynamicSignedSource.bounded_hash_match_is_commitment
 #print axioms QSB.DynamicSignedSource.bounded_hash_match_nonce_or_commitment
 #print axioms QSB.DynamicSignedSource.bounded_hash_match_has_original_position
+#print axioms QSB.DynamicSignedSource.accepted_comparison_nonce_or_commitment
+#print axioms QSB.DynamicSignedSource.accepted_comparison_nonce_or_original_position
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

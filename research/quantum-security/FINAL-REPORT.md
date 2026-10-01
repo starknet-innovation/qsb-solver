@@ -331,7 +331,9 @@ The local dynamic signed-source theorem now classifies any reached, bounded
 20-byte comparison under explicit aligned-pool and retained-width premises.
 Its source is a current commitment at a known original position, except that
 a 20-byte final nonce signature may itself be selected and match the HASH160
-output. The literal 55-byte nonce excludes that branch; an arbitrary setup
+output. This now follows from a successful generated five-opcode comparison,
+conditional on its reached dynamic post-ADD stack and roll cap. The literal
+55-byte nonce excludes that branch; an arbitrary setup
 cannot inherit this exclusion. In an isolated bare `CHECKSIG` experiment,
 pinned Core 27.2 accepted a 20-byte strict-DER `SIGHASH_ALL` signature with a
 message-specific recovered key and rejected both a wrong key and an altered

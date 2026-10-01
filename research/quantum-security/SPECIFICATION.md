@@ -223,7 +223,9 @@ At one reached signed comparison, the parameterized source classifier gives a
 current commitment with its original pool position whenever the nonce bytes
 are not 20 bytes. Without that width premise, a shallow selection can instead
 be the fixed nonce itself, provided it is 20 bytes and equals the HASH160 of
-the supplied opening. A pinned-Core isolated `CHECKSIG` probe demonstrates
+the supplied opening. A conditional run theorem derives this result from the
+generated five-opcode comparison with an explicit reached post-ADD stack and
+bounded parsed roll depth. A pinned-Core isolated `CHECKSIG` probe demonstrates
 that a 20-byte strict-DER `SIGHASH_ALL` nonce can verify for a recovered key;
 it does not demonstrate a matching hash opening or a QSB spend. The dynamic
 seven-comparison induction must propagate the nonce-or-commitment branch,
