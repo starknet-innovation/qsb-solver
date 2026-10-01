@@ -1,5 +1,5 @@
 {
-  "theorem_count": 854,
+  "theorem_count": 857,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -375,11 +375,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreCheckedCertificate.firstOutcomeMatches_sound": [
+      "propext"
+    ],
     "QSB.CoreCheckedCertificate.search_complete": [
       "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedCertificate.search_first_puzzle": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_first_scan": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedCertificate.search_first_scan_and_cursor": [
       "Quot.sound",
       "propext"
     ],

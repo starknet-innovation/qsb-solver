@@ -544,9 +544,15 @@ compiled interpreter, exact transaction sighashes, ECDSA, and the
 source-to-Core relation remain external.
 `QSB/CoreCheckedCertificate.lean` searches the two possible first-round
 multisignature outcomes and verifies the full reached source-model certificate
-before returning a result. Lean proves this finite search sound and complete
-relative to those checked source-model candidates, then derives the fixed
-`SIGHASH_ALL` obligations from a returned certificate. Hash functions, key
+before returning a result. It additionally recomputes the reached first-round
+source scan and requires it to equal the candidate flag. Lean proves that any
+returned flag equals both this scan and the structural run's reached outcome
+cursor. The finite search is sound and complete relative to candidates with
+this direct-match condition, then derives the fixed `SIGHASH_ALL` obligations
+from a returned certificate. The search returns a Boolean and final source
+state; the `RoundWitness` in the extraction theorem is still existential and
+has not been implemented as an efficient parser of adversarial transaction
+bytes. Hash functions, key
 parsing, and ECDSA remain explicit inputs; this search is not a compiled-Core
 acceptance proof or a quantum query bound.
 The first version of this generic scanner reused the final-round

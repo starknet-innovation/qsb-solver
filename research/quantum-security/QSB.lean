@@ -158,9 +158,12 @@ import QSB.Reduction
 #print axioms QSB.CoreSourceExtraction.necessary_checks_first_puzzle
 #print axioms QSB.CoreCheckedCertificate.candidate_sound
 #print axioms QSB.CoreCheckedCertificate.candidate_complete
+#print axioms QSB.CoreCheckedCertificate.firstOutcomeMatches_sound
 #print axioms QSB.CoreCheckedCertificate.search_sound
 #print axioms QSB.CoreCheckedCertificate.search_complete
 #print axioms QSB.CoreCheckedCertificate.search_first_puzzle
+#print axioms QSB.CoreCheckedCertificate.search_first_scan
+#print axioms QSB.CoreCheckedCertificate.search_first_scan_and_cursor
 #print axioms QSB.CoreCheckedCertificate.search_fixed_all_calls
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
