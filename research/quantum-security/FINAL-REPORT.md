@@ -113,7 +113,8 @@ used.
    lower bits for every negative one- to four-byte encoding; all successfully
    parsed operands lie in Core's unsaturated `getint` range. The pinned
    adapter accepted a finite `OP_1ADD` differential
-   probe of 337 encodings and rejected one five-byte operand. A source-shaped
+   probe of 2,384 encodings (including every canonical integer from −1023
+   through 1023) and rejected one five-byte operand. A source-shaped
    Lean conversion using Core's bitwise sign test and 64-bit complement mask
    now equals the parser for every allowed byte string. Compiled-Core
    whole-interpreter refinement remains open. A separate Lean range theorem
@@ -123,6 +124,10 @@ used.
    for every raw index and stack, subject to its opcode budget. Eleven isolated
    pinned-Core cases corroborate the modeled depth and parsing boundaries;
    compiled-Core trace refinement is still required.
+   A source-shaped Core magnitude-byte loop now has a universal decode and
+   fuel-stability proof. Its signed serialization equals the byte model and
+   reparses correctly for every integer from −1023 through 1023; an
+   all-values byte equality and a full Core trace range invariant remain open.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13
    boundary cases byte-for-byte, including the NULLDUMMY-slot rejection. The
    separate six-case overshoot report had mislabeled the canonical first

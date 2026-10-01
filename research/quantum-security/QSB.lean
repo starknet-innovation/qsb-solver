@@ -19,6 +19,7 @@ import QSB.ByteIndex
 import QSB.ByteIndexRange
 import QSB.CoreScriptNum
 import QSB.CoreRoll
+import QSB.CoreSerialize
 import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
@@ -209,6 +210,16 @@ import QSB.Reduction
 #print axioms QSB.CoreRoll.coreRollWithRaw_reverse
 #print axioms QSB.CoreRoll.byteRollTop_eq_step_stack
 #print axioms QSB.CoreRoll.source_roll_matches_byte_step
+#print axioms QSB.CoreSerialize.magnitudeBytes_length_le
+#print axioms QSB.CoreSerialize.unsignedLE_magnitudeBytes
+#print axioms QSB.CoreSerialize.magnitudeBytes_fuel_stable
+#print axioms QSB.CoreSerialize.coreSerialize_eq_model_small_positive
+#print axioms QSB.CoreSerialize.coreSerialize_eq_model_small_negative
+#print axioms QSB.CoreSerialize.coreSerialize_roundtrip_small_positive
+#print axioms QSB.CoreSerialize.coreSerialize_roundtrip_small_negative
+#print axioms QSB.CoreSerialize.magnitudeBytes_5_length_le_4
+#print axioms QSB.CoreSerialize.coreSerialize_eq_model_small
+#print axioms QSB.CoreSerialize.coreSerialize_roundtrip_small
 #print axioms QSB.ByteIndex.empty_is_zero
 #print axioms QSB.ByteIndex.negative_zero_is_zero
 #print axioms QSB.ByteIndex.nonminimal_ten

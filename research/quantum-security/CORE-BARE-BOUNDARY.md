@@ -51,6 +51,13 @@ whole opcode trace still need refinement to Lean.
 `QSB/ByteIndexRange.lean` also proves that the optional Lean serializer is
 defined for the sum and minimum of any two successfully parsed operands;
 this removes a model-only failure branch from `OP_ADD` and `OP_MIN`.
+`QSB/CoreSerialize.lean` models Core's repeated low-byte/divide magnitude
+loop, proves its decoded value and fuel stability below the corresponding
+power of 256, and checks byte equality with the existing Lean serializer for
+every signed integer from −1023 to 1023. That interval includes the small
+generated arithmetic offsets, but an all-values serializer equivalence and
+the premise that every successful Core trace stays in the checked interval
+remain unproved.
 `QSB/CoreRoll.lean` proves that the source-shaped bottom-first `OP_ROLL`
 select/erase/append operation, including raw-index parsing, is the reverse
 of the top-first `ByteMachine.step .roll` stack result when its opcode budget
@@ -71,11 +78,12 @@ source corroboration and boundary tests, **not** full QSB acceptance or a
 formal interpreter equivalence proof.
 
 `analysis/check_scriptnum_core.py` adds a finite differential check of
-`OP_1ADD` on 337 selected zero- to four-byte encodings, including every
-one-byte encoding and sign/nonminimal four-byte boundaries. It checks Core's
-serialized result against an independent sign-magnitude calculation in four
-locks below the 201-opcode limit, and checks one five-byte operand rejection.
-The pinned adapter accepted all four batches and rejected the oversized
+`OP_1ADD` on 2,384 selected zero- to four-byte encodings, including every
+one-byte encoding, every canonical signed integer from −1023 through 1023,
+and sign/nonminimal four-byte boundaries. It checks Core's serialized result
+against an independent sign-magnitude calculation in 27 locks below the
+201-opcode limit, and checks one five-byte operand rejection.
+The pinned adapter accepted all 27 batches and rejected the oversized
 operand; exact binary/image hashes and transaction hashes are in
 `evidence/scriptnum-core.json`. The test helper's `bitcoin_tx.py` hash still
 matches the original source inventory even though the app checkout revision

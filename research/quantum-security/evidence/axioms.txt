@@ -164,6 +164,16 @@
 'QSB.CoreRoll.coreRollWithRaw_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreRoll.byteRollTop_eq_step_stack' depends on axioms: [propext, Quot.sound]
 'QSB.CoreRoll.source_roll_matches_byte_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreSerialize.magnitudeBytes_length_le' depends on axioms: [propext, Quot.sound]
+'QSB.CoreSerialize.unsignedLE_magnitudeBytes' depends on axioms: [propext, Quot.sound]
+'QSB.CoreSerialize.magnitudeBytes_fuel_stable' depends on axioms: [propext, Quot.sound]
+'QSB.CoreSerialize.coreSerialize_eq_model_small_positive' does not depend on any axioms
+'QSB.CoreSerialize.coreSerialize_eq_model_small_negative' does not depend on any axioms
+'QSB.CoreSerialize.coreSerialize_roundtrip_small_positive' does not depend on any axioms
+'QSB.CoreSerialize.coreSerialize_roundtrip_small_negative' does not depend on any axioms
+'QSB.CoreSerialize.magnitudeBytes_5_length_le_4' depends on axioms: [propext, Quot.sound]
+'QSB.CoreSerialize.coreSerialize_eq_model_small' depends on axioms: [propext, Quot.sound]
+'QSB.CoreSerialize.coreSerialize_roundtrip_small' depends on axioms: [propext, Quot.sound]
 'QSB.ByteIndex.empty_is_zero' does not depend on any axioms
 'QSB.ByteIndex.negative_zero_is_zero' does not depend on any axioms
 'QSB.ByteIndex.nonminimal_ten' does not depend on any axioms

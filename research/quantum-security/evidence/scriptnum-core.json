@@ -10,7 +10,7 @@
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
   },
   "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
-  "tested_encodings": 337,
+  "tested_encodings": 2384,
   "groups": [
     {
       "cases": 90,
@@ -31,10 +31,148 @@
       "test_lock_sha256": "09bec4e4809a66d41f0be65076e4512338ffbbf42d7f2df4ba4cee01e5e4ba26"
     },
     {
-      "cases": 67,
+      "cases": 90,
       "accepted": true,
-      "transaction_sha256": "5228e45f4d50cb8dbb65d88e54f85e30529b43a36d25b877cde49bd343b43347",
-      "test_lock_sha256": "4b7a325aecf1aeb327986bf2d0f925df7a487bba9f2afd07b5f32fbad69b07b1"
+      "transaction_sha256": "1e226daf0b106bab8df892ed083e038cdf01967c867528adafd5e77c7030a154",
+      "test_lock_sha256": "908849dd54bb4ff061b9b05c30f31de1802b87392b6e4a4fb819630accffbc6b"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "612f65a9666a0969e7a42c9a4ae6e1363f3bd8ab509056ec148cf53cf3cc4edb",
+      "test_lock_sha256": "2798d027d26c27863d9a1a14ff68ccb4d835ebb9fc34e6cd5953de0776c04cc8"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "78d3e42fc0212070e806f204784ebf2c6b849a685975e70f6332a73b7dffcae2",
+      "test_lock_sha256": "a56c2280f7bfd7103f4bda5ba9129eb469ee023284f69169656a0c61c737e45e"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "88195aef7aac1f4204ed86426cb635707156d4fd144a4593cd20db9a7a4db058",
+      "test_lock_sha256": "ba8ef2655ce9b8e58e755c5f830b8f296c18514d3889163197ec372765ea4b62"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "f4a7c5021672a18c982b54fce34f658b787fed7cae7e7893ed3325ce85d4197c",
+      "test_lock_sha256": "78c40e432965858f6ec00da1ed8bb9c761dae895bef9377654bc43778ede4112"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "9c106b411c440deaaacbf253ce88177bdd6d914a3d3783ec31999e805794c1d0",
+      "test_lock_sha256": "c4364cf0f27b1ece4a9ac45d817d0ae099e331de789c1dcf17f6bfc9d38eb0d4"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "0f6e2c828f879f8a329e58bcd47ca4d9f03b5a4a142362e6db433a778d62f624",
+      "test_lock_sha256": "7a338a86a1b9c43941b00deee3ccd72526ba14d65f2fc8fd9c7a80b2e236b94a"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "f38108b3ba18fd72f8cfd0d44cd9b3870a89552883255b2bb9a8e3dca9431abd",
+      "test_lock_sha256": "3316acd01af1a67e0a502801a4da5527e97319f3d6d824969bc4e95d5e593173"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "4fbaa18ee042f72da668772205e2298c1a1120cc0eff60f48b195414244deb7e",
+      "test_lock_sha256": "e6cfc62be77597c371204a592c4473b39132d5909bcf386a73815fc53f6da7ba"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "658836fd1f8d8dbdfe6e168435f40d9027bd7c1682b182b7189d3bea5025c40f",
+      "test_lock_sha256": "10d973b4b7df90160c6b1dcf55be6520d0aa313af4f993bec67874ce3385fad4"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "e2a1b6cbf3eb808b9744f94a060d06ee28d9befa31fd5c9e5aa11c7f05968cdb",
+      "test_lock_sha256": "d8e32d2a981e5ff3405d381f412153a78b7f3c18fb0abc25d204c6ad43ad1cb0"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "4b72614050fb0075b4820282257a1b8d8e3f844402120c362c1c593da885037f",
+      "test_lock_sha256": "12b10f0e695bdf2ee0b5ec6c32df45a8892f0ca4d122380a1d502b8a9abb65c4"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "8ba37a488978bde2ba367b33d8d42c3eef8d0db9ea743c8656e80208552fd92f",
+      "test_lock_sha256": "9e29769b9fe9b6aadee72b414c3a1b32407dafd389bfd1ce3405937cc8a9d7ca"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "71782c242dccd94656a0d4d35aedee8df1c7b0711c9c483cb935c6831c968614",
+      "test_lock_sha256": "bb2e293b58b2ce818b3c2fb2684af051f00c31ea9203ba1de17f19c117280e2e"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "31d100a4140e164b21dcf662e4fe052498a5407320f42be0c7a207a900903b5e",
+      "test_lock_sha256": "7f5b027b9a3658e63f67966dad0a775001c9b4bddd945371e118f377800d52b8"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "c8db29ecf923e98d567d4dfa531589aa9b19a134ce70c627787e152121265478",
+      "test_lock_sha256": "7d5eda69ea89ad22fbb42221ffb496312f5afbc280ab5fb243dab297691199a3"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "66656387b990d695fe8fbe5fc82b0e6f5b6bd5777c4e235539c5cd3760dffbd4",
+      "test_lock_sha256": "a118ab645174bf39218415a44056fe7cc12fa63d63a5f848b7c0078e1e142e28"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "dea0328bf57839712bb37156ecda784eec82895f6f4eec3b778f3944562ed720",
+      "test_lock_sha256": "a5f2ca4c26fc40c5ea5c7119a3e00077ade484fd6382ac5142ac2230f8978735"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "5276927fd571e9bcf6f6bdb271716acfaff5a61e6c103fcb9b51aae75130aa80",
+      "test_lock_sha256": "5c11c8001c796dc412df0d47a1f1e3d8aaa5023caab50a7b65058af849ca80d1"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "c03203939e8f130b7cfa3569228c8c55f4f2affc750db7beaa41a522f47dd5d9",
+      "test_lock_sha256": "d62899e848fd69d232a12689d18df2095b360c98ca8f25965bd47f33659e1c8f"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "e6b6a74e7295a2d8a5e155c0832a9d821760d7f7aa3f2e5dd3303ceaa9e9f246",
+      "test_lock_sha256": "61298cab4bd9d130f0605908bc6464b70561a333b5d071f486d2d5f2bc195bdf"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "375c400003f9e2dda4364f3670c9f00d3b481f5ad2d14c76d0870dc4f4841364",
+      "test_lock_sha256": "0680e6d4035460b537fd1ee2a686f02cd5c4761e9c257b407662cb91db5c8b5d"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "a61989bc5d5cfdda6babf28b33e1c66d2b912251076568e5fa50a280a0e8c45f",
+      "test_lock_sha256": "177e46c7717f90bb29410bc0a46ee395001cf6b2e89f1d41ba62901a5b9bfb71"
+    },
+    {
+      "cases": 44,
+      "accepted": true,
+      "transaction_sha256": "536fcea609a9209f25bb02abbdf5740bc6c59c3b602254fee02b6503c9e845fb",
+      "test_lock_sha256": "24c2912053c4880a2f3c9a6fab2f4464b598978d1324382d914fb81b1a7ea0f0"
     }
   ],
   "five_byte_operand_rejected": true

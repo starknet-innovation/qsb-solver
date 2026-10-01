@@ -1,8 +1,10 @@
 """Compare source-shaped ScriptNum cases with the pinned Core 27.2 adapter.
 
 The tested lock executes OP_1ADD, compares its serialized result against an
-independent sign-magnitude expectation, and fails on the first mismatch. This
-is a finite differential probe of numeric opcodes, not a full QSB spend.
+independent sign-magnitude expectation, and fails on the first mismatch. The
+cases cover every one-byte encoding, selected nonminimal boundaries, and the
+canonical encodings of all integers from -1023 through 1023. This is a finite
+differential probe of numeric opcodes, not a full QSB spend.
 """
 
 import argparse
@@ -45,6 +47,7 @@ def cases() -> list[bytes]:
     rows.extend((b"", b"\x0a\x00", b"\x98\x00\x00",
                  b"\x98\x80", b"\xff\xff\xff\x7f",
                  b"\xff\xff\xff\xff"))
+    rows.extend(encode_scriptnum(value) for value in range(-1023, 1024))
     return rows
 
 

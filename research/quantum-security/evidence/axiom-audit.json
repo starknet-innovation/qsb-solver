@@ -1,5 +1,5 @@
 {
-  "theorem_count": 679,
+  "theorem_count": 689,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -432,6 +432,34 @@
       "propext"
     ],
     "QSB.CoreScriptNum.short_mask_agrees": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.coreSerialize_eq_model_small": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.coreSerialize_eq_model_small_negative": [],
+    "QSB.CoreSerialize.coreSerialize_eq_model_small_positive": [],
+    "QSB.CoreSerialize.coreSerialize_roundtrip_small": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.coreSerialize_roundtrip_small_negative": [],
+    "QSB.CoreSerialize.coreSerialize_roundtrip_small_positive": [],
+    "QSB.CoreSerialize.magnitudeBytes_5_length_le_4": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.magnitudeBytes_fuel_stable": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.magnitudeBytes_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSerialize.unsignedLE_magnitudeBytes": [
       "Quot.sound",
       "propext"
     ],
