@@ -1,5 +1,10 @@
 # One-shot optimized A10G gate
 
+This documents the controller shipped on `main`, with its original Ireland scope
+and 25-minute deadline. Later research-branch controllers and campaign permissions
+do not change this implementation. The recorded gate is historical; do not restart
+it from these instructions. See [release status](../../docs/README.md).
+
 Adapted from the completed qsb-app AWS execution controller at c8c6f21833798900ae1e6a21f0b5d10d2adab291.
 This operator-specific experiment uses one g5.xlarge in eu-west-1. No app activation.
 Before launch: verify price, effective quota, zero other test GPUs, clean pushed
@@ -31,7 +36,7 @@ through SSM before creating the gate directory or issuing the one-shot compute
 command. It waits at most three minutes for the boot marker and both systemd
 services, while requiring 18 minutes remaining for image setup plus the gate.
 A readiness failure terminates the experiment without starting the solver. Do not
-reset the fixed deadline. The 17:13 UTC attempt failed ten seconds before the boot
+reset the fixed deadline. The historical readiness attempt recorded at 17:13 UTC failed ten seconds before the boot
 marker existed; no bundle was staged or solver executed, and no rerun was issued.
 
 ## External operator scope

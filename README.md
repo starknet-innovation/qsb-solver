@@ -2,6 +2,9 @@
 
 Public-data GPU workers for [qsb-app](https://github.com/starknet-innovation/qsb-app). The application retains its independent CPU verifier, coordinator, wallet and release registry. No verifier or wallet material is included here. An image identity is not evidence of solver correctness or complete range coverage.
 
+For verified publication and qsb-app enrollment status, evidence limits and the
+documentation map, start with [docs/README.md](docs/README.md).
+
 ## Historical worker
 
 The upstream candidate tree at `2791ed0588f5014ccd688d48ba5502df2879f2f1` is committed under `vendor/challenge/candidates`. `vendor/challenge/provenance.json` identifies every imported file. `worker/prepare_kernels.py` applies the existing production-predicate/ranked-search adaptation; it does not silently repair historical arithmetic or output truncation.
@@ -15,7 +18,7 @@ The worker accepts the historical `ranked-v2` public parameter requests and prod
 
 ## Research subset
 
-`research/optimized-subset` and `worker/optimized` preserve the separate modified subset implementation and compute adapter. It remains **HOLD**, subset-only, and is not interchangeable with the historical worker. Its runtime deliberately excludes the former embedded CPU reference and accepts only describe/compute. This changes runtime identities; historical validation and old runtime hashes must not be reused as attestation of these builds.
+`research/optimized-subset` and `worker/optimized` preserve the separate modified subset implementation and compute adapter. The standalone target remains **HOLD** and subset-only. The separately validated combined release includes this source lineage; see [release status](docs/README.md). Neither target is interchangeable with the historical worker. Its runtime deliberately excludes the former embedded CPU reference and accepts only describe/compute. This changes runtime identities; historical validation and old runtime hashes must not be reused as attestation of these builds.
 
 ```
 docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:local .
@@ -23,7 +26,7 @@ python3 worker/optimized/test_image.py qsb-optimized:local
 docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target queue -t qsb-optimized-queue:local .
 ```
 
-GPU differential tests and a fresh end-to-end proof are still separate from source/unit/build checks. No mainnet enablement or provider allocation is performed by this repository's CI.
+Source/unit/build checks do not establish native correctness or end-to-end execution. The exact combined release has separate native evidence; new builds need their own assessment. No mainnet enablement or provider allocation is performed by this repository's CI.
 
 ## Release
 
@@ -36,8 +39,8 @@ Development validation scripts under `worker/validation` consume an explicitly s
 ## Optimized promotion work
 
 [Combined candidate integration](worker/promotion/README.md) joins historical
-pinning and the optimized subset under one `ranked-v2` worker identity. Candidate
-prereleases remain HOLD until native correctness, matched A10G performance for
+pinning and the optimized subset under one `ranked-v2` worker identity. The tested sm86 combined image was published and its descriptor enrolled in qsb-app;
+see [verified status](docs/README.md). New candidate prereleases remain HOLD until native correctness, matched A10G performance for
 pinning and both subset rounds, and final evidence review pass. Normal version
 tags still build the historical baseline.
 

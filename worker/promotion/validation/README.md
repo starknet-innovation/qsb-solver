@@ -1,4 +1,9 @@
-# Exact-binary validation batch
+# Historical exact-binary validation batch
+
+This is the original sm89 candidate batch, retained for reproducibility. It is not
+the later sm86 release gate or a current launch plan. See [current release status](../../../docs/README.md)
+and the [completed A10G results](../../../docs/promotion/2026-09-26-a10g-performance.md).
+Do not restart spent-fixture replays from this record.
 
 `benchmark.py` validates the candidate-20260925-1 subset executable against its
 published SHA256, then downloads and checks the historical subset executable

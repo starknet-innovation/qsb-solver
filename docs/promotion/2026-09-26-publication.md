@@ -1,6 +1,6 @@
 # Publication record: combined sm86 AWS release, 26 September 2026
 
-Status: **approved for publication by @adrienlacombe on 26 September 2026**. It isn't enrolled in qsb-app yet; enrollment is a separate app change.
+Status: **approved for publication by @adrienlacombe on 26 September 2026**. Enrollment was outside this publication operation. The descriptor is now present in qsb-app; see [verified status](../README.md).
 
 ## Gates, all met
 
@@ -12,14 +12,14 @@ Recorded on the merged qsb-solver#2 (`2e7e1e0`, a squash merge):
 
 ## What is published
 
-- **Descriptor:** `releases/qsb-ranked-v2-43c77084648a-e22afc720df1.json`, a strict schema-3 descriptor for the app's consumer. It's identical to the `solver` object that `scripts/prepare_combined_release.py` emitted after verifying the candidate's GitHub attestation. The preparation hashes are in `2026-09-26-publication.json`.
+- **Descriptor:** [qsb-ranked-v2-43c77084648a-e22afc720df1.json](releases/qsb-ranked-v2-43c77084648a-e22afc720df1.json), a strict schema-3 descriptor for the app's consumer. It's identical to the `solver` object that `scripts/prepare_combined_release.py` emitted after verifying the candidate's GitHub attestation. The preparation hashes are in `2026-09-26-publication.json`.
 - **Image:** the already tested, immutable `ghcr.io/starknet-innovation/qsb-solver@sha256:e22afc720df17dd280678e610ea0861dcbd297e17baf6b9a5a264782aeb7f32d`, built and attested from source `43c77084648aa0f4cbcb1589abfcc792c9cc0d9d` (tag `candidate-sm86-20260925-1`). It is **not rebuilt**. The candidate tag must never be moved or deleted: after the squash merge, it is what keeps the attested source reachable.
 - **Binaries:** pinning `cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62`, subset `673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15`. Both are sm_86.
 - **Search contract:** ranked-v2, `c570e14089e62de5185d9c8ba9f8f85d1b22c788edc524cd98a9ecaac5c26f7a`, unchanged from `aws-v0.1.0`.
 
 ## Release tag
 
-The release is published as the GitHub release `combined-aws-sm86-v0.2.0` on the commit that merges this record. The tag name deliberately avoids both **publishing** workflows: `release.yml` fires on `v*` and `aws-v*`, and would rebuild the historical solver; `candidate.yml` fires on `candidate-*`, and would build and push a new image.
+The release is published as the GitHub release `combined-aws-sm86-v0.2.0` at `8fe127790397b6903640f8949219c1ef34a92db2`, published 26 September 2026 at 17:36:58 UTC (verified 1 October). The tag name deliberately avoids both **publishing** workflows: `release.yml` fires on `v*` and `aws-v*`, and would rebuild the historical solver; `candidate.yml` fires on `candidate-*`, and would build and push a new image.
 
 Pushing the tag still triggers `ci.yml`, which runs on every push, and the audit workflows filtered only by path, because GitHub ignores path filters on tag pushes. Those are read-only builds that push no image and publish nothing. The release itself only carries this descriptor as `solver.json`. No image is built for it, and no registry is written to.
 

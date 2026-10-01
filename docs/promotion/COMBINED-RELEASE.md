@@ -1,6 +1,6 @@
 # Publishing the tested combined image
 
-Status: **publication approved on 26 September 2026**; see [the publication record](2026-09-26-publication.md). App enrollment is a separate change.
+Status: **published on 26 September 2026; descriptor enrollment verified 1 October**. See [verified status](../README.md) and [the publication record](2026-09-26-publication.md). Live deployment was not verified by this audit. The preparation commands below are retained for provenance review, not instructions to republish this release.
 
 A normal version tag currently triggers `release.yml`, which compiles the historical
 solver. It must not be used to claim publication of the optimized candidate.
@@ -72,10 +72,14 @@ already published releases remain unchanged.
 the strict schema 3 consumer. The candidate2 proposal previously passed that
 consumer's schema, registry and paid search-contract checks locally at
 `922c6c1d68ab992aa1fd2028b7cf3cc49a12af83`. This is compatibility evidence only;
-the optimized descriptor has not been enrolled. The contract fingerprint is
+enrollment was not part of that historical compatibility check. The released descriptor is now enrolled; see [verified status](../README.md). The contract fingerprint is
 `c570e14089e62de5185d9c8ba9f8f85d1b22c788edc524cd98a9ecaac5c26f7a`.
 
-## Required completion sequence
+## Promotion sequence for a new artifact
+
+For the September release, evidence review and publication are recorded as complete,
+and app enrollment is now verified. New artifacts require a fresh applicability
+assessment. Historical transaction permissions below do not authorize a new pilot.
 
 1. Complete native sm86 pinning, exceptional recovery, curve and memory checks,
    plus matched A10G performance against `aws-v0.1.0` for pinning and both subset
@@ -102,15 +106,15 @@ the optimized descriptor has not been enrolled. The contract fingerprint is
 
 No step enables mainnet. External miner inclusion and any exact mainnet transaction
 remain separate gates. The old completed proof endpoints and spent fixtures stay
-untouched. This document is a completion plan, not evidence that steps 1–5 ran.
+untouched. Use the linked records for completed publication/enrollment; this sequence does not establish deployment or transaction execution.
 
 ## Executed preparation check
 
 The real command at `bbaf782874e83b26a5c8bbca241613787e4ccf89` verified candidate2
 through GitHub, pulled its immutable digest and executed the installed binding
 check in a local Linux/amd64 container without network access or GPU. The extracted
-proposal exactly matched the source-bound proposal accepted by the pending app
-consumer. A real wrong-candidate-tag attempt failed attestation before extraction.
+proposal exactly matched the source-bound proposal accepted by the app
+consumer under review at that time. A real wrong-candidate-tag attempt failed attestation before extraction.
 A post-check showed no extraction containers remaining. The
 [preparation receipt](2026-09-25-preparation.json) records artifact hashes.
 
@@ -122,7 +126,7 @@ container removal after timeout. These tests do not grant promotion approval.
 
 ## Merged app consumer check for sm86
 
-App PR47 merged at `8c704906`; the current checked app commit
+App PR47 merged at `8c704906`; the then-checked app commit
 `476a47c` includes its strict schema3 consumer. In an isolated checkout, two actual
 consumer tests passed for the source-bound sm86 proposal already extracted and
 verified in the AWS candidate preparation. They checked exact source/image and
@@ -134,7 +138,7 @@ This closes consumer compatibility for that proposal, not enrollment or promotio
 
 Treat `QSB_RANGE_INCOMPLETE`, hit-capacity overflow and repeatable publication or
 CUDA failures as a stopped work unit. Preserve the exact range, image and logs;
-do not blindly resume or retry. The current app may describe exit-2 results as
+do not blindly resume or retry. Historical app versions may describe exit-2 results as
 resumable incomplete ranges, but that is not evidence that retrying will help.
 Diagnose and correct the cause before authorizing another paid attempt. No
 failed or truncated range receives completion credit.

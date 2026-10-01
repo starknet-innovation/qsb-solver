@@ -18,10 +18,10 @@ The runtime target includes the newly compiled subset binary, guarded compute ad
 
 The apt package repositories are not snapshot-locked, so this is a source-complete build recipe, **not a claim of universal bit-for-bit container reproducibility**. Record the generated receipt and OCI digest for each release. Historical speed/correctness evidence does not automatically certify the new binary. OS snapshotting remains a further reproducibility improvement.
 
-The image remains HOLD and subset-only. The offline image checks verify description, wrong-identity rejection and real binary failure without a GPU. They do not certify successful GPU execution, complete range coverage, a withdrawal or mainnet readiness. New release identities must be reviewed and enrolled with the supervisor and public CPU verifier before any activation; the existing historical identity guards deliberately reject a different build.
+This standalone image remains HOLD and subset-only. The [published combined image](../../docs/README.md) is a distinct artifact with its own evidence and descriptor. The offline image checks verify description, wrong-identity rejection and real binary failure without a GPU. They do not certify successful GPU execution, complete range coverage, a withdrawal or mainnet readiness. New release identities must be reviewed and enrolled with the supervisor and public CPU verifier before any activation; the existing historical identity guards deliberately reject a different build.
 
 The optimized source retains Apache-2.0 in research/optimized-subset/LICENSE.
 
 The migration regenerated source-lock.json for the actual imported sources; historical-source-lock.json preserves the previous stale lock, which differs in pair_shared.cuh and tree.cu. New hashes do not retroactively validate the changed code.
 
-The tag release workflow publishes only the historical worker. Optimized images require separate build, validation and enrollment; none are automatically released.
+The ordinary `v*`/`aws-v*` release workflow builds the historical worker. Combined candidates use a separate workflow and descriptor publication path; see [the publication guide](../../docs/promotion/COMBINED-RELEASE.md). A new standalone build is not automatically released or enrolled.

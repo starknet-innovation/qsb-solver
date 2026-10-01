@@ -18,7 +18,11 @@ They never emit an app release descriptor. The existing `v*` release workflow
 continues to publish the historical baseline, so a candidate cannot silently
 replace it.
 
-Before promoting a combined candidate:
+The exact September 26 sm86 image is published and enrolled in qsb-app; see
+[current documented status](../../docs/README.md). The checklist below applies to
+new candidates, not a request to repeat completed gates.
+
+Before promoting a new combined candidate:
 
 - Verify the image provenance, source commit, contract and actual binary binding.
 - Execute all three stages on a compatible GPU and compare public results against
@@ -29,7 +33,7 @@ Before promoting a combined candidate:
   25 September). The first separately authorized mainnet withdrawal (qsb-app#22) is the
   end-to-end proof, and qsb-app re-checks every hit on CPU before any credit. Any real
   mainnet spend still requires concrete user transaction authorization.
-- Publish a new normal release and enroll its descriptor only after reviewing that
+- Publish a descriptor through the [combined release path](../../docs/promotion/COMBINED-RELEASE.md) and enroll it only after reviewing that
   evidence. No automatic application deployment or default change is performed.
 
 The pinning device algorithm remains historical. Both stages fail closed when

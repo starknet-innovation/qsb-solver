@@ -1,5 +1,11 @@
 # A10G component gate: harness failure
 
+> Historical record (25 September 2026). HOLD statements and pending gates describe
+> that checkpoint. See [verified status](../README.md) and the
+> [September 26 publication record](2026-09-26-publication.md) for the exact released
+> artifact, later gate decisions and completed evidence. This is not authorization
+> to repeat an experiment.
+
 Status: HOLD. The bounded component audit stopped before the first diagnostic
 solver process started. No native component gate passed in this run.
 

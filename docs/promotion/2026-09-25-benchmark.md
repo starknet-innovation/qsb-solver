@@ -1,5 +1,11 @@
 # Exact-build replay and matched benchmark
 
+> Historical record (25 September 2026). HOLD statements and pending gates describe
+> that checkpoint. See [verified status](../README.md) and the
+> [September 26 publication record](2026-09-26-publication.md) for the exact released
+> artifact, later gate decisions and completed evidence. This is not authorization
+> to repeat an experiment.
+
 Status: **HOLD — measured improvement, not yet a promoted default release**.
 
 The unchanged `candidate-20260925-1` image and subset binary were tested against the

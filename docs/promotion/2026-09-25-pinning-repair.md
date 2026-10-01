@@ -1,5 +1,11 @@
 # Combined candidate pinning repair — HOLD
 
+> Historical record (25 September 2026). HOLD statements and pending gates describe
+> that checkpoint. See [verified status](../README.md) and the
+> [September 26 publication record](2026-09-26-publication.md) for the exact released
+> artifact, later gate decisions and completed evidence. This is not authorization
+> to repeat an experiment.
+
 Independent review of the promotion branch identified three host-side pinning
 problems: unchecked CUDA input/reset/readback calls, unchecked hit-file publication,
 and silently clamped hit counts above 64. Commit 52b1398 repairs these in the

@@ -1,5 +1,11 @@
 # A10G sampled subset differential passed
 
+> Historical record (25 September 2026). HOLD statements and pending gates describe
+> that checkpoint. See [verified status](../README.md) and the
+> [September 26 publication record](2026-09-26-publication.md) for the exact released
+> artifact, later gate decisions and completed evidence. This is not authorization
+> to repeat an experiment.
+
 Status: HOLD for promotion; this bounded subset gate passed.
 
 The frozen sm86 candidate at source `43c77084648aa0f4cbcb1589abfcc792c9cc0d9d`

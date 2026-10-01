@@ -1,8 +1,10 @@
-# Optimized solver on AWS A10G — build preparation
+# Optimized solver on AWS A10G
 
-Status: HOLD. The user selected the optimized solver for the mainnet pilot, capped
-at USD100 of BTC including transaction fees, with Xverse signing. GPU costs are
-separate. This selection does not approve any exact funding or withdrawal bytes.
+The exact sm86 combined image is published and its descriptor enrolled in qsb-app;
+see [verified status](../README.md). Native correctness and matched per-stage
+performance are recorded in [the publication record](2026-09-26-publication.md).
+New image identities require their own evidence assessment. This guide grants no
+cloud budget, wallet access, deployment or transaction authorization.
 
 Candidate2 was compiled for sm_89. The AWS A10G backend targets sm_86. Do not copy
 candidate2 into that deployment and assume compatibility. NVIDIA documents that
@@ -24,25 +26,9 @@ candidate-* tags retain89. Never move an existing tag. Every new build remains a
 HOLD prerelease and has new image/binary identities. No tag is created by this
 change. The historical release workflow and default remain unchanged.
 
-Next: verify the sm86 native build, compose the merged AWS public-only transport
-with the combined candidate (not the historical AWS binary), then validate actual
-A10G execution, independent CPU differentials, boundaries, failures and matched
-performance for the new artifacts. Preserve source/licensing inputs from merged
-main when composing. The fresh proof is not required for this release (user decision,
-25 September); obtain the matched A10G performance evidence and final review before
-enrollment. Native checks on candidate2 do not certify new binary bytes.
-
-The existing regtest request retains36completed pinning ranges and nextAttempt36,
-with no active GPU and no solution. Preserve it as candidate2-scoped evidence;
-do not silently attribute that coverage to a new build. A new build needs explicit
-coverage provenance/reconciliation or a separately identified fresh proof.
-No old spent fixture, regtest private key, or recovery state may become the mainnet
-wallet. Mainnet funds remain untouched; exact Xverse funding/fee approval follows
-verified deployment and a new mainnet public request.
-
 ## AWS transport integration
 
-The promotion branch now includes main's AWS transport and license packaging.
+The combined worker includes main's AWS transport and license packaging.
 Combined candidates use explicit `aws` and `runpod` Docker targets. The AWS target
 starts `aws_entrypoint.py`, uses the same combined handler and release binding,
 and keeps the public-only S3 input digest and immutable output protocol. CI runs

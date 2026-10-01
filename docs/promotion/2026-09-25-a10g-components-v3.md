@@ -1,5 +1,11 @@
 # A10G component gates passed
 
+> Historical record (25 September 2026). HOLD statements and pending gates describe
+> that checkpoint. See [verified status](../README.md) and the
+> [September 26 publication record](2026-09-26-publication.md) for the exact released
+> artifact, later gate decisions and completed evidence. This is not authorization
+> to repeat an experiment.
+
 Promotion remains HOLD. The frozen candidate source `43c77084648aa0f4cbcb1589abfcc792c9cc0d9d` was tested on one NVIDIA A10G using controller `29847cdcafb9688065b69c92e5630f0c59c5d9ab`. Numerical candidate binaries were unchanged; the pinned derivative image adds memory tooling.
 
 - Curve diagnostic: 5,628 scalar inputs, 11,256 points, four infinity cases and 504 table checks; zero errors.

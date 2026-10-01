@@ -34,10 +34,10 @@ The sm86 baseline binary SHA256 is
 `672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d`.
 All receipt file hashes matched, and all13 adapted source files were independently
 reproduced from the committed historical preparation inputs. Compiler receipt is
-CUDA12.8.93. This verifies build inputs/artifact consistency; native execution,
-effective binary architecture inspection and measured performance remain pending.
+CUDA12.8.93. This verifies build inputs/artifact consistency; that build receipt alone did not establish native execution, effective architecture
+or performance. The later results linked above record the completed native gate.
 
-## Prepared runner, not yet executed on GPU
+## Runner preparation (historical)
 
 `run_a10g_performance.py` pins both binary hashes and the externally frozen fixture
 hash. It requires one A10G and the installed candidate binding, then runs 24 samples:
@@ -53,10 +53,10 @@ minimum13minutes before compute,12minute outer timeout and10minute internal budg
 The baseline is a hash-verified executable in the public read-only bundle. This
 preparation does not launch infrastructure. Nine local tests cover acceptance and
 negative accounting, including dummy subprocess success, hit preservation and timeout output capture; they
-are not native solver/performance evidence. Operator bundle publication, complete
-collection/cleanup preparation and one reviewed bounded launch are still required.
+are not native solver/performance evidence. Operator bundle publication, collection/cleanup preparation and a bounded launch
+were prerequisites subsequently completed for the results linked above.
 
-## Revised sizing and remaining pinning session
+## Revised sizing and separate pinning session (historical)
 
 The original 2^31 plan is superseded before execution. Recorded exact-candidate
 A10G samples of 2^26 ranks took 2.101/2.119 seconds in round1 and 1.430/1.438
@@ -82,7 +82,7 @@ and exact sequence/locktime bounds; preserve full logs and account for a full
 bundle as if it completed the combined performance gate. Each paid session needs
 its own complete reviewed collection and cleanup plan.
 
-### Pinning runner prepared
+### Pinning runner preparation (historical)
 
 `run_a10g_pinning_performance.py` now defines a separate twelve-sample session:
 three alternating pairs for two synthetic public layouts, each requesting one
@@ -98,6 +98,6 @@ The runner verifies the requested arguments, printed effective scope and rounded
 256M completion. This is timing evidence for a source-bound bounded invocation,
 not independent exact enumeration or whole-range credit. Native correctness
 coverage remains the separate component gate. Four local tests exercise result
-acceptance and rejection; no native performance result is claimed. Synthetic
-fixture export, released-binary extraction, bundle review and host collection
-preparation remain required before launch.
+acceptance and rejection; those local tests are not native performance evidence.
+Fixture export, binary extraction, bundle review and collection preparation were
+preconditions to the subsequently completed native run.
