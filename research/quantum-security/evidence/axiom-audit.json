@@ -1,5 +1,5 @@
 {
-  "theorem_count": 788,
+  "theorem_count": 798,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2673,12 +2673,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SighashAllWire.changed_committedFields_sourceAll_distinct_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SighashAllWire.changed_outputs_distinct_preimages": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.committedFields_prepareAll": [
+      "propext"
+    ],
+    "QSB.SighashAllWire.decodeFull_encode": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -2693,6 +2706,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SighashAllWire.encode_injective_on": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.equal_sourceAllPreimage_committedFields": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.equal_sourceAllPreimage_projectionWithLedger": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.inputReference_withScript": [],
     "QSB.SighashAllWire.prepareAll_valid": [
       "Classical.choice",
       "Quot.sound",
@@ -2701,7 +2730,15 @@
     "QSB.SighashAllWire.prepareInputsAt_length": [
       "propext"
     ],
+    "QSB.SighashAllWire.prepareInputsAt_references": [
+      "propext"
+    ],
     "QSB.SighashAllWire.prepareInputsAt_valid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.unauthorized_sourceAll_distinct_preimage": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -2756,6 +2793,11 @@
       "propext"
     ],
     "QSB.SighashBinding.source_all_changed_outputs_wire_digest_target": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.source_all_forbidden_projection_wire_digest_target": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -311,6 +311,14 @@ is therefore a joint search-or-replay target, not
 necessarily two fresh independent DER hits. Bounding it must include the
 shared hash oracles, sighash correlations, all accepted public-key encodings,
 and adaptive disclosed subsets.
+For the source-shaped legacy ALL serializer, Lean now proves that any
+owner-forbidden exact projection in one fixed ledger context has a different
+preimage from every approved release. The proof decodes the complete prepared
+preimage and recovers ordered outpoints, sequences, outputs, version, and
+locktime; the fixed ledger maps those outpoints to previous outputs and fee.
+Different preimages still may hash to one fixed signature/key's admissible
+ECDSA target digest. Core serializer and ledger refinement, and the shared-
+budget quantum target-hit bound, remain open.
 It also does not require the pin and final-round key bytes to be distinct; a
 distinct-input QROM theorem cannot cover their equality case without a
 separate argument.

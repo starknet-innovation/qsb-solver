@@ -63,11 +63,24 @@
 'QSB.WireOutputs.decode_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireOutputs.encode_injective_on' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.decodeOutputs_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.decodeFull_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.encode_injective_on' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.changed_outputs_distinct_preimages' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.prepareInputsAt_length' depends on axioms: [propext]
 'QSB.SighashAllWire.withScript_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.prepareInputsAt_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.prepareAll_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.inputReference_withScript' does not depend on any axioms
+'QSB.SighashAllWire.prepareInputsAt_references' depends on axioms: [propext]
+'QSB.SighashAllWire.committedFields_prepareAll' depends on axioms: [propext]
+'QSB.SighashAllWire.equal_sourceAllPreimage_committedFields' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.changed_committedFields_sourceAll_distinct_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.SighashAllWire.equal_sourceAllPreimage_projectionWithLedger' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.SighashAllWire.unauthorized_sourceAll_distinct_preimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.decodeOutputs_sourceAllPreimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages' depends on axioms: [propext,
  Classical.choice,
@@ -90,6 +103,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.SighashBinding.source_all_changed_outputs_wire_digest_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.SighashBinding.source_all_forbidden_projection_wire_digest_target' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms

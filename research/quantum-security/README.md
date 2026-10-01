@@ -99,9 +99,11 @@ restrict the recovery points relevant to a consensus attacker model. The same
 fixture file records an x=`r+n` algebraic verification that this helper omits;
 the test uses message scalar zero and supplies no Bitcoin transaction preimage.
 
-`QSB/SighashBinding.lean` isolates the legacy `SIGHASH_ALL` output-binding
-step under an explicit wire-encoding or output-parser premise and maps a
-changed-output same-key verification to an admissible ECDSA message target.
+`QSB/SighashBinding.lean` isolates the legacy `SIGHASH_ALL` binding
+step and maps a same-key verification on an owner-forbidden semantic
+projection to an admissible ECDSA message target. The source-shaped preimage
+is distinct from each approved release under a fixed ledger-resolution
+function, even when scriptSig bytes, selected input, or scriptCode vary.
 `QSB/OutputCodec.lean`, `QSB/WireIntegers.lean`, and `QSB/WireOutputs.lean`
 prove concrete CompactSize, nonnegative eight-byte amount, and ordered-output
 round trips on their valid wire domains. A pinned 13-case Core probe checks
@@ -109,9 +111,11 @@ selected output, input, and `scriptSig` changes;
 see [the sighash boundary](CORE-SIGHASH-ALL.md). The general transaction
 Core refinement and quantum target-hit bounds are still open.
 `QSB/SighashAllWire.lean` now proves that a complete source-shaped ALL
-preimage reveals ordered outputs even with varying prepared input scripts,
-version, input count, and locktime. One 139-byte Lean fixture matches the
-pinned app's baseline preimage used in the Core probe.
+preimage determines version, ordered outpoints and sequences, ordered
+outputs, and locktime. It also proves that input-script preparation preserves
+those committed input fields. One 139-byte Lean fixture matches the pinned
+app's baseline preimage used in the Core probe. The actual Core serializer
+and ledger resolution remain separate refinement obligations.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that

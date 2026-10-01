@@ -226,4 +226,61 @@ theorem source_all_changed_outputs_wire_digest_target
     RecoveryCandidates.secp_digestTargets_card_le_eight r s key points
       xCoord rNat residueOf admissible fiber⟩
 
+/-- The source-shaped ALL replay target applies to any owner-forbidden
+transaction projection in a fixed ledger context, not only changed outputs.
+The fixed signature/key and admitted recovery-point premises remain explicit.
+In particular, this does not turn the finite target set into a quantum
+query-success bound or establish Core's actual serializer/ECDSA relation. -/
+theorem source_all_forbidden_projection_wire_digest_target
+    {F G : Type*} [Field F] [AddCommGroup G] [Module F G] [DecidableEq G]
+    (hash : Bytes → G) (digest : Bytes → Nat) (residueOf : G → Nat)
+    (r s : F) (key : G) (points : Finset G)
+    (xCoord : G → Nat) (rNat : Nat)
+    (admissible : ∀ R ∈ points,
+      xCoord R < RecoveryCandidates.secpFieldPrime ∧
+        xCoord R % RecoveryCandidates.secpGroupOrder = rNat)
+    (fiber : ∀ x, (points.filter (fun R => xCoord R = x)).card ≤ 2)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    {released attempted : SighashAllWire.TxFields}
+    (releasedSelected attemptedSelected : Nat)
+    (releasedScript attemptedScript : Bytes)
+    (releasedValid : SighashAllWire.valid released)
+    (attemptedValid : SighashAllWire.valid attempted)
+    (releasedScriptValid : releasedScript.length < 256 ^ 8)
+    (attemptedScriptValid : attemptedScript.length < 256 ^ 8)
+    (approved : SighashAllWire.projectionWithLedger ledger released ∈ authorized)
+    (forbidden : SighashAllWire.projectionWithLedger ledger attempted ∉ authorized)
+    (verified : ∃ R ∈ points,
+      RecoveryEquation r s R
+        (hash (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+          attemptedScript)) key)
+    (wire : digest (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+      attemptedScript) < 2 ^ 256)
+    (reduction : digest (SighashAllWire.sourceAllPreimage attempted
+      attemptedSelected attemptedScript) % RecoveryCandidates.secpGroupOrder =
+      residueOf (hash (SighashAllWire.sourceAllPreimage attempted
+        attemptedSelected attemptedScript))) :
+    SighashAllWire.sourceAllPreimage attempted attemptedSelected attemptedScript ≠
+      SighashAllWire.sourceAllPreimage released releasedSelected releasedScript ∧
+    digest (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+      attemptedScript) ∈
+      RecoveryCandidates.digestTargets RecoveryCandidates.secpGroupOrder
+        (2 ^ 256) ((messageTargets r s key points).image residueOf) ∧
+    (RecoveryCandidates.digestTargets RecoveryCandidates.secpGroupOrder
+      (2 ^ 256) ((messageTargets r s key points).image residueOf)).card ≤ 8 := by
+  let attemptedPreimage := SighashAllWire.sourceAllPreimage attempted
+    attemptedSelected attemptedScript
+  obtain ⟨R, present, equation⟩ := verified
+  have target : hash attemptedPreimage ∈ messageTargets r s key points :=
+    recovery_in_messageTargets r s key _ R points present equation
+  exact ⟨SighashAllWire.unauthorized_sourceAll_distinct_preimage
+      ledger authorized releasedSelected attemptedSelected
+      releasedScript attemptedScript releasedValid attemptedValid
+      releasedScriptValid attemptedScriptValid approved forbidden,
+    RecoveryCandidates.secp_digest_in_targetSet r s key points residueOf
+      (digest attemptedPreimage) (hash attemptedPreimage) wire target reduction,
+    RecoveryCandidates.secp_digestTargets_card_le_eight r s key points
+      xCoord rNat residueOf admissible fiber⟩
+
 end QSB.SighashBinding

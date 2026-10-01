@@ -1,4 +1,4 @@
-# Legacy `SIGHASH_ALL` output commitment boundary (Core 27.2)
+# Legacy `SIGHASH_ALL` semantic commitment boundary (Core 27.2)
 
 The fixed pinning and final nonce signatures in the disposable Config A lock
 end in `0x01`. That requests legacy `SIGHASH_ALL` for their reached checks.
@@ -37,6 +37,16 @@ ordered outputs from a complete source-shaped ALL preimage with variable
 version, prepared input scripts, input count, and locktime. The parser round
 trip is proved on its valid wire domain; a generated 139-byte fixture in
 `QSB/SighashAllWireFixture.lean` equals the pinned app's baseline preimage.
+The newer full parser also recovers version, every prepared input, outputs,
+locktime, and the appended ALL word. On valid fields it is a left inverse of
+the complete encoder. Source-shaped input preparation preserves each ordered
+prevout and sequence while replacing the scripts. Therefore equal prepared
+preimages force equality of all these committed fields even if the original
+scriptSigs, selected input index, or reached scriptCode differ. A fixed
+ledger-resolution function then maps equal ordered outpoints to equal
+previous outputs, giving equal `Game.Projection` and fee in that same ledger
+context. This ledger function is an explicit model parameter, not a proof of
+Bitcoin chain-state resolution.
 The model now also blanks original input scripts and substitutes a supplied
 `scriptCode` for the signed input before encoding. Its output parser still
 round-trips with arbitrary original scriptSigs and selected scriptCode in the
@@ -59,13 +69,21 @@ source-shaped ALL preimage: changed outputs force a distinct preimage, while
 an explicitly admitted same-key verification and digest reduction place the
 attempted digest in the set. Core acceptance and the joint-oracle target-hit
 probability remain unproved.
+The stronger `source_all_forbidden_projection_wire_digest_target` theorem
+uses an owner-authorized set of exact semantic projections. An attempted
+projection outside that set has a distinct preimage from any approved release
+under the same ledger function, including cases where outputs stay the same
+but an input, sequence, version, or locktime changes. The same explicit
+verification premises put its digest in the at-most-eight-value set; no
+uniformity or quantum query bound follows from that cardinality alone.
 
 For arbitrary accepted QSB witnesses, scriptCode may vary with the selected
 final dummy signatures, and other transaction fields may vary too. The
 arbitrary-context theorem assumes, but does not prove, that the output
-projection can be recovered from *any* legacy ALL preimage in the relevant
-domain. It also does not prove that every Core-accepted witness reaches the
-modeled ALL check with the modeled key.
+projection can be recovered from *any actual Core* legacy ALL preimage in the
+relevant domain. The source-shaped parser proves the corresponding fact for
+its own serializer. It does not prove that every Core-accepted witness reaches
+the modeled ALL check with the modeled key.
 
 ## Pinned native probe
 

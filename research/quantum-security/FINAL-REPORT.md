@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 788 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 798 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -396,7 +396,12 @@ ordered-output preimage distinction under an explicit injective wire-encoding
 premise and maps any same-key verification of the new message to an admissible
 ECDSA recovery target. A second Lean theorem permits other fields and
 scriptCode to vary: the full source-shaped ALL preimage parser now recovers
-ordered outputs for every valid encoded transaction, and a 139-byte Lean
+version, every prepared input, ordered outputs, locktime, and the ALL word
+for every valid encoded transaction. Input-script preparation preserves each
+ordered prevout and sequence; equal prepared preimages therefore imply equal
+committed transaction fields despite different original scriptSigs or
+scriptCodes. In one fixed ledger context they imply equal owner-authorization
+projections, including resolved previous outputs and fee. A 139-byte Lean
 fixture equals the pinned app's baseline preimage. Concrete CompactSize and
 nonnegative eight-byte amount encodings are included. Lean-checked branch
 vectors match the pinned app, and two 253-boundary transactions passed Core.
@@ -628,9 +633,11 @@ eight possible wire digest targets. This is finite target accounting, not a
 SHA256d quantum hit bound; the Core digest-to-residue bridge, point parser,
 and oracle correlations remain unresolved.
 `QSB/SighashBinding.lean` composes this count with the source-shaped ALL
-serializer: changed outputs imply a distinct prepared preimage, and the
-explicit verification and reduction premises put its digest in that
-at-most-eight-value target set. No Core acceptance or quantum probability
+serializer: an owner-forbidden semantic projection implies a distinct
+prepared preimage from any approved release in the same fixed ledger
+context. This includes changes to inputs, sequences, version, locktime, or
+outputs. The explicit verification and reduction premises put its digest in
+the at-most-eight-value target set. No Core acceptance or quantum probability
 enters the theorem.
 The pinned app's `ecdsa_recover` helper considers only x=`r`. A second public
 algebraic fixture uses x=`r+n`: the app's ECDSA verifier accepts its signature
