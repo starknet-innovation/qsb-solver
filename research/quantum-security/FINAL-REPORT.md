@@ -106,8 +106,17 @@ used.
    reject sampled nonfresh choices, and reproduce the index-152 commitment
    exception. This narrows the canonical-prefix case but does not prove an
    arbitrary-witness invariant. Nonminimal index encodings of numeric 10 and
-   152 also pass the same Core adapter; a byte-level ScriptNum candidate and
-   selected examples are checked in Lean, but full Core refinement is open.
+   152 also pass the same Core adapter. Lean checks those byte examples and
+   now proves for every byte list that OR-ing disjoint eight-bit lanes equals
+   arithmetic little-endian assembly, with the assembled word below
+   `256^length`. Lean also proves sign-bit subtraction equals keeping the
+   lower bits for every negative one- to four-byte encoding; all successfully
+   parsed operands lie in Core's unsaturated `getint` range. The pinned
+   adapter accepted a finite `OP_1ADD` differential
+   probe of 337 encodings and rejected one five-byte operand. Core's sign-mask
+   and whole-interpreter refinement remain open. A separate Lean range theorem
+   shows that the modeled serializer cannot fail on `OP_ADD` or `OP_MIN`
+   results from two successfully parsed operands.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13
    boundary cases byte-for-byte, including the NULLDUMMY-slot rejection. The
    separate six-case overshoot report had mislabeled the canonical first

@@ -28,6 +28,25 @@ scriptSig supplies an ordinary byte-vector stack at the lock entrance. Core
 checks the combined main/altstack size after each instruction
 ([source](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1216-L1223)).
 
+The [Core 27.2 `CScriptNum` constructor and `set_vch`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.h#L226-L396)
+reject more than four operand bytes, optionally enforce minimal encoding, and
+assemble the remaining little-endian bytes by OR-ing disjoint shifted lanes.
+For this adapter, `MINIMALDATA` is absent from `VERIFY_ALL`, so that optional
+minimality test is off. `QSB/ByteIndex.lean` now proves for **every** byte list
+that an OR-based recursive assembly equals the arithmetic little-endian word
+used by its parser, and that the word is below `256^length`. It also proves
+that substituting the OR assembly into the source-shaped sign-magnitude
+parser leaves every result unchanged. A further theorem bounds every parsed
+value by ±2,147,483,647, so the `getint` saturation in Core's `OP_ROLL`
+path cannot change a successfully parsed four-byte operand. This checks the
+disjoint-byte-lane arithmetic. A separate theorem shows that, for each
+negative one- to four-byte encoding, subtraction of the sign bit equals
+retaining precisely the lower bits. The exact C++ 64-bit complement-mask
+semantics, execution and whole opcode trace still need refinement to Lean.
+`QSB/ByteIndexRange.lean` also proves that the optional Lean serializer is
+defined for the sum and minimum of any two successfully parsed operands;
+this removes a model-only failure branch from `OP_ADD` and `OP_MIN`.
+
 `analysis/check_bare_script_boundary.py` reproduces five isolated cases with
 the pinned native adapter; results are in `evidence/bare-script-boundary.json`.
 In particular, non-push-only `OP_1 OP_1 OP_ADD` leaves `2` for a bare
@@ -35,6 +54,18 @@ In particular, non-push-only `OP_1 OP_1 OP_ADD` leaves `2` for a bare
 are accepted. A 202nd counted opcode in either script is rejected. These are
 source corroboration and boundary tests, **not** full QSB acceptance or a
 formal interpreter equivalence proof.
+
+`analysis/check_scriptnum_core.py` adds a finite differential check of
+`OP_1ADD` on 337 selected zero- to four-byte encodings, including every
+one-byte encoding and sign/nonminimal four-byte boundaries. It checks Core's
+serialized result against an independent sign-magnitude calculation in four
+locks below the 201-opcode limit, and checks one five-byte operand rejection.
+The pinned adapter accepted all four batches and rejected the oversized
+operand; exact binary/image hashes and transaction hashes are in
+`evidence/scriptnum-core.json`. The test helper's `bitcoin_tx.py` hash still
+matches the original source inventory even though the app checkout revision
+has advanced. This supports the parser model at the tested
+points; it is not a universal compiled-Core refinement theorem.
 
 ## What is checked in Lean
 

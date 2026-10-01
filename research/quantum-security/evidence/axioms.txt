@@ -139,19 +139,28 @@
 'QSB.Bonus.oversized_index_selects_commitment' depends on axioms: [propext]
 'QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot' depends on axioms: [propext]
 'QSB.Bonus.fresh_or_commitment_preserves_zero_dummy' depends on axioms: [propext]
-'QSB.ByteIndex.empty_is_zero' depends on axioms: [propext]
-'QSB.ByteIndex.negative_zero_is_zero' depends on axioms: [propext]
-'QSB.ByteIndex.nonminimal_ten' depends on axioms: [propext]
-'QSB.ByteIndex.positive_152' depends on axioms: [propext]
-'QSB.ByteIndex.nonminimal_positive_152' depends on axioms: [propext]
-'QSB.ByteIndex.negative_152' depends on axioms: [propext]
-'QSB.ByteIndex.five_bytes_rejected' depends on axioms: [propext]
+'QSB.ByteIndex.unsignedLE_lt_pow' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndex.coreOrWord_eq_unsignedLE' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndex.coreOrScriptNum_eq_parseScriptNum' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndex.clear_sign_bit_eq_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndex.negative_sign_mask' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndex.parsed_in_int32' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndexRange.encode_defined_of_natAbs_lt' depends on axioms: [propext, Quot.sound]
+'QSB.ByteIndexRange.add_parsed_defined' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndexRange.min_parsed_defined' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteIndex.empty_is_zero' does not depend on any axioms
+'QSB.ByteIndex.negative_zero_is_zero' does not depend on any axioms
+'QSB.ByteIndex.nonminimal_ten' does not depend on any axioms
+'QSB.ByteIndex.positive_152' does not depend on any axioms
+'QSB.ByteIndex.nonminimal_positive_152' does not depend on any axioms
+'QSB.ByteIndex.negative_152' does not depend on any axioms
+'QSB.ByteIndex.five_bytes_rejected' does not depend on any axioms
 'QSB.ByteIndex.encode_zero' does not depend on any axioms
 'QSB.ByteIndex.encode_ten' does not depend on any axioms
 'QSB.ByteIndex.encode_positive_152' does not depend on any axioms
 'QSB.ByteIndex.encode_negative_152' does not depend on any axioms
-'QSB.ByteIndex.encode_zero_roundtrip' depends on axioms: [propext]
-'QSB.ByteIndex.encode_152_roundtrip' depends on axioms: [propext]
+'QSB.ByteIndex.encode_zero_roundtrip' does not depend on any axioms
+'QSB.ByteIndex.encode_152_roundtrip' does not depend on any axioms
 'QSB.ByteIndex.nonminimal_ten_selects_dummy' depends on axioms: [propext]
 'QSB.ByteIndex.nonminimal_152_selects_commitment' depends on axioms: [propext]
 'QSB.ByteIndex.negative_152_cannot_roll' depends on axioms: [propext]
@@ -222,10 +231,10 @@
 'QSB.FirstOvershoot.next_index_is_lock_commitment' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.next_index_roll_full' depends on axioms: [propext]
 'QSB.FirstOvershoot.second_min_rejects_commitment' depends on axioms: [propext, Quot.sound]
-'QSB.FirstOvershoot.parse_151' depends on axioms: [propext]
+'QSB.FirstOvershoot.parse_151' does not depend on any axioms
 'QSB.FirstOvershoot.encode_303' does not depend on any axioms
-'QSB.FirstOvershoot.parse_303' depends on axioms: [propext]
-'QSB.FirstOvershoot.parse_311' depends on axioms: [propext]
+'QSB.FirstOvershoot.parse_303' does not depend on any axioms
+'QSB.FirstOvershoot.parse_311' does not depend on any axioms
 'QSB.FirstOvershoot.oversized_index_clamps_to_152' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.oversized_index_min_step' depends on axioms: [propext, Quot.sound]
 'QSB.FirstOvershoot.unparseable_index_min_fails' depends on axioms: [propext, Quot.sound]
@@ -313,12 +322,12 @@
 'QSB.FirstIndexMap.fixed_region_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-'QSB.FirstNumericRange.canonical_index_roundtrip' depends on axioms: [propext]
-'QSB.FirstNumericRange.signed_offset_roundtrip' depends on axioms: [propext]
+'QSB.FirstNumericRange.canonical_index_roundtrip' does not depend on any axioms
+'QSB.FirstNumericRange.signed_offset_roundtrip' does not depend on any axioms
 'QSB.FirstNumericRange.encode_canonical_index' does not depend on any axioms
-'QSB.FirstNumericRange.parse_canonical_index' depends on axioms: [propext]
+'QSB.FirstNumericRange.parse_canonical_index' does not depend on any axioms
 'QSB.FirstNumericRange.encode_signed_offset' does not depend on any axioms
-'QSB.FirstNumericRange.parse_signed_offset' depends on axioms: [propext]
+'QSB.FirstNumericRange.parse_signed_offset' does not depend on any axioms
 'QSB.FirstNumericRange.canonical_index_small' does not depend on any axioms
 'QSB.FirstNumericRange.inrange_hash_hit_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
@@ -333,9 +342,9 @@
 'QSB.FirstNumericRange.inrange_first_roll_has_commitment_origin' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-'QSB.FirstNegativeRange.negative_roundtrip' depends on axioms: [propext]
+'QSB.FirstNegativeRange.negative_roundtrip' does not depend on any axioms
 'QSB.FirstNegativeRange.negative_encode' does not depend on any axioms
-'QSB.FirstNegativeRange.depth_roundtrip' depends on axioms: [propext]
+'QSB.FirstNegativeRange.depth_roundtrip' does not depend on any axioms
 'QSB.FirstNegativeRange.depth_encode' does not depend on any axioms
 'QSB.FirstNegativeRange.negative_arithmetic' does not depend on any axioms
 'QSB.FirstNegativeRange.negative_canonical_small' does not depend on any axioms
@@ -401,7 +410,7 @@
  Quot.sound]
 'QSB.ByteFinalCounts.generated_final_byte_suffix' does not depend on any axioms
 'QSB.ByteFinalCounts.generated_final_setup_suffix' does not depend on any axioms
-'QSB.ByteFinalCounts.key_index_bytes_decode' depends on axioms: [propext]
+'QSB.ByteFinalCounts.key_index_bytes_decode' does not depend on any axioms
 'QSB.ByteFinalCounts.key_index_values' does not depend on any axioms
 'QSB.ByteFinalCounts.push_success_shape' depends on axioms: [propext]
 'QSB.ByteFinalCounts.roll_success_budget' depends on axioms: [propext, Quot.sound]
@@ -431,7 +440,7 @@
  Classical.choice,
  Quot.sound]
 'QSB.ByteLatePuzzle.generated_late_ops' does not depend on any axioms
-'QSB.ByteLatePuzzle.late_indices_decode' depends on axioms: [propext]
+'QSB.ByteLatePuzzle.late_indices_decode' does not depend on any axioms
 'QSB.ByteLatePuzzle.accepted_dup_sha256_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteLatePuzzle.accepted_checksigverify_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteLatePuzzle.accepted_late_puzzle_key' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -458,7 +467,7 @@
  Classical.choice,
  Quot.sound]
 'QSB.ByteBonusBetween.generated_between_ops' does not depend on any axioms
-'QSB.ByteBonusBetween.between_roll_index_decode' depends on axioms: [propext]
+'QSB.ByteBonusBetween.between_roll_index_decode' does not depend on any axioms
 'QSB.ByteBonusBetween.successful_cap_min_tail' depends on axioms: [propext, Quot.sound]
 'QSB.ByteBonusBetween.accepted_cap_min_preserves_tail' depends on axioms: [propext, Quot.sound]
 'QSB.ByteBonusBetween.accepted_between_preserves_shallow' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -502,8 +511,8 @@
  Classical.choice,
  Quot.sound]
 'QSB.FinalSignedBoundary.generated_first_signed_comparison_tail' does not depend on any axioms
-'QSB.FinalSignedBoundary.capped_offset_encoding' depends on axioms: [propext]
-'QSB.FinalSignedBoundary.preimage_roll_index_decode' depends on axioms: [propext]
+'QSB.FinalSignedBoundary.capped_offset_encoding' does not depend on any axioms
+'QSB.FinalSignedBoundary.preimage_roll_index_decode' does not depend on any axioms
 'QSB.FinalSignedBoundary.wrong_width_target_rejects_comparison' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -525,7 +534,7 @@
 'QSB.FinalSignedAccepted.generated_final_round_all_pushes' depends on axioms: [propext]
 'QSB.FinalSignedAccepted.accepted_final_round_init_shape' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedAccepted.generated_fixed_index_pair' does not depend on any axioms
-'QSB.FinalSignedAccepted.fixed_index_decodes' depends on axioms: [propext]
+'QSB.FinalSignedAccepted.fixed_index_decodes' does not depend on any axioms
 'QSB.FinalSignedAccepted.base_region_prefix_length' depends on axioms: [propext]
 'QSB.FinalSignedAccepted.fixed_index_roll_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedAccepted.fixed_index_roll_requires_tail' depends on axioms: [propext, Quot.sound]
@@ -567,11 +576,11 @@
 'QSB.FinalSignedLoop.generated_signed_comparison_ops' does not depend on any axioms
 'QSB.FinalSignedLoop.signed_suffix_splits' does not depend on any axioms
 'QSB.FinalSignedLoop.generated_fixed_raw_index_pairs' does not depend on any axioms
-'QSB.FinalSignedLoop.generated_fixed_raw_index_decodes' depends on axioms: [propext]
+'QSB.FinalSignedLoop.generated_fixed_raw_index_decodes' does not depend on any axioms
 'QSB.FinalSignedLoop.generated_signed_block_ops' does not depend on any axioms
-'QSB.FinalSignedLoop.generated_signed_gap_decodes' depends on axioms: [propext]
-'QSB.FinalSignedLoop.generated_preimage_index_decodes' depends on axioms: [propext]
-'QSB.FinalSignedLoop.scriptnum_roundtrip_to_303' depends on axioms: [propext]
+'QSB.FinalSignedLoop.generated_signed_gap_decodes' does not depend on any axioms
+'QSB.FinalSignedLoop.generated_preimage_index_decodes' does not depend on any axioms
+'QSB.FinalSignedLoop.scriptnum_roundtrip_to_303' does not depend on any axioms
 'QSB.FinalSignedLoop.encoded_nonnegative_reparse_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedLoop.encoded_reparse_preserves_upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedLoop.signed_cap_add_index_bound' depends on axioms: [propext, Classical.choice, Quot.sound]

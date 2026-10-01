@@ -16,6 +16,7 @@ import QSB.Layout
 import QSB.Bonus
 import QSB.FirstBonus
 import QSB.ByteIndex
+import QSB.ByteIndexRange
 import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
@@ -181,6 +182,15 @@ import QSB.Reduction
 #print axioms QSB.Bonus.oversized_index_selects_commitment
 #print axioms QSB.Bonus.nonfresh_shifts_nonzero_into_dummy_slot
 #print axioms QSB.Bonus.fresh_or_commitment_preserves_zero_dummy
+#print axioms QSB.ByteIndex.unsignedLE_lt_pow
+#print axioms QSB.ByteIndex.coreOrWord_eq_unsignedLE
+#print axioms QSB.ByteIndex.coreOrScriptNum_eq_parseScriptNum
+#print axioms QSB.ByteIndex.clear_sign_bit_eq_sub
+#print axioms QSB.ByteIndex.negative_sign_mask
+#print axioms QSB.ByteIndex.parsed_in_int32
+#print axioms QSB.ByteIndexRange.encode_defined_of_natAbs_lt
+#print axioms QSB.ByteIndexRange.add_parsed_defined
+#print axioms QSB.ByteIndexRange.min_parsed_defined
 #print axioms QSB.ByteIndex.empty_is_zero
 #print axioms QSB.ByteIndex.negative_zero_is_zero
 #print axioms QSB.ByteIndex.nonminimal_ten

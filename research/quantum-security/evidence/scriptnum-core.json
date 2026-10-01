@@ -1,0 +1,41 @@
+{
+  "scope": "finite numeric-opcode probe on a disposable two-input transaction",
+  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "source_file_sha256": {
+    "worker/cpu/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "consensus/verify.cpp": "54ddb7c6049a21f4aaad23ef1a5e1fe15249eb2ade1cb5082ef15f90c2847fee"
+  },
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "tested_encodings": 337,
+  "groups": [
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "273bf615738ccd4d8abdf609ada8317b3e4812866d72b1c5f1b86d7072d4b24f",
+      "test_lock_sha256": "26d6b808bfa0d722bc1b7490f775fef67a2090bee035447c7a8990c02602cbd1"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "4cd81573ef949d8c7d986a966dabb627f71b84afa055ea4ab183f94f80160d50",
+      "test_lock_sha256": "ffba0bb05ecce9097ff3c9d3d9aab12033a9b91b0254cc7f01c49d3e351499b9"
+    },
+    {
+      "cases": 90,
+      "accepted": true,
+      "transaction_sha256": "a8aa5de1bdd4192b532dece082fd4c68affdf4cd733096cbd4e43b80603568e6",
+      "test_lock_sha256": "09bec4e4809a66d41f0be65076e4512338ffbbf42d7f2df4ba4cee01e5e4ba26"
+    },
+    {
+      "cases": 67,
+      "accepted": true,
+      "transaction_sha256": "5228e45f4d50cb8dbb65d88e54f85e30529b43a36d25b877cde49bd343b43347",
+      "test_lock_sha256": "4b7a325aecf1aeb327986bf2d0f925df7a487bba9f2afd07b5f32fbad69b07b1"
+    }
+  ],
+  "five_byte_operand_rejected": true
+}

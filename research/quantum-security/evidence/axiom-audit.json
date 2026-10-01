@@ -1,5 +1,5 @@
 {
-  "theorem_count": 654,
+  "theorem_count": 663,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -56,9 +56,7 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.ByteBonusBetween.between_roll_index_decode": [
-      "propext"
-    ],
+    "QSB.ByteBonusBetween.between_roll_index_decode": [],
     "QSB.ByteBonusBetween.generated_between_ops": [],
     "QSB.ByteBonusBetween.modeled_shallow_first_ninth_source": [
       "Classical.choice",
@@ -151,9 +149,7 @@
     ],
     "QSB.ByteFinalCounts.generated_final_byte_suffix": [],
     "QSB.ByteFinalCounts.generated_final_setup_suffix": [],
-    "QSB.ByteFinalCounts.key_index_bytes_decode": [
-      "propext"
-    ],
+    "QSB.ByteFinalCounts.key_index_bytes_decode": [],
     "QSB.ByteFinalCounts.key_index_values": [],
     "QSB.ByteFinalCounts.push_success_shape": [
       "propext"
@@ -172,47 +168,70 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.ByteIndex.empty_is_zero": [
+    "QSB.ByteIndex.clear_sign_bit_eq_sub": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
-    "QSB.ByteIndex.encode_152_roundtrip": [
+    "QSB.ByteIndex.coreOrScriptNum_eq_parseScriptNum": [
+      "Quot.sound",
       "propext"
     ],
+    "QSB.ByteIndex.coreOrWord_eq_unsignedLE": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndex.empty_is_zero": [],
+    "QSB.ByteIndex.encode_152_roundtrip": [],
     "QSB.ByteIndex.encode_negative_152": [],
     "QSB.ByteIndex.encode_positive_152": [],
     "QSB.ByteIndex.encode_ten": [],
     "QSB.ByteIndex.encode_zero": [],
-    "QSB.ByteIndex.encode_zero_roundtrip": [
-      "propext"
-    ],
-    "QSB.ByteIndex.five_bytes_rejected": [
-      "propext"
-    ],
-    "QSB.ByteIndex.negative_152": [
-      "propext"
-    ],
+    "QSB.ByteIndex.encode_zero_roundtrip": [],
+    "QSB.ByteIndex.five_bytes_rejected": [],
+    "QSB.ByteIndex.negative_152": [],
     "QSB.ByteIndex.negative_152_cannot_roll": [
       "propext"
     ],
-    "QSB.ByteIndex.negative_zero_is_zero": [
+    "QSB.ByteIndex.negative_sign_mask": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
+    "QSB.ByteIndex.negative_zero_is_zero": [],
     "QSB.ByteIndex.nonminimal_152_selects_commitment": [
       "propext"
     ],
-    "QSB.ByteIndex.nonminimal_positive_152": [
-      "propext"
-    ],
-    "QSB.ByteIndex.nonminimal_ten": [
-      "propext"
-    ],
+    "QSB.ByteIndex.nonminimal_positive_152": [],
+    "QSB.ByteIndex.nonminimal_ten": [],
     "QSB.ByteIndex.nonminimal_ten_selects_dummy": [
       "propext"
     ],
     "QSB.ByteIndex.oversized_encoding_cannot_roll": [
       "propext"
     ],
-    "QSB.ByteIndex.positive_152": [
+    "QSB.ByteIndex.parsed_in_int32": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndex.positive_152": [],
+    "QSB.ByteIndex.unsignedLE_lt_pow": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexRange.add_parsed_defined": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexRange.encode_defined_of_natAbs_lt": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteIndexRange.min_parsed_defined": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.ByteIndexSign.encoded_below_152_parses_below_152": [
@@ -298,9 +317,7 @@
     "QSB.ByteLatePuzzle.generated_late_final_check_split": [],
     "QSB.ByteLatePuzzle.generated_late_final_suffix": [],
     "QSB.ByteLatePuzzle.generated_late_ops": [],
-    "QSB.ByteLatePuzzle.late_indices_decode": [
-      "propext"
-    ],
+    "QSB.ByteLatePuzzle.late_indices_decode": [],
     "QSB.ByteLayout.comparisons_follow_hash160": [],
     "QSB.ByteLayout.fifteen_hors_comparisons": [],
     "QSB.ByteLayout.final_opcode_is_checkmultisig": [],
@@ -809,9 +826,7 @@
     "QSB.FinalSignedAccepted.base_region_prefix_length": [
       "propext"
     ],
-    "QSB.FinalSignedAccepted.fixed_index_decodes": [
-      "propext"
-    ],
+    "QSB.FinalSignedAccepted.fixed_index_decodes": [],
     "QSB.FinalSignedAccepted.fixed_index_roll_requires_tail": [
       "Quot.sound",
       "propext"
@@ -895,9 +910,7 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FinalSignedBoundary.capped_offset_encoding": [
-      "propext"
-    ],
+    "QSB.FinalSignedBoundary.capped_offset_encoding": [],
     "QSB.FinalSignedBoundary.generated_commitment_ops_are_pushes": [
       "propext"
     ],
@@ -933,9 +946,7 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FinalSignedBoundary.preimage_roll_index_decode": [
-      "propext"
-    ],
+    "QSB.FinalSignedBoundary.preimage_roll_index_decode": [],
     "QSB.FinalSignedBoundary.shallow_first_signed_comparison_rejects": [
       "Classical.choice",
       "Quot.sound",
@@ -1063,9 +1074,7 @@
     "QSB.FinalSignedLoop.generated_dummy_pool_nodup": [
       "propext"
     ],
-    "QSB.FinalSignedLoop.generated_fixed_raw_index_decodes": [
-      "propext"
-    ],
+    "QSB.FinalSignedLoop.generated_fixed_raw_index_decodes": [],
     "QSB.FinalSignedLoop.generated_fixed_raw_index_pairs": [],
     "QSB.FinalSignedLoop.generated_initial_pool_alignment": [
       "propext"
@@ -1074,15 +1083,11 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FinalSignedLoop.generated_preimage_index_decodes": [
-      "propext"
-    ],
+    "QSB.FinalSignedLoop.generated_preimage_index_decodes": [],
     "QSB.FinalSignedLoop.generated_signed_block_ops": [],
     "QSB.FinalSignedLoop.generated_signed_cap_add_ops": [],
     "QSB.FinalSignedLoop.generated_signed_comparison_ops": [],
-    "QSB.FinalSignedLoop.generated_signed_gap_decodes": [
-      "propext"
-    ],
+    "QSB.FinalSignedLoop.generated_signed_gap_decodes": [],
     "QSB.FinalSignedLoop.generated_signed_round_ops": [],
     "QSB.FinalSignedLoop.generated_signed_suffix_ops": [],
     "QSB.FinalSignedLoop.inrange_paired_roll_transition": [
@@ -1115,9 +1120,7 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FinalSignedLoop.scriptnum_roundtrip_to_303": [
-      "propext"
-    ],
+    "QSB.FinalSignedLoop.scriptnum_roundtrip_to_303": [],
     "QSB.FinalSignedLoop.shallow_signed_source_wrong_width": [
       "Quot.sound",
       "propext"
@@ -1376,9 +1379,7 @@
       "propext"
     ],
     "QSB.FirstNegativeRange.depth_encode": [],
-    "QSB.FirstNegativeRange.depth_roundtrip": [
-      "propext"
-    ],
+    "QSB.FirstNegativeRange.depth_roundtrip": [],
     "QSB.FirstNegativeRange.negative_arithmetic": [],
     "QSB.FirstNegativeRange.negative_canonical_small": [],
     "QSB.FirstNegativeRange.negative_encode": [],
@@ -1410,12 +1411,8 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FirstNegativeRange.negative_roundtrip": [
-      "propext"
-    ],
-    "QSB.FirstNumericRange.canonical_index_roundtrip": [
-      "propext"
-    ],
+    "QSB.FirstNegativeRange.negative_roundtrip": [],
+    "QSB.FirstNumericRange.canonical_index_roundtrip": [],
     "QSB.FirstNumericRange.canonical_index_small": [],
     "QSB.FirstNumericRange.encode_canonical_index": [],
     "QSB.FirstNumericRange.encode_signed_offset": [],
@@ -1453,15 +1450,9 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FirstNumericRange.parse_canonical_index": [
-      "propext"
-    ],
-    "QSB.FirstNumericRange.parse_signed_offset": [
-      "propext"
-    ],
-    "QSB.FirstNumericRange.signed_offset_roundtrip": [
-      "propext"
-    ],
+    "QSB.FirstNumericRange.parse_canonical_index": [],
+    "QSB.FirstNumericRange.parse_signed_offset": [],
+    "QSB.FirstNumericRange.signed_offset_roundtrip": [],
     "QSB.FirstOvershoot.accepted_first_index_below_152": [
       "Classical.choice",
       "Quot.sound",
@@ -1725,15 +1716,9 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.FirstOvershoot.parse_151": [
-      "propext"
-    ],
-    "QSB.FirstOvershoot.parse_303": [
-      "propext"
-    ],
-    "QSB.FirstOvershoot.parse_311": [
-      "propext"
-    ],
+    "QSB.FirstOvershoot.parse_151": [],
+    "QSB.FirstOvershoot.parse_303": [],
+    "QSB.FirstOvershoot.parse_311": [],
     "QSB.FirstOvershoot.penultimate_capacity_segment_fails": [
       "Classical.choice",
       "Quot.sound",
