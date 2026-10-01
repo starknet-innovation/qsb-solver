@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,142 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,149 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -892,6 +892,15 @@ not a quantum collision or search bound. A further checked lemma turns the
 equal-digest case into an explicit collision for that *same* H: if the first
 hashes agree, the distinct ALL preimages collide; otherwise their distinct
 first hashes collide under the second H application.
+The history event now retains precisely those reached preimages in its
+collision branch. Its former branch, `∃ a ≠ b, H(a) = H(b)` with no relation
+to the attempted call, was unsuitable for a quantum success bound: Lean proves
+that this unrestricted event holds for every total 32-byte-output H on all
+byte strings, even before any query. A finite checked example also has an
+unrelated global collision while the two chosen preimages do not collide.
+The corrected witnessed event is equivalent to equality of the two reached
+SHA256d digests; it still needs a causal query/transcript theorem;
+this repair is not a QROM bound.
 `QSB/DynamicRetarget.search_pin_final_history_cases` now classifies both
 reached source checks against a list of approved fixed-signature/key ALL
 calls. Each is either an unmatched DER-shaped verifying call on a preimage

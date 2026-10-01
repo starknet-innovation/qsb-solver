@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1142,
+  "theorem_count": 1149,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1742,6 +1742,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRetarget.double_hash_collision_witnessed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.double_hash_collision_yields_hash_collision": [],
     "QSB.DynamicRetarget.findRelease_mem": [
       "Classical.choice",
@@ -1758,6 +1763,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRetarget.fixed_width_global_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.joint_functions_global_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.reused_fixed_call_collision_or_alternative": [
       "Classical.choice",
       "Quot.sound",
@@ -1768,12 +1783,27 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRetarget.reused_fixed_call_witnessed_collision_or_alternative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRetarget.search_good_setup_joint_history_event": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicRetarget.search_pin_final_history_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.unrelated_global_collision_counterexample": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.witnessed_collision_has_reached_pair": [],
+    "QSB.DynamicRetarget.witnessed_collision_iff_double_equal": [
       "Classical.choice",
       "Quot.sound",
       "propext"

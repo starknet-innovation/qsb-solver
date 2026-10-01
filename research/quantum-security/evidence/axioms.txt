@@ -44,7 +44,16 @@
 'QSB.DynamicRetarget.findRelease_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.findRelease_none_no_match' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.double_hash_collision_yields_hash_collision' does not depend on any axioms
+'QSB.DynamicRetarget.double_hash_collision_witnessed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.witnessed_collision_iff_double_equal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.witnessed_collision_has_reached_pair' does not depend on any axioms
+'QSB.DynamicRetarget.unrelated_global_collision_counterexample' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicRetarget.fixed_width_global_collision' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.joint_functions_global_collision' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicRetarget.reused_fixed_call_witnessed_collision_or_alternative' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicRetarget.classify_checked_call' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -474,6 +474,11 @@ distinct ALL preimage; `QSB/DynamicRetarget.lean` splits the result into an
 equal-digest collision or a hit on at most seven alternative digest values.
 Lean reduces the equal-digest case to a collision in the same H, using either
 the two distinct ALL preimages or their distinct first H outputs.
+The event used by the approved-call history classification retains those
+specific inputs. An unrestricted existential collision would be certain for
+any total 32-byte-output H on the infinite byte-string domain, so it cannot
+be assigned a nontrivial quantum query-success probability. The witnessed
+collision still requires a causal transcript and shared-query QROM bound.
 The source certificate now has a finer deterministic classification against
 a supplied list of approved fixed-signature/key ALL calls: each reached pin
 and final pair either has no exact signature/key match in that list and is a

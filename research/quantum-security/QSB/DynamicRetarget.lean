@@ -1,4 +1,6 @@
 import QSB.DynamicDisclosureEvent
+import Mathlib.Data.Fintype.Vector
+import Mathlib.Data.Fintype.EquivFin
 
 /-!
 An approved disclosure of one fixed-signature/key verification makes a
@@ -117,6 +119,88 @@ theorem double_hash_collision_yields_hash_collision
   · exact ⟨left, right, different, firstEqual⟩
   · exact ⟨H left, H right, firstEqual, doubleEqual⟩
 
+/-- The collision is witnessed at one of two specific input pairs determined
+by the approved and attempted ALL preimages. Unlike an unrestricted
+existential collision, this event names the reached calls' actual inputs. -/
+def WitnessedHashCollision {X : Type*} (H : X → X)
+    (oldInput newInput : X) : Prop :=
+  H oldInput = H newInput ∨
+    (H oldInput ≠ H newInput ∧
+      H (H oldInput) = H (H newInput))
+
+theorem double_hash_collision_witnessed {X : Type*}
+    (H : X → X) (oldInput newInput : X)
+    (equal : H (H oldInput) = H (H newInput)) :
+    WitnessedHashCollision H oldInput newInput := by
+  by_cases firstEqual : H oldInput = H newInput
+  · exact Or.inl firstEqual
+  · exact Or.inr ⟨firstEqual, equal⟩
+
+/-- The reached-pair event is exactly equality of the two double-hash
+digests, with the first-round versus second-round collision made explicit. -/
+theorem witnessed_collision_iff_double_equal {X : Type*}
+    (H : X → X) (oldInput newInput : X) :
+    WitnessedHashCollision H oldInput newInput ↔
+      H (H oldInput) = H (H newInput) := by
+  constructor
+  · intro witnessed
+    rcases witnessed with firstEqual | ⟨_, secondEqual⟩
+    · exact congrArg H firstEqual
+    · exact secondEqual
+  · exact double_hash_collision_witnessed H oldInput newInput
+
+theorem witnessed_collision_has_reached_pair {X : Type*}
+    (H : X → X) (oldInput newInput : X)
+    (different : oldInput ≠ newInput)
+    (witnessed : WitnessedHashCollision H oldInput newInput) :
+    ∃ a b : X,
+      ((a = oldInput ∧ b = newInput) ∨
+        (a = H oldInput ∧ b = H newInput)) ∧
+      a ≠ b ∧ H a = H b := by
+  rcases witnessed with firstEqual | ⟨firstDifferent, secondEqual⟩
+  · exact ⟨oldInput, newInput, Or.inl ⟨rfl, rfl⟩,
+      different, firstEqual⟩
+  · exact ⟨H oldInput, H newInput, Or.inr ⟨rfl, rfl⟩,
+      firstDifferent, secondEqual⟩
+
+/-- A collision somewhere else in the function is not the reached-call
+collision. The finite example has a collision at inputs 2 and 3, but its
+outputs at approved input 0 and attempted input 1 remain distinct through
+both hash rounds. -/
+theorem unrelated_global_collision_counterexample :
+    let H : Fin 4 → Fin 4 := fun x => if x = 3 then 2 else x
+    (∃ a b : Fin 4, a ≠ b ∧ H a = H b) ∧
+      ¬WitnessedHashCollision H 0 1 := by
+  dsimp
+  constructor
+  · refine ⟨2, 3, ?_, ?_⟩ <;> decide
+  · simp [WitnessedHashCollision]
+
+/-- For a total fixed-width SHA-256-shaped function on all byte strings, the
+unrestricted global collision event is true even before an adversary runs.
+It therefore cannot itself receive a nontrivial query-success bound. -/
+theorem fixed_width_global_collision (H : Bytes → Bytes)
+    (width : ∀ input, (H input).length = 32) :
+    ∃ a b : Bytes, a ≠ b ∧ H a = H b := by
+  classical
+  by_contra noCollision
+  have injective : Function.Injective H := by
+    intro a b equal
+    by_contra different
+    exact noCollision ⟨a, b, different, equal⟩
+  let vectorized : Bytes → List.Vector UInt8 32 :=
+    fun input => ⟨H input, width input⟩
+  have vectorizedInjective : Function.Injective vectorized := by
+    intro a b equal
+    exact injective (congrArg Subtype.val equal)
+  haveI : Finite Bytes := Finite.of_injective vectorized vectorizedInjective
+  exact (inferInstance : Infinite Bytes).false
+
+theorem joint_functions_global_collision
+    (functions : JointSourceChecks.Functions) :
+    ∃ a b : Bytes, a ≠ b ∧ functions.H a = functions.H b :=
+  fixed_width_global_collision functions.H functions.H_width
+
 /-- Reusing a publicly disclosed fixed-signature/key pair on an unauthorized
 projection yields either an equal SHA256d digest on distinct ALL preimages or
 an alternative digest in a target set of size at most seven. The target-set
@@ -176,9 +260,10 @@ theorem reused_fixed_call_collision_or_alternative
         have bound := contract.card_le_eight released.sig released.key
         omega
 
-/-- The equal-digest branch above is an ordinary collision in the *same*
-SHA-256 oracle. The other branch remains a finite, oracle-dependent target
-search problem. No independent-oracle replacement is used. -/
+/-- The equal-digest branch implies an ordinary collision in the *same*
+SHA-256 oracle. This unrestricted existential consequence must not be used
+as the quantum failure event: it is always true for a total fixed-width H.
+The reached-pair event below is the one retained by history classification. -/
 theorem reused_fixed_call_hash_collision_or_alternative
     (functions : JointSourceChecks.Functions)
     (ecdsa : Bytes → Bytes → Bytes → Bool)
@@ -217,9 +302,51 @@ theorem reused_fixed_call_hash_collision_or_alternative
       functions.H _ _ prior.1 equalDigest)
   · exact Or.inr alternative
 
+/-- Retain the collision's actual reached input pair. An unrestricted
+`∃ a b, H a = H b` would be too broad to serve as a QROM failure event. -/
+theorem reused_fixed_call_witnessed_collision_or_alternative
+    (functions : JointSourceChecks.Functions)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : DynamicDisclosureEvent.ECDSATargets ecdsa)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    (released : ReleasedAllCall functions ecdsa ledger authorized)
+    (attempted : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes)
+    (attemptedValid : SighashAllWire.valid attempted)
+    (scriptCodeValid : scriptCode.length < 256 ^ 8)
+    (forbidden : SighashAllWire.projectionWithLedger ledger attempted ∉
+      authorized)
+    (checked : ecdsa released.sig released.key
+      (functions.H (functions.H
+        (SighashAllWire.sourceAllPreimage attempted selected
+          scriptCode))) = true) :
+    let oldPreimage := SighashAllWire.sourceAllPreimage
+      released.tx released.selected released.scriptCode
+    let newPreimage := SighashAllWire.sourceAllPreimage
+      attempted selected scriptCode
+    let oldDigest := functions.H (functions.H oldPreimage)
+    let newDigest := functions.H (functions.H newPreimage)
+    newPreimage ≠ oldPreimage ∧
+      (WitnessedHashCollision functions.H oldPreimage newPreimage ∨
+        (newDigest ∈
+          (contract.targets released.sig released.key).erase oldDigest ∧
+        ((contract.targets released.sig released.key).erase
+          oldDigest).card ≤ 7)) := by
+  have prior := reused_fixed_call_collision_or_alternative
+    functions ecdsa contract ledger authorized released attempted selected
+    scriptCode attemptedValid scriptCodeValid forbidden checked
+  dsimp at prior ⊢
+  refine ⟨prior.1, ?_⟩
+  rcases prior.2 with equalDigest | alternative
+  · exact Or.inl (double_hash_collision_witnessed
+      functions.H _ _ equalDigest.symm)
+  · exact Or.inr alternative
+
 /-- The deterministic event for a fixed signature/key pair previously checked
-on an approved source-shaped ALL transaction. It contains an actual collision
-in the shared H, or a hit in the other at most seven ECDSA wire targets. -/
+on an approved source-shaped ALL transaction. Its collision branch names the
+specific reached preimages or their first H outputs; an arbitrary collision
+elsewhere does not satisfy it. -/
 def RetargetEvent
     (functions : JointSourceChecks.Functions)
     (ecdsa : Bytes → Bytes → Bytes → Bool)
@@ -234,7 +361,7 @@ def RetargetEvent
   let newPreimage := SighashAllWire.sourceAllPreimage
     attempted selected scriptCode
   newPreimage ≠ oldPreimage ∧
-    ((∃ a b : Bytes, a ≠ b ∧ functions.H a = functions.H b) ∨
+    (WitnessedHashCollision functions.H oldPreimage newPreimage ∨
       (functions.H (functions.H newPreimage) ∈
         (contract.targets released.sig released.key).erase
           (functions.H (functions.H oldPreimage)) ∧
@@ -300,7 +427,7 @@ theorem classify_checked_call
               scriptCode))) = true := by
         simpa [pair.1, pair.2] using checked
       refine Or.inr ⟨released, rfl, ?_⟩
-      exact reused_fixed_call_hash_collision_or_alternative
+      exact reused_fixed_call_witnessed_collision_or_alternative
         functions ecdsa contract ledger authorized released attempted
         selected scriptCode attemptedValid scriptCodeValid forbidden
         releasedChecked

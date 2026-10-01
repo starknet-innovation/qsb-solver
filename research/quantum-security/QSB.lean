@@ -152,7 +152,14 @@ import QSB.Reduction
 #print axioms QSB.DynamicRetarget.findRelease_mem
 #print axioms QSB.DynamicRetarget.findRelease_none_no_match
 #print axioms QSB.DynamicRetarget.double_hash_collision_yields_hash_collision
+#print axioms QSB.DynamicRetarget.double_hash_collision_witnessed
+#print axioms QSB.DynamicRetarget.witnessed_collision_iff_double_equal
+#print axioms QSB.DynamicRetarget.witnessed_collision_has_reached_pair
+#print axioms QSB.DynamicRetarget.unrelated_global_collision_counterexample
+#print axioms QSB.DynamicRetarget.fixed_width_global_collision
+#print axioms QSB.DynamicRetarget.joint_functions_global_collision
 #print axioms QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative
+#print axioms QSB.DynamicRetarget.reused_fixed_call_witnessed_collision_or_alternative
 #print axioms QSB.DynamicRetarget.classify_checked_call
 #print axioms QSB.DynamicRetarget.search_pin_final_history_cases
 #print axioms QSB.DynamicRetarget.search_good_setup_joint_history_event
