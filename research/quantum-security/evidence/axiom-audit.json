@@ -1,5 +1,5 @@
 {
-  "theorem_count": 663,
+  "theorem_count": 673,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,48 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreScriptNum.byte_sign_test": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.core64_negative_magnitude": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.coreSetVch_eq_parseScriptNum": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.coreWord_fits_signed64": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.mask64_15": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.mask64_23": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.mask64_31": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.mask64_7": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.mask64_agree": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreScriptNum.short_mask_agrees": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERHeaderBound.bounded_target_setup_union_count": [
       "Classical.choice",
       "Quot.sound",

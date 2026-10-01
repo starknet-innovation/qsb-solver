@@ -148,6 +148,16 @@
 'QSB.ByteIndexRange.encode_defined_of_natAbs_lt' depends on axioms: [propext, Quot.sound]
 'QSB.ByteIndexRange.add_parsed_defined' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteIndexRange.min_parsed_defined' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreScriptNum.mask64_agree' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.mask64_7' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.mask64_15' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.mask64_23' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.mask64_31' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.coreWord_fits_signed64' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.short_mask_agrees' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.byte_sign_test' depends on axioms: [propext, Quot.sound]
+'QSB.CoreScriptNum.core64_negative_magnitude' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreScriptNum.coreSetVch_eq_parseScriptNum' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteIndex.empty_is_zero' does not depend on any axioms
 'QSB.ByteIndex.negative_zero_is_zero' does not depend on any axioms
 'QSB.ByteIndex.nonminimal_ten' does not depend on any axioms

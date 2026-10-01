@@ -113,8 +113,10 @@ used.
    lower bits for every negative one- to four-byte encoding; all successfully
    parsed operands lie in Core's unsaturated `getint` range. The pinned
    adapter accepted a finite `OP_1ADD` differential
-   probe of 337 encodings and rejected one five-byte operand. Core's sign-mask
-   and whole-interpreter refinement remain open. A separate Lean range theorem
+   probe of 337 encodings and rejected one five-byte operand. A source-shaped
+   Lean conversion using Core's bitwise sign test and 64-bit complement mask
+   now equals the parser for every allowed byte string. Compiled-Core
+   whole-interpreter refinement remains open. A separate Lean range theorem
    shows that the modeled serializer cannot fail on `OP_ADD` or `OP_MIN`
    results from two successfully parsed operands.
    A rebuild of the pinned Core 27.2 adapter reproduced the recorded 13

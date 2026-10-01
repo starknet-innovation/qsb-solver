@@ -17,6 +17,7 @@ import QSB.Bonus
 import QSB.FirstBonus
 import QSB.ByteIndex
 import QSB.ByteIndexRange
+import QSB.CoreScriptNum
 import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
@@ -191,6 +192,16 @@ import QSB.Reduction
 #print axioms QSB.ByteIndexRange.encode_defined_of_natAbs_lt
 #print axioms QSB.ByteIndexRange.add_parsed_defined
 #print axioms QSB.ByteIndexRange.min_parsed_defined
+#print axioms QSB.CoreScriptNum.mask64_agree
+#print axioms QSB.CoreScriptNum.mask64_7
+#print axioms QSB.CoreScriptNum.mask64_15
+#print axioms QSB.CoreScriptNum.mask64_23
+#print axioms QSB.CoreScriptNum.mask64_31
+#print axioms QSB.CoreScriptNum.coreWord_fits_signed64
+#print axioms QSB.CoreScriptNum.short_mask_agrees
+#print axioms QSB.CoreScriptNum.byte_sign_test
+#print axioms QSB.CoreScriptNum.core64_negative_magnitude
+#print axioms QSB.CoreScriptNum.coreSetVch_eq_parseScriptNum
 #print axioms QSB.ByteIndex.empty_is_zero
 #print axioms QSB.ByteIndex.negative_zero_is_zero
 #print axioms QSB.ByteIndex.nonminimal_ten

@@ -41,8 +41,13 @@ value by ±2,147,483,647, so the `getint` saturation in Core's `OP_ROLL`
 path cannot change a successfully parsed four-byte operand. This checks the
 disjoint-byte-lane arithmetic. A separate theorem shows that, for each
 negative one- to four-byte encoding, subtraction of the sign bit equals
-retaining precisely the lower bits. The exact C++ 64-bit complement-mask
-semantics, execution and whole opcode trace still need refinement to Lean.
+retaining precisely the lower bits. `QSB/CoreScriptNum.lean` additionally
+models the final-byte bitwise sign test and the 64-bit complement mask from
+Core's source, proving this source-shaped conversion equals the Lean parser
+for every byte list after the four-byte guard. Its assembled word is below
+`2^63` whenever the guard passes, so the source-shaped accumulation fits the
+signed storage type. Compiled C++ execution and the
+whole opcode trace still need refinement to Lean.
 `QSB/ByteIndexRange.lean` also proves that the optional Lean serializer is
 defined for the sum and minimum of any two successfully parsed operands;
 this removes a model-only failure branch from `OP_ADD` and `OP_MIN`.
