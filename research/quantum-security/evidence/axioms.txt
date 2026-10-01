@@ -14,6 +14,17 @@
 'QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ScriptNumExtensional.four_byte_positive_parses' depends on axioms: [propext, Quot.sound]
+'QSB.ScriptNumExtensional.five_byte_positive_rejected' depends on axioms: [propext]
+'QSB.ScriptNumExtensional.roll_step_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.min_step_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.add_step_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.source_roll_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.source_min_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.source_add_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.roll_run_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.min_run_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptNumExtensional.add_run_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreGetOp.parse_split' depends on axioms: [propext]
 'QSB.CoreGetOp.scan_length_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreFindAndDelete.run_length_le' depends on axioms: [propext, Classical.choice, Quot.sound]

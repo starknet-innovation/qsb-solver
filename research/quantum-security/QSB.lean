@@ -21,6 +21,7 @@ import QSB.Bonus
 import QSB.FirstBonus
 import QSB.ByteIndex
 import QSB.ByteIndexRange
+import QSB.ScriptNumExtensional
 import QSB.CoreScriptNum
 import QSB.CoreNumericOps
 import QSB.CoreRoll
@@ -127,6 +128,17 @@ import QSB.Reduction
 #print axioms QSB.JointOracleReduction.unauthorized_joint_or_gap
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup
+#print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
+#print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
+#print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional
+#print axioms QSB.ScriptNumExtensional.min_step_parse_extensional
+#print axioms QSB.ScriptNumExtensional.add_step_parse_extensional
+#print axioms QSB.ScriptNumExtensional.source_roll_parse_extensional
+#print axioms QSB.ScriptNumExtensional.source_min_parse_extensional
+#print axioms QSB.ScriptNumExtensional.source_add_parse_extensional
+#print axioms QSB.ScriptNumExtensional.roll_run_parse_extensional
+#print axioms QSB.ScriptNumExtensional.min_run_parse_extensional
+#print axioms QSB.ScriptNumExtensional.add_run_parse_extensional
 #print axioms QSB.CoreGetOp.parse_split
 #print axioms QSB.CoreGetOp.scan_length_le
 #print axioms QSB.CoreFindAndDelete.run_length_le

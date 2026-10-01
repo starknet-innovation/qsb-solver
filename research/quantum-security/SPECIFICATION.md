@@ -343,6 +343,17 @@ composes all seven blocks from an arbitrary successful full generated
 byte-model run. Its trace contains seven distinct original commitment
 positions, each matched to the HASH160 of the opening consumed at that block.
 Core refinement and actual signature verification remain required.
+`QSB/ScriptNumExtensional.lean` proves that the modeled MIN, ADD, and ROLL
+transitions, and any suffix after their operands are consumed, are invariant
+under replacing raw bytes by any other encoding with the same ScriptNum
+parse. A four-byte zero-topped little-endian encoding parses every positive
+value below `2^24` unchanged; five bytes fail. The pinned puzzle-relaxed
+full-lock adapter accepted replacing all 18 witness indices by such
+nonminimal encodings or PUSHDATA1 pushes of them, and rejected a five-byte
+first index. A before/after truncated-lock pair isolates the first `OP_MIN`
+as the rejection boundary for that value. This is finite confirmation of the
+numeric source boundary, not proof that every Core-accepted scriptSig refines
+the byte model.
 The literal-byte lock fixture separately proves that each of its 15 HORS
 `OP_EQUALVERIFY` comparisons immediately follows `OP_HASH160`. In the byte
 interpreter, any reached comparison on an accepting modeled run must equate

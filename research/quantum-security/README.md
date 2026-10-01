@@ -192,6 +192,16 @@ open. The same adapter accepts nonminimal byte encodings of indices 10 and
 152. `QSB/ByteIndex.lean` models the pinned Core source's four-byte signed
 ScriptNum rule for these cases; complete compiled-Core equivalence remains
 unproved. See `evidence/bonus-indices.json`.
+`QSB/ScriptNumExtensional.lean` proves that numeric opcode transitions and
+their remaining byte-model suffixes depend on parsed ScriptNum values rather
+than canonical encodings. In the complete puzzle-relaxed native lock, all 18
+witness indices can be changed to nonminimal four-byte values or PUSHDATA1
+pushes of those values without losing acceptance; a five-byte first index
+rejects. A truncated-lock pair accepts that five-byte value just before the
+first `OP_MIN` and rejects with the opcode included. See
+`evidence/full-two-outputs-core.json` and `evidence/selection-prefix.json`.
+This is finite Core evidence, not a compiled-interpreter proof or an
+unmodified-lock spend.
 
 The final key-roll suffix has a stronger arbitrary-stack result. Lean checks
 that its ten fixed rolls preserve the lock-pushed signature count at the exact

@@ -29,6 +29,30 @@
     {
       "accepted": true,
       "expected": true,
+      "name": "two_outputs_all_18_nonminimal_four_byte_indices",
+      "output_count": 2,
+      "script_sig_length": 1221,
+      "transaction_sha256": "9bba6a82d9059935db12f370e39e20e790a1fc0e4860522377848ec504eaa715"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_all_18_nonminimal_pushdata1_indices",
+      "output_count": 2,
+      "script_sig_length": 1239,
+      "transaction_sha256": "b6613c80beccb1b835fda4cba62abada7fa051842906abf99d7999f765c77639"
+    },
+    {
+      "accepted": false,
+      "expected": false,
+      "name": "two_outputs_first_index_five_bytes_rejected",
+      "output_count": 2,
+      "script_sig_length": 1154,
+      "transaction_sha256": "9de4ea0980c832df6042f777968434af072e88ed8d1da7eff37bed7b8d5e8490"
+    },
+    {
+      "accepted": true,
+      "expected": true,
       "name": "two_outputs_1_bottom_empty_cells",
       "output_count": 2,
       "script_sig_length": 1150,

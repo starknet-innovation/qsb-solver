@@ -53,6 +53,9 @@ def main():
     assert source_hash == layout["builder_sha256"]
     assert hashlib.sha256(exact_lock).hexdigest() == layout["script_sha256"]
     instructions = list(opcodes(exact_lock))
+    assert instructions[311][1] == bt.OP_MIN
+    first_min_before_prefix_len = instructions[311][0]
+    first_min_after_prefix_len = instructions[312][0]
     assert instructions[315] == (4783, bt.OP_ROLL)
     roll_prefix_len = instructions[316][0]
     comparison_prefix_len = instructions[320][0]
@@ -60,6 +63,7 @@ def main():
     before_min_prefix_len = instructions[324][0]
     second_min_prefix_len = instructions[325][0]
     assert (roll_prefix_len, comparison_prefix_len) == (4784, 4790)
+    assert (first_min_before_prefix_len, first_min_after_prefix_len) == (4777, 4778)
     assert instructions[322][1] == bt.OP_ROLL
     assert instructions[324][1] == bt.OP_MIN
 
@@ -110,6 +114,10 @@ def main():
 
     results = []
     for name, prefix_len, marker, first_index, expected in (
+        ("five_byte_first_index_before_first_min", first_min_before_prefix_len,
+         b"\xa5" * 20, b"\x03\x00\x00\x00\x00", True),
+        ("five_byte_first_index_first_min_rejects", first_min_after_prefix_len,
+         b"\xa5" * 20, b"\x03\x00\x00\x00\x00", False),
         ("roll_nonzero_external_marker", roll_prefix_len, b"\xa5" * 20, 152, True),
         ("roll_zero_external_marker", roll_prefix_len, b"\x00" * 20, 152, False),
         ("comparison_self_chosen_commitment", comparison_prefix_len,

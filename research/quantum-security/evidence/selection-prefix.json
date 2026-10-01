@@ -1,6 +1,6 @@
 {
   "scope": "TRUNCATED first-selection test lock with one puzzle check relaxed; not full-lock acceptance",
-  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
   "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
   "roll_prefix_bytes": 4784,
   "comparison_prefix_bytes": 4790,
@@ -14,6 +14,24 @@
   },
   "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
   "cases": [
+    {
+      "name": "five_byte_first_index_before_first_min",
+      "prefix_bytes": 4777,
+      "first_index": "0300000000",
+      "test_lock_sha256": "2370009ed3a17a63c103f257edf2b577c1113e493be8d4ef5119965fa73b109b",
+      "accepted": true,
+      "expected": true,
+      "transaction_sha256": "e20e72cef53f1f5c768f16c9e49e581c3d570b6bbfdcfaa01c1df7068eeadeb0"
+    },
+    {
+      "name": "five_byte_first_index_first_min_rejects",
+      "prefix_bytes": 4778,
+      "first_index": "0300000000",
+      "test_lock_sha256": "2372e0f5c36be241a0a14d53f16e10db2a332b264a2bde486d73d4aee8b2ce82",
+      "accepted": false,
+      "expected": false,
+      "transaction_sha256": "8627479731508395832c91fd69817fc62e73770ce415996965ae200852bbf986"
+    },
     {
       "name": "roll_nonzero_external_marker",
       "prefix_bytes": 4784,

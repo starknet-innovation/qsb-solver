@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1131,
+  "theorem_count": 1142,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4064,6 +4064,58 @@
       "propext"
     ],
     "QSB.ScriptCodeSelection.stripSignaturePushes_perm": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.add_run_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.add_step_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.five_byte_positive_rejected": [
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.four_byte_positive_parses": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.min_run_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.min_step_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.roll_run_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.roll_step_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.source_add_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.source_min_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptNumExtensional.source_roll_parse_extensional": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

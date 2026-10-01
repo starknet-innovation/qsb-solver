@@ -133,8 +133,20 @@ used.
    under its opcode budget. Lean also excludes signed 64-bit overflow when
    adding two parsed operands. A 17-case pinned-Core bare-script differential
    includes negative, nonminimal, and overshoot inputs, with a wrong-byte
-   control and five-byte rejection. Compiled Core interpreter refinement
-   remains open.
+   control and five-byte rejection. `QSB/ScriptNumExtensional.lean` additionally
+   proves that all raw operands with equal parsed ScriptNum values induce
+   identical modeled `OP_MIN`, `OP_ADD`, and `OP_ROLL` transitions and every
+   subsequent byte-model suffix. It proves that every positive value below
+   `2^24` parses unchanged in the deliberately nonminimal four-byte encoding,
+   while appending a fifth byte fails the parser. Source-shaped roll and
+   numeric substeps have the same extensionality. On one complete disposable
+   puzzle-relaxed lock, pinned Core accepted replacing all 18 witness indices
+   by those four-byte encodings or by PUSHDATA1 pushes of the same bytes; a
+   five-byte first index rejected. A separate pinned-Core truncated-lock pair
+   with the same five-byte index accepts immediately before the first
+   `OP_MIN` and rejects when that opcode is added. This isolates the first
+   numeric parse in that one witness. These are finite tests, not a universal
+   Core interpreter refinement or real-lock spend.
    A bottom-first source-shaped Lean interpreter now agrees with the existing
    top-first byte interpreter over every non-signature segment of the exact
    880-opcode lock, for arbitrary starting stacks and modeled resource limits.
@@ -155,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,131 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,142 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union

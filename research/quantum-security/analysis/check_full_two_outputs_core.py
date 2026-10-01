@@ -118,7 +118,27 @@ def main() -> None:
     assert bug_digest == 1 << 248
     assert in_range_digest != bug_digest
 
-    def witness(tx: bt.Transaction, dummy_context: bt.Transaction) -> bytes:
+    def canonical_index(_round: int, _position: int, value: int) -> bytes:
+        return bt.push_number(value)
+
+    def four_byte_index(_round: int, _position: int, value: int) -> bytes:
+        # Four-byte positive ScriptNum, deliberately nonminimal for these
+        # small values. This tests operand parsing through the full lock.
+        assert 0 <= value < 1 << 24
+        return bt.push_data(value.to_bytes(4, "little"))
+
+    def pushdata1_index(round_index: int, position: int, value: int) -> bytes:
+        direct = four_byte_index(round_index, position, value)
+        assert direct[0] == 4
+        return b"\x4c\x04" + direct[1:]
+
+    def one_oversize_index(round_index: int, position: int, value: int) -> bytes:
+        if round_index == 0 and position == 0:
+            return bt.push_data(value.to_bytes(5, "little"))
+        return canonical_index(round_index, position, value)
+
+    def witness(tx: bt.Transaction, dummy_context: bt.Transaction,
+                index_encoder=canonical_index) -> bytes:
         script_sig = bytearray()
         for round_index in (1, 0):
             selected = [builder.dummy_sigs[round_index][j]
@@ -137,8 +157,9 @@ def main() -> None:
             for j in range((7 if round_index else 8) - 1, -1, -1):
                 script_sig += bt.push_data(
                     builder.hors_secrets[round_index][subsets[round_index][j]])
-            for value in reversed(indices[round_index]):
-                script_sig += bt.push_number(value)
+            for position in range(len(indices[round_index]) - 1, -1, -1):
+                value = indices[round_index][position]
+                script_sig += index_encoder(round_index, position, value)
         pin_key = recover(pin, tx.sighash(
             1, bt.find_and_delete(lock, pin), 1))
         script_sig += bt.push_data(ec.compress_pubkey(ec.G))
@@ -180,6 +201,16 @@ def main() -> None:
     two_outputs.inputs[1].script_sig = witness(two_outputs, two_outputs)
     check("two_outputs_recovered_keys", two_outputs, True)
     canonical_witness = two_outputs.inputs[1].script_sig
+    assert len(indices[0]) == len(indices[1]) == 9
+    two_outputs.inputs[1].script_sig = witness(
+        two_outputs, two_outputs, four_byte_index)
+    check("two_outputs_all_18_nonminimal_four_byte_indices", two_outputs, True)
+    two_outputs.inputs[1].script_sig = witness(
+        two_outputs, two_outputs, pushdata1_index)
+    check("two_outputs_all_18_nonminimal_pushdata1_indices", two_outputs, True)
+    two_outputs.inputs[1].script_sig = witness(
+        two_outputs, two_outputs, one_oversize_index)
+    check("two_outputs_first_index_five_bytes_rejected", two_outputs, False)
     # Empty pushes before the witness become bottom-stack cells. The modeled
     # canonical peak is 615, so 385 reaches the 1000-cell limit and 386
     # exceeds it. These are finite native differential cases, not a proof of
