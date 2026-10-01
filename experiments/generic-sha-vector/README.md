@@ -142,6 +142,13 @@ source binding and limitations. This supports optional bulk-verification
 experimentation only: all records were fixed rejections, CPU usage increased,
 and neither successful first-hit behavior nor full-pipeline cost was measured.
 
+Native Linux CPU run `36852144732` then passed the original serial and prepared
+paths: serial/parallel at 1 and 32 records, plus prepared serial at 32 records.
+Downloaded receipts matched the fixed rejection verdict and the same prepared
+state/parameter hashes; the workflow independently confirmed container removal.
+`evidence/prepared-public-verification-linux.json` binds those five receipts to
+the source and artifact. This is portability evidence, not paired Linux timing.
+
 ### Saved trace replay on Linux
 
 `evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the

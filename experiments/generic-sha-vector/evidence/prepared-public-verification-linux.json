@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "scope": "Native Linux correctness/portability of five fixed public verification calls; not paired performance or complete pipeline",
+  "sourceCommit": "bd6c9f2f3962db41ebf93b39567d26c51cabce84",
+  "ciRun": 36852144732,
+  "ciUrl": "https://github.com/starknet-innovation/qsb-solver/actions/runs/36852144732",
+  "artifactId": 11156306896,
+  "artifactDigest": "sha256:192f45850c5c2eada92d9f87fe8d19c5dcf338a723cbbbe75ca76f16e4b58618",
+  "receipts": {
+    "serial-1.json": "d5008e7685e304d2f274107686f12b184287c7708a7b4214e665792706a843e0",
+    "serial-32.json": "5db82e0ba438e2b32945ce02344ba9200ec133cc449e8c6c50873e9d9b880edb",
+    "parallel4-1.json": "fe0d6870097416f45ae59f15c81c99380215180fecb7ce004a18b0b54d46bbfc",
+    "parallel4-32.json": "bc82e5aa8278f1f881745ce52b6bf9ea877ee8daab58b1b91b56c87b983ee67e",
+    "prepared1-32.json": "f7e81a79ed6325ac494dc4e69b2c9a976fb8228cef7c017009a9205488250c5f"
+  },
+  "preparedDigests": {
+    "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+    "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+  },
+  "containerCleanupVerified": true,
+  "newGpuRuns": 0,
+  "newAwsSpendUsd": 0
+}
