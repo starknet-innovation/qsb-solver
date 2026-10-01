@@ -11,6 +11,10 @@ The pair scan and compiled-C++ refinement remain separate obligations.
 namespace QSB.CoreMultisigCleanup
 open ByteMachine
 
+def parseSourceCount (bottom : List Bytes) (depth : Nat) : Option Int :=
+  (CoreMultisigStack.stacktopNeg bottom depth).bind
+    CoreScriptNum.coreSetVch
+
 /-- `nKeys + nSigs + 3` cells comprise the two count cells, keys,
 signatures, and the extra dummy. `stacktopNeg` uses Core's one-based address
 from the bottom-first stack. -/
@@ -127,5 +131,25 @@ theorem finalTenEval_cleanup (script : Bytes)
   simpa [CoreMultisigStack.sourceArgumentDepth] using
     cleanup_reverse top 10 10 true (by simpa [CoreMultisigStack.sourceArgumentDepth] using enough)
       (by simpa [CoreMultisigStack.sourceArgumentDepth] using dummy)
+
+/-- The successful final source evaluator's literal count cells decode as ten
+under Core's non-minimal ScriptNum parser, and its bottom-first cleanup has
+the same resulting stack as the byte model. Only the ECDSA scan outcome and
+compiled interpreter correspondence remain outside this structural step. -/
+theorem finalTenEval_count_and_cleanup (script : Bytes)
+    (checker : Bytes → Bytes → Bytes → Bool) (top : List Bytes)
+    (success : CoreMultisigEval.finalTenEval script checker top = some true) :
+    parseSourceCount top.reverse 1 = some 10 ∧
+      parseSourceCount top.reverse 12 = some 10 ∧
+      cleanup top.reverse 10 10 true =
+        some (boolBytes true :: top.drop 23).reverse := by
+  obtain ⟨keys, sigs, _dummy, enough⟩ :=
+    CoreMultisigEval.finalTenEval_success_layout script checker top success
+  obtain ⟨keyAddress, sigAddress, _dummyAddress, _pairs⟩ :=
+    CoreMultisigStack.final_source_layout top enough
+  have parsed : CoreScriptNum.coreSetVch [0x0a] = some 10 := by decide
+  refine ⟨?_, ?_, finalTenEval_cleanup script checker top success⟩
+  · simp [parseSourceCount, keyAddress, keys, parsed]
+  · simp [parseSourceCount, sigAddress, sigs, parsed]
 
 end QSB.CoreMultisigCleanup
