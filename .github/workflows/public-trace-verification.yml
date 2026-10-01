@@ -1,0 +1,66 @@
+name: Saved public trace verification
+on:
+  push:
+    branches: [research/parallel-public-verification]
+    paths:
+      - 'experiments/generic-sha-vector/verify_trace.py'
+      - 'experiments/generic-sha-vector/cpu-reference-lock.json'
+      - 'experiments/generic-sha-vector/evidence/native-trace-replay.json.gz'
+      - 'experiments/generic-sha-vector/fixtures/**'
+      - 'tests/test_parallel_trace_verification.py'
+      - 'worker/promotion/validation/trace-fixtures.json'
+      - '.github/workflows/public-trace-verification.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Stage hash-bound public records and reference
+        run: |
+          python3 - <<'PY'
+          import gzip, hashlib, json, pathlib, urllib.request
+          base = pathlib.Path('experiments/generic-sha-vector')
+          root = pathlib.Path('trace-check'); root.mkdir()
+          refs = root/'reference'; refs.mkdir()
+          lock = json.loads((base/'cpu-reference-lock.json').read_text())
+          for name in ('gpu_emulator.py', 'secp256k1.py', 'bitcoin_tx.py'):
+              url = 'https://raw.githubusercontent.com/starknet-innovation/qsb-app/b737fc6e6c1f4114fcd655b2f57f99224f79f280/worker/cpu/' + name
+              data = urllib.request.urlopen(url, timeout=30).read()
+              assert hashlib.sha256(data).hexdigest() == lock['files']['reference/'+name]
+              (refs/name).write_bytes(data)
+          data = gzip.decompress((base/'evidence/native-trace-replay.json.gz').read_bytes())
+          assert len(data) == 824188
+          assert hashlib.sha256(data).hexdigest() == '8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04'
+          (root/'native.json').write_bytes(data)
+          (root/'results').mkdir()
+          PY
+      - name: Verify existing trace on native Linux CPU
+        run: |
+          set -eu
+          trap 'docker rm -f qsb-public-trace-check >/dev/null 2>&1 || true' EXIT
+          timeout 600s docker run --name qsb-public-trace-check --rm \
+            --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --pids-limit 64 --memory 2g --cpus 2 --tmpfs /tmp:rw,nosuid,size=128m \
+            -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD/experiments/generic-sha-vector:/src/experiments/generic-sha-vector:ro" \
+            -v "$PWD/worker/promotion/validation/trace-fixtures.json:/src/worker/promotion/validation/trace-fixtures.json:ro" \
+            -v "$PWD/trace-check/native.json:/input/native.json:ro" \
+            -v "$PWD/trace-check/reference:/reference:ro" \
+            -v "$PWD/trace-check/results:/results:rw" \
+            --entrypoint python3 \
+            ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf \
+            /src/experiments/generic-sha-vector/verify_trace.py \
+            /input/native.json /reference /src/experiments/generic-sha-vector/fixtures \
+            /results/receipt.json --workers 4
+          echo '650927daa8935bbd39cc83f3cb394f47fe196b919738d03652f5e356f822d17c  trace-check/results/receipt.json' | sha256sum -c -
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: public-trace-cpu-verification
+          path: trace-check/results/
+          if-no-files-found: warn

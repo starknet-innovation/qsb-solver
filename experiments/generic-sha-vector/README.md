@@ -80,6 +80,24 @@ worker image or claiming cheaper transactions or complete-pipeline improvement.
 
 ## Native results, 30 September
 
+### Saved trace replay on Linux
+
+`evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the
+existing public synthetic diagnostic trace from 30 September. Its uncompressed
+824,188 bytes have SHA256
+`8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04`.
+It contains saved outputs, not a new GPU execution or performance measurement.
+The `Saved public trace verification` workflow fetches the three pinned public
+CPU reference modules, checks their locked hashes, and verifies the saved trace
+with four worker processes in the immutable validation runtime. The container
+has no network, a read-only root, a two-CPU quota and a ten-minute timeout.
+The resulting receipt must match SHA256
+`650927daa8935bbd39cc83f3cb394f47fe196b919738d03652f5e356f822d17c`.
+This checks native Linux portability only, not throughput or pipeline cost.
+Local amd64 emulation passed the scheduling unit tests but reached its separate
+300-second full-trace deadline without a receipt; that attempt was cleaned up
+and is inconclusive. CI success must be established from an actual run.
+
 The extracted compression gate subsequently passed 174,080 independent native comparisons and compute-sanitizer reported zero errors. This is the extracted harness, not full-solver certification.
 
 The exact frozen baseline/candidate binaries have now passed all 32 sampled range checks on one A10G. Complete output and identities are preserved in `evidence/native-ranges.json`; the receipt SHA256 is `43273178c0d7c2c48882ea11a56581ac4365597f1faf5284cd34ddf3afd59775`. The sampled inventory covers four ranges for each of four stage/layout contexts, for both binaries; it grants no whole-range credit. The host, root disk and temporary infrastructure were independently confirmed removed.
