@@ -5,6 +5,15 @@
 'QSB.DynamicScriptLimits.full_wire_below_core_limit' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicCheckedCertificate.candidate_complete' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicCheckedCertificate.search_complete' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicCoreFinalTruth.program_ends_in_multisig' depends on axioms: [propext]
+'QSB.DynamicCoreFinalTruth.source_run_final_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicCoreFinalTruth.candidate_sound_core_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicCoreFinalTruth.search_complete_from_core_truth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointOracleReduction.unauthorized_joint_or_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointOracleReduction.unauthorized_measure_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreGetOp.parse_split' depends on axioms: [propext]
 'QSB.CoreGetOp.scan_length_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreFindAndDelete.run_length_le' depends on axioms: [propext, Classical.choice, Quot.sound]

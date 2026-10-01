@@ -138,7 +138,12 @@ inequality: `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`
 The fresh-opening and two puzzle-search terms are unproved joint-QROM event
 bounds. The theorem also requires actual transaction/Core extraction on every
 good setup and a uniform setup marginal, so it is not a deployed-security
-estimate.
+claim. `QSB/JointOracleReduction.lean` also gives a world-indexed interface:
+the same sampled `H` and `R` determine commitments and puzzles, while the
+attacker output and disclosures depend on that world. Its one-event bound is
+`Pr[Unauthorized] ≤ εjoint + εgap`, or `εjoint + 150·12/256^6` under the
+good-setup extraction and uniform setup premises. No nontrivial `εjoint` or
+shared coherent-query theorem is proved.
 
 `QSB/Nonce.lean` models fixed-signature ECDSA recovery targets, including the
 possibility that opposite recovery points admit different message scalars for

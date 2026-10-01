@@ -133,6 +133,10 @@ scan and signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
 computes a complete modeled `RoundWitness` from this trace, the two reached
 bonus signature bytes, and the last reached key. The game extractor still
 needs an actual transaction and Core-acceptance refinement.
+`QSB.DynamicCoreFinalTruth` extends the final-truth bridge to every
+parameterized Lean Config A lock. A source-shaped accepted run with all
+reached signature-site checks enters the executable two-candidate search;
+compiled-Core acceptance still does not supply those premises.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes
@@ -292,6 +296,13 @@ event bounds for one joint adversary distribution, Lean proves
 The good-setup extraction and all three quantum event bounds remain external
 premises. In particular, the count theorem supplies only the final setup
 term and cannot justify setting the other terms to zero.
+`JointOracleReduction` instead samples `H`, `R`, setup secrets,
+`R(H(secret))` commitments, adaptive disclosures, and the attacker output in
+one world. Its checked game inequality uses a single bound on the joint
+fresh-opening-or-two-puzzle event: `Pr[Unauthorized] ≤ εjoint + εgap`, or
+`≤ εjoint + 150·12/256^6` under good-setup extraction and the explicit
+product-uniform setup marginal. It does not establish `εjoint` or model a
+coherent query budget. Core/sighash/ECDSA instantiation remains open.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine
@@ -393,6 +404,10 @@ explicit for the parameterized lock. The certificate and checker remain source-m
 premises. These modules have no random-oracle sampling or quantum-query
 semantics; the query-success theorem still needs a game over those same
 functions and their adaptive disclosures.
+`QSB/JointOracleReduction.lean` places sampled `H` and `R` in each measured
+world and uses one unsplit event bound. It does not yet specify a quantum
+algorithm or count coherent oracle calls; a query theorem must target that
+same world-indexed event.
 
 The successful parameterized byte run also fixes the tenth final signature
 cell to the lock-pushed second-round nonce, regardless of the initial witness

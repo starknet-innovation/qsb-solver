@@ -71,6 +71,7 @@ import QSB.DynamicCoreStructural
 import QSB.DynamicFullSerialized
 import QSB.DynamicScriptLimits
 import QSB.DynamicCheckedCertificate
+import QSB.DynamicCoreFinalTruth
 import QSB.DynamicJointTransaction
 import QSB.DynamicDisclosureEvent
 import QSB.DynamicRetarget
@@ -78,6 +79,7 @@ import QSB.WireECDSATargets
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
+import QSB.JointOracleReduction
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -118,6 +120,13 @@ import QSB.Reduction
 #print axioms QSB.DynamicScriptLimits.full_wire_below_core_limit
 #print axioms QSB.DynamicCheckedCertificate.candidate_complete
 #print axioms QSB.DynamicCheckedCertificate.search_complete
+#print axioms QSB.DynamicCoreFinalTruth.program_ends_in_multisig
+#print axioms QSB.DynamicCoreFinalTruth.source_run_final_truth
+#print axioms QSB.DynamicCoreFinalTruth.candidate_sound_core_truth
+#print axioms QSB.DynamicCoreFinalTruth.search_complete_from_core_truth
+#print axioms QSB.JointOracleReduction.unauthorized_joint_or_gap
+#print axioms QSB.JointOracleReduction.unauthorized_measure_bound
+#print axioms QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup
 #print axioms QSB.CoreGetOp.parse_split
 #print axioms QSB.CoreGetOp.scan_length_le
 #print axioms QSB.CoreFindAndDelete.run_length_le

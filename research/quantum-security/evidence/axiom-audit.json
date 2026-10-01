@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1124,
+  "theorem_count": 1131,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1552,6 +1552,24 @@
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.source_sites_pin": [
+      "propext"
+    ],
+    "QSB.DynamicCoreFinalTruth.candidate_sound_core_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCoreFinalTruth.program_ends_in_multisig": [
+      "propext"
+    ],
+    "QSB.DynamicCoreFinalTruth.search_complete_from_core_truth": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCoreFinalTruth.source_run_final_truth": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions": [
@@ -3547,6 +3565,21 @@
       "propext"
     ],
     "QSB.Game.disclosedAt_card_le_min": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointOracleReduction.unauthorized_joint_or_gap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointOracleReduction.unauthorized_measure_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup": [
       "Classical.choice",
       "Quot.sound",
       "propext"

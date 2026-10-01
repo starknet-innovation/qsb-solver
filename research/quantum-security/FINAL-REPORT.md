@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,124 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,131 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -480,6 +480,18 @@ distribution, and source/transaction/Core extraction on every good setup.
 Those last three event bounds and the good-setup extraction implication are
 not established by this work. The displayed inequality is therefore a
 conditional proof interface, not a numerical security claim for deployed QSB.
+`QSB/JointOracleReduction.lean` gives a second, world-indexed interface:
+each sample carries one `H` and one `R`, setup secret bytes, commitments
+defined as `R(H(secret))`, adaptive releases, and an attacker output. Its
+strict-DER target is fixed by the source-shaped predicate. Lean proves
+`Pr[Unauthorized] ≤ εjoint + εgap`, or
+`Pr[Unauthorized] ≤ εjoint + 150·12/256^6` if every good setup has actual
+transaction/Core extraction and the stated product-uniform setup marginal.
+Here `εjoint` bounds the *union* of the fresh-opening and pin/final puzzle
+events in that one sampled world. No coherent-query algorithm, shared query
+budget theorem, nontrivial `εjoint`, or Core extraction is supplied; the
+source ECDSA relations remain external. This interface avoids accidentally
+treating sampled oracle functions as constants of the terminal measure.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
@@ -724,6 +736,14 @@ The theorem converts a source-shaped final `CastToBool` success into the
 rejects seven isolated final-stack byte cases as this model predicts,
 including negative zero. Actual compiled-Core-to-model execution and
 signature-checker results remain separate obligations.
+`QSB/DynamicCoreFinalTruth.lean` proves that every parameterized Config A
+Lean lock, for arbitrary commitment and fixed-signature bytes, ends in the
+same final `CHECKMULTISIG`. Its source-shaped structural run therefore has
+the same Core-shaped `CastToBool` and byte-model truth value. A source-shaped
+accepted run with all reached site checks is returned by the two-candidate
+certificate search, including a false first-round result. This is still a
+Lean-to-Lean connection; it does not derive the run or site checks from
+compiled Core.
 `QSB/CoreSourceExtraction.lean` lifts this composition to a truthy full
 source-shaped structural run. Its executable `necessarySignatureChecks`
 examines the reached source stacks at all six signature opcodes: the fixed pin,
