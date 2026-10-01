@@ -1,0 +1,37 @@
+name: Host ladder GPU artifact compile
+on:
+  push:
+    paths:
+      - experiments/host-ladder-batch/**
+      - tests/test_host_ladder*.py
+      - .github/workflows/host-ladder-gpu.yml
+  pull_request:
+    paths:
+      - experiments/host-ladder-batch/**
+      - tests/test_host_ladder*.py
+      - .github/workflows/host-ladder-gpu.yml
+permissions:
+  contents: read
+jobs:
+  native-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test isolated preparation and bounded staging
+        run: python3 -m unittest discover -s tests -p 'test_host_ladder*.py'
+      - name: Compile public table artifact without GPU or solver execution
+        run: |
+          set -euo pipefail
+          docker build -f experiments/host-ladder-batch/Dockerfile.gpu -t qsb-host-ladder-gpu .
+          id=$(docker create qsb-host-ladder-gpu)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: host-ladder-gpu-native
+          path: results/
+          retention-days: 14

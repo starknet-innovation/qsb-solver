@@ -1,0 +1,74 @@
+{
+  "status": "table-gate-passed",
+  "binarySha256": "a6f27536823810d95352d40885beadc79554bbb24140ced444ead3d09997192f",
+  "runtime": "ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf",
+  "tableSha256": [
+    "6c6af155b84552c23ee2fc17b29dfe31bad768b92ca43e3198efc7a0e097ad8f",
+    "50d441cd9f92518c6e83bd762005b3116fd24d26be8b939abaf670eb6ffd7f2f",
+    "86abdf630755b9eb96003f3574ed4c90daf42144878a02170a1ba1481802303f"
+  ],
+  "pairedTimeRatios": {
+    "kernel_ms": {
+      "candidateOverBaseline": [
+        0.9323915237134208,
+        0.9251086593112671,
+        0.9289782244556114,
+        0.9177807486631017,
+        0.9309066397034041,
+        0.9239021119678177,
+        0.9213857428381079
+      ],
+      "median": 0.9251086593112671,
+      "minimum": 0.9177807486631017,
+      "maximum": 0.9323915237134208
+    },
+    "construction_ms": {
+      "candidateOverBaseline": [
+        0.9986589237465588,
+        1.0057792262385286,
+        1.0006801460958334,
+        0.9924941620249713,
+        0.9989850079058422,
+        1.0066587674242768,
+        0.9987733928476479
+      ],
+      "median": 0.9989850079058422,
+      "minimum": 0.9924941620249713,
+      "maximum": 1.0066587674242768
+    }
+  },
+  "solverSpeedupEstablished": false,
+  "grantsRangeCredit": false,
+  "scope": "mixed15 public table differential and OpenSSL samples; instrumented table timings only",
+  "evidenceSha256": {
+    "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runtime.txt": "7d13e762b1393575180b2b5209f55e02a5e155f1a06777dad79c9d7a4e29b3f8",
+    "binary.sha256": "9850a4186c81d0f9ba6e9f24fd146ac562fc94bfd75d25b7c4661d4b748c961f",
+    "gpu.txt": "4f61eda3ff42df572e362e5fa65dc754cdcf08080a78069f63a3f0b87dbce348",
+    "gate.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "normal.json": "d6c09ec0c7d9515b6c47717bb09a63f67bf3db3d45563b158df1c23783fd99bf",
+    "normal.log": "d969c867e09c914a58be9b87c7249cb15241f6963abe8ecd681a84f1155534da",
+    "memcheck.json": "91f80489665921b324a37812fecce9ff961637efc8a79b32044cacd3182eaded",
+    "memcheck.log": "84cac1d57cc20a49a7445c7fee29c953ebad1ff42633b9ffe4ca3687c1a4dfe7",
+    "racecheck.json": "91f80489665921b324a37812fecce9ff961637efc8a79b32044cacd3182eaded",
+    "racecheck.log": "4b7047a8e6a303a296599005e4763c8fafb3a7faed64a9d63559136709a2bfab",
+    "synccheck.json": "91f80489665921b324a37812fecce9ff961637efc8a79b32044cacd3182eaded",
+    "synccheck.log": "84cac1d57cc20a49a7445c7fee29c953ebad1ff42633b9ffe4ca3687c1a4dfe7"
+  },
+  "controllerCommit": "b6529cf5c63b0964a16f9b452dfc4805e086fec1",
+  "artifactSourceCommit": "9915a898ec4dce6fad69263e222b11725054b233",
+  "artifactRun": 36766661594,
+  "artifactId": 11120703920,
+  "recommendation": "Keep experimental; no production adoption based on this run.",
+  "cleanup": {
+    "verifiedAt": "2026-09-30T20:17:40.437839+00:00",
+    "instanceTerminated": true,
+    "volumesRemaining": 0,
+    "temporaryResourcesRemaining": 0
+  },
+  "budget": {
+    "campaignLimitUsd": 100,
+    "conservativeChargeUsd": 5,
+    "actualInvoiceCostVerified": false
+  }
+}

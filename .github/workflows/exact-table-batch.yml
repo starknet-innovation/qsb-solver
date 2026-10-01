@@ -1,0 +1,40 @@
+name: Exact table batch compile
+on:
+  push:
+    paths:
+      - experiments/exact-table-batch/**
+      - tests/test_exact_table_batch.py
+      - tests/test_table*.py
+      - .github/workflows/exact-table-batch.yml
+  pull_request:
+    paths:
+      - experiments/exact-table-batch/**
+      - tests/test_exact_table_batch.py
+      - tests/test_table*.py
+      - .github/workflows/exact-table-batch.yml
+permissions:
+  contents: read
+jobs:
+  native-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test isolated source and gate guards
+        run: |
+          python3 -m unittest discover -s tests -p 'test_exact_table_batch.py'
+          python3 -m unittest discover -s tests -p 'test_table*.py'
+      - name: Compile isolated native table comparison without GPU execution
+        run: |
+          docker build -f experiments/exact-table-batch/Dockerfile -t qsb-table-gate .
+          id=$(docker create qsb-table-gate)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: exact-table-batch-native
+          path: results/
+          retention-days: 14

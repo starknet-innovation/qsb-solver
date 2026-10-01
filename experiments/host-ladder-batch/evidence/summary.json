@@ -1,0 +1,88 @@
+{
+  "status": "host-ladder-table-gate-passed",
+  "originalKernelSha256": "e5ef86cb59945d71acc48fc43299c4f176c41b25a4141b813f2c59a78e246d79",
+  "kernelAlgorithmChanged": false,
+  "binarySha256": "3eba54f48c42f97db941a14c18cd5bf5b454bf36c27f7e0c2c8619bfa016cfab",
+  "runtime": "ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf",
+  "tableSha256": [
+    "6c6af155b84552c23ee2fc17b29dfe31bad768b92ca43e3198efc7a0e097ad8f",
+    "50d441cd9f92518c6e83bd762005b3116fd24d26be8b939abaf670eb6ffd7f2f",
+    "86abdf630755b9eb96003f3574ed4c90daf42144878a02170a1ba1481802303f"
+  ],
+  "pairedTimeRatios": {
+    "kernel_ms": {
+      "candidateOverBaseline": [
+        0.9973197032973883,
+        1.0030272452068618,
+        0.9926739926739927,
+        0.9913563829787234,
+        1.0043333333333333,
+        1.0043463724506854,
+        1.0010087424344318
+      ],
+      "median": 1.0010087424344318,
+      "minimum": 0.9913563829787234,
+      "maximum": 1.0043463724506854
+    },
+    "construction_ms": {
+      "candidateOverBaseline": [
+        0.4475789682944139,
+        0.45981672578295657,
+        0.45964068451977486,
+        0.4603092960926879,
+        0.46096010122557063,
+        0.4612496099079394,
+        0.4601797822633229
+      ],
+      "median": 0.4601797822633229,
+      "minimum": 0.4475789682944139,
+      "maximum": 0.4612496099079394
+    }
+  },
+  "solverSpeedupEstablished": false,
+  "grantsRangeCredit": false,
+  "scope": "mixed15 public table differential and OpenSSL samples; host-ladder candidate only, GPU kernel unchanged; warm instrumented construction on scalar 1 only, excludes CUDA context initialization and host output allocation; includes GPU allocation, sentinels, events and cleanup; kernel timings diagnostic only",
+  "sourceCommit": "882e336849386577f6fdd966dcfecf27384eff67",
+  "artifactId": 11125011733,
+  "artifactRun": 36774856236,
+  "archiveSha256": "64455568b95bb27052b94965e283eecf612a25d7b865ef41cd57e2e64eb4688d",
+  "gpu": "NVIDIA A10G",
+  "armMedianMilliseconds": {
+    "baseline": {
+      "kernel_ms": 3.072,
+      "construction_ms": 327.514839,
+      "ladder_ms": 212.988742,
+      "setup_ms": 0.758496,
+      "kernel_wall_ms": 3.084765,
+      "download_ms": 6.747443,
+      "verification_ms": 103.740358,
+      "cleanup_ms": 0.286636
+    },
+    "candidate": {
+      "kernel_ms": 3.053568,
+      "construction_ms": 150.806475,
+      "ladder_ms": 36.466963,
+      "setup_ms": 0.671374,
+      "kernel_wall_ms": 3.066635,
+      "download_ms": 6.675471,
+      "verification_ms": 103.533123,
+      "cleanup_ms": 0.279876
+    }
+  },
+  "cleanup": {
+    "verifiedAt": "2026-09-30T21:02:49.960342+00:00",
+    "instanceState": "terminated",
+    "volumesRemaining": 0,
+    "temporaryResourcesRemaining": 0
+  },
+  "evidenceSha256": {
+    "memcheck.json": "ec3dacbc957bdeeb0445494117ad33b81334633026b81292bf028754773cfd62",
+    "memcheck.log": "9ee0a5e3d5b70ac43a85ee542d63fc3eb558f570a69f0c467311b8a2021760d6",
+    "normal.json": "8ce1416720b4f2d62c64388930930974865b27a7833c10a5ef4308c3259e1c31",
+    "normal.log": "2afa1c33ac25f53a1c400f7a7f63b845bacfed8ec3208458517e6fd70d908801",
+    "racecheck.json": "ec3dacbc957bdeeb0445494117ad33b81334633026b81292bf028754773cfd62",
+    "racecheck.log": "ebd22b6673a970fd8c7680db15b4c069b760510a45779f011928190163895e20",
+    "synccheck.json": "ec3dacbc957bdeeb0445494117ad33b81334633026b81292bf028754773cfd62",
+    "synccheck.log": "9ee0a5e3d5b70ac43a85ee542d63fc3eb558f570a69f0c467311b8a2021760d6"
+  }
+}

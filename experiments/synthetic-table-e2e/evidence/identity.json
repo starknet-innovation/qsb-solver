@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "295119e6b771ca3c6089b4e3d69536e7c78e2b1e",
+  "nativeCompileRun": 36816895862,
+  "artifactId": 11141379212,
+  "archiveSha256": "9a747daa3c07d6d0e396107c33a1cb9464f24648c0578f10112d76a2e43efae8",
+  "binarySha256": "4d9e9108e2b637c52ecb81e6a5adc85cec38b97681dbd93077b6e32b405d7a39",
+  "runtime": "ghcr.io/starknet-innovation/qsb-solver@sha256:86eba696ee50bfd5e7b90eca1d3ed6dfa3f60582779a653eff5e9229b55cbfbf",
+  "resultEnvelopeSha256": "1069f380a9b8f5185a5eabe5560ea0fcf02076223630d97c6472a2d0dbeeaf30",
+  "noSolverSearch": true,
+  "solverThroughputMeasured": false
+}

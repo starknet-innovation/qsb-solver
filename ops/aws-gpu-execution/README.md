@@ -104,3 +104,17 @@ The pinned CUDA development base lacks Python. The validation-only Dockerfile at
 by the Python runners. A build is not an approved runtime: record and verify its
 immutable registry digest, dependency checks and host handoff before allocation.
 Do not replace the frozen solver binaries with artifacts built in that image.
+
+## Table-only execution profile
+
+Use `operate.py STATE_DIRECTORY send table` for the committed table-only handoff.
+It requires more than 43 minutes remaining on the original host deadline before
+creating the send intent, and gives SSM 30 minutes for delivery-independent
+execution. This covers bounded staging, readiness, image pull, the unchanged
+12-minute outer compute gate, and result packaging. The admission check reserves
+60 seconds each for submission, delivery and prompt polling, plus ten minutes
+for collection. This is an admission margin, not a guarantee against delayed
+operator polling or provider latency. It never changes the
+host deadline or compute budget. Existing modes and default send behavior remain
+unchanged; the table profile is rejected for other modes. A rejected pre-send
+admission check requires termination, not a deadline extension.
