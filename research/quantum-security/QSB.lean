@@ -33,6 +33,7 @@ import QSB.CoreOpcodeStep
 import QSB.CoreChecksigStep
 import QSB.CoreMultisigStep
 import QSB.CoreStructuralRun
+import QSB.CoreCheckedStep
 import QSB.CoreStructuralEquiv
 import QSB.CoreFinalTruth
 import QSB.CoreSerialize
@@ -1281,6 +1282,15 @@ import QSB.Reduction
 #print axioms QSB.SourceWitness.matched_run_pin_and_final_der_puzzles
 #print axioms QSB.CoreStructuralRun.run_append
 #print axioms QSB.CoreStructuralRun.successful_prefix
+#print axioms QSB.CoreCheckedStep.step_record_length
+#print axioms QSB.CoreCheckedStep.run_record_length
+#print axioms QSB.CoreCheckedStep.literal_signature_sites
+#print axioms QSB.CoreCheckedStep.literal_run_six_records
+#print axioms QSB.CoreCheckedStep.false_multisig_result_can_continue
+#print axioms QSB.CoreCheckedStep.checkedChecksig_sound
+#print axioms QSB.CoreCheckedStep.checkedChecksig_reached_call
+#print axioms QSB.CoreCheckedStep.checkedMultisig_sound
+#print axioms QSB.CoreCheckedStep.checkedMultisig_ten_pairs
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

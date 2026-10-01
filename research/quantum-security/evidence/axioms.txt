@@ -1402,6 +1402,15 @@
 'QSB.SourceWitness.matched_run_pin_and_final_der_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreStructuralRun.run_append' depends on axioms: [propext, Quot.sound]
 'QSB.CoreStructuralRun.successful_prefix' depends on axioms: [propext, Quot.sound]
+'QSB.CoreCheckedStep.step_record_length' depends on axioms: [propext, Quot.sound]
+'QSB.CoreCheckedStep.run_record_length' depends on axioms: [propext, Quot.sound]
+'QSB.CoreCheckedStep.literal_signature_sites' depends on axioms: [propext]
+'QSB.CoreCheckedStep.literal_run_six_records' depends on axioms: [propext, Quot.sound]
+'QSB.CoreCheckedStep.false_multisig_result_can_continue' depends on axioms: [propext]
+'QSB.CoreCheckedStep.checkedChecksig_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checkedChecksig_reached_call' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedStep.checkedMultisig_sound' depends on axioms: [propext, Quot.sound]
+'QSB.CoreCheckedStep.checkedMultisig_ten_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

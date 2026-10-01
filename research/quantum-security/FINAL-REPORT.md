@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,195 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,204 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -783,6 +783,21 @@ scriptCodes. The earlier multisignature may still return false. This is not
 compiled Core acceptance: deriving the source checker outcomes from the
 compiled interpreter, exact transaction sighashes, ECDSA, and the
 source-to-Core relation remain external.
+`QSB/CoreCheckedStep.lean` now offers a separate executable source-shaped
+opcode run whose signature results are computed from each reached stack.
+CHECKSIGVERIFY uses the complete Core push pattern for FindAndDelete before
+the DER gate; CHECKMULTISIG computes the common deleted scriptCode and
+ordered scan before source-shaped cleanup. Lean proves that any successful
+literal run records six signature-site results, that each successful checked
+CHECKSIGVERIFY exposes its actual hash-type and verifier call, and that a
+computed true final ten-pair result exposes all ten source-addressed strict-DER
+pairs under the stated short-push premise. This removes caller-chosen signature
+Booleans from this *new source model*; a whole-run equivalence to the older
+structural interpreter/certificate and compiled-Core refinement are still
+unproved. The key parser, ECDSA, transaction digest, and hash functions remain
+external inputs. A small checked-run theorem also demonstrates a computed
+false non-VERIFY multisignature followed by a truthy push; it is an isolated
+model case, not a QSB spend.
 `QSB/CoreCheckedCertificate.lean` searches the two possible first-round
 multisignature outcomes and verifies the full reached source-model certificate
 before returning a result. It additionally recomputes the reached first-round

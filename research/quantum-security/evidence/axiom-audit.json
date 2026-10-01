@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1195,
+  "theorem_count": 1204,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -539,6 +539,43 @@
       "propext"
     ],
     "QSB.CoreCheckedCertificate.search_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedChecksig_reached_call": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedChecksig_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedMultisig_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.checkedMultisig_ten_pairs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.false_multisig_result_can_continue": [
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_run_six_records": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.literal_signature_sites": [
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.run_record_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedStep.step_record_length": [
       "Quot.sound",
       "propext"
     ],
