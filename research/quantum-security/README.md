@@ -275,6 +275,10 @@ pinning signature's `SIGHASH_ALL` checker call and the two reached
 SHA256-derived puzzles' actual trailing sighash bytes. Both puzzles use the
 unmodified literal lock as source-shaped scriptCode. The external checker
 and Core refinement premises remain explicit.
+`QSB/CoreFinalChecksigEval.lean` similarly exposes each reached final
+multisignature pair's actual hash-type byte, parsed-key condition, and
+external ECDSA/sighash call on the one selected scriptCode, conditional on a
+successful source-shaped final ten-pair evaluation.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

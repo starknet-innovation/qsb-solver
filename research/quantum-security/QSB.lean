@@ -59,6 +59,7 @@ import QSB.CoreMultisigEval
 import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
 import QSB.CoreChecksigEval
+import QSB.CoreFinalChecksigEval
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -118,6 +119,8 @@ import QSB.Reduction
 #print axioms QSB.CoreChecksigEval.successful_hash_puzzle
 #print axioms QSB.CoreChecksigEval.accepted_pinning_source_checks
 #print axioms QSB.CoreChecksigEval.accepted_late_source_check
+#print axioms QSB.CoreFinalChecksigEval.checker_success
+#print axioms QSB.CoreFinalChecksigEval.successful_byte_run_typed_final_pairs
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.compact_65535

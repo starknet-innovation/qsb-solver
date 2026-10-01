@@ -345,8 +345,12 @@ both reached puzzle sites and the fixed pinning check. In particular, the
 hash-derived signatures are **not** assumed to end in `SIGHASH_ALL`.
 The successful-checker premises, actual Core-to-Lean equivalence, and
 transaction sighash/ECDSA refinement remain open.
+The final ten-pair source model now also exposes each reached signature's
+actual last-byte hash type and external ECDSA/sighash checker call on the
+same selected scriptCode. This is conditional on successful source-shaped
+final evaluation; the checker and compiled-Core bridge remain external.
 This corroborates the selected source behavior but does not compute the final
-QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
+QSB scriptCode for arbitrary Core-accepted witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.
 An additional isolated 10-of-10 multisignature experiment places all 151
 fixture signature pushes in a nonexecuted branch. Core accepts keys recovered
