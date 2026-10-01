@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,161 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,167 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -1031,6 +1031,13 @@ extractor cannot assume the app's legacy-only transaction serialization.
 envelope and its witness stacks and proves that changing only those stacks
 leaves its *source-shaped* legacy digest unchanged. It does not prove full
 Core transaction parsing or that the unmodified QSB lock can be spent.
+`QSB/LegacyTxWire.lean` separately round-trips canonical raw legacy
+serialization, without the hash-type suffix of the ALL preimage. For the
+same transaction fields, its raw envelope and the SegWit envelope yield the
+same modeled legacy digest. A 167-byte fixture matches an app-built raw
+transaction accepted in the pinned Core ALL-commitment probe. These facts
+still do not identify every Core-accepted transaction byte string with either
+Lean parser or refine the actual Core signature checker.
 `JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and
 `checker_single_bug_ignores_outputs` prove the corresponding source-shaped
 invariance for any output replacement that leaves the selected input past

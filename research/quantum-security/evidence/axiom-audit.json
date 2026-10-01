@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1161,
+  "theorem_count": 1167,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3862,6 +3862,36 @@
     ],
     "QSB.LegacySighashWireFixture.single_bug_raw_digest": [],
     "QSB.LegacySighashWireFixture.unknown_all_anyone": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWire.decode_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWire.legacyDigestOfRaw_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWire.legacy_segwit_same_digest": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWireFixture.fixture_decodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWireFixture.fixture_raw_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacyTxWireFixture.fixture_valid": [
       "Classical.choice",
       "Quot.sound",
       "propext"
