@@ -112,6 +112,7 @@ import QSB.Reduction
 #print axioms QSB.SighashBinding.changed_outputs_same_key_requires_target
 #print axioms QSB.SighashBinding.changed_outputs_any_context_same_key_target
 #print axioms QSB.SighashBinding.source_shaped_all_changed_outputs_same_key_target
+#print axioms QSB.SighashBinding.source_all_changed_outputs_wire_digest_target
 #print axioms QSB.RecoveryCandidates.secp_prime_lt_twice_order
 #print axioms QSB.RecoveryCandidates.x_coordinate_candidates
 #print axioms QSB.RecoveryCandidates.recovery_points_card_le_four

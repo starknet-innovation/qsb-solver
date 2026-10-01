@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 647 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 648 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -504,6 +504,11 @@ the conditional four-recovery-point bound, a fixed signature/key has at most
 eight possible wire digest targets. This is finite target accounting, not a
 SHA256d quantum hit bound; the Core digest-to-residue bridge, point parser,
 and oracle correlations remain unresolved.
+`QSB/SighashBinding.lean` composes this count with the source-shaped ALL
+serializer: changed outputs imply a distinct prepared preimage, and the
+explicit verification and reduction premises put its digest in that
+at-most-eight-value target set. No Core acceptance or quantum probability
+enters the theorem.
 The pinned app's `ecdsa_recover` helper considers only x=`r`. A second public
 algebraic fixture uses x=`r+n`: the app's ECDSA verifier accepts its signature
 and key at scalar message zero, but neither helper parity reconstructs that

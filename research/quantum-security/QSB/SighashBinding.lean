@@ -3,6 +3,7 @@ import QSB.Nonce
 import QSB.OutputCodec
 import QSB.WireOutputs
 import QSB.SighashAllWire
+import QSB.RecoveryCandidates
 
 /-!
 The authorization-to-sighash bridge for a legacy SIGHASH_ALL check. In the
@@ -172,5 +173,57 @@ theorem source_shaped_all_changed_outputs_same_key_target
     (fun tx => tx.val.outputs) SighashAllWire.decodeOutputs
     (fun tx => SighashAllWire.decodeOutputs_encode tx.val tx.property)
     hash r s key points changed verified
+
+/-- A source-shaped changed-output same-key verification has a distinct
+preimage and an unsigned digest in a set of at most eight values. The actual
+Core verifier, point admissibility, digest-to-scalar reduction, and joint
+SHA256d quantum target-hit bound are explicit external obligations. -/
+theorem source_all_changed_outputs_wire_digest_target
+    {F G : Type*} [Field F] [AddCommGroup G] [Module F G] [DecidableEq G]
+    (hash : Bytes → G) (digest : Bytes → Nat) (residueOf : G → Nat)
+    (r s : F) (key : G) (points : Finset G)
+    (xCoord : G → Nat) (rNat : Nat)
+    (admissible : ∀ R ∈ points,
+      xCoord R < RecoveryCandidates.secpFieldPrime ∧
+        xCoord R % RecoveryCandidates.secpGroupOrder = rNat)
+    (fiber : ∀ x, (points.filter (fun R => xCoord R = x)).card ≤ 2)
+    {released attempted : SighashAllWire.TxFields}
+    (releasedSelected attemptedSelected : Nat)
+    (releasedScript attemptedScript : Bytes)
+    (releasedValid : SighashAllWire.valid released)
+    (attemptedValid : SighashAllWire.valid attempted)
+    (releasedScriptValid : releasedScript.length < 256 ^ 8)
+    (attemptedScriptValid : attemptedScript.length < 256 ^ 8)
+    (changed : attempted.outputs ≠ released.outputs)
+    (verified : ∃ R ∈ points,
+      RecoveryEquation r s R
+        (hash (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+          attemptedScript)) key)
+    (wire : digest (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+      attemptedScript) < 2 ^ 256)
+    (reduction : digest (SighashAllWire.sourceAllPreimage attempted
+      attemptedSelected attemptedScript) % RecoveryCandidates.secpGroupOrder =
+      residueOf (hash (SighashAllWire.sourceAllPreimage attempted
+        attemptedSelected attemptedScript))) :
+    SighashAllWire.sourceAllPreimage attempted attemptedSelected attemptedScript ≠
+      SighashAllWire.sourceAllPreimage released releasedSelected releasedScript ∧
+    digest (SighashAllWire.sourceAllPreimage attempted attemptedSelected
+      attemptedScript) ∈
+      RecoveryCandidates.digestTargets RecoveryCandidates.secpGroupOrder
+        (2 ^ 256) ((messageTargets r s key points).image residueOf) ∧
+    (RecoveryCandidates.digestTargets RecoveryCandidates.secpGroupOrder
+      (2 ^ 256) ((messageTargets r s key points).image residueOf)).card ≤ 8 := by
+  let attemptedPreimage := SighashAllWire.sourceAllPreimage attempted
+    attemptedSelected attemptedScript
+  obtain ⟨R, present, equation⟩ := verified
+  have target : hash attemptedPreimage ∈ messageTargets r s key points :=
+    recovery_in_messageTargets r s key _ R points present equation
+  exact ⟨SighashAllWire.changed_outputs_sourceAll_distinct_preimages
+      releasedSelected attemptedSelected releasedScript attemptedScript
+      releasedValid attemptedValid releasedScriptValid attemptedScriptValid changed,
+    RecoveryCandidates.secp_digest_in_targetSet r s key points residueOf
+      (digest attemptedPreimage) (hash attemptedPreimage) wire target reduction,
+    RecoveryCandidates.secp_digestTargets_card_le_eight r s key points
+      xCoord rNat residueOf admissible fiber⟩
 
 end QSB.SighashBinding

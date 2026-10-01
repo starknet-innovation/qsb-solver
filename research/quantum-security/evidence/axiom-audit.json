@@ -1,5 +1,5 @@
 {
-  "theorem_count": 647,
+  "theorem_count": 648,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2212,6 +2212,11 @@
       "propext"
     ],
     "QSB.SighashBinding.changed_outputs_same_key_requires_target": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashBinding.source_all_changed_outputs_wire_digest_target": [
       "Classical.choice",
       "Quot.sound",
       "propext"

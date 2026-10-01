@@ -64,6 +64,9 @@
 'QSB.SighashBinding.source_shaped_all_changed_outputs_same_key_target' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.SighashBinding.source_all_changed_outputs_wire_digest_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms
 'QSB.RecoveryCandidates.x_coordinate_candidates' depends on axioms: [propext, Quot.sound]
 'QSB.RecoveryCandidates.recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
