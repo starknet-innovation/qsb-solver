@@ -81,10 +81,11 @@ change how a surviving chunk parses. Lean also checks that no parsed opcode
 is `OP_CODESEPARATOR`. `QSB/CoreGetOp.lean` separately models the iterator
 advance in Core v27.2's
 [`GetScriptOp`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.cpp#L289-L340).
-It proves that model consumes the same complete chunk as the prior parser for
-every literal opcode and arbitrary following bytes, including after complete
-chunk deletions. The two source-shaped FindAndDelete loops therefore agree for
-any ordered list of selected signatures and for the fixed pin signature.
+It proves that this parser and the prior parser return the same result for
+*every byte string*, including malformed and truncated PUSHDATA1/2/4
+encodings. The two fuelled source-shaped Lean FindAndDelete loops therefore
+agree on any script and ordered pattern list. Combined with the literal-lock
+chunk-filter theorem, this gives the selected final and fixed pin scriptCodes.
 Compiled-C++ refinement and the identification of Core's reached ten
 signature bytes with these selected patterns for every accepted witness remain
 open.
@@ -109,13 +110,13 @@ exception. This is a finite corpus, not a proof of predicate equivalence.
 
 `analysis/check_find_and_delete_boundary.py` uses the app's
 `bitcoin_tx.find_and_delete` to calculate a scriptCode and publicly recovers
-a verification key for its sighash. The pinned adapter accepts all five
+a verification key for its sighash. The pinned adapter accepts all seven
 isolated cases: one canonical signature push, two canonical pushes, a
-signature-push byte pattern embedded inside another push, a noncanonical
-`PUSHDATA1` push, and the literal pinning signature in an isolated lock. For
+signature-push byte pattern embedded inside another push, noncanonical
+`PUSHDATA1/2/4` pushes, and the literal pinning signature in an isolated lock. For
 each case, a key recovered for a deliberately wrong scriptCode is rejected.
 The embedded and noncanonical pushes remain in the correct scriptCode;
-canonical boundary pushes are removed. These ten native outcomes test selected
+canonical boundary pushes are removed. These 14 native outcomes test selected
 paths, not the whole generated QSB lock.
 
 `analysis/check_ten_signature_findanddelete.py` adds an isolated 10-of-10

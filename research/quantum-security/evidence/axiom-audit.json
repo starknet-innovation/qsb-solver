@@ -1,5 +1,5 @@
 {
-  "theorem_count": 698,
+  "theorem_count": 699,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -382,6 +382,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreGetOp.parse_eq_parseOne": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreGetOp.parse_matches_model_simple": [
       "Classical.choice",
       "Quot.sound",
@@ -397,12 +402,12 @@
       "Quot.sound",
       "propext"
     ],
-    "QSB.CoreGetOp.scanMany_eq_model_scanMany": [
+    "QSB.CoreGetOp.scanMany_eq_model_scanMany_all": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "QSB.CoreGetOp.scan_eq_model_scan": [
+    "QSB.CoreGetOp.scan_eq_model_scan_all": [
       "Classical.choice",
       "Quot.sound",
       "propext"

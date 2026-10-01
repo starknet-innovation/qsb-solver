@@ -53,6 +53,12 @@ def main() -> None:
         ("noncanonical_pushdata1",
          b"\x4c" + bytes((len(sig),)) + sig + drop_checksig,
          drop_checksig),
+        ("noncanonical_pushdata2",
+         b"\x4d" + len(sig).to_bytes(2, "little") + sig + drop_checksig,
+         drop_checksig),
+        ("noncanonical_pushdata4",
+         b"\x4e" + len(sig).to_bytes(4, "little") + sig + drop_checksig,
+         drop_checksig),
     ]
     pin_k = int.from_bytes(hashlib.sha256(b"qsb_pin_nonce").digest(), "big") % ec.N
     pin_r = ec.point_mul(pin_k, ec.G)[0] % ec.N

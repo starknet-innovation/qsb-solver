@@ -141,7 +141,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 698 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 699 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -299,10 +299,10 @@ conditional interface: successful pair verification must imply both nonempty
 signature bytes and acceptance by that gate before it concludes strict DER and
 the nine-position shape. The corpus does not prove the interface for Core's
 full final multisignature scan or all possible signature bytes.
-Five further isolated `FindAndDelete` cases each pass with a public key
+Seven further isolated `FindAndDelete` cases each pass with a public key
 recovered for the app's opcode-boundary scriptCode and fail with a key
 recovered for a deliberately wrong scriptCode. They cover repeated canonical
-signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1`, and the
+signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1/2/4`, and the
 literal 56-byte pinning signature in an isolated lock.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
@@ -409,10 +409,12 @@ loop returns the exact serialized-chunk filter of the literal lock, including
 repeated patterns. The proof uses checked simple-opcode and complete-match
 properties; the literal script also has no `OP_CODESEPARATOR` opcode.
 `QSB/CoreGetOp.lean` adds a separate source-shaped model of Core v27.2's
-opcode iterator advance. Lean proves it parses every surviving literal chunk
-identically to the prior parser for any following bytes, and that its
-sequential deletion loop gives the same final scriptCode for any chosen final
-signature index list. It also proves the one-push pinning result. These are
+opcode iterator advance. Lean proves it equals the existing parser for every
+byte string, including malformed or truncated PUSHDATA1/2/4 inputs. The two
+source-shaped sequential deletion loops consequently agree for every byte
+script and ordered pattern list. Applied to the literal lock, this gives the
+same final scriptCode for any chosen final-signature index list and the
+one-push pinning result. These are
 source-level model theorems, not compiled-C++ refinement or a full arbitrary
 scriptSig and transaction extractor. The source fixture confirms that
 the pinning push occurs only once at byte offset zero; the fifth isolated

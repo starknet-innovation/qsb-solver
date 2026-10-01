@@ -707,10 +707,11 @@ import QSB.Reduction
 #print axioms QSB.CoreGetOp.simple_chunk_width
 #print axioms QSB.CoreGetOp.parse_simple_chunk
 #print axioms QSB.CoreGetOp.parse_matches_model_simple
+#print axioms QSB.CoreGetOp.parse_eq_parseOne
 #print axioms QSB.CoreGetOp.literal_parse_stable
-#print axioms QSB.CoreGetOp.scan_eq_model_scan
+#print axioms QSB.CoreGetOp.scan_eq_model_scan_all
 #print axioms QSB.CoreGetOp.literal_selected_delete
-#print axioms QSB.CoreGetOp.scanMany_eq_model_scanMany
+#print axioms QSB.CoreGetOp.scanMany_eq_model_scanMany_all
 #print axioms QSB.CoreGetOp.final_scriptCode_scan
 #print axioms QSB.CoreGetOp.pin_scriptCode_scan
 #print axioms QSB.PinningScriptCode.accepted_pinning_reached_bytes
