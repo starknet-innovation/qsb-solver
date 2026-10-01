@@ -125,6 +125,10 @@ Lean wire lock parses without an arbitrary-prior-chunk premise. Its first
 446 chunks match the literal fixture. `analysis/check_dynamic_full_data.py`
 checks four complete pinned-builder outputs against that parameterized layout;
 the Python-to-Lean universal equality remains open.
+`QSB/DynamicCheckedCertificate.lean` searches the two first-round Boolean
+cases and checks source-shaped signature evaluations at the reached stacks.
+A returned certificate implies the good-setup nine-position result, while
+compiled-Core acceptance and the verifier implementation remain unproved.
 `analysis/audit_builder_parametric.py` checks the pinned Python source's
 byte-value flow: variable commitments, dummies, and nonce bytes enter
 `_emit_round` only through data pushes, while suffix depths use stack labels.

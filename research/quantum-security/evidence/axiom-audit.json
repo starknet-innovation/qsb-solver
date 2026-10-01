@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1016,
+  "theorem_count": 1020,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1288,6 +1288,22 @@
     ],
     "QSB.DynamicBonusTrace.accepted_bonus_suffix_source_trace": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.candidate_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.final_checked_sound": [
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.search_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.search_sound": [
       "Quot.sound",
       "propext"
     ],

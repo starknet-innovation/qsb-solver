@@ -454,6 +454,15 @@ disposable full-lock builder runs match the parameterized chunk fixture,
 including empty and 75-byte pushes. These are source audit and finite
 differential evidence, not a formal theorem about every Python execution or
 compiled Core.
+`QSB/DynamicCheckedCertificate.search` now tries both legal first-round
+`CHECKMULTISIG` results for that parameterized lock. A returned certificate
+contains a truthy structural run, checks the six signature-opcode positions,
+four reached source-shaped `CHECKSIGVERIFY` results, the actual first-round
+source scan against its Boolean, and the final ten-pair source scan at the
+same reached pre-check stack. Lean proves that such a certificate yields the
+seven-opening, nine-position result on a good setup. The certificate's key
+parser and ECDSA/sighash verifier are supplied functions, and neither the
+certificate nor a Core-accepted transaction is known to imply the other.
 The pinned Python source audit in `analysis/audit_builder_parametric.py`
 checks that `_emit_round` reads commitment, dummy-signature and nonce byte
 values only as three `push_data` arguments; its later stack-depth calculations

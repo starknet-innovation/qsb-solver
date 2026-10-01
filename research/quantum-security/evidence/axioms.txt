@@ -949,6 +949,12 @@
 'QSB.DynamicFullSerialized.accepted_full_structural_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicCheckedCertificate.final_checked_sound' depends on axioms: [propext]
+'QSB.DynamicCheckedCertificate.candidate_sound' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicCheckedCertificate.search_sound' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicCheckedCertificate.search_good_setup_nine_positions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusSetup.bad_der_setup_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicBonusProbability.uniform_bad_der_probability' depends on axioms: [propext, Classical.choice, Quot.sound]
