@@ -1,5 +1,5 @@
 {
-  "theorem_count": 867,
+  "theorem_count": 878,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1424,6 +1424,33 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.literal_signed_split": [],
+    "QSB.FinalOpeningTrace.prefix_hash_count": [
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.prefix_paired": [
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.signed_hash_count": [
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.signed_paired": [
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.suffix_hash_count": [
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.suffix_paired": [
+      "propext"
+    ],
     "QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature": [
       "Classical.choice",
       "Quot.sound",
@@ -1688,11 +1715,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSignedChain.baseRegion_drop_tail": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSignedChain.generated_all_signed_blocks": [],
     "QSB.FinalSignedChain.generated_blocks_ordered": [
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSignedChain.generated_to_signed_prefix": [],
     "QSB.FinalSignedChain.generated_whole_signed_boundary": [],
     "QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty": [
       "Quot.sound",

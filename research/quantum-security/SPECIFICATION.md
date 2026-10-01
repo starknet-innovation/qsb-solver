@@ -115,6 +115,12 @@ the adversary's transaction and returns its pinning and final-round witness.
 That extractor is not implemented for arbitrary Script executions. A shaped
 final witness requires seven distinct signed positions and two disjoint bonus
 positions; otherwise the corresponding extraction gap remains possible.
+Within the literal byte model, `FinalSignedChain.extractWholeFinal` now
+computes the seven signed positions and actual openings from any successful
+full run, including arbitrary initial byte stacks and supplied signature
+outcomes. It does not consume transaction bytes or establish that Core
+acceptance supplies such a run; extracting the two bonus positions and nonce
+key into the game witness remains separate.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

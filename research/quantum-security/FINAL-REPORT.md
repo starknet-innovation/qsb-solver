@@ -649,10 +649,19 @@ that any reached pair on an accepting modeled suffix compares an actual
 opening's hash with the next stack item, for arbitrary hash functions, stack
 tails and suffixes. An executable opening trace preserves the interpreter's
 result; a successful run of the literal lock has exactly 15 matched records,
-and dropping the first eight computes a seven-record suffix. This advances
-local HORS extraction but does not identify the compared stack item as an
-intended commitment in every witness, label the suffix with source indices,
-or refine signature outcomes and transaction acceptance to Bitcoin Core.
+and Lean proves that dropping the first eight leaves exactly the seven records
+executed by the generated final signed blocks at opcodes 749–839. This advances
+local HORS extraction but does not by itself label those byte-trace records
+with original pool indices or refine signature outcomes and transaction
+acceptance to Bitcoin Core. Separately, `extractWholeFinal` now executes the
+literal prefix and reads each subsequent raw ScriptNum and opening from the
+reached stack. Lean proves it returns seven distinct original positions and
+actual opening bytes for every successful full byte-model run, with each
+opening hashing to its generated commitment. This result needs no assumption
+that public commitment bytes are distinct. Its input is still a modeled stack
+with supplied signature outcomes, not an adversarial transaction or Core
+acceptance proof; equality with the independent byte-opening trace remains
+unproved.
 The trace also composes with any executable program prefix, so a future
 provenance invariant can apply it at each of the 15 concrete comparison sites.
 

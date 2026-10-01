@@ -718,7 +718,7 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, signedShape, pool, aligned, gatheredCount,
-                    traceCount, distinct, hits, tracePerm,
+                    traceCount, _traceExtract, distinct, hits, tracePerm,
                     gatheredTrace⟩ :=
                     FinalSignedChain.accepted_all_signed_blocks hashes result
                       earlyTail checkOutcomes checkCost afterSigned signed

@@ -50,6 +50,7 @@ import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
 import QSB.FinalSignedChain
+import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
 import QSB.FinalBonusSecond
 import QSB.DERSyntax
@@ -387,6 +388,15 @@ import QSB.Reduction
 #print axioms QSB.ByteTrace.accepted_literal_has_fifteen_openings
 #print axioms QSB.ByteTrace.finalSevenOpenings_length
 #print axioms QSB.ByteTrace.forget_trace
+#print axioms QSB.FinalOpeningTrace.literal_signed_split
+#print axioms QSB.FinalOpeningTrace.prefix_paired
+#print axioms QSB.FinalOpeningTrace.signed_paired
+#print axioms QSB.FinalOpeningTrace.suffix_paired
+#print axioms QSB.FinalOpeningTrace.prefix_hash_count
+#print axioms QSB.FinalOpeningTrace.signed_hash_count
+#print axioms QSB.FinalOpeningTrace.suffix_hash_count
+#print axioms QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks
+#print axioms QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks
 #print axioms QSB.ByteWitness.witness_length
 #print axioms QSB.ByteWitness.canonical_byte_run
 #print axioms QSB.ByteWitness.first_round_boolean_ignored
@@ -729,6 +739,8 @@ import QSB.Reduction
 #print axioms QSB.FinalSignedChain.accepted_ordered_blocks
 #print axioms QSB.FinalSignedChain.accepted_all_signed_blocks
 #print axioms QSB.FinalSignedChain.generated_whole_signed_boundary
+#print axioms QSB.FinalSignedChain.generated_to_signed_prefix
+#print axioms QSB.FinalSignedChain.baseRegion_drop_tail
 #print axioms QSB.FinalSignedChain.accepted_whole_program_final_signed_openings
 #print axioms QSB.FinalSignedChain.seven_signed_bonus_sources_nonempty
 #print axioms QSB.FinalBonusAccepted.generated_first_bonus_prelude

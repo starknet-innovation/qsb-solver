@@ -623,7 +623,8 @@ theorem accepted_whole_program_signed_and_bonus_bounds (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, signedShape, pool, aligned, gatheredCount,
-                    traceCount, distinct, hits, _tracePerm⟩ :=
+                    traceCount, _traceExtract, distinct, hits,
+                    _tracePerm⟩ :=
                     accepted_all_signed_blocks hashes result tail
                       checkOutcomes checkCost afterSigned signed
                   simp only [signed, Option.bind_some] at suffix

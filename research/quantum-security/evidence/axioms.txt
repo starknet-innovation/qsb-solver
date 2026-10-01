@@ -328,6 +328,15 @@
 'QSB.ByteTrace.accepted_literal_has_fifteen_openings' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.finalSevenOpenings_length' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
+'QSB.FinalOpeningTrace.literal_signed_split' does not depend on any axioms
+'QSB.FinalOpeningTrace.prefix_paired' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.signed_paired' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.suffix_paired' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.prefix_hash_count' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.signed_hash_count' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.suffix_hash_count' depends on axioms: [propext]
+'QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks' depends on axioms: [propext, Quot.sound]
+'QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks' depends on axioms: [propext, Quot.sound]
 'QSB.ByteWitness.witness_length' does not depend on any axioms
 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]
 'QSB.ByteWitness.first_round_boolean_ignored' depends on axioms: [propext]
@@ -754,6 +763,8 @@
 'QSB.FinalSignedChain.accepted_ordered_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedChain.accepted_all_signed_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSignedChain.generated_whole_signed_boundary' does not depend on any axioms
+'QSB.FinalSignedChain.generated_to_signed_prefix' does not depend on any axioms
+'QSB.FinalSignedChain.baseRegion_drop_tail' depends on axioms: [propext, Quot.sound]
 'QSB.FinalSignedChain.accepted_whole_program_final_signed_openings' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
