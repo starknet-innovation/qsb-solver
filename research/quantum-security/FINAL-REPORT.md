@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 634 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 641 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -307,6 +307,10 @@ ordered outputs for every valid encoded transaction, and a 139-byte Lean
 fixture equals the pinned app's baseline preimage. Concrete CompactSize and
 nonnegative eight-byte amount encodings are included. Lean-checked branch
 vectors match the pinned app, and two 253-boundary transactions passed Core.
+The source-shaped model now also performs BASE/ALL input-script preparation;
+a second fixture starts with different scriptSig bytes and checks that
+replacement and blanking yield the same 139-byte preimage. This remains a
+model of the source branch, not a C++ equivalence theorem.
 Core 27.2's published sighash corpus supplies an additional 253 ALL-branch
 cases with varied inputs, outputs, signed hash-type words, and simple
 opcode-boundary `OP_CODESEPARATOR` removal; all expected digests match both

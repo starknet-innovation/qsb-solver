@@ -37,6 +37,11 @@ ordered outputs from a complete source-shaped ALL preimage with variable
 version, prepared input scripts, input count, and locktime. The parser round
 trip is proved on its valid wire domain; a generated 139-byte fixture in
 `QSB/SighashAllWireFixture.lean` equals the pinned app's baseline preimage.
+The model now also blanks original input scripts and substitutes a supplied
+`scriptCode` for the signed input before encoding. Its output parser still
+round-trips with arbitrary original scriptSigs and selected scriptCode in the
+wire domain. A generated fixture checks that this preparation yields the
+same pinned 139-byte preimage from different original scriptSig bytes.
 The remaining step is to identify Core's C++ preimage for every accepted
 transaction with this source-shaped encoding, including its reached
 FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the

@@ -8,8 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 ALLOWED = {"propext", "Classical.choice", "Quot.sound"}
 
 def main():
-    build = subprocess.run(["lake", "build"], cwd=ROOT, text=True, capture_output=True)
-    (ROOT / "evidence/lean-build.txt").write_text(build.stdout + build.stderr)
+    build = subprocess.run(["lake", "--quiet", "build"], cwd=ROOT,
+                           text=True, capture_output=True)
+    (ROOT / "evidence/lean-build.txt").write_text(
+        f"lake --quiet build exit code: {build.returncode}\n" +
+        build.stdout + build.stderr)
     if build.returncode:
         raise SystemExit(build.stdout + build.stderr)
     result = subprocess.run(["lake", "env", "lean", "QSB.lean"], cwd=ROOT,

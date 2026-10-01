@@ -43,4 +43,16 @@ theorem fixture_outputs_parsed : decodeOutputs (encode fixture) =
     some fixture.outputs :=
   decodeOutputs_encode fixture fixture_valid
 
+/-- Original scriptSig bytes are irrelevant to the BASE/ALL preimage:
+Core-shaped preparation blanks the other input and substitutes scriptCode
+for the signed input. This checks that preparation against the same pinned
+139-byte fixture, without asserting a universal C++ refinement. -/
+def rawFixture : TxFields := { fixture with inputs := [
+  (List.replicate 32 (68 : UInt8), (0, ([81], 0xfffffffe))),
+  (List.replicate 32 (85 : UInt8), (1, ([81, 81], 0x80000000)))
+] }
+
+theorem raw_fixture_preimage :
+    sourceAllPreimage rawFixture 1 [124, 172] = encode fixture := by decide
+
 end QSB.SighashAllWireFixture

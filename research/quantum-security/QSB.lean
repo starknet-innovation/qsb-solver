@@ -95,9 +95,16 @@ import QSB.Reduction
 #print axioms QSB.WireOutputs.encode_injective_on
 #print axioms QSB.SighashAllWire.decodeOutputs_encode
 #print axioms QSB.SighashAllWire.changed_outputs_distinct_preimages
+#print axioms QSB.SighashAllWire.prepareInputsAt_length
+#print axioms QSB.SighashAllWire.withScript_valid
+#print axioms QSB.SighashAllWire.prepareInputsAt_valid
+#print axioms QSB.SighashAllWire.prepareAll_valid
+#print axioms QSB.SighashAllWire.decodeOutputs_sourceAllPreimage
+#print axioms QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages
 #print axioms QSB.SighashAllWireFixture.fixture_valid
 #print axioms QSB.SighashAllWireFixture.fixture_preimage_bytes
 #print axioms QSB.SighashAllWireFixture.fixture_outputs_parsed
+#print axioms QSB.SighashAllWireFixture.raw_fixture_preimage
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs
 #print axioms QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes

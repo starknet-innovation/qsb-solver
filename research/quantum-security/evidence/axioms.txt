@@ -39,9 +39,18 @@
 'QSB.WireOutputs.encode_injective_on' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.decodeOutputs_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.changed_outputs_distinct_preimages' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.prepareInputsAt_length' depends on axioms: [propext]
+'QSB.SighashAllWire.withScript_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.prepareInputsAt_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.prepareAll_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.decodeOutputs_sourceAllPreimage' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.SighashAllWireFixture.fixture_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_preimage_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_outputs_parsed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWireFixture.raw_fixture_preimage' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_codecs' depends on axioms: [propext, Quot.sound]
 'QSB.SighashBinding.changed_outputs_distinct_preimages_of_wire_bytes' depends on axioms: [propext,
