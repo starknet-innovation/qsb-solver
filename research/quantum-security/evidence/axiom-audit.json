@@ -1,5 +1,5 @@
 {
-  "theorem_count": 998,
+  "theorem_count": 1000,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1289,6 +1289,14 @@
     "QSB.DynamicBonusTrace.accepted_bonus_suffix_source_trace": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCoreStructural.full_program_final_check_split": [
       "propext"
     ],
     "QSB.DynamicFinalInit.accepted_data_shape": [

@@ -431,6 +431,16 @@ to a successful source-shaped run of those parsed opcodes, with the final
 evaluator checking the same full wire bytes. The explicit prior-chunk contract
 has not been proved for every Python builder execution, and the premise is a
 Lean source-shaped run rather than compiled Core's consensus result.
+`QSB/DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions`
+uses one bottom-first Core-shaped structural run of that parsed full program.
+The existing source-to-byte simulation supplies its byte-model execution, and
+the final ten-pair evaluator is applied to the pre-CHECKMULTISIG stack reached
+by the same structural run. The resulting seven opening pairs are still
+computed by `extractTrace`. This removes a separate byte-run premise from
+that source-level statement. The structural run still takes signature-scan
+Booleans as inputs, and the evaluator still delegates actual sighash/ECDSA
+verification to a supplied checker. No compiled-Core acceptance implication
+follows.
 The pinned Python source audit in `analysis/audit_builder_parametric.py`
 checks that `_emit_round` reads commitment, dummy-signature and nonce byte
 values only as three `push_data` arguments; its later stack-depth calculations

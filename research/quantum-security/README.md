@@ -115,6 +115,10 @@ literal fixture; real builder and Core acceptance links remain open.
 serialized script bytes under an explicit, well-formed prior-chunk contract.
 The separately written GetOp parser recovers the exact modeled opcode list;
 the builder-output and compiled-Core links are still unproved.
+`QSB/DynamicCoreStructural.lean` derives the required byte execution from a
+single successful bottom-first source-shaped run of those parsed opcodes and
+checks the final source evaluator at that run's reached pre-check stack.
+Its signature Booleans and ECDSA/sighash checker remain external inputs.
 `analysis/audit_builder_parametric.py` checks the pinned Python source's
 byte-value flow: variable commitments, dummies, and nonce bytes enter
 `_emit_round` only through data pushes, while suffix depths use stack labels.

@@ -63,6 +63,7 @@ import QSB.DynamicSerializedRound
 import QSB.DynamicSourceGate
 import QSB.DynamicWholeSource
 import QSB.DynamicWireSource
+import QSB.DynamicCoreStructural
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -874,6 +875,8 @@ import QSB.Reduction
 #print axioms QSB.DynamicWireSource.full_chunks_decode
 #print axioms QSB.DynamicWireSource.full_wire_decodes
 #print axioms QSB.DynamicWireSource.accepted_wire_good_setup_nine_positions
+#print axioms QSB.DynamicCoreStructural.full_program_final_check_split
+#print axioms QSB.DynamicCoreStructural.accepted_structural_wire_good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability
