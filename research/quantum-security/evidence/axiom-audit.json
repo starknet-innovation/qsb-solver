@@ -1,5 +1,5 @@
 {
-  "theorem_count": 993,
+  "theorem_count": 998,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1342,6 +1342,10 @@
     "QSB.DynamicSerializedRound.dataValues_map": [
       "propext"
     ],
+    "QSB.DynamicSerializedRound.mapM_of_map_some": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks": [
       "Classical.choice",
       "Quot.sound",
@@ -1633,6 +1637,26 @@
     ],
     "QSB.DynamicWholeSource.first_result_wrong_width": [],
     "QSB.DynamicWholeSource.literal_full_program": [
+      "propext"
+    ],
+    "QSB.DynamicWireSource.accepted_wire_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWireSource.full_chunks_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWireSource.full_chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWireSource.full_wire_decodes": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.EncodedLayout.chunks_length": [],

@@ -1,5 +1,5 @@
 lake --quiet build exit code: 0
-⚠ [8578/8580] Built QSB.DynamicWholeSource (211s)
+⚠ [8577/8581] Replayed QSB.DynamicWholeSource
 warning: QSB/DynamicWholeSource.lean:84:18: try 'simp' instead of 'simpa'
 
 Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`

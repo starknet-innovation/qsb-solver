@@ -420,6 +420,15 @@ full-program form specializes to the literal 880-op fixture. This removes a
 starting-stack restriction in the source-shaped model; it does not prove that
 every Python-built lock has that program or that consensus acceptance implies
 the modeled run and evaluator result.
+`QSB/DynamicWireSource.full_wire_decodes` extends the parser bridge to the
+whole serialized script: any well-formed earlier opcode chunks decoding to a
+stated prior program, followed by the first `CHECKMULTISIG` and parameterized
+final segment, parse to exactly the full program above. Its companion
+`accepted_wire_good_setup_nine_positions` applies the nine-position theorem
+to a successful source-shaped run of those parsed opcodes, with the final
+evaluator checking the same full wire bytes. The explicit prior-chunk contract
+has not been proved for every Python builder execution, and the premise is a
+Lean source-shaped run rather than compiled Core's consensus result.
 `QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`
 now composes that setup probability with the transaction-game reduction:
 `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.

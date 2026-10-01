@@ -202,7 +202,7 @@ theorem parseCoreOps_eq_parseOps (fuel : Nat) (wire : Bytes) :
     parseCoreOps fuel wire = parseOps fuel wire := by
   simp [parseCoreOps, parseOps, parseCoreChunks_eq_parseChunks]
 
-private theorem mapM_of_map_some (xs : List Bytes) (ops : List Op)
+theorem mapM_of_map_some (xs : List Bytes) (ops : List Op)
     (aligned : xs.map decodeChunk = ops.map some) :
     xs.mapM decodeChunk = some ops := by
   induction xs generalizing ops with

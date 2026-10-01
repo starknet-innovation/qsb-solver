@@ -907,6 +907,7 @@
 'QSB.DynamicSerializedRound.serialized_final_round_parses' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicSerializedRound.parseCoreOps_eq_parseOps' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSerializedRound.mapM_of_map_some' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicSerializedRound.serialized_final_round_decodes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicSerializedRound.serialized_final_round_core_decodes' depends on axioms: [propext,
  Classical.choice,
@@ -918,6 +919,12 @@
 'QSB.DynamicWholeSource.accepted_first_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWholeSource.first_result_wrong_width' does not depend on any axioms
 'QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicWireSource.full_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicWireSource.full_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicWireSource.full_wire_decodes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicWireSource.accepted_wire_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]
