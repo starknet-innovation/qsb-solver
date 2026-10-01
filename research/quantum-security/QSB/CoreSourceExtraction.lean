@@ -252,6 +252,8 @@ theorem checked_source_run_pin_and_final (hashes : Hashes)
         PinPuzzleScriptCode.literalScript
         FirstOvershoot.pinSignature pinKey validKey verify = some true ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨stack, outcomes, 0⟩ = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
@@ -376,7 +378,8 @@ theorem checked_source_run_pin_and_final (hashes : Hashes)
     simp [puzzleChecked, lateStack, lateChecked]
   obtain ⟨pinKey, puzzleKey, raw, tail, _later, w,
     stackShape, _outcomeShape, fixedChecked, pinDER,
-    roundShape, openings, nonceChecked, finalDER⟩ :=
+    computedWitness, roundShape, openings,
+    nonceChecked, finalDER⟩ :=
     SourceWitness.matched_run_pin_and_final_der_puzzles hashes
       stack outcomes byteFinal accepted
       (puzzleChecked validKey verify)
@@ -400,7 +403,7 @@ theorem checked_source_run_pin_and_final (hashes : Hashes)
     exact (CoreMultisigEval.nonemptyVerify_sound _ _ _ _ parts.2).2
   exact ⟨pinKey, puzzleKey, raw, tail, w,
     stackShape, fixedSource, pinDER,
-    roundShape, openings, finalDER, sourceLastTrue,
+    computedWitness, roundShape, openings, finalDER, sourceLastTrue,
     by rw [← finalStack]; exact checkerSuccess⟩
 
 /-- The first two pinning checker sites read exactly the fixed nonce signature
@@ -541,6 +544,8 @@ theorem checked_reached_source_run_pin_and_final (hashes : Hashes)
         PinPuzzleScriptCode.literalScript
         FirstOvershoot.pinSignature pinKey validKey verify = some true ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨stack, outcomes, 0⟩ = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
@@ -638,6 +643,8 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
         PinPuzzleScriptCode.literalScript
         FirstOvershoot.pinSignature pinKey validKey verify = some true ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨stack, outcomes, 0⟩ = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
@@ -745,7 +752,7 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
                     exact ⟨allFacts.1, allFacts.2.1,
                       allFacts.2.2.2.1, allFacts.2.2.2.2⟩
                   obtain ⟨pinKey, puzzleKey, raw, tail, w,
-                    stackShape, fixed, pinDER, roundShape,
+                    stackShape, fixed, pinDER, computedWitness, roundShape,
                     openings, finalDER, finalOutcome, nonce⟩ :=
                     checked_reached_source_run_pin_and_final
                       hashes stack outcomes sourceFinal pin early
@@ -759,7 +766,7 @@ theorem necessary_checks_extract_pin_and_final (hashes : Hashes)
                       (by simpa [initial] using hLate)
                       facts.2.2.1
                   exact ⟨pinKey, puzzleKey, raw, tail, w, beforeCheck,
-                    stackShape, fixed, pinDER, roundShape, openings,
+                    stackShape, fixed, pinDER, computedWitness, roundShape, openings,
                     finalDER, by simp [initial] at hFinal ⊢,
                     finalOutcome, nonce⟩
 
@@ -785,6 +792,8 @@ theorem necessary_checks_fixed_all_calls (hashes : Hashes)
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨stack, outcomes, 0⟩ = some w ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
       DERSyntax.valid (hashes.h256 w.key) = true ∧
       validKey pinKey = true ∧
@@ -796,7 +805,7 @@ theorem necessary_checks_fixed_all_calls (hashes : Hashes)
         (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
           beforeCheck.stack.reverse) 0x01 = true := by
   obtain ⟨pinKey, _puzzleKey, _raw, _tail, w, beforeCheck,
-    _stackShape, fixedEval, pinDER, roundShape, openings,
+    _stackShape, fixedEval, pinDER, computedWitness, roundShape, openings,
     finalDER, _reached, _outcome, nonceEval⟩ :=
     necessary_checks_extract_pin_and_final hashes stack outcomes
       sourceFinal validKey verify sourceRun truth checks
@@ -825,7 +834,7 @@ theorem necessary_checks_fixed_all_calls (hashes : Hashes)
       (finalLast.symm.trans ScriptCodeSelection.finalNonce_sighash_all)
   subst finalFlag
   exact ⟨pinKey, w, beforeCheck, roundShape, openings,
-    pinDER, finalDER, pinKeyValid, pinVerified,
+    computedWitness, pinDER, finalDER, pinKeyValid, pinVerified,
     finalKeyValid, finalVerified⟩
 
 end QSB.CoreSourceExtraction

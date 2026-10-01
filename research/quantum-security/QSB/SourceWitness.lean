@@ -48,6 +48,8 @@ theorem matched_run_pin_and_final_der_puzzles (hashes : Hashes)
       outcomes = true :: true :: later ∧
       pinNonceVerify FirstOvershoot.pinSignature pinKey = true ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        (State.mk stack outcomes 0) = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
@@ -58,13 +60,15 @@ theorem matched_run_pin_and_final_der_puzzles (hashes : Hashes)
     PinningScriptCode.matched_run_pinning_der_puzzle
       hashes stack outcomes final accepted
       pinNonceVerify pinPuzzleVerify pinMatched pinPuzzleEncoding
-  obtain ⟨w, roundShape, openings, finalNonceVerified, finalDER⟩ :=
+  obtain ⟨w, computedWitness, roundShape, openings,
+    finalNonceVerified, finalDER⟩ :=
     FinalRoundWitness.matched_run_reached_key_der_puzzle
       hashes (State.mk stack outcomes 0) final accepted
       finalVerify finalPuzzleVerify finalNonempty finalEncoding
       finalMatched finalPuzzleEncoding finalPuzzleMatched
   exact ⟨pinKey, puzzleKey, raw, tail, later, w,
     shape, checks, pinVerified, pinDER,
-    roundShape, openings, finalNonceVerified, finalDER⟩
+    computedWitness, roundShape, openings,
+    finalNonceVerified, finalDER⟩
 
 end QSB.SourceWitness

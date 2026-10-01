@@ -969,6 +969,8 @@
  Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
+'QSB.FinalRoundWitness.findDummyIn_exact' depends on axioms: [propext, Quot.sound]
+'QSB.FinalRoundWitness.findDummy_exact' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalRoundWitness.matched_run_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all' depends on axioms: [propext,

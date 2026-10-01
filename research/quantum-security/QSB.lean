@@ -921,6 +921,8 @@ import QSB.Reduction
 #print axioms QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
+#print axioms QSB.FinalRoundWitness.findDummyIn_exact
+#print axioms QSB.FinalRoundWitness.findDummy_exact
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings
 #print axioms QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all

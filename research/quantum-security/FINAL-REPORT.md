@@ -625,9 +625,16 @@ segment proves that its CHECKSIGVERIFY signature is SHA256 of that same key.
 Under explicit successful, encoding-sound predicates for the reached final
 ten-pair scan and late puzzle check, the fixed final nonce verifies against
 this key and its SHA256 is strict DER in the source-shaped Lean predicate.
-This removes a freely chosen key from the modeled final-round witness, but
-does not establish Core checker equivalence, the ECDSA nonce equation for the
-real legacy sighash, a transaction extractor, or a quantum puzzle bound.
+An executable `extractMatchedWitness` now computes that modeled witness from
+the signed prefix and final reached stack: it looks up the two bonus dummy
+signatures among the 150 generated values and reads the last reached key.
+Lean proves that the returned value equals the witness in the source-shaped
+pin/final certificate, including the two-candidate certificate search and
+the shared-hash-function theorem. This removes freely selected witness fields
+at that modeled boundary. It does not establish Core checker equivalence,
+the ECDSA nonce equation for the real legacy sighash, a transaction extractor,
+or a quantum puzzle bound. For dynamic setups, DER-shaped commitments remain
+an explicit exception to the dummy-only bonus argument.
 
 Five pinned Core 27.2 cases corroborate this first final-round signed
 boundary on a puzzle-relaxed complete lock: the canonical index 2 accepts,

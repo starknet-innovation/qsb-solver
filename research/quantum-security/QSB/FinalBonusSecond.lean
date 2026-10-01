@@ -669,7 +669,10 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
       postLast.stack[1]? = postFirst.stack.head? ∧
       (∀ p : Nat, p ≤ 8 → postLast.stack[p + 2]? =
         (nextRawFront (boolBytes result)
-          gathered dummies commitments ++ tail)[p]?) := by
+          gathered dummies commitments ++ tail)[p]?) ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace ∧
+      FinalSignedChain.extractWholeRemaining hashes initial =
+        some remainingIds := by
   rw [FinalSignedChain.generated_whole_signed_boundary,
     run_append] at accepted
   cases preRun : run hashes (ByteLayout.program.take 446) initial with
@@ -718,7 +721,7 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
               | some afterSigned =>
                   obtain ⟨ids', gathered', dummies', commitments', tail',
                     trace, signedShape, pool, aligned, gatheredCount,
-                    traceCount, _traceExtract, _remainingExtract,
+                    traceCount, traceExtract, remainingExtract,
                     distinct, hits, tracePerm,
                     gatheredTrace⟩ :=
                     FinalSignedChain.accepted_all_signed_blocks hashes result
@@ -731,6 +734,31 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
                     simp only [checkRun, Option.bind_some]
                     rw [run_append]
                     simpa [init, initShape] using signed
+                  have signedPrefixRun : run hashes
+                      (ByteLayout.program.take 749) initial =
+                      some afterInit := by
+                    rw [FinalSignedChain.generated_to_signed_prefix,
+                      run_append]
+                    simp only [preRun, Option.bind_some]
+                    rw [run_append]
+                    simp only [checkRun, Option.bind_some]
+                    simpa [initShape] using init
+                  have afterDrop : afterInit.stack.drop 303 = earlyTail := by
+                    rw [initShape]
+                    change (FinalSignedAccepted.baseRegion
+                      (boolBytes result) earlyTail).drop 303 = earlyTail
+                    exact FinalSignedChain.baseRegion_drop_tail
+                      (boolBytes result) earlyTail
+                  have traceComputed :
+                      FinalSignedChain.extractWholeFinal hashes initial =
+                        some trace := by
+                    simp [FinalSignedChain.extractWholeFinal,
+                      signedPrefixRun, afterDrop, traceExtract]
+                  have remainingComputed :
+                      FinalSignedChain.extractWholeRemaining hashes initial =
+                        some ids' := by
+                    simp [FinalSignedChain.extractWholeRemaining,
+                      signedPrefixRun, afterDrop, remainingExtract]
                   simp only [signed, Option.bind_some] at suffix
                   rw [signedShape] at suffix
                   obtain ⟨firstIndex, lastIndex, postFirst, postLast,
@@ -748,7 +776,8 @@ theorem accepted_whole_program_bonus_source_trace (hashes : Hashes)
                     gatheredTrace,
                     firstRun, bothRun,
                     firstLower, firstUpper, lastLower, lastUpper,
-                    firstSource, lastSource, firstCarried, shallow⟩
+                    firstSource, lastSource, firstCarried, shallow,
+                    traceComputed, remainingComputed⟩
                   rw [prefixRun, signedShape]
 
 /-- From the reached post-bonus stack, the final CHECKMULTISIG witness
@@ -883,7 +912,10 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
           some (generatedCommitmentAt candidate)) ∧
       (firstIndex < 152 ∧ lastIndex = 152 →
         beforeCheck.stack[12]? =
-          some (generatedCommitmentAt candidate)) := by
+          some (generatedCommitmentAt candidate)) ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace ∧
+      FinalSignedChain.extractWholeRemaining hashes initial =
+        some remainingIds := by
   obtain ⟨result, gathered, dummies, commitments, tail,
       outcomes, cost, trace, remainingIds, firstIndex, lastIndex,
       postFirst, postLast,
@@ -891,7 +923,7 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
       aligned, tracePerm, gatheredTrace,
       firstRun, bothRun, firstLower, firstUpper,
       lastLower, lastUpper, firstSource, lastSource,
-      firstCarried, shallow⟩ :=
+      firstCarried, shallow, traceComputed, remainingComputed⟩ :=
     accepted_whole_program_bonus_source_trace hashes initial final accepted
   have through : run hashes (ByteLayout.program.take 850) initial =
       some postLast := by
@@ -939,7 +971,7 @@ theorem accepted_whole_program_final_signature_origins (hashes : Hashes)
     firstLower, firstUpper, lastLower, lastUpper,
     firstSource, lastSource, beforeRun, lastSlot, firstSlot,
     gatheredSlots, nonceSlot, dummySlot,
-    firstException, lastException⟩
+    firstException, lastException, traceComputed, remainingComputed⟩
 
 /-- A conditional byte-model setup reduction. If both reached final bonus
 signature slots must satisfy `sigSyntax`, then excluding that syntax from every
@@ -968,7 +1000,8 @@ theorem no_bonus_commitment_of_signature_syntax (hashes : Hashes)
     firstLower, firstUpper, lastLower, lastUpper,
     _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
     _gatheredSlots, _nonceSlot, _dummySlot,
-    firstException, lastException⟩ :=
+    firstException, lastException, _traceComputed,
+    _remainingComputed⟩ :=
       accepted_whole_program_final_signature_origins
         hashes initial final accepted
   obtain ⟨lastSyntax, firstSyntax⟩ :=
@@ -1050,7 +1083,8 @@ theorem no_bonus_commitment_of_matching_verifier (hashes : Hashes)
     _firstLower, _firstUpper, _lastLower, _lastUpper,
     _firstSource, _lastSource, _beforeRun, _lastSlot, _firstSlot,
     _gatheredSlots, _nonceSlot, dummySlot,
-    _firstException, _lastException⟩ :=
+    _firstException, _lastException, _traceComputed,
+    _remainingComputed⟩ :=
       accepted_whole_program_final_signature_origins
         hashes initial final accepted
   have enough : 22 ≤ beforeCheck.stack.length := by

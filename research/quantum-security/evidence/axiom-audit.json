@@ -1,5 +1,5 @@
 {
-  "theorem_count": 878,
+  "theorem_count": 880,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1449,6 +1449,14 @@
       "propext"
     ],
     "QSB.FinalOpeningTrace.suffix_paired": [
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.findDummyIn_exact": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.findDummy_exact": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature": [

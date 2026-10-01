@@ -257,6 +257,8 @@ theorem search_fixed_all_calls (hashes : Hashes) (stack : List Bytes)
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 FinalSignedLoop.generatedCommitmentAt
         w.signed w.opening ∧
+      FinalRoundWitness.extractMatchedWitness hashes
+        ⟨stack, outcomes firstRound, 0⟩ = some w ∧
       DERSyntax.valid (hashes.h256 pinKey) = true ∧
       DERSyntax.valid (hashes.h256 w.key) = true ∧
       validKey pinKey = true ∧

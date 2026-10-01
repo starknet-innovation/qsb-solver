@@ -146,6 +146,8 @@ theorem necessary_checks_fixed_all_joint (functions : Functions)
       FinalRoundShape w ∧
       OpeningsValid (fun x => functions.R (functions.H x))
         FinalSignedLoop.generatedCommitmentAt w.signed w.opening ∧
+      FinalRoundWitness.extractMatchedWitness (hashes functions)
+        ⟨stack, outcomes, 0⟩ = some w ∧
       DERSyntax.valid (functions.H pinKey) = true ∧
       DERSyntax.valid (functions.H w.key) = true ∧
       validKey pinKey = true ∧
@@ -158,14 +160,14 @@ theorem necessary_checks_fixed_all_joint (functions : Functions)
         (functions.H (functions.H (SighashAllWire.sourceAllPreimage tx selected
           (CoreMultisigEval.deletedScript EncodedLayout.chunks.flatten
             beforeCheck.stack.reverse)))) = true := by
-  obtain ⟨pinKey, w, beforeCheck, shape, openings,
+  obtain ⟨pinKey, w, beforeCheck, shape, openings, computedWitness,
     pinDER, finalDER, pinValid, pinChecked, finalValid, finalChecked⟩ :=
     CoreSourceExtraction.necessary_checks_fixed_all_calls
       (hashes functions) stack outcomes sourceFinal validKey
       (checker functions tx selected ecdsa) sourceRun truth checks
   rw [checker_all functions tx selected ecdsa _ _ _ inputValid] at pinChecked
   rw [checker_all functions tx selected ecdsa _ _ _ inputValid] at finalChecked
-  exact ⟨pinKey, w, beforeCheck, shape, openings,
+  exact ⟨pinKey, w, beforeCheck, shape, openings, computedWitness,
     pinDER, finalDER, pinValid, pinChecked, finalValid, finalChecked⟩
 
 end QSB.JointSourceChecks

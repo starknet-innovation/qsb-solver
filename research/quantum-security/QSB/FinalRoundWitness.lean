@@ -58,6 +58,55 @@ def witnessFromTrace (trace : List (Fin 150 × Bytes))
     opening := fun i _ => traceValue trace i
     key := key }
 
+/-- The generated nine-byte dummy signatures have distinct public values, so
+their reached final stack bytes identify original pool positions directly. -/
+def findDummyIn : List (Fin 150) → Bytes → Option (Fin 150)
+  | [], _ => none
+  | i :: rest, value =>
+      if generatedDummyAt i = value then some i else findDummyIn rest value
+
+def findDummy (value : Bytes) : Option (Fin 150) :=
+  findDummyIn (List.finRange 150) value
+
+theorem findDummyIn_exact (ids : List (Fin 150)) (i : Fin 150)
+    (present : i ∈ ids) :
+    findDummyIn ids (generatedDummyAt i) = some i := by
+  induction ids with
+  | nil => simp at present
+  | cons candidate rest ih =>
+      by_cases same : candidate = i
+      · subst candidate
+        simp [findDummyIn]
+      · have different : generatedDummyAt candidate ≠
+            generatedDummyAt i := by
+          intro equal
+          exact same (generatedDummyAt_injective equal)
+        have inRest : i ∈ rest := by
+          rcases List.mem_cons.mp present with first | later
+          · exact False.elim (same first.symm)
+          · exact later
+        simpa [findDummyIn, different] using ih inRest
+
+theorem findDummy_exact (i : Fin 150) :
+    findDummy (generatedDummyAt i) = some i := by
+  apply findDummyIn_exact (List.finRange 150) i
+  simp
+
+/-- Executable modeled final witness: signed indices and openings from the
+reached signed prefix, bonus indices from their final signature slots, and
+the final key from the reached last key slot. Core transaction refinement is
+not included. -/
+def extractMatchedWitness (hashes : Hashes) (initial : State) :
+    Option (RoundWitness (Fin 150) Bytes Bytes) := do
+  let trace ← FinalSignedChain.extractWholeFinal hashes initial
+  let beforeCheck ← run hashes (ByteLayout.program.take 879) initial
+  let firstBonus ← beforeCheck.stack[13]?
+  let secondBonus ← beforeCheck.stack[12]?
+  let a ← findDummy firstBonus
+  let b ← findDummy secondBonus
+  let key ← beforeCheck.stack[10]?
+  some (witnessFromTrace trace a b key)
+
 /-- The trace-to-abstract bridge retains real opening bytes and the exact
 seven-plus-two shape; it makes no claim about the arbitrary `key` argument. -/
 theorem witnessFromTrace_shape_and_openings
@@ -176,6 +225,7 @@ theorem matched_run_reached_key_and_puzzle_signature (hashes : Hashes)
         ((beforeCheck.stack.drop 1).take 10) = true) :
     ∃ (w : RoundWitness (Fin 150) Bytes Bytes)
       (beforeVerify beforeSuffix beforeCheck : State),
+      extractMatchedWitness hashes initial = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening ∧
       run hashes (ByteLayout.program.take 856) initial = some beforeVerify ∧
@@ -186,7 +236,8 @@ theorem matched_run_reached_key_and_puzzle_signature (hashes : Hashes)
       verify PoolRollInvariant.finalNonce w.key = true := by
   obtain ⟨trace, a, b, beforeCheck, reached,
     firstSlot, lastSlot, signedSlots, nonceSlot, _dummySlot,
-    seven, hits, _different, _aUnopened, _bUnopened, distinct, _nine⟩ :=
+    seven, hits, _different, _aUnopened, _bUnopened, distinct, _nine,
+    traceComputed⟩ :=
       FinalBonusIndices.matched_full_run_nine_positions_verify_all
         hashes initial final accepted verify verifyNonempty verifyEncoding matched
   obtain ⟨key, beforeVerify, beforeSuffix, reachedCheck,
@@ -205,9 +256,13 @@ theorem matched_run_reached_key_and_puzzle_signature (hashes : Hashes)
   subst lastKey
   have shapeAndOpen := witnessFromTrace_shape_and_openings
     hashes trace a b key seven distinct hits
+  have computedWitness : extractMatchedWitness hashes initial =
+      some (witnessFromTrace trace a b key) := by
+    simp [extractMatchedWitness, traceComputed, reached,
+      firstSlot, lastSlot, findDummy_exact, keyAt]
   exact ⟨witnessFromTrace trace a b key,
     beforeVerify, beforeSuffix, beforeCheck,
-    shapeAndOpen.1, shapeAndOpen.2, reachedPuzzle,
+    computedWitness, shapeAndOpen.1, shapeAndOpen.2, reachedPuzzle,
     reached, keyAt, sigAt, verifyRun, nonceVerified⟩
 
 /-- If the reached late CHECKSIGVERIFY pair is accepted by a verifier whose
@@ -235,12 +290,14 @@ theorem matched_run_reached_key_der_puzzle (hashes : Hashes)
       puzzleVerify (beforeVerify.stack[1]?.getD [])
         (beforeVerify.stack[0]?.getD []) = true) :
     ∃ w : RoundWitness (Fin 150) Bytes Bytes,
+      extractMatchedWitness hashes initial = some w ∧
       FinalRoundShape w ∧
       OpeningsValid hashes.h160 generatedCommitmentAt w.signed w.opening ∧
       verify PoolRollInvariant.finalNonce w.key = true ∧
       DERSyntax.valid (hashes.h256 w.key) = true := by
   obtain ⟨w, beforeVerify, _beforeSuffix, _beforeCheck,
-    shape, openings, reachedPuzzle, _reachedCheck, _keyAt,
+    computedWitness, shape, openings, reachedPuzzle,
+    _reachedCheck, _keyAt,
     sigAt, _verifyRun, nonceVerified⟩ :=
       matched_run_reached_key_and_puzzle_signature
         hashes initial final accepted verify verifyNonempty verifyEncoding matched
@@ -254,6 +311,7 @@ theorem matched_run_reached_key_der_puzzle (hashes : Hashes)
     have width := hashes.h256_width w.key
     simp [empty] at width
   rw [DERSyntax.verifyAllEncoding_nonempty _ nonempty] at encoded
-  exact ⟨w, shape, openings, nonceVerified, encoded⟩
+  exact ⟨w, computedWitness, shape, openings,
+    nonceVerified, encoded⟩
 
 end QSB.FinalRoundWitness

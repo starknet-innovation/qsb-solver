@@ -102,7 +102,8 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
       (a :: b :: trace.map Prod.fst).Nodup ∧
-      (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace := by
   obtain ⟨result, gathered, dummies, commitments, tail,
     outcomes, cost, trace, remainingIds, candidate, firstIndex, lastIndex,
     postFirst, postLast, beforeCheck,
@@ -112,7 +113,8 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
     firstLower, firstUpper, lastLower, lastUpper,
     firstSource, lastSource, _beforeRun, lastSlot, firstSlot,
     gatheredSlots, nonceSlot, dummySlot,
-    firstException, lastException⟩ :=
+    firstException, lastException, traceComputed,
+    _remainingComputed⟩ :=
       FinalBonusSecond.accepted_whole_program_final_signature_origins
         hashes initial final accepted
   have enough : 22 ≤ beforeCheck.stack.length := by
@@ -166,7 +168,8 @@ theorem matched_full_run_nine_positions (hashes : Hashes)
   exact ⟨trace, a, b, beforeCheck, beforePrefix, firstAt, lastAt,
     signedSlots, nonceSlot, dummySlot,
     traceCount, hits, two.1, two.2.1,
-    two.2.2.1, two.2.2.2.1, two.2.2.2.2⟩
+    two.2.2.1, two.2.2.2.1, two.2.2.2.2,
+    traceComputed⟩
 
 /-- The nine-position source result specialized to the literal lock's strict
 DER predicate. The successful Core-shaped scan and parser-soundness premises
@@ -195,7 +198,8 @@ theorem matched_full_run_nine_positions_der (hashes : Hashes)
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
       (a :: b :: trace.map Prod.fst).Nodup ∧
-      (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace := by
   apply matched_full_run_nine_positions hashes initial final accepted verify
     (fun sig => DERSyntax.valid sig = true) verifySound
   · intro id
@@ -231,7 +235,8 @@ theorem matched_full_run_nine_positions_verify_all (hashes : Hashes)
       (∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) ∧
       a ≠ b ∧ a ∉ trace.map Prod.fst ∧ b ∉ trace.map Prod.fst ∧
       (a :: b :: trace.map Prod.fst).Nodup ∧
-      (a :: b :: trace.map Prod.fst).toFinset.card = 9 := by
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      FinalSignedChain.extractWholeFinal hashes initial = some trace := by
   apply matched_full_run_nine_positions_der hashes initial final accepted
     verify ?_ matched
   intro sig key success

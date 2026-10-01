@@ -120,8 +120,11 @@ computes the seven signed positions and actual openings from any successful
 full run, including arbitrary initial byte stacks and supplied signature
 outcomes; `extractWholeRemaining` computes their ordered residual pool.
 Neither consumes transaction bytes or establishes that Core
-acceptance supplies such a run; extracting the two bonus positions and nonce
-key into the game witness remains separate.
+acceptance supplies such a run. Under the later source-shaped final scan and
+signature-encoding premises, `FinalRoundWitness.extractMatchedWitness`
+computes a complete modeled `RoundWitness` from this trace, the two reached
+bonus signature bytes, and the last reached key. The game extractor still
+needs an actual transaction and Core-acceptance refinement.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes
@@ -209,7 +212,12 @@ accepts a separately supplied key. A newer full-run theorem uses the key in
 the actual last reached final multisignature slot and proves that the late
 puzzle CHECKSIGVERIFY receives SHA256 of those same bytes. Conditional on
 encoding-sound successful final and puzzle checks, SHA256 of this reached key
-is strict DER and the fixed nonce checks against it. The real transaction
+is strict DER and the fixed nonce checks against it. The executable
+`extractMatchedWitness` builds this modeled witness from the reached signed
+prefix, final bonus signature slots, and final key slot; the source-shaped
+certificate proves equality with that computed value. This dummy-only bonus
+argument relies on the literal generated commitments being non-DER; other
+setups need an exceptional branch. The real transaction
 sighash/ECDSA nonce relation, compiled-Core refinement, and a transaction-byte
 extractor remain open.
 At the first signed selection of the final round, the generated lookup map
