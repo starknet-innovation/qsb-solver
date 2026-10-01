@@ -57,6 +57,7 @@ import QSB.CoreFindAndDelete
 import QSB.CoreMultisigStack
 import QSB.CoreMultisigEval
 import QSB.PinningScriptCode
+import QSB.PinPuzzleScriptCode
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -105,6 +106,14 @@ import QSB.Reduction
 #print axioms QSB.CoreOpcodeStep.literal_segments_supported
 #print axioms QSB.CoreOpcodeStep.supported_of_segment
 #print axioms QSB.CoreOpcodeStep.literal_segment_run_eq_byte
+#print axioms QSB.PinPuzzleScriptCode.literal_no_push32
+#print axioms QSB.PinPuzzleScriptCode.push32_head
+#print axioms QSB.PinPuzzleScriptCode.push32_rigid
+#print axioms QSB.PinPuzzleScriptCode.puzzleScriptCode_eq_literal
+#print axioms QSB.PinPuzzleScriptCode.pin_hash_scriptCode_eq_literal
+#print axioms QSB.PinPuzzleScriptCode.accepted_pinning_scriptCodes
+#print axioms QSB.PinPuzzleScriptCode.accepted_both_puzzle_scriptCodes
+#print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
 #print axioms QSB.WireIntegers.compact_65535
 #print axioms QSB.WireIntegers.compact_65536

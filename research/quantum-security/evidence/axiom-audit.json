@@ -1,5 +1,5 @@
 {
-  "theorem_count": 753,
+  "theorem_count": 761,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2302,6 +2302,39 @@
       "propext"
     ],
     "QSB.OutputCodec.sourceShapedOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.accepted_both_puzzle_scriptCodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.accepted_pinning_scriptCodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.literal_no_push32": [],
+    "QSB.PinPuzzleScriptCode.pin_hash_scriptCode_eq_literal": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.push32_head": [
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.push32_rigid": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.puzzleScriptCode_eq_literal": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PinPuzzleScriptCode.successful_puzzle_gate": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

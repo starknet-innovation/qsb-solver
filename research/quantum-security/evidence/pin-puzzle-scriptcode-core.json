@@ -1,0 +1,34 @@
+{
+  "scope": "isolated 32-byte legacy signature deletion; not QSB acceptance",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "app_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "app_checkout_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "signature_hex": "301d020101021801000000000000000000000000000000000000000000001101",
+  "cases": [
+    {
+      "name": "no_push32",
+      "lock_hex": "ac",
+      "expected_script_code_hex": "ac",
+      "wrong_script_code_hex": "",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "1d179bb531ab2e1ca9020f404dabc70f9f7ca57ecd3b19c3c8bc5d2124efd3d4",
+      "negative_tx_sha256": "ce9cc5e7dd610d0e8fa8469f9431bca1d0003836047dac1b0a7b1d715ccc8eee"
+    },
+    {
+      "name": "one_push32",
+      "lock_hex": "20301d02010102180100000000000000000000000000000000000000000000110175ac",
+      "expected_script_code_hex": "75ac",
+      "wrong_script_code_hex": "20301d02010102180100000000000000000000000000000000000000000000110175ac",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "5959c142a9421ad978832c3d90914ffd903158d615060516a6c3dcbcdd332196",
+      "negative_tx_sha256": "8b4183adde45224be69f983495681a93178283f263285a54dcfdc2d2c40902ea"
+    }
+  ]
+}
