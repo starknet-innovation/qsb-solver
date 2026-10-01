@@ -1,4 +1,4 @@
-"""Check the final data-block boundary in two disposable Config A builds."""
+"""Check final data blocks across two setups and a 20-byte nonce case."""
 
 import argparse
 import hashlib
@@ -87,11 +87,23 @@ def main():
     first_suffix = first[1][first[2][749][0] :]
     second_suffix = second[1][second[2][749][0] :]
     assert first_suffix == second_suffix
+    nonce20 = ec.encode_der_sig(1, (1 << 88) + 17, sighash=1)
+    assert len(nonce20) == 20
+    short_nonce_script = first[0].build_full_script(
+        nonces[0], nonces[1], nonce20)
+    short_nonce_ops = decode(short_nonce_script)
+    assert len(short_nonce_ops) == 880
+    assert short_nonce_ops[748][3] == nonce20
+    assert [op[3] for op in short_nonce_ops[447:597]] == [
+        op[3] for op in first[2][447:597]]
+    assert short_nonce_script[short_nonce_ops[749][0] :] == first_suffix
 
     report = {
         "builder_sha256": source_hash,
         "base_script_sha256": hashlib.sha256(first[1]).hexdigest(),
         "alternate_script_sha256": hashlib.sha256(second[1]).hexdigest(),
+        "nonce20_script_sha256": hashlib.sha256(short_nonce_script).hexdigest(),
+        "nonce20_signature_hex": nonce20.hex(),
         "instruction_count": 880,
         "final_data_instruction_range": [447, 749],
         "final_commitment_pushes_reverse_indexed": True,
@@ -99,11 +111,12 @@ def main():
         "dummy_bytes_equal_across_setups": True,
         "commitments_differ_across_setups": True,
         "suffix_from_instruction_749_equal": True,
-        "scope": "Two disposable builder executions; not a universal source or Core proof.",
+        "nonce20_suffix_from_instruction_749_equal": True,
+        "scope": "Three disposable builder executions; not a universal source or Core proof.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
-    print("Checked two disposable dynamic final data blocks and suffixes.")
+    print("Checked three disposable dynamic final data blocks and suffixes.")
 
 
 if __name__ == "__main__":

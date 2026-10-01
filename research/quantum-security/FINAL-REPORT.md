@@ -321,10 +321,11 @@ premises, and this setup term is not a bound on unauthorized spending.
 with arbitrary commitment and nonce bytes. Lean proves its successful stack
 effect, 150-position initial alignment, paired-erasure preservation, and
 equality with the literal block when specialized to the disposable fixture.
-Two disposable executions of the pinned builder independently confirm that
-the commitment pushes reverse the original indices, the second-round dummy
-signatures are identical across setups, and the suffix after instruction 749
-is byte-identical (`evidence/dynamic-final-data.json`). The full dynamic
+Three disposable executions of the pinned builder confirm that the commitment
+pushes reverse the original indices, the second-round dummy signatures are
+identical across two setups, and the suffix after instruction 749 is
+byte-identical even when the final nonce signature is 20 bytes
+(`evidence/dynamic-final-data.json`). The full dynamic
 signed-loop invariant and universal builder-to-model correspondence are still
 unproved; this evidence does not establish Core acceptance or a spend bound.
 The local dynamic signed-source theorem now classifies any reached, bounded

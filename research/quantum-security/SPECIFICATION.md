@@ -215,8 +215,9 @@ matched signature scan; neither is supplied by the count theorem.
 The parameterized second-round data block in `DynamicFinalInit` supplies the
 first such execution boundary for arbitrary commitment and nonce bytes: every
 successful modeled block has the intended stack order and initially aligned
-pools. The literal block is its exact specialization. A two-setup pinned-builder
-check corroborates push order and the unchanged post-data opcode suffix, but
+pools. The literal block is its exact specialization. A three-build
+pinned-builder check corroborates push order and the unchanged post-data
+opcode suffix across two setups and a 20-byte final nonce, but
 the seven signed selections and bonus-source trace have not yet been lifted
 through that parameterized suffix.
 At one reached signed comparison, the parameterized source classifier gives a

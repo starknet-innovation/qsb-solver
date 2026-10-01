@@ -11,6 +11,9 @@
   ],
   "final_dummy_pushes_reverse_indexed": true,
   "instruction_count": 880,
-  "scope": "Two disposable builder executions; not a universal source or Core proof.",
+  "nonce20_script_sha256": "870e86a781f9deefd069d2cff7b9f304e4043a45d571cd75b1d4849a21e22dfb",
+  "nonce20_signature_hex": "3011020101020c01000000000000000000001101",
+  "nonce20_suffix_from_instruction_749_equal": true,
+  "scope": "Three disposable builder executions; not a universal source or Core proof.",
   "suffix_from_instruction_749_equal": true
 }
