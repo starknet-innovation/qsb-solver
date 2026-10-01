@@ -31,6 +31,11 @@ those addresses for any sufficiently long stack. It also proves that every
 truthy successful full byte-model run reaches those addresses, and that an
 externally supplied successful ten-pair scan verifies each source-addressed
 pair. This does not prove that Core's real ECDSA checker produces that scan.
+`QSB/CoreMultisigCleanup.lean` additionally proves the bottom-first source
+cleanup agrees with the byte model's top-first stack mutation for arbitrary
+key/signature counts and either scan result. Its final specialization uses
+the ten-pair evaluator's capacity and `NULLDUMMY` facts to pop 23 cells and
+push true. The actual Core pair-scan result remains external.
 
 `QSB/CoreMultisigEval.lean` models the final source loop's DER gate,
 nonempty signature requirement, key-skip behavior, shared ten-signature

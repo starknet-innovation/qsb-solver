@@ -56,6 +56,7 @@ import QSB.CoreGetOp
 import QSB.CoreFindAndDelete
 import QSB.CoreMultisigStack
 import QSB.CoreMultisigEval
+import QSB.CoreMultisigCleanup
 import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
 import QSB.CoreChecksigEval
@@ -772,6 +773,9 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_pairs
 #print axioms QSB.CoreMultisigEval.deletedScript_selected
 #print axioms QSB.CoreMultisigEval.successful_byte_run_source_check
+#print axioms QSB.CoreMultisigCleanup.cleanup_reverse
+#print axioms QSB.CoreMultisigCleanup.cleanup_success
+#print axioms QSB.CoreMultisigCleanup.finalTenEval_cleanup
 #print axioms QSB.CoreSerialize.magnitudeBytes_eq_model
 #print axioms QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos
 #print axioms QSB.CoreSerialize.coreSerialize_eq_model

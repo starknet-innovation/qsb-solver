@@ -1,5 +1,5 @@
 {
-  "theorem_count": 768,
+  "theorem_count": 771,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -491,6 +491,18 @@
     ],
     "QSB.CoreGetOp.simple_chunk_width": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigCleanup.cleanup_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigCleanup.cleanup_success": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigCleanup.finalTenEval_cleanup": [
       "Quot.sound",
       "propext"
     ],
