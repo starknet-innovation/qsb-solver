@@ -169,6 +169,7 @@ def main() -> None:
             "accepted": accepted,
             "expected": expected,
             "output_count": len(tx.outputs),
+            "script_sig_length": len(tx.inputs[1].script_sig),
             "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
         })
 
@@ -179,6 +180,14 @@ def main() -> None:
     two_outputs.inputs[1].script_sig = witness(two_outputs, two_outputs)
     check("two_outputs_recovered_keys", two_outputs, True)
     canonical_witness = two_outputs.inputs[1].script_sig
+    # Empty pushes before the witness become bottom-stack cells. The modeled
+    # canonical peak is 615, so 385 reaches the 1000-cell limit and 386
+    # exceeds it. These are finite native differential cases, not a proof of
+    # full Core-to-Lean trace equivalence.
+    for extra_cells, expected in ((1, True), (64, True), (256, True),
+                                  (385, True), (386, False)):
+        two_outputs.inputs[1].script_sig = b"\x00" * extra_cells + canonical_witness
+        check(f"two_outputs_{extra_cells}_bottom_empty_cells", two_outputs, expected)
     # The lock's fixed roll depths address cells above these additional
     # bottom-stack values. A non-push scriptSig prefix is consensus-admitted
     # for this bare output, and a 520-byte push reaches the element limit.

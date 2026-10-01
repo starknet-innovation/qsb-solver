@@ -33,6 +33,7 @@ import QSB.Multisig
 import QSB.KeyRolls
 import QSB.ByteTrace
 import QSB.ByteWitness
+import QSB.BytePrefixCapacity
 import QSB.FirstOvershoot
 import QSB.FirstIndexMap
 import QSB.FirstNumericRange
@@ -172,6 +173,13 @@ import QSB.Reduction
 #print axioms QSB.WireIntegers.coreSingleBug_rawDigest_readBE
 #print axioms QSB.WireECDSATargets.targets_card_le_eight
 #print axioms QSB.WireECDSATargets.checked_digest_mem_targets
+#print axioms QSB.BytePrefixCapacity.forget_peak
+#print axioms QSB.BytePrefixCapacity.diagnose_toOption
+#print axioms QSB.BytePrefixCapacity.canonical_peak
+#print axioms QSB.BytePrefixCapacity.extra_385_at_limit
+#print axioms QSB.BytePrefixCapacity.extra_386_over_limit
+#print axioms QSB.BytePrefixCapacity.extra_386_capacity_failure
+#print axioms QSB.BytePrefixCapacity.extra_386_byte_run_rejects
 #print axioms QSB.WireIntegers.compactSize_roundtrip
 #print axioms QSB.WireIntegers.compact_252
 #print axioms QSB.CoreOpcodeStep.step_eq_byte

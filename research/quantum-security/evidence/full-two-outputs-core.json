@@ -7,6 +7,7 @@
       "expected": true,
       "name": "one_output_bug_digest",
       "output_count": 1,
+      "script_sig_length": 1149,
       "transaction_sha256": "9cf51e3af7b80666c228e7ab66c2688d35692ec96ce6607ca16ec824ac2f57fc"
     },
     {
@@ -14,6 +15,7 @@
       "expected": false,
       "name": "two_outputs_old_dummy_keys",
       "output_count": 2,
+      "script_sig_length": 1149,
       "transaction_sha256": "17edfe154d4ddcb98652119f9cc5ec983f7998ac0173e6ef4257899cdb2e53e4"
     },
     {
@@ -21,13 +23,55 @@
       "expected": true,
       "name": "two_outputs_recovered_keys",
       "output_count": 2,
+      "script_sig_length": 1149,
       "transaction_sha256": "c63e8ef63e3c5228a6196cc959b5d9b8431d9772ee816feb97172a03ec41e679"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_1_bottom_empty_cells",
+      "output_count": 2,
+      "script_sig_length": 1150,
+      "transaction_sha256": "45a61249eeb4bf3e535d2b1bf90d367f9e082ca2b2e08e91716da7677ab56f39"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_64_bottom_empty_cells",
+      "output_count": 2,
+      "script_sig_length": 1213,
+      "transaction_sha256": "2786f6bc795675d5c0dd1c8e022c980bae213729aa125db553c2d9411d2851cf"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_256_bottom_empty_cells",
+      "output_count": 2,
+      "script_sig_length": 1405,
+      "transaction_sha256": "805c08e3b27596941d548e3f3d5dd014868c789601993668281ebe09be114b98"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_385_bottom_empty_cells",
+      "output_count": 2,
+      "script_sig_length": 1534,
+      "transaction_sha256": "3ebd80eb31121c44666c9966c0bfae6c8e3c2e4a1e7e86b248465be7b8cd36e7"
+    },
+    {
+      "accepted": false,
+      "expected": false,
+      "name": "two_outputs_386_bottom_empty_cells",
+      "output_count": 2,
+      "script_sig_length": 1535,
+      "transaction_sha256": "a37a105ef17183f4f0f2d0e3081135bc60b5894266238085f026255019c312c1"
     },
     {
       "accepted": true,
       "expected": true,
       "name": "two_outputs_nonpush_bottom_prefix",
       "output_count": 2,
+      "script_sig_length": 1152,
       "transaction_sha256": "686b8fadeaf6003ae83a1300a011d16a32580b3a6b025e97bd5611771bdc1b16"
     },
     {
@@ -35,6 +79,7 @@
       "expected": true,
       "name": "two_outputs_max_element_bottom_prefix",
       "output_count": 2,
+      "script_sig_length": 1672,
       "transaction_sha256": "35ecccf6895c8dbb28cc98f4ce6298efd41dbcf7f830210037cebb0a9517febc"
     },
     {
@@ -42,6 +87,7 @@
       "expected": false,
       "name": "two_outputs_changed_second_value",
       "output_count": 2,
+      "script_sig_length": 1149,
       "transaction_sha256": "611ed7f3f00337526b186b36b2f8ae0a47182b40ae31ef6f2a8579754ea19904"
     },
     {
@@ -49,6 +95,7 @@
       "expected": true,
       "name": "two_outputs_changed_first_value_same_dummy_keys",
       "output_count": 2,
+      "script_sig_length": 1149,
       "transaction_sha256": "c34aa0fcf52d02bba9cd88de978ab3c4bccdb3a558a2f3030c7e432e186b364e"
     }
   ],

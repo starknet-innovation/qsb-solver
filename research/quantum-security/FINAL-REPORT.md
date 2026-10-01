@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,084 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,091 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -902,6 +902,19 @@ in-range message; changing the selected second output's value then rejects.
 The same accepted two-output witness remains accepted with either a non-push
 scriptSig prefix computing an extra bottom-stack value or an extra 520-byte
 bottom-stack element.
+The pinned adapter now also accepts 1, 64, 256, and 385 additional empty
+bottom-stack cells before that witness, but rejects 386. The original seven
+native outcomes and transaction hashes remain unchanged. For the parallel
+disposable byte-model witness, `QSB/BytePrefixCapacity.lean` proves that
+peak recording preserves the ordinary run and checks a base peak of 615:
+385 extras reach exactly 1,000 cells. A separate diagnostic, proved to
+erase to the ordinary run, identifies the 386-cell case as a 1,001-cell
+overflow after modeled zero-based opcode index 754. The
+two boundary scriptSigs are 1,534 and 1,535 bytes, well below Core's
+10,000-byte script limit. The adapter reports only acceptance, so the
+precise native failure opcode is
+not observed. These are finite tests with three puzzle sites relaxed, not
+universal arbitrary-scriptSig extraction from compiled Core.
 Changing only the unselected first output and rederiving the fixed ALL keys
 accepts while reusing the in-range SINGLE dummy keys. Lean proves the
 corresponding source-shaped preimage and joint-digest invariance for any

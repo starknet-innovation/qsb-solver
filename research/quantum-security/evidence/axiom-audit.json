@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1084,
+  "theorem_count": 1091,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -350,6 +350,30 @@
       "propext"
     ],
     "QSB.ByteMachine.successful_hash_comparison_in_context": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.canonical_peak": [
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.diagnose_toOption": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.extra_385_at_limit": [
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.extra_386_byte_run_rejects": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.extra_386_capacity_failure": [
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.extra_386_over_limit": [
+      "propext"
+    ],
+    "QSB.BytePrefixCapacity.forget_peak": [
       "Quot.sound",
       "propext"
     ],
