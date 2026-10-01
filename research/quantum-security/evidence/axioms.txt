@@ -930,9 +930,11 @@
 'QSB.DynamicSourceGate.source_eval_success_match' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicSourceGate.nine_positions_of_source_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWholeSource.literal_full_program' depends on axioms: [propext]
+'QSB.DynamicWholeSource.full_program_late_verify_split' depends on axioms: [propext]
 'QSB.DynamicWholeSource.accepted_first_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWholeSource.first_result_wrong_width' does not depend on any axioms
 'QSB.DynamicWholeSource.accepted_whole_final_nonce_slot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicWholeSource.accepted_whole_late_puzzle_final_key' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -965,12 +967,18 @@
  Classical.choice,
  Quot.sound]
 'QSB.DynamicCheckedCertificate.first_two_opcodes' depends on axioms: [propext]
+'QSB.DynamicCheckedCertificate.prior_ops_length' depends on axioms: [propext]
+'QSB.DynamicCheckedCertificate.late_verify_prefix_opcodes' depends on axioms: [propext]
 'QSB.DynamicCheckedCertificate.reached_pin_fixed_signature' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicCheckedCertificate.source_sites_pin' depends on axioms: [propext]
+'QSB.DynamicCheckedCertificate.source_sites_late' depends on axioms: [propext]
 'QSB.DynamicCheckedCertificate.final_checked_sound' depends on axioms: [propext]
 'QSB.DynamicCheckedCertificate.candidate_sound' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicCheckedCertificate.search_sound' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicCheckedCertificate.search_final_fixed_nonce_slot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicCheckedCertificate.search_late_puzzle_final_key_der' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicCheckedCertificate.search_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -980,6 +988,10 @@
  Classical.choice,
  Quot.sound]
 'QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicJointTransaction.search_final_nonce_joint_hit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicJointTransaction.search_good_setup_joint_final_event' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicBonusSetup.good_setup_nine_positions' depends on axioms: [propext, Classical.choice, Quot.sound]

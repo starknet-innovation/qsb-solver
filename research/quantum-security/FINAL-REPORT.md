@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,037 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,045 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -788,6 +788,15 @@ identity through reversal. When the parameterized nonce ends in `0x01`, its
 reached ECDSA call is therefore on `H(H(sourceAllPreimage))` with the common
 final FindAndDelete scriptCode. The arbitrary-lock `0x01` condition is an
 explicit premise; the source checker and compiled-Core bridge remain open.
+The late puzzle's checked source stack consumes `H(key)` for that *same*
+tenth final key, forcing a strict-DER hash output. The parameterized good-setup
+theorem combines this with seven actual `R(H(opening))` commitment equations
+and the nonce's `H(H(ALL preimage))` ECDSA call in one certificate. This is a
+deterministic joint event over shared functions, with an adversary-dependent
+key and scriptCode. It does not establish a quantum query bound; the pin-key
+puzzle link, Core/builder refinement, and adaptive disclosure model remain
+open. The nonce ECDSA call by itself is not a fresh hash target because a
+public key can be recovered for a chosen digest.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
 signature for any initial stack on which the modeled prefix succeeds. Strict

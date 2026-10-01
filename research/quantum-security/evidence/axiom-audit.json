@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1037,
+  "theorem_count": 1045,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1301,6 +1301,12 @@
     "QSB.DynamicCheckedCertificate.first_two_opcodes": [
       "propext"
     ],
+    "QSB.DynamicCheckedCertificate.late_verify_prefix_opcodes": [
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.prior_ops_length": [
+      "propext"
+    ],
     "QSB.DynamicCheckedCertificate.reached_pin_fixed_signature": [
       "Classical.choice",
       "Quot.sound",
@@ -1316,8 +1322,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicCheckedCertificate.search_late_puzzle_final_key_der": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicCheckedCertificate.search_sound": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.source_sites_late": [
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.source_sites_pin": [
@@ -1433,12 +1447,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicJointTransaction.search_final_nonce_joint_hit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicJointTransaction.search_fixed_pin_all_call": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_good_setup_joint_final_event": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -1772,7 +1796,15 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicWholeSource.accepted_whole_late_puzzle_final_key": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicWholeSource.first_result_wrong_width": [],
+    "QSB.DynamicWholeSource.full_program_late_verify_split": [
+      "propext"
+    ],
     "QSB.DynamicWholeSource.literal_full_program": [
       "propext"
     ],

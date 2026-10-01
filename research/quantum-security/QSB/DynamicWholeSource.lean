@@ -23,6 +23,48 @@ def beforeFinalCheckProgram (priorOps : List Op) (nonce : Bytes)
   priorOps ++ [.checkmultisig] ++
     DynamicBonusChain.finalCheckPrefix nonce commitmentAt
 
+def beforeLateVerifyProgram (priorOps : List Op) (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes) : List Op :=
+  priorOps ++ [.checkmultisig] ++
+    DynamicSignedChain.dataAndSignedProgram nonce commitmentAt ++
+      FinalBonusSecond.bothBonusOps ++ ByteLatePuzzle.lateOps.take 6
+
+theorem full_program_late_verify_split (priorOps : List Op)
+    (nonce : Bytes) (commitmentAt : Fin 150 → Bytes) :
+    fullProgram priorOps nonce commitmentAt =
+      beforeLateVerifyProgram priorOps nonce commitmentAt ++
+        [.checksigverify] ++ ByteFinalCounts.finalSetup ++
+        [.checkmultisig] := by
+  have suffix840 : ByteLayout.program.drop 840 =
+      FinalBonusSecond.bothBonusOps ++ ByteLayout.program.drop 850 := by
+    decide
+  have lateSplit : ByteLatePuzzle.lateOps =
+      ByteLatePuzzle.lateOps.take 6 ++ [.checksigverify] := by decide
+  have suffix850 : ByteLayout.program.drop 850 =
+      ByteLatePuzzle.lateOps.take 6 ++ [.checksigverify] ++
+        ByteFinalCounts.finalSetup ++ [.checkmultisig] := by
+    calc
+      _ = ByteLatePuzzle.lateOps ++ ByteFinalCounts.finalSetup ++
+          [.checkmultisig] :=
+        ByteLatePuzzle.generated_late_final_check_split
+      _ = _ := by
+        simpa only [List.append_assoc] using
+          congrArg (fun ops : List Op =>
+            ops ++ ByteFinalCounts.finalSetup ++ [.checkmultisig]) lateSplit
+  calc
+    _ = priorOps ++ [.checkmultisig] ++
+        DynamicSignedChain.dataAndSignedProgram nonce commitmentAt ++
+        FinalBonusSecond.bothBonusOps ++
+        (ByteLatePuzzle.lateOps.take 6 ++ [.checksigverify] ++
+          ByteFinalCounts.finalSetup ++ [.checkmultisig]) := by
+          rw [fullProgram, DynamicBonusChain.final_round_program_eq,
+            suffix840, suffix850]
+          simp only [List.append_assoc]
+    _ = beforeLateVerifyProgram priorOps nonce commitmentAt ++
+          [.checksigverify] ++ ByteFinalCounts.finalSetup ++
+          [.checkmultisig] := by
+          simp only [beforeLateVerifyProgram, List.append_assoc]
+
 theorem literal_full_program :
     fullProgram (ByteLayout.program.take 446)
       PoolRollInvariant.finalNonce
@@ -124,6 +166,66 @@ theorem accepted_whole_final_nonce_slot (hashes : Hashes)
       some beforeCheck
   rw [run_append, firstRun]
   exact prefixRun
+
+/-- The late puzzle consumes `H(key)` where `key` is also the tenth final
+multisignature key. This is one-run stack provenance for arbitrary modeled
+initial stacks; signature verdicts are still supplied Boolean outcomes. -/
+theorem accepted_whole_late_puzzle_final_key (hashes : Hashes)
+    (priorOps : List Op) (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes)
+    (initial final : State)
+    (accepted : run hashes (fullProgram priorOps nonce commitmentAt)
+      initial = some final) :
+    ∃ (key : Bytes) (beforeVerify beforeCheck : State),
+      run hashes (beforeLateVerifyProgram priorOps nonce commitmentAt)
+        initial = some beforeVerify ∧
+      run hashes (beforeFinalCheckProgram priorOps nonce commitmentAt)
+        initial = some beforeCheck ∧
+      beforeVerify.stack[1]? = some (hashes.h256 key) ∧
+      beforeCheck.stack[10]? = some key := by
+  let preBonusOps := priorOps ++ [.checkmultisig] ++
+    DynamicSignedChain.dataAndSignedProgram nonce commitmentAt ++
+      FinalBonusSecond.bothBonusOps
+  have suffixSplit : ByteLayout.program.drop 840 =
+      FinalBonusSecond.bothBonusOps ++ ByteLayout.program.drop 850 := by
+    decide
+  have split : fullProgram priorOps nonce commitmentAt =
+      preBonusOps ++ ByteLayout.program.drop 850 := by
+    simp [preBonusOps, fullProgram,
+      DynamicBonusChain.final_round_program_eq, suffixSplit,
+      List.append_assoc]
+  rw [split, run_append] at accepted
+  cases prefixRun : run hashes preBonusOps initial with
+  | none => simp [prefixRun] at accepted
+  | some afterBonus =>
+      simp only [prefixRun, Option.bind_some] at accepted
+      obtain ⟨key, beforeVerify, beforeSuffix, beforeCheck,
+        lateRun, puzzleRun, _verifyRun, sigAt, setupRun, keyAt⟩ :=
+        ByteLatePuzzle.accepted_late_final_puzzle_key
+          hashes afterBonus final accepted
+      have puzzleReached : run hashes
+          (beforeLateVerifyProgram priorOps nonce commitmentAt)
+          initial = some beforeVerify := by
+        change run hashes (preBonusOps ++ ByteLatePuzzle.lateOps.take 6)
+          initial = some beforeVerify
+        rw [run_append, prefixRun]
+        exact puzzleRun
+      have finalReached : run hashes
+          (beforeFinalCheckProgram priorOps nonce commitmentAt)
+          initial = some beforeCheck := by
+        have opsEq : beforeFinalCheckProgram priorOps nonce commitmentAt =
+            preBonusOps ++
+              (ByteLatePuzzle.lateOps ++ ByteFinalCounts.finalSetup) := by
+          simp [beforeFinalCheckProgram,
+            DynamicBonusChain.finalCheckPrefix, preBonusOps,
+            List.append_assoc]
+        rw [opsEq]
+        rw [run_append, prefixRun]
+        simp only [Option.bind_some]
+        rw [run_append, lateRun]
+        exact setupRun
+      exact ⟨key, beforeVerify, beforeCheck, puzzleReached,
+        finalReached, sigAt, keyAt⟩
 
 /-- Read the seven signed opening pairs from the actual post-first-round
 modeled stack. The first-round prefix is executed, then the extractor uses

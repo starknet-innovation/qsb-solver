@@ -47,6 +47,53 @@ theorem first_two_opcodes (lock : Lock) :
   simp [program, DynamicWholeSource.fullProgram,
     DynamicFullSerialized.priorOps, DynamicFullSerialized.pinOps, fixed]
 
+theorem prior_ops_length (lock : Lock) :
+    (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+      lock.firstCommitment).length = 446 := by
+  have pushes :
+      (DynamicFinalInit.commitmentPushes lock.firstCommitment).length =
+        150 := by
+    simpa [DynamicFinalInit.commitmentPushes] using
+      DynamicFinalInit.commitmentPool_length lock.firstCommitment
+  have static5 : (DynamicFullSerialized.staticOps 1 5).length = 5 := by
+    decide
+  have static151 : (DynamicFullSerialized.staticOps 156 151).length =
+      151 := by decide
+  have static138 : (DynamicFullSerialized.staticOps 308 138).length =
+      138 := by decide
+  simp [DynamicFullSerialized.priorOps, DynamicFullSerialized.pinOps,
+    DynamicFullSerialized.firstDataOps, pushes, static5, static151,
+    static138]
+
+theorem late_verify_prefix_opcodes (lock : Lock) :
+    (program lock).take 856 =
+      DynamicWholeSource.beforeLateVerifyProgram
+        (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+          lock.firstCommitment) lock.nonce1 lock.secondCommitment := by
+  have signedLength :
+      (DynamicSignedChain.dataAndSignedProgram lock.nonce1
+        lock.secondCommitment).length = 393 := by
+    have blocks : FinalSignedChain.allSignedBlocks.length = 91 := by
+      decide
+    simp [DynamicSignedChain.dataAndSignedProgram,
+      DynamicFinalInit.dataOps_length, blocks]
+  have bonusLength : FinalBonusSecond.bothBonusOps.length = 10 := by
+    decide
+  have lateLength : (ByteLatePuzzle.lateOps.take 6).length = 6 := by
+    decide
+  have prefixLength :
+      (DynamicWholeSource.beforeLateVerifyProgram
+        (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+          lock.firstCommitment) lock.nonce1
+          lock.secondCommitment).length = 856 := by
+    simp [DynamicWholeSource.beforeLateVerifyProgram,
+      prior_ops_length lock, signedLength, bonusLength, lateLength]
+  have split := DynamicWholeSource.full_program_late_verify_split
+    (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+      lock.firstCommitment) lock.nonce1 lock.secondCommitment
+  have taken := congrArg (List.take 856) split
+  simpa [program, prefixLength] using taken
+
 /-- The first reached CHECKSIGVERIFY always reads the pin signature pushed
 by the parameterized lock, regardless of the scriptSig stack beneath it. -/
 theorem reached_pin_fixed_signature (hashes : Hashes) (lock : Lock)
@@ -195,6 +242,51 @@ theorem source_sites_pin (hashes : Hashes) (lock : Lock)
                         Bool.and_eq_true_eq_eq_true_and_eq_true,
                         decide_eq_true_eq] at all
                       exact ⟨beforePin, rfl, all.2.1⟩
+
+theorem source_sites_late (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) (firstRound : Bool)
+    (checked : sourceSites hashes lock stack validKey verify
+      firstRound = true) :
+    ∃ beforeLate,
+      CoreStructuralRun.run hashes ((program lock).take 856)
+        (initial stack firstRound) = some beforeLate ∧
+      CoreChecksigEval.evalBaseVerifyAll 880 (wire lock)
+        (beforeLate.stack.reverse[1]?.getD [])
+        (beforeLate.stack.reverse[0]?.getD [])
+        validKey verify = some true := by
+  unfold sourceSites at checked
+  cases pinEq : CoreStructuralRun.run hashes ((program lock).take 2)
+      (initial stack firstRound) with
+  | none => simp [pinEq] at checked
+  | some beforePin =>
+      cases earlyEq : CoreStructuralRun.run hashes ((program lock).take 5)
+          (initial stack firstRound) with
+      | none => simp [pinEq, earlyEq] at checked
+      | some early =>
+          cases firstPuzzleEq : CoreStructuralRun.run hashes
+              ((program lock).take 423) (initial stack firstRound) with
+          | none => simp [pinEq, earlyEq, firstPuzzleEq] at checked
+          | some firstPuzzle =>
+              cases firstCheckEq : CoreStructuralRun.run hashes
+                  ((program lock).take 446)
+                  (initial stack firstRound) with
+              | none =>
+                  simp [pinEq, earlyEq, firstPuzzleEq, firstCheckEq] at checked
+              | some firstCheck =>
+                  cases lateEq : CoreStructuralRun.run hashes
+                      ((program lock).take 856)
+                      (initial stack firstRound) with
+                  | none =>
+                      simp [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq] at checked
+                  | some beforeLate =>
+                      have all := checked
+                      simp only [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq,
+                        Bool.and_eq_true_eq_eq_true_and_eq_true,
+                        decide_eq_true_eq] at all
+                      exact ⟨beforeLate, rfl, all.2.2.2.2.1⟩
 
 /-- The final source evaluator is checked on the very stack reached by the
 same structural prefix that precedes the final CHECKMULTISIG. -/
@@ -356,6 +448,84 @@ theorem search_final_fixed_nonce_slot (hashes : Hashes) (lock : Lock)
       CoreMultisigStack.final_signature_slot
         beforeCheck.stack.reverse 9 enough
     _ = some lock.nonce1 := by simpa using topSlot
+
+/-- The reached late CHECKSIGVERIFY gates `H` of the same key used by the
+tenth final CHECKMULTISIG pair. A successful source-site certificate forces
+that hash to be strict DER. The hash and verifier remain supplied functions;
+compiled-Core acceptance is not inferred. -/
+theorem search_late_puzzle_final_key_der (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : search hashes lock stack validKey verify =
+      some (firstRound, final)) :
+    ∃ (key : Bytes) (beforeLate beforeCheck : CoreOpcodeStep.State),
+      CoreStructuralRun.run hashes ((program lock).take 856)
+        (initial stack firstRound) = some beforeLate ∧
+      CoreStructuralRun.run hashes (beforeFinalProgram lock)
+        (initial stack firstRound) = some beforeCheck ∧
+      beforeLate.stack.reverse[1]? = some (hashes.h256 key) ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some key ∧
+      DERSyntax.valid (hashes.h256 key) = true := by
+  obtain ⟨fullRun, _truth, sites, checked⟩ :=
+    search_sound hashes lock stack validKey verify firstRound final found
+  obtain ⟨beforeLate, lateReached, lateChecked⟩ :=
+    source_sites_late hashes lock stack validKey verify firstRound sites
+  obtain ⟨beforeCheck, checkReached, _finalEval⟩ :=
+    final_checked_sound hashes lock stack validKey verify firstRound checked
+  let initialByte : State :=
+    ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩
+  obtain ⟨byteFinal, byteAccepted, _finalShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (program lock)
+      initialByte final (by simpa [initial, initialByte] using fullRun)
+  obtain ⟨byteLate, byteLateReached, lateShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes ((program lock).take 856)
+      initialByte beforeLate (by simpa [initial, initialByte] using lateReached)
+  obtain ⟨byteCheck, byteCheckReached, checkShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (beforeFinalProgram lock)
+      initialByte beforeCheck (by simpa [initial, initialByte] using checkReached)
+  obtain ⟨key, modelLate, modelCheck, modelLateReached,
+    modelCheckReached, sigAt, keyAt⟩ :=
+    DynamicWholeSource.accepted_whole_late_puzzle_final_key hashes
+      (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+        lock.firstCommitment) lock.nonce1 lock.secondCommitment
+      initialByte byteFinal (by simpa [program] using byteAccepted)
+  have lateSame : modelLate = byteLate :=
+    Option.some.inj (modelLateReached.symm.trans
+      (by simpa [late_verify_prefix_opcodes lock] using byteLateReached))
+  have checkSame : modelCheck = byteCheck :=
+    Option.some.inj (modelCheckReached.symm.trans
+      (by simpa [beforeFinalProgram] using byteCheckReached))
+  subst modelLate
+  subst modelCheck
+  have sourceSig : beforeLate.stack.reverse[1]? =
+      some (hashes.h256 key) := by
+    rw [lateShape]
+    simpa [CoreOpcodeStep.ofByte] using sigAt
+  have sourceKey : beforeCheck.stack.reverse[10]? = some key := by
+    rw [checkShape]
+    simpa [CoreOpcodeStep.ofByte] using keyAt
+  obtain ⟨within, _⟩ := List.getElem?_eq_some_iff.mp sourceKey
+  have keyBound : 2 + 9 ≤ beforeCheck.stack.reverse.length := by omega
+  have finalKey : CoreMultisigStack.keyAt beforeCheck.stack 9 =
+      some key := by
+    calc
+      CoreMultisigStack.keyAt beforeCheck.stack 9 =
+          CoreMultisigStack.keyAt
+            (beforeCheck.stack.reverse).reverse 9 := by simp
+      _ = beforeCheck.stack.reverse[1 + 9]? :=
+        CoreMultisigStack.keyAt_reverse
+          beforeCheck.stack.reverse 9 keyBound
+      _ = some key := by simpa using sourceKey
+  have actualSig : beforeLate.stack.reverse[1]?.getD [] =
+      hashes.h256 key := by simp [sourceSig]
+  rw [actualSig] at lateChecked
+  obtain ⟨_hashType, _last, der, _keyValid, _verified⟩ :=
+    CoreChecksigEval.successful_base_check 880 (wire lock)
+      (hashes.h256 key) (beforeLate.stack.reverse[0]?.getD [])
+      validKey verify lateChecked
+  exact ⟨key, beforeLate, beforeCheck, lateReached, checkReached,
+    sourceSig, finalKey, der⟩
 
 /-- A returned certificate yields the checked nine-position shape for the
 complete parameterized Lean serialization. Its source-level ECDSA verifier

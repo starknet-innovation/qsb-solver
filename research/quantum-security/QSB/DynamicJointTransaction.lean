@@ -325,4 +325,125 @@ theorem search_fixed_final_nonce_all_call
   exact ⟨beforeCheck, key, reached, fixedSlot, keyAt, der,
     keyValid, inputValid, verified⟩
 
+/-- Deterministic joint final puzzle event from one parameterized source
+certificate. The same `H` produces a DER-shaped signature from the final
+nonce key and hashes the ALL preimage twice for that key's fixed-signature
+ECDSA call. No independence, quantum query bound, or Core refinement is
+asserted. -/
+theorem search_final_nonce_joint_hit
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (nonceAll : lock.nonce1.getLast? = some 0x01) :
+    ∃ (beforeLate beforeCheck : CoreOpcodeStep.State) (key : Bytes),
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 856)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeLate ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      beforeLate.stack.reverse[1]? = some (functions.H key) ∧
+      CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        some lock.nonce1 ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some key ∧
+      DERSyntax.valid (functions.H key) = true ∧
+      selected < tx.inputs.length ∧
+      ecdsa lock.nonce1.dropLast key
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (CoreMultisigSourceScan.deletedScript
+              (DynamicCheckedCertificate.wire lock)
+              beforeCheck.stack.reverse 10 10)))) = true := by
+  obtain ⟨key, beforeLate, beforeFromPuzzle, lateReached,
+    puzzleReached, puzzleSig, puzzleKey, derHit⟩ :=
+    DynamicCheckedCertificate.search_late_puzzle_final_key_der
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found
+  obtain ⟨beforeFromNonce, nonceKey, nonceReached, nonceSlot,
+    nonceKeyAt, _nonceDer, _keyValid, inputValid, verified⟩ :=
+    search_fixed_final_nonce_all_call functions tx selected lock
+      secondWidth stack validKey ecdsa firstRound final found nonceAll
+  have sameBefore : beforeFromPuzzle = beforeFromNonce :=
+    Option.some.inj (puzzleReached.symm.trans nonceReached)
+  subst beforeFromPuzzle
+  have sameKey : key = nonceKey :=
+    Option.some.inj (puzzleKey.symm.trans nonceKeyAt)
+  subst nonceKey
+  exact ⟨beforeLate, beforeFromNonce, key, lateReached, nonceReached,
+    puzzleSig, nonceSlot, nonceKeyAt, derHit, inputValid, verified⟩
+
+/-- On a good setup, the same checked source certificate supplies all seven
+`R(H(opening))` equations and the correlated final `H(key)`/`H(H(ALL))`
+puzzle. The trace is read from the actual modeled witness. This is the
+deterministic event a later shared-query quantum analysis must bound; it is
+not itself a probability estimate or a Core acceptance implication. -/
+theorem search_good_setup_joint_final_event
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (pinShort : lock.pin.length < 76)
+    (nonce0Short : lock.nonce0.length < 76)
+    (nonce1Short : lock.nonce1.length < 76)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false)
+    (nonceAll : lock.nonce1.getLast? = some 0x01) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : CoreOpcodeStep.State) (key : Bytes),
+      DynamicWholeSource.extractTrace (JointSourceChecks.hashes functions)
+        (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+          lock.firstCommitment)
+        ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          some trace ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace,
+        functions.R (functions.H p.2) = lock.secondCommitment p.1) ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      DERSyntax.valid (functions.H key) = true ∧
+      selected < tx.inputs.length ∧
+      ecdsa lock.nonce1.dropLast key
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (CoreMultisigSourceScan.deletedScript
+              (DynamicCheckedCertificate.wire lock)
+              beforeCheck.stack.reverse 10 10)))) = true := by
+  obtain ⟨trace, a, b, extracted, seven, hits, distinct, count⟩ :=
+    DynamicCheckedCertificate.search_good_setup_nine_positions
+      (JointSourceChecks.hashes functions) lock firstWidth secondWidth
+      pinShort nonce0Short nonce1Short stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found noCommitmentDER
+  obtain ⟨_beforeLate, beforeCheck, key, _lateReached,
+    checkReached, _puzzleSig, _nonceSlot, _keyAt, derHit,
+    inputValid, verified⟩ :=
+    search_final_nonce_joint_hit functions tx selected lock secondWidth
+      stack validKey ecdsa firstRound final found nonceAll
+  exact ⟨trace, a, b, beforeCheck, key, extracted, seven,
+    by simpa [JointSourceChecks.hashes] using hits, distinct, count,
+    checkReached, derHit, inputValid, verified⟩
+
 end QSB.DynamicJointTransaction

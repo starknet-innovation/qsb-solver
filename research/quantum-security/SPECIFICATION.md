@@ -393,6 +393,19 @@ the external ECDSA checker accept that exact nonce against
 links. This does not establish a compiled-Core acceptance implication or a
 quantum bound.
 
+The late puzzle supplies the necessary correlated condition: its reached
+signature is `H(key)` for that same tenth final key. A successful source-site
+check requires `H(key)` to satisfy strict DER. On a good setup, the one
+certificate also supplies seven reached `R(H(opening)) = commitment` equations
+and nine distinct selected positions. The checked statement is
+`QSB/DynamicJointTransaction.search_good_setup_joint_final_event`. It is a
+deterministic event over the *same* `H` and `R`, with the key and final
+FindAndDelete scriptCode chosen by the witness. It does not yet include a
+parameterized pin-key puzzle relation or a coherent-query success bound.
+Public-key recovery means the nonce ECDSA condition alone is not a hash-search
+event; treating it as independent of the DER condition would misstate the
+problem.
+
 Use **one shared adversary budget `q`** for coherent queries to the tagged
 oracle that evaluates either H256 or R160. A query controlled by a
 superposition of primitive tags consumes one query, so a proposed bound may
