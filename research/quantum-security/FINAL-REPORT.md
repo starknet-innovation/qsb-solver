@@ -409,6 +409,17 @@ or compiled Core. `QSB/DynamicSourceGate.nine_positions_of_source_eval` also
 discharges the abstract matched-scan/DER-sound premises when the separate
 source-shaped `finalTenEval` succeeds at the reached stack; its checker and
 the compiled-Core-to-evaluator link are still unproved.
+`QSB/DynamicWholeSource.accepted_whole_good_setup_nine_positions` now starts
+from any initial byte stack and any preceding opcode program whose last
+instruction is the first `CHECKMULTISIG`. The modeled first multisignature
+leaves `[]` or `[1]`, so the earlier non-20-byte prior-result premise follows
+from the run. On a good setup, a successful parameterized final round and
+successful source-shaped `finalTenEval` then give seven actual opening/hash
+equations and nine distinct original positions. Lean also proves that this
+full-program form specializes to the literal 880-op fixture. This removes a
+starting-stack restriction in the source-shaped model; it does not prove that
+every Python-built lock has that program or that consensus acceptance implies
+the modeled run and evaluator result.
 `QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`
 now composes that setup probability with the transaction-game reduction:
 `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.

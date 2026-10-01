@@ -1,5 +1,5 @@
 {
-  "theorem_count": 989,
+  "theorem_count": 993,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1619,6 +1619,20 @@
     "QSB.DynamicSourceGate.source_eval_success_match": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWholeSource.accepted_first_boundary": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicWholeSource.first_result_wrong_width": [],
+    "QSB.DynamicWholeSource.literal_full_program": [
       "propext"
     ],
     "QSB.EncodedLayout.chunks_length": [],

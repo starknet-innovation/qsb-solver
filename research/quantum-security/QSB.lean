@@ -61,6 +61,7 @@ import QSB.DynamicBonusDER
 import QSB.DynamicBonusIndices
 import QSB.DynamicSerializedRound
 import QSB.DynamicSourceGate
+import QSB.DynamicWholeSource
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
@@ -863,6 +864,10 @@ import QSB.Reduction
 #print axioms QSB.DynamicSourceGate.checkedPair_der
 #print axioms QSB.DynamicSourceGate.source_eval_success_match
 #print axioms QSB.DynamicSourceGate.nine_positions_of_source_eval
+#print axioms QSB.DynamicWholeSource.literal_full_program
+#print axioms QSB.DynamicWholeSource.accepted_first_boundary
+#print axioms QSB.DynamicWholeSource.first_result_wrong_width
+#print axioms QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability

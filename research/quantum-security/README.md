@@ -104,6 +104,12 @@ gate from a successful source-shaped final ten-pair evaluator. A four-run
 disposable builder check includes a crafted DER-shaped commitment, but
 universal Python-builder and compiled-Core refinement remain open. The joint
 quantum unauthorized-spend bound remains open.
+`QSB/DynamicWholeSource.lean` composes any modeled initial stack and
+first-round opcode prefix with the parameterized final round. It derives the
+prior result's short width from the first `CHECKMULTISIG` transition and
+proves the good-setup nine-position consequence under a successful
+source-shaped final evaluator. Its full-program form specializes to the
+literal fixture; real builder and Core acceptance links remain open.
 `QSB/DynamicSetupReduction.lean` gives the resulting conditional game
 inequality: `Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.
 The fresh-opening and two puzzle-search terms are unproved joint-QROM event
