@@ -1,5 +1,5 @@
 {
-  "theorem_count": 782,
+  "theorem_count": 788,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -825,8 +825,32 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSourceExtraction.checked_source_run_pin_and_final": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreSourceExtraction.necessary_checks_fixed_all_calls": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreStructuralRun.literal_lock_refines_byte": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralRun.run_append": [
       "Quot.sound",
       "propext"
     ],
@@ -837,6 +861,10 @@
     ],
     "QSB.CoreStructuralRun.step_refines_byte": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralRun.successful_prefix": [
       "Quot.sound",
       "propext"
     ],

@@ -286,6 +286,13 @@ signature-site count parsing and stack cleanup. `QSB/CoreMultisigStep.lean`
 and `QSB/CoreChecksigStep.lean` provide those signature-site transitions;
 their cryptographic outcomes remain supplied Booleans. Compiled Core and
 real checker/sighash refinement remain open.
+`QSB/CoreSourceExtraction.lean` combines one truthy source-shaped run with
+source-shaped checks of the four reached signature sites that matter to the
+enforced final witness. Its checked theorem extracts the pin key and a
+seven-plus-two final-round witness, then exposes both fixed signatures'
+`SIGHASH_ALL` checker calls and their reached scriptCodes. The first-round
+multisignature is still allowed to return false. This is a source-model
+certificate, not a theorem from compiled Core acceptance or a QROM bound.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

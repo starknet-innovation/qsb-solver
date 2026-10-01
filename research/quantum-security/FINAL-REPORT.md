@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 747 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 788 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -499,6 +499,15 @@ strict DER. `QSB/SourceWitness.lean` composes this with the final-round
 witness theorem: both puzzle hits and the seven final openings arise from the
 same modeled execution. It still lacks Core verifier/sighash equivalence,
 dynamic-setup parameterization, and a joint quantum hash bound.
+`QSB/CoreSourceExtraction.lean` lifts this composition to a truthy full
+source-shaped structural run. Its executable `necessarySignatureChecks`
+examines the reached source stacks at the fixed pin check, both hash-puzzle
+checks, and the enforcing final multisignature. Under those source-model
+premises, Lean extracts the same seven-plus-two final witness and exposes the
+fixed pin and final nonce's actual `SIGHASH_ALL` calls on their source-shaped
+scriptCodes. The earlier multisignature may still return false. This is not
+compiled Core acceptance: signature Booleans, exact transaction sighashes,
+ECDSA, and the source-to-Core relation remain external.
 `QSB/FinalScriptCode.lean` connects that loop to the ten signature bytes
 actually reached by the final modeled CHECKMULTISIG. Under an accepted full
 byte-model run and the explicit nonempty, encoding-sound successful-scan

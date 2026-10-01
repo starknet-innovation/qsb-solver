@@ -47,6 +47,17 @@ source-shaped execution of the literal 880-opcode lock from an arbitrary
 post-scriptSig stack projects to a successful byte-model run. The signature
 Booleans are still supplied, and compiled Core-to-source refinement remains
 open.
+`QSB/CoreSourceExtraction.lean` now packages the next sufficient source-model
+certificate. It reruns the four reached prefixes and requires source-shaped
+success for the fixed pin check, the two SHA256-derived puzzle checks, and
+the enforcing final ten-pair scan. Together with a truthy full structural
+run, Lean derives seven matching final HORS openings, two disjoint bonus
+positions, both DER puzzle hits, and the precise `SIGHASH_ALL` external
+checker calls for the fixed pin and final nonce signatures. It proves the
+first two checker operands are the bytes reached at the pinning sites from
+any successful arbitrary-stack prefix. The first-round multisignature result
+may be false; this certificate does not model its fatal DER failures and is
+not a claim that an arbitrary Core transaction supplies the premises.
 
 `QSB/CoreMultisigEval.lean` models the final source loop's DER gate,
 nonempty signature requirement, key-skip behavior, shared ten-signature

@@ -64,6 +64,7 @@ import QSB.PinningScriptCode
 import QSB.PinPuzzleScriptCode
 import QSB.CoreChecksigEval
 import QSB.CoreFinalChecksigEval
+import QSB.CoreSourceExtraction
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -827,6 +828,12 @@ import QSB.Reduction
 #print axioms QSB.FinalRoundWitness.matched_run_reached_key_and_puzzle_signature
 #print axioms QSB.FinalRoundWitness.matched_run_reached_key_der_puzzle
 #print axioms QSB.SourceWitness.matched_run_pin_and_final_der_puzzles
+#print axioms QSB.CoreStructuralRun.run_append
+#print axioms QSB.CoreStructuralRun.successful_prefix
+#print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
+#print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
+#print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final
+#print axioms QSB.CoreSourceExtraction.necessary_checks_fixed_all_calls
 #print axioms QSB.DERHeaderBound.byte_ofFn
 #print axioms QSB.DERHeaderBound.target_header
 #print axioms QSB.DERHeaderBound.encode_injective

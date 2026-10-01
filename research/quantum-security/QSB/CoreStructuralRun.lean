@@ -28,6 +28,32 @@ def run (hashes : Hashes) : List Op → CoreOpcodeStep.State →
       let next ← step hashes op s
       if next.stack.length > 1000 then none else run hashes rest next
 
+theorem run_append (hashes : Hashes) (before after : List Op)
+    (s : CoreOpcodeStep.State) :
+    run hashes (before ++ after) s =
+      (run hashes before s).bind (run hashes after) := by
+  induction before generalizing s with
+  | nil => rfl
+  | cons op rest ih =>
+      simp only [List.cons_append, run]
+      cases hStep : step hashes op s with
+      | none => simp
+      | some next =>
+          by_cases large : next.stack.length > 1000
+          · simp [large]
+          · simp [large, ih]
+
+/-- Every reached prefix of a successful source-shaped run has a concrete
+bottom-first stack and outcome cursor. -/
+theorem successful_prefix (hashes : Hashes) (before after : List Op)
+    (initial final : CoreOpcodeStep.State)
+    (accepted : run hashes (before ++ after) initial = some final) :
+    ∃ middle, run hashes before initial = some middle := by
+  rw [run_append] at accepted
+  cases hPrefix : run hashes before initial with
+  | none => simp [hPrefix] at accepted
+  | some middle => exact ⟨middle, rfl⟩
+
 private theorem ordinary_step_refines (hashes : Hashes) (op : Op)
     (s : ByteMachine.State) (after : CoreOpcodeStep.State)
     (supported : CoreOpcodeStep.supported op = true)
