@@ -1,0 +1,27 @@
+{
+  "appCommit": "848751c082c2b70dfd11c7542525bbd2162819dd",
+  "files": {
+    "handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+    "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+    "verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba",
+    "gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+    "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "LICENSE": "8d2562b24636fb569997da918899eed12e95b573eef1207bf60be6bf7bd836ff",
+    "event.json": "1225a11cc2da41a089350eee96a6b14ebe8d827fb0f1d875d4488bcaa0924875"
+  },
+  "nativeTraceSha256": "8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04",
+  "traceCase": "wpkh-r1-255",
+  "scope": "Independent verification of 32 fixed saved public diagnostic records only; no solver execution or new search",
+  "adoption": "UNQUALIFIED",
+  "workloads": [
+    1,
+    32
+  ],
+  "pairs": 3,
+  "arms": [
+    "serial",
+    "parallel4"
+  ],
+  "deadlineSecondsPerProcess": 60
+}

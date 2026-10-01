@@ -111,6 +111,26 @@ All 12 samples and source/input bindings are retained in
 `evidence/first-verdict-public-reference.json`. No successful-hit workload,
 full solver pipeline, cloud-dollar saving or image promotion was measured.
 
+`prepared_verdict_experiment.py` evaluates the follow-up with a single public
+parameter export. Workers hash-check read-only prepared files and use unchanged
+reference checks in separate processes. It accepts only the frozen round-1
+event and record counts 1 or 32; it is not a general handler replacement.
+The `serial` arm calls the original handler; `prepared1` checks the prepared-input
+path serially; `parallel4` uses the ordered scheduler. Run each sample under an
+outer timeout (the local measurement uses 60 seconds). The worker join is not
+an internal timeout.
+
+Reproduce the input staging with
+`python3 experiments/generic-sha-vector/prepare_verdict_fixtures.py NEW_DIRECTORY`.
+It downloads only the hash-locked public qsb-app source and restores the saved
+event; a pre-existing destination is rejected. Then set
+`QSB_PUBLIC_VERDICT_FIXTURES=NEW_DIRECTORY` and run
+`python3 experiments/generic-sha-vector/prepared_verdict_experiment.py ARM COUNT NEW_RECEIPT`.
+Source, reference and event hashes remain fixed, and no signature setup,
+transaction assembly or solver execution is invoked. Any TLS failure during
+staging must be resolved with a trusted CA bundle, never by disabling certificate
+verification. These experiments grant no production or full-pipeline claim.
+
 ### Saved trace replay on Linux
 
 `evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the
