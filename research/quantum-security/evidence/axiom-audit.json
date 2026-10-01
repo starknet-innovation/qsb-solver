@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1107,
+  "theorem_count": 1110,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -386,6 +386,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_byte_run_rejects": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_overflow": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteStackFrame.checkmultisig_frame": [
       "Classical.choice",
       "Quot.sound",
@@ -424,6 +434,11 @@
       "propext"
     ],
     "QSB.ByteStackFrame.runPeak_frame": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteStackFrame.runPeak_frame_overflow": [
       "Classical.choice",
       "Quot.sound",
       "propext"

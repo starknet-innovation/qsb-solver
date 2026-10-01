@@ -91,8 +91,13 @@
 'QSB.ByteStackFrame.checkmultisig_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteStackFrame.step_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteStackFrame.runPeak_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteStackFrame.runPeak_frame_overflow' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ByteStackFrame.finalTruth_frame' depends on axioms: [propext]
 'QSB.ByteStackFrame.canonical_arbitrary_bottom_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_overflow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_byte_run_rejects' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.WireIntegers.compactSize_roundtrip' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.WireIntegers.compact_252' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreOpcodeStep.step_eq_byte' depends on axioms: [propext, Classical.choice, Quot.sound]

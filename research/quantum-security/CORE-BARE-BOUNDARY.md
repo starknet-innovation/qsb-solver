@@ -117,3 +117,15 @@ source inspection and this Lean composition do **not** set the game's
 seven final HORS openings and the final signature-source slots from an
 arbitrary initial byte stack. Core execution and signature-checker refinement,
 the nonce and puzzle relations, and the joint quantum hash bound remain open.
+
+The disposable witness has an exact modeled lower-stack capacity threshold:
+`QSB.ByteStackFrame.canonical_arbitrary_bottom_tail` proves that any suffix
+of at most 385 byte cells preserves final truth, while
+`canonical_arbitrary_bottom_tail_byte_run_rejects` proves rejection for every
+suffix of 386 or more cells. The proof includes `OP_ROLL` and
+`CHECKMULTISIG`, and depends only on cell count, not cell contents.
+`analysis/check_full_two_outputs_core.py` now also checks three pinned native
+cases with nonempty lower cells: 385 distinct 20-byte values pass, 386 fail,
+and 384 empty cells plus a 520-byte value pass. Their scriptSigs are 9,234,
+9,255, and 2,056 bytes respectively. These cases corroborate the modeled
+boundary for specific witnesses, not the universal compiled-Core bridge.

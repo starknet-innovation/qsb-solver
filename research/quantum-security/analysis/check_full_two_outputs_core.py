@@ -188,6 +188,20 @@ def main() -> None:
                                   (385, True), (386, False)):
         two_outputs.inputs[1].script_sig = b"\x00" * extra_cells + canonical_witness
         check(f"two_outputs_{extra_cells}_bottom_empty_cells", two_outputs, expected)
+    # The Lean frame theorem quantifies over byte values, not only empty cells.
+    # Exercise that distinction at the same stack boundary with nonempty data.
+    varied_cells = [
+        hashlib.sha256(b"qsb-bottom-cell-" + i.to_bytes(2, "little")).digest()[:20]
+        for i in range(386)
+    ]
+    for extra_cells, expected in ((385, True), (386, False)):
+        prefix = b"".join(bt.push_data(cell) for cell in varied_cells[:extra_cells])
+        two_outputs.inputs[1].script_sig = prefix + canonical_witness
+        check(f"two_outputs_{extra_cells}_bottom_varied_20_byte_cells",
+              two_outputs, expected)
+    two_outputs.inputs[1].script_sig = (
+        b"\x00" * 384 + bt.push_data(b"\x5a" * 520) + canonical_witness)
+    check("two_outputs_385_bottom_cells_one_520_byte", two_outputs, True)
     # The lock's fixed roll depths address cells above these additional
     # bottom-stack values. A non-push scriptSig prefix is consensus-admitted
     # for this bare output, and a 520-byte push reaches the element limit.

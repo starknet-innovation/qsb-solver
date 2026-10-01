@@ -195,8 +195,11 @@ import QSB.Reduction
 #print axioms QSB.ByteStackFrame.checkmultisig_frame
 #print axioms QSB.ByteStackFrame.step_frame
 #print axioms QSB.ByteStackFrame.runPeak_frame
+#print axioms QSB.ByteStackFrame.runPeak_frame_overflow
 #print axioms QSB.ByteStackFrame.finalTruth_frame
 #print axioms QSB.ByteStackFrame.canonical_arbitrary_bottom_tail
+#print axioms QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_overflow
+#print axioms QSB.ByteStackFrame.canonical_arbitrary_bottom_tail_byte_run_rejects
 #print axioms QSB.WireIntegers.compactSize_roundtrip
 #print axioms QSB.WireIntegers.compact_252
 #print axioms QSB.CoreOpcodeStep.step_eq_byte

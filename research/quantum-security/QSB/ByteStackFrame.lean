@@ -305,6 +305,45 @@ theorem runPeak_frame (hashes : Hashes) (ops : List Op)
                 simp [framedStep, nextCapacity, framedTail,
                   List.length_append]
 
+/-- For a nonempty successful base run, an appended lower stack suffix that
+pushes the base peak beyond the post-op 1000-cell guard must fail. The guard
+is not checked for an empty program, hence the nonempty premise. -/
+theorem runPeak_frame_overflow (hashes : Hashes) (ops : List Op)
+    (s final : State) (peak : Nat) (tail : List Bytes)
+    (nonempty : ops ≠ [])
+    (base : QSB.BytePrefixCapacity.runPeak hashes ops s = some (final, peak))
+    (overflow : peak + tail.length > 1000) :
+    QSB.BytePrefixCapacity.runPeak hashes ops
+      {s with stack := s.stack ++ tail} = none := by
+  induction ops generalizing s final peak with
+  | nil => contradiction
+  | cons op rest ih =>
+      simp only [QSB.BytePrefixCapacity.runPeak] at base ⊢
+      cases hstep : step hashes op s with
+      | none => simp [hstep] at base
+      | some next =>
+          by_cases large : next.stack.length > 1000
+          · simp [hstep, large] at base
+          · cases htail : QSB.BytePrefixCapacity.runPeak hashes rest next with
+            | none => simp [hstep, large, htail] at base
+            | some value =>
+                rcases value with ⟨reached, laterPeak⟩
+                simp [hstep, large, htail] at base
+                rcases base with ⟨rfl, rfl⟩
+                have framedStep := step_frame hashes op s next tail hstep
+                by_cases immediate : next.stack.length + tail.length > 1000
+                · simp [framedStep, List.length_append, immediate]
+                · have lateOver : laterPeak + tail.length > 1000 := by
+                    omega
+                  by_cases restEmpty : rest = []
+                  · subst rest
+                    simp [QSB.BytePrefixCapacity.runPeak] at htail
+                    rcases htail with ⟨rfl, rfl⟩
+                    omega
+                  · have failed := ih next reached laterPeak restEmpty
+                        htail lateOver
+                    simp [framedStep, List.length_append, immediate, failed]
+
 theorem finalTruth_frame (s : State) (tail : List Bytes)
     (truth : finalTruth s = true) :
     finalTruth {s with stack := s.stack ++ tail} = true := by
@@ -343,5 +382,38 @@ theorem canonical_arbitrary_bottom_tail
         List.length_append] using congrArg
           (Option.map fun result =>
             (finalTruth result.1, result.2, result.1.stack.length)) framed
+
+/-- The same disposable fixture overflows for every lower byte-cell suffix
+of length at least 386, independent of cell contents. -/
+theorem canonical_arbitrary_bottom_tail_overflow
+    (tail : List Bytes) (over : 386 ≤ tail.length) :
+    QSB.BytePrefixCapacity.runPeak QSB.ByteWitness.hashes
+      QSB.ByteLayout.program
+      ⟨QSB.ByteWitness.witness ++ tail,
+        [true, true, true, false, true, true], 0⟩ = none := by
+  have base := QSB.BytePrefixCapacity.canonical_peak
+  cases hrun : QSB.BytePrefixCapacity.runPeak QSB.ByteWitness.hashes
+      QSB.ByteLayout.program (QSB.BytePrefixCapacity.input 0) with
+  | none => simp [hrun] at base
+  | some value =>
+      rcases value with ⟨final, peak⟩
+      simp [hrun] at base
+      rcases base with ⟨_truth, peakEq, _lengthEq⟩
+      have overflow : peak + tail.length > 1000 := by omega
+      have failed := runPeak_frame_overflow QSB.ByteWitness.hashes
+        QSB.ByteLayout.program (QSB.BytePrefixCapacity.input 0)
+        final peak tail (by decide) hrun overflow
+      simpa [QSB.BytePrefixCapacity.input] using failed
+
+theorem canonical_arbitrary_bottom_tail_byte_run_rejects
+    (tail : List Bytes) (over : 386 ≤ tail.length) :
+    ByteMachine.run QSB.ByteWitness.hashes QSB.ByteLayout.program
+      ⟨QSB.ByteWitness.witness ++ tail,
+        [true, true, true, false, true, true], 0⟩ = none := by
+  have erase := QSB.BytePrefixCapacity.forget_peak QSB.ByteWitness.hashes
+    QSB.ByteLayout.program
+    (⟨QSB.ByteWitness.witness ++ tail,
+      [true, true, true, false, true, true], 0⟩ : State)
+  simpa [canonical_arbitrary_bottom_tail_overflow tail over] using erase.symm
 
 end QSB.ByteStackFrame

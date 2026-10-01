@@ -155,7 +155,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,107 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,110 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -910,18 +910,23 @@ peak recording preserves the ordinary run and checks a base peak of 615:
 385 extras reach exactly 1,000 cells. A separate diagnostic, proved to
 erase to the ordinary run, identifies the 386-cell case as a 1,001-cell
 overflow after modeled zero-based opcode index 754. The
-`QSB/ByteStackFrame.lean` proof generalizes the successful modeled case to
-any 385 or fewer bottom-stack byte cells, regardless of their contents. It
-proves an opcode frame property, including `OP_ROLL` and `CHECKMULTISIG`, and
-lifts it through any successful modeled run whose enlarged peak stays within
-1,000 cells. The canonical fixture then remains truthy with peak
-`615 + tail.length` and final height `569 + tail.length`. This does not
-establish acceptance of arbitrary tails in compiled Core. The
+`QSB/ByteStackFrame.lean` proof generalizes the modeled boundary to arbitrary
+bottom-stack byte values: with at most 385 extra cells the fixture remains
+truthy with peak `615 + tail.length` and final height `569 + tail.length`;
+with 386 or more cells the ordinary byte run rejects. A per-opcode frame
+property, including `OP_ROLL` and `CHECKMULTISIG`, yields both sides of this
+capacity threshold for any successful nonempty modeled base run. This does
+not establish the behavior of arbitrary tails in compiled Core. The
 two boundary scriptSigs are 1,534 and 1,535 bytes, well below Core's
 10,000-byte script limit. The adapter reports only acceptance, so the
 precise native failure opcode is
 not observed. These are finite tests with three puzzle sites relaxed, not
 universal arbitrary-scriptSig extraction from compiled Core.
+Three additional pinned Core cases corroborate the modeled content-independent
+boundary: 385 deterministic nonempty 20-byte cells pass, 386 fail, and 384
+empty cells plus one 520-byte cell pass. All three scriptSigs are below the
+10,000-byte limit; the adapter still exposes only acceptance.
+
 Changing only the unselected first output and rederiving the fixed ALL keys
 accepts while reusing the in-range SINGLE dummy keys. Lean proves the
 corresponding source-shaped preimage and joint-digest invariance for any
