@@ -1,0 +1,127 @@
+{
+  "status": "verified-offline-verification-improvement",
+  "sourceCommit": "d58d2a1",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "pairs": 3,
+  "samples": [
+    {
+      "pair": 0,
+      "arm": "parallel4",
+      "seconds": 33.41747591699823,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    },
+    {
+      "pair": 0,
+      "arm": "serial",
+      "seconds": 127.36294175000512,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    },
+    {
+      "pair": 1,
+      "arm": "serial",
+      "seconds": 127.32252799998969,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    },
+    {
+      "pair": 1,
+      "arm": "parallel4",
+      "seconds": 34.71976837501279,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    },
+    {
+      "pair": 2,
+      "arm": "parallel4",
+      "seconds": 36.642481875023805,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    },
+    {
+      "pair": 2,
+      "arm": "serial",
+      "seconds": 136.29587070900016,
+      "exitCode": 0,
+      "timeout": false,
+      "stdout": "{\"status\": \"passed\", \"nativeResultSha256\": \"8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04\", \"candidateSha256\": \"0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b\", \"candidates\": 3116, \"hashes\": 6232, \"freshWithdrawal\": false, \"grantsRangeCredit\": false, \"scope\": \"Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof\"}\n",
+      "stderr": "",
+      "identicalReceipt": true
+    }
+  ],
+  "serialMedianSeconds": 127.36294175000512,
+  "parallelMedianSeconds": 34.71976837501279,
+  "pairedRatios": [
+    0.2623798999758647,
+    0.2726914782513241,
+    0.2688451358387643
+  ],
+  "medianLatencyReductionPercent": 73.11548641612357,
+  "receiptSha256": "650927daa8935bbd39cc83f3cb394f47fe196b919738d03652f5e356f822d17c",
+  "receiptIdentical": true,
+  "corruptionRejectedWorkers": [
+    1,
+    4
+  ],
+  "scope": "Complete offline verification command including startup, locked references, CPU checks, output and exit; not complete solver pipeline",
+  "cpuTimeMeasured": false,
+  "cloudSpendUsd": 0,
+  "computeDollarsPerBenchmark": null,
+  "workerImagePublicationEligible": false,
+  "earlierMeasurementFailure": "Relocated original verifier failed relative fixture lookup before verification. Original receipt preserved; corrected full source snapshot used for all three pairs; no partial pair included.",
+  "baselineSourceSha256": "1285cf56a03cb93ae42544b570626119c6b7e1693e893baed43d6a0ab9ce2b78",
+  "candidateSourceSha256": "735c553d9074b5dd4900dd8d4d1fdc8a73e3d8dac73771b3b3f2b48b9eef2c2a",
+  "upstreamPattern": {
+    "candidate": "bounded independent CPU verification scheduling",
+    "upstreamCommit": "ff27a2b66990a3eb554a1d4453e896c0397337ba",
+    "upstreamPath": "harness/verify.py",
+    "upstreamSha256": "3ddc9ffc97381b858aff2b5dce74f24a1fb911c51469192c4a43b6d4dc4eb0fb",
+    "reuse": "parallel independent verification pattern; implementation written locally, no arithmetic or verification predicate changes",
+    "deviations": "spawn workers capped at four, ordered results, only hash-verified reference modules staged before pool creation; upstream uses fork/all CPUs and unordered results",
+    "baselineVerifierSha256": "1285cf56a03cb93ae42544b570626119c6b7e1693e893baed43d6a0ab9ce2b78",
+    "nativeTraceSha256": "8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04",
+    "measurement": "offline CPU verification of existing trace only; not search, solver throughput or complete pipeline",
+    "newGpuRuns": 0,
+    "newCloudSpendUsd": 0
+  },
+  "testSuite": {
+    "run": 196,
+    "skipped": 1,
+    "failed": 0
+  },
+  "corruptionChecks": [
+    {
+      "workers": 1,
+      "seconds": 0.16566658299416304,
+      "returncode": 1,
+      "timeout": false,
+      "receiptExists": false,
+      "expectedError": "CPU/GPU recovery hash mismatch"
+    },
+    {
+      "workers": 4,
+      "seconds": 27.49535141699016,
+      "returncode": 1,
+      "timeout": false,
+      "receiptExists": false,
+      "expectedError": "CPU/GPU recovery hash mismatch"
+    }
+  ]
+}

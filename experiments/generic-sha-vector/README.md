@@ -53,6 +53,31 @@ This option does not change solver execution, reference arithmetic, fixtures,
 receipt contents, search coverage or image qualification. Scheduling tests are
 separate from native-trace equivalence and performance measurements.
 
+### Offline verification scheduling result, 1 October 2026
+
+On the local macOS ARM64 host, three interleaved serial/four-worker pairs checked
+the same saved native trace: 20 cases, 3,116 candidates and 6,232 hashes. All six
+passing receipts were byte-identical. Serial median command time was 127.363 s;
+four-worker median was 34.720 s. Candidate/baseline paired ratios were
+0.2624, 0.2727 and 0.2688 (median paired latency reduction 73.12%). These three
+observations are not confidence intervals or evidence of A10G/Linux performance.
+Timing includes process startup, reference loading, checks, receipt writing and
+exit; no GPU search ran. CPU time, energy and dollar cost were not measured.
+
+Both modes rejected a one-nibble corruption in an existing trace hash without
+writing a passing receipt. The unchanged verification functions were also
+compared structurally against the original source. The full local suite ran
+196 tests successfully, with one skipped. An earlier timing attempt failed
+before verification because relocating the baseline broke relative fixture
+lookup; that failed attempt is retained and excluded in full. All reported
+pairs used an intact frozen baseline source snapshot.
+
+See `evidence/parallel-cpu-verification.json` for all six samples, source bindings
+and rejection summaries. The candidate is qualified only as optional local
+offline-verifier scheduling; serial remains the default. The verifier is not
+packaged in the worker image, so this result does not justify publishing a new
+worker image or claiming cheaper transactions or complete-pipeline improvement.
+
 ## Native results, 30 September
 
 The extracted compression gate subsequently passed 174,080 independent native comparisons and compute-sanitizer reported zero errors. This is the extracted harness, not full-solver certification.
