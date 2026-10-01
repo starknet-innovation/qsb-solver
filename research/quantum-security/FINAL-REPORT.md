@@ -392,8 +392,17 @@ puzzle-relaxed Core check: the shared-scriptCode witness accepts, while ten
 one-key controls retaining one reached final signature push in scriptCode
 all reject. The first seven native cases remain byte-identical. This tests
 the actual generated final multisignature path, but the three puzzle
-`CHECKSIGVERIFY` sites are still replaced by `OP_2DROP` and arbitrary
-accepted witnesses are not covered.
+   `CHECKSIGVERIFY` sites are still replaced by `OP_2DROP` and arbitrary
+   accepted witnesses are not covered.
+   Core's failed `CHECKMULTISIG` scan has an additional source-control-flow
+   detail: once remaining signatures outnumber remaining keys, it returns
+   false before checking the next signature's DER encoding. The Lean scan was
+   corrected to make that early exit. A pinned isolated Core probe accepts a
+   malformed lower signature when the first failed comparison makes it
+   unreachable and the false result is dropped; it rejects both the undropped
+   false result and a malformed signature that is actually attempted. This
+   does not supply the still-missing first-round checker/outcome bridge for
+   the full lock.
 An isolated fixed-signature `SIGHASH_ALL` probe now records the complete
 source-shaped preimages and SHA256d digests for ten committed-field changes
 and two `scriptSig`-only controls. In all ten changed-preimage cases, pinned

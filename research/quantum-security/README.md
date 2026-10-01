@@ -387,6 +387,7 @@ python3 analysis/check_bare_script_boundary.py --app-root /path/to/qsb-app --nat
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_der20_parser.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/der20-parser.json
+python3 analysis/check_multisig_early_exit.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/multisig-early-exit.json
 python3 analysis/check_find_and_delete_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/find-and-delete-boundary.json
 python3 analysis/check_pin_puzzle_scriptcode_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/pin-puzzle-scriptcode-core.json
 python3 analysis/check_ten_signature_findanddelete.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/ten-signature-find-and-delete.json

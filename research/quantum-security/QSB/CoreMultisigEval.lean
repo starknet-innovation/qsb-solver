@@ -13,16 +13,45 @@ namespace QSB.CoreMultisigEval
 open ByteMachine
 
 /-- Core's loop advances both cursors on a pair success and only the key
-cursor on failure. A failed encoding gate aborts the script. -/
+cursor on failure. If more signatures than keys remain, Core returns false
+*before* attempting another encoding check. A failed encoding gate on an
+actually attempted pair aborts the script. -/
 def scan (encoding : Bytes → Bool) (verify : Bytes → Bytes → Bool) :
     List Bytes → List Bytes → Option Bool
   | [], _ => some true
   | _ :: _, [] => some false
   | sig :: sigs, key :: keys =>
-      if encoding sig then
+      if (sig :: sigs).length > (key :: keys).length then some false
+      else if encoding sig then
         if verify sig key then scan encoding verify sigs keys
         else scan encoding verify (sig :: sigs) keys
       else none
+
+/-- A loop-internal state with too few keys exits without touching the next
+signature. Core's initial `nSigsCount ≤ nKeysCount` check is separate. -/
+theorem scan_early_failure (encoding : Bytes → Bool)
+    (verify : Bytes → Bytes → Bool) (sigs keys : List Bytes)
+    (more : keys.length < sigs.length) :
+    scan encoding verify sigs keys = some false := by
+  cases sigs with
+  | nil => simp at more
+  | cons sig rest =>
+      cases keys with
+      | nil => rfl
+      | cons key tail =>
+          have guard : tail.length < rest.length := by simpa using more
+          simp [scan, guard]
+
+/-- A malformed signature not reached after the first failed pair cannot
+abort the script. The first signature is well-encoded but never verifies;
+the second one would fail the encoding gate if Core attempted it. -/
+theorem scan_skips_unreachable_malformed :
+    scan (fun sig => sig == [1]) (fun _ _ => false)
+      [[1], [2]] [[3], [4]] = some false := by decide
+
+theorem scan_rejects_attempted_malformed :
+    scan (fun sig => sig == [1]) (fun _ _ => false)
+      [[2], [1]] [[3], [4]] = none := by decide
 
 /-- A successful scan is a successful abstract Core key scan with the encoding
 gate included in each attempted pair. -/
@@ -40,17 +69,27 @@ theorem scan_success_match (encoding : Bytes → Bool)
       cases sigs with
       | nil => rfl
       | cons sig rest =>
-          by_cases encoded : encoding sig
-          · by_cases verified : verify sig key
-            · have next : scan encoding verify rest keys = some true := by
-                simpa [scan, encoded, verified] using success
-              simpa [Multisig.matchSigs, encoded, verified] using ih rest next
-            · have next : scan encoding verify (sig :: rest) keys =
-                  some true := by
-                simpa [scan, encoded, verified] using success
-              simpa [Multisig.matchSigs, encoded, verified] using
-                ih (sig :: rest) next
-          · simp [scan, encoded] at success
+          by_cases impossible : (sig :: rest).length > (key :: keys).length
+          · have guard : keys.length < rest.length := by
+              simpa using impossible
+            simp [scan, guard] at success
+          · by_cases encoded : encoding sig
+            · by_cases verified : verify sig key
+              · have next : scan encoding verify rest keys = some true := by
+                  have guard : ¬ keys.length < rest.length := by
+                    simpa using impossible
+                  simpa [scan, guard, encoded, verified] using success
+                simpa [Multisig.matchSigs, encoded, verified] using ih rest next
+              · have next : scan encoding verify (sig :: rest) keys =
+                    some true := by
+                  have guard : ¬ keys.length < rest.length := by
+                    simpa using impossible
+                  simpa [scan, guard, encoded, verified] using success
+                simpa [Multisig.matchSigs, encoded, verified] using
+                  ih (sig :: rest) next
+            · have guard : ¬ keys.length < rest.length := by
+                simpa using impossible
+              simp [scan, guard, encoded] at success
 
 /-- The source transaction checker rejects an empty signature even though
 `CheckSignatureEncoding` permits it as an invalid-check placeholder. -/

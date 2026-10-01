@@ -810,6 +810,9 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout
 #print axioms QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs
 #print axioms QSB.CoreMultisigEval.scan_success_match
+#print axioms QSB.CoreMultisigEval.scan_early_failure
+#print axioms QSB.CoreMultisigEval.scan_skips_unreachable_malformed
+#print axioms QSB.CoreMultisigEval.scan_rejects_attempted_malformed
 #print axioms QSB.CoreMultisigEval.nonemptyVerify_sound
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_layout
 #print axioms QSB.CoreMultisigEval.finalTenEval_success_match

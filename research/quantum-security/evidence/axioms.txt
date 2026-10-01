@@ -856,10 +856,13 @@
 'QSB.CoreMultisigStack.matched_source_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigStack.accepted_whole_byte_run_source_layout' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigStack.matched_whole_byte_run_source_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
-'QSB.CoreMultisigEval.scan_success_match' depends on axioms: [propext]
+'QSB.CoreMultisigEval.scan_success_match' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigEval.scan_early_failure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigEval.scan_skips_unreachable_malformed' does not depend on any axioms
+'QSB.CoreMultisigEval.scan_rejects_attempted_malformed' does not depend on any axioms
 'QSB.CoreMultisigEval.nonemptyVerify_sound' depends on axioms: [propext]
 'QSB.CoreMultisigEval.finalTenEval_success_layout' depends on axioms: [propext, Quot.sound]
-'QSB.CoreMultisigEval.finalTenEval_success_match' depends on axioms: [propext, Quot.sound]
+'QSB.CoreMultisigEval.finalTenEval_success_match' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigEval.checkedPair_der' depends on axioms: [propext, Quot.sound]
 'QSB.CoreMultisigEval.finalTenEval_success_pairs' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreMultisigEval.deletedScript_selected' depends on axioms: [propext, Classical.choice, Quot.sound]

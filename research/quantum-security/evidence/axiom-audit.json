@@ -1,5 +1,5 @@
 {
-  "theorem_count": 824,
+  "theorem_count": 827,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -549,6 +549,7 @@
       "propext"
     ],
     "QSB.CoreMultisigEval.finalTenEval_success_match": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -560,7 +561,16 @@
     "QSB.CoreMultisigEval.nonemptyVerify_sound": [
       "propext"
     ],
+    "QSB.CoreMultisigEval.scan_early_failure": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigEval.scan_rejects_attempted_malformed": [],
+    "QSB.CoreMultisigEval.scan_skips_unreachable_malformed": [],
     "QSB.CoreMultisigEval.scan_success_match": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreMultisigEval.successful_byte_run_source_check": [

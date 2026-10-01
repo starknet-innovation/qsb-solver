@@ -1,0 +1,37 @@
+{
+  "scope": "isolated Core 27.2 bare CHECKMULTISIG early-exit probe; not QSB acceptance",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "well_formed_signature_hex": "300602010102010101",
+  "malformed_signature_hex": "01",
+  "results": {
+    "malformed_unreachable_drop_true": {
+      "accepted": true,
+      "returncode": 0,
+      "stdout": "core-27.2-api2-all-inputs-valid",
+      "stderr": "",
+      "script_sha256": "2974ca611ebd5ac522bcb42b57a098fc8ec88557a285ec7d7b2380a2125b2c01",
+      "raw_tx_sha256": "8f74e2a87cf82a5fd7a963e3b765a710e5ba0216fc6edc98956c4adeca42655f"
+    },
+    "malformed_unreachable_no_drop": {
+      "accepted": false,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "",
+      "script_sha256": "d714cd9a28197a7a65cccd77a20938194fdc05910105459ae6a9715918c6c408",
+      "raw_tx_sha256": "8f74e2a87cf82a5fd7a963e3b765a710e5ba0216fc6edc98956c4adeca42655f"
+    },
+    "malformed_attempted_drop_true": {
+      "accepted": false,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "",
+      "script_sha256": "2974ca611ebd5ac522bcb42b57a098fc8ec88557a285ec7d7b2380a2125b2c01",
+      "raw_tx_sha256": "207fba3bfe58dd52ff629e06198f9c4c6996fa495476486e9ae4613a4d107899"
+    }
+  }
+}
