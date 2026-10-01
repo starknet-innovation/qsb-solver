@@ -1,0 +1,38 @@
+{
+  "format": "qsb-combined-publication-preparation-v1",
+  "date": "2026-10-01",
+  "command": "python3 scripts/prepare_combined_release.py --target aws --candidate-tag candidate-sm86-20261001-1 --source-commit 40b5d9f9f741eeac498c55ba98f52db08c288170 --image-digest sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48 --output-directory <new private directory outside Git>",
+  "status": "prepared; publication approved by @adrienlacombe on 2026-10-01, conditional on the native component check, which passed (2026-10-01-a10g-components.md)",
+  "candidateTag": "candidate-sm86-20261001-1",
+  "sourceCommit": "40b5d9f9f741eeac498c55ba98f52db08c288170",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48",
+  "binding": {
+    "target": "aws",
+    "imageConfigSha256": "037ce71077238157e0c6b3a106ed986ddaed30a42b199b7ceece0ca82b64ac8d",
+    "contractSourceCommit": "40b5d9f9f741eeac498c55ba98f52db08c288170",
+    "contractFileSha256": "1bf7fb177e684c7b9c520b2dcb3c6e840f346e6d9c2c37089b35ee6fae010076",
+    "pipelineSha256": "b12896ce333ce6927109c2803eb2628566f8c62ad38cc8736a4288d9fe71993e",
+    "buildReceiptSha256": "cca8efb1742178250b873195b8b2ed7cd824c470d541120802c209e047b9022b",
+    "files": {
+      "handler.py": "fa5bc549305d821cc8edfb40f7bffa6a8505cfeda5878fa73ac56de37f286838",
+      "historical_handler.py": "e1aaaf8890797030f9e8a80ff1dda146e0d00d422a39bb41a1edd558f1618ab6",
+      "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+      "search_ranges.py": "07b0c2639e2a61b6a0306bed06a8f261f9f8c71ea1ee5d68806e3044a93c27df",
+      "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+    },
+    "subsetSourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3"
+  },
+  "artifactSha256": {
+    "attestation.json": "f4b3d8fb487d421e8064a3f038dff4e9cc8aafdaea5db0b7d5e9103c42abb5c2",
+    "descriptor-proposal.json": "44502bd8e08f50323e8ffb6431639b3ca2ccbda87da8eb61db0dd51e98635c7c",
+    "image-config.json": "d727160a1056f157b07f400bde73e8c49541cc94bc9f53d9ee09ff0028952e9f",
+    "optimized-build-receipt.json": "cca8efb1742178250b873195b8b2ed7cd824c470d541120802c209e047b9022b",
+    "pipeline.json": "b12896ce333ce6927109c2803eb2628566f8c62ad38cc8736a4288d9fe71993e",
+    "preparation.json": "096d35505757f3bb7fb279d6de8fa200d0987c4baefc5423b982262c3e9e0eb7"
+  },
+  "descriptorSha256": "4d73d6e0f26f3845970d8d07db7d0049d4bda6a8927cc8d9d4abd09c52dbf0ca",
+  "toolingCommit": "a876265cc2d36001542f5232dc8431354e3ff44f",
+  "toolingNote": "scripts/prepare_combined_release.py and scripts/combined_descriptor.py as of main a876265 (the qsb-solver#9 squash merge, tree-identical to the candidate source) were used.",
+  "nativeEvidence": "docs/promotion/2026-10-01-a10g-components.json",
+  "releaseTag": "combined-aws-sm86-v0.3.0"
+}
