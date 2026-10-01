@@ -1,0 +1,335 @@
+{
+  "status": "verified-fixed-rejection-workload-only",
+  "measurementPlan": {
+    "sourceCommit": "b226a28d8fc4ee645709585310a2790ca5ca44bd",
+    "scope": "Fixed independent public-output verification only; not full solver pipeline",
+    "pairs": 3,
+    "counts": [
+      1,
+      32
+    ],
+    "arms": [
+      "serial",
+      "parallel4"
+    ],
+    "timeoutSeconds": 60,
+    "includes": "Child startup, source/fixture hash checks, original handler export/checks, process scheduling, durable output and exit; no GPU work",
+    "python": "3.13.4 (v3.13.4:8a526ec7cbe, Jun  3 2025, 21:14:54) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "scriptSha256": "8c3c7d2f58fb5d4d345e08024fca3b4800c3b067f90ed7e69c3de3e913562084",
+    "schedulerSha256": "e8705631bb929f5818f9d7c35570bf283bfa4199b68257d0f02d5af8fc27e005"
+  },
+  "samples": [
+    {
+      "count": 1,
+      "pair": 0,
+      "arm": "parallel4",
+      "processSeconds": 0.28588825001497753,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.2066535420017317,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 0.24299399999999996
+      }
+    },
+    {
+      "count": 1,
+      "pair": 0,
+      "arm": "serial",
+      "processSeconds": 0.19740045801154338,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.11791283299680799,
+        "preparedDigests": null,
+        "cpuSeconds": 0.172722
+      }
+    },
+    {
+      "count": 1,
+      "pair": 1,
+      "arm": "serial",
+      "processSeconds": 0.20201991699286737,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.11731000000145286,
+        "preparedDigests": null,
+        "cpuSeconds": 0.176743
+      }
+    },
+    {
+      "count": 1,
+      "pair": 1,
+      "arm": "parallel4",
+      "processSeconds": 0.29162316597648896,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.20820787499542348,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 0.241489
+      }
+    },
+    {
+      "count": 1,
+      "pair": 2,
+      "arm": "parallel4",
+      "processSeconds": 0.29441245802445337,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.20746304199565202,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 0.250685
+      }
+    },
+    {
+      "count": 1,
+      "pair": 2,
+      "arm": "serial",
+      "processSeconds": 0.19675612499122508,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.11724516699905507,
+        "preparedDigests": null,
+        "cpuSeconds": 0.1749
+      }
+    },
+    {
+      "count": 32,
+      "pair": 0,
+      "arm": "parallel4",
+      "processSeconds": 0.6218669999798294,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.5354633340029977,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 1.845033
+      }
+    },
+    {
+      "count": 32,
+      "pair": 0,
+      "arm": "serial",
+      "processSeconds": 1.5199767909944057,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.4466630420065485,
+        "preparedDigests": null,
+        "cpuSeconds": 1.502237
+      }
+    },
+    {
+      "count": 32,
+      "pair": 1,
+      "arm": "serial",
+      "processSeconds": 1.5158129160117824,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.4288548330077901,
+        "preparedDigests": null,
+        "cpuSeconds": 1.487629
+      }
+    },
+    {
+      "count": 32,
+      "pair": 1,
+      "arm": "parallel4",
+      "processSeconds": 0.6309446249797475,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.5468561660090927,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 1.904128
+      }
+    },
+    {
+      "count": 32,
+      "pair": 2,
+      "arm": "parallel4",
+      "processSeconds": 0.642317500023637,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.5534112919995096,
+        "preparedDigests": {
+          "gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+          "qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901"
+        },
+        "cpuSeconds": 1.856658
+      }
+    },
+    {
+      "count": 32,
+      "pair": 2,
+      "arm": "serial",
+      "processSeconds": 1.5137422920088284,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.4319080830027815,
+        "preparedDigests": null,
+        "cpuSeconds": 1.486937
+      }
+    }
+  ],
+  "summary": {
+    "1": {
+      "medianSerialSeconds": 0.19740045801154338,
+      "medianParallelSeconds": 0.29162316597648896,
+      "pairedElapsedRatios": [
+        1.4482653834483994,
+        1.4435367082483515,
+        1.4963318577126052
+      ],
+      "medianPairedElapsedRatio": 1.4482653834483994,
+      "pairedCpuRatios": [
+        1.4068503143780178,
+        1.3663285108886916,
+        1.4333047455688965
+      ],
+      "medianPairedCpuRatio": 1.4068503143780178
+    },
+    "32": {
+      "medianSerialSeconds": 1.5158129160117824,
+      "medianParallelSeconds": 0.6309446249797475,
+      "pairedElapsedRatios": [
+        0.4091292733311993,
+        0.41624175273543,
+        0.4243242085621077
+      ],
+      "medianPairedElapsedRatio": 0.41624175273543,
+      "pairedCpuRatios": [
+        1.2281903587782752,
+        1.2799750475420955,
+        1.2486460421658752
+      ],
+      "medianPairedCpuRatio": 1.2486460421658752
+    }
+  },
+  "correctness": "All 12 calls match unchanged serial handler rejection; unchanged reference functions and exported file hashes checked",
+  "limitations": [
+    "One local macOS host; three pairs per count; no confidence interval",
+    "One-record latency regresses; all records are fixed rejections, not a successful first-hit workload",
+    "CPU usage still exceeds serial; no cloud-dollar or pipeline-cost measurement",
+    "No production handler wiring or worker image publication"
+  ],
+  "priorAttempts": [
+    "Per-record-export timings retained separately; no samples pooled",
+    "Local shared-export prototype retained separately; final samples use committed source and freshly downloaded hash-verified references",
+    "First anonymous reference download failed because local Python lacked a CA bundle; successful fresh staging used system trusted CA with verification enabled"
+  ],
+  "testSuite": {
+    "run": 206,
+    "skipped": 1,
+    "failed": 0
+  },
+  "newAwsSpendUsd": 0,
+  "fullPipelineQualified": false
+}

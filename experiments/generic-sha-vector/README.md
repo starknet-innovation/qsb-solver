@@ -131,6 +131,17 @@ transaction assembly or solver execution is invoked. Any TLS failure during
 staging must be resolved with a trusted CA bundle, never by disabling certificate
 verification. These experiments grant no production or full-pipeline claim.
 
+The committed prepared-input path (`b226a28`) was then measured against the
+unchanged handler using freshly downloaded, hash-verified references. Across
+three interleaved pairs, 32-record median process latency fell from 1.516 s to
+0.631 s (median paired ratio 0.416); CPU-time ratio was 1.249. One-record median
+latency increased from 0.197 s to 0.292 s (paired ratio 1.448). All 12 results
+matched the serial rejection verdict, and all prepared-file hashes remained
+unchanged. `evidence/prepared-public-verification.json` retains every sample,
+source binding and limitations. This supports optional bulk-verification
+experimentation only: all records were fixed rejections, CPU usage increased,
+and neither successful first-hit behavior nor full-pipeline cost was measured.
+
 ### Saved trace replay on Linux
 
 `evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the
