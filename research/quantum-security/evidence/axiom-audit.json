@@ -1,5 +1,5 @@
 {
-  "theorem_count": 970,
+  "theorem_count": 973,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1319,6 +1319,21 @@
       "propext"
     ],
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
+      "propext"
+    ],
+    "QSB.DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSetupReduction.unauthorized_measure_bound_with_uniform_setup": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSetupReduction.uniform_setup_bad_event_bound": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedChain.accepted_all_signed_blocks": [

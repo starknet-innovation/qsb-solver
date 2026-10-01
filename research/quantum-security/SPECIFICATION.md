@@ -270,6 +270,14 @@ bounded by `150·12/256^6`; `DynamicBonusProbability` proves the same
 inequality for the uniform measure on the nonempty finite setup space. This
 is classical uniform-function setup analysis, not a coherent-query or
 unauthorized-spend bound.
+`DynamicSetupReduction` inserts that setup term into the game-level measure
+bound. With an explicit uniform setup marginal, good-setup transaction/Core
+extraction, honest release, and fresh-opening plus distinct/same-key puzzle
+event bounds for one joint adversary distribution, Lean proves
+`Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.
+The good-setup extraction and all three quantum event bounds remain external
+premises. In particular, the count theorem supplies only the final setup
+term and cannot justify setting the other terms to zero.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

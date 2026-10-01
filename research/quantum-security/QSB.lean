@@ -61,6 +61,7 @@ import QSB.DynamicBonusDER
 import QSB.DynamicBonusIndices
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
+import QSB.DynamicSetupReduction
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -847,6 +848,9 @@ import QSB.Reduction
 #print axioms QSB.DynamicBonusSetup.good_setup_nine_positions
 #print axioms QSB.DynamicBonusSetup.bad_der_setup_count
 #print axioms QSB.DynamicBonusProbability.uniform_bad_der_probability
+#print axioms QSB.DynamicSetupReduction.uniform_setup_bad_event_bound
+#print axioms QSB.DynamicSetupReduction.unauthorized_measure_bound_with_uniform_setup
+#print axioms QSB.DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

@@ -395,6 +395,15 @@ selecting its 150 inputs. `QSB/DynamicBonusProbability.lean` converts the
 finite count to the same bound for the uniform probability measure on a
 nonempty finite setup space. This is a setup-event guarantee under a modeled
 matched scan; it is not an unauthorized-spend or quantum-query bound.
+`QSB/DynamicSetupReduction.unauthorized_measure_bound_uniform_setup_key_cases`
+now composes that setup probability with the transaction-game reduction:
+`Pr[Unauthorized] ≤ εfresh + εdistinct + εsame + 150·12/256^6`.
+Its type explicitly requires a uniform setup marginal, owner-honest release,
+fresh-opening and distinct/same-key puzzle event bounds for the *same* terminal
+distribution, and source/transaction/Core extraction on every good setup.
+Those last three event bounds and the good-setup extraction implication are
+not established by this work. The displayed inequality is therefore a
+conditional proof interface, not a numerical security claim for deployed QSB.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
