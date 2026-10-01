@@ -98,6 +98,19 @@ The adapter is not wired into qsb-app or a worker image. It needs isolated publi
 reference initialization and matched representative workload measurements before
 adoption; extra work after early acceptance can outweigh parallelism.
 
+A real-reference follow-up used the unchanged frozen qsb-app handler on one or
+32 existing diagnostic records (all rejected), with three interleaved pairs on
+the same local macOS host. Serial/four-worker median process times were
+0.199/0.300 s for one record and 1.524/1.165 s for 32. Median paired elapsed
+ratios were 1.502 and 0.760; CPU-time ratios were 1.433 and 2.830. The adapter
+called the original handler separately per record, including repeated parameter
+export, while serial exported once. This isolates a concrete setup-cost problem;
+it does not justify a default parallel path. The parent timer includes startup,
+hash checks, exports, verification, worker shutdown, durable receipt and exit.
+All 12 samples and source/input bindings are retained in
+`evidence/first-verdict-public-reference.json`. No successful-hit workload,
+full solver pipeline, cloud-dollar saving or image promotion was measured.
+
 ### Saved trace replay on Linux
 
 `evidence/native-trace-replay.json.gz` is a deterministic gzip copy of the

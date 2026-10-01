@@ -1,0 +1,322 @@
+{
+  "status": "mixed-workload-dependent-result",
+  "scope": "Independent real public-reference rejection verification; no solver, new search, transaction assembly or full pipeline",
+  "sourceCommit": "ae94a65",
+  "plan": {
+    "appCommit": "848751c082c2b70dfd11c7542525bbd2162819dd",
+    "files": {
+      "handler.py": "d08b7e530d2c140021bfeb645d229f8bb37e2c0f88100cdbe79b03432026a5c1",
+      "qsb_pipeline.py": "05334c08fa012a77ccba2887e05d78f90a8b81c0e34b786931b423f7f11255d8",
+      "verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba",
+      "gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+      "secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+      "bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+      "LICENSE": "8d2562b24636fb569997da918899eed12e95b573eef1207bf60be6bf7bd836ff",
+      "event.json": "1225a11cc2da41a089350eee96a6b14ebe8d827fb0f1d875d4488bcaa0924875"
+    },
+    "nativeTraceSha256": "8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04",
+    "traceCase": "wpkh-r1-255",
+    "scope": "Independent verification of 32 fixed saved public diagnostic records only; no solver execution or new search",
+    "adoption": "UNQUALIFIED",
+    "workloads": [
+      1,
+      32
+    ],
+    "pairs": 3,
+    "arms": [
+      "serial",
+      "parallel4"
+    ],
+    "deadlineSecondsPerProcess": 60
+  },
+  "measurementPlan": {
+    "scope": "Fixed independent public-output verification only; not full solver pipeline",
+    "pairs": 3,
+    "counts": [
+      1,
+      32
+    ],
+    "arms": [
+      "serial",
+      "parallel4"
+    ],
+    "timeoutSeconds": 60,
+    "includes": "Child startup, source/fixture hash checks, original handler export/checks, process scheduling, durable output and exit; no GPU work",
+    "python": "3.13.4 (v3.13.4:8a526ec7cbe, Jun  3 2025, 21:14:54) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "scriptSha256": "0f0ec38ddc55130b00d1008f449397d46ddfa7e91daa2e46de493273a95524f8",
+    "schedulerSha256": "e8705631bb929f5818f9d7c35570bf283bfa4199b68257d0f02d5af8fc27e005"
+  },
+  "samples": [
+    {
+      "count": 1,
+      "pair": 0,
+      "arm": "parallel4",
+      "processSeconds": 0.3326671249815263,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.213427959010005,
+        "cpuSeconds": 0.25393699999999997
+      }
+    },
+    {
+      "count": 1,
+      "pair": 0,
+      "arm": "serial",
+      "processSeconds": 0.19188591701094992,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.1150271249935031,
+        "cpuSeconds": 0.16980699999999999
+      }
+    },
+    {
+      "count": 1,
+      "pair": 1,
+      "arm": "serial",
+      "processSeconds": 0.199560749984812,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.11758233400178142,
+        "cpuSeconds": 0.173357
+      }
+    },
+    {
+      "count": 1,
+      "pair": 1,
+      "arm": "parallel4",
+      "processSeconds": 0.299831708020065,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.2157881669991184,
+        "cpuSeconds": 0.24849299999999996
+      }
+    },
+    {
+      "count": 1,
+      "pair": 2,
+      "arm": "parallel4",
+      "processSeconds": 0.2970559579844121,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.21178383298683912,
+        "cpuSeconds": 0.241046
+      }
+    },
+    {
+      "count": 1,
+      "pair": 2,
+      "arm": "serial",
+      "processSeconds": 0.19942016701679677,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 1,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 0.11938437499338761,
+        "cpuSeconds": 0.1755
+      }
+    },
+    {
+      "count": 32,
+      "pair": 0,
+      "arm": "parallel4",
+      "processSeconds": 1.1649823329935316,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.0805218330060598,
+        "cpuSeconds": 4.204708999999999
+      }
+    },
+    {
+      "count": 32,
+      "pair": 0,
+      "arm": "serial",
+      "processSeconds": 1.5337779160181526,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.4499606669996865,
+        "cpuSeconds": 1.504982
+      }
+    },
+    {
+      "count": 32,
+      "pair": 1,
+      "arm": "serial",
+      "processSeconds": 1.5100714169966523,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.4199316669837572,
+        "cpuSeconds": 1.477269
+      }
+    },
+    {
+      "count": 32,
+      "pair": 1,
+      "arm": "parallel4",
+      "processSeconds": 1.139751292008441,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.0604360420256853,
+        "cpuSeconds": 4.208913
+      }
+    },
+    {
+      "count": 32,
+      "pair": 2,
+      "arm": "parallel4",
+      "processSeconds": 1.1718105420004576,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "parallel4",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.0815704170090612,
+        "cpuSeconds": 4.23204
+      }
+    },
+    {
+      "count": 32,
+      "pair": 2,
+      "arm": "serial",
+      "processSeconds": 1.523592000012286,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout": false,
+      "receipt": {
+        "arm": "serial",
+        "count": 32,
+        "result": {
+          "valid": false
+        },
+        "handlerAndSchedulingSeconds": 1.440572332998272,
+        "cpuSeconds": 1.495191
+      }
+    }
+  ],
+  "summary": {
+    "1": {
+      "medianSerialSeconds": 0.19942016701679677,
+      "medianParallelSeconds": 0.299831708020065,
+      "pairedElapsedRatios": [
+        1.7336713926876808,
+        1.5024583142871748,
+        1.4895983812880451
+      ],
+      "medianPairedElapsedRatio": 1.5024583142871748,
+      "pairedCpuRatios": [
+        1.4954448285406372,
+        1.4334177448848326,
+        1.3734814814814815
+      ],
+      "medianPairedCpuRatio": 1.4334177448848326
+    },
+    "32": {
+      "medianSerialSeconds": 1.523592000012286,
+      "medianParallelSeconds": 1.1649823329935316,
+      "pairedElapsedRatios": [
+        0.759550858587107,
+        0.7547664826841549,
+        0.7691104586995786
+      ],
+      "medianPairedElapsedRatio": 0.759550858587107,
+      "pairedCpuRatios": [
+        2.7938599930098826,
+        2.849117527004222,
+        2.8304343725985506
+      ],
+      "medianPairedCpuRatio": 2.8304343725985506
+    }
+  },
+  "limitations": [
+    "Three interleaved pairs per workload on one local macOS host; no statistical confidence interval",
+    "All fixed records were rejected; successful first-hit performance was not measured",
+    "Parallel adapter exports parameters per record, while serial handler exports once",
+    "CPU seconds include process self and waited child user/system time; no cloud-dollar cost measured"
+  ],
+  "decision": "Do not enable parallel verification by default or publish a worker image: one-record latency regresses and CPU cost increases; production workload distribution and full-pipeline effects remain unmeasured",
+  "newAwsSpendUsd": 0
+}
