@@ -46,6 +46,8 @@ def main() -> None:
          pattern + drop_checksig),
         ("two_canonical_pushes", pattern + b"\x75" + pattern + drop_checksig,
          pattern + b"\x75" + pattern + drop_checksig),
+        ("adjacent_canonical_pushes", pattern + pattern + b"\x6d\xac",
+         pattern + pattern + b"\x6d\xac"),
         ("embedded_pattern_inside_push",
          bt.push_data(b"\xaa" + pattern + b"\xbb") + drop_checksig,
          bt.push_data(b"\xaa" + pattern + b"\xbb").replace(pattern, b"") +

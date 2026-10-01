@@ -141,7 +141,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 699 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 706 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -299,9 +299,10 @@ conditional interface: successful pair verification must imply both nonempty
 signature bytes and acceptance by that gate before it concludes strict DER and
 the nine-position shape. The corpus does not prove the interface for Core's
 full final multisignature scan or all possible signature bytes.
-Seven further isolated `FindAndDelete` cases each pass with a public key
+Eight further isolated `FindAndDelete` cases each pass with a public key
 recovered for the app's opcode-boundary scriptCode and fail with a key
-recovered for a deliberately wrong scriptCode. They cover repeated canonical
+recovered for a deliberately wrong scriptCode. They cover separated and
+adjacent repeated canonical
 signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1/2/4`, and the
 literal 56-byte pinning signature in an isolated lock.
 This corroborates the selected source behavior but does not compute the final
@@ -417,8 +418,14 @@ same final scriptCode for any chosen final-signature index list and the
 one-push pinning result. These are
 source-level model theorems, not compiled-C++ refinement or a full arbitrary
 scriptSig and transaction extractor. The source fixture confirms that
-the pinning push occurs only once at byte offset zero; the fifth isolated
+the pinning push occurs only once at byte offset zero; the eighth isolated
 Core case corroborates deletion for those signature bytes.
+`QSB/CoreFindAndDelete.lean` further models Core's delayed copy of each parsed
+opcode and its return of the original script when no pattern matched. Lean
+proves its byte output agrees with the prior deletion model for every script
+and pattern, then obtains the same literal final and pin scriptCodes. This
+narrows the source-control-flow gap but does not turn the Lean model into a
+compiled-Core acceptance theorem.
 
 `QSB/PinningScriptCode.lean` identifies the actual nonce and puzzle key bytes
 reached by both pinning checks from any successful initial byte-model stack.

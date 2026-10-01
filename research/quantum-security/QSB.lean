@@ -50,6 +50,7 @@ import QSB.ScriptCodeSelection
 import QSB.EncodedScript
 import QSB.FindAndDelete
 import QSB.CoreGetOp
+import QSB.CoreFindAndDelete
 import QSB.PinningScriptCode
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
@@ -714,6 +715,13 @@ import QSB.Reduction
 #print axioms QSB.CoreGetOp.scanMany_eq_model_scanMany_all
 #print axioms QSB.CoreGetOp.final_scriptCode_scan
 #print axioms QSB.CoreGetOp.pin_scriptCode_scan
+#print axioms QSB.CoreFindAndDelete.loop_bytes_eq_scan
+#print axioms QSB.CoreFindAndDelete.loop_no_match_preserves_bytes
+#print axioms QSB.CoreFindAndDelete.run_eq_scan
+#print axioms QSB.CoreFindAndDelete.run_eq_model_scan
+#print axioms QSB.CoreFindAndDelete.runMany_eq_model_scanMany
+#print axioms QSB.CoreFindAndDelete.final_scriptCode_run
+#print axioms QSB.CoreFindAndDelete.pin_scriptCode_run
 #print axioms QSB.PinningScriptCode.accepted_pinning_reached_bytes
 #print axioms QSB.PinningScriptCode.matched_run_pinning_der_puzzle
 #print axioms QSB.FinalScriptCode.reached_signatures_exact

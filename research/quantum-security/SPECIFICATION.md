@@ -172,7 +172,7 @@ interface: a successful ten-pair scan and a per-pair verifier sound for syntax
 imply that the reached bonus slots satisfy the syntax predicate. Equality of
 that abstract scan with the actual Core check remains an external obligation.
 `CORE-FINAL-MATCH.md` states the source-level refinement contract, including
-Core's sequential opcode-boundary FindAndDelete before its ten-pair scan. Seven
+Core's sequential opcode-boundary FindAndDelete before its ten-pair scan. Eight
 isolated pinned-Core differential cases corroborate the app's FindAndDelete
 behavior on canonical, repeated, embedded-pattern, and noncanonical PUSHDATA1/2/4 pushes;
 they do not determine the full QSB scriptCode for arbitrary witnesses.

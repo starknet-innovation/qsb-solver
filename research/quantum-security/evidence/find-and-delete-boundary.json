@@ -38,6 +38,19 @@
       "negative_tx_sha256": "3ae78434dfc10da6319a2daec7a18b045cf4b6c296a1cef886212837c39de6f6"
     },
     {
+      "name": "adjacent_canonical_pushes",
+      "lock_hex": "09300602010102011101093006020101020111016dac",
+      "signature_hex": "300602010102011101",
+      "script_code_hex": "6dac",
+      "wrong_script_code_hex": "09300602010102011101093006020101020111016dac",
+      "correct_pubkey_hex": "03b4a63ffc8294d9df3d713f337e6e5145ac0b727bd9b9257992b7d12b77de3ee7",
+      "wrong_pubkey_hex": "027c8382abb69a15c9d9e4394973f85c18471e51781464df1361303b86654edd81",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "acb9c708ae7bc0f130fcd6bbc854c1d7930681b0e21cfa2519cfd0958e06428a",
+      "negative_tx_sha256": "bb19296d95fbc1bb79e6681464aae18763b0667f07e36e05a89f150cad2a6fef"
+    },
+    {
       "name": "embedded_pattern_inside_push",
       "lock_hex": "0caa09300602010102011101bb75ac",
       "signature_hex": "300602010102011101",
