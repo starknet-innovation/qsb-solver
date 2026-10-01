@@ -777,6 +777,12 @@ import QSB.Reduction
 #print axioms QSB.DynamicSignedSource.bounded_hash_match_has_original_position
 #print axioms QSB.DynamicSignedSource.accepted_comparison_nonce_or_commitment
 #print axioms QSB.DynamicSignedSource.accepted_comparison_nonce_or_original_position
+#print axioms QSB.DynamicSignedSource.literal_next_raw_front
+#print axioms QSB.DynamicSignedSource.next_raw_front_length
+#print axioms QSB.DynamicSignedSource.accepted_fixed_raw_pair_dynamic
+#print axioms QSB.DynamicSignedSource.accepted_first_raw_pair_from_data
+#print axioms QSB.DynamicSignedSource.literal_first_comparison_program
+#print axioms QSB.DynamicSignedSource.accepted_first_comparison_nonce_or_original_position
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

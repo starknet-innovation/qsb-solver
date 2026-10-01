@@ -231,6 +231,13 @@ that a 20-byte strict-DER `SIGHASH_ALL` nonce can verify for a recovered key;
 it does not demonstrate a matching hash opening or a QSB spend. The dynamic
 seven-comparison induction must propagate the nonce-or-commitment branch,
 then the joint-oracle event must account for the nonce-hit case.
+For the first signed selection, Lean now starts before the dynamic data pushes
+and proves the disjunction from a successful prefix run through the first
+comparison. It extracts the actual witness-tail raw index, applies the reached
+MIN/ADD cap, and identifies a commitment by original pool position when that
+branch occurs. This prefix is exactly the literal final round's first 314
+instructions under the fixture specialization. The paired dummy roll and
+remaining six comparisons still need a dynamic induction.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

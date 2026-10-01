@@ -1,5 +1,5 @@
 {
-  "theorem_count": 910,
+  "theorem_count": 916,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1207,6 +1207,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicSignedSource.accepted_first_comparison_nonce_or_original_position": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_first_raw_pair_from_data": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_fixed_raw_pair_dynamic": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSignedSource.bounded_hash_match_has_original_position": [
       "Classical.choice",
       "Quot.sound",
@@ -1231,7 +1246,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicSignedSource.literal_first_comparison_program": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.literal_next_raw_front": [
+      "propext"
+    ],
     "QSB.DynamicSignedSource.literal_region": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.next_raw_front_length": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.prefix_length": [

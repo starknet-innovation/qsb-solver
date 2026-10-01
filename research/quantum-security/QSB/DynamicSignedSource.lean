@@ -10,6 +10,8 @@ namespace QSB.DynamicSignedSource
 open ByteMachine
 open FinalSignedLoop
 open PoolRollInvariant
+set_option maxRecDepth 20000
+set_option maxHeartbeats 10000000
 
 def signedPrefixN (nonce retained : Bytes)
     (gathered dummies : List Bytes) : List Bytes :=
@@ -20,10 +22,112 @@ def region (nonce retained prior : Bytes)
   signedPrefixN nonce retained gathered dummies ++
     (commitments ++ prior :: tail)
 
+def nextRawFrontN (nonce prior : Bytes)
+    (gathered dummies commitments : List Bytes) : List Bytes :=
+  gathered ++ [nonce, []] ++ dummies ++ commitments ++ [prior]
+
 theorem literal_region (retained prior : Bytes)
     (gathered dummies commitments tail : List Bytes) :
     region finalNonce retained prior gathered dummies commitments tail =
       signedRegion retained gathered dummies commitments prior tail := rfl
+
+theorem literal_next_raw_front (prior : Bytes)
+    (gathered dummies commitments : List Bytes) :
+    nextRawFrontN finalNonce prior gathered dummies commitments =
+      nextRawFront prior gathered dummies commitments := rfl
+
+theorem next_raw_front_length (nonce prior : Bytes)
+    (gathered dummies commitments : List Bytes)
+    (shape : PoolShape gathered dummies commitments) :
+    (nextRawFrontN nonce prior gathered dummies commitments).length =
+      303 - gathered.length := by
+  simp only [nextRawFrontN, List.length_append, List.length_cons,
+    List.length_nil]
+  rw [shape.commitmentCount]
+  have count := shape.poolCount
+  omega
+
+/-- The literal fixed raw-index pair still fetches tail cell 283 when only
+the final nonce and commitment bytes vary. -/
+theorem accepted_fixed_raw_pair_dynamic (hashes : Hashes) (k : Fin 7)
+    (nonce prior : Bytes) (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (count : gathered.length = k.val)
+    (outcomes : List Bool) (cost : Nat) (after : State)
+    (accepted : run hashes [.push (fixedRawIndex k), .roll]
+      (State.mk (nextRawFrontN nonce prior gathered dummies commitments ++
+        tail) outcomes cost) = some after) :
+    ∃ enough : 283 < tail.length,
+      after = State.mk
+        (tail[283] :: nextRawFrontN nonce prior gathered dummies
+          commitments ++ tail.eraseIdx 283) outcomes (cost + 1) := by
+  have frontLength := next_raw_front_length nonce prior gathered dummies
+    commitments shape
+  have depth :
+      (nextRawFrontN nonce prior gathered dummies commitments).length + 283 =
+        586 - k.val := by
+    rw [frontLength, count]
+    omega
+  have parsed := generated_fixed_raw_index_decodes k
+  rw [← depth] at parsed
+  exact accepted_push_roll_tail_shape hashes (fixedRawIndex k)
+    (nextRawFrontN nonce prior gathered dummies commitments) tail
+    outcomes cost after 283 parsed accepted
+
+/-- The arbitrary commitment/nonce data block followed by the first fixed
+raw-index pair fetches the same witness-tail cell 283 as the literal lock.
+The preceding round's Boolean is an explicit one-byte-width premise at later
+comparisons; this theorem only records its position. -/
+theorem accepted_first_raw_pair_from_data (hashes : Hashes)
+    (nonce prior : Bytes) (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (tail : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (after : State)
+    (accepted : run hashes
+      (DynamicFinalInit.dataOps nonce commitmentAt ++
+        [.push (fixedRawIndex ⟨0, by decide⟩), .roll])
+      (State.mk (prior :: tail) outcomes cost) = some after) :
+    ∃ enough : 283 < tail.length,
+      after = State.mk
+        (tail[283] :: nextRawFrontN nonce prior [] finalDummyPool
+          (DynamicFinalInit.commitmentPool commitmentAt) ++
+          tail.eraseIdx 283) outcomes (cost + 1) := by
+  rw [run_append] at accepted
+  cases reached : run hashes (DynamicFinalInit.dataOps nonce commitmentAt)
+      (State.mk (prior :: tail) outcomes cost) with
+  | none => simp [reached] at accepted
+  | some middle =>
+      have dataShape := DynamicFinalInit.accepted_data_shape hashes nonce
+        commitmentAt (prior :: tail) outcomes cost middle reached
+      simp only [reached, Option.bind_some] at accepted
+      rw [dataShape] at accepted
+      have stackEq :
+          nonce :: [] :: finalDummyPool ++
+            DynamicFinalInit.commitmentPool commitmentAt ++ prior :: tail =
+          nextRawFrontN nonce prior [] finalDummyPool
+            (DynamicFinalInit.commitmentPool commitmentAt) ++ tail := by
+        simp [nextRawFrontN, List.append_assoc]
+      rw [stackEq] at accepted
+      exact accepted_fixed_raw_pair_dynamic hashes ⟨0, by decide⟩
+        nonce prior [] finalDummyPool
+        (DynamicFinalInit.commitmentPool commitmentAt) tail
+        (DynamicFinalInit.initial_pool_shape commitmentAt width)
+        (by decide) outcomes cost after accepted
+
+private def firstK : Fin 7 := ⟨0, by decide⟩
+
+/-- The dynamic final-round prefix through its first HASH160/EQUALVERIFY.
+This stops before the paired dummy roll; it does not assume the comparison
+result or the later six signed blocks. -/
+def firstComparisonProgram (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes) : List Op :=
+  (DynamicFinalInit.dataOps nonce commitmentAt ++
+    [.push (fixedRawIndex firstK), .roll]) ++
+    (signedCapAddOps firstK ++ signedComparisonOps firstK)
+
+theorem literal_first_comparison_program :
+    firstComparisonProgram finalNonce generatedCommitmentAt =
+      (ByteLayout.program.drop 447).take 314 := by decide
 
 theorem prefix_length (nonce retained : Bytes)
     (gathered dummies : List Bytes)
@@ -386,5 +490,120 @@ theorem accepted_comparison_nonce_or_original_position (hashes : Hashes)
       Option.some.inj (hit.symm.trans source)
     exact ⟨opening, Or.inr ⟨id, j, withinIds, indexEq,
       List.getElem?_eq_getElem withinIds, equal⟩⟩
+
+theorem accepted_first_comparison_nonce_or_original_position
+    (hashes : Hashes) (nonce prior : Bytes)
+    (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (priorWrong : prior.length ≠ 20)
+    (tail : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (final : State)
+    (accepted : run hashes (firstComparisonProgram nonce commitmentAt)
+      (State.mk (prior :: tail) outcomes cost) = some final) :
+    ∃ opening : Bytes,
+      (nonce.length = 20 ∧ hashes.h160 opening = nonce) ∨
+      (∃ (id : Fin 150) (j : Nat),
+        j < (List.finRange 150).length ∧
+        (List.finRange 150)[j]? = some id ∧
+        (DynamicFinalInit.commitmentPool commitmentAt)[j]? =
+          some (commitmentAt id) ∧
+        hashes.h160 opening = commitmentAt id) := by
+  unfold firstComparisonProgram at accepted
+  rw [run_append] at accepted
+  cases first : run hashes
+      (DynamicFinalInit.dataOps nonce commitmentAt ++
+        [.push (fixedRawIndex firstK), .roll])
+      (State.mk (prior :: tail) outcomes cost) with
+  | none => simp [first] at accepted
+  | some afterFirst =>
+      obtain ⟨enough, firstShape⟩ :=
+        accepted_first_raw_pair_from_data hashes nonce prior commitmentAt
+          width tail outcomes cost afterFirst first
+      simp only [first, Option.bind_some] at accepted
+      rw [firstShape, run_append] at accepted
+      simp only [List.cons_append] at accepted
+      cases cap : run hashes (signedCapAddOps firstK)
+          (State.mk
+            (tail[283] :: (nextRawFrontN nonce prior [] finalDummyPool
+              (DynamicFinalInit.commitmentPool commitmentAt) ++
+              tail.eraseIdx 283)) outcomes (cost + 1)) with
+      | none => simp [cap] at accepted
+      | some afterCap =>
+          obtain ⟨source, operand, retained, offset, rawParsed,
+              retainedEncoded, retainedParsed, offsetEncoded, capShape⟩ :=
+            accepted_signed_cap_add_shape hashes firstK tail[283]
+              (nextRawFrontN nonce prior [] finalDummyPool
+                (DynamicFinalInit.commitmentPool commitmentAt) ++
+                tail.eraseIdx 283) outcomes (cost + 1) afterCap cap
+          simp only [cap, Option.bind_some] at accepted
+          rw [capShape] at accepted
+          have baseEq : retained ::
+              (nextRawFrontN nonce prior [] finalDummyPool
+                (DynamicFinalInit.commitmentPool commitmentAt) ++
+                tail.eraseIdx 283) =
+              region nonce retained prior [] finalDummyPool
+                (DynamicFinalInit.commitmentPool commitmentAt)
+                (tail.eraseIdx 283) := by
+            simp [region, signedPrefixN, nextRawFrontN,
+              List.append_assoc]
+          rw [baseEq] at accepted
+          have comparisonRun : run hashes (signedComparisonOps firstK)
+              (State.mk (offset :: region nonce retained prior []
+                finalDummyPool (DynamicFinalInit.commitmentPool commitmentAt)
+                (tail.eraseIdx 283)) outcomes (cost + 4)) = some final := by
+            simpa only [Nat.add_assoc] using accepted
+          rw [generated_signed_comparison_ops] at comparisonRun
+          obtain ⟨afterRoll, rollStep, _, _rest⟩ :=
+            FirstAcceptedOrigin.run_cons_success hashes .roll
+              [.push (preimageIndex firstK), .roll, .hash160, .equalverify]
+              (State.mk (offset :: region nonce retained prior []
+                finalDummyPool (DynamicFinalInit.commitmentPool commitmentAt)
+                (tail.eraseIdx 283)) outcomes (cost + 4))
+              final comparisonRun
+          obtain ⟨index, parsedOffset, nonnegative⟩ :=
+            FinalSignedAccepted.accepted_roll_parses_nonnegative hashes
+              offset (region nonce retained prior [] finalDummyPool
+                (DynamicFinalInit.commitmentPool commitmentAt)
+                (tail.eraseIdx 283)) outcomes (cost + 4) afterRoll rollStep
+          have boundInt := signed_cap_add_index_bound firstK retained offset
+            source operand index retainedEncoded retainedParsed offsetEncoded
+            parsedOffset
+          have indexEq : index = Int.ofNat index.toNat :=
+            Int.eq_natCast_toNat.mpr nonnegative
+          have indexBound : index.toNat ≤ 303 := by
+            rw [indexEq] at boundInt
+            simpa [firstK] using Int.ofNat_le.mp boundInt
+          have parsedNat : ByteIndex.parseScriptNum offset =
+              some (Int.ofNat index.toNat) := by
+            rw [← indexEq]
+            exact parsedOffset
+          have comparisonAccepted : run hashes (signedComparisonOps firstK)
+              (State.mk (offset :: region nonce retained prior []
+                finalDummyPool (DynamicFinalInit.commitmentPool commitmentAt)
+                (tail.eraseIdx 283)) outcomes (cost + 4)) = some final := by
+            rw [generated_signed_comparison_ops]
+            exact comparisonRun
+          obtain ⟨opening, nonceHit | commitmentHit⟩ :=
+            accepted_comparison_nonce_or_original_position hashes
+              commitmentAt (List.finRange 150) firstK nonce retained prior
+              offset [] finalDummyPool
+              (DynamicFinalInit.commitmentPool commitmentAt)
+              (tail.eraseIdx 283)
+              (DynamicFinalInit.initial_pool_shape commitmentAt width)
+              (DynamicFinalInit.initial_alignment commitmentAt)
+              (ByteIndexSign.parsed_bytes_are_short retained operand
+                retainedParsed) priorWrong index.toNat parsedNat
+              (by simpa using indexBound) outcomes (cost + 4) final
+              comparisonAccepted
+          · exact ⟨opening, Or.inl nonceHit⟩
+          · obtain ⟨id, j, within, _index, idAt, hit⟩ := commitmentHit
+            have source :
+                (DynamicFinalInit.commitmentPool commitmentAt)[j]? =
+                  some (commitmentAt id) := by
+              change ((List.finRange 150).map commitmentAt)[j]? =
+                some (commitmentAt id)
+              rw [List.getElem?_map, idAt]
+              rfl
+            exact ⟨opening, Or.inr ⟨id, j, within, idAt, source, hit⟩⟩
 
 end QSB.DynamicSignedSource

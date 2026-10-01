@@ -343,6 +343,13 @@ signature validity alone does not remove the source exception. No matching
 HASH160 opening or QSB-lock spend was produced. A dynamic seven-block
 interpreter proof must carry this disjunction, and any security reduction must
 exclude or charge the nonce-hit event under the **joint** hash model.
+The first comparison is now derived from one successful parameterized prefix
+run, beginning with arbitrary nonce/commitment data pushes above a prior-round
+result and adversarial tail. The fixed raw roll fetches tail cell 283; the
+actual capped MIN/ADD depth and comparison yield a nonce hit or an
+original-position commitment opening. Lean checks that this prefix is the
+first 314 instructions of the literal final round. Carrying the result
+through the dummy roll and next six comparisons remains open.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
