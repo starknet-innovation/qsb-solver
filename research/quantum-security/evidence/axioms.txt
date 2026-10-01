@@ -826,6 +826,18 @@
 'QSB.CoreMultisigCleanup.cleanup_success' depends on axioms: [propext, Quot.sound]
 'QSB.CoreMultisigCleanup.finalTenEval_cleanup' depends on axioms: [propext, Quot.sound]
 'QSB.CoreMultisigCleanup.finalTenEval_count_and_cleanup' depends on axioms: [propext, Quot.sound]
+'QSB.CoreMultisigCleanup.parseSourceCount_reverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigCleanup.source_cells_from_byte_cells' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigCleanup.successful_byte_multisig_source_cells' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CoreMultisigStep.step_of_reached_cells' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreMultisigStep.successful_source_step_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreChecksigStep.step_of_reached_cells' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreChecksigStep.successful_source_step_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreStructuralRun.step_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreStructuralRun.run_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreStructuralRun.literal_lock_refines_byte' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSerialize.magnitudeBytes_eq_model' depends on axioms: [propext]
 'QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos' depends on axioms: [propext, Quot.sound]
 'QSB.CoreSerialize.coreSerialize_eq_model' depends on axioms: [propext]

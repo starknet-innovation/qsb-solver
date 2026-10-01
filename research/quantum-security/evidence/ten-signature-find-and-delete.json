@@ -114,6 +114,48 @@
       "accepted": false,
       "lock_sha256": "b3df557bba3db174123e7fb8280c248dcbfd098236628584a01224f2b83c1542",
       "transaction_sha256": "ab8edb0c0fc77c4f09b4781b687eb86c01367000102b38d3f5bfb962ac213c33"
+    },
+    {
+      "case": "nonminimal_key_count_10",
+      "accepted": true,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "970c4bd8667073d6375cf44a2591798363f17c907f254de97d0a6325e3b70e41"
+    },
+    {
+      "case": "nonminimal_sig_count_10",
+      "accepted": true,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "9f3181b1be7f884d0cd67209288f2840405c40b85fe2452e60d318c195bcd064"
+    },
+    {
+      "case": "nonminimal_both_counts_10",
+      "accepted": true,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "6a05e9f640e5f17ce20ff1010867cee5a7a98b12fd0501fe59ef738c9e151c6d"
+    },
+    {
+      "case": "nonempty_dummy",
+      "accepted": false,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "f3eebd04f903f3d6a77b552c94ca978bb891a241d91126f8989f47ce0926b8b8"
+    },
+    {
+      "case": "negative_key_count",
+      "accepted": false,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "66fa222405fc53229b99123c40d0833240afe5d660b3998fb92a8104441ddede"
+    },
+    {
+      "case": "too_many_keys_21",
+      "accepted": false,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "043f3fa8e50570e6cc632d7be7673d0076b4e7f4f94c65c8bec9e1db85dad548"
+    },
+    {
+      "case": "more_signatures_than_keys_11",
+      "accepted": false,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "2cd480dd50f243c7465bd927b6c740ea4bd52c6b127b9fa1ccf8d3d499c22e0d"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 772,
+  "theorem_count": 782,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -385,6 +385,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreChecksigStep.step_of_reached_cells": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreChecksigStep.successful_source_step_refines_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreDEREncoding.accepted_indices_in_bounds": [
       "Quot.sound",
       "propext"
@@ -510,6 +520,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreMultisigCleanup.parseSourceCount_reverse": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigCleanup.source_cells_from_byte_cells": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigCleanup.successful_byte_multisig_source_cells": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreMultisigEval.checkedPair_der": [
       "Quot.sound",
       "propext"
@@ -593,6 +618,16 @@
       "propext"
     ],
     "QSB.CoreMultisigStack.stacktopNeg_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStep.step_of_reached_cells": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreMultisigStep.successful_source_step_refines_byte": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -787,6 +822,21 @@
       "propext"
     ],
     "QSB.CoreSerialize.unsignedLE_magnitudeBytes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralRun.literal_lock_refines_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralRun.run_refines_byte": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreStructuralRun.step_refines_byte": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

@@ -349,6 +349,15 @@ The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped
 final evaluation; the checker and compiled-Core bridge remain external.
+Lean now additionally composes source-shaped bottom-first structural steps
+for every generated opcode, including arbitrary-count multisignature parsing,
+the false first-round result, NULLDUMMY cleanup, and CHECKSIGVERIFY stack
+pops. A successful source-shaped run of the whole 880-opcode lock from any
+post-scriptSig stack projects to the byte-model run. This narrows the
+remaining bridge to the compiled interpreter, actual signature outcomes,
+transaction sighashes, and consensus context. The isolated ten-signature
+Core differential also passed three nonminimal-count positives and four
+count/dummy negatives, for 22 cases total.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary Core-accepted witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.
@@ -360,7 +369,7 @@ The two-output transaction exercises in-range `SIGHASH_SINGLE` as well as
 `SIGHASH_ALL`. A `CHECKMULTISIG; DROP; TRUE` variant accepts an empty
 first-scanned signature but rejects a malformed nonempty one, consistent with
 the source encoding gate. The adapter does not expose the error code. These
-15 cases are native evidence for selected
+22 cases are native evidence for selected
 source behavior, not
 full-lock acceptance or a proof of arbitrary-witness refinement.
 The new source-shaped final evaluator checks the reached ten-count cells,

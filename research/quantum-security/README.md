@@ -279,13 +279,20 @@ and Core refinement premises remain explicit.
 multisignature pair's actual hash-type byte, parsed-key condition, and
 external ECDSA/sighash call on the one selected scriptCode, conditional on a
 successful source-shaped final ten-pair evaluation.
+`QSB/CoreStructuralRun.lean` composes source-shaped structural transitions
+for all generated opcodes. A successful bottom-first run of the literal lock
+from any post-scriptSig stack projects to the byte-model run, including
+signature-site count parsing and stack cleanup. `QSB/CoreMultisigStep.lean`
+and `QSB/CoreChecksigStep.lean` provide those signature-site transitions;
+their cryptographic outcomes remain supplied Booleans. Compiled Core and
+real checker/sighash refinement remain open.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
 the actual opening bytes hash to the compared commitment bytes. This local
 result does not identify where the commitment came from. `QSB/ByteTrace.lean`
 records equality pairs and proves that erasing the record recovers the modeled
-execution; the whole-lock arbitrary-witness source invariant is still open.
+execution; the compiled-Core arbitrary-witness bridge is still open.
 `QSB/ByteWitness.lean` executes one disposable 57-cell witness through all 880
 byte opcodes, records 15 successful comparisons, and checks the final modeled
 truth, 201-op count and 569-cell stack. It also confirms that the first-round

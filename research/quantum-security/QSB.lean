@@ -21,6 +21,9 @@ import QSB.CoreScriptNum
 import QSB.CoreNumericOps
 import QSB.CoreRoll
 import QSB.CoreOpcodeStep
+import QSB.CoreChecksigStep
+import QSB.CoreMultisigStep
+import QSB.CoreStructuralRun
 import QSB.CoreSerialize
 import QSB.Multisig
 import QSB.KeyRolls
@@ -777,6 +780,16 @@ import QSB.Reduction
 #print axioms QSB.CoreMultisigCleanup.cleanup_success
 #print axioms QSB.CoreMultisigCleanup.finalTenEval_cleanup
 #print axioms QSB.CoreMultisigCleanup.finalTenEval_count_and_cleanup
+#print axioms QSB.CoreMultisigCleanup.parseSourceCount_reverse
+#print axioms QSB.CoreMultisigCleanup.source_cells_from_byte_cells
+#print axioms QSB.CoreMultisigCleanup.successful_byte_multisig_source_cells
+#print axioms QSB.CoreMultisigStep.step_of_reached_cells
+#print axioms QSB.CoreMultisigStep.successful_source_step_refines_byte
+#print axioms QSB.CoreChecksigStep.step_of_reached_cells
+#print axioms QSB.CoreChecksigStep.successful_source_step_refines_byte
+#print axioms QSB.CoreStructuralRun.step_refines_byte
+#print axioms QSB.CoreStructuralRun.run_refines_byte
+#print axioms QSB.CoreStructuralRun.literal_lock_refines_byte
 #print axioms QSB.CoreSerialize.magnitudeBytes_eq_model
 #print axioms QSB.CoreSerialize.magnitudeBytes_nonempty_of_pos
 #print axioms QSB.CoreSerialize.coreSerialize_eq_model

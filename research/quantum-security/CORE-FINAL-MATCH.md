@@ -36,6 +36,17 @@ cleanup agrees with the byte model's top-first stack mutation for arbitrary
 key/signature counts and either scan result. Its final specialization uses
 the ten-pair evaluator's capacity and `NULLDUMMY` facts to pop 23 cells and
 push true. The actual Core pair-scan result remains external.
+`QSB/CoreMultisigStep.lean` now combines source-addressed ScriptNum reads,
+the key-count opcode charge, capacity checks, supplied scan result, and
+cleanup into a bottom-first transition; any successful transition projects
+to the byte-model `CHECKMULTISIG` step. `QSB/CoreChecksigStep.lean` proves the
+same source-to-byte stack projection for `CHECKSIGVERIFY`.
+`QSB/CoreStructuralRun.lean` composes those two signature-site transitions
+with all other source-shaped opcode steps, proving that any successful
+source-shaped execution of the literal 880-opcode lock from an arbitrary
+post-scriptSig stack projects to a successful byte-model run. The signature
+Booleans are still supplied, and compiled Core-to-source refinement remains
+open.
 
 `QSB/CoreMultisigEval.lean` models the final source loop's DER gate,
 nonempty signature requirement, key-skip behavior, shared ten-signature
@@ -183,7 +194,10 @@ one selected push. The 1,560-byte base lock has 13 outcomes. Two further
 `CHECKMULTISIG; DROP; TRUE` cases accept an empty first-scanned
 signature after a false result and reject a malformed nonempty one at the DER
 gate as predicted by the source. The adapter reports only acceptance, so the
-specific error code is inferred from the pinned source. The 15 outcomes do
+specific error code is inferred from the pinned source. Seven more cases
+accept nonminimal encodings of either or both ten-count cells and reject a
+nonempty NULLDUMMY, negative or 21-key count, and eleven signatures against
+ten keys. These 22 outcomes do
 not execute the full 9,923-byte QSB lock or prove
 Core/Lean equivalence.
 

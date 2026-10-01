@@ -4,6 +4,8 @@ This is an isolated bare CHECKMULTISIG lock, not a full QSB spend. It places
 the fixture's 151 possible signature pushes in a nonexecuted branch, so Core
 must delete the ten reached signatures from one shared legacy scriptCode.
 Both SINGLE and ALL checks use in-range, transaction-dependent sighashes.
+The final cases probe nonminimal count ScriptNums, count bounds, and
+NULLDUMMY on the same isolated lock.
 """
 
 import argparse
@@ -116,13 +118,19 @@ def main() -> None:
 
     def check(label: str, key_list: list[bytes],
               sig_list: list[bytes] | None = None,
-              lock_bytes: bytes | None = None) -> dict:
+              lock_bytes: bytes | None = None,
+              key_count_cell: bytes | None = None,
+              sig_count_cell: bytes | None = None,
+              dummy: bytes = b"") -> dict:
         sig_list = chosen if sig_list is None else sig_list
         lock_bytes = lock if lock_bytes is None else lock_bytes
-        script_sig = (b"\x00" + b"".join(bt.push_data(sig) for sig in sig_list) +
-                      bt.push_number(10) +
+        script_sig = (bt.push_data(dummy) +
+                      b"".join(bt.push_data(sig) for sig in sig_list) +
+                      (bt.push_number(10) if sig_count_cell is None else
+                       bt.push_data(sig_count_cell)) +
                       b"".join(bt.push_data(key) for key in key_list) +
-                      bt.push_number(10))
+                      (bt.push_number(10) if key_count_cell is None else
+                       bt.push_data(key_count_cell)))
         tx.inputs[1].script_sig = script_sig
         raw = tx.serialize()
         payload = f"{raw.hex()}\n2\n1000\n51\n100000\n{lock_bytes.hex()}\n"
@@ -171,6 +179,23 @@ def main() -> None:
               lock_drop_true),
     ))
     assert [case["accepted"] for case in cases[-2:]] == [True, False], cases
+
+    # Core parses both source-addressed count cells with minimal-number
+    # enforcement disabled, but enforces the count ranges and NULLDUMMY.
+    structural_cases = [
+        check("nonminimal_key_count_10", keys, key_count_cell=b"\x0a\x00"),
+        check("nonminimal_sig_count_10", keys, sig_count_cell=b"\x0a\x00"),
+        check("nonminimal_both_counts_10", keys,
+              key_count_cell=b"\x0a\x00", sig_count_cell=b"\x0a\x00"),
+        check("nonempty_dummy", keys, dummy=b"\x01"),
+        check("negative_key_count", keys, key_count_cell=b"\x81"),
+        check("too_many_keys_21", keys, key_count_cell=b"\x15"),
+        check("more_signatures_than_keys_11", keys,
+              sig_count_cell=b"\x0b"),
+    ]
+    assert [case["accepted"] for case in structural_cases] == [
+        True, True, True, False, False, False, False], structural_cases
+    cases.extend(structural_cases)
 
     report = {
         "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, plus two DROP; TRUE encoding-gate cases; not full QSB acceptance",
