@@ -50,6 +50,7 @@ import QSB.FinalSignedBoundary
 import QSB.FinalSignedAccepted
 import QSB.FinalSignedLoop
 import QSB.DynamicFinalInit
+import QSB.DynamicSignedSource
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -763,6 +764,17 @@ import QSB.Reduction
 #print axioms QSB.DynamicFinalInit.paired_erasure_preserves_alignment
 #print axioms QSB.DynamicFinalInit.initial_pool_shape
 #print axioms QSB.DynamicFinalInit.accepted_final_round_init
+#print axioms QSB.DynamicSignedSource.literal_region
+#print axioms QSB.DynamicSignedSource.prefix_length
+#print axioms QSB.DynamicSignedSource.prefix_wrong_width
+#print axioms QSB.DynamicSignedSource.prefix_twenty_is_nonce
+#print axioms QSB.DynamicSignedSource.shallow_hash_match_is_nonce
+#print axioms QSB.DynamicSignedSource.shallow_source_wrong_width
+#print axioms QSB.DynamicSignedSource.commitment_source
+#print axioms QSB.DynamicSignedSource.capped_source_is_prior
+#print axioms QSB.DynamicSignedSource.bounded_hash_match_is_commitment
+#print axioms QSB.DynamicSignedSource.bounded_hash_match_nonce_or_commitment
+#print axioms QSB.DynamicSignedSource.bounded_hash_match_has_original_position
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

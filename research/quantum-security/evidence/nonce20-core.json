@@ -1,0 +1,29 @@
+{
+  "scope": "isolated bare CHECKSIG, disposable transaction; no HASH160 preimage or QSB lock acceptance",
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+  "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+  "signature_hex": "3011020101020c01000000000000000000001101",
+  "signature_length": 20,
+  "recovered_pubkey_hex": "033d75ccc3cfa55a6e5fa595c77afb8294172818702df6c10823d8df58c891a151",
+  "sighash_all_scalar_hex": "46f54100a76b1069cf2489a4e3148b9c5d8af9cc97219d9a57d6a0dc5afb87ca",
+  "cases": [
+    {
+      "name": "recovered_key",
+      "accepted": true,
+      "raw_tx_sha256": "43ad1b19e34374cf3a137b50999c654725c11d3188c882b295ccf395d402fb2e"
+    },
+    {
+      "name": "wrong_key",
+      "accepted": false,
+      "raw_tx_sha256": "38daf45e18e4420a3f2f4175503707cc4395cd0af0412804f75e59ae5070f91b"
+    },
+    {
+      "name": "changed_all_output",
+      "accepted": false,
+      "raw_tx_sha256": "c376ec3c6e66e6ebccb9790809ca550ee9e8a6bab6781419d963226ac0dc489c"
+    }
+  ]
+}

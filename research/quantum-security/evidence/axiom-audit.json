@@ -1,5 +1,5 @@
 {
-  "theorem_count": 897,
+  "theorem_count": 908,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1195,6 +1195,53 @@
       "propext"
     ],
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.bounded_hash_match_has_original_position": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.bounded_hash_match_is_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.bounded_hash_match_nonce_or_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.capped_source_is_prior": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.commitment_source": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.literal_region": [
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.prefix_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.prefix_twenty_is_nonce": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.prefix_wrong_width": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.shallow_hash_match_is_nonce": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.shallow_source_wrong_width": [
+      "Quot.sound",
       "propext"
     ],
     "QSB.EncodedLayout.chunks_length": [],

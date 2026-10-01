@@ -790,6 +790,21 @@
 'QSB.DynamicFinalInit.paired_erasure_preserves_alignment' depends on axioms: [propext]
 'QSB.DynamicFinalInit.initial_pool_shape' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicFinalInit.accepted_final_round_init' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.literal_region' depends on axioms: [propext]
+'QSB.DynamicSignedSource.prefix_length' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.prefix_wrong_width' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.prefix_twenty_is_nonce' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.shallow_hash_match_is_nonce' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.shallow_source_wrong_width' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.commitment_source' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicSignedSource.capped_source_is_prior' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.bounded_hash_match_is_commitment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.bounded_hash_match_nonce_or_commitment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.bounded_hash_match_has_original_position' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]

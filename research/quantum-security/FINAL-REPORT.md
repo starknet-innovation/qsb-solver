@@ -327,6 +327,19 @@ signatures are identical across setups, and the suffix after instruction 749
 is byte-identical (`evidence/dynamic-final-data.json`). The full dynamic
 signed-loop invariant and universal builder-to-model correspondence are still
 unproved; this evidence does not establish Core acceptance or a spend bound.
+The local dynamic signed-source theorem now classifies any reached, bounded
+20-byte comparison under explicit aligned-pool and retained-width premises.
+Its source is a current commitment at a known original position, except that
+a 20-byte final nonce signature may itself be selected and match the HASH160
+output. The literal 55-byte nonce excludes that branch; an arbitrary setup
+cannot inherit this exclusion. In an isolated bare `CHECKSIG` experiment,
+pinned Core 27.2 accepted a 20-byte strict-DER `SIGHASH_ALL` signature with a
+message-specific recovered key and rejected both a wrong key and an altered
+ALL-signed output (`evidence/nonce20-core.json`). This confirms that Core
+signature validity alone does not remove the source exception. No matching
+HASH160 opening or QSB-lock spend was produced. A dynamic seven-block
+interpreter proof must carry this disjunction, and any security reduction must
+exclude or charge the nonce-hit event under the **joint** hash model.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required

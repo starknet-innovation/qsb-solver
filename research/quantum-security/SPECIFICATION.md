@@ -219,6 +219,15 @@ pools. The literal block is its exact specialization. A two-setup pinned-builder
 check corroborates push order and the unchanged post-data opcode suffix, but
 the seven signed selections and bonus-source trace have not yet been lifted
 through that parameterized suffix.
+At one reached signed comparison, the parameterized source classifier gives a
+current commitment with its original pool position whenever the nonce bytes
+are not 20 bytes. Without that width premise, a shallow selection can instead
+be the fixed nonce itself, provided it is 20 bytes and equals the HASH160 of
+the supplied opening. A pinned-Core isolated `CHECKSIG` probe demonstrates
+that a 20-byte strict-DER `SIGHASH_ALL` nonce can verify for a recovered key;
+it does not demonstrate a matching hash opening or a QSB spend. The dynamic
+seven-comparison induction must propagate the nonce-or-commitment branch,
+then the joint-oracle event must account for the nonce-hit case.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine
