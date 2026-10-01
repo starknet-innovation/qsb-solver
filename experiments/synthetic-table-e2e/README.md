@@ -1,0 +1,13 @@
+# Synthetic public-table end-to-end measurement
+
+This fixed arithmetic workload measures fresh process startup through a durable child JSON report and parent parsing/validation. It does not run a solver, transaction recovery, signature search or pinning/subset pipeline. Results must never be described as whole-solver throughput.
+
+Both arms use the identical frozen original GPU table kernel and scalar 1. Only host ladder generation differs. Each of 1, 4 or 16 tables passes 252 direct OpenSSL samples and a full-table digest check against earlier native evidence. Six sanitizer runs (both arms under memcheck, racecheck and synccheck) must succeed before 42 retained measurements: seven alternating pairs at each fixed work size. No arbitrary scalar or work size is accepted.
+
+`processSeconds` includes executable/loader startup, CUDA initialization, allocation, transfers, arithmetic, independent checks, full-table hashing, report write/flush/fsync/close and process exit. `pipelineSeconds` additionally includes parent writing of the per-sample log and reading/parsing/validating the child report. The runner's campaign journal fsync, result collection and cloud setup are outside both metrics. Each process has a fresh CUDA context; the physical GPU and driver may be warmed by preceding sanitizer/sample processes. This is not a cold-device measurement.
+
+The child reports context initialization, output allocation/cleanup, table construction phases and hashing. CUDA-event kernel time is nested inside kernel wall time and must not be added again. Report writing and process startup/exit are covered by the external timer, not separately instrumented. The parent uses bounded event-driven pipe reads with a timeout for both arms, avoiding the coarse polling interval of a timed process wait.
+
+Preparation retains the earlier verified extraction prefix byte-for-byte and replaces only its isolated harness. Existing source notices and OpenSSL deprecated API limitations remain. Manifest hashes, native CI binary identity and pinned runtime compatibility must be independently verified before cloud execution. `stage.py` binds committed host, readiness and runner bytes plus the exact CI ZIP/binary. `verify.py` rechecks collected reports, logs, sanitizers, ordering, identities and timing arithmetic. Failed/incomplete samples are never substituted or credited.
+
+Runtime is bounded by a 570-second runner deadline, 90 seconds per child, 600-second container timeout, 720-second outer timeout and the unchanged maximum60-minute host lifetime. Runtime containers have no network, read-only root, dropped capabilities and only public gate/results mounts. No performance claim exists until native execution and independently verified cleanup complete.

@@ -1,0 +1,39 @@
+name: Synthetic public table end-to-end compile
+on:
+  push:
+    paths:
+      - experiments/synthetic-table-e2e/**
+      - experiments/host-ladder-batch/**
+      - tests/test_synthetic_table*.py
+      - .github/workflows/synthetic-table-e2e.yml
+  pull_request:
+    paths:
+      - experiments/synthetic-table-e2e/**
+      - experiments/host-ladder-batch/**
+      - tests/test_synthetic_table*.py
+      - .github/workflows/synthetic-table-e2e.yml
+permissions:
+  contents: read
+jobs:
+  native-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test isolated preparation and bounded staging
+        run: python3 -m unittest discover -s tests -p 'test_synthetic_table*.py'
+      - name: Compile public table artifact without GPU or solver execution
+        run: |
+          set -euo pipefail
+          docker build -f experiments/synthetic-table-e2e/Dockerfile -t qsb-synthetic-table .
+          id=$(docker create qsb-synthetic-table)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: synthetic-table-native
+          path: results/
+          retention-days: 14
