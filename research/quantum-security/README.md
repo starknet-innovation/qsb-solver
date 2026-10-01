@@ -250,8 +250,8 @@ its 15 `OP_EQUALVERIFY` instructions immediately follows `OP_HASH160`.
 `QSB/EncodedLayout.lean` retains each instruction's original serialized bytes.
 `QSB/EncodedScript.lean` parses those 9,923 bytes into 880 chunks, decodes
 them back to `ByteLayout.program`, and checks the 151 final signature-push
-patterns. This proves internal fixture alignment, not equivalence with Core's
-`GetOp` or `FindAndDelete`.
+patterns. Separate source-shaped Lean `GetOp` and `FindAndDelete` loops now
+agree with the parsed fixture; compiled Core equivalence is still open.
 `QSB/FindAndDelete.lean` proves the sequential deletion result for the
 source-shaped Lean byte loop and every selected final-signature list. It does
 the same for the fixed pinning signature's one serialized push. It does not
@@ -269,6 +269,12 @@ bytes from any successful arbitrary-stack byte-model run. With explicit
 verification premises it proves strict DER for SHA256 of the reached pin key.
 `QSB/SourceWitness.lean` combines that result with the final-round extraction
 in the same run; the Core verifier bridge and quantum bound remain open.
+`QSB/CoreChecksigEval.lean` models the BASE `CHECKSIGVERIFY` success path under
+the pinned `VERIFY_ALL` flags. Its conditional theorems expose the fixed
+pinning signature's `SIGHASH_ALL` checker call and the two reached
+SHA256-derived puzzles' actual trailing sighash bytes. Both puzzles use the
+unmodified literal lock as source-shaped scriptCode. The external checker
+and Core refinement premises remain explicit.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
@@ -392,16 +398,15 @@ are recorded with the experiment.
 
 ## Immediate remaining work
 
-1. Mechanize the actual selection-loop invariant for arbitrary witness stacks,
-   including bonus selections, DER-shaped commitments and the final `NULLDUMMY`
-   condition. The Lean without-replacement lemma covers the abstract pool
-   traversal only.
-2. Extend the generated opcode trace from one canonical witness to arbitrary
-   Bitcoin witnesses and actual ScriptNum/encoding semantics, while keeping
-   cryptographic checks explicit.
-3. Connect the final enforced round and pinning checks to a precise fresh-message
-   puzzle-search problem, including all accepted key encodings and FindAndDelete.
-4. Prove or find a counterexample to the quantum bound for that problem. Standard
-   HORS and ordinary unstructured-search bounds do not establish it by themselves.
+1. Refine the source-shaped opcode, signature-check, scriptSig, and
+   transaction-sighash models to every consensus-accepted arbitrary witness
+   on the pinned output. Handle DER-shaped setup/commitment exceptions in the
+   resulting extractor.
+2. Derive a precise fresh-message event from the reached pinning and final
+   ECDSA checks, including accepted key encodings, sighash collisions, and
+   the signature's actual hash-type byte.
+3. Prove or find a counterexample to a joint quantum query bound for
+   SHA-256/SHA256d/HASH160 after adaptive disclosures and multiple vaults.
+   Standard HORS and ordinary unstructured-search bounds do not establish it.
 
 These obligations are unresolved. The goal remains active.

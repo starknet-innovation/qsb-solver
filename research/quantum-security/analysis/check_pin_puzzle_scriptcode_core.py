@@ -40,22 +40,19 @@ def main() -> None:
 
     r = bt._valid_small_r_values()[0]
     s = (1 << 184) + 17  # exactly 24 DER integer bytes
-    sig = ec.encode_der_sig(r, s, sighash=1)
-    assert len(sig) == 32 and ec.is_valid_der_sig(sig)
-    assert bt.push_data(sig) == b"\x20" + sig
-
     tx = bt.Transaction(version=1, locktime=0)
     tx.add_input(bt.TxIn(b"\x11" * 32, 0, bytes([bt.OP_1])))
     tx.add_input(bt.TxIn(b"\x22" * 32, 0, b""))
     tx.add_output(bt.TxOut(90000, bytes([bt.OP_1])))
+    tx.add_output(bt.TxOut(1000, bytes([bt.OP_1])))
 
-    def recovered_key(script_code: bytes) -> bytes:
-        z = tx.sighash(1, script_code, 1)
+    def recovered_key(script_code: bytes, hash_type: int) -> bytes:
+        z = tx.sighash(1, script_code, hash_type)
         point = ec.ecdsa_recover(r, s, z, 0)
         assert point and ec.ecdsa_verify(point, z, r, s)
         return ec.compress_pubkey(point)
 
-    def accepts(lock: bytes, key: bytes) -> tuple[bool, str]:
+    def accepts(lock: bytes, sig: bytes, key: bytes) -> tuple[bool, str]:
         tx.inputs[1].script_sig = bt.push_data(sig) + bt.push_data(key)
         raw = tx.serialize()
         payload = f"{raw.hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
@@ -72,30 +69,35 @@ def main() -> None:
                     run.stdout.strip() == "core-27.2-api2-all-inputs-valid")
         return accepted, sha256(raw)
 
-    no_push = bytes([bt.OP_CHECKSIG])
-    with_push = bt.push_data(sig) + bytes([0x75, bt.OP_CHECKSIG])
-    cases = [
-        ("no_push32", no_push, no_push, b""),
-        ("one_push32", with_push, bytes([0x75, bt.OP_CHECKSIG]), with_push),
-    ]
     results = []
-    for name, lock, expected_code, wrong_code in cases:
-        tx.inputs[1].script_sig = b""
-        assert bt.find_and_delete(lock, sig) == expected_code
-        correct_key = recovered_key(expected_code)
-        wrong_key = recovered_key(wrong_code)
-        assert correct_key != wrong_key
-        positive, positive_tx = accepts(lock, correct_key)
-        negative, negative_tx = accepts(lock, wrong_key)
-        assert positive and not negative, name
-        results.append({
-            "name": name, "lock_hex": lock.hex(),
-            "expected_script_code_hex": expected_code.hex(),
-            "wrong_script_code_hex": wrong_code.hex(),
-            "positive_accepted": positive, "negative_accepted": negative,
-            "positive_tx_sha256": positive_tx,
-            "negative_tx_sha256": negative_tx,
-        })
+    for hash_type in (0x01, 0x03, 0xFF):
+        sig = ec.encode_der_sig(r, s, sighash=hash_type)
+        assert len(sig) == 32 and ec.is_valid_der_sig(sig)
+        assert bt.push_data(sig) == b"\x20" + sig
+        no_push = bytes([bt.OP_CHECKSIG])
+        with_push = bt.push_data(sig) + bytes([0x75, bt.OP_CHECKSIG])
+        cases = [
+            ("no_push32", no_push, no_push, b""),
+            ("one_push32", with_push, bytes([0x75, bt.OP_CHECKSIG]), with_push),
+        ]
+        for name, lock, expected_code, wrong_code in cases:
+            tx.inputs[1].script_sig = b""
+            assert bt.find_and_delete(lock, sig) == expected_code
+            correct_key = recovered_key(expected_code, hash_type)
+            wrong_key = recovered_key(wrong_code, hash_type)
+            assert correct_key != wrong_key
+            positive, positive_tx = accepts(lock, sig, correct_key)
+            negative, negative_tx = accepts(lock, sig, wrong_key)
+            assert positive and not negative, (name, hash_type)
+            results.append({
+                "name": name, "hash_type_hex": f"{hash_type:02x}",
+                "signature_hex": sig.hex(), "lock_hex": lock.hex(),
+                "expected_script_code_hex": expected_code.hex(),
+                "wrong_script_code_hex": wrong_code.hex(),
+                "positive_accepted": positive, "negative_accepted": negative,
+                "positive_tx_sha256": positive_tx,
+                "negative_tx_sha256": negative_tx,
+            })
 
     report = {
         "scope": "isolated 32-byte legacy signature deletion; not QSB acceptance",
@@ -106,11 +108,11 @@ def main() -> None:
             text=True).strip(),
         "image": args.image,
         "native_files_sha256": prior["native_files_sha256"],
-        "signature_hex": sig.hex(),
+        "hash_types_hex": ["01", "03", "ff"],
         "cases": results,
     }
     args.output.write_text(json.dumps(report, indent=2) + "\n")
-    print(json.dumps({"signature_bytes": len(sig),
+    print(json.dumps({"signature_bytes": 32,
                       "positive_accepted": len(results),
                       "negative_rejected": len(results)}))
 

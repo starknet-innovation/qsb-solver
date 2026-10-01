@@ -8,27 +8,83 @@
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
   },
-  "signature_hex": "301d020101021801000000000000000000000000000000000000000000001101",
+  "hash_types_hex": [
+    "01",
+    "03",
+    "ff"
+  ],
   "cases": [
     {
       "name": "no_push32",
+      "hash_type_hex": "01",
+      "signature_hex": "301d020101021801000000000000000000000000000000000000000000001101",
       "lock_hex": "ac",
       "expected_script_code_hex": "ac",
       "wrong_script_code_hex": "",
       "positive_accepted": true,
       "negative_accepted": false,
-      "positive_tx_sha256": "1d179bb531ab2e1ca9020f404dabc70f9f7ca57ecd3b19c3c8bc5d2124efd3d4",
-      "negative_tx_sha256": "ce9cc5e7dd610d0e8fa8469f9431bca1d0003836047dac1b0a7b1d715ccc8eee"
+      "positive_tx_sha256": "48a0aade33f736e14f3aa4f136256f23c32be1eb7b171458adc1c8f0d1dd62d8",
+      "negative_tx_sha256": "766f005e03b462c3a80357e5f859d84b2b71a9a926e9e2f09b053478661a1ff4"
     },
     {
       "name": "one_push32",
+      "hash_type_hex": "01",
+      "signature_hex": "301d020101021801000000000000000000000000000000000000000000001101",
       "lock_hex": "20301d02010102180100000000000000000000000000000000000000000000110175ac",
       "expected_script_code_hex": "75ac",
       "wrong_script_code_hex": "20301d02010102180100000000000000000000000000000000000000000000110175ac",
       "positive_accepted": true,
       "negative_accepted": false,
-      "positive_tx_sha256": "5959c142a9421ad978832c3d90914ffd903158d615060516a6c3dcbcdd332196",
-      "negative_tx_sha256": "8b4183adde45224be69f983495681a93178283f263285a54dcfdc2d2c40902ea"
+      "positive_tx_sha256": "81352db2cafb5912a3581d49b18f35487eab00cb420346425f992812dddffee9",
+      "negative_tx_sha256": "64bda831873d9150655d21a6ccaf7118f71c24d90ddbe36ab90bcd5317351d49"
+    },
+    {
+      "name": "no_push32",
+      "hash_type_hex": "03",
+      "signature_hex": "301d020101021801000000000000000000000000000000000000000000001103",
+      "lock_hex": "ac",
+      "expected_script_code_hex": "ac",
+      "wrong_script_code_hex": "",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "e57967bcaf2600ccd97c27da40084b88aab68e4662ec23229548ea96cf4a0f68",
+      "negative_tx_sha256": "dba8bd1ec78865990ed57f6a87769150ca20a31fe03f46716d3cd25e4fbdbaf6"
+    },
+    {
+      "name": "one_push32",
+      "hash_type_hex": "03",
+      "signature_hex": "301d020101021801000000000000000000000000000000000000000000001103",
+      "lock_hex": "20301d02010102180100000000000000000000000000000000000000000000110375ac",
+      "expected_script_code_hex": "75ac",
+      "wrong_script_code_hex": "20301d02010102180100000000000000000000000000000000000000000000110375ac",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "398546c7796644f87e531f8816da41eec250eacb8d515a5d3b0bbaff44e5c550",
+      "negative_tx_sha256": "4cd46d83f2005818856771362f16880d5934ff50e976f0ea3f9d005ee632607d"
+    },
+    {
+      "name": "no_push32",
+      "hash_type_hex": "ff",
+      "signature_hex": "301d0201010218010000000000000000000000000000000000000000000011ff",
+      "lock_hex": "ac",
+      "expected_script_code_hex": "ac",
+      "wrong_script_code_hex": "",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "1e187df3fecc6720104e93a229c7fad71bc222f0b0a9d016534f1014dd644d32",
+      "negative_tx_sha256": "91ecbc46d53bd03bb7ef4d593d591849179e0f10f32fa0ad7336b01b6c1242f4"
+    },
+    {
+      "name": "one_push32",
+      "hash_type_hex": "ff",
+      "signature_hex": "301d0201010218010000000000000000000000000000000000000000000011ff",
+      "lock_hex": "20301d0201010218010000000000000000000000000000000000000000000011ff75ac",
+      "expected_script_code_hex": "75ac",
+      "wrong_script_code_hex": "20301d0201010218010000000000000000000000000000000000000000000011ff75ac",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "354fb31512ed6154970eea43a714b02c62973eba0d5f3990b60e1ef252ac62c2",
+      "negative_tx_sha256": "1f7cef1feacfaa0f8bdf7f8f1c8e892f12914fafc2c2f4b8de3614ac75a1a1b4"
     }
   ]
 }

@@ -329,16 +329,22 @@ recovered for a deliberately wrong scriptCode. They cover separated and
 adjacent repeated canonical
 signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1/2/4`, and the
 literal 56-byte pinning signature in an isolated lock.
-An additional two-case pinned-Core differential uses a valid 32-byte DER
-signature: a lock without a push-32 opcode accepts the key recovered for its
-unchanged scriptCode, while an exact-push control accepts the key recovered
-after deletion; both wrong-code controls fail. For the exact QSB fixture,
+An additional six-pair pinned-Core differential uses valid 32-byte DER
+signatures with trailing sighash bytes `0x01`, `0x03`, and `0xff`: a lock
+without a push-32 opcode accepts the key recovered for its unchanged
+scriptCode, while an exact-push control accepts the key recovered after
+deletion; every wrong-code control fails. For the exact QSB fixture,
 Lean proves no opcode chunk starts with push-32, so the source-shaped legacy
 FindAndDelete loop leaves the whole lock unchanged for SHA256 of **either**
 reached hash-puzzle key in the same arbitrary-stack byte-model run. The final
 key is also traced to its later CHECKMULTISIG slot. This removes a
-witness-dependent scriptCode choice from both hash puzzles, but actual
-Core-to-Lean and sighash/ECDSA refinement remain open.
+witness-dependent scriptCode choice from both hash puzzles. A new
+source-shaped BASE `CHECKSIGVERIFY` theorem exposes the actual hash-type byte,
+DER gate, key-validity result, and external ECDSA/sighash checker call for
+both reached puzzle sites and the fixed pinning check. In particular, the
+hash-derived signatures are **not** assumed to end in `SIGHASH_ALL`.
+The successful-checker premises, actual Core-to-Lean equivalence, and
+transaction sighash/ECDSA refinement remain open.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.

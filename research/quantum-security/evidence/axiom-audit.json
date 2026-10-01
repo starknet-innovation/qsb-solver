@@ -1,5 +1,5 @@
 {
-  "theorem_count": 761,
+  "theorem_count": 765,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -367,6 +367,24 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CoreChecksigEval.accepted_late_source_check": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreChecksigEval.accepted_pinning_source_checks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreChecksigEval.successful_base_check": [
+      "propext"
+    ],
+    "QSB.CoreChecksigEval.successful_hash_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreDEREncoding.accepted_indices_in_bounds": [
       "Quot.sound",
       "propext"
