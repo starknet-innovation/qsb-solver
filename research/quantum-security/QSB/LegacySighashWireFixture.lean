@@ -67,4 +67,27 @@ theorem single_bug :
 theorem single_bug_raw_digest :
     singleBugDigest.map UInt8.toNat = 1 :: List.replicate 31 0 := by decide
 
+/-- A source-wire counterexample to whole-output binding by an in-range
+SIGHASH_SINGLE signature. Input 1's selected output is unchanged, while output
+0 changes by one satoshi. The matched preimage says nothing about ECDSA
+validity or acceptance of the complete QSB lock. -/
+def changedFirstOutput : SighashAllWire.TxFields :=
+  { rawFixture with outputs :=
+      { value := 90001, script := [0, 20] ++
+          List.replicate 20 (102 : UInt8) } :: rawFixture.outputs.drop 1 }
+
+theorem changed_first_output_same_single_preimage :
+    changedFirstOutput.outputs ≠ rawFixture.outputs ∧
+    sourcePreimage changedFirstOutput 1 [124, 172] 3 =
+      sourcePreimage rawFixture 1 [124, 172] 3 := by
+  constructor
+  · decide
+  · exact single_same_selected_output_preimage rawFixture 1 [124, 172]
+      3 changedFirstOutput.outputs (by decide) (by decide) (by decide)
+      (by decide) (by decide)
+
+theorem changed_first_output_changes_all_preimage :
+    sourcePreimage changedFirstOutput 1 [124, 172] 1 ≠
+      sourcePreimage rawFixture 1 [124, 172] 1 := by decide
+
 end QSB.LegacySighashWireFixture

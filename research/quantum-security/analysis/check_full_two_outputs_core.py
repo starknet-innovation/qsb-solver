@@ -171,6 +171,12 @@ def main() -> None:
     check("two_outputs_recovered_keys", two_outputs, True)
     two_outputs.outputs[1] = bt.TxOut(1001, b"\x51")
     check("two_outputs_changed_second_value", two_outputs, False)
+    two_outputs.outputs[1] = bt.TxOut(1000, b"\x51")
+    two_outputs.outputs[0] = bt.TxOut(90001, b"\x00\x14" + b"\x33" * 20)
+    # The SINGLE dummy checks keep the original two-output recovery keys.
+    # The fixed ALL pin and nonce checks get keys for this changed transaction.
+    two_outputs.inputs[1].script_sig = witness(two_outputs, transaction(True))
+    check("two_outputs_changed_first_value_same_dummy_keys", two_outputs, True)
 
     report = {
         "scope": "Two-input disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Input 1 uses in-range SIGHASH_SINGLE when two outputs exist. Not a full QSB spend or universal Core refinement.",

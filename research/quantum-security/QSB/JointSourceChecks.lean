@@ -59,6 +59,28 @@ theorem legacyDigest_single_bug (functions : Functions)
     LegacySighashWire.single_out_of_range tx selected scriptCode
       hashType inputValid single outputMissing]
 
+/-- In-range SINGLE retains the same joint SHA256d digest when only
+unselected outputs change. A changed output list therefore need not create
+a fresh-message target for a SINGLE signature. -/
+theorem legacyDigest_single_same_selected_output (functions : Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes) (hashType : Nat)
+    (replacement : List Game.Output)
+    (inputValid : selected < tx.inputs.length)
+    (oldInRange : selected < tx.outputs.length)
+    (newInRange : selected < replacement.length)
+    (single : LegacySighashWire.baseType hashType = 3)
+    (sameOutput : replacement[selected]? = tx.outputs[selected]?) :
+    legacyDigest functions {tx with outputs := replacement} selected
+      scriptCode hashType =
+    legacyDigest functions tx selected scriptCode hashType := by
+  unfold legacyDigest
+  simp only [show ¬selected ≥ tx.inputs.length from Nat.not_le.mpr inputValid,
+    ↓reduceIte]
+  rw [LegacySighashWire.single_same_selected_output_preimage tx selected
+    scriptCode hashType replacement inputValid oldInRange newInRange
+    single sameOutput]
+
 /-- The ECDSA predicate is supplied externally. CoreChecksigEval separately
 checks key validity and DER encoding before calling this function. -/
 def checker (functions : Functions) (tx : SighashAllWire.TxFields)

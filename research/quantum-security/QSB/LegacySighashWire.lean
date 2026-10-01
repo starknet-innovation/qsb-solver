@@ -104,6 +104,28 @@ theorem single_out_of_range (tx : TxFields) (selected : Nat)
   simp [sourcePreimage, Nat.not_le.mpr inputValid,
     single, outputMissing]
 
+/-- An in-range SINGLE preimage sees only the output at the signed input's
+index. Changing earlier or later outputs, or appending outputs, leaves the
+preimage unchanged as long as that indexed output remains present and equal.
+The transaction's inputs, version, locktime, and selected `scriptCode` are
+fixed here. In particular, this does not give the ALL output-binding property
+needed for an authorization reduction. -/
+theorem single_same_selected_output_preimage (tx : TxFields)
+    (selected : Nat) (scriptCode : Bytes) (hashType : Nat)
+    (replacement : List Game.Output)
+    (inputValid : selected < tx.inputs.length)
+    (oldInRange : selected < tx.outputs.length)
+    (newInRange : selected < replacement.length)
+    (single : baseType hashType = 3)
+    (sameOutput : replacement[selected]? = tx.outputs[selected]?) :
+    sourcePreimage {tx with outputs := replacement} selected scriptCode
+      hashType = sourcePreimage tx selected scriptCode hashType := by
+  have inputCheck : ¬ selected ≥ tx.inputs.length := Nat.not_le.mpr inputValid
+  have oldCheck : ¬ selected ≥ tx.outputs.length := Nat.not_le.mpr oldInRange
+  have newCheck : ¬ selected ≥ replacement.length := Nat.not_le.mpr newInRange
+  simp [sourcePreimage, inputCheck, oldCheck, newCheck, single,
+    encodeOutputs, sameOutput, signedInputs]
+
 theorem all_preimage (tx : TxFields) (selected : Nat)
     (scriptCode : Bytes) (inputValid : selected < tx.inputs.length) :
     sourcePreimage tx selected scriptCode 1 =

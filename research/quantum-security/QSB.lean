@@ -217,6 +217,7 @@ import QSB.Reduction
 #print axioms QSB.SighashAllWireFixture.raw_fixture_preimage
 #print axioms QSB.LegacySighashWire.preparedInputsAt_all
 #print axioms QSB.LegacySighashWire.single_out_of_range
+#print axioms QSB.LegacySighashWire.single_same_selected_output_preimage
 #print axioms QSB.LegacySighashWire.all_preimage
 #print axioms QSB.LegacySighashWireFixture.all_branch
 #print axioms QSB.LegacySighashWireFixture.none_branch
@@ -225,8 +226,11 @@ import QSB.Reduction
 #print axioms QSB.LegacySighashWireFixture.unknown_all_anyone
 #print axioms QSB.LegacySighashWireFixture.single_bug
 #print axioms QSB.LegacySighashWireFixture.single_bug_raw_digest
+#print axioms QSB.LegacySighashWireFixture.changed_first_output_same_single_preimage
+#print axioms QSB.LegacySighashWireFixture.changed_first_output_changes_all_preimage
 #print axioms QSB.JointSourceChecks.legacyDigest_all
 #print axioms QSB.JointSourceChecks.legacyDigest_single_bug
+#print axioms QSB.JointSourceChecks.legacyDigest_single_same_selected_output
 #print axioms QSB.JointSourceChecks.checker_all
 #print axioms QSB.JointSourceChecks.checker_single_bug
 #print axioms QSB.JointSourceChecks.successful_hash_puzzle_joint

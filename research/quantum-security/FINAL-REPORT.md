@@ -797,7 +797,11 @@ out-of-range recovery key fails on that same transaction. A further disposable
 test runs the complete two-round stack path with the three puzzle checks
 relaxed to `OP_2DROP`: one output accepts with the SINGLE-bug recovery keys;
 two outputs reject those old dummy keys and accept keys recovered for the
-in-range message; changing the second output's value then rejects. All 15
+in-range message; changing the selected second output's value then rejects.
+Changing only the unselected first output and rederiving the fixed ALL keys
+accepts while reusing the in-range SINGLE dummy keys. Lean proves the
+corresponding source-shaped preimage and joint-digest invariance for any
+unselected output changes that retain the selected output. All 15
 HORS comparisons, pinning, and both CHECKMULTISIGs remain active. This is a
 two-input component experiment, not acceptance of the unmodified QSB lock,
 arbitrary transaction layouts, or an unauthorized spend.

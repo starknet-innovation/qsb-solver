@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1020,
+  "theorem_count": 1024,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3195,6 +3195,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointSourceChecks.legacyDigest_single_same_selected_output": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointSourceChecks.necessary_checks_fixed_all_joint": [
       "Classical.choice",
       "Quot.sound",
@@ -3321,7 +3326,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.LegacySighashWire.single_same_selected_output_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LegacySighashWireFixture.all_branch": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.changed_first_output_changes_all_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LegacySighashWireFixture.changed_first_output_same_single_preimage": [
       "Classical.choice",
       "Quot.sound",
       "propext"

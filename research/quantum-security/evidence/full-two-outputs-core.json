@@ -29,6 +29,13 @@
       "name": "two_outputs_changed_second_value",
       "output_count": 2,
       "transaction_sha256": "611ed7f3f00337526b186b36b2f8ae0a47182b40ae31ef6f2a8579754ea19904"
+    },
+    {
+      "accepted": true,
+      "expected": true,
+      "name": "two_outputs_changed_first_value_same_dummy_keys",
+      "output_count": 2,
+      "transaction_sha256": "c34aa0fcf52d02bba9cd88de978ab3c4bccdb3a558a2f3030c7e432e186b364e"
     }
   ],
   "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
