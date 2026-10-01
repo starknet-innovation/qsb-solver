@@ -814,6 +814,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.FinalBonusSecond.first_remaining_commitment_unopened' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.first_remaining_commitment_unopened_of_map' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -821,6 +824,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.FinalBonusSecond.matched_final_signature_has_syntax' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusSecond.matched_bonus_overshoot_has_unopened_syntax' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -835,6 +841,8 @@
 'QSB.DERSyntax.verifyAllEncoding_empty' depends on axioms: [propext]
 'QSB.DERSyntax.verifyAllEncoding_nonempty' depends on axioms: [propext]
 'QSB.FinalBonusDER.generated_final_commitments_not_der' depends on axioms: [propext]
+'QSB.FinalBonusDER.aligned_bonus_dummies_or_unopened_der' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalBonusDER.aligned_bonus_overshoot_uniform_setup_hit' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusDER.bonus_dummies_or_unopened_der' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusIndices.two_bonus_ids_extend_seven' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1007,6 +1015,8 @@
 'QSB.DERHeaderBound.target_density_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DERHeaderBound.target_density_tight_scaled' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DERHeaderBound.bounded_target_setup_union_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DERHeaderBound.final_bonus_uniform_setup_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DERHeaderBound.covered_final_bonus_setup_event_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.extracted_pin_final_fresh_or_two_puzzles' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.final_round_shape_total' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.abstract_run_final_shape' depends on axioms: [propext, Classical.choice, Quot.sound]

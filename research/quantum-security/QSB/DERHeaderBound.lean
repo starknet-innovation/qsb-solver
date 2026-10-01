@@ -263,4 +263,59 @@ theorem bounded_target_setup_union_count {I Ξ X Y : Type*}
       RandomOracleSetup.shared_function_union_hit_count source target
     _ ≤ _ := by gcongr
 
+/-- The 150 second-round setup inputs may collide and may depend on shared
+independent setup material (including an inner SHA-256 function). Sampling one
+whole twenty-byte-output function uniformly still gives this conservative
+count for the event that any output passes the modeled DER predicate. This is
+a setup count only: it assumes the input-selection material is independent of
+the sampled function and says nothing about adaptive quantum queries. -/
+theorem final_bonus_uniform_setup_count {Ξ X : Type*}
+    [Fintype Ξ] [DecidableEq Ξ] [Fintype X] [DecidableEq X]
+    (source : Fin 150 → Ξ → X) :
+    ((Finset.univ.filter fun p :
+      Ξ × (X → (Fin 20 → UInt8)) =>
+        ∃ i : Fin 150,
+          DERSyntax.valid (List.ofFn (p.2 (source i p.1))) = true).card) *
+        Fintype.card (Fin 20 → UInt8) ≤
+      150 * (Fintype.card (Ξ × (X → (Fin 20 → UInt8))) *
+        (12 * 256 ^ 14)) := by
+  classical
+  have h := bounded_target_setup_union_count source Target
+    (12 * 256 ^ 14) target_card_tight_le
+  simpa [Target] using h
+
+/-- Any event covered by the dynamic DER-commitment exception inherits the
+same setup count. The cover premise is where a future Core/dynamic-lock
+refinement must place every applicable bonus overshoot. Adversarial behavior
+may depend on the sampled function; only input-selection material `Ξ` must
+be independent of that function in the uniform product space. -/
+theorem covered_final_bonus_setup_event_count {Ξ X : Type*}
+    [Fintype Ξ] [DecidableEq Ξ] [Fintype X] [DecidableEq X]
+    (source : Fin 150 → Ξ → X)
+    (bad : Ξ × (X → (Fin 20 → UInt8)) → Prop)
+    [DecidablePred bad]
+    (cover : ∀ p, bad p → ∃ i : Fin 150,
+      DERSyntax.valid (List.ofFn (p.2 (source i p.1))) = true) :
+    ((Finset.univ.filter bad).card) *
+        Fintype.card (Fin 20 → UInt8) ≤
+      150 * (Fintype.card (Ξ × (X → (Fin 20 → UInt8))) *
+        (12 * 256 ^ 14)) := by
+  classical
+  have subset : (Finset.univ.filter bad) ⊆
+      (Finset.univ.filter fun p : Ξ × (X → (Fin 20 → UInt8)) =>
+        ∃ i : Fin 150,
+          DERSyntax.valid (List.ofFn (p.2 (source i p.1))) = true) := by
+    intro p hp
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, cover p (Finset.mem_filter.mp hp).2⟩
+  have cardBound := Finset.card_le_card subset
+  have countBound : ((Finset.univ.filter bad).card) *
+      Fintype.card (Fin 20 → UInt8) ≤
+      ((Finset.univ.filter fun p : Ξ × (X → (Fin 20 → UInt8)) =>
+        ∃ i : Fin 150,
+          DERSyntax.valid (List.ofFn (p.2 (source i p.1))) = true).card) *
+        Fintype.card (Fin 20 → UInt8) :=
+    Nat.mul_le_mul_right _ cardBound
+  exact countBound.trans (final_bonus_uniform_setup_count source)
+
 end QSB.DERHeaderBound

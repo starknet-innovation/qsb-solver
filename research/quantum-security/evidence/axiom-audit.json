@@ -1,5 +1,5 @@
 {
-  "theorem_count": 882,
+  "theorem_count": 888,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1034,12 +1034,22 @@
     "QSB.DERHeaderBound.byte_ofFn": [
       "propext"
     ],
+    "QSB.DERHeaderBound.covered_final_bonus_setup_event_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DERHeaderBound.encodeTight_injective": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.DERHeaderBound.encode_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERHeaderBound.final_bonus_uniform_setup_count": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -1298,6 +1308,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusDER.aligned_bonus_dummies_or_unopened_der": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalBonusDER.aligned_bonus_overshoot_uniform_setup_hit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusDER.bonus_dummies_or_unopened_der": [
       "Classical.choice",
       "Quot.sound",
@@ -1390,11 +1410,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalBonusSecond.first_remaining_commitment_unopened_of_map": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.generated_after_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_bonus_op_segments": [],
     "QSB.FinalBonusSecond.generated_precheck_prefix": [],
     "QSB.FinalBonusSecond.generated_through_both_bonuses": [],
     "QSB.FinalBonusSecond.generated_to_bonus_prefix": [],
+    "QSB.FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalBonusSecond.matched_bonus_overshoot_has_unopened_syntax": [
       "Classical.choice",
       "Quot.sound",

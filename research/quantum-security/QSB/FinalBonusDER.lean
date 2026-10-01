@@ -1,17 +1,105 @@
 import QSB.FinalBonusSecond
 import QSB.DERSyntax
+import QSB.DERHeaderBound
 
 /-!
-Specialize the abstract final-bonus syntax boundary to strict DER syntax for
-the literal, disposable Config A lock encoded in `ByteLayout.program`. This
-does not quantify over all honestly generated locks or establish Core binary
-equivalence to the source-shaped predicate.
+Specialize the abstract final-bonus syntax boundary to strict DER syntax.
+Generic aligned-pool theorems allow arbitrary commitment bytes under explicit
+reached-stack premises; literal-lock theorems then use the disposable Config A
+bytes encoded in `ByteLayout.program`. Neither proves that every honestly
+generated lock supplies those premises or establishes Core binary equivalence.
 -/
 namespace QSB.FinalBonusDER
 open ByteMachine
 
 set_option maxRecDepth 20000
 set_option maxHeartbeats 10000000
+
+/-- At any reached final-scan boundary with an aligned 150-position residual
+pool, arbitrary dynamic commitment bytes satisfy this exact alternative. The
+structural alignment and signature-slot equations remain premises; this does
+not assert that a generated dynamic lock or compiled Core supplies them. -/
+theorem aligned_bonus_dummies_or_unopened_der
+    (commitmentAt : Fin 150 → Bytes)
+    (trace : List (Fin 150 × Bytes))
+    (remainingIds : List (Fin 150)) (commitments stack : List Bytes)
+    (firstIndex lastIndex : Nat)
+    (aligned : commitments = remainingIds.map commitmentAt)
+    (permutation : List.Perm (trace.map Prod.fst ++ remainingIds)
+      (List.finRange 150))
+    (nonempty : 0 < commitments.length)
+    (firstLower : 9 ≤ firstIndex) (firstUpper : firstIndex ≤ 152)
+    (lastLower : 10 ≤ lastIndex) (lastUpper : lastIndex ≤ 152)
+    (firstCap : firstIndex = 152 → stack[13]? = commitments[0]?)
+    (lastCap : firstIndex < 152 ∧ lastIndex = 152 →
+      stack[12]? = commitments[0]?)
+    (enough : 22 ≤ stack.length)
+    (verify : Bytes → Bytes → Bool)
+    (verifySound : ∀ sig key, verify sig key = true →
+      DERSyntax.valid sig = true)
+    (matched : Multisig.matchSigs verify
+      ((stack.drop 12).take 10) ((stack.drop 1).take 10) = true) :
+    (9 ≤ firstIndex ∧ firstIndex < 152 ∧
+      10 ≤ lastIndex ∧ lastIndex < 152) ∨
+    (∃ candidate : Fin 150,
+      candidate ∉ trace.map Prod.fst ∧
+      DERSyntax.valid (commitmentAt candidate) = true) := by
+  by_cases firstShallow : firstIndex < 152
+  · by_cases lastShallow : lastIndex < 152
+    · exact Or.inl ⟨firstLower, firstShallow,
+        lastLower, lastShallow⟩
+    · have lastAtCap : lastIndex = 152 := by omega
+      exact Or.inr <|
+        FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax
+          commitmentAt trace remainingIds commitments stack
+          firstIndex lastIndex aligned permutation nonempty firstUpper
+          firstCap lastCap enough verify
+          (fun sig => DERSyntax.valid sig = true) verifySound matched
+          (Or.inr lastAtCap)
+  · have firstAtCap : firstIndex = 152 := by omega
+    exact Or.inr <|
+      FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax
+        commitmentAt trace remainingIds commitments stack
+        firstIndex lastIndex aligned permutation nonempty firstUpper
+        firstCap lastCap enough verify
+        (fun sig => DERSyntax.valid sig = true) verifySound matched
+        (Or.inl firstAtCap)
+
+/-- A bonus overshoot in an aligned dynamic setup implies an actual hit in
+the same twenty-byte-output function used to form all commitments. Combined
+with `DERHeaderBound.final_bonus_uniform_setup_count`, this identifies the
+setup event to charge, conditional on the reached geometry and matched scan.
+It does not prove those premises for Core-accepted dynamic locks. -/
+theorem aligned_bonus_overshoot_uniform_setup_hit
+    {Ξ X : Type*} (source : Fin 150 → Ξ → X)
+    (R : X → (Fin 20 → UInt8)) (ξ : Ξ)
+    (trace : List (Fin 150 × Bytes))
+    (remainingIds : List (Fin 150)) (commitments stack : List Bytes)
+    (firstIndex lastIndex : Nat)
+    (aligned : commitments = remainingIds.map
+      (fun i => List.ofFn (R (source i ξ))))
+    (permutation : List.Perm (trace.map Prod.fst ++ remainingIds)
+      (List.finRange 150))
+    (nonempty : 0 < commitments.length)
+    (firstUpper : firstIndex ≤ 152)
+    (firstCap : firstIndex = 152 → stack[13]? = commitments[0]?)
+    (lastCap : firstIndex < 152 ∧ lastIndex = 152 →
+      stack[12]? = commitments[0]?)
+    (enough : 22 ≤ stack.length)
+    (verify : Bytes → Bytes → Bool)
+    (verifySound : ∀ sig key, verify sig key = true →
+      DERSyntax.valid sig = true)
+    (matched : Multisig.matchSigs verify
+      ((stack.drop 12).take 10) ((stack.drop 1).take 10) = true)
+    (overshoot : firstIndex = 152 ∨ lastIndex = 152) :
+    ∃ i : Fin 150,
+      i ∉ trace.map Prod.fst ∧
+      DERSyntax.valid (List.ofFn (R (source i ξ))) = true := by
+  exact FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax
+    (fun i => List.ofFn (R (source i ξ))) trace remainingIds
+    commitments stack firstIndex lastIndex aligned permutation nonempty
+    firstUpper firstCap lastCap enough verify
+    (fun sig => DERSyntax.valid sig = true) verifySound matched overshoot
 
 /-- None of the 150 literal second-round HORS commitments in the generated
 test lock has the source-shaped strict DER encoding. This is a property of

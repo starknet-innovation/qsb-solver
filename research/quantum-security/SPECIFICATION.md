@@ -204,6 +204,14 @@ that passes the same signature-syntax predicate. Specializing to strict DER
 produces a dummy-bonus-or-unopened-DER-commitment disjunction. Its bad-setup
 branch still needs dynamic-lock bytes and a Core parser bridge before it can
 be charged to a setup probability.
+At the local reached-scan boundary, Lean now allows an arbitrary commitment
+map: aligned residual pool positions and the two bonus slot equations imply
+that any commitment-selection branch is a syntax hit at an unopened position.
+For outputs of one uniformly sampled twenty-byte function `R`, independent of
+the material selecting its 150 inputs, a checked shared-function count bounds
+the DER setup-hit fraction by `150·12/256^6`. A dynamic script execution must
+still supply that aligned boundary, and Core acceptance must still imply its
+matched signature scan; neither is supplied by the count theorem.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

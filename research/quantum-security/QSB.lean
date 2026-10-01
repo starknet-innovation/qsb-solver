@@ -778,9 +778,11 @@ import QSB.Reduction
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_bonus_source_trace
 #print axioms QSB.FinalBonusSecond.accepted_postbonus_final_signature_origins
 #print axioms QSB.FinalBonusSecond.first_remaining_commitment_unopened
+#print axioms QSB.FinalBonusSecond.first_remaining_commitment_unopened_of_map
 #print axioms QSB.FinalBonusSecond.accepted_whole_program_final_signature_origins
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_signature_syntax
 #print axioms QSB.FinalBonusSecond.matched_final_signature_has_syntax
+#print axioms QSB.FinalBonusSecond.matched_bonus_boundary_has_unopened_syntax
 #print axioms QSB.FinalBonusSecond.matched_bonus_overshoot_has_unopened_syntax
 #print axioms QSB.FinalBonusSecond.no_bonus_commitment_of_matching_verifier
 #print axioms QSB.DERSyntax.valid_twenty_byte_lengths
@@ -791,6 +793,8 @@ import QSB.Reduction
 #print axioms QSB.DERSyntax.verifyAllEncoding_empty
 #print axioms QSB.DERSyntax.verifyAllEncoding_nonempty
 #print axioms QSB.FinalBonusDER.generated_final_commitments_not_der
+#print axioms QSB.FinalBonusDER.aligned_bonus_dummies_or_unopened_der
+#print axioms QSB.FinalBonusDER.aligned_bonus_overshoot_uniform_setup_hit
 #print axioms QSB.FinalBonusDER.no_final_bonus_overshoot_of_der_matching
 #print axioms QSB.FinalBonusDER.bonus_dummies_or_unopened_der
 #print axioms QSB.FinalBonusIndices.two_bonus_ids_extend_seven
@@ -949,6 +953,8 @@ import QSB.Reduction
 #print axioms QSB.DERHeaderBound.target_density_scaled
 #print axioms QSB.DERHeaderBound.target_density_tight_scaled
 #print axioms QSB.DERHeaderBound.bounded_target_setup_union_count
+#print axioms QSB.DERHeaderBound.final_bonus_uniform_setup_count
+#print axioms QSB.DERHeaderBound.covered_final_bonus_setup_event_count
 #print axioms QSB.extracted_pin_final_fresh_or_two_puzzles
 #print axioms QSB.final_round_shape_total
 #print axioms QSB.abstract_run_final_shape
