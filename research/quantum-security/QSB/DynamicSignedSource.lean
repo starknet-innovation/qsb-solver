@@ -532,6 +532,80 @@ theorem matched_postadd_with_nonnegative_retained_is_commitment
     opening gathered dummies commitments tail shape gatheredSmall priorWrong
     index.toNat high bounded matched
 
+/-- Two positive-depth rolls in the signed comparison preserve the original
+top stack cell: it moves to offsets one and two, then HASH160/EQUALVERIFY
+consume the two cells above it. This is independent of which target matched. -/
+theorem comparison_preserves_retained (hashes : Hashes)
+    (offset preRaw retained : Bytes) (rest : List Bytes)
+    (index preDepth : Nat)
+    (indexPositive : 0 < index) (preDepthDeep : 1 < preDepth)
+    (parsedOffset : ByteIndex.parseScriptNum offset = some (Int.ofNat index))
+    (parsedPre : ByteIndex.parseScriptNum preRaw = some (Int.ofNat preDepth))
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes [.roll, .push preRaw, .roll, .hash160, .equalverify]
+      (State.mk (offset :: retained :: rest) outcomes cost) = some final) :
+    final.stack[0]? = some retained := by
+  obtain ⟨afterFirst, firstStep, _, remaining⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .roll
+      [.push preRaw, .roll, .hash160, .equalverify]
+      (State.mk (offset :: retained :: rest) outcomes cost) final accepted
+  have firstBudget := ByteFinalCounts.roll_success_budget hashes offset
+    (retained :: rest) outcomes cost afterFirst firstStep
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes offset index
+    (retained :: rest) outcomes cost parsedOffset firstBudget] at firstStep
+  cases firstRoll : KeyRolls.rollAt index (retained :: rest) with
+  | none => simp [firstRoll] at firstStep
+  | some afterFirstStack =>
+      simp [firstRoll] at firstStep
+      have retainedAtOne : afterFirstStack[1]? = some retained :=
+        KeyRolls.rollAt_preserves_shallower_cell
+          (n := index) (p := 0) indexPositive (by rfl) firstRoll
+      rw [← firstStep] at remaining
+      obtain ⟨afterPush, pushStep, _, afterPushRun⟩ :=
+        FirstAcceptedOrigin.run_cons_success hashes (.push preRaw)
+          [.roll, .hash160, .equalverify]
+          (State.mk afterFirstStack outcomes (cost + 1)) final remaining
+      have pushShape := ByteFinalCounts.push_success_shape hashes preRaw
+        afterFirstStack outcomes (cost + 1) afterPush pushStep
+      rw [pushShape] at afterPushRun
+      obtain ⟨afterSecond, secondStep, _, pairRun⟩ :=
+        FirstAcceptedOrigin.run_cons_success hashes .roll
+          [.hash160, .equalverify]
+          (State.mk (preRaw :: afterFirstStack) outcomes (cost + 1))
+          final afterPushRun
+      have secondBudget := ByteFinalCounts.roll_success_budget hashes
+        preRaw afterFirstStack outcomes (cost + 1) afterSecond secondStep
+      rw [FirstOvershoot.byte_roll_matches_list_roll hashes preRaw
+        preDepth afterFirstStack outcomes (cost + 1) parsedPre secondBudget]
+        at secondStep
+      cases secondRoll : KeyRolls.rollAt preDepth afterFirstStack with
+      | none => simp [secondRoll] at secondStep
+      | some afterSecondStack =>
+          simp [secondRoll] at secondStep
+          have retainedAtTwo : afterSecondStack[2]? = some retained :=
+            KeyRolls.rollAt_preserves_shallower_cell
+              (n := preDepth) (p := 1) preDepthDeep retainedAtOne
+              secondRoll
+          rw [← secondStep] at pairRun
+          cases afterSecondStack with
+          | nil => simp at retainedAtTwo
+          | cons opening xs =>
+              cases xs with
+              | nil => simp at retainedAtTwo
+              | cons target ys =>
+                  cases ys with
+                  | nil => simp at retainedAtTwo
+                  | cons raw tail =>
+                      have same : raw = retained := by
+                        simpa using retainedAtTwo
+                      subst raw
+                      obtain ⟨_, finalShape⟩ :=
+                        accepted_hash_pair_shape hashes opening target
+                          (retained :: tail) outcomes (cost + 2) final
+                          pairRun
+                      rw [finalShape]
+                      rfl
+
 /-- Alignment turns the matched current commitment cell into its original
 HORS position. Equality of commitment bytes at different positions is allowed:
 the index comes from the pool erasure history, not a reverse hash lookup. -/
@@ -568,10 +642,344 @@ theorem bounded_hash_match_has_original_position (hashes : Hashes)
   exact ⟨id, j, withinIds, index,
     List.getElem?_eq_getElem withinIds, equal⟩
 
-/-- Successful execution of the generated five-opcode comparison, starting
-from an explicitly reached dynamic post-ADD stack, yields an opening whose
-HASH160 target is either the nonce or a current commitment cell. The dynamic
-seven-block invariant must still establish this starting stack and cap. -/
+/-- Successful execution of the generated five-opcode comparison exposes
+the actual selected source and opening from its reached post-ADD stack. -/
+theorem accepted_comparison_matches_source (hashes : Hashes)
+    (k : Fin 7) (nonce retained prior offset : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (index : Nat)
+    (parsed : ByteIndex.parseScriptNum offset = some (Int.ofNat index))
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (signedComparisonOps k)
+      (State.mk (offset :: region nonce retained prior gathered dummies
+        commitments tail) outcomes cost) = some final) :
+    ∃ opening : Bytes,
+      (region nonce retained prior gathered dummies commitments tail)[index]? =
+        some (hashes.h160 opening) := by
+  rw [generated_signed_comparison_ops] at accepted
+  obtain ⟨afterRoll, rolled, _, suffix⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes .roll
+      [.push (preimageIndex k), .roll, .hash160, .equalverify]
+      (State.mk (offset :: region nonce retained prior gathered dummies
+        commitments tail) outcomes cost) final accepted
+  have budget := ByteFinalCounts.roll_success_budget hashes offset
+    (region nonce retained prior gathered dummies commitments tail)
+    outcomes cost afterRoll rolled
+  rw [FirstOvershoot.byte_roll_matches_list_roll hashes offset index
+    (region nonce retained prior gathered dummies commitments tail)
+    outcomes cost parsed budget] at rolled
+  unfold KeyRolls.rollAt at rolled
+  cases source : (region nonce retained prior gathered dummies
+      commitments tail)[index]? with
+  | none => simp [source] at rolled
+  | some selected =>
+      simp [source] at rolled
+      rw [← rolled] at suffix
+      have preimageParsed := generated_preimage_index_decodes k
+      obtain ⟨opening, hit⟩ :=
+        successful_target_matches_hash160_at hashes (preimageIndex k)
+          (595 - 2 * k.val) preimageParsed (by omega)
+          selected ((region nonce retained prior gathered dummies
+            commitments tail).eraseIdx index) outcomes (cost + 1) final
+          suffix
+      exact ⟨opening, by rw [hit]⟩
+
+theorem matched_source_index_positive (hashes : Hashes)
+    (nonce retained prior opening : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (retainedSmall : retained.length ≤ 4)
+    (index : Nat)
+    (matched :
+      (region nonce retained prior gathered dummies commitments tail)[index]? =
+        some (hashes.h160 opening)) :
+    0 < index := by
+  by_contra notPositive
+  have zero : index = 0 := by omega
+  subst index
+  have same : retained = hashes.h160 opening := by
+    simpa [region, signedPrefixN] using matched
+  have width := hashes.h160_width opening
+  rw [same] at retainedSmall
+  omega
+
+/-- Completion of the comparison and its following dummy roll proves that
+the raw index retained by MIN/ADD is the bytes parsed by that final roll.
+This is the execution link needed to exclude the comparison-only nonce case. -/
+theorem accepted_full_suffix_retained_nonnegative (hashes : Hashes)
+    (k : Fin 7) (nonce retained prior offset : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (retainedSmall : retained.length ≤ 4)
+    (index : Nat)
+    (parsedOffset : ByteIndex.parseScriptNum offset = some (Int.ofNat index))
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (signedSuffixOps k)
+      (State.mk (offset :: region nonce retained prior gathered dummies
+        commitments tail) outcomes cost) = some final) :
+    ∃ (opening : Bytes) (operand : Int),
+      (region nonce retained prior gathered dummies commitments tail)[index]? =
+        some (hashes.h160 opening) ∧
+      ByteIndex.parseScriptNum retained = some operand ∧ 0 ≤ operand := by
+  rw [signed_suffix_splits k, run_append] at accepted
+  cases compared : run hashes (signedComparisonOps k)
+      (State.mk (offset :: region nonce retained prior gathered dummies
+        commitments tail) outcomes cost) with
+  | none => simp [compared] at accepted
+  | some afterComparison =>
+      obtain ⟨opening, matched⟩ :=
+        accepted_comparison_matches_source hashes k nonce retained prior
+          offset gathered dummies commitments tail index parsedOffset
+          outcomes cost afterComparison compared
+      have positive := matched_source_index_positive hashes nonce retained
+        prior opening gathered dummies commitments tail retainedSmall
+        index matched
+      let below := gathered ++ [nonce, []] ++ dummies ++ commitments ++
+        prior :: tail
+      have regionCons :
+          region nonce retained prior gathered dummies commitments tail =
+            retained :: below := by
+        simp [region, signedPrefixN, below, List.append_assoc]
+      have comparisonRun : run hashes
+          [.roll, .push (preimageIndex k), .roll, .hash160, .equalverify]
+          (State.mk (offset :: retained :: below) outcomes cost) =
+            some afterComparison := by
+        rw [← regionCons]
+        rw [← generated_signed_comparison_ops]
+        exact compared
+      have preDepthDeep : 1 < 595 - 2 * k.val := by
+        have small := k.isLt
+        omega
+      have retainedTop := comparison_preserves_retained hashes offset
+        (preimageIndex k) retained below index (595 - 2 * k.val)
+        positive preDepthDeep parsedOffset
+        (generated_preimage_index_decodes k) outcomes cost afterComparison
+        comparisonRun
+      simp only [compared, Option.bind_some] at accepted
+      cases afterComparison with
+      | mk stack afterOutcomes afterCost =>
+          cases stack with
+          | nil => simp at retainedTop
+          | cons top rest =>
+              have same : top = retained := by simpa using retainedTop
+              subst top
+              obtain ⟨afterRoll, rollStep, _, _finished⟩ :=
+                FirstAcceptedOrigin.run_cons_success hashes .roll []
+                  (State.mk (retained :: rest) afterOutcomes afterCost)
+                  final accepted
+              obtain ⟨operand, parsedRetained, nonnegative⟩ :=
+                FinalSignedAccepted.accepted_roll_parses_nonnegative hashes
+                  retained rest afterOutcomes afterCost afterRoll rollStep
+              exact ⟨opening, operand, matched, parsedRetained, nonnegative⟩
+
+/-- Any successful generated signed suffix on the dynamic pool-shaped
+post-ADD stack compares a genuine current commitment, even if the fixed
+nonce is itself a twenty-byte valid signature. The retained-index parse is
+derived from the final dummy roll, not assumed. -/
+theorem accepted_full_suffix_is_commitment (hashes : Hashes)
+    (k : Fin 7) (nonce retained prior offset : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (count : gathered.length = k.val)
+    (priorWrong : prior.length ≠ 20)
+    (source operand : Int) (index : Nat)
+    (retainedEncoded :
+      ByteIndex.encodeScriptNum (min (152 : Int) source) = some retained)
+    (retainedParsed : ByteIndex.parseScriptNum retained = some operand)
+    (offsetEncoded : ByteIndex.encodeScriptNum
+      (Int.ofNat (151 - k.val) + operand) = some offset)
+    (offsetParsed : ByteIndex.parseScriptNum offset = some (Int.ofNat index))
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (signedSuffixOps k)
+      (State.mk (offset :: region nonce retained prior gathered dummies
+        commitments tail) outcomes cost) = some final) :
+    ∃ (j : Nat) (opening : Bytes),
+      j < commitments.length ∧ index = 153 + j ∧
+      commitments[j]? = some (hashes.h160 opening) := by
+  obtain ⟨opening, parsedOperand, matched, finalParsed, nonnegative⟩ :=
+    accepted_full_suffix_retained_nonnegative hashes k nonce retained prior
+      offset gathered dummies commitments tail
+      (ByteIndexSign.parsed_bytes_are_short retained operand retainedParsed)
+      index offsetParsed outcomes cost final accepted
+  have operandEq : parsedOperand = operand :=
+    Option.some.inj (finalParsed.symm.trans retainedParsed)
+  subst parsedOperand
+  obtain ⟨j, within, indexEq, hit⟩ :=
+    matched_postadd_with_nonnegative_retained_is_commitment hashes k nonce
+      retained prior offset opening gathered dummies commitments tail shape
+      count priorWrong source operand (Int.ofNat index) retainedEncoded
+      retainedParsed nonnegative offsetEncoded offsetParsed
+      (Int.natCast_nonneg _) (by simpa using matched)
+  exact ⟨j, opening, within, by simpa using indexEq, hit⟩
+
+/-- The full generated MIN/ADD, comparison, and dummy-roll round can only
+match a current commitment on a dynamic pool-shaped stack. This result does
+not assume the nonce length differs from twenty. -/
+theorem accepted_signed_round_commitment_source (hashes : Hashes)
+    (k : Fin 7) (nonce prior raw : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (count : gathered.length = k.val)
+    (priorWrong : prior.length ≠ 20)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (signedRoundOps k)
+      (State.mk (raw :: nextRawFrontN nonce prior gathered dummies
+        commitments ++ tail) outcomes cost) = some final) :
+    ∃ (j : Nat) (opening : Bytes),
+      j < commitments.length ∧
+      commitments[j]? = some (hashes.h160 opening) := by
+  rw [signed_round_splits k, run_append] at accepted
+  simp only [List.cons_append] at accepted
+  cases cap : run hashes (signedCapAddOps k)
+      (State.mk (raw :: (nextRawFrontN nonce prior gathered dummies
+        commitments ++ tail)) outcomes cost) with
+  | none => simp [cap] at accepted
+  | some afterCap =>
+      obtain ⟨source, operand, retained, offset, _rawParsed,
+          retainedEncoded, retainedParsed, offsetEncoded, capShape⟩ :=
+        accepted_signed_cap_add_shape hashes k raw
+          (nextRawFrontN nonce prior gathered dummies commitments ++ tail)
+          outcomes cost afterCap cap
+      simp only [cap, Option.bind_some] at accepted
+      rw [capShape] at accepted
+      have baseEq : retained ::
+          (nextRawFrontN nonce prior gathered dummies commitments ++ tail) =
+          region nonce retained prior gathered dummies commitments tail := by
+        simp [nextRawFrontN, region, signedPrefixN, List.append_assoc]
+      rw [baseEq] at accepted
+      have suffix : run hashes (signedSuffixOps k)
+          (State.mk (offset :: region nonce retained prior gathered
+            dummies commitments tail) outcomes (cost + 3)) =
+            some final := accepted
+      rw [generated_signed_suffix_ops] at suffix
+      obtain ⟨afterRoll, firstStep, _, _rest⟩ :=
+        FirstAcceptedOrigin.run_cons_success hashes .roll
+          [.push (preimageIndex k), .roll, .hash160, .equalverify, .roll]
+          (State.mk (offset :: region nonce retained prior gathered
+            dummies commitments tail) outcomes (cost + 3)) final suffix
+      obtain ⟨index, parsedOffset, indexNonnegative⟩ :=
+        FinalSignedAccepted.accepted_roll_parses_nonnegative hashes offset
+          (region nonce retained prior gathered dummies commitments tail)
+          outcomes (cost + 3) afterRoll firstStep
+      have indexEq : index = Int.ofNat index.toNat :=
+        Int.eq_natCast_toNat.mpr indexNonnegative
+      have parsedNat : ByteIndex.parseScriptNum offset =
+          some (Int.ofNat index.toNat) := by
+        rw [← indexEq]
+        exact parsedOffset
+      have suffixAccepted : run hashes (signedSuffixOps k)
+          (State.mk (offset :: region nonce retained prior gathered
+            dummies commitments tail) outcomes (cost + 3)) =
+            some final := by
+        rw [generated_signed_suffix_ops]
+        exact suffix
+      obtain ⟨j, opening, within, _, hit⟩ :=
+        accepted_full_suffix_is_commitment hashes k nonce retained prior
+          offset gathered dummies commitments tail shape count priorWrong
+          source operand index.toNat retainedEncoded retainedParsed
+          offsetEncoded parsedNat outcomes (cost + 3) final suffixAccepted
+      exact ⟨j, opening, within, hit⟩
+
+/-- Pool alignment converts the reached current cell into an original HORS
+position without assuming distinct commitment bytes. -/
+theorem accepted_signed_round_original_position (hashes : Hashes)
+    (commitmentAt : Fin 150 → Bytes) (ids : List (Fin 150))
+    (k : Fin 7) (nonce prior raw : Bytes)
+    (gathered dummies commitments tail : List Bytes)
+    (shape : PoolShape gathered dummies commitments)
+    (aligned : DynamicFinalInit.AlignedPool commitmentAt ids
+      dummies commitments)
+    (count : gathered.length = k.val)
+    (priorWrong : prior.length ≠ 20)
+    (outcomes : List Bool) (cost : Nat) (final : State)
+    (accepted : run hashes (signedRoundOps k)
+      (State.mk (raw :: nextRawFrontN nonce prior gathered dummies
+        commitments ++ tail) outcomes cost) = some final) :
+    ∃ (id : Fin 150) (j : Nat) (opening : Bytes),
+      j < ids.length ∧ ids[j]? = some id ∧
+      hashes.h160 opening = commitmentAt id := by
+  obtain ⟨j, opening, within, hit⟩ :=
+    accepted_signed_round_commitment_source hashes k nonce prior raw
+      gathered dummies commitments tail shape count priorWrong outcomes
+      cost final accepted
+  have withinIds : j < ids.length := by
+    rw [aligned.commitmentMap] at within
+    simpa using within
+  let id := ids[j]
+  have source : commitments[j]? = some (commitmentAt id) := by
+    simp [aligned.commitmentMap, id, withinIds]
+  have equal : hashes.h160 opening = commitmentAt id :=
+    Option.some.inj (hit.symm.trans source)
+  exact ⟨id, j, opening, withinIds,
+    List.getElem?_eq_getElem withinIds, equal⟩
+
+def firstBlockProgram (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes) : List Op :=
+  DynamicFinalInit.dataOps nonce commitmentAt ++ signedBlockOps firstK
+
+theorem literal_first_block_program :
+    firstBlockProgram finalNonce generatedCommitmentAt =
+      (ByteLayout.program.drop 447).take 315 := by decide
+
+/-- Starting before the arbitrary second-round data pushes, successful
+execution through the first complete 13-opcode signed block reaches an
+original-position commitment opening. The twenty-byte nonce comparison
+branch of the shorter prefix cannot survive the final dummy roll. -/
+theorem accepted_first_full_block_original_position (hashes : Hashes)
+    (nonce prior : Bytes) (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (priorWrong : prior.length ≠ 20)
+    (tail : List Bytes) (outcomes : List Bool) (cost : Nat)
+    (final : State)
+    (accepted : run hashes (firstBlockProgram nonce commitmentAt)
+      (State.mk (prior :: tail) outcomes cost) = some final) :
+    ∃ (id : Fin 150) (j : Nat) (opening : Bytes),
+      j < (List.finRange 150).length ∧
+      (List.finRange 150)[j]? = some id ∧
+      hashes.h160 opening = commitmentAt id := by
+  unfold firstBlockProgram at accepted
+  rw [run_append] at accepted
+  cases data : run hashes (DynamicFinalInit.dataOps nonce commitmentAt)
+      (State.mk (prior :: tail) outcomes cost) with
+  | none => simp [data] at accepted
+  | some afterData =>
+      have dataShape := DynamicFinalInit.accepted_data_shape hashes nonce
+        commitmentAt (prior :: tail) outcomes cost afterData data
+      simp only [data, Option.bind_some] at accepted
+      rw [dataShape] at accepted
+      have stackEq :
+          nonce :: [] :: finalDummyPool ++
+            DynamicFinalInit.commitmentPool commitmentAt ++ prior :: tail =
+          nextRawFrontN nonce prior [] finalDummyPool
+            (DynamicFinalInit.commitmentPool commitmentAt) ++ tail := by
+        simp [nextRawFrontN, List.append_assoc]
+      rw [stackEq, generated_signed_block_ops firstK, run_append] at accepted
+      cases fixed : run hashes [.push (fixedRawIndex firstK), .roll]
+          (State.mk
+            (nextRawFrontN nonce prior [] finalDummyPool
+              (DynamicFinalInit.commitmentPool commitmentAt) ++ tail)
+            outcomes cost) with
+      | none => simp [fixed] at accepted
+      | some afterFixed =>
+          obtain ⟨enough, fixedShape⟩ :=
+            accepted_fixed_raw_pair_dynamic hashes firstK nonce prior []
+              finalDummyPool (DynamicFinalInit.commitmentPool commitmentAt)
+              tail (DynamicFinalInit.initial_pool_shape commitmentAt width)
+              (by decide) outcomes cost afterFixed fixed
+          simp only [fixed, Option.bind_some] at accepted
+          rw [fixedShape] at accepted
+          obtain ⟨id, j, opening, within, idAt, hit⟩ :=
+            accepted_signed_round_original_position hashes commitmentAt
+              (List.finRange 150) firstK nonce prior tail[283] []
+              finalDummyPool (DynamicFinalInit.commitmentPool commitmentAt)
+              (tail.eraseIdx 283)
+              (DynamicFinalInit.initial_pool_shape commitmentAt width)
+              (DynamicFinalInit.initial_alignment commitmentAt)
+              (by decide) priorWrong outcomes (cost + 1) final
+              (by simpa only [List.cons_append] using accepted)
+          exact ⟨id, j, opening, within, idAt, hit⟩
+
+/-- The selected source is either a current commitment or the nonce on a
+shallow comparison prefix. Completion of the subsequent dummy roll is a
+stronger condition that excludes the nonce case below. -/
 theorem accepted_comparison_nonce_or_commitment (hashes : Hashes)
     (k : Fin 7) (nonce retained prior offset : Bytes)
     (gathered dummies commitments tail : List Bytes)

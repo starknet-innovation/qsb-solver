@@ -830,6 +830,23 @@
 'QSB.DynamicSignedSource.matched_postadd_with_nonnegative_retained_is_commitment' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicSignedSource.comparison_preserves_retained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.accepted_comparison_matches_source' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.matched_source_index_positive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.accepted_full_suffix_retained_nonnegative' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.accepted_full_suffix_is_commitment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicSignedSource.accepted_signed_round_commitment_source' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.accepted_signed_round_original_position' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicSignedSource.literal_first_block_program' depends on axioms: [propext]
+'QSB.DynamicSignedSource.accepted_first_full_block_original_position' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]

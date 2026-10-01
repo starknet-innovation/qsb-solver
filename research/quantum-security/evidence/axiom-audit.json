@@ -1,5 +1,5 @@
 {
-  "theorem_count": 921,
+  "theorem_count": 930,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1197,6 +1197,11 @@
     "QSB.DynamicFinalInit.paired_erasure_preserves_alignment": [
       "propext"
     ],
+    "QSB.DynamicSignedSource.accepted_comparison_matches_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSignedSource.accepted_comparison_nonce_or_commitment": [
       "Classical.choice",
       "Quot.sound",
@@ -1212,12 +1217,37 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicSignedSource.accepted_first_full_block_original_position": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSignedSource.accepted_first_raw_pair_from_data": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.accepted_fixed_raw_pair_dynamic": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_full_suffix_is_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_full_suffix_retained_nonnegative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_signed_round_commitment_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.accepted_signed_round_original_position": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -1251,12 +1281,20 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicSignedSource.comparison_preserves_retained": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicSignedSource.high_shallow_hash_match_impossible": [
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicSignedSource.late_shallow_source_is_dummy": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.literal_first_block_program": [
       "propext"
     ],
     "QSB.DynamicSignedSource.literal_first_comparison_program": [
@@ -1269,6 +1307,11 @@
       "propext"
     ],
     "QSB.DynamicSignedSource.matched_postadd_with_nonnegative_retained_is_commitment": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSignedSource.matched_source_index_positive": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -788,6 +788,15 @@ import QSB.Reduction
 #print axioms QSB.DynamicSignedSource.high_shallow_hash_match_impossible
 #print axioms QSB.DynamicSignedSource.bounded_high_hash_match_is_commitment
 #print axioms QSB.DynamicSignedSource.matched_postadd_with_nonnegative_retained_is_commitment
+#print axioms QSB.DynamicSignedSource.comparison_preserves_retained
+#print axioms QSB.DynamicSignedSource.accepted_comparison_matches_source
+#print axioms QSB.DynamicSignedSource.matched_source_index_positive
+#print axioms QSB.DynamicSignedSource.accepted_full_suffix_retained_nonnegative
+#print axioms QSB.DynamicSignedSource.accepted_full_suffix_is_commitment
+#print axioms QSB.DynamicSignedSource.accepted_signed_round_commitment_source
+#print axioms QSB.DynamicSignedSource.accepted_signed_round_original_position
+#print axioms QSB.DynamicSignedSource.literal_first_block_program
+#print axioms QSB.DynamicSignedSource.accepted_first_full_block_original_position
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

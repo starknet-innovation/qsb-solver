@@ -228,22 +228,23 @@ the supplied opening. A conditional run theorem derives this result from the
 generated five-opcode comparison with an explicit reached post-ADD stack and
 bounded parsed roll depth. A pinned-Core isolated `CHECKSIG` probe demonstrates
 that a 20-byte strict-DER `SIGHASH_ALL` nonce can verify for a recovered key;
-it does not demonstrate a matching hash opening or a QSB spend. The dynamic
-seven-comparison induction must propagate the nonce-or-commitment branch,
-or prove that the later dummy roll rules out the nonce branch. Lean has now
-proved the relevant conditional arithmetic: when the retained index parses
-nonnegative, the earlier comparison depth is at least 145, where every
-shallow source is a nine-byte dummy; a matching bounded source must be a
-commitment, irrespective of nonce width. The dynamic full-block run has not
-yet been connected to that parse condition. Only if a nonce branch survives
-that connection would the joint-oracle event need to charge it.
+it does not demonstrate a matching hash opening or a QSB spend. Lean now
+proves that a successful *complete* signed suffix preserves the retained raw
+bytes through comparison and parses them nonnegative at the final dummy roll.
+This places the earlier comparison at depth at least 145, where every shallow
+source is a nine-byte dummy; a matching bounded source must be a commitment,
+irrespective of nonce width. Thus the nonce branch is only possible for a
+comparison prefix that does not complete the signed block in this byte model.
 For the first signed selection, Lean now starts before the dynamic data pushes
 and proves the disjunction from a successful prefix run through the first
 comparison. It extracts the actual witness-tail raw index, applies the reached
 MIN/ADD cap, and identifies a commitment by original pool position when that
 branch occurs. This prefix is exactly the literal final round's first 314
-instructions under the fixture specialization. The paired dummy roll and
-remaining six comparisons still need a dynamic induction.
+instructions under the fixture specialization. A second checked theorem
+carries the first full block through the paired dummy roll: from the data
+pushes to the first 315 literal instructions, success forces an
+original-position commitment opening even with a 20-byte nonce. The remaining
+six comparisons still need an exact dynamic pool-transition induction.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine
