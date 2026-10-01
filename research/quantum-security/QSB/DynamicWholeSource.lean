@@ -293,4 +293,68 @@ theorem accepted_whole_good_setup_nine_positions (hashes : Hashes)
     exact traceExtract
   exact ⟨trace, a, b, extracted, seven, hits, distinct, count⟩
 
+/-- Retain the reached signature-cell identities along with the extracted
+nine-position trace. The earlier projection intentionally omitted these cells;
+transaction-dependent sighash reasoning needs their actual byte values. -/
+theorem accepted_whole_good_setup_nine_reached_slots (hashes : Hashes)
+    (priorOps : List Op) (nonce : Bytes)
+    (commitmentAt : Fin 150 → Bytes)
+    (width : ∀ i, (commitmentAt i).length = 20)
+    (initial final : State)
+    (accepted : run hashes (fullProgram priorOps nonce commitmentAt)
+      initial = some final)
+    (script : Bytes) (checker : Bytes → Bytes → Bytes → Bool)
+    (sourceEval : ∀ beforeCheck : State,
+      run hashes (beforeFinalCheckProgram priorOps nonce commitmentAt)
+        initial = some beforeCheck →
+      CoreMultisigEval.finalTenEval script checker
+        beforeCheck.stack = some true)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (commitmentAt id) = false) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : State),
+      run hashes (beforeFinalCheckProgram priorOps nonce commitmentAt)
+        initial = some beforeCheck ∧
+      beforeCheck.stack[12]? = some (FinalSignedLoop.generatedDummyAt b) ∧
+      beforeCheck.stack[13]? = some (FinalSignedLoop.generatedDummyAt a) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack[j + 14]? =
+        (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack[21]? = some nonce ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace, hashes.h160 p.2 = commitmentAt p.1) ∧
+      (a :: b :: trace.map Prod.fst).Nodup := by
+  obtain ⟨result, tail, outcomes, cost, firstRun, finalRun⟩ :=
+    accepted_first_boundary hashes priorOps nonce commitmentAt initial final
+      accepted
+  have gate : ∀ beforeCheck : State,
+      run hashes (DynamicBonusChain.finalCheckPrefix nonce commitmentAt)
+        (State.mk (boolBytes result :: tail) outcomes cost) =
+          some beforeCheck →
+      CoreMultisigEval.finalTenEval script checker
+        beforeCheck.stack = some true := by
+    intro beforeCheck reached
+    apply sourceEval beforeCheck
+    change run hashes ((priorOps ++ [.checkmultisig]) ++
+      DynamicBonusChain.finalCheckPrefix nonce commitmentAt) initial =
+        some beforeCheck
+    rw [run_append, firstRun]
+    exact reached
+  obtain ⟨trace, a, b, beforeCheck, checkRun, slotA, slotB,
+      signed, nonceSlot, _dummySlot, seven, hits,
+      _different, _freshA, _freshB, distinct, _count, _traceExtract⟩ :=
+    DynamicSourceGate.nine_positions_of_source_eval hashes nonce
+      (boolBytes result) commitmentAt width
+      (first_result_wrong_width result) tail outcomes cost final finalRun
+      script checker gate noCommitmentDER
+  have reached : run hashes
+      (beforeFinalCheckProgram priorOps nonce commitmentAt) initial =
+        some beforeCheck := by
+    change run hashes ((priorOps ++ [.checkmultisig]) ++
+      DynamicBonusChain.finalCheckPrefix nonce commitmentAt) initial =
+        some beforeCheck
+    rw [run_append, firstRun]
+    exact checkRun
+  exact ⟨trace, a, b, beforeCheck, reached, slotB, slotA, signed,
+    nonceSlot, seven, hits, distinct⟩
+
 end QSB.DynamicWholeSource

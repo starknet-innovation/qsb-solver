@@ -256,6 +256,80 @@ theorem search_reached_final_joint_calls
         by simpa using keyAt, der, last, keyValid, digestEq, verified,
         digestCases.1, digestCases.2⟩
 
+/-- Under the explicit no-DER-commitment setup condition, the first nine
+reached final multisignature pairs use generated `SIGHASH_SINGLE` dummy
+signatures. If the selected input is beyond the final output, all nine
+ECDSA calls receive Core's raw constant SINGLE-bug digest, independently of
+the shared final FindAndDelete scriptCode. The tenth fixed nonce pair remains
+separate and may bind the transaction through `SIGHASH_ALL`. -/
+theorem search_good_setup_nine_single_bug_calls
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false)
+    (outputMissing : tx.outputs.length ≤ selected) :
+    ∃ beforeCheck : CoreOpcodeStep.State,
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      ∀ j : Fin 9, ∃ (id : Fin 150) (key : Bytes),
+        CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+          some (FinalSignedLoop.generatedDummyAt id) ∧
+        CoreMultisigStack.keyAt beforeCheck.stack j.val = some key ∧
+        CoreDEREncoding.valid (FinalSignedLoop.generatedDummyAt id) = true ∧
+        validKey key = true ∧
+        selected < tx.inputs.length ∧
+        ecdsa (FinalSignedLoop.generatedDummyAt id).dropLast key
+          LegacySighashWire.singleBugDigest = true := by
+  obtain ⟨beforeSlots, slotsReached, slots⟩ :=
+    DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found secondWidth noCommitmentDER
+  obtain ⟨beforeCalls, callsReached, calls⟩ :=
+    search_reached_final_joint_calls functions tx selected lock stack
+      validKey ecdsa firstRound final found
+  have same : beforeCalls = beforeSlots :=
+    Option.some.inj (callsReached.symm.trans slotsReached)
+  subst beforeCalls
+  refine ⟨beforeSlots, slotsReached, ?_⟩
+  intro j
+  obtain ⟨id, slot⟩ := slots j
+  obtain ⟨sig, key, hashType, digest, sigAt, keyAt, der, last,
+    keyValid, digestEq, verified, inputValid, _digestCases⟩ :=
+    calls ⟨j.val, by omega⟩
+  have sigEq : sig = FinalSignedLoop.generatedDummyAt id :=
+    Option.some.inj (sigAt.symm.trans slot)
+  subst sig
+  have flag : hashType = 0x03 :=
+    Option.some.inj (last.symm.trans
+      (ScriptCodeSelection.generatedDummyAt_sighash_single id))
+  subst hashType
+  have digestEq' : JointSourceChecks.legacyDigest functions tx selected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicCheckedCertificate.wire lock)
+        beforeSlots.stack.reverse 10 10) 3 = some digest := by
+    simpa using digestEq
+  rw [JointSourceChecks.legacyDigest_single_bug functions tx selected
+    (CoreMultisigSourceScan.deletedScript
+      (DynamicCheckedCertificate.wire lock)
+      beforeSlots.stack.reverse 10 10) 3 inputValid (by decide)
+    outputMissing] at digestEq'
+  have sameDigest : LegacySighashWire.singleBugDigest = digest :=
+    Option.some.inj digestEq'
+  rw [← sameDigest] at verified
+  exact ⟨id, key, slot, keyAt, der, keyValid, inputValid, verified⟩
+
 /-- The tenth reached final CHECKMULTISIG pair checks the lock-pushed nonce
 under the selected transaction's exact ALL preimage whenever that nonce ends
 in the builder's `0x01` flag. The key and ECDSA verdict still come from the

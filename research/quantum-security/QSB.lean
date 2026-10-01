@@ -982,6 +982,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicWholeSource.accepted_whole_final_nonce_slot
 #print axioms QSB.DynamicWholeSource.accepted_whole_late_puzzle_final_key
 #print axioms QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions
+#print axioms QSB.DynamicWholeSource.accepted_whole_good_setup_nine_reached_slots
 #print axioms QSB.DynamicWireSource.full_chunks_simple
 #print axioms QSB.DynamicWireSource.full_chunks_decode
 #print axioms QSB.DynamicWireSource.full_wire_decodes
@@ -1022,9 +1023,12 @@ import QSB.Reduction
 #print axioms QSB.DynamicCheckedCertificate.search_late_puzzle_final_key_der
 #print axioms QSB.DynamicCheckedCertificate.search_early_puzzle_pin_key_der
 #print axioms QSB.DynamicCheckedCertificate.search_good_setup_nine_positions
+#print axioms QSB.DynamicCheckedCertificate.search_good_setup_reached_final_slots
+#print axioms QSB.DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures
 #print axioms QSB.DynamicJointTransaction.search_reached_pin_joint_call
 #print axioms QSB.DynamicJointTransaction.search_fixed_pin_all_call
 #print axioms QSB.DynamicJointTransaction.search_reached_final_joint_calls
+#print axioms QSB.DynamicJointTransaction.search_good_setup_nine_single_bug_calls
 #print axioms QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call
 #print axioms QSB.DynamicJointTransaction.search_final_nonce_joint_hit
 #print axioms QSB.DynamicJointTransaction.search_two_key_joint_hit

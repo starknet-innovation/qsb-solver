@@ -129,6 +129,11 @@ the Python-to-Lean universal equality remains open.
 cases and checks source-shaped signature evaluations at the reached stacks.
 A returned certificate implies the good-setup nine-position result, while
 compiled-Core acceptance and the verifier implementation remain unproved.
+The reached-slot theorem also identifies all nine source-addressed dummy
+signatures under that good-setup premise. For an existing selected input past
+the final output, `QSB/DynamicJointTransaction.lean` proves that their nine
+external ECDSA calls use the raw constant SINGLE-bug digest; the tenth nonce
+call remains separate.
 `analysis/audit_builder_parametric.py` checks the pinned Python source's
 byte-value flow: variable commitments, dummies, and nonce bytes enter
 `_emit_round` only through data pushes, while suffix depths use stack labels.

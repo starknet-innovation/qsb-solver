@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,151 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,155 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -833,6 +833,16 @@ selected legacy hash type or the raw out-of-range SINGLE constant; a valid
 input index is necessary. This is conditional on finding the source
 certificate with the supplied key parser and ECDSA predicate. It is not a
 compiled-Core acceptance implication or a quantum success bound.
+The good-setup extractor now retains the *reached signature cells*, rather
+than only nine selected commitment positions. With no DER-shaped second-round
+commitment, the first nine actual source-addressed final signatures are
+generated `0x03` dummies. The transaction theorem then proves that whenever
+the selected input exists and its index is at least the output count, each of
+their nine external ECDSA calls receives the raw `01 00…00` SINGLE-bug digest.
+This applies to the three-input/two-output layout observed in the pinned Core
+experiment, but remains a source-model implication. It does not remove the
+fixed nonce's separate ALL commitment or prove that a real arbitrary witness
+produces the checked certificate.
 `QSB/DynamicCheckedCertificate.search_complete` proves the other direction
 of the executable certificate boundary: if either first-round Boolean has a
 truthy structural run satisfying the reached source checks, the two-candidate

@@ -415,6 +415,14 @@ explicit for the parameterized lock. The certificate and checker remain source-m
 premises. These modules have no random-oracle sampling or quantum-query
 semantics; the query-success theorem still needs a game over those same
 functions and their adaptive disclosures.
+On a good setup with no DER-shaped second-round commitment,
+`QSB/DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures`
+identifies the first nine *reached source-addressed signature cells* as
+generated `0x03` dummies. If the selected input index is past the final
+output, `QSB/DynamicJointTransaction.search_good_setup_nine_single_bug_calls`
+forces their nine external ECDSA calls to use the constant raw SINGLE-bug
+digest. This is conditional on the same returned source certificate and does
+not assign any probability to the event.
 `QSB/JointOracleReduction.lean` places sampled `H` and `R` in each measured
 world and uses one unsplit event bound. It does not yet specify a quantum
 algorithm or count coherent oracle calls; a query theorem must target that

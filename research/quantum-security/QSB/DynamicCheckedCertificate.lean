@@ -810,4 +810,146 @@ theorem search_good_setup_nine_positions (hashes : Hashes) (lock : Lock)
     parsed runEq (CoreFinalChecksigEval.checker validKey verify)
     sourceEval noCommitmentDER
 
+/-- A good-setup certificate fixes the actual first nine signature cells at
+the reached source-shaped final CHECKMULTISIG. The seven trace-derived cells
+are kept in their scan order; the tenth cell is handled separately by
+`search_final_fixed_nonce_slot`. -/
+theorem search_good_setup_reached_final_slots (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : search hashes lock stack validKey verify =
+      some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (beforeCheck : CoreOpcodeStep.State),
+      CoreStructuralRun.run hashes (beforeFinalProgram lock)
+        (initial stack firstRound) = some beforeCheck ∧
+      beforeCheck.stack.reverse[12]? =
+        some (FinalSignedLoop.generatedDummyAt b) ∧
+      beforeCheck.stack.reverse[13]? =
+        some (FinalSignedLoop.generatedDummyAt a) ∧
+      (∀ j : Nat, j < 7 → beforeCheck.stack.reverse[j + 14]? =
+        (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[j]?) ∧
+      beforeCheck.stack.reverse[21]? = some lock.nonce1 ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace, hashes.h160 p.2 = lock.secondCommitment p.1) ∧
+      (a :: b :: trace.map Prod.fst).Nodup := by
+  obtain ⟨fullRun, _truth, _sites, checked⟩ :=
+    search_sound hashes lock stack validKey verify firstRound final found
+  obtain ⟨beforeCheck, reached, finalEval⟩ :=
+    final_checked_sound hashes lock stack validKey verify firstRound checked
+  let initialByte : State :=
+    ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩
+  obtain ⟨byteFinal, byteAccepted, _finalShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (program lock)
+      initialByte final (by simpa [initial, initialByte] using fullRun)
+  obtain ⟨byteBefore, byteReached, sourceBeforeShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes (beforeFinalProgram lock)
+      initialByte beforeCheck (by simpa [initial, initialByte] using reached)
+  have byteEval : ∀ before : State,
+      run hashes (beforeFinalProgram lock) initialByte = some before →
+      CoreMultisigEval.finalTenEval (wire lock)
+        (CoreFinalChecksigEval.checker validKey verify)
+        before.stack = some true := by
+    intro before h
+    have same : before = byteBefore :=
+      Option.some.inj (h.symm.trans byteReached)
+    subst before
+    simpa [sourceBeforeShape, CoreOpcodeStep.ofByte] using finalEval
+  obtain ⟨trace, a, b, modelBefore, modelReached, slotB, slotA,
+    signed, nonceSlot, seven, hits, distinct⟩ :=
+    DynamicWholeSource.accepted_whole_good_setup_nine_reached_slots
+      hashes
+      (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+        lock.firstCommitment) lock.nonce1 lock.secondCommitment
+      secondWidth initialByte byteFinal
+      (by simpa [program] using byteAccepted)
+      (wire lock) (CoreFinalChecksigEval.checker validKey verify)
+      (by simpa [beforeFinalProgram] using byteEval) noCommitmentDER
+  have same : modelBefore = byteBefore :=
+    Option.some.inj (modelReached.symm.trans
+      (by simpa [beforeFinalProgram] using byteReached))
+  subst modelBefore
+  have sourceB : beforeCheck.stack.reverse[12]? =
+      some (FinalSignedLoop.generatedDummyAt b) := by
+    rw [sourceBeforeShape]
+    simpa [CoreOpcodeStep.ofByte] using slotB
+  have sourceA : beforeCheck.stack.reverse[13]? =
+      some (FinalSignedLoop.generatedDummyAt a) := by
+    rw [sourceBeforeShape]
+    simpa [CoreOpcodeStep.ofByte] using slotA
+  have sourceSigned : ∀ j : Nat, j < 7 →
+      beforeCheck.stack.reverse[j + 14]? =
+        (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[j]? := by
+    intro j within
+    rw [sourceBeforeShape]
+    simpa [CoreOpcodeStep.ofByte] using signed j within
+  have sourceNonce : beforeCheck.stack.reverse[21]? = some lock.nonce1 := by
+    rw [sourceBeforeShape]
+    simpa [CoreOpcodeStep.ofByte] using nonceSlot
+  exact ⟨trace, a, b, beforeCheck, reached, sourceB, sourceA,
+    sourceSigned, sourceNonce, seven, hits, distinct⟩
+
+/-- On a good setup, all nine source-addressed signature bytes before the
+fixed final nonce are generated `SIGHASH_SINGLE` dummies. This identifies
+the actual cells read by the final ten-pair scan, not merely nine selected
+commitment indices. -/
+theorem search_good_setup_nine_dummy_signatures (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : search hashes lock stack validKey verify =
+      some (firstRound, final))
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false) :
+    ∃ beforeCheck : CoreOpcodeStep.State,
+      CoreStructuralRun.run hashes (beforeFinalProgram lock)
+        (initial stack firstRound) = some beforeCheck ∧
+      ∀ j : Fin 9, ∃ id : Fin 150,
+        CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+          some (FinalSignedLoop.generatedDummyAt id) := by
+  obtain ⟨trace, a, b, beforeCheck, reached, slotB, slotA,
+    signed, nonceSlot, seven, _hits, _distinct⟩ :=
+    search_good_setup_reached_final_slots hashes lock stack validKey verify
+      firstRound final found secondWidth noCommitmentDER
+  have enough : 22 ≤ beforeCheck.stack.reverse.length := by
+    obtain ⟨within, _⟩ := List.getElem?_eq_some_iff.mp nonceSlot
+    omega
+  refine ⟨beforeCheck, reached, ?_⟩
+  intro j
+  have address : CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+      beforeCheck.stack.reverse[12 + j.val]? := by
+    simpa using CoreMultisigStack.final_signature_slot
+      beforeCheck.stack.reverse j.val (by omega)
+  by_cases zero : j.val = 0
+  · exact ⟨b, address.trans (by simpa [zero] using slotB)⟩
+  by_cases one : j.val = 1
+  · exact ⟨a, address.trans (by simpa [one] using slotA)⟩
+  let k := j.val - 2
+  have kBound : k < 7 := by dsimp [k]; omega
+  let ids := (trace.map Prod.fst).reverse
+  have idsLength : ids.length = 7 := by simp [ids, seven]
+  have kWithin : k < ids.length := by omega
+  have mapEq :
+      (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse =
+        ids.map FinalSignedLoop.generatedDummyAt := by
+    simp [ids, List.map_reverse, List.map_map]
+  have dummyAt :
+      (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[k]? =
+        some (FinalSignedLoop.generatedDummyAt ids[k]) := by
+    rw [mapEq]
+    simp [kWithin]
+  refine ⟨ids[k], ?_⟩
+  calc
+    CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
+        beforeCheck.stack.reverse[12 + j.val]? := address
+    _ = beforeCheck.stack.reverse[k + 14]? := by congr 1; dsimp [k]; omega
+    _ = (trace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[k]? :=
+          signed k kBound
+    _ = some (FinalSignedLoop.generatedDummyAt ids[k]) := dummyAt
+
 end QSB.DynamicCheckedCertificate

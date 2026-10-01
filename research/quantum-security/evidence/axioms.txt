@@ -1039,6 +1039,9 @@
 'QSB.DynamicWholeSource.accepted_whole_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicWholeSource.accepted_whole_good_setup_nine_reached_slots' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicWireSource.full_chunks_simple' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWireSource.full_chunks_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicWireSource.full_wire_decodes' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1093,9 +1096,18 @@
 'QSB.DynamicCheckedCertificate.search_good_setup_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicCheckedCertificate.search_good_setup_reached_final_slots' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicCheckedCertificate.search_good_setup_nine_dummy_signatures' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicJointTransaction.search_reached_pin_joint_call' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicJointTransaction.search_fixed_pin_all_call' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicJointTransaction.search_reached_final_joint_calls' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicJointTransaction.search_good_setup_nine_single_bug_calls' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicJointTransaction.search_fixed_final_nonce_all_call' depends on axioms: [propext,
