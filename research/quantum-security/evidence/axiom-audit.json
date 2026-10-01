@@ -1,5 +1,5 @@
 {
-  "theorem_count": 814,
+  "theorem_count": 824,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -923,6 +923,50 @@
     ],
     "QSB.DERHeaderBound.target_second_header": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.assemble_classify": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.classify_assemble": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.positiveHead_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.protectedHead_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.validLong_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.validShort_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.valid_der_r_long": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.valid_der_r_short": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.valid_der_s_long": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DERIntegerCount.valid_der_s_short": [
       "Quot.sound",
       "propext"
     ],

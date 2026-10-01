@@ -312,6 +312,13 @@ this predicate. A proof that this Lean predicate equals Core's compiled parser
 for every byte string, and a count of its entire 20-byte accepted set, remain
 open; the earlier `390405/2^65` figure is still conditional on that count
 correspondence.
+`QSB/DERIntegerCount.lean` now proves the integer-field part of that count:
+the one-byte case has 128 encodings, and every longer length has exactly the
+positive-first-byte and sign-protected-leading-zero counts used by
+`derIntegerCount`. It also derives the corresponding R/S prefix constraints
+from `DERSyntax.valid`. The remaining step is a dependent length-pair
+decomposition of complete 20-byte signatures; the exact target-set count is
+still unproved.
 Core's `CheckSignatureEncoding` permits the empty signature as an invalid-check
 placeholder under the pinned `VERIFY_ALL` flags. Lean now models that encoding
 gate separately and proves that it equals strict DER on nonempty inputs.

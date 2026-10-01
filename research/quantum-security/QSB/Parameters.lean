@@ -60,7 +60,8 @@ def derIntegerCount : Nat → Nat
 
 /-- Count by the 24 possible nonempty integer-length pairs summing to 25,
 multiplied by the 256 unconstrained sighash bytes. The combinatorial expression
-is explicit; a bijection with a formal BIP66 parser has not yet been proved. -/
+is explicit. `DERIntegerCount` now proves the count of each individual integer
+field; the length-pair decomposition of the complete parser target is open. -/
 def der32Count : Nat :=
   ((List.range 24).map (fun i => derIntegerCount (i + 1) * derIntegerCount (24 - i))).sum * 256
 
@@ -81,7 +82,9 @@ theorem der32_count_ratio :
 /-- The analogous syntactic count for a 20-byte commitment that is also a
 strict DER-encoded signature with one trailing sighash byte. This is relevant
 to bonus-index overshoot; it is not a proof that a real HASH160 output is random
-or that a DER-shaped value yields an accepted CHECKMULTISIG witness. -/
+or that a DER-shaped value yields an accepted CHECKMULTISIG witness. The
+individual integer-field counts are now checked in `DERIntegerCount`, while
+the full 20-byte target-set cardinality remains unproved. -/
 def der20Count : Nat :=
   ((List.range 12).map (fun i => derIntegerCount (i + 1) * derIntegerCount (12 - i))).sum * 256
 
