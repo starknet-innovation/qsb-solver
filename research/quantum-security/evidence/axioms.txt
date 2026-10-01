@@ -867,6 +867,34 @@
 'QSB.DynamicSignedChain.accepted_all_signed_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicSignedChain.literal_data_and_signed_program' depends on axioms: [propext]
 'QSB.DynamicSignedChain.accepted_data_and_signed_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.accepted_first_bonus_fixed_raw_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.accepted_first_bonus_prelude_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.first_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.accepted_first_bonus_reached' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusFirst.accepted_data_signed_first_bonus' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.first_dummy_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.first_commitment_roll_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.second_source_after_first_dummy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.second_source_after_first_commitment' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicBonusSecond.second_bonus_source_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.accepted_second_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusSecond.accepted_bonus_two_roll_shallow_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicBonusSecond.seven_signed_bonus_sources_nonempty' depends on axioms: [propext, Quot.sound]
+'QSB.DynamicBonusSecond.signed_front_origins' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusTrace.accepted_bonus_suffix_source_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusChain.literal_final_check_prefix' depends on axioms: [propext]
+'QSB.DynamicBonusChain.final_round_program_eq' depends on axioms: [propext]
+'QSB.DynamicBonusChain.accepted_data_signed_bonus_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicBonusChain.accepted_postbonus_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicBonusChain.accepted_data_signed_final_signature_origins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicBonusDER.accepted_dynamic_bonus_der_alternative' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_roll_selected_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_source_role' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 944,
+  "theorem_count": 966,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1165,6 +1165,110 @@
       "propext"
     ],
     "QSB.DERSyntax.wrong_sequence_length_rejected": [
+      "propext"
+    ],
+    "QSB.DynamicBonusChain.accepted_data_signed_bonus_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusChain.accepted_data_signed_final_signature_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusChain.accepted_postbonus_final_signature_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusChain.final_round_program_eq": [
+      "propext"
+    ],
+    "QSB.DynamicBonusChain.literal_final_check_prefix": [
+      "propext"
+    ],
+    "QSB.DynamicBonusDER.accepted_dynamic_bonus_der_alternative": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.accepted_data_signed_first_bonus": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.accepted_first_bonus_fixed_raw_pair": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.accepted_first_bonus_prelude_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.accepted_first_bonus_reached": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.accepted_first_bonus_source_role": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusFirst.first_bonus_source_map": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.accepted_bonus_two_roll_shallow_origin": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.accepted_second_bonus_source_role": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.first_commitment_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.first_dummy_roll_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.second_bonus_source_map": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.second_source_after_first_commitment": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.second_source_after_first_dummy": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.seven_signed_bonus_sources_nonempty": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusSecond.signed_front_origins": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicBonusTrace.accepted_bonus_suffix_source_trace": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.DynamicFinalInit.accepted_data_shape": [

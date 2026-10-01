@@ -53,6 +53,11 @@ import QSB.DynamicFinalInit
 import QSB.DynamicSignedSource
 import QSB.DynamicSignedTransition
 import QSB.DynamicSignedChain
+import QSB.DynamicBonusFirst
+import QSB.DynamicBonusSecond
+import QSB.DynamicBonusTrace
+import QSB.DynamicBonusChain
+import QSB.DynamicBonusDER
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -813,6 +818,28 @@ import QSB.Reduction
 #print axioms QSB.DynamicSignedChain.accepted_all_signed_blocks
 #print axioms QSB.DynamicSignedChain.literal_data_and_signed_program
 #print axioms QSB.DynamicSignedChain.accepted_data_and_signed_openings
+#print axioms QSB.DynamicBonusFirst.accepted_first_bonus_fixed_raw_pair
+#print axioms QSB.DynamicBonusFirst.accepted_first_bonus_prelude_exact
+#print axioms QSB.DynamicBonusFirst.first_bonus_source_map
+#print axioms QSB.DynamicBonusFirst.accepted_first_bonus_source_role
+#print axioms QSB.DynamicBonusFirst.accepted_first_bonus_reached
+#print axioms QSB.DynamicBonusFirst.accepted_data_signed_first_bonus
+#print axioms QSB.DynamicBonusSecond.first_dummy_roll_shape
+#print axioms QSB.DynamicBonusSecond.first_commitment_roll_shape
+#print axioms QSB.DynamicBonusSecond.second_source_after_first_dummy
+#print axioms QSB.DynamicBonusSecond.second_source_after_first_commitment
+#print axioms QSB.DynamicBonusSecond.second_bonus_source_map
+#print axioms QSB.DynamicBonusSecond.accepted_second_bonus_source_role
+#print axioms QSB.DynamicBonusSecond.accepted_bonus_two_roll_shallow_origin
+#print axioms QSB.DynamicBonusSecond.seven_signed_bonus_sources_nonempty
+#print axioms QSB.DynamicBonusSecond.signed_front_origins
+#print axioms QSB.DynamicBonusTrace.accepted_bonus_suffix_source_trace
+#print axioms QSB.DynamicBonusChain.literal_final_check_prefix
+#print axioms QSB.DynamicBonusChain.final_round_program_eq
+#print axioms QSB.DynamicBonusChain.accepted_data_signed_bonus_trace
+#print axioms QSB.DynamicBonusChain.accepted_postbonus_final_signature_origins
+#print axioms QSB.DynamicBonusChain.accepted_data_signed_final_signature_origins
+#print axioms QSB.DynamicBonusDER.accepted_dynamic_bonus_der_alternative
 #print axioms QSB.FinalBonusAccepted.accepted_roll_selected_source
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_source_role
 #print axioms QSB.FinalBonusAccepted.accepted_first_bonus_prelude_sources

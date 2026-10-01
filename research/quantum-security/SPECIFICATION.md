@@ -209,17 +209,18 @@ map: aligned residual pool positions and the two bonus slot equations imply
 that any commitment-selection branch is a syntax hit at an unopened position.
 For outputs of one uniformly sampled twenty-byte function `R`, independent of
 the material selecting its 150 inputs, a checked shared-function count bounds
-the DER setup-hit fraction by `150·12/256^6`. A dynamic script execution must
-still supply that aligned boundary, and Core acceptance must still imply its
-matched signature scan; neither is supplied by the count theorem.
+the DER setup-hit fraction by `150·12/256^6`. The parameterized byte-model
+execution below now supplies the aligned boundary; universal builder-to-model
+correspondence and Core acceptance implying its matched signature scan are
+still separate obligations. Neither is supplied by the count theorem.
 The parameterized second-round data block in `DynamicFinalInit` supplies the
 first such execution boundary for arbitrary commitment and nonce bytes: every
 successful modeled block has the intended stack order and initially aligned
 pools. The literal block is its exact specialization. A three-build
 pinned-builder check corroborates push order and the unchanged post-data
 opcode suffix across two setups and a 20-byte final nonce. The seven signed
-selections have now been lifted through that parameterized suffix; the bonus
-source trace and universal builder-to-model correspondence remain open.
+selections and both bonus source traces have now been lifted through that
+parameterized suffix; universal builder-to-model correspondence remains open.
 At one reached signed comparison, the parameterized source classifier gives a
 current commitment with its original pool position whenever the nonce bytes
 are not 20 bytes. Without that width premise, a shallow selection can instead
@@ -246,8 +247,18 @@ pushes to the first 315 literal instructions, success forces an
 original-position commitment opening even with a 20-byte nonce. The exact
 dynamic pool-transition induction now covers all seven blocks and returns the
 same executable opening and residual-position traces as the literal proof.
-It has not yet been carried through the bonus, puzzle, and multisignature
-suffix or refined to compiled Core acceptance.
+`DynamicBonusFirst`, `DynamicBonusSecond`, `DynamicBonusTrace`, and
+`DynamicBonusChain` carry the aligned pool through both reached bonus draws
+and the late-puzzle stack rearrangement. Successful parameterized byte-model
+execution places the bonus bytes in final signature slots 12 and 13, the
+seven gathered dummies in slots 14–20, the arbitrary nonce in slot 21, and
+the empty dummy in slot 22. A bonus index at 152 selects a commitment at an
+original position outside the seven openings. With an explicit successful
+DER-sound ten-pair scan, `DynamicBonusDER` proves that both bonus draws stay
+in the dummy region or an unopened commitment passes DER syntax. The latter
+is a setup exception, not a quantum spend bound. Compiled-Core acceptance,
+checker refinement, universal builder correspondence, and transaction-level
+extraction remain open.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine
