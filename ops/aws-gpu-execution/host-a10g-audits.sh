@@ -15,7 +15,7 @@ sha256sum -c SHA256SUMS
 mkdir "$results"
 # Persist before image setup; never repeat this host operation after uncertainty.
 printf '%s\n' "$deadline" > "$results/deadline.txt"
-image=ghcr.io/starknet-innovation/qsb-solver@sha256:c05d39a303971baaca6908b19427158d0428963f16b57c5e823432b50ddf307b
+image=ghcr.io/starknet-innovation/qsb-solver@sha256:90dedfe09bc8e3ff506dbd2a8c9ef616bfff5635354efa0a68bab2b936964522
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image"
 [ "$((deadline-$(date -u +%s)))" -ge 780 ]
 nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader > "$results/gpu.txt"
