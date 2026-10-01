@@ -8,7 +8,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ARG CUDA_ARCH=89
 RUN CUDA_ARCH=${CUDA_ARCH} python3 /src/worker/optimized/build.py
 FROM nvidia/cuda:12.8.1-runtime-ubuntu22.04@sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends python3 libssl3 && rm -rf /var/lib/apt/lists/*
+# Same Ubuntu-only update as worker/Dockerfile: the pinned CUDA user-space packages stay unchanged.
+RUN apt-get -o Dir::Etc::SourceParts=/nonexistent update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -o Dir::Etc::SourceParts=/nonexistent upgrade -y \
+ && apt-get -o Dir::Etc::SourceParts=/nonexistent install -y --no-install-recommends python3 libssl3 \
+ && rm -rf /var/lib/apt/lists/*
 COPY --from=build /opt/qsb-validation /opt/qsb-validation
 # Preserve GPL terms referenced by GPUMath/GPUHash as well as the top-level Apache license.
 COPY vendor/challenge/candidates/subset/COPYING /opt/qsb-validation/licenses/subset-COPYING

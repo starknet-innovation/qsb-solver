@@ -37,6 +37,17 @@ jobs:
           tags: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
           provenance: mode=max
           sbom: true
+      # Scans the exact pushed digest. A failure leaves that tag unattested, with no
+      # descriptor or release, so consumers cannot enroll it.
+      - name: Scan published digest (fails on critical findings with a fix)
+        env:
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+        run: python3 scripts/image_scan.py "registry:ghcr.io/starknet-innovation/qsb-solver@$IMAGE_DIGEST" image-scan
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() }}
+        with:
+          name: image-scan
+          path: image-scan/
       - name: Attest image
         uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
         with:
@@ -51,4 +62,4 @@ jobs:
       - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" release-output/solver.json contracts/ranked-v2.json --verify-tag --title "$GITHUB_REF_NAME" --notes "Historical solver image, digest and provenance. Independent app CPU verification remains required. No mainnet activation."
+        run: gh release create "$GITHUB_REF_NAME" release-output/solver.json contracts/ranked-v2.json image-scan/image-scan.json --verify-tag --title "$GITHUB_REF_NAME" --notes "Historical solver image, digest and provenance. Independent app CPU verification remains required. No mainnet activation."

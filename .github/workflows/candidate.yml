@@ -42,6 +42,15 @@ jobs:
             --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t "$IMAGE" .
           python3 worker/promotion/test_image.py "$IMAGE"
           if [ "$TRANSPORT" = aws ]; then python3 worker/promotion/test_aws_image.py "$IMAGE"; fi
+      - name: Scan before push (fails on critical findings with a fix)
+        env:
+          IMAGE: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
+        run: python3 scripts/image_scan.py "docker:$IMAGE" image-scan
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() }}
+        with:
+          name: image-scan
+          path: image-scan/
       - name: Publish candidate and extract actual binding
         id: publish
         env:
@@ -63,6 +72,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" candidate-output/* contracts/ranked-v2.json \
+          gh release create "$GITHUB_REF_NAME" candidate-output/* contracts/ranked-v2.json image-scan/image-scan.json \
             --verify-tag --prerelease --title "$GITHUB_REF_NAME" \
             --notes 'HOLD: combined host-repaired pinning and optimized subset candidate. No automatic promotion: evidence must bind this exact image and binaries; native regression, independent CPU differential, source review and matched A10G performance evidence are required. No app enrollment or mainnet activation.'
