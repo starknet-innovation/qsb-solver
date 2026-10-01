@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1045,
+  "theorem_count": 1052,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1291,11 +1291,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicCheckedCertificate.accepted_early_puzzle_from_pin_state": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicCheckedCertificate.candidate_sound": [
       "Quot.sound",
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.final_checked_sound": [
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.first_five_opcodes": [
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.first_five_split": [
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.first_two_opcodes": [
@@ -1308,6 +1319,16 @@
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.reached_pin_fixed_signature": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.reached_pin_stack_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.search_early_puzzle_pin_key_der": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -1329,6 +1350,9 @@
     ],
     "QSB.DynamicCheckedCertificate.search_sound": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicCheckedCertificate.source_sites_early": [
       "propext"
     ],
     "QSB.DynamicCheckedCertificate.source_sites_late": [
@@ -1473,6 +1497,11 @@
       "propext"
     ],
     "QSB.DynamicJointTransaction.search_reached_pin_joint_call": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicJointTransaction.search_two_key_joint_hit": [
       "Classical.choice",
       "Quot.sound",
       "propext"

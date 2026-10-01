@@ -383,6 +383,77 @@ theorem search_final_nonce_joint_hit
   exact ⟨beforeLate, beforeFromNonce, key, lateReached, nonceReached,
     puzzleSig, nonceSlot, nonceKeyAt, derHit, inputValid, verified⟩
 
+/-- Both correlated hash-to-DER puzzles and both fixed-signature ALL calls
+come from the same checked source certificate. The keys may be equal; this
+statement makes no independence or quantum success claim. -/
+theorem search_two_key_joint_hit
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (pinAll : lock.pin.getLast? = some 0x01)
+    (nonceAll : lock.nonce1.getLast? = some 0x01) :
+    ∃ (pinKey finalKey : Bytes)
+      (beforePin beforeCheck : CoreOpcodeStep.State),
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 2)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforePin ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      reachedPinSignature beforePin = lock.pin ∧
+      reachedPinKey beforePin = pinKey ∧
+      CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        some lock.nonce1 ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some finalKey ∧
+      DERSyntax.valid (functions.H pinKey) = true ∧
+      DERSyntax.valid (functions.H finalKey) = true ∧
+      selected < tx.inputs.length ∧
+      ecdsa lock.pin.dropLast pinKey
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (reachedPinScriptCode lock beforePin)))) = true ∧
+      ecdsa lock.nonce1.dropLast finalKey
+        (functions.H (functions.H
+          (SighashAllWire.sourceAllPreimage tx selected
+            (CoreMultisigSourceScan.deletedScript
+              (DynamicCheckedCertificate.wire lock)
+              beforeCheck.stack.reverse 10 10)))) = true := by
+  obtain ⟨pinKey, beforeFromPuzzle, _beforeEarly,
+    puzzleReached, _earlyReached, pinKeyAt, _puzzleSig, pinDER⟩ :=
+    DynamicCheckedCertificate.search_early_puzzle_pin_key_der
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa)
+      firstRound final found
+  obtain ⟨beforeFromPin, pinReached, fixedPin, _pinDer,
+    _pinValid, pinVerified⟩ :=
+    search_fixed_pin_all_call functions tx selected lock stack
+      validKey ecdsa firstRound final found pinAll
+  have samePin : beforeFromPuzzle = beforeFromPin :=
+    Option.some.inj (puzzleReached.symm.trans pinReached)
+  subst beforeFromPuzzle
+  have reachedKey : reachedPinKey beforeFromPin = pinKey := by
+    simpa [reachedPinKey] using
+      congrArg (fun value : Option Bytes => value.getD []) pinKeyAt
+  obtain ⟨_beforeLate, beforeCheck, finalKey, _lateReached,
+    checkReached, _puzzleSig, nonceSlot, finalKeyAt, finalDER,
+    inputValid, finalVerified⟩ :=
+    search_final_nonce_joint_hit functions tx selected lock secondWidth
+      stack validKey ecdsa firstRound final found nonceAll
+  rw [reachedKey] at pinVerified
+  exact ⟨pinKey, finalKey, beforeFromPin, beforeCheck, pinReached,
+    checkReached, fixedPin, reachedKey, nonceSlot, finalKeyAt,
+    pinDER, finalDER, inputValid, pinVerified, finalVerified⟩
+
 /-- On a good setup, the same checked source certificate supplies all seven
 `R(H(opening))` equations and the correlated final `H(key)`/`H(H(ALL))`
 puzzle. The trace is read from the actual modeled witness. This is the

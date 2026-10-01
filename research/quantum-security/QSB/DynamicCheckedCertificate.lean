@@ -47,6 +47,73 @@ theorem first_two_opcodes (lock : Lock) :
   simp [program, DynamicWholeSource.fullProgram,
     DynamicFullSerialized.priorOps, DynamicFullSerialized.pinOps, fixed]
 
+theorem first_five_opcodes (lock : Lock) :
+    (program lock).take 5 =
+      [.push lock.pin, .over, .checksigverify, .sha256, .swap] := by
+  have fixed : DynamicFullSerialized.staticOps 1 5 =
+      [.over, .checksigverify, .sha256, .swap, .checksigverify] := by
+    decide
+  simp [program, DynamicWholeSource.fullProgram,
+    DynamicFullSerialized.priorOps, DynamicFullSerialized.pinOps, fixed]
+
+theorem first_five_split (lock : Lock) :
+    (program lock).take 5 =
+      (program lock).take 2 ++ [.checksigverify, .sha256, .swap] := by
+  rw [first_five_opcodes, first_two_opcodes]
+  rfl
+
+/-- The exact three instructions after the pin site hash the duplicated pin
+key and put that hash in the next CHECKSIGVERIFY signature slot. -/
+theorem accepted_early_puzzle_from_pin_state (hashes : Hashes)
+    (pin key : Bytes) (tail : List Bytes) (firstRound : Bool)
+    (after : State)
+    (accepted : run hashes [.checksigverify, .sha256, .swap]
+      ⟨key :: pin :: key :: tail,
+        CoreCheckedCertificate.outcomes firstRound, 1⟩ = some after) :
+    after.stack[1]? = some (hashes.h256 key) := by
+  cases tail with
+  | nil =>
+      have first : step hashes .checksigverify
+          ⟨[key, pin, key], CoreCheckedCertificate.outcomes firstRound, 1⟩ =
+          some ⟨[key], [true, true, firstRound, true, true], 2⟩ := by rfl
+      have second : step hashes .sha256
+          ⟨[key], [true, true, firstRound, true, true], 2⟩ =
+          some ⟨[hashes.h256 key],
+            [true, true, firstRound, true, true], 3⟩ := by rfl
+      have third : step hashes .swap
+          ⟨[hashes.h256 key],
+            [true, true, firstRound, true, true], 3⟩ = none := by rfl
+      simp [run, first, second, third] at accepted
+  | cons puzzle rest =>
+      have first : step hashes .checksigverify
+          ⟨key :: pin :: key :: puzzle :: rest,
+            CoreCheckedCertificate.outcomes firstRound, 1⟩ =
+          some ⟨key :: puzzle :: rest,
+            [true, true, firstRound, true, true], 2⟩ := by rfl
+      have second : step hashes .sha256
+          ⟨key :: puzzle :: rest,
+            [true, true, firstRound, true, true], 2⟩ =
+          some ⟨hashes.h256 key :: puzzle :: rest,
+            [true, true, firstRound, true, true], 3⟩ := by rfl
+      have third : step hashes .swap
+          ⟨hashes.h256 key :: puzzle :: rest,
+            [true, true, firstRound, true, true], 3⟩ =
+          some ⟨puzzle :: hashes.h256 key :: rest,
+            [true, true, firstRound, true, true], 4⟩ := by rfl
+      by_cases large : rest.length + 2 > 1000
+      · simp [run, first, large] at accepted
+      · have shape : after =
+            ⟨puzzle :: hashes.h256 key :: rest,
+              [true, true, firstRound, true, true], 4⟩ := by
+          simpa [run, first, second, third, large,
+            show (key :: puzzle :: rest).length = rest.length + 2 by simp,
+            show (hashes.h256 key :: puzzle :: rest).length =
+              rest.length + 2 by simp,
+            show (puzzle :: hashes.h256 key :: rest).length =
+              rest.length + 2 by simp] using accepted.symm
+        subst after
+        rfl
+
 theorem prior_ops_length (lock : Lock) :
     (DynamicFullSerialized.priorOps lock.pin lock.nonce0
       lock.firstCommitment).length = 446 := by
@@ -94,14 +161,17 @@ theorem late_verify_prefix_opcodes (lock : Lock) :
   have taken := congrArg (List.take 856) split
   simpa [program, prefixLength] using taken
 
-/-- The first reached CHECKSIGVERIFY always reads the pin signature pushed
-by the parameterized lock, regardless of the scriptSig stack beneath it. -/
-theorem reached_pin_fixed_signature (hashes : Hashes) (lock : Lock)
+/-- Successful execution of the first two parameterized opcodes duplicates
+the first arbitrary witness key around the lock-pushed pin signature. -/
+theorem reached_pin_stack_shape (hashes : Hashes) (lock : Lock)
     (stack : List Bytes) (firstRound : Bool)
     (beforePin : CoreOpcodeStep.State)
     (reached : CoreStructuralRun.run hashes ((program lock).take 2)
       (initial stack firstRound) = some beforePin) :
-    beforePin.stack.reverse[1]? = some lock.pin := by
+    ∃ key tail, stack = key :: tail ∧
+      beforePin = CoreOpcodeStep.ofByte
+        ⟨key :: lock.pin :: key :: tail,
+          CoreCheckedCertificate.outcomes firstRound, 1⟩ := by
   obtain ⟨byteAfter, byteRun, shape⟩ :=
     CoreStructuralRun.run_refines_byte hashes ((program lock).take 2)
       ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩ beforePin
@@ -145,7 +215,19 @@ theorem reached_pin_fixed_signature (hashes : Hashes) (lock : Lock)
               simpa [ByteMachine.run, pushStep, overStep,
                 long, cap1, cap2] using byteRun.symm
             subst byteAfter
-            simp [CoreOpcodeStep.ofByte]
+            exact ⟨key, tail, rfl, rfl⟩
+
+/-- The first reached CHECKSIGVERIFY always reads the pin signature pushed
+by the parameterized lock, regardless of the scriptSig stack beneath it. -/
+theorem reached_pin_fixed_signature (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (firstRound : Bool)
+    (beforePin : CoreOpcodeStep.State)
+    (reached : CoreStructuralRun.run hashes ((program lock).take 2)
+      (initial stack firstRound) = some beforePin) :
+    beforePin.stack.reverse[1]? = some lock.pin := by
+  obtain ⟨key, tail, _stackShape, pinShape⟩ :=
+    reached_pin_stack_shape hashes lock stack firstRound beforePin reached
+  simp [pinShape, CoreOpcodeStep.ofByte]
 
 /-- Check that the six signature sites retain their Config A opcode roles
 despite parameterized data bytes. The individual source evaluators below are
@@ -242,6 +324,51 @@ theorem source_sites_pin (hashes : Hashes) (lock : Lock)
                         Bool.and_eq_true_eq_eq_true_and_eq_true,
                         decide_eq_true_eq] at all
                       exact ⟨beforePin, rfl, all.2.1⟩
+
+theorem source_sites_early (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) (firstRound : Bool)
+    (checked : sourceSites hashes lock stack validKey verify
+      firstRound = true) :
+    ∃ beforeEarly,
+      CoreStructuralRun.run hashes ((program lock).take 5)
+        (initial stack firstRound) = some beforeEarly ∧
+      CoreChecksigEval.evalBaseVerifyAll 880 (wire lock)
+        (beforeEarly.stack.reverse[1]?.getD [])
+        (beforeEarly.stack.reverse[0]?.getD [])
+        validKey verify = some true := by
+  unfold sourceSites at checked
+  cases pinEq : CoreStructuralRun.run hashes ((program lock).take 2)
+      (initial stack firstRound) with
+  | none => simp [pinEq] at checked
+  | some beforePin =>
+      cases earlyEq : CoreStructuralRun.run hashes ((program lock).take 5)
+          (initial stack firstRound) with
+      | none => simp [pinEq, earlyEq] at checked
+      | some beforeEarly =>
+          cases firstPuzzleEq : CoreStructuralRun.run hashes
+              ((program lock).take 423) (initial stack firstRound) with
+          | none => simp [pinEq, earlyEq, firstPuzzleEq] at checked
+          | some firstPuzzle =>
+              cases firstCheckEq : CoreStructuralRun.run hashes
+                  ((program lock).take 446)
+                  (initial stack firstRound) with
+              | none =>
+                  simp [pinEq, earlyEq, firstPuzzleEq, firstCheckEq] at checked
+              | some firstCheck =>
+                  cases lateEq : CoreStructuralRun.run hashes
+                      ((program lock).take 856)
+                      (initial stack firstRound) with
+                  | none =>
+                      simp [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq] at checked
+                  | some late =>
+                      have all := checked
+                      simp only [pinEq, earlyEq, firstPuzzleEq,
+                        firstCheckEq, lateEq,
+                        Bool.and_eq_true_eq_eq_true_and_eq_true,
+                        decide_eq_true_eq] at all
+                      exact ⟨beforeEarly, rfl, all.2.2.1⟩
 
 theorem source_sites_late (hashes : Hashes) (lock : Lock)
     (stack : List Bytes) (validKey : Bytes → Bool)
@@ -526,6 +653,61 @@ theorem search_late_puzzle_final_key_der (hashes : Hashes) (lock : Lock)
       validKey verify lateChecked
   exact ⟨key, beforeLate, beforeCheck, lateReached, checkReached,
     sourceSig, finalKey, der⟩
+
+/-- The early puzzle gates `H` of the exact reached pinning key. Its
+CHECKSIGVERIFY source-site success forces those hash bytes to be strict DER.
+The pin key originates in the arbitrary initial witness stack. -/
+theorem search_early_puzzle_pin_key_der (hashes : Hashes) (lock : Lock)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : search hashes lock stack validKey verify =
+      some (firstRound, final)) :
+    ∃ (key : Bytes) (beforePin beforeEarly : CoreOpcodeStep.State),
+      CoreStructuralRun.run hashes ((program lock).take 2)
+        (initial stack firstRound) = some beforePin ∧
+      CoreStructuralRun.run hashes ((program lock).take 5)
+        (initial stack firstRound) = some beforeEarly ∧
+      beforePin.stack.reverse[0]? = some key ∧
+      beforeEarly.stack.reverse[1]? = some (hashes.h256 key) ∧
+      DERSyntax.valid (hashes.h256 key) = true := by
+  obtain ⟨_fullRun, _truth, sites, _checked⟩ :=
+    search_sound hashes lock stack validKey verify firstRound final found
+  obtain ⟨beforePin, pinReached, _pinChecked⟩ :=
+    source_sites_pin hashes lock stack validKey verify firstRound sites
+  obtain ⟨beforeEarly, earlyReached, earlyChecked⟩ :=
+    source_sites_early hashes lock stack validKey verify firstRound sites
+  obtain ⟨key, tail, _stackShape, pinShape⟩ :=
+    reached_pin_stack_shape hashes lock stack firstRound beforePin pinReached
+  have suffixRun : CoreStructuralRun.run hashes
+      [.checksigverify, .sha256, .swap] beforePin =
+        some beforeEarly := by
+    rw [first_five_split, CoreStructuralRun.run_append,
+      pinReached] at earlyReached
+    simpa using earlyReached
+  obtain ⟨byteEarly, byteEarlyRun, earlyShape⟩ :=
+    CoreStructuralRun.run_refines_byte hashes
+      [.checksigverify, .sha256, .swap]
+      ⟨key :: lock.pin :: key :: tail,
+        CoreCheckedCertificate.outcomes firstRound, 1⟩
+      beforeEarly (by simpa [pinShape] using suffixRun)
+  have byteSig := accepted_early_puzzle_from_pin_state
+    hashes lock.pin key tail firstRound byteEarly byteEarlyRun
+  have sourceSig : beforeEarly.stack.reverse[1]? =
+      some (hashes.h256 key) := by
+    rw [earlyShape]
+    simpa [CoreOpcodeStep.ofByte] using byteSig
+  have pinKey : beforePin.stack.reverse[0]? = some key := by
+    simp [pinShape, CoreOpcodeStep.ofByte]
+  have actualSig : beforeEarly.stack.reverse[1]?.getD [] =
+      hashes.h256 key := by simp [sourceSig]
+  rw [actualSig] at earlyChecked
+  obtain ⟨_hashType, _last, der, _keyValid, _verified⟩ :=
+    CoreChecksigEval.successful_base_check 880 (wire lock)
+      (hashes.h256 key) (beforeEarly.stack.reverse[0]?.getD [])
+      validKey verify earlyChecked
+  exact ⟨key, beforePin, beforeEarly, pinReached, earlyReached,
+    pinKey, sourceSig, der⟩
 
 /-- A returned certificate yields the checked nine-position shape for the
 complete parameterized Lean serialization. Its source-level ECDSA verifier

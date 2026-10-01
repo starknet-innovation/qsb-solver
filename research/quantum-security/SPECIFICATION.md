@@ -400,8 +400,13 @@ certificate also supplies seven reached `R(H(opening)) = commitment` equations
 and nine distinct selected positions. The checked statement is
 `QSB/DynamicJointTransaction.search_good_setup_joint_final_event`. It is a
 deterministic event over the *same* `H` and `R`, with the key and final
-FindAndDelete scriptCode chosen by the witness. It does not yet include a
-parameterized pin-key puzzle relation or a coherent-query success bound.
+FindAndDelete scriptCode chosen by the witness. The corresponding pin-side
+source theorem now identifies the early puzzle signature as `H(pinKey)` for
+the reached fixed pin key, and forces those bytes to be strict DER.
+`QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
+with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
+the pin and final keys may coincide. These statements do not yet supply a
+coherent-query success bound or compiled-Core acceptance bridge.
 Public-key recovery means the nonce ECDSA condition alone is not a hash-search
 event; treating it as independent of the DER condition would misstate the
 problem.
