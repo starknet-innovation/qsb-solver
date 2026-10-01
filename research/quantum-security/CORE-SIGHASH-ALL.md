@@ -80,6 +80,40 @@ against the Lean-checked CompactSize boundary examples at 252, 253, 65,535,
 are in [wire-vectors.json](evidence/wire-vectors.json). The two 253-boundary
 transaction cases above additionally passed the pinned Core adapter.
 
+## Core's published sighash vectors
+
+`analysis/check_core_sighash_vectors.py` parses the pinned [Core 27.2 sighash
+vectors](https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/data/sighash.json)
+independently, constructs the complete legacy preimage, and compares its
+SHA256d to Core's expected digest. It also reconstructs each transaction with
+the pinned app serializer and compares that serializer's sighash. Core's
+[test harness](https://github.com/bitcoin/bitcoin/blob/v27.2/src/test/sighash_tests.cpp)
+generates 500 random cases and checks the new implementation against the old
+one before printing the vectors; its data test compares the published digest
+against `SignatureHash` in base sigversion.
+
+The [differential report](evidence/core-sighash-vectors.json) selects all 253
+vectors whose hash type takes the full-input/full-output ALL branch without
+ANYONECANPAY. All 253 expected digests matched both source-shaped calculations.
+Among these, 114 scripts contain an opcode-boundary `OP_CODESEPARATOR`, 181
+have multiple inputs, and 181 have multiple outputs. In this corpus the
+`scriptCode` generator emits only one-byte opcodes, so removing `0xab` is
+unambiguously opcode removal. No published vector uses the literal hash type
+`0x01`; its separate 13-case native fixture above exercises that exact value.
+The report pins the upstream JSON SHA-256 and the app source hash. Reproduce it
+from the repository root after downloading the linked JSON:
+
+```sh
+python3 research/quantum-security/analysis/check_core_sighash_vectors.py \
+  --vectors /path/to/bitcoin-core-v27.2-sighash.json \
+  --app-root /Users/adrienlacombe/ws/qsb-app \
+  --output research/quantum-security/evidence/core-sighash-vectors.json
+```
+
+These are finite checks of the serializer branch. They do not refine arbitrary
+Core transactions or prove that an accepted QSB witness reaches the modeled
+final nonce check with the selected `scriptCode`.
+
 Run the probe with the pinned app, native adapter, and image recorded in the
 evidence file:
 

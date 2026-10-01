@@ -181,6 +181,15 @@ the pinned app; all match the corresponding kernel-checked Lean examples,
 including the 253, 65,536, and `2^32` branch boundaries. This is finite
 cross-checking of the concrete encoders, not a C++ equivalence theorem.
 
+`core-sighash-vectors.json` records a differential check against Core 27.2's
+published legacy sighash corpus. All 253 cases using the full-input,
+full-output ALL serializer branch without ANYONECANPAY matched independent
+source-shaped preimage hashing and the pinned app's sighash. Of these, 114
+contain opcode-boundary `OP_CODESEPARATOR`; Core's simple-script generator
+makes that removal unambiguous. The published corpus has no literal `0x01`
+hash type; the separate native 13-case probe tests that exact type. Neither
+finite check proves Core-to-Lean equivalence for arbitrary accepted witnesses.
+
 `der20-parser.json` records 73 isolated Core 27.2 `CHECKSIG; DROP; TRUE`
 cases against the same pinned consensus library and `VERIFY_ALL` flags. The
 script discards the ECDSA Boolean, so a nonempty malformed DER signature aborts
