@@ -287,6 +287,10 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedCertificate.search_fixed_all_calls
 #print axioms QSB.PinPuzzleScriptCode.successful_puzzle_gate
 #print axioms QSB.WireIntegers.compact_253
+#print axioms QSB.WireIntegers.fixedLE_decode_sound
+#print axioms QSB.WireIntegers.compactSizeDecode_sound
+#print axioms QSB.WireIntegers.compact_noncanonical_16_rejected
+#print axioms QSB.WireIntegers.compact_noncanonical_32_rejected
 #print axioms QSB.WireIntegers.compact_65535
 #print axioms QSB.WireIntegers.compact_65536
 #print axioms QSB.WireIntegers.compact_2pow32

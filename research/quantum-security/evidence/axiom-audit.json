@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1167,
+  "theorem_count": 1171,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4398,6 +4398,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireIntegers.compactSizeDecode_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.compactSize_roundtrip": [
       "Classical.choice",
       "Quot.sound",
@@ -4428,7 +4433,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.WireIntegers.compact_noncanonical_16_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WireIntegers.compact_noncanonical_32_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.WireIntegers.coreSingleBug_rawDigest_readBE": [
+      "propext"
+    ],
+    "QSB.WireIntegers.fixedLE_decode_sound": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.WireIntegers.leBytes_length": [

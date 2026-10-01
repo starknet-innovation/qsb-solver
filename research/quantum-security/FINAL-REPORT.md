@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,167 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,171 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -625,6 +625,16 @@ projections, including resolved previous outputs and fee. A 139-byte Lean
 fixture equals the pinned app's baseline preimage. Concrete CompactSize and
 nonnegative eight-byte amount encodings are included. Lean-checked branch
 vectors match the pinned app, and two 253-boundary transactions passed Core.
+The CompactSize decoder now rejects overlong encodings, and Lean proves that
+every successful parse consumes exactly the shortest encoding of its value.
+A separate nine-case pinned Core 27.2 probe accepts a canonical synthetic
+transaction and returns deserialization error `3` for six overlong-length
+variants, an all-empty SegWit witness record, and an unknown SegWit flag.
+This matches the rejection branches in Core v27.2's
+[CompactSize reader](https://github.com/bitcoin/bitcoin/blob/v27.2/src/serialize.h)
+and [transaction reader](https://github.com/bitcoin/bitcoin/blob/v27.2/src/primitives/transaction.h).
+Core's resource cap, full parser, and contextual consensus checks remain
+outside the Lean model.
 The source-shaped model now also performs BASE/ALL input-script preparation;
 a second fixture starts with different scriptSig bytes and checks that
 replacement and blanking yield the same 139-byte preimage. This remains a
@@ -1028,7 +1038,7 @@ script with the wrong bytes rejects input 0 while the bare QSB input still
 verifies. Thus a raw-byte
 extractor cannot assume the app's legacy-only transaction serialization.
 `QSB/SegwitTxWire.lean` now round-trips a canonical marker/flag `00 01`
-envelope and its witness stacks and proves that changing only those stacks
+envelope with at least one nonempty witness stack and proves that changing only those stacks
 leaves its *source-shaped* legacy digest unchanged. It does not prove full
 Core transaction parsing or that the unmodified QSB lock can be spent.
 `QSB/LegacyTxWire.lean` separately round-trips canonical raw legacy

@@ -37,11 +37,17 @@ def witnessStackCodec : PrefixCodec (List Bytes) where
     rw [WireIntegers.compactSizeCodec.roundtrip _ valid.1]
     exact decodeItems_encodeItems witnessItemCodec items tail valid.2
 
+/-- Core's SegWit envelope requires at least one nonempty witness stack;
+otherwise it rejects the serialization as a superfluous witness record. -/
+def hasWitness (witnesses : List (List Bytes)) : Bool :=
+  witnesses.any (fun stack => !stack.isEmpty)
+
 def valid (tx : SighashAllWire.TxFields)
     (witnesses : List (List Bytes)) : Prop :=
   SighashAllWire.valid tx ∧
   witnesses.length = tx.inputs.length ∧
-  ∀ witness ∈ witnesses, witnessStackCodec.valid witness
+  (∀ witness ∈ witnesses, witnessStackCodec.valid witness) ∧
+  hasWitness witnesses = true
 
 def encode (tx : SighashAllWire.TxFields)
     (witnesses : List (List Bytes)) : Bytes :=
@@ -68,9 +74,11 @@ def decode (raw : Bytes) :
     let (outputs, afterOutputs) ← WireOutputs.decode afterInputs
     let (witnesses, afterWitnesses) ←
       decodeItems witnessStackCodec count afterOutputs
-    let (locktime, tail) ←
-      (WireIntegers.fixedLECodec 4).decode afterWitnesses
-    return (⟨version, inputs, outputs, locktime⟩, witnesses, tail)
+    if hasWitness witnesses then
+      let (locktime, tail) ←
+        (WireIntegers.fixedLECodec 4).decode afterWitnesses
+      return (⟨version, inputs, outputs, locktime⟩, witnesses, tail)
+    else none
 
 /-- The parser recovers both the legacy-sighash fields and every witness
 stack from a valid canonical witness serialization, at any input count. -/
@@ -143,9 +151,9 @@ theorem decode_encode (tx : SighashAllWire.TxFields)
   simp
   have hWitnesses := decodeItems_encodeItems witnessStackCodec witnesses
     ((WireIntegers.fixedLECodec 4).encode tx.locktime)
-    wellFormed.2.2
+    wellFormed.2.2.1
   rw [← wellFormed.2.1, hWitnesses]
-  simp
+  simp [wellFormed.2.2.2]
   have hLocktime := (WireIntegers.fixedLECodec 4).roundtrip
     tx.locktime wellFormed.1.2.2.2.2 []
   simp only [List.append_nil] at hLocktime

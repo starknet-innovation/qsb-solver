@@ -110,6 +110,32 @@ def fixedLECodec (width : Nat) : PrefixCodec Nat where
     have len := leBytes_length width value valid
     simp [leBytes_length width value valid, readLE_leBytes width value]
 
+/-- Every successful fixed-width parse recovers exactly the consumed bytes;
+this is the converse direction needed for raw-byte canonicality. -/
+theorem fixedLE_decode_sound (width : Nat) (raw : Bytes)
+    (value : Nat) (tail : Bytes)
+    (parsed : (fixedLECodec width).decode raw = some (value, tail)) :
+    value < 256 ^ width ∧ raw = leBytes width value ++ tail := by
+  have enough : width ≤ raw.length := by
+    by_contra short
+    simp [fixedLECodec, short] at parsed
+  have pair : (readLE (raw.take width), raw.drop width) =
+      (value, tail) := by
+    exact Option.some.inj (by simpa [fixedLECodec, enough] using parsed)
+  have hValue : readLE (raw.take width) = value := by
+    simpa using congrArg Prod.fst pair
+  have hTail : raw.drop width = tail := by
+    simpa using congrArg Prod.snd pair
+  constructor
+  · rw [← hValue]
+    simpa [List.length_take_of_le enough] using readLE_lt (raw.take width)
+  · calc
+      raw = raw.take width ++ raw.drop width :=
+        (List.take_append_drop width raw).symm
+      _ = leBytes width value ++ tail := by
+        rw [← hValue, leBytes_readLE (raw.take width) width
+          (List.length_take_of_le enough), hTail]
+
 /-- The entire nonnegative signed-64 range has a distinct eight-byte encoding.
 Consensus imposes a tighter monetary range; this theorem does not model it. -/
 def nonnegativeAmountCodec : PrefixCodec Nat where
@@ -124,7 +150,7 @@ def nonnegativeAmountCodec : PrefixCodec Nat where
       omega) tail
 
 /-- The four canonical CompactSize encoder branches. The valid domain is the
-uint64 range; the decoder need only round-trip encoded values here. -/
+uint64 range; decoding rejects an overlong representation as Core does. -/
 def compactSizeEncode (value : Nat) : Bytes :=
   if value < 253 then
     [UInt8.ofNat value]
@@ -141,11 +167,17 @@ def compactSizeDecode : Bytes → Option (Nat × Bytes)
       if tag.toNat < 253 then
         some (tag.toNat, rest)
       else if tag.toNat = 253 then
-        (fixedLECodec 2).decode rest
+        do
+          let (value, tail) ← (fixedLECodec 2).decode rest
+          if value < 253 then none else some (value, tail)
       else if tag.toNat = 254 then
-        (fixedLECodec 4).decode rest
+        do
+          let (value, tail) ← (fixedLECodec 4).decode rest
+          if value < 256 ^ 2 then none else some (value, tail)
       else
-        (fixedLECodec 8).decode rest
+        do
+          let (value, tail) ← (fixedLECodec 8).decode rest
+          if value < 256 ^ 4 then none else some (value, tail)
 
 theorem compactSize_roundtrip (value : Nat) (valid : value < 256 ^ 8)
     (tail : Bytes) :
@@ -160,14 +192,147 @@ theorem compactSize_roundtrip (value : Nat) (valid : value < 256 ^ 8)
   · by_cases medium : value < 256 ^ 2
     · simp only [compactSizeEncode, if_neg small, if_pos medium]
       simp [compactSizeDecode]
-      exact (fixedLECodec 2).roundtrip value medium tail
+      have h : (fixedLECodec 2).decode (leBytes 2 value ++ tail) =
+          some (value, tail) := (fixedLECodec 2).roundtrip value medium tail
+      rw [h]
+      simp [small]
     · by_cases large : value < 256 ^ 4
       · simp only [compactSizeEncode, if_neg small, if_neg medium, if_pos large]
         simp [compactSizeDecode]
-        exact (fixedLECodec 4).roundtrip value large tail
+        have h : (fixedLECodec 4).decode (leBytes 4 value ++ tail) =
+            some (value, tail) := (fixedLECodec 4).roundtrip value large tail
+        rw [h]
+        norm_num at medium
+        simp [medium]
       · simp only [compactSizeEncode, if_neg small, if_neg medium, if_neg large]
         simp [compactSizeDecode]
-        exact (fixedLECodec 8).roundtrip value valid tail
+        have h : (fixedLECodec 8).decode (leBytes 8 value ++ tail) =
+            some (value, tail) := (fixedLECodec 8).roundtrip value valid tail
+        rw [h]
+        norm_num at large
+        simp [large]
+
+/-- A successful CompactSize parse consumes the unique shortest encoding of
+its value. This excludes noncanonical length prefixes in every transaction
+field that uses this codec, not just the three boundary examples below. -/
+theorem compactSizeDecode_sound (raw : Bytes) (value : Nat) (tail : Bytes)
+    (parsed : compactSizeDecode raw = some (value, tail)) :
+    value < 256 ^ 8 ∧ raw = compactSizeEncode value ++ tail := by
+  cases raw with
+  | nil => simp [compactSizeDecode] at parsed
+  | cons tag rest =>
+    by_cases small : tag.toNat < 253
+    · have pair : (tag.toNat, rest) = (value, tail) := by
+        exact Option.some.inj (by simpa [compactSizeDecode, small] using parsed)
+      have hValue : tag.toNat = value := by
+        simpa using congrArg Prod.fst pair
+      have hTail : rest = tail := by
+        simpa using congrArg Prod.snd pair
+      have valueSmall : value < 253 := by omega
+      constructor
+      · have := tag.toNat_lt
+        omega
+      · rw [← hValue, hTail]
+        simp [compactSizeEncode, small]
+    · by_cases tag16 : tag.toNat = 253
+      · cases hDecode : (fixedLECodec 2).decode rest with
+        | none => simp [compactSizeDecode, tag16, hDecode] at parsed
+        | some result =>
+          rcases result with ⟨n, after⟩
+          by_cases overlong : n < 253
+          · simp [compactSizeDecode, tag16, hDecode, overlong] at parsed
+          · have pair : (n, after) = (value, tail) := by
+              exact Option.some.inj (by
+                simpa [compactSizeDecode, small, tag16, hDecode, overlong]
+                  using parsed)
+            have hValue : n = value := by
+              simpa using congrArg Prod.fst pair
+            have hTail : after = tail := by
+              simpa using congrArg Prod.snd pair
+            obtain ⟨upper, consumed⟩ :=
+              fixedLE_decode_sound 2 rest n after hDecode
+            have tagEq : tag = (253 : UInt8) := by
+              apply UInt8.ext
+              simpa using tag16
+            have valueLower : ¬value < 253 := by omega
+            constructor
+            · omega
+            · rw [tagEq, consumed, ← hValue, ← hTail]
+              norm_num at upper
+              simp [compactSizeEncode, overlong, upper]
+      · by_cases tag32 : tag.toNat = 254
+        · cases hDecode : (fixedLECodec 4).decode rest with
+          | none => simp [compactSizeDecode, tag32, hDecode] at parsed
+          | some result =>
+            rcases result with ⟨n, after⟩
+            by_cases overlong : n < 256 ^ 2
+            · simp [compactSizeDecode, tag32, hDecode] at parsed
+              norm_num at overlong
+              omega
+            · have parsedParts : 65536 ≤ n ∧ n = value ∧ after = tail := by
+                simpa [compactSizeDecode, small, tag16, tag32, hDecode]
+                  using parsed
+              have pair : (n, after) = (value, tail) :=
+                Prod.ext parsedParts.2.1 parsedParts.2.2
+              have hValue : n = value := by
+                simpa using congrArg Prod.fst pair
+              have hTail : after = tail := by
+                simpa using congrArg Prod.snd pair
+              obtain ⟨upper, consumed⟩ :=
+                fixedLE_decode_sound 4 rest n after hDecode
+              have tagEq : tag = (254 : UInt8) := by
+                apply UInt8.ext
+                simpa using tag32
+              have notSmall : ¬value < 253 := by omega
+              have notMedium : ¬value < 256 ^ 2 := by omega
+              constructor
+              · omega
+              · rw [tagEq, consumed, ← hValue, ← hTail]
+                norm_num at overlong upper
+                have notSmallN : ¬n < 253 := by omega
+                have notMediumN : ¬n < 65536 := by omega
+                simp [compactSizeEncode, notSmallN, notMediumN, upper]
+        · cases hDecode : (fixedLECodec 8).decode rest with
+          | none => simp [compactSizeDecode, small, tag16, tag32, hDecode] at parsed
+          | some result =>
+            rcases result with ⟨n, after⟩
+            by_cases overlong : n < 256 ^ 4
+            · simp [compactSizeDecode, small, tag16, tag32, hDecode] at parsed
+              norm_num at overlong
+              omega
+            · have parsedParts : 4294967296 ≤ n ∧ n = value ∧ after = tail := by
+                simpa [compactSizeDecode, small, tag16, tag32, hDecode]
+                  using parsed
+              have pair : (n, after) = (value, tail) :=
+                Prod.ext parsedParts.2.1 parsedParts.2.2
+              have hValue : n = value := by
+                simpa using congrArg Prod.fst pair
+              have hTail : after = tail := by
+                simpa using congrArg Prod.snd pair
+              obtain ⟨upper, consumed⟩ :=
+                fixedLE_decode_sound 8 rest n after hDecode
+              have tagEq : tag = (255 : UInt8) := by
+                have tagBound := tag.toNat_lt
+                have tagNat : tag.toNat = 255 := by omega
+                apply UInt8.ext
+                simpa using tagNat
+              have notSmall : ¬value < 253 := by omega
+              have notMedium : ¬value < 256 ^ 2 := by omega
+              have notLarge : ¬value < 256 ^ 4 := by omega
+              constructor
+              · simpa [← hValue] using upper
+              · rw [tagEq, consumed, ← hValue, ← hTail]
+                norm_num at overlong
+                have notSmallN : ¬n < 253 := by omega
+                have notMediumN : ¬n < 65536 := by omega
+                have notLargeN : ¬n < 4294967296 := by omega
+                simp [compactSizeEncode, notSmallN, notMediumN, notLargeN]
+
+theorem compact_noncanonical_16_rejected (tail : Bytes) :
+    compactSizeDecode ([253, 1, 0] ++ tail) = none := by rfl
+
+theorem compact_noncanonical_32_rejected (tail : Bytes) :
+    compactSizeDecode ([254, 253, 0, 0, 0] ++ tail) = none := by rfl
 
 def compactSizeCodec : PrefixCodec Nat where
   valid := fun value => value < 256 ^ 8

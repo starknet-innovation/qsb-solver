@@ -1,0 +1,71 @@
+{
+  "adapter_sha256": "40590ee53a0067a1ea16998e5bc5923b070af985d6f8b11a160396eb9adcb351",
+  "cases": [
+    {
+      "error": 0,
+      "name": "canonical",
+      "transaction_hex": "020000000111111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "dddc956fdc1e29041960c9276658916dc5d40c377fc7ae3e92f82acdfc4a815d",
+      "valid": true
+    },
+    {
+      "error": 3,
+      "name": "input_count_overlong_16",
+      "transaction_hex": "02000000fd010011111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "f9c14461130fc29a35705d6522d0b3b4d3d15da67bc1baeb8ca4fc7efecd36c4",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "input_count_overlong_32",
+      "transaction_hex": "02000000fe0100000011111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "584ea901e35f712d2561076a00a202b14b17ccc66684b145bf08867ef2292195",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "input_count_overlong_64",
+      "transaction_hex": "02000000ff010000000000000011111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "8d20495b559d9135fad28300d6b7a3cdb9dba9b6273ecc8608bfd2cf4c21dbf4",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "script_sig_length_overlong",
+      "transaction_hex": "0200000001111111111111111111111111111111111111111111111111111111111111111100000000fd0000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "0ba7e2e89aa00910e9962780297fce6b3830d3bcf7f72ba7efe2b0c4659b3a33",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "output_count_overlong",
+      "transaction_hex": "020000000111111111111111111111111111111111111111111111111111111111111111110000000000fefffffffd0100e803000000000000015100000000",
+      "transaction_sha256": "9bbb1595fc05729e9de006f70c670298fb7cb9d2511e0fabb7507932c21d04da",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "output_script_length_overlong",
+      "transaction_hex": "020000000111111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000fd01005100000000",
+      "transaction_sha256": "db37ad851711d5dbfd4f9a23d1913d3402c1b911bcd23cfd8a72c3fa41982eb2",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "segwit_all_witnesses_empty",
+      "transaction_hex": "0200000000010111111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e80300000000000001510000000000",
+      "transaction_sha256": "d79ad8ccd952a144c8574d675600fef857944e718f08df38c2c67803f2869cbc",
+      "valid": false
+    },
+    {
+      "error": 3,
+      "name": "segwit_unknown_flag",
+      "transaction_hex": "0200000000020111111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "628bf44711cd3c01394b176078d77f0c681dff2c08ac1f082d561b6c33783c05",
+      "valid": false
+    }
+  ],
+  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+  "scope": "Finite libbitcoinconsensus API v2 parser differential, not a consensus proof"
+}

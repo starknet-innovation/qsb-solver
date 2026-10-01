@@ -196,6 +196,11 @@ companion input in SegWit transaction serialization. `QSB/SegwitTxWire.lean`
 parses and round-trips that canonical envelope and proves its source-shaped
 legacy digest ignores witness-only changes. Complete Core transaction parsing
 and arbitrary-witness extraction remain open.
+`QSB/WireIntegers.lean` additionally proves that every successful CompactSize
+parse consumed the shortest encoding; the SegWit envelope parser now rejects
+all-empty witness records. Nine pinned Core framing cases are recorded in
+`evidence/tx-framing-core.json`. The source model still lacks Core's complete
+parser, resource bounds, and transaction-consensus validation.
 
 The last final-round bonus index has an exact local stack-role map when the
 preceding eight selections are canonical. Lean's `QSB/Bonus.lean` checks that
