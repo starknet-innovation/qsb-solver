@@ -11,7 +11,7 @@ The upstream candidate tree at `2791ed0588f5014ccd688d48ba5502df2879f2f1` is com
 
 ```
 python3 -m unittest discover -s tests -v
-docker build --platform linux/amd64 -f worker/Dockerfile -t qsb-solver:local .
+docker build --platform linux/amd64 -f worker/Dockerfile --target aws --build-arg CUDA_ARCH=86 -t qsb-solver:local .
 ```
 
 The worker accepts the historical `ranked-v2` public parameter requests and produces untrusted hit candidates and range reports. `contracts/ranked-v2.json` is the versioned cross-repository range-vector contract. Both repositories test the same vectors; changes to the partition require a new searchVersion.
@@ -23,14 +23,13 @@ The worker accepts the historical `ranked-v2` public parameter requests and prod
 ```
 docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target runtime -t qsb-optimized:local .
 python3 worker/optimized/test_image.py qsb-optimized:local
-docker build --platform linux/amd64 -f worker/optimized/Dockerfile --target queue -t qsb-optimized-queue:local .
 ```
 
 Source/unit/build checks do not establish native correctness or end-to-end execution. The exact combined release has separate native evidence; new builds need their own assessment. No mainnet enablement or provider allocation is performed by this repository's CI.
 
 ## Release
 
-A `v*` Git tag builds the historical worker for Linux amd64/sm_89, pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes a schema-v3 descriptor and exact range vectors. `searchContract` is the SHA-256 of UTF-8 canonical JSON (recursive sorted keys, compact separators, array order preserved) for `contracts/ranked-v2.json`. The descriptor generator checks every valid and invalid vector against the worker before hashing. Consumers must require the same hash as their independently tested contract. Earlier schema-v2 releases remain immutable; they do not gain this binding retroactively, and a new tagged release plus explicit consumer enrollment is required. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
+An `aws-v*` Git tag builds the historical worker for Linux amd64/sm_86 (AWS A10G), pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes a schema-v3 descriptor and exact range vectors. `searchContract` is the SHA-256 of UTF-8 canonical JSON (recursive sorted keys, compact separators, array order preserved) for `contracts/ranked-v2.json`. The descriptor generator checks every valid and invalid vector against the worker before hashing. Consumers must require the same hash as their independently tested contract. Earlier schema-v2 releases remain immutable; they do not gain this binding retroactively, and a new tagged release plus explicit consumer enrollment is required. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
 
 NVIDIA does not rebuild CUDA image tags, so runtime stages apply current Ubuntu updates to the pinned base at build time, from Ubuntu's archives only (NVIDIA's apt source is excluded, keeping the pinned CUDA packages). OS package versions therefore depend on the build date. Publishing workflows scan with a pinned Grype (`scripts/image_scan.py`). They fail on critical findings that have a fix, rating each by the worse of the distribution and NVD severities. `candidate-*` scans before push. `v*` and `aws-v*` scan the pushed digest before attestation, descriptor and release, so a failed scan leaves an unattested tag that consumers cannot enroll. The release carries the summary as `image-scan.json`. It is a point-in-time package scan. It is not correctness evidence, and nothing here rescans published images.
 
@@ -43,7 +42,7 @@ Development validation scripts under `worker/validation` consume an explicitly s
 [Combined candidate integration](worker/promotion/README.md) joins historical
 pinning and the optimized subset under one `ranked-v2` worker identity. The tested sm86 combined image was published and its descriptor enrolled in qsb-app;
 see [verified status](docs/README.md). New candidate prereleases remain HOLD until native correctness, matched A10G performance for
-pinning and both subset rounds, and final evidence review pass. Normal version
+pinning and both subset rounds, and final evidence review pass. `aws-v*`
 tags still build the historical baseline.
 
 The user removed the fresh wallet-backed regtest search from this release's gates
@@ -53,6 +52,6 @@ release. Publication and app enrollment each require explicit user approval.
 
 ### Attested AWS release
 
-An `aws-v*` tag uses the same publication, provenance attestation and descriptor steps above, selecting the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). Ordinary `v*` tags retain the Runpod/sm_89 target. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.
+AWS Batch is the only transport. Releases use the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). The Runpod transport was retired on 1 October 2026: `v*` and non-sm86 `candidate-*` tags no longer publish, and the earlier Runpod releases (`v0.1.0`, `candidate-20260925-1`, `candidate-20260925-2`) remain immutable records. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.
 
 After CI succeeds, verify the generated descriptor's GHCR digest and source commit with `gh attestation verify`. To mirror it into a private registry, use a digest-preserving registry copy (for example `crane copy GHCR_IMAGE@sha256:DIGEST ECR_REPOSITORY:RELEASE_TAG`) and verify the destination manifest digest equals the attested digest before registering a Batch job definition. Keep the public descriptor's canonical GHCR identity; operator registry/account configuration belongs outside this repository. Never substitute a digest from a `docker load`/`push` round trip or treat the mirror's name as provenance. Consumer enrollment and deployment remain separate steps requiring that exact digest and fresh runtime verification.

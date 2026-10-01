@@ -29,8 +29,3 @@ def handler(event):
     # Legacy wire name: this is the combined repository commit, not either upstream lineage.
     historical_handler.PINNED_KERNEL = binding['solverCommit']
     return historical_handler.handler(event)
-
-
-if __name__ == '__main__':
-    import runpod
-    runpod.serverless.start({'handler': handler})
