@@ -76,6 +76,16 @@ variable {G : Type*} [AddCommGroup G] [Module F G]
 def RecoveryEquation (r s : F) (R Z Q : G) : Prop :=
   s • R = Z + r • Q
 
+/-- Negating ECDSA's S scalar negates the matching recovery point. Bitcoin
+Core normalizes high-S signatures before calling libsecp256k1; retaining the
+original DER scalar in a target-set argument is sound only if both signs of
+an admissible recovery point are included. This is the algebraic step, not a
+proof of Core's parser or normalization behavior. -/
+theorem recovery_negate_s_point (r s : F) (R Z Q : G) :
+    RecoveryEquation r (-s) R Z Q ↔
+      RecoveryEquation r s (-R) Z Q := by
+  simp [RecoveryEquation, neg_smul, smul_neg]
+
 theorem public_recovery_for_any_message (r s : F) (R Z : G) (hr : r ≠ 0) :
     RecoveryEquation r s R Z (r⁻¹ • (s • R - Z)) := by
   unfold RecoveryEquation
@@ -132,5 +142,18 @@ theorem recovery_in_messageTargets [DecidableEq G] (r s : F) (Q Z R : G)
     Z ∈ messageTargets r s Q points := by
   rw [(recovery_iff_message_for_point r s R Z Q).mp verified]
   exact Finset.mem_image_of_mem _ present
+
+/-- A verifier that normalizes `s` to `-s` still lands in the target set
+defined using the original DER scalar, provided that the admitted recovery
+points are closed under negation. Core's parser and that closure are external
+obligations for the concrete Bitcoin instantiation. -/
+theorem normalized_recovery_in_messageTargets [DecidableEq G]
+    (r s : F) (Q Z R : G) (points : Finset G)
+    (closed : ∀ T ∈ points, -T ∈ points)
+    (present : R ∈ points)
+    (verified : RecoveryEquation r (-s) R Z Q) :
+    Z ∈ messageTargets r s Q points := by
+  exact recovery_in_messageTargets r s Q Z (-R) points
+    (closed R present) ((recovery_negate_s_point r s R Z Q).mp verified)
 
 end QSB

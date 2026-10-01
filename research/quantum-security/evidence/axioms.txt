@@ -16,12 +16,14 @@
 'QSB.fixed_recovery_point_message_unique' depends on axioms: [propext, Quot.sound]
 'QSB.fixed_message_key_unique' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.public_recovery_for_any_message' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.recovery_negate_s_point' depends on axioms: [propext, Quot.sound]
 'QSB.common_key_requires_equal_recoveries' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.equal_recoveries_give_common_key' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.recovery_iff_message_for_point' depends on axioms: [propext, Quot.sound]
 'QSB.opposite_points_distinct_messages' depends on axioms: [propext, Quot.sound]
 'QSB.messageTargets_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.recovery_in_messageTargets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.normalized_recovery_in_messageTargets' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.OutputCodec.decodeItems_encodeItems' depends on axioms: [propext, Quot.sound]
 'QSB.OutputCodec.decodeOutputs_encodeOutputs' depends on axioms: [propext, Quot.sound]
 'QSB.OutputCodec.encodeOutputs_injective_on' depends on axioms: [propext, Quot.sound]
@@ -69,14 +71,22 @@
  Quot.sound]
 'QSB.RecoveryCandidates.secp_prime_lt_twice_order' does not depend on any axioms
 'QSB.RecoveryCandidates.x_coordinate_candidates' depends on axioms: [propext, Quot.sound]
+'QSB.RecoveryCandidates.square_roots_eq_or_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.affine_fiber_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.secp_recovery_points_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.secp_messageTargets_card_le_four' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.secp_messageTargets_card_le_four_of_curve' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.RecoveryCandidates.secp_digest_lt_twice_order' depends on axioms: [propext]
 'QSB.RecoveryCandidates.digestCandidates_card_le_two' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.secp_digest_in_candidates' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.digestTargets_card_le_twice' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.RecoveryCandidates.secp_digestTargets_card_le_eight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RecoveryCandidates.secp_digestTargets_card_le_eight_of_curve' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.RecoveryCandidates.secp_digest_in_targetSet' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_round1_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.configA_round2_bonus_choices' depends on axioms: [propext, Classical.choice, Quot.sound]

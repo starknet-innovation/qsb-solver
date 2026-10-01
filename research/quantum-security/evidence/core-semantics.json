@@ -2,6 +2,11 @@
   "scope": "isolated legacy scripts; NOT full QSB acceptance or a forgery",
   "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL (consensus, not policy)",
   "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "app_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "cases": [
     {
       "name": "all_compressed",
@@ -34,6 +39,14 @@
       "script_hex": "093006020101020111017cac",
       "pubkey_encoding_hex": "06b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb3750f350f70b1b78a1f65a25f9907b585910e01af0bb09525b3667a14e0a00f98b",
       "raw_tx_sha256": "f373e7f48845f1fe45535238e3b29e0092560f2199b9b51d438d7e824baa8b70"
+    },
+    {
+      "name": "all_high_s_same_key",
+      "accepted": true,
+      "expected": true,
+      "script_hex": "293026020101022100fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364130017cac",
+      "pubkey_encoding_hex": "03b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "6159a4cd2561fc1df2554dde737682a4ac525ed8fd218da74876c6dcd4e4590b"
     },
     {
       "name": "all_changed_destination_same_key",

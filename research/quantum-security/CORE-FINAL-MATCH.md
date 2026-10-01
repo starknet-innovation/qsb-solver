@@ -30,6 +30,24 @@ under `DERSIG`. The [transaction ECDSA checker](https://github.com/bitcoin/bitco
 `QSB.FinalRoundWitness.matched_run_shape_and_openings_verify_all`. This
 implication has not been lifted from the C++ checker to Lean for all inputs.
 
+After the script checker removes the trailing sighash byte, Core's
+[`CPubKey::Verify`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/pubkey.cpp#L267-L282)
+normalizes a high-S signature before calling libsecp256k1. The pinned
+[`secp256k1_ecdsa_sig_verify`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/secp256k1/src/ecdsa_impl.h#L195-L264)
+rejects an infinity recovery point and checks both x-coordinate candidates
+`r` and `r+n` when the second is below the field prime. Its public verifier
+reduces the 32-byte message to a scalar before that check in
+[`secp256k1.c`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/secp256k1/src/secp256k1.c#L444-L457).
+`QSB.Nonce.recovery_negate_s_point` proves the algebraic sign adjustment:
+normalizing S requires the opposite recovery point when the original DER S
+is used in the target-set equation.
+`QSB.normalized_recovery_in_messageTargets` then places the verified message
+in the original-S target set under an explicit sign-closure premise for the
+admitted points. The affine fiber theorem in
+`QSB/RecoveryCandidates.lean` bounds solutions of the curve equation by two
+per x under coordinate uniqueness. Core's byte parser, point coordinate
+mapping, and exact digest reduction still require refinement.
+
 Core's [`FindAndDelete`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L228-L255) matches a serialized signature push only
 at opcode boundaries. The final multisignature body applies it sequentially
 to all ten reached signatures before checking any pair. The selected final
@@ -158,6 +176,14 @@ obtained by Core's sequential FindAndDelete on those ten signatures and the
 real legacy sighash of that transaction. It must prove that a true pair check
 is nonempty and encoding-valid. The resulting key still needs a transaction-
 bound nonce relation and Core equivalence of the late puzzle encoding check.
+For each successful ECDSA pair, the remaining cryptographic refinement must
+extract original DER scalars `0 < r,s < n`, the parsed public-key point `Q`,
+the SHA256d wire digest `d`, and a non-infinity affine point `R` with
+`x(R) < p`, `x(R) mod n = r`, `d mod n = z`, and
+`s·R = z·G + r·Q`. If Core normalized a high-S value, `R` must be the
+negation of the point used by the normalized verification. The admitted-point
+set must include both signs. Neither the finite native fixtures nor the
+current Lean field-module model proves these C++ parser and group facts.
 Within the byte model, `QSB/FinalRoundWitness.lean` now proves that SHA256 of
 this exact reached key is the late puzzle signature, and derives strict-DER
 syntax if that reached check is encoding-sound. Core and real ECDSA/sighash

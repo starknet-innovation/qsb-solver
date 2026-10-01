@@ -121,7 +121,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 648 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 654 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -500,11 +500,22 @@ supplies neither a SHA256d preimage nor an accepted QSB spend. A QROM argument
 must bound hits to the full admissible message-target set; a collision-only
 replay event is too narrow. The actual secp256k1 point count, Core digest
 conversion and transaction refinement remain open.
+Core 27.2 normalizes a high-S signature before calling libsecp256k1. Lean
+proves that negating S swaps the corresponding recovery point with its
+opposite; a pinned isolated Core check accepts a strict-DER high-S variant
+under the same key and ALL digest. Thus an original-DER-S target set needs
+both recovery-point signs. Lean proves target membership after normalization
+under an explicit sign-closed admitted-point premise. This does not establish
+that Core's parsed recovery points satisfy that premise or the full
+Core-to-Lean verifier relation.
 Lean also proves the numerical inequality `p < 2n` for the secp256k1 field
 prime and subgroup order. Under an explicit at-most-two-points-per-x premise,
 it bounds admissible recovery points and their message group-element targets
-by four. The curve-fiber premise and its connection to Core's accepted keys
-are not proved.
+by four. Lean now derives that fiber bound for any collection of affine
+points satisfying a field-valued curve equation and unique `(x,y)`
+coordinates: two solutions of the same square equation differ by sign.
+Proving that Core's admitted recovery points map injectively to such affine
+secp256k1 coordinates, excluding infinity and invalid points, remains open.
 Lean also proves `2^256 < 2n`: each message residue modulo the secp256k1
 order has at most two unsigned 256-bit digest representatives. Combined with
 the conditional four-recovery-point bound, a fixed signature/key has at most

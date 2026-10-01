@@ -20,6 +20,16 @@ def main():
     sys.path.insert(0, str(a.app_root / "worker/cpu"))
     import bitcoin_tx as bt
     import secp256k1 as ec
+    root = Path(__file__).resolve().parents[1]
+    pinned = json.loads((root / "evidence/source-inventory.json").read_text())["app"]
+    for name in ("worker/cpu/bitcoin_tx.py", "worker/cpu/secp256k1.py"):
+        assert hashlib.sha256((a.app_root / name).read_bytes()).hexdigest() == pinned["files"][name]
+    prior = json.loads((root / "evidence/core-semantics.json").read_text())
+    assert a.image == prior["image"]
+    native_hashes = json.loads((root / "evidence/round-results.json").read_text())[
+        "native_files_sha256"]
+    for name, expected in native_hashes.items():
+        assert hashlib.sha256((a.native_root / name).read_bytes()).hexdigest() == expected
     tx = bt.Transaction(version=1, locktime=1234567)
     tx.add_input(bt.TxIn(b"\x44" * 32, 0, b"", 0xfffffffe))
     tx.add_input(bt.TxIn(b"\x55" * 32, 0, b"", 0x80000000))
@@ -50,7 +60,7 @@ def main():
         point = ec.ecdsa_recover(r, s, z, 0)
         assert point and ec.ecdsa_verify(point, z, r, s)
         return lock, point, z
-    lock, point, _ = lock_and_point(1)
+    lock, point, z_all = lock_and_point(1)
     x, y = point
     compressed = ec.compress_pubkey(point)
     xy = x.to_bytes(32, "big") + y.to_bytes(32, "big")
@@ -58,6 +68,16 @@ def main():
     check("all_uncompressed", lock, b"\x04" + xy, True)
     check("all_hybrid", lock, bytes([6 + y % 2]) + xy, True)
     check("all_hybrid_wrong_parity", lock, bytes([7 - y % 2]) + xy, False)
+    # Core normalizes a strict-DER high-S signature before libsecp256k1
+    # verification. The same public key and ALL message remain valid.
+    high_s = ec.N - s
+    assert high_s > ec.N // 2
+    assert ec.ecdsa_verify(point, z_all, r, high_s)
+    high_sig = ec.encode_der_sig(r, high_s, sighash=1)
+    high_lock = bt.push_data(high_sig) + bytes([bt.OP_SWAP, bt.OP_CHECKSIG])
+    assert bt.find_and_delete(high_lock, high_sig) == bt.find_and_delete(
+        lock, ec.encode_der_sig(r, s, sighash=1))
+    check("all_high_s_same_key", high_lock, compressed, True)
     tx.outputs[0].script_pubkey = b"\x00\x14" + b"\x77" * 20
     check("all_changed_destination_same_key", lock, compressed, False)
     lock, new_point, _ = lock_and_point(1)
@@ -78,7 +98,8 @@ def main():
           ec.compress_pubkey(in_range_point), True)
     report = {"scope": "isolated legacy scripts; NOT full QSB acceptance or a forgery",
               "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL (consensus, not policy)",
-              "image": a.image, "cases": cases}
+              "image": a.image, "native_files_sha256": native_hashes,
+              "app_source_revision": pinned["revision"], "cases": cases}
     a.output.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps([{k: c[k] for k in ("name", "accepted")} for c in cases], indent=2))
 

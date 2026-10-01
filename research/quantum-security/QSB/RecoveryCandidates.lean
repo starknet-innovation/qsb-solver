@@ -2,9 +2,11 @@ import QSB.Nonce
 import Mathlib.Tactic
 
 /-!
-An arithmetic interface for the number of ECDSA recovery points. The curve
-fiber bound remains an explicit premise: this module does not formalize the
-secp256k1 curve, its parser, or Bitcoin's hash-to-scalar rule.
+An arithmetic interface for the number of ECDSA recovery points. The
+two-points-per-x fiber bound is derived from a field-valued affine curve
+equation and coordinate uniqueness, but mapping Core's accepted recovery
+points to those coordinates remains an explicit premise. This module does
+not formalize Core's curve parser or Bitcoin's hash-to-scalar rule.
 -/
 namespace QSB.RecoveryCandidates
 
@@ -33,6 +35,64 @@ theorem x_coordinate_candidates {p n r x : Nat}
     simpa [h, residue] using decompose
   · right
     simpa [h, residue, Nat.add_comm] using decompose
+
+/-- Two roots of the same square equation in a field agree up to sign.
+This is the algebraic source of the two-affine-points-per-x bound. -/
+theorem square_roots_eq_or_neg {K : Type*} [Field K]
+    (left right : K) (same : left * left = right * right) :
+    left = right ∨ left = -right := by
+  have product : (left - right) * (left + right) = 0 := by
+    calc
+      (left - right) * (left + right) = left * left - right * right := by ring
+      _ = 0 := sub_eq_zero.mpr same
+  rcases mul_eq_zero.mp product with h | h
+  · exact Or.inl (sub_eq_zero.mp h)
+  · exact Or.inr (eq_neg_of_add_eq_zero_left h)
+
+/-- Any collection of affine points satisfying one square equation per x
+has at most two points at each x, provided the x/y coordinates uniquely
+identify a point. It does not cover an infinity point, Core's point parser,
+or the assertion that parsed points satisfy the secp256k1 equation. -/
+theorem affine_fiber_card_le_two
+    {P K : Type*} [DecidableEq P] [Field K] [DecidableEq K]
+    (points : Finset P) (xCoord : P → Nat) (yCoord : P → K)
+    (curveRhs : Nat → K)
+    (onCurve : ∀ R ∈ points,
+      yCoord R * yCoord R = curveRhs (xCoord R))
+    (coordinateUnique : ∀ R ∈ points, ∀ S ∈ points,
+      xCoord R = xCoord S → yCoord R = yCoord S → R = S)
+    (x : Nat) :
+    (points.filter (fun R => xCoord R = x)).card ≤ 2 := by
+  classical
+  let fiber := points.filter (fun R => xCoord R = x)
+  by_cases nonempty : fiber.Nonempty
+  · obtain ⟨anchor, anchorMem⟩ := nonempty
+    let choices : Finset K := {yCoord anchor, -yCoord anchor}
+    have anchorData := Finset.mem_filter.mp anchorMem
+    have mapsTo : Set.MapsTo yCoord (fiber : Set P) (choices : Set K) := by
+      intro R present
+      have data := Finset.mem_filter.mp present
+      have sameSquare : yCoord R * yCoord R =
+          yCoord anchor * yCoord anchor := by
+        rw [onCurve R data.1, onCurve anchor anchorData.1,
+          data.2, anchorData.2]
+      rcases square_roots_eq_or_neg (yCoord R) (yCoord anchor)
+          sameSquare with same | opposite
+      · simp [choices, same]
+      · simp [choices, opposite]
+    have injective : (fiber : Set P).InjOn yCoord := by
+      intro R rMem S sMem equalY
+      have rData := Finset.mem_filter.mp rMem
+      have sData := Finset.mem_filter.mp sMem
+      exact coordinateUnique R rData.1 S sData.1
+        (rData.2.trans sData.2.symm) equalY
+    have cardChoices : choices.card ≤ 2 := by
+      dsimp [choices]
+      simpa using Finset.card_insert_le (yCoord anchor)
+        ({-yCoord anchor} : Finset K)
+    exact (Finset.card_le_card_of_injOn yCoord mapsTo injective).trans
+      cardChoices
+  · simp [fiber, Finset.not_nonempty_iff_eq_empty.mp nonempty]
 
 variable {P : Type*} [DecidableEq P]
 
@@ -96,6 +156,24 @@ theorem secp_messageTargets_card_le_four
     (QSB.messageTargets r s Q points).card ≤ 4 :=
   (QSB.messageTargets_card_le r s Q points).trans
     (secp_recovery_points_card_le_four points xCoord rNat admissible fiber)
+
+/-- Replace the abstract two-points-per-x premise by a field-valued affine
+curve equation and coordinate uniqueness. Supplying these facts for Core's
+parsed secp256k1 points remains a separate refinement obligation. -/
+theorem secp_messageTargets_card_le_four_of_curve
+    {K : Type*} [Field K] [DecidableEq K]
+    (r s : F) (Q : G) (points : Finset G)
+    (xCoord : G → Nat) (yCoord : G → K) (rNat : Nat)
+    (admissible : ∀ R ∈ points,
+      xCoord R < secpFieldPrime ∧ xCoord R % secpGroupOrder = rNat)
+    (onCurve : ∀ R ∈ points,
+      yCoord R * yCoord R = (xCoord R : K) ^ 3 + 7)
+    (coordinateUnique : ∀ R ∈ points, ∀ S ∈ points,
+      xCoord R = xCoord S → yCoord R = yCoord S → R = S) :
+    (QSB.messageTargets r s Q points).card ≤ 4 := by
+  apply secp_messageTargets_card_le_four r s Q points xCoord rNat admissible
+  exact affine_fiber_card_le_two points xCoord yCoord
+    (fun x => (x : K) ^ 3 + 7) onCurve coordinateUnique
 
 /-- A 256-bit SHA256d digest, viewed as an unsigned integer, is smaller than
 twice the secp256k1 group order. This is a wire-range fact, not a claim about
@@ -166,6 +244,24 @@ theorem secp_digestTargets_card_le_eight
   have mapped : ((QSB.messageTargets r s Q points).image residueOf).card ≤ 4 :=
     (Finset.card_image_le).trans messages
   exact (digestTargets_card_le_twice secpGroupOrder (2 ^ 256) _).trans (by omega)
+
+theorem secp_digestTargets_card_le_eight_of_curve
+    {K : Type*} [Field K] [DecidableEq K]
+    (r s : F) (Q : G) (points : Finset G)
+    (xCoord : G → Nat) (yCoord : G → K) (rNat : Nat)
+    (residueOf : G → Nat)
+    (admissible : ∀ R ∈ points,
+      xCoord R < secpFieldPrime ∧ xCoord R % secpGroupOrder = rNat)
+    (onCurve : ∀ R ∈ points,
+      yCoord R * yCoord R = (xCoord R : K) ^ 3 + 7)
+    (coordinateUnique : ∀ R ∈ points, ∀ S ∈ points,
+      xCoord R = xCoord S → yCoord R = yCoord S → R = S) :
+    (digestTargets secpGroupOrder (2 ^ 256)
+      ((QSB.messageTargets r s Q points).image residueOf)).card ≤ 8 := by
+  apply secp_digestTargets_card_le_eight r s Q points xCoord rNat residueOf
+    admissible
+  exact affine_fiber_card_le_two points xCoord yCoord
+    (fun x => (x : K) ^ 3 + 7) onCurve coordinateUnique
 
 /-- Conditional event bridge: if the verifier's message target is admitted
 and its scalar residue is the digest's reduction, then the complete unsigned
