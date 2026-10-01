@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1238,
+  "theorem_count": 1248,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -547,7 +547,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreCheckedDynamic.checked_run_candidate": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreCheckedDynamic.checked_run_der_exception_or_nine_positions": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_final_checked": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -567,7 +577,45 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CoreCheckedDynamic.checked_run_record_pattern": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_search_succeeds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.checked_run_source_sites": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.prefix_site_counts": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreCheckedDynamic.program_final_split": [
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.program_six_sites": [
+      "propext"
+    ],
+    "QSB.CoreCheckedDynamic.site_opcodes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedJointTransaction.checked_run_good_setup_joint_final_event": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedJointTransaction.checked_run_two_key_joint_hit": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.CoreCheckedRunCertificate.literal_run_candidate": [

@@ -1455,6 +1455,20 @@
 'QSB.CoreCheckedDynamic.checked_run_der_exception_or_nine_positions' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.CoreCheckedDynamic.site_opcodes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.program_six_sites' depends on axioms: [propext]
+'QSB.CoreCheckedDynamic.prefix_site_counts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.checked_run_record_pattern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.checked_run_source_sites' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.checked_run_final_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.checked_run_candidate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedDynamic.checked_run_search_succeeds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CoreCheckedJointTransaction.checked_run_two_key_joint_hit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CoreCheckedJointTransaction.checked_run_good_setup_joint_final_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

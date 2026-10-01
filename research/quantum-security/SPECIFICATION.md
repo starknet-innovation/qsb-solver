@@ -159,7 +159,12 @@ true, and the fixed ten/ten count and NULLDUMMY layout converts that scan into
 the ten-pair evaluator on the same stack. For any 20-byte second-round pool,
 the run then yields either a DER-shaped setup commitment or seven matching
 openings and nine distinct positions. The theorem does not yet connect that
-run to the parameterized two-candidate search or to compiled Core.
+run to compiled Core. It now proves the six computed signature records have
+pattern `[true, true, true, firstRound, true, true]`, verifies the reached
+source sites and final evaluator, and enters the parameterized two-candidate
+search. `QSB.CoreCheckedJointTransaction` composes the resulting certificate
+with the shared-hash transaction checker to expose both DER key puzzles, fixed
+ALL calls, and the good-setup final HORS event from one modeled run.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

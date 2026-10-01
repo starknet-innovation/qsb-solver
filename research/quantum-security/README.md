@@ -426,6 +426,13 @@ ten-pair source scan. With 20-byte second-round commitments, it either exposes
 a DER-shaped commitment in the setup or extracts seven matching openings and
 nine distinct second-round positions. The external checker and the missing
 compiled-Core and builder refinements still prevent a consensus-level claim.
+The same checked run now has exactly six computed signature records and passes
+the parameterized two-candidate certificate search. In
+`QSB/CoreCheckedJointTransaction.lean`, specializing its checker to one
+transaction yields both DER key puzzles and fixed `SIGHASH_ALL` calls under the
+shared `H`; on a good setup it also yields seven `R(H(opening))` equations and
+the final ALL call. This remains a deterministic modeled event, without a
+shared-query probability bound.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
