@@ -78,6 +78,84 @@ private theorem prepared_selected_script
           simpa [SighashAllWire.prepareInputsAt] using
             ih (position + 1) next later restWithin
 
+private theorem prepared_other_script
+    (selected position index : Nat) (scriptCode : Bytes)
+    (inputs : List SighashAllWire.InputFields)
+    (other : selected ≠ position + index)
+    (within : index < inputs.length) :
+    ((SighashAllWire.prepareInputsAt selected scriptCode position
+      inputs)[index]?).map (fun input => input.2.2.1) =
+        some [] := by
+  induction inputs generalizing position index with
+  | nil => simp at within
+  | cons input rest ih =>
+      cases index with
+      | zero =>
+          have different : selected ≠ position := by simpa using other
+          have reversed : position ≠ selected := Ne.symm different
+          simp [SighashAllWire.prepareInputsAt, reversed,
+            SighashAllWire.withScript]
+      | succ next =>
+          have later : selected ≠ position + 1 + next := by omega
+          have restWithin : next < rest.length := by simpa using within
+          simpa [SighashAllWire.prepareInputsAt] using
+            ih (position + 1) next later restWithin
+
+/-- Across arbitrary valid source transactions, equal ALL preimage bytes
+with a nonempty selected scriptCode identify both the selected input index
+and the selected scriptCode. Other transaction fields and original scriptSigs
+may differ; equal bytes do not imply equal SHA256d digests in reverse. -/
+theorem sourceAllPreimage_identifies_selected_scriptCode
+    (left right : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat) (leftScript rightScript : Bytes)
+    (leftValid : SighashAllWire.valid left)
+    (rightValid : SighashAllWire.valid right)
+    (leftSelectedValid : leftSelected < left.inputs.length)
+    (leftScriptValid : leftScript.length < 256 ^ 8)
+    (rightScriptValid : rightScript.length < 256 ^ 8)
+    (leftNonempty : leftScript ≠ [])
+    (same : SighashAllWire.sourceAllPreimage left leftSelected leftScript =
+      SighashAllWire.sourceAllPreimage right rightSelected rightScript) :
+    leftSelected = rightSelected ∧ leftScript = rightScript := by
+  have preparedEqual :
+      SighashAllWire.prepareAll left leftSelected leftScript =
+        SighashAllWire.prepareAll right rightSelected rightScript :=
+    SighashAllWire.encode_injective_on
+      (SighashAllWire.prepareAll_valid left leftSelected leftScript
+        leftValid leftScriptValid)
+      (SighashAllWire.prepareAll_valid right rightSelected rightScript
+        rightValid rightScriptValid) same
+  have inputLengths := congrArg
+    (fun tx : SighashAllWire.TxFields => tx.inputs.length) preparedEqual
+  have rightWithin : leftSelected < right.inputs.length := by
+    simp only [SighashAllWire.prepareAll,
+      SighashAllWire.prepareInputsAt_length] at inputLengths
+    omega
+  have scriptsEq := congrArg
+    (fun tx : SighashAllWire.TxFields =>
+      (tx.inputs[leftSelected]?).map (fun input => input.2.2.1))
+    preparedEqual
+  have leftAt := prepared_selected_script leftSelected 0 leftSelected
+    leftScript left.inputs (by omega) leftSelectedValid
+  by_cases selectedEq : leftSelected = rightSelected
+  · subst rightSelected
+    have rightAt := prepared_selected_script leftSelected 0 leftSelected
+      rightScript right.inputs (by omega) rightWithin
+    constructor
+    · rfl
+    · simpa [SighashAllWire.prepareAll, leftAt, rightAt] using
+        Option.some.inj (by simpa [SighashAllWire.prepareAll,
+          leftAt, rightAt] using scriptsEq)
+  · have other : rightSelected ≠ 0 + leftSelected := by
+      simpa using Ne.symm selectedEq
+    have rightAt := prepared_other_script rightSelected 0 leftSelected
+      rightScript right.inputs other rightWithin
+    have empty : leftScript = [] := by
+      have slots : (some leftScript : Option Bytes) = some [] := by
+        simpa [SighashAllWire.prepareAll, leftAt, rightAt] using scriptsEq
+      exact Option.some.inj slots
+    exact (leftNonempty empty).elim
+
 /-- For a real selected input, the source-shaped ALL preimage is injective
 in the supplied scriptCode on the valid finite-width wire domain. This does
 not assert that SHA256d is injective. -/

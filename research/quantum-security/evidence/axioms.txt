@@ -28,6 +28,15 @@
 'QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage_cross_tx' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_pin_final_all_preimages_disjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_final_disjoint_from_pin_all_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -1604,6 +1613,9 @@
  Classical.choice,
  Quot.sound]
 'QSB.ScriptSigSighash.sourceAllPreimage_injective_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigSighash.sourceAllPreimage_identifies_selected_scriptCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ScriptSigSighash.literal_dummy_zero_one_delete_different' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -1629,6 +1641,9 @@
  Quot.sound]
 'QSB.FinalSubsetInjective.pin_scriptCode_ne_final_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FinalSubsetInjective.pin_all_preimage_ne_final_all_preimage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSubsetInjective.pin_all_preimage_ne_final_all_preimage_cross_tx' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -557,6 +557,31 @@ theorem pin_scriptCode_ne_final_scriptCode
     simp [residualChunks, selectedPatterns_eq]
   exact notFinal (residualEq ▸ inPin)
 
+private theorem pinDeletedScript_nonempty
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      noncePattern nonce1) :
+    pinDeletedScript pin nonce0 nonce1 firstCommitment
+      secondCommitment ≠ [] := by
+  intro empty
+  have inPin : noncePattern nonce1 ∈ pinResidualChunks
+      pin nonce0 nonce1 firstCommitment secondCommitment :=
+    List.mem_filter.mpr ⟨nonce_pattern_in_chunks pin nonce0 nonce1
+      firstCommitment secondCommitment,
+      by simpa using differentPush.symm⟩
+  have parsed := pin_residual_parse pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short
+  rw [empty] at parsed
+  simp [EncodedScript.parseChunks] at parsed
+  simp [parsed] at inPin
+
 private theorem pinDeletedScript_width (pin nonce0 nonce1 : Bytes)
     (firstCommitment secondCommitment : Fin 150 → Bytes)
     (firstWidth : ∀ i, (firstCommitment i).length = 20)
@@ -614,5 +639,52 @@ theorem pin_all_preimage_ne_final_all_preimage
       (deletedScript_width pin nonce0 nonce1 firstCommitment
         secondCommitment firstWidth secondWidth pinShort nonce0Short
         nonce1Short ids) same)
+
+/-- For parameterized Config A locks satisfying the stated push inequality,
+pin and final modeled ALL preimages cannot alias even across two independently
+chosen valid source transactions, original scriptSigs, or selected inputs. -/
+theorem pin_all_preimage_ne_final_all_preimage_cross_tx
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      noncePattern nonce1)
+    (left right : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat)
+    (leftValid : SighashAllWire.valid left)
+    (rightValid : SighashAllWire.valid right)
+    (leftSelectedValid : leftSelected < left.inputs.length)
+    (ids : List (Fin 150)) :
+    SighashAllWire.sourceAllPreimage left leftSelected
+      (pinDeletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment) ≠
+    SighashAllWire.sourceAllPreimage right rightSelected
+      (deletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment ids) := by
+  intro same
+  obtain ⟨_, codes⟩ :=
+    ScriptSigSighash.sourceAllPreimage_identifies_selected_scriptCode
+      left right leftSelected rightSelected
+      (pinDeletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment)
+      (deletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment ids)
+      leftValid rightValid leftSelectedValid
+      (pinDeletedScript_width pin nonce0 nonce1 firstCommitment
+        secondCommitment firstWidth secondWidth pinShort nonce0Short
+        nonce1Short)
+      (deletedScript_width pin nonce0 nonce1 firstCommitment
+        secondCommitment firstWidth secondWidth pinShort nonce0Short
+        nonce1Short ids)
+      (pinDeletedScript_nonempty pin nonce0 nonce1 firstCommitment
+        secondCommitment firstWidth secondWidth pinShort nonce0Short
+        nonce1Short differentPush) same
+  exact pin_scriptCode_ne_final_scriptCode pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short differentPush ids codes
 
 end QSB.ParameterizedFinalSubset

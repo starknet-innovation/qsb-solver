@@ -179,6 +179,42 @@ theorem reached_deleted_script_of_witness
     nonce1Short w.stack w.trace w.a w.b
     w.slotB w.slotA w.signed w.nonceSlot w.seven
 
+/-- A reached final ten-signature stack supplies its actual candidate
+FindAndDelete scriptCode, so the cross-transaction pin/final ALL preimage
+separation applies without a caller-chosen final index list. This remains a
+source-model statement about supplied reached slots. -/
+theorem reached_pin_final_all_preimages_disjoint
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      ParameterizedFinalSubset.noncePattern nonce1)
+    (leftTx rightTx : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat)
+    (leftValid : SighashAllWire.valid leftTx)
+    (rightValid : SighashAllWire.valid rightTx)
+    (leftSelectedValid : leftSelected < leftTx.inputs.length)
+    (w : Reached nonce1) :
+    SighashAllWire.sourceAllPreimage leftTx leftSelected
+      (ParameterizedFinalSubset.pinDeletedScript pin nonce0 nonce1
+        firstCommitment secondCommitment) ≠
+    SighashAllWire.sourceAllPreimage rightTx rightSelected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicFullSerialized.fullWire pin nonce0 nonce1
+          firstCommitment secondCommitment) w.stack 10 10) := by
+  rw [reached_deleted_script_of_witness pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short w]
+  exact ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage_cross_tx
+    pin nonce0 nonce1 firstCommitment secondCommitment
+    firstWidth secondWidth pinShort nonce0Short nonce1Short
+    differentPush leftTx rightTx leftSelected rightSelected
+    leftValid rightValid leftSelectedValid (selectedIds w)
+
 /-- Two reached modeled final stacks for one parameterized Config A lock
 have equal source-shaped ALL preimages iff their selected dummy sets agree.
 The nonce ALL flag excludes aliasing with a generated SINGLE dummy. -/

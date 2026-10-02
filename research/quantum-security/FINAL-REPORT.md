@@ -611,6 +611,17 @@ reasoning about two hash evaluations, not a claim
 that their SHA256d values or recovered keys differ: one key can still verify
 two different fixed signatures/messages under the recovery equations. The
 universal compiled-Core and shared-query quantum arguments remain open.
+The separation also survives adversarial changes to the modeled transaction:
+`ScriptSigSighash.sourceAllPreimage_identifies_selected_scriptCode` proves
+that equal valid ALL preimage bytes with a nonempty selected scriptCode force
+both the selected input index and selected scriptCode to agree, even when the
+two transactions have different original scriptSigs. The literal and
+parameterized pin/final theorems compose this with their distinct scriptCodes,
+so no pin/final preimage alias exists across any two valid source transactions
+or selected inputs under the stated push inequality. The pin code is proved
+nonempty by the surviving final nonce push. These are equality facts about
+source byte strings, not independence of adaptive quantum oracle evaluations
+or a Core-to-Lean verifier theorem.
 `ParameterizedFinalSubset.nonce_alias_counterexample` checks the ALL-flag
 boundary of the arbitrary-list theorem: if the final nonce bytes instead
 equal one generated `SIGHASH_SINGLE` dummy, selecting that dummy or omitting
@@ -643,6 +654,13 @@ source ALL preimages agree exactly when their nine selected dummy sets agree.
 This removes independent transaction-field choice inside the raw source
 model. The parser, scriptSig evaluator, checker and execution are still not
 proved equivalent to compiled Bitcoin Core.
+On a good setup, a further raw-source theorem obtains the final signature
+slots from a successful checked search on one parsed raw attempt. Its reached
+final ALL preimage cannot equal any valid pin ALL preimage, even for another
+source transaction or selected input. This removes a caller-chosen final
+subset from the cross-role byte separation. It still assumes the validated
+parameterized lock, a nonaliasing pin/final push pair, and the source checker;
+compiled-Core acceptance and the one-budget quantum bound remain open.
 `QSB/ReachedSubsetSighash.lean` now applies that classification to the ten
 signature bytes in two reached final CHECKMULTISIG stacks. A successful full
 literal byte-model run with an explicit nonempty, DER-sound successful

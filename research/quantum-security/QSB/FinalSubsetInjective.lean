@@ -336,6 +336,16 @@ theorem pin_scriptCode_ne_final_scriptCode (ids : List (Fin 150)) :
     simp [residualChunks, selectedPatterns_eq]
   exact notFinal (residualEq ▸ inPin)
 
+private theorem pinDeletedScript_nonempty : pinDeletedScript ≠ [] := by
+  intro empty
+  have inPin : noncePattern ∈ pinResidualChunks :=
+    List.mem_filter.mpr ⟨nonce_pattern_in_chunks,
+      by simp [nonce_pattern_ne_pin]⟩
+  have parsed := pin_residual_parse
+  rw [empty] at parsed
+  simp [EncodedScript.parseChunks] at parsed
+  simp [parsed] at inPin
+
 private theorem pinDeletedScript_width :
     pinDeletedScript.length < 256 ^ 8 := by
   have bounded := CoreFindAndDelete.run_length_le 880
@@ -361,5 +371,28 @@ theorem pin_all_preimage_ne_final_all_preimage
     (ScriptSigSighash.sourceAllPreimage_injective_scriptCode
       tx selected _ _ txValid selectedValid
       pinDeletedScript_width (tenDeletedScript_width ids) same)
+
+/-- Changing source transaction fields or the selected input cannot make a
+pin ALL preimage equal a final candidate ALL preimage on the literal lock.
+The original scriptSigs remain unrestricted source fields. -/
+theorem pin_all_preimage_ne_final_all_preimage_cross_tx
+    (left right : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat)
+    (leftValid : SighashAllWire.valid left)
+    (rightValid : SighashAllWire.valid right)
+    (leftSelectedValid : leftSelected < left.inputs.length)
+    (ids : List (Fin 150)) :
+    SighashAllWire.sourceAllPreimage left leftSelected pinDeletedScript ≠
+      SighashAllWire.sourceAllPreimage right rightSelected
+        (ScriptSigSighash.tenDeletedScript ids) := by
+  intro same
+  obtain ⟨_, codes⟩ :=
+    ScriptSigSighash.sourceAllPreimage_identifies_selected_scriptCode
+      left right leftSelected rightSelected pinDeletedScript
+      (ScriptSigSighash.tenDeletedScript ids)
+      leftValid rightValid leftSelectedValid
+      pinDeletedScript_width (tenDeletedScript_width ids)
+      pinDeletedScript_nonempty same
+  exact pin_scriptCode_ne_final_scriptCode ids codes
 
 end QSB.FinalSubsetInjective
