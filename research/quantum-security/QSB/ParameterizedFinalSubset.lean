@@ -413,4 +413,40 @@ theorem all_preimage_eq_iff_selected_set_eq_of_erased
     pinShort nonce0Short nonce1Short nonceAll
     leftTx selected leftValid selectedValid
 
+/-- The final nonce's ALL flag is necessary for the unrestricted-list
+selected-set injectivity theorem.
+If it equals a generated SINGLE dummy byte-for-byte, selecting that dummy
+adds no new deletion pattern, so distinct selected sets produce the same
+source-shaped scriptCode. This is outside the stated Config A nonce premise;
+it is not a spend of the real lock. -/
+theorem nonce_alias_counterexample
+    (pin nonce0 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (i : Fin 150) :
+    deletedScript pin nonce0 (FinalSignedLoop.generatedDummyAt i)
+      firstCommitment secondCommitment [] =
+      deletedScript pin nonce0 (FinalSignedLoop.generatedDummyAt i)
+        firstCommitment secondCommitment [i] ∧
+    ([] : List (Fin 150)).toFinset ≠ ([i] : List (Fin 150)).toFinset := by
+  have nonceShort := dummy_short i
+  constructor
+  · rw [scriptCode_eq_residual_flatten pin nonce0
+        (FinalSignedLoop.generatedDummyAt i)
+        firstCommitment secondCommitment firstWidth secondWidth
+        pinShort nonce0Short nonceShort [],
+      scriptCode_eq_residual_flatten pin nonce0
+        (FinalSignedLoop.generatedDummyAt i)
+        firstCommitment secondCommitment firstWidth secondWidth
+        pinShort nonce0Short nonceShort [i]]
+    congr 1
+    unfold residualChunks
+    apply List.filter_congr
+    intro chunk _
+    simp [selectedPatterns]
+  · simp
+
 end QSB.ParameterizedFinalSubset

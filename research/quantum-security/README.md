@@ -203,6 +203,10 @@ ALL preimage equality. The classification also permits different original
 scriptSigs when the remaining transaction fields agree after erasure. It does
 not identify Core-accepted subsets or bound SHA256d collisions or quantum
 queries.
+Lean also checks a counterexample if the final nonce uses the bytes of a
+generated SINGLE dummy: selecting that dummy adds no deletion pattern, so
+different selected sets have the same source scriptCode. The actual theorem
+requires a nonce ending in `SIGHASH_ALL`; this counterexample is not a spend.
 `QSB/ParameterizedReachedSubsetSighash.lean` derives the deletion list from
 the reached final signature slots of successful parameterized checked-source
 searches on a good setup. It returns nine distinct selected dummy indices per
@@ -229,6 +233,11 @@ The checked classification also allows different original scriptSig bytes
 when the source transaction fields agree after script erasure. A finite
 puzzle-relaxed Core case accepts an added non-push `OP_1 OP_DROP` prefix with
 the same recovered keys; see `evidence/full-subset-switch-core.json`.
+The evidence also records a second disposable parameter set with regenerated
+HORS pools and fixed signatures. Its two subset choices pass the pinned Core
+adapter with fresh recovered keys; reusing the first final nonce key for the
+second fails. The app deletion bytes match a separate whole-chunk filter in
+both parameter sets. The three puzzle checks are still disabled.
 `QSB/RawReachedSubsetSighash.lean` ties both stacks to the parsed raw
 transactions through the explicit scriptSig evaluator in the checked source
 game. Equal fields after scriptSig erasure retain the selected-set preimage

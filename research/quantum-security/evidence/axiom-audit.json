@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1319,
+  "theorem_count": 1320,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4387,6 +4387,11 @@
       "propext"
     ],
     "QSB.ParameterizedFinalSubset.equal_scriptCode_equal_selected_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.nonce_alias_counterexample": [
       "Classical.choice",
       "Quot.sound",
       "propext"

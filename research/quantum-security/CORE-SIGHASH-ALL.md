@@ -76,6 +76,11 @@ so its push cannot alias a generated `SIGHASH_SINGLE` dummy. Original
 scriptSig bytes may differ if the transaction fields agree after erasure.
 These parameterized source theorems do not determine accepted Core subsets,
 rule out SHA256d collisions, or give a quantum-query bound.
+`ParameterizedFinalSubset.nonce_alias_counterexample` proves the final ALL
+flag is a real condition of the selected-set theorem: replacing the nonce
+with a generated SINGLE dummy makes the empty selection and the singleton
+selection of that dummy delete the same source scriptCode. This is a
+counterexample to dropping a theorem premise, not to the real lock's safety.
 `QSB/ParameterizedReachedSubsetSighash.lean` connects the candidate
 classification to ten signature bytes at the reached final stack of two
 successful parameterized checked-source searches. A good-setup premise
@@ -126,6 +131,12 @@ the witness-dependent scriptCode boundary, not acceptance by the real lock
 or a same-key rejection theorem. Reproduce it with
 `analysis/check_full_subset_switch_core.py` and the pinned app/native paths
 recorded in that script and report.
+The same [finite differential](evidence/full-subset-switch-core.json) now
+includes a second disposable lock with regenerated HORS commitments and new
+pin/nonce signatures. Its two final subsets pass pinned Core with separately
+recovered keys; an old final nonce key fails on the changed subset. The
+app's deletion result matches an independent whole-chunk filter in both
+parameter sets. The three puzzle sites remain disabled in every case.
 The remaining step is to identify Core's C++ preimage for every accepted
 transaction with this source-shaped encoding, including its reached
 FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the

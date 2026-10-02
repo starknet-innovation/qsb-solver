@@ -148,6 +148,7 @@ import QSB.Reduction
 #print axioms QSB.ParameterizedFinalSubset.scriptCode_eq_iff_selected_set_eq
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased
+#print axioms QSB.ParameterizedFinalSubset.nonce_alias_counterexample
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script_of_witness
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq

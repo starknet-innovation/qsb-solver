@@ -597,6 +597,12 @@ covers transactions equal after original scriptSig erasure. The fixed final
 nonce's `SIGHASH_ALL` byte prevents aliasing with generated `SIGHASH_SINGLE`
 dummies. These results do not determine Core-accepted subsets or refine
 compiled Core, and preimage inequality does not rule out SHA256d collisions.
+`ParameterizedFinalSubset.nonce_alias_counterexample` checks the ALL-flag
+boundary of the arbitrary-list theorem: if the final nonce bytes instead
+equal one generated `SIGHASH_SINGLE` dummy, selecting that dummy or omitting
+it gives the same source scriptCode despite different selected-position sets.
+This is outside the stated final-nonce premise and is not an accepted QSB
+spend.
 `QSB/ParameterizedReachedSubsetSighash.lean` now takes the actual ten
 signature bytes at a parameterized checked-source search's reached final
 stack. Under the good-setup no-DER-commitment premise, it constructs nine
@@ -650,6 +656,15 @@ outside the theorem. A fourth pinned-Core case in
 accepted puzzle-relaxed witness; it remains accepted with the same recovered
 keys, and the app's ALL digest is unchanged. The experiment is finite and
 does not execute the three real puzzle checks.
+The full-lock differential now repeats the subset switch with a second
+public disposable parameter set: both HORS commitment pools and all three
+fixed signatures differ from the literal fixture. The app's repeated
+FindAndDelete bytes equal an independent whole-original-chunk filter for
+both selections in both parameter sets. Pinned Core accepts each second-set
+selection with newly recovered keys, accepts an `OP_1 OP_DROP` scriptSig
+prefix with the same keys, and rejects reuse of the first selection's final
+nonce key for the second. All eight cases are synthetic, unfunded and
+puzzle-relaxed; this is finite corroboration, not universal Core refinement.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped

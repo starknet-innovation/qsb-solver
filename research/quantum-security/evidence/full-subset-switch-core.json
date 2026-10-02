@@ -59,5 +59,41 @@
       "accepted": false,
       "transaction_sha256": "df12d963b674f99fad028fc599a68e12d36b99c5c7fe82aad8e56c1a0afdb998"
     }
-  ]
+  ],
+  "parameterized_variant": {
+    "scope": "Second public disposable builder parameter set; both HORS pools and all three fixed signatures changed; same synthetic transaction and puzzle-relaxed Core checks",
+    "exact_lock_sha256": "618b90bcff157d2f474601314e41ec0af8a8835d17a9614dbf08cfac30967ad4",
+    "test_lock_sha256": "49a8deff19fa897d46162f555b5594a18cb532e0a6c4d9a0f8085fff5fb4c6dd",
+    "pin_length": 55,
+    "first_nonce_length": 55,
+    "final_nonce_length": 55,
+    "first_commitment_pool_sha256": "615532d5623a6be629ceebe539028b5a8fe780c7da95647c1d8f6a8c7dc753a8",
+    "second_commitment_pool_sha256": "72fd4215f8cf3d1c5859b239b668fe802c9b83bc8e5d0917f69a4eef2618dae5",
+    "subset_a_script_code_sha256": "4f0297089c12b73235fd85682d58185444775b10b1a24f657900e8210b617818",
+    "subset_b_script_code_sha256": "a23b0c8f86ce27b512bbbf07ac7fb3399cc951024de477e150220a3f358db4de",
+    "subset_a_all_digest_hex": "7196a9a451dcbff2c5aea171e51143ec9a708c4f5945fe82598f295ecbd5d80c",
+    "subset_b_all_digest_hex": "460e8dd7910b53478145bae5e3e39fee6c6dfb5518305683c504a6242ae92ea4",
+    "cases": [
+      {
+        "case": "parameterized_subset_a_recovered",
+        "accepted": true,
+        "transaction_sha256": "9775495a7f081b80de401b713a771f7e1fb810df31e8c4124bbce06e5ee0d7a4"
+      },
+      {
+        "case": "parameterized_subset_a_nonpush_prefix_same_keys",
+        "accepted": true,
+        "transaction_sha256": "0ef43a679ee3a3c3e8def3d075dec3ee4cb5bfc0cf2c433fb0dc0377329fc652"
+      },
+      {
+        "case": "parameterized_subset_b_recovered",
+        "accepted": true,
+        "transaction_sha256": "c3951ff3a84a929d2bc2e98fe56da4ce3090e0741e0d3979124810e785f43481"
+      },
+      {
+        "case": "parameterized_subset_b_old_nonce_key",
+        "accepted": false,
+        "transaction_sha256": "c877c451a0d35856d93f602d19831a3452cb26eea77581887d684c68a0a08e8b"
+      }
+    ]
+  }
 }

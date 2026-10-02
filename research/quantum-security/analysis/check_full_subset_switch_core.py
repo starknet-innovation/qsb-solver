@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 from check_round_results import opcodes
+from check_dynamic_full_data import parse_chunks
 
 
 IMAGE = "ubuntu@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7"
@@ -115,6 +116,14 @@ def main() -> None:
             script_code = bt.find_and_delete(lock, nonces[round_index])
             for sig in selected:
                 script_code = bt.find_and_delete(script_code, sig)
+            patterns = {bytes((len(sig),)) + sig
+                        for sig in [nonces[round_index], *selected]}
+            assert all(0 < len(sig) < 76
+                       for sig in [nonces[round_index], *selected])
+            expected_code = b"".join(
+                chunk for chunk in parse_chunks(lock)
+                if chunk not in patterns)
+            assert script_code == expected_code
             nonce_digest = tx.sighash(1, script_code, 1)
             nonce_key = recover(nonces[round_index], nonce_digest)
             pubkeys = [recover(sig, tx.sighash(1, script_code, sig[-1]))
@@ -201,9 +210,68 @@ def main() -> None:
             original_script_sig_digest == prefixed_script_sig_digest,
         "cases": cases,
     }
+    # Exercise the same subset switch after regenerating both HORS pools and
+    # all three fixed signatures. The disposable secrets and transaction stay
+    # offline; Core still sees the puzzle-relaxed test lock.
+    builder = bt.QSBScriptBuilder(150, 8, 1, 7, 2, hash_mode="sha256")
+    alt_rng = random.Random(
+        "QSB security analysis: SECOND PUBLIC DISPOSABLE PARAMETER SET")
+    try:
+        bt.os.urandom = alt_rng.randbytes
+        builder.generate_keys()
+    finally:
+        bt.os.urandom = old_random
+    indices = builder.compute_witness_indices(subsets)
+    pin = nonce_sig(b"qsb_param_pin")
+    nonces = [nonce_sig(b"qsb_param_r0"),
+              nonce_sig(b"qsb_param_r1")]
+    alt_exact = builder.build_full_script(pin, *nonces)
+    assert hashlib.sha256(alt_exact).hexdigest() != report["exact_lock_sha256"]
+    alt_lock = bytearray(alt_exact)
+    alt_sites = [index for index, op in opcodes(alt_exact)
+                 if op == bt.OP_CHECKSIGVERIFY]
+    assert len(alt_sites) == 4
+    for index in alt_sites[1:]:
+        alt_lock[index] = 0x6d
+    lock = bytes(alt_lock)
+    alt_sig_a, alt_key_a, alt_code_a, alt_digest_a, alt_ids_a = witness(10)
+    alt_sig_b, alt_key_b, alt_code_b, alt_digest_b, alt_ids_b = witness(11)
+    alt_sig_b_old, _, _, _, _ = witness(11, alt_key_a)
+    assert alt_ids_a == ids_a and alt_ids_b == ids_b
+    assert alt_code_a != alt_code_b
+    assert alt_digest_a != alt_digest_b
+    assert alt_key_a != alt_key_b
+    alt_cases = [
+        check("parameterized_subset_a_recovered", alt_sig_a, True),
+        check("parameterized_subset_a_nonpush_prefix_same_keys",
+              nonpush_prefix + alt_sig_a, True),
+        check("parameterized_subset_b_recovered", alt_sig_b, True),
+        check("parameterized_subset_b_old_nonce_key", alt_sig_b_old, False),
+    ]
+    report["parameterized_variant"] = {
+        "scope": "Second public disposable builder parameter set; both HORS pools and all three fixed signatures changed; same synthetic transaction and puzzle-relaxed Core checks",
+        "exact_lock_sha256": hashlib.sha256(alt_exact).hexdigest(),
+        "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
+        "pin_length": len(pin),
+        "first_nonce_length": len(nonces[0]),
+        "final_nonce_length": len(nonces[1]),
+        "first_commitment_pool_sha256": hashlib.sha256(
+            b"".join(builder.hors_commitments[0])).hexdigest(),
+        "second_commitment_pool_sha256": hashlib.sha256(
+            b"".join(builder.hors_commitments[1])).hexdigest(),
+        "subset_a_script_code_sha256": hashlib.sha256(alt_code_a).hexdigest(),
+        "subset_b_script_code_sha256": hashlib.sha256(alt_code_b).hexdigest(),
+        "subset_a_all_digest_hex": f"{alt_digest_a:064x}",
+        "subset_b_all_digest_hex": f"{alt_digest_b:064x}",
+        "cases": alt_cases,
+    }
     args.output.write_text(json.dumps(report, indent=2) + "\n")
-    print(json.dumps({"cases": cases,
-                      "all_digests_differ": digest_a != digest_b}, indent=2))
+    print(json.dumps({
+        "baseline_cases": cases,
+        "parameterized_cases": alt_cases,
+        "baseline_all_digests_differ": digest_a != digest_b,
+        "parameterized_all_digests_differ": alt_digest_a != alt_digest_b,
+    }, indent=2))
 
 
 if __name__ == "__main__":

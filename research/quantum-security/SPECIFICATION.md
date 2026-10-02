@@ -534,6 +534,11 @@ in `0x01`, excluding aliasing with `SIGHASH_SINGLE` dummy pushes. The preimage
 result persists across original scriptSig changes when erased transaction
 fields agree. Which sets are Core-reachable and the compiled-Core and joint
 QROM bounds remain open.
+`ParameterizedFinalSubset.nonce_alias_counterexample` shows why the final
+nonce ALL premise cannot be omitted from that general theorem: a SINGLE
+nonce equal to one generated dummy causes distinct selected-position sets
+to produce the same source scriptCode. This is a formal theorem-boundary
+counterexample, not an unauthorized spend of the intended lock.
 `QSB/ParameterizedReachedSubsetSighash.lean` uses the reached ten-signature
 stack of two successful parameterized checked-source searches against one
 lock. With the no-DER-commitment good-setup premise, it derives nine distinct
