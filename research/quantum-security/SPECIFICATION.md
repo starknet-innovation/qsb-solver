@@ -517,6 +517,12 @@ deterministic event over the *same* `H` and `R`, with the key and final
 FindAndDelete scriptCode chosen by the witness. The corresponding pin-side
 source theorem now identifies the early puzzle signature as `H(pinKey)` for
 the reached fixed pin key, and forces those bytes to be strict DER.
+For the literal generated lock, `QSB/FinalSubsetInjective.lean` proves that
+the source-shaped final ALL preimage at fixed valid transaction fields is
+equal across two candidate lists exactly when they select the same set of
+generated dummy positions. This removes draw-order and duplicate-list
+multiplicity from that source-model message family. It does not identify the
+Core-reachable subsets, rule out SHA256d collisions, or bound quantum search.
 `QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a

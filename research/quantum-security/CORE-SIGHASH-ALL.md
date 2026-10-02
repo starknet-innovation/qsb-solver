@@ -59,6 +59,12 @@ Two complete candidate final-signature lists delete different pushes from the
 literal generated lock, so fixed transaction fields do not by themselves fix
 the final ALL preimage. Those lists are not established as accepted QSB
 witnesses; unequal preimages do not rule out a SHA256d collision.
+`QSB/FinalSubsetInjective.lean` generalizes this to all lists of the 150
+generated final dummy positions in the literal lock: equal source-shaped final
+scriptCodes, and therefore equal valid fixed-transaction ALL preimages, occur
+exactly for equal selected position sets. Permuting or repeating selected
+positions does not change that set. The theorem does not show which sets an
+accepted Core execution can reach or assign a quantum-query probability.
 The remaining step is to identify Core's C++ preimage for every accepted
 transaction with this source-shaped encoding, including its reached
 FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the

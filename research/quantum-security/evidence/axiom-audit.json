@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1284,
+  "theorem_count": 1291,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3345,6 +3345,41 @@
       "propext"
     ],
     "QSB.FinalSignedLoop.successful_target_matches_hash160_at": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.all_preimage_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.distinct_selected_sets_distinct_all_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.equal_scriptCode_equal_residual": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.equal_scriptCode_equal_selected_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.residual_from_scriptCode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.same_selected_set_equal_scriptCode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.scriptCode_eq_iff_selected_set_eq": [
       "Classical.choice",
       "Quot.sound",
       "propext"

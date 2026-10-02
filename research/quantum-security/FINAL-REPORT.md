@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,284 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,291 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -574,6 +574,17 @@ and therefore produce different ALL preimages with all transaction fields
 held fixed. These are source-model preimages, not a claim that their SHA256d
 digests differ or that both candidate lists are reachable in accepted QSB
 spends. The witness-dependent scriptCode remains part of the joint hash event.
+`QSB/FinalSubsetInjective.lean` strengthens the literal-lock result from one
+example to every list of generated dummy positions. Source-shaped deletion
+removes complete opcode chunks, and reparsing the residual bytes recovers those
+chunks. Each generated dummy has one unique serialized push, so two selected
+lists yield the same final scriptCode **if and only if** they contain the same
+positions, regardless of order or repeated entries. For a valid selected
+input and fixed transaction fields, their source-shaped ALL preimages have
+exactly those same equality classes. This does not prove that every subset is
+reachable by an accepted witness, that actual Core computes these bytes for
+every witness, or that SHA256d outputs are distinct. The number of possible
+preimages must not be read as independent quantum search trials.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped

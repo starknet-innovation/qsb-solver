@@ -120,6 +120,7 @@ import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
 import QSB.ScriptSigSighash
+import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1380,6 +1381,13 @@ import QSB.Reduction
 #print axioms QSB.ScriptSigSighash.selected_nine_nodup
 #print axioms QSB.ScriptSigSighash.selected_nine_ten_deletions_different
 #print axioms QSB.ScriptSigSighash.selected_nine_distinct_all_preimages
+#print axioms QSB.FinalSubsetInjective.residual_from_scriptCode
+#print axioms QSB.FinalSubsetInjective.equal_scriptCode_equal_residual
+#print axioms QSB.FinalSubsetInjective.equal_scriptCode_equal_selected_set
+#print axioms QSB.FinalSubsetInjective.same_selected_set_equal_scriptCode
+#print axioms QSB.FinalSubsetInjective.scriptCode_eq_iff_selected_set_eq
+#print axioms QSB.FinalSubsetInjective.distinct_selected_sets_distinct_all_preimages
+#print axioms QSB.FinalSubsetInjective.all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

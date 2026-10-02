@@ -1529,6 +1529,19 @@
 'QSB.ScriptSigSighash.selected_nine_nodup' depends on axioms: [propext, Quot.sound]
 'QSB.ScriptSigSighash.selected_nine_ten_deletions_different' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptSigSighash.selected_nine_distinct_all_preimages' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSubsetInjective.residual_from_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSubsetInjective.equal_scriptCode_equal_residual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSubsetInjective.equal_scriptCode_equal_selected_set' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSubsetInjective.same_selected_set_equal_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSubsetInjective.scriptCode_eq_iff_selected_set_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FinalSubsetInjective.distinct_selected_sets_distinct_all_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FinalSubsetInjective.all_preimage_eq_iff_selected_set_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

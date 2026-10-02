@@ -189,6 +189,10 @@ final-signature selections of the literal lock produce distinct source-shaped
 ALL preimages even with identical transaction fields. Neither selection is
 proved accepted by the unmodified lock, and SHA256d collision resistance is
 not inferred from preimage inequality.
+`QSB/FinalSubsetInjective.lean` proves the general literal-lock version:
+selected dummy-position sets and source-shaped final ALL preimages have the
+same equality classes for fixed valid transaction fields and selected input.
+The result does not count reachable Core-accepted subsets or quantum queries.
 `QSB/JointSourceChecks.lean` also proves that an out-of-range SINGLE checker
 call keeps the raw constant digest after any output-list replacement that
 leaves the selected input past the last output. A cross-checked test adapter
