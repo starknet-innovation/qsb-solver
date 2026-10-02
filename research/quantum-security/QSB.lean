@@ -221,6 +221,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicRetarget.findRelease_sound
 #print axioms QSB.DynamicRetarget.findRelease_mem
 #print axioms QSB.DynamicRetarget.findRelease_none_no_match
+#print axioms QSB.DynamicRetarget.unmatched_known_key_has_other_signature
 #print axioms QSB.DynamicRetarget.double_hash_collision_yields_hash_collision
 #print axioms QSB.DynamicRetarget.double_hash_collision_witnessed
 #print axioms QSB.DynamicRetarget.witnessed_collision_iff_double_equal

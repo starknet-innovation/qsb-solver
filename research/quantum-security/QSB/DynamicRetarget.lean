@@ -108,6 +108,34 @@ theorem findRelease_none_no_match
           exact headMatch pair
         · exact ih tailMissing release tailMember pair
 
+/-- A key may have been disclosed in an approved call under a different
+signature even when no exact signature/key record matches. -/
+def KeyInHistory
+    {functions : JointSourceChecks.Functions}
+    {ecdsa : Bytes → Bytes → Bytes → Bool}
+    {ledger : Game.Outpoint → Game.Output}
+    {authorized : Set Game.Projection}
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (key : Bytes) : Prop :=
+  ∃ release ∈ history, release.key = key
+
+theorem unmatched_known_key_has_other_signature
+    {functions : JointSourceChecks.Functions}
+    {ecdsa : Bytes → Bytes → Bytes → Bool}
+    {ledger : Game.Outpoint → Game.Output}
+    {authorized : Set Game.Projection}
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (sig key : Bytes)
+    (missing : findRelease history sig key = none)
+    (known : KeyInHistory history key) :
+    ∃ release ∈ history,
+      release.key = key ∧ release.sig ≠ sig := by
+  obtain ⟨release, member, sameKey⟩ := known
+  refine ⟨release, member, sameKey, ?_⟩
+  intro sameSig
+  exact (findRelease_none_no_match history sig key missing
+    release member) ⟨sameSig, sameKey⟩
+
 /-- A collision of `H ∘ H` on distinct inputs yields a collision of that
 same H, either on the original inputs or on their distinct first outputs. -/
 theorem double_hash_collision_yields_hash_collision
@@ -368,9 +396,10 @@ def RetargetEvent
       ((contract.targets released.sig released.key).erase
         (functions.H (functions.H oldPreimage))).card ≤ 7))
 
-/-- A call without a matching approved signature/key record remains an
-unmatched DER-shaped checked call. Matching on the key alone would be unsound:
-an approved signature for a different role need not be the attempted one. -/
+/-- Classify a checked forbidden call by both exact-pair and key-only
+release history. An unmatched pair with a previously released key is charged
+to an at-most-eight digest target event, not a fresh DER-key event. A matching
+pair uses the reached collision or at-most-seven alternative-target split. -/
 def HistoryCallEvent
     (functions : JointSourceChecks.Functions)
     (ecdsa : Bytes → Bytes → Bytes → Bool)
@@ -379,17 +408,28 @@ def HistoryCallEvent
     (authorized : Set Game.Projection)
     (history : List (ReleasedAllCall functions ecdsa ledger authorized))
     (sig key : Bytes)
-    (attempted : SighashAllWire.TxFields) (selected : Nat)
+  (attempted : SighashAllWire.TxFields) (selected : Nat)
     (scriptCode : Bytes) : Prop :=
   (findRelease history sig key = none ∧
+    ¬KeyInHistory history key ∧
     SighashAllWire.sourceAllPreimage attempted selected scriptCode ∉
       DynamicDisclosureEvent.approvedAllPreimages ledger authorized ∧
     DERSyntax.valid (functions.H key) = true ∧
     ecdsa sig key (functions.H (functions.H
       (SighashAllWire.sourceAllPreimage attempted selected scriptCode))) = true) ∨
-  ∃ released, findRelease history sig key = some released ∧
+  (∃ released, findRelease history sig key = some released ∧
     RetargetEvent functions ecdsa contract ledger authorized released
-      attempted selected scriptCode
+      attempted selected scriptCode) ∨
+  (findRelease history sig key = none ∧
+    (∃ released ∈ history,
+      released.key = key ∧ released.sig ≠ sig) ∧
+    SighashAllWire.sourceAllPreimage attempted selected scriptCode ∉
+      DynamicDisclosureEvent.approvedAllPreimages ledger authorized ∧
+    DERSyntax.valid (functions.H key) = true ∧
+    functions.H (functions.H
+      (SighashAllWire.sourceAllPreimage attempted selected scriptCode)) ∈
+        contract.targets sig key ∧
+    (contract.targets sig key).card ≤ 8)
 
 theorem classify_checked_call
     (functions : JointSourceChecks.Functions)
@@ -414,11 +454,16 @@ theorem classify_checked_call
   unfold HistoryCallEvent
   cases lookup : findRelease history sig key with
   | none =>
-      exact Or.inl ⟨rfl,
-        DynamicDisclosureEvent.forbidden_all_preimage_fresh
-          ledger authorized attempted selected scriptCode
-          attemptedValid scriptCodeValid forbidden,
-        der, checked⟩
+      have fresh := DynamicDisclosureEvent.forbidden_all_preimage_fresh
+        ledger authorized attempted selected scriptCode
+        attemptedValid scriptCodeValid forbidden
+      by_cases known : KeyInHistory history key
+      · exact Or.inr (Or.inr ⟨rfl,
+          unmatched_known_key_has_other_signature history sig key
+            lookup known,
+          fresh, der, contract.sound sig key _ checked,
+          contract.card_le_eight sig key⟩)
+      · exact Or.inl ⟨rfl, known, fresh, der, checked⟩
   | some released =>
       have pair := findRelease_sound history sig key released lookup
       have releasedChecked : ecdsa released.sig released.key
@@ -426,7 +471,7 @@ theorem classify_checked_call
             (SighashAllWire.sourceAllPreimage attempted selected
               scriptCode))) = true := by
         simpa [pair.1, pair.2] using checked
-      refine Or.inr ⟨released, rfl, ?_⟩
+      refine Or.inr (Or.inl ⟨released, rfl, ?_⟩)
       exact reused_fixed_call_witnessed_collision_or_alternative
         functions ecdsa contract ledger authorized released attempted
         selected scriptCode attemptedValid scriptCodeValid forbidden

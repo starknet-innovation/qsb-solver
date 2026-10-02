@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1349,
+  "theorem_count": 1350,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2168,6 +2168,11 @@
       "propext"
     ],
     "QSB.DynamicRetarget.search_pin_final_history_cases": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.unmatched_known_key_has_other_signature": [
       "Classical.choice",
       "Quot.sound",
       "propext"

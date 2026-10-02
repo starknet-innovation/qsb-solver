@@ -149,6 +149,7 @@
 'QSB.DynamicRetarget.findRelease_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.findRelease_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.findRelease_none_no_match' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.unmatched_known_key_has_other_signature' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.double_hash_collision_yields_hash_collision' does not depend on any axioms
 'QSB.DynamicRetarget.double_hash_collision_witnessed' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.witnessed_collision_iff_double_equal' depends on axioms: [propext, Classical.choice, Quot.sound]

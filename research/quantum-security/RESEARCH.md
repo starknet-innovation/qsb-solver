@@ -64,6 +64,14 @@ and a variable selected subset. A proof must separate key reuse and equal-key
 cases and model the signing transcript, rather than simply substitute the
 DER count into Theorem 9. The theorem's q-to-the-fourth loss also shows that
 two unconstrained hits alone do not double the quantum work exponent.
+`QSB/DynamicRetarget.lean` now makes the approved-call history split explicit:
+an unmatched signature/key pair may reuse a key released under another
+signature, in which case the source reduction retains an at-most-eight digest
+target event instead of treating `H(key)` as a new DER hit. Even when no
+approved-call record uses the key, absence from that list does not establish
+that the key was unqueried or oracle-independent. Thus the distinct-input
+theorem still cannot be applied to the complete QSB event without a causal
+transcript and shared-query argument.
 
 Qipeng Liu, [*Non-uniformity and Quantum Advice in the Quantum Random Oracle
 Model*](https://arxiv.org/abs/2210.06693), treats oracle-dependent advice as

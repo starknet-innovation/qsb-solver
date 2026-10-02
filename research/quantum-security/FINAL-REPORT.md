@@ -1220,19 +1220,22 @@ that this unrestricted event holds for every total 32-byte-output H on all
 byte strings, even before any query. A finite checked example also has an
 unrelated global collision while the two chosen preimages do not collide.
 The corrected witnessed event is equivalent to equality of the two reached
-SHA256d digests; it still needs a causal query/transcript theorem;
-this repair is not a QROM bound.
+SHA256d digests. It still needs a causal query/transcript theorem; this
+repair is not a QROM bound.
 `QSB/DynamicRetarget.search_pin_final_history_cases` now classifies both
 reached source checks against a list of approved fixed-signature/key ALL
-calls. Each is either an unmatched DER-shaped verifying call on a preimage
-outside all valid owner-approved source ALL preimages, or a matching approved
-pair with the collision/alternative-target event. Lookup matches
-both signature and key bytes: an unmatched pair need not have a fresh key,
-and the list must contain all relevant approvals before it can represent a
-complete disclosure transcript. The result is deterministic; causal
+calls. If no record uses the key, the branch retains a DER-shaped verifying
+call on a forbidden preimage. If the key was released under another signature
+but no exact pair matches, the attempted digest lies in an at-most-eight
+target set. A matching pair yields the reached collision or at-most-seven
+alternative-target event. A key absent from the approved-call list may still
+have been queried or exposed elsewhere, so that branch is not yet an
+oracle-fresh event. The list must contain all relevant approvals to represent
+a complete disclosure transcript. The result is deterministic; causal
 transcript modeling and a shared-query quantum bound are still missing.
 On a good setup, `search_good_setup_joint_history_event` places those two
-cases alongside the seven reached `R(H(opening))` equations and two distinct
+checks and their three cases alongside the seven reached `R(H(opening))`
+equations and two distinct
 bonus positions from the same source certificate and the same H and R.
 The same parameterized certificate also yields the reached first pinning
 CHECKSIGVERIFY call. Its signature bytes are provably the lock-pushed pin
