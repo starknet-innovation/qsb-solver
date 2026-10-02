@@ -500,6 +500,12 @@ The observation would cost a query (or be correlated advice) in a causal game;
 the current arbitrary world-indexed output has no such accounting. This does
 not invalidate the conditional joint reduction or give a QSB attack. It shows
 why fixed-input setup densities cannot serve as its adaptive `εjoint` bound.
+The same four-world model also has one-element digest targets for **every**
+fixed key. A fixed key is hit in two worlds, whereas selecting the key from
+an oracle-dependent disclosed digest gives a hit in all four. Thus even a
+proved per-key target cardinality, such as the proposed eight-wire-digest
+contract, needs a causal key-selection and advice argument before it yields
+an adaptive hit bound. This toy selector is not an ECDSA or QSB attack.
 
 The successful parameterized byte run also fixes the tenth final signature
 cell to the lock-pushed second-round nonce, regardless of the initial witness

@@ -60,4 +60,41 @@ theorem fixed_marginal_not_adaptive_bound :
   rw [fixed_hit_count, inspected_hit_count]
   decide
 
+/-- A toy verifier whose target set for every fixed key has one element. -/
+def singletonTarget (key : Bool) : Finset Bool := {key}
+
+theorem singleton_target_card (key : Bool) :
+    (singletonTarget key).card = 1 := by
+  simp [singletonTarget]
+
+/-- With a fixed key and one fixed digest input, the target hit has the
+ordinary one-half marginal over the four Boolean oracle functions. -/
+theorem fixed_key_target_hit_count :
+    (Finset.univ.filter fun oracle : Bool → Bool =>
+      oracle false ∈ singletonTarget false).card = 2 := by
+  decide
+
+/-- If disclosure reveals the digest and the key is selected to be that
+digest, the singleton target contains it in all four worlds. The target
+cardinality is still one for every fixed key. This world-indexed selection
+does not charge the query or advice needed to learn the disclosed bit. -/
+theorem disclosed_key_target_hit_count :
+    (Finset.univ.filter fun oracle : Bool → Bool =>
+      oracle false ∈ singletonTarget (revealedBit oracle)).card = 4 := by
+  decide
+
+/-- A finite per-key target count alone cannot justify applying a
+fixed-key target-density bound after oracle-dependent key selection. This is
+a toy reduction counterexample, not a QSB spend or a causal QROM lower bound. -/
+theorem singleton_target_count_not_adaptive_bound :
+    (∀ key : Bool, (singletonTarget key).card = 1) ∧
+    (Finset.univ.filter fun oracle : Bool → Bool =>
+      oracle false ∈ singletonTarget false).card <
+    (Finset.univ.filter fun oracle : Bool → Bool =>
+      oracle false ∈ singletonTarget (revealedBit oracle)).card := by
+  constructor
+  · exact singleton_target_card
+  · rw [fixed_key_target_hit_count, disclosed_key_target_hit_count]
+    decide
+
 end QSB.OracleDependentSelection

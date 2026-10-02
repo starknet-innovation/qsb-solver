@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1352,
+  "theorem_count": 1356,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4400,6 +4400,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.OracleDependentSelection.disclosed_key_target_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.OracleDependentSelection.disclosure_true_count": [
       "Classical.choice",
       "Quot.sound",
@@ -4410,12 +4415,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.OracleDependentSelection.fixed_key_target_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.OracleDependentSelection.fixed_marginal_not_adaptive_bound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.OracleDependentSelection.inspected_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.singleton_target_card": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.OracleDependentSelection.singleton_target_count_not_adaptive_bound": [
       "Classical.choice",
       "Quot.sound",
       "propext"

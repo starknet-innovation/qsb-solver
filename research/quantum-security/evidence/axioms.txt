@@ -193,6 +193,12 @@
 'QSB.OracleDependentSelection.fixed_marginal_not_adaptive_bound' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.OracleDependentSelection.singleton_target_card' depends on axioms: [propext, Quot.sound]
+'QSB.OracleDependentSelection.fixed_key_target_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.OracleDependentSelection.disclosed_key_target_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.OracleDependentSelection.singleton_target_count_not_adaptive_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.public_scalar_satisfies' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.fixed_recovery_point_message_unique' depends on axioms: [propext, Quot.sound]
 'QSB.fixed_message_key_unique' depends on axioms: [propext, Classical.choice, Quot.sound]

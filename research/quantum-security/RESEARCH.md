@@ -72,6 +72,11 @@ approved-call record uses the key, absence from that list does not establish
 that the key was unqueried or oracle-independent. Thus the distinct-input
 theorem still cannot be applied to the complete QSB event without a causal
 transcript and shared-query argument.
+`OracleDependentSelection.singleton_target_count_not_adaptive_bound` gives a
+finite warning about per-key counts: every fixed key has one digest target,
+but an oracle-dependent disclosed digest can determine a key whose target is
+hit in every world. This does not model ECDSA or a causal query budget; it
+shows why the eight-target contract alone cannot supply an adaptive bound.
 `history_event_public_case` additionally takes a supplied public-key set.
 It routes an unmatched pair using an already disclosed key to the finite
 digest-target branch, even without an approved-call record. The set's

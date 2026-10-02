@@ -256,6 +256,10 @@ import QSB.Reduction
 #print axioms QSB.OracleDependentSelection.inspected_hit_count
 #print axioms QSB.OracleDependentSelection.correlated_disclosure_hit_count
 #print axioms QSB.OracleDependentSelection.fixed_marginal_not_adaptive_bound
+#print axioms QSB.OracleDependentSelection.singleton_target_card
+#print axioms QSB.OracleDependentSelection.fixed_key_target_hit_count
+#print axioms QSB.OracleDependentSelection.disclosed_key_target_hit_count
+#print axioms QSB.OracleDependentSelection.singleton_target_count_not_adaptive_bound
 #print axioms QSB.public_scalar_satisfies
 #print axioms QSB.fixed_recovery_point_message_unique
 #print axioms QSB.fixed_message_key_unique

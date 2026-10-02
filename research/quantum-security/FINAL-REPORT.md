@@ -513,6 +513,11 @@ observation as a query or model it as correlated advice. This finite result
 does not refute the conditional reduction, attack QSB, or establish a quantum
 bound. It rules out substituting a fixed-input random-function density for
 the still-unknown adaptive `εjoint`.
+The same file proves a second four-world warning: every fixed key has a
+singleton digest target, yet a fixed key hits in two worlds and a key chosen
+from a disclosed oracle digest hits in all four. The per-key target count
+alone therefore supplies no adaptive probability bound. This world-indexed
+toy does not model ECDSA recovery or charge the disclosure's query cost.
 `QSB/DERSyntax.lean` now gives an executable source-shaped translation of
 [Core 27.2's strict signature-encoding checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp). Lean proves that any accepted
 20-byte value has positive R/S byte lengths summing to 13 and the required
