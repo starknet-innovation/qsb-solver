@@ -1,12 +1,25 @@
 # Documentation and verified release status
 
-Checked 1 October 2026. This page describes the solver `main` documentation and
-its published combined release. Research branches and their experiment receipts
+Checked 2 October 2026. This page describes the solver `main` documentation and
+its published combined releases. Research branches and their experiment receipts
 must be assessed separately; their code is not automatically included in this image.
 AWS Batch is the only transport built or published; the Runpod transport was retired
 on 1 October 2026 and its earlier releases remain immutable records.
 
-## Published and enrolled artifact
+## Published and enrolled artifacts
+
+[combined-aws-sm86-v0.3.0](https://github.com/starknet-innovation/qsb-solver/releases/tag/combined-aws-sm86-v0.3.0)
+was published on 2 October 2026 at 05:19:08 UTC, targeting commit
+`490e21af84b95ed13aa5b3dae7260422f96718db`. Its `solver.json` describes the existing
+image, without rebuilding it:
+
+- Image: `ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48`.
+- Attested image source: `40b5d9f9f741eeac498c55ba98f52db08c288170`, preserved by `candidate-sm86-20261001-1`.
+- Descriptor: [qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c](promotion/releases/qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c.json).
+- Relation to v0.2.0: the same pinning and subset binaries, with Ubuntu updates
+  applied to the runtime at build and the Runpod transport retired.
+- Consumer enrollment: the identical descriptor and its generated registry import
+  are present in [qsb-app at 6082b55](https://github.com/starknet-innovation/qsb-app/tree/6082b55ae7aa9ce46b9da84fcda845bc02f04337/src/lib/releases).
 
 [combined-aws-sm86-v0.2.0](https://github.com/starknet-innovation/qsb-solver/releases/tag/combined-aws-sm86-v0.2.0)
 was published on 26 September 2026 at 17:36:58 UTC, targeting commit
@@ -17,15 +30,25 @@ image, without rebuilding it:
 - Attested image source: `43c77084648aa0f4cbcb1589abfcc792c9cc0d9d`, preserved by `candidate-sm86-20260925-1`.
 - Descriptor: [qsb-ranked-v2-43c77084648a-e22afc720df1](promotion/releases/qsb-ranked-v2-43c77084648a-e22afc720df1.json).
 - Consumer enrollment: the identical descriptor and its generated registry import
-  are present in [qsb-app at c7c900e8](https://github.com/starknet-innovation/qsb-app/tree/c7c900e8b0a9dbed58433d70ae66fc8838dede56/src/lib/releases).
+  are also present in [qsb-app at 6082b55](https://github.com/starknet-innovation/qsb-app/tree/6082b55ae7aa9ce46b9da84fcda845bc02f04337/src/lib/releases).
 
+qsb-app's status page lists `combined-aws-sm86-v0.2.0` as the served release; serving
+v0.3.0 needs its own ECR copy, job-definition revision and `solver_release_id`.
 Enrollment is verified repository state. Live deployment, selected runtime digest,
 mainnet activation and transaction execution were not checked by this documentation
 audit and cannot be inferred from enrollment.
 
 ## Evidence and limits
 
-The [publication record](promotion/2026-09-26-publication.md) binds the native
+For v0.3.0, the [publication record](promotion/2026-10-01-publication.md) binds the
+[native component checks](promotion/2026-10-01-a10g-components.md), run on two A10G
+replicas, the binary identities and the candidate's release scan. That scan found
+no fixable findings on 1 October; nothing rescans published images. No matched
+performance run was made for v0.3.0: its binaries are byte-identical to v0.2.0 and
+only runtime libraries received patch releases, so the September results below
+apply by an applicability judgement, not a new measurement.
+
+For v0.2.0, the [publication record](promotion/2026-09-26-publication.md) binds the native
 component checks, binary identities and final review. The
 [matched A10G results](promotion/2026-09-26-a10g-performance.md) report subset round 1
 about 31–32% faster, round 2 about 1.6–1.7% faster, and unchanged pinning.
@@ -50,8 +73,8 @@ artifact-specific applicability assessment.
 The dated files under `docs/promotion/` preserve observations and plans at their
 recorded dates. September 25 HOLD statements and pending gate lists were
 superseded for the exact published artifact by the September 26 publication
-record. They do not apply unchanged to new artifacts, and are not instructions
-to restart completed tests. Raw JSON receipts and their paths are retained.
+record; the October 1 records apply to the v0.3.0 artifact. They do not apply
+unchanged to new artifacts, and are not instructions to restart completed tests. Raw JSON receipts and their paths are retained.
 
 [Archived ranked-v1 tooling](../research/archived-validation/README.md) and
 [the original sm89 validation batch](../worker/promotion/validation/README.md)

@@ -1,6 +1,6 @@
 # Publication record: combined sm86 AWS release, 1 October 2026
 
-Status: **publication approved by @adrienlacombe on 1 October 2026, conditional on the native component check, which passed.** The release is created only after this record merges. qsb-app enrollment and deployment are separate steps.
+Status: **published on 2 October 2026 at 05:19:08 UTC as `combined-aws-sm86-v0.3.0`, targeting `490e21af84b95ed13aa5b3dae7260422f96718db` (verified 2 October).** Publication was approved by @adrienlacombe on 1 October 2026, conditional on the native component check, which passed. The descriptor is enrolled in qsb-app at `6082b55` ([qsb-app#131](https://github.com/starknet-innovation/qsb-app/pull/131)), not served; see [verified status](../README.md).
 
 ## What changed since combined-aws-sm86-v0.2.0
 
@@ -18,7 +18,7 @@ Status: **publication approved by @adrienlacombe on 1 October 2026, conditional 
 
 - **Descriptor:** [qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c.json](releases/qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c.json). It is identical to the `solver` object that `scripts/prepare_combined_release.py` emitted after verifying the candidate's attestation; the preparation hashes are in [2026-10-01-publication.json](2026-10-01-publication.json). Against the enrolled September descriptor, only `id`, `image`, `solverCommit` and `kernelCommit` differ.
 - **Search contract:** ranked-v2 `c570e14089e62de5185d9c8ba9f8f85d1b22c788edc524cd98a9ecaac5c26f7a`, unchanged.
-- **Release tag:** `combined-aws-sm86-v0.3.0` on this record's merge commit, with the descriptor as `solver.json`. The name avoids both publishing workflows (`aws-v*`, `candidate-sm86-*`). No image is built for it, and no registry is written to.
+- **Release tag:** `combined-aws-sm86-v0.3.0` on this record's merge commit `490e21a`, with the descriptor as `solver.json`. The name avoids both publishing workflows (`aws-v*`, `candidate-sm86-*`). No image is built for it, and no registry is written to.
 - **Candidate tag:** `candidate-sm86-20261001-1` must never be moved or deleted, because it keeps the attested source reachable.
 
 ## Rollback
@@ -27,6 +27,6 @@ The previous release `combined-aws-sm86-v0.2.0` (`sha256:e22afc72…`) and its e
 
 ## Not part of this record
 
-- Enrolling the descriptor in qsb-app, a separate reviewed app change.
+- Enrolling the descriptor in qsb-app, a separate reviewed app change ([qsb-app#131](https://github.com/starknet-innovation/qsb-app/pull/131)).
 - Deploying it: copying the digest into ECR, registering a new job definition, and setting the app stack's `solver_release_id`.
 - Any mainnet switch.
