@@ -165,6 +165,41 @@ The complete spend-path and attack table is in `SPECIFICATION.md`. It covers
 funding, pinning, both rounds, index and scriptSig manipulation, disclosure,
 recovery, alternate transaction layouts, policy, and chain inclusion.
 
+## Reuse of the released first-round puzzle
+
+The paper's Config A second-preimage estimate in Section 4.5 charges a fresh
+first-round hash-to-signature hit for each new pinned transaction. The emitted
+lock does not enforce the first-round `CHECKMULTISIG` result, so that factor
+cannot be charged after a valid spend has disclosed its first-round witness.
+The attacker can retain the released first-round HORS openings, indices, and
+nonce key. Its `RIPEMD160(nonce key)` remains the same DER-shaped signature.
+For a changed transaction, the attacker can recover a new public key for that
+fixed puzzle signature and the new puzzle sighash. The fixed first-round
+`SIGHASH_ALL` nonce signature and dummy signatures may then fail inside the
+unchecked multisignature. Pinning and the final-round multisignature still
+have to pass. `QSB/Layout.lean` checks the discarded-Boolean stack behavior,
+`QSB/Nonce.lean` checks public-key recovery algebra for any new message under
+an admissible recovery point, and the disposable pinned-Core case
+`changed_destination_reused_round1_nonce` accepts a changed destination even
+though an independent check finds the retained nonce key fails its new
+first-round `SIGHASH_ALL` message. That Core fixture relaxes all three
+hash-to-signature checks; it does not solve or spend the unmodified lock.
+
+Using **only the paper's own independent-hit work heuristic** for comparison,
+let `p ≈ 2^-46.425` be the DER-shaped-output density. A fresh first-round
+search with one bonus index contributes roughly `142p` per pinned attempt;
+the final round with two bonus indices contributes roughly
+`C(143,2)p = 10153p`. Reusing the disclosed first-round puzzle removes the
+`142p` factor. The resulting illustrative pin-plus-final estimate is
+`1/(p · 10153p) ≈ 2^79.54` hash-work units, versus approximately
+`1/(p · 142p · 10153p) ≈ 2^118.82` if a fresh first-round hit were required.
+These are comparisons within a simplified classical heuristic, **not** a
+proved attack complexity, a full-lock unauthorized spend, or a QROM success
+bound. In particular, Core extraction, shared-oracle correlations, adaptive
+disclosure, and the exact DER-parser density remain open. The checked
+reduction therefore targets pinning plus the *final* round, not three
+independent puzzle hits.
+
 ## What Lean proves
 
 The pinned Lean 4.30.0/mathlib build checks every project theorem dependency list with
