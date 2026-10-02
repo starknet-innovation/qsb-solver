@@ -7,7 +7,7 @@ import sys
 import time
 from benchmark import execute, hit_fields
 
-COMMIT = '43c77084648aa0f4cbcb1589abfcc792c9cc0d9d'
+COMMIT = '40b5d9f9f741eeac498c55ba98f52db08c288170'
 PIN = 'cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62'
 SUB = '673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15'
 

@@ -1,0 +1,11 @@
+{
+  "exceptionBranchesMatched": 156,
+  "pinningCpuVerdict": {
+    "valid": true,
+    "sequence": 2147507508,
+    "locktime": 1497688167
+  },
+  "capacityCases": 7,
+  "resultSha256": "80af506c4c24b96a5d819b7b7fd44957e83ec1db0b35a6013ded7259c6c5529d",
+  "scope": "Real historical single-pin replay and diagnostic synthetic exception/hit-capacity cases, not fresh withdrawal"
+}
