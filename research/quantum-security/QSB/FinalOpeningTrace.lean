@@ -43,6 +43,7 @@ theorem literal_final_trace_is_signed_blocks (hashes : Hashes)
       runOpenings hashes prefixOps initial = some (beforeSigned, first) ∧
       runOpenings hashes FinalSignedChain.allSignedBlocks beforeSigned =
         some (afterSigned, signed) ∧
+      trace.take 8 = first ∧ first.length = 8 ∧
       trace.drop 8 = signed ∧ signed.length = 7 := by
   rw [literal_signed_split, runOpenings_append] at accepted
   cases hprefix : runOpenings hashes prefixOps initial with
@@ -79,8 +80,44 @@ theorem literal_final_trace_is_signed_blocks (hashes : Hashes)
               have lastNil : last = [] := List.length_eq_zero_iff.mp lastLength
               subst last
               refine ⟨beforeSigned, afterSigned, first, signed,
-                rfl, hsigned, ?_, signedLength⟩
-              simp [firstLength]
+                rfl, hsigned, ?_, firstLength, ?_, signedLength⟩
+              · simp [firstLength]
+              · simp [firstLength]
+
+/-- The first eight matching HASH160 pairs are read from the reached
+first-round prefix of any terminating literal byte run, with no initial-stack
+shape premise. Their source commitment positions are not yet identified. -/
+theorem literal_first_eight_openings (hashes : Hashes)
+    (initial final : State) (trace : List (HashOpening hashes))
+    (accepted : runOpenings hashes ByteLayout.program initial =
+      some (final, trace)) :
+    ∃ beforeSigned first,
+      runOpenings hashes prefixOps initial = some (beforeSigned, first) ∧
+      trace.take 8 = first ∧ first.length = 8 := by
+  obtain ⟨beforeSigned, _afterSigned, first, _signed,
+    firstRun, _signedRun, prefixEq, count, _suffix, _signedCount⟩ :=
+    literal_final_trace_is_signed_blocks hashes initial final trace accepted
+  exact ⟨beforeSigned, first, firstRun, prefixEq, count⟩
+
+/-- The executable first-eight projection is exactly the reached prefix
+trace. This still does not classify its compared cells as original lock
+commitments or connect the byte run to compiled Core. -/
+theorem extracted_first_eight_are_prefix (hashes : Hashes)
+    (initial final : State) (eight : List (HashOpening hashes))
+    (extracted : firstEightOpenings hashes initial = some (final, eight)) :
+    ∃ beforeSigned,
+      runOpenings hashes prefixOps initial = some (beforeSigned, eight) := by
+  unfold firstEightOpenings at extracted
+  cases hrun : runOpenings hashes ByteLayout.program initial with
+  | none => simp [hrun] at extracted
+  | some value =>
+      rcases value with ⟨reached, trace⟩
+      simp [hrun] at extracted
+      rcases extracted with ⟨rfl, rfl⟩
+      obtain ⟨beforeSigned, first, firstRun, prefixEq, _count⟩ :=
+        literal_first_eight_openings hashes initial reached trace hrun
+      rw [prefixEq]
+      exact ⟨beforeSigned, firstRun⟩
 
 /-- The public executable projection `finalSevenOpenings` is the opening
 trace of the reached final signed-block segment, for any terminating run. -/
@@ -98,7 +135,7 @@ theorem extracted_seven_are_signed_blocks (hashes : Hashes)
       simp [hrun] at extracted
       rcases extracted with ⟨rfl, rfl⟩
       obtain ⟨beforeSigned, afterSigned, _, signed, _, signedRun,
-          traceEq, _⟩ :=
+          _prefix, _firstLength, traceEq, _⟩ :=
         literal_final_trace_is_signed_blocks hashes initial reached
           trace hrun
       rw [traceEq]

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1361,
+  "theorem_count": 1364,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -459,6 +459,10 @@
       "propext"
     ],
     "QSB.ByteTrace.finalSevenOpenings_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteTrace.firstEightOpenings_length": [
       "Quot.sound",
       "propext"
     ],
@@ -2905,11 +2909,19 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalOpeningTrace.extracted_first_eight_are_prefix": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks": [
       "Quot.sound",
       "propext"
     ],
     "QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalOpeningTrace.literal_first_eight_openings": [
       "Quot.sound",
       "propext"
     ],

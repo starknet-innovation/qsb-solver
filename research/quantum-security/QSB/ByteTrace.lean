@@ -274,6 +274,29 @@ theorem accepted_literal_has_fifteen_openings (hashes : Hashes)
     s final trace literal_hashes_paired accepted
   simpa [literal_hash_count] using counted
 
+/-- Compute the first eight reached HASH160/EQUALVERIFY opening records of
+the literal lock. The returned values come from execution, with no supplied
+scriptSig stack layout or private commitment index map. -/
+def firstEightOpenings (hashes : Hashes) (s : State) :
+    Option (State × List (HashOpening hashes)) :=
+  (runOpenings hashes ByteLayout.program s).map fun (final, trace) =>
+    (final, trace.take 8)
+
+theorem firstEightOpenings_length (hashes : Hashes) (s final : State)
+    (eight : List (HashOpening hashes))
+    (extracted : firstEightOpenings hashes s = some (final, eight)) :
+    eight.length = 8 := by
+  unfold firstEightOpenings at extracted
+  cases hrun : runOpenings hashes ByteLayout.program s with
+  | none => simp [hrun] at extracted
+  | some value =>
+      rcases value with ⟨reached, trace⟩
+      simp [hrun] at extracted
+      rcases extracted with ⟨rfl, rfl⟩
+      have fifteen := accepted_literal_has_fifteen_openings hashes s
+        reached trace hrun
+      simp [List.length_take, fifteen]
+
 /-- Compute the last seven opening records from a terminating byte-model run.
 The ordinal split is syntactic; identifying these records with the intended
 final-round source positions requires a further reached-stack refinement. -/

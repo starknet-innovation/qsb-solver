@@ -642,6 +642,7 @@ import QSB.Reduction
 #print axioms QSB.ByteTrace.literal_hash_count
 #print axioms QSB.ByteTrace.runOpenings_length_of_paired
 #print axioms QSB.ByteTrace.accepted_literal_has_fifteen_openings
+#print axioms QSB.ByteTrace.firstEightOpenings_length
 #print axioms QSB.ByteTrace.finalSevenOpenings_length
 #print axioms QSB.ByteTrace.forget_trace
 #print axioms QSB.FinalOpeningTrace.literal_signed_split
@@ -652,6 +653,8 @@ import QSB.Reduction
 #print axioms QSB.FinalOpeningTrace.signed_hash_count
 #print axioms QSB.FinalOpeningTrace.suffix_hash_count
 #print axioms QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks
+#print axioms QSB.FinalOpeningTrace.literal_first_eight_openings
+#print axioms QSB.FinalOpeningTrace.extracted_first_eight_are_prefix
 #print axioms QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks
 #print axioms QSB.ByteWitness.witness_length
 #print axioms QSB.ByteWitness.canonical_byte_run

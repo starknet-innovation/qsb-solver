@@ -620,6 +620,7 @@
 'QSB.ByteTrace.literal_hash_count' depends on axioms: [propext]
 'QSB.ByteTrace.runOpenings_length_of_paired' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.accepted_literal_has_fifteen_openings' depends on axioms: [propext, Quot.sound]
+'QSB.ByteTrace.firstEightOpenings_length' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.finalSevenOpenings_length' depends on axioms: [propext, Quot.sound]
 'QSB.ByteTrace.forget_trace' depends on axioms: [propext, Quot.sound]
 'QSB.FinalOpeningTrace.literal_signed_split' does not depend on any axioms
@@ -630,6 +631,8 @@
 'QSB.FinalOpeningTrace.signed_hash_count' depends on axioms: [propext]
 'QSB.FinalOpeningTrace.suffix_hash_count' depends on axioms: [propext]
 'QSB.FinalOpeningTrace.literal_final_trace_is_signed_blocks' depends on axioms: [propext, Quot.sound]
+'QSB.FinalOpeningTrace.literal_first_eight_openings' depends on axioms: [propext, Quot.sound]
+'QSB.FinalOpeningTrace.extracted_first_eight_are_prefix' depends on axioms: [propext, Quot.sound]
 'QSB.FinalOpeningTrace.extracted_seven_are_signed_blocks' depends on axioms: [propext, Quot.sound]
 'QSB.ByteWitness.witness_length' does not depend on any axioms
 'QSB.ByteWitness.canonical_byte_run' depends on axioms: [propext]
