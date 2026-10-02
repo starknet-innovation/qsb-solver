@@ -16,6 +16,7 @@ import QSB.SegwitTxWire
 import QSB.LegacyTxWire
 import QSB.LegacyTxWireFixture
 import QSB.TransactionEnvelopeWire
+import QSB.ConsensusValidityBoundary
 import QSB.DERIntegerCount
 import QSB.SighashBinding
 import QSB.RecoveryCandidates
@@ -1410,6 +1411,10 @@ import QSB.Reduction
 #print axioms QSB.DynamicRawSource.source_unauthorized_fresh_or_two_puzzle
 #print axioms QSB.DynamicRawSource.source_unauthorized_joint_or_bad_setup
 #print axioms QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup
+#print axioms QSB.ConsensusValidityBoundary.duplicateTx_valid_wire
+#print axioms QSB.ConsensusValidityBoundary.duplicateTx_rejected_duplicate_check
+#print axioms QSB.ConsensusValidityBoundary.duplicateTx_parses
+#print axioms QSB.ConsensusValidityBoundary.wire_parse_does_not_imply_no_duplicate_prevouts
 #print axioms QSB.ScriptSigSighash.sourceAllPreimage_eraseScripts
 #print axioms QSB.ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq
 #print axioms QSB.ScriptSigSighash.sourceAllPreimage_injective_scriptCode

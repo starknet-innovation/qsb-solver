@@ -1,0 +1,52 @@
+{
+  "adapter_sha256": "40590ee53a0067a1ea16998e5bc5923b070af985d6f8b11a160396eb9adcb351",
+  "cases": [
+    {
+      "check_transaction_source_result": "passes duplicate-prevout check",
+      "duplicate_prevout": false,
+      "name": "distinct_prevouts",
+      "script_api": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": true
+          }
+        ]
+      },
+      "transaction_hex": "020000000211111111111111111111111111111111111111111111111111111111111111110000000000feffffff22222222222222222222222222222222222222222222222222222222222222220000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "652f64a79a470cb22c0c3b49a07879baf428f5c0fae9026c2fb5cb6e67a4fd2b"
+    },
+    {
+      "check_transaction_source_result": "bad-txns-inputs-duplicate",
+      "duplicate_prevout": true,
+      "name": "duplicate_prevout",
+      "script_api": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": true
+          }
+        ]
+      },
+      "transaction_hex": "020000000211111111111111111111111111111111111111111111111111111111111111110000000000feffffff11111111111111111111111111111111111111111111111111111111111111110000000000feffffff01e803000000000000015100000000",
+      "transaction_sha256": "6077f0ea71f271827aa6251ae1e2ce4a4a3740ed4dfe39cb115d9837a476316f"
+    }
+  ],
+  "check_transaction_source": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/consensus/tx_check.cpp",
+  "image": "sha256:f77ac9e44ae96ef2c90b8053ea08c31f8be030f824196b0ae4db6d462c84e51f",
+  "library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
+  "scope": "Finite pinned Core 27.2 script-API differential; CheckTransaction conclusion follows from pinned source, not an invoked validation API",
+  "script_api_source": "https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/bitcoinconsensus.cpp"
+}

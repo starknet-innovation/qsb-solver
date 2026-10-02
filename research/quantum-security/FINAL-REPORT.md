@@ -1320,6 +1320,18 @@ uses the empty initial input vector as the witness-marker branch, while
 rejects an empty input vector. These source-code observations do not prove
 compiled-Core parser equivalence, contextual transaction validity, or that
 the QSB lock's actual checker calls use this modeled digest.
+The distinction is concrete: `QSB/ConsensusValidityBoundary.lean` checks a
+canonical two-input legacy envelope that the Lean parser accepts although
+both inputs repeat the same prevout. Core v27.2
+[CheckTransaction](https://github.com/bitcoin/bitcoin/blob/v27.2/src/consensus/tx_check.cpp)
+rejects that transaction with `bad-txns-inputs-duplicate`. The pinned
+[script API](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/bitcoinconsensus.cpp)
+checks each of its two synthetic `OP_TRUE` inputs successfully, as recorded in
+`evidence/consensus-validity-boundary-core.json`; that API does not call
+`CheckTransaction`. The finite native result and source-code reading make
+script-verifier acceptance an insufficient replacement for full transaction
+acceptance, even when every input script passes. This is a validation-boundary
+counterexample, not a QSB spend or a counterexample to a quantum bound.
 `JointSourceChecks.legacyDigest_single_bug_ignores_outputs` and
 `checker_single_bug_ignores_outputs` prove the corresponding source-shaped
 invariance for any output replacement that leaves the selected input past

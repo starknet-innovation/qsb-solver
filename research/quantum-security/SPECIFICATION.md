@@ -110,6 +110,13 @@ five items. The current `ExtractedRound` is an intermediate algebraic interface,
 predicate with Core acceptance and target consumption left explicit, and a
 monotone disclosure history. Its authorization lemma covers changed outputs;
 the Bitcoin parser and acceptance predicate still require refinement.
+This distinction is observable even with trivial scripts: the pinned Core
+script API accepts each `OP_TRUE` input of a transaction that repeats a
+prevout, while Core's `CheckTransaction` rejects that transaction. Lean's
+strict wire parser admits the same duplicate-prevout shape. Therefore the
+game's acceptance predicate must include transaction and contextual
+validation in addition to parsing and per-input script verification; the
+checked boundary case is recorded in `evidence/consensus-validity-boundary-core.json`.
 `QSB/Reduction.lean` states the next implication with an extractor that reads
 the adversary's transaction and returns its pinning and final-round witness.
 That extractor is not implemented for arbitrary Script executions. A shaped

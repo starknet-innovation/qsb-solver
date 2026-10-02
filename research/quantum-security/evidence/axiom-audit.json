@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1322,
+  "theorem_count": 1326,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -506,6 +506,24 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.ConsensusValidityBoundary.duplicateTx_parses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ConsensusValidityBoundary.duplicateTx_rejected_duplicate_check": [
+      "propext"
+    ],
+    "QSB.ConsensusValidityBoundary.duplicateTx_valid_wire": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ConsensusValidityBoundary.wire_parse_does_not_imply_no_duplicate_prevouts": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CoreCheckedCertificate.candidate_complete": [
       "Quot.sound",
       "propext"

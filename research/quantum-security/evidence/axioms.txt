@@ -1587,6 +1587,12 @@
 'QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ConsensusValidityBoundary.duplicateTx_valid_wire' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ConsensusValidityBoundary.duplicateTx_rejected_duplicate_check' depends on axioms: [propext]
+'QSB.ConsensusValidityBoundary.duplicateTx_parses' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ConsensusValidityBoundary.wire_parse_does_not_imply_no_duplicate_prevouts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ScriptSigSighash.sourceAllPreimage_eraseScripts' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq' depends on axioms: [propext,
  Classical.choice,
