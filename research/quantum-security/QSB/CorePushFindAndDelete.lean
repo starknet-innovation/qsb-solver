@@ -59,13 +59,20 @@ private theorem simple_no_pushdata_head (chunk : Bytes)
         simp [simpleChunk] at simple
       simpa using ⟨no76, no77, no78⟩
 
-/-- Canonical serialized signature pushes are rigid at every opcode
-boundary of the literal lock, for arbitrary signature bytes. -/
-theorem literal_push_rigid (sig : Bytes) :
-    rigidChunks (CorePushSerialize.pushPattern sig)
-      EncodedLayout.chunks := by
+/-- Canonical serialized signature pushes are rigid at every opcode boundary
+of any script split into simple direct-push or one-byte opcode chunks. This
+also covers arbitrary long or malformed signature bytes: their PUSHDATA
+prefix cannot match a simple chunk header. -/
+theorem simple_push_rigid (chunks : List Bytes)
+    (simple : ∀ chunk ∈ chunks, simpleChunk chunk = true)
+    (sig : Bytes) :
+    rigidChunks (CorePushSerialize.pushPattern sig) chunks := by
   intro chunk present suffix
-  have simple := (List.all_eq_true.mp literal_simple_chunks chunk present)
+  have chunkSimple := simple chunk present
+  have chunkNonempty : chunk ≠ [] := by
+    intro empty
+    subst chunk
+    simp [simpleChunk] at chunkSimple
   constructor
   · intro matched
     by_cases short : sig.length < 76
@@ -74,9 +81,9 @@ theorem literal_push_rigid (sig : Bytes) :
         have both := EncodedScript.head_eq_of_prefix_match
           (CorePushSerialize.pushPattern sig) chunk suffix
           (CorePushSerialize.pushPattern_nonempty sig)
-          (EncodedScript.literal_chunks_nonempty chunk present) matched
+          chunkNonempty matched
         simpa [pattern, ScriptCodeSelection.directPushPattern] using both
-      have width := simple_direct_width chunk simple sig.length short headEq
+      have width := simple_direct_width chunk chunkSimple sig.length short headEq
       have width' : chunk.length =
           (ScriptCodeSelection.directPushPattern sig).length := by
         simpa [ScriptCodeSelection.directPushPattern] using width
@@ -89,11 +96,11 @@ theorem literal_push_rigid (sig : Bytes) :
         suffix width' matched').trans pattern.symm
     · have long : 76 ≤ sig.length := by omega
       have patternHead := CorePushSerialize.long_head sig long
-      have chunkHead := simple_no_pushdata_head chunk simple
+      have chunkHead := simple_no_pushdata_head chunk chunkSimple
       have sameHead := EncodedScript.head_eq_of_prefix_match
         (CorePushSerialize.pushPattern sig) chunk suffix
         (CorePushSerialize.pushPattern_nonempty sig)
-        (EncodedScript.literal_chunks_nonempty chunk present) matched
+        chunkNonempty matched
       rcases patternHead with h | h | h
       · exact False.elim (chunkHead.1 (sameHead.trans h))
       · exact False.elim (chunkHead.2.1 (sameHead.trans h))
@@ -101,6 +108,39 @@ theorem literal_push_rigid (sig : Bytes) :
   · intro same
     subst chunk
     simp
+
+/-- Canonical pushes are rigid on the 880 simple chunks of the literal lock,
+even for malformed or long reached signatures. -/
+theorem literal_push_rigid (sig : Bytes) :
+    rigidChunks (CorePushSerialize.pushPattern sig)
+      EncodedLayout.chunks :=
+  simple_push_rigid EncodedLayout.chunks
+    (fun chunk present =>
+      List.all_eq_true.mp literal_simple_chunks chunk present) sig
+
+/-- On any simple-chunk script, Core-shaped repeated FindAndDelete of an
+arbitrary reached signature list equals filtering complete original opcode
+chunks. The fuel must cover the original chunk count; no short-signature or
+distinctness premise is needed. -/
+theorem simple_many_pushes (fuel : Nat) (chunks : List Bytes)
+    (simple : ∀ chunk ∈ chunks, simpleChunk chunk = true)
+    (enough : chunks.length ≤ fuel) (sigs : List Bytes) :
+    CoreFindAndDelete.runMany fuel chunks.flatten
+      (sigs.map CorePushSerialize.pushPattern) =
+      stripEncodedChunks (sigs.map CorePushSerialize.pushPattern)
+        chunks := by
+  rw [CoreFindAndDelete.runMany_eq_model_scanMany]
+  apply scanMany_eq_chunk_filter _ _
+  · intro chunk present empty
+    subst chunk
+    have impossible := simple [] present
+    simp [simpleChunk] at impossible
+  · intro chunk present suffix
+    exact simple_chunk_stable chunk (simple chunk present) suffix
+  · intro pattern present
+    obtain ⟨sig, _, rfl⟩ := List.mem_map.mp present
+    exact simple_push_rigid chunks simple sig
+  · exact enough
 
 /-- With arbitrary reached signatures, the 880-step source-shaped deletion
 loop equals filtering complete original chunks by their Core-serialized push
@@ -111,12 +151,9 @@ theorem literal_many_pushes (sigs : List Bytes) :
       (sigs.map CorePushSerialize.pushPattern) =
       stripEncodedChunks (sigs.map CorePushSerialize.pushPattern)
         EncodedLayout.chunks := by
-  rw [CoreFindAndDelete.runMany_eq_model_scanMany]
-  apply scanMany_eq_chunk_filter _ _
-    EncodedScript.literal_chunks_nonempty literal_stable_chunks
-  · intro pattern present
-    obtain ⟨sig, _, rfl⟩ := List.mem_map.mp present
-    exact literal_push_rigid sig
-  · simp [EncodedLayout.chunks_length]
+  exact simple_many_pushes 880 EncodedLayout.chunks
+    (fun chunk present =>
+      List.all_eq_true.mp literal_simple_chunks chunk present)
+    (by simp [EncodedLayout.chunks_length]) sigs
 
 end QSB.CorePushFindAndDelete

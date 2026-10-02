@@ -193,6 +193,16 @@ not inferred from preimage inequality.
 selected dummy-position sets and source-shaped final ALL preimages have the
 same equality classes for fixed valid transaction fields and selected input.
 The result does not count reachable Core-accepted subsets or quantum queries.
+`QSB/ParameterizedFindAndDelete.lean` proves whole-chunk deletion for the
+parameterized Config A wire under 20-byte commitment and short fixed-push
+premises, even for arbitrary reached signature bytes. Under the same premises
+and a final nonce ending in `SIGHASH_ALL`,
+`QSB/ParameterizedFinalSubset.lean` proves that candidate final selected
+dummy-position sets exactly classify source scriptCode and fixed-transaction
+ALL preimage equality. The classification also permits different original
+scriptSigs when the remaining transaction fields agree after erasure. It does
+not identify Core-accepted subsets or bound SHA256d collisions or quantum
+queries.
 `QSB/ReachedSubsetSighash.lean` derives the same preimage classification from
 signature bytes reached by two successful full byte-model runs with explicit
 successful ten-pair scan premises. Core acceptance and actual digest behavior

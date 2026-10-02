@@ -585,6 +585,18 @@ exactly those same equality classes. This does not prove that every subset is
 reachable by an accepted witness, that actual Core computes these bytes for
 every witness, or that SHA256d outputs are distinct. The number of possible
 preimages must not be read as independent quantum search trials.
+`QSB/ParameterizedFindAndDelete.lean` extends whole-chunk deletion to the
+parameterized Config A serializer: with 20-byte commitments and short fixed
+pin/nonce signatures, its 880 chunks are simple direct pushes or one-byte
+opcodes. Arbitrary reached signature bytes, including long and malformed
+ones, delete exactly the matching original chunks in the source-shaped loop.
+`QSB/ParameterizedFinalSubset.lean` then proves that candidate final lists
+have equal scriptCodes and, at a fixed valid selected input, equal source ALL
+preimages exactly when their selected dummy-position sets agree. It also
+covers transactions equal after original scriptSig erasure. The fixed final
+nonce's `SIGHASH_ALL` byte prevents aliasing with generated `SIGHASH_SINGLE`
+dummies. These results do not determine Core-accepted subsets or refine
+compiled Core, and preimage inequality does not rule out SHA256d collisions.
 `QSB/ReachedSubsetSighash.lean` now applies that classification to the ten
 signature bytes in two reached final CHECKMULTISIG stacks. A successful full
 literal byte-model run with an explicit nonempty, DER-sound successful
@@ -1002,13 +1014,13 @@ the older final-round evaluator. The premise follows for any successful
 ten-of-ten final scan from strict DER, as checked by
 `finalTenEval_success_generic_scan`. This repairs the source certificate but
 does not establish a compiled-Core refinement for arbitrary witnesses.
-The separate `QSB/CorePushFindAndDelete.lean` theorem now proves, for any
-signature list on this fixed literal lock, that each canonical push pattern
-can match only a complete original opcode chunk. Repeated deletion therefore
-equals filtering those chunks, even with long, duplicate, malformed, or
-subsequently skipped signatures. This discharges the 880-step fuel obligation
-for the source-shaped first-round scriptCode; it does not generalize to an
-unrelated lock with different encoded chunks.
+The separate `QSB/CorePushFindAndDelete.lean` theorem proves that, for any
+simple-chunk script and sufficient fuel, canonical push patterns match only
+complete original opcode chunks. Repeated deletion therefore filters those
+chunks, even with long, duplicate, malformed, or subsequently skipped
+signatures. Its 880-step literal and parameterized Config A specializations
+discharge the source-shaped deletion fuel obligation. Scripts with other
+encoded chunk shapes need a separate rigidity proof.
 The analogous generic `CHECKSIGVERIFY` shortcut is now checked separately:
 `CoreChecksigEval.evalBaseVerifyAll_eq_core` proves its returned `Option Bool`
 equals a version using full Core push serialization for every input. Under

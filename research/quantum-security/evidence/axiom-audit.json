@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1301,
+  "theorem_count": 1312,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -1283,6 +1283,16 @@
       "propext"
     ],
     "QSB.CorePushFindAndDelete.literal_push_rigid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushFindAndDelete.simple_many_pushes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushFindAndDelete.simple_push_rigid": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4363,6 +4373,49 @@
       "propext"
     ],
     "QSB.OutputCodec.sourceShapedOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.equal_scriptCode_equal_selected_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.same_selected_set_equal_scriptCode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.scriptCode_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFindAndDelete.chunks_length": [
+      "propext"
+    ],
+    "QSB.ParameterizedFindAndDelete.chunks_simple": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFindAndDelete.reached_ten_deleted_script": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFindAndDelete.runMany_eq_chunk_filter": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

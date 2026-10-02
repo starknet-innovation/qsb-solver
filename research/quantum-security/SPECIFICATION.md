@@ -523,6 +523,17 @@ equal across two candidate lists exactly when they select the same set of
 generated dummy positions. This removes draw-order and duplicate-list
 multiplicity from that source-model message family. It does not identify the
 Core-reachable subsets, rule out SHA256d collisions, or bound quantum search.
+`QSB/ParameterizedFindAndDelete.lean` extends the source-shaped
+FindAndDelete chunk-filter result to the parameterized Config A serializer:
+all 880 chunks are simple under 20-byte commitment and short fixed-push
+premises, and arbitrary reached signature bytes remove only matching whole
+chunks. `QSB/ParameterizedFinalSubset.lean` proves that candidate final lists
+have equal scriptCodes, and equal fixed-valid-transaction ALL preimages, iff
+their selected generated dummy-position sets agree. Its final nonce must end
+in `0x01`, excluding aliasing with `SIGHASH_SINGLE` dummy pushes. The preimage
+result persists across original scriptSig changes when erased transaction
+fields agree. Which sets are Core-reachable and the compiled-Core and joint
+QROM bounds remain open.
 `QSB/ReachedSubsetSighash.lean` derives the same equality classification from
 two reached final stacks in successful literal byte-model runs under explicit
 successful ten-pair scan premises. The selected sets each have nine distinct

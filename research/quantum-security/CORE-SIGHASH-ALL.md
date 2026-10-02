@@ -65,6 +65,17 @@ scriptCodes, and therefore equal valid fixed-transaction ALL preimages, occur
 exactly for equal selected position sets. Permuting or repeating selected
 positions does not change that set. The theorem does not show which sets an
 accepted Core execution can reach or assign a quantum-query probability.
+`QSB/ParameterizedFindAndDelete.lean` proves whole-original-chunk deletion
+for the parameterized Config A wire when commitments are 20 bytes and fixed
+pin/nonce pushes are short, including arbitrary malformed or long reached
+signature bytes. `QSB/ParameterizedFinalSubset.lean` proves that candidate
+final signature lists have equal source scriptCodes and, for fixed valid
+transaction fields, equal ALL preimages exactly when the selected generated
+dummy-position sets agree. The final nonce must end in `0x01` (`SIGHASH_ALL`),
+so its push cannot alias a generated `SIGHASH_SINGLE` dummy. Original
+scriptSig bytes may differ if the transaction fields agree after erasure.
+These parameterized source theorems do not determine accepted Core subsets,
+rule out SHA256d collisions, or give a quantum-query bound.
 `QSB/ReachedSubsetSighash.lean` applies this exact equality classification to
 two reached modeled final stacks. Successful full byte-model execution plus
 explicit nonempty, DER-sound successful scans supplies nine distinct selected

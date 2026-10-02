@@ -124,6 +124,8 @@ import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
 import QSB.ReachedSubsetSighash
 import QSB.RawReachedSubsetSighash
+import QSB.ParameterizedFindAndDelete
+import QSB.ParameterizedFinalSubset
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
 import QSB.DERHeaderBound
@@ -133,6 +135,17 @@ import QSB.Reduction
 
 #print axioms QSB.DynamicScriptLimits.short_push_length
 #print axioms QSB.ReachedSubsetSighash.reached_deleted_script
+#print axioms QSB.CorePushFindAndDelete.simple_push_rigid
+#print axioms QSB.CorePushFindAndDelete.simple_many_pushes
+#print axioms QSB.ParameterizedFindAndDelete.chunks_length
+#print axioms QSB.ParameterizedFindAndDelete.chunks_simple
+#print axioms QSB.ParameterizedFindAndDelete.runMany_eq_chunk_filter
+#print axioms QSB.ParameterizedFindAndDelete.reached_ten_deleted_script
+#print axioms QSB.ParameterizedFinalSubset.equal_scriptCode_equal_selected_set
+#print axioms QSB.ParameterizedFinalSubset.same_selected_set_equal_scriptCode
+#print axioms QSB.ParameterizedFinalSubset.scriptCode_eq_iff_selected_set_eq
+#print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq
+#print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased
 #print axioms QSB.ReachedSubsetSighash.reached_script_eq_iff_selected_set_eq
 #print axioms QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq_of_erased
