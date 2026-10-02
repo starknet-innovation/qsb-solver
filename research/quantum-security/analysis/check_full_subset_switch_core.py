@@ -149,6 +149,13 @@ def main() -> None:
     assert ids_a == list(range(9))
     assert ids_b == list(range(8)) + [9]
     assert code_a != code_b and digest_a != digest_b and key_a != key_b
+    nonpush_prefix = b"\x51\x75"  # OP_1 OP_DROP; leaves the same stack.
+    tx.inputs[1].script_sig = sig_a
+    original_script_sig_digest = tx.sighash(1, code_a, 1)
+    tx.inputs[1].script_sig = nonpush_prefix + sig_a
+    prefixed_script_sig_digest = tx.sighash(1, code_a, 1)
+    assert original_script_sig_digest == prefixed_script_sig_digest == digest_a
+    tx.inputs[1].script_sig = b""
 
     def check(name: str, script_sig: bytes, expected: bool) -> dict:
         tx.inputs[1].script_sig = script_sig
@@ -169,6 +176,8 @@ def main() -> None:
                 "transaction_sha256": hashlib.sha256(raw).hexdigest()}
 
     cases = [check("subset_a_recovered", sig_a, True),
+             check("subset_a_nonpush_prefix_same_keys",
+                   nonpush_prefix + sig_a, True),
              check("subset_b_recovered", sig_b, True),
              check("subset_b_old_nonce_key", sig_b_old, False)]
     report = {
@@ -187,6 +196,9 @@ def main() -> None:
         "subset_b_script_code_sha256": hashlib.sha256(code_b).hexdigest(),
         "subset_a_all_digest_hex": f"{digest_a:064x}",
         "subset_b_all_digest_hex": f"{digest_b:064x}",
+        "nonpush_prefix_hex": nonpush_prefix.hex(),
+        "script_sig_only_all_digest_unchanged":
+            original_script_sig_digest == prefixed_script_sig_digest,
         "cases": cases,
     }
     args.output.write_text(json.dumps(report, indent=2) + "\n")

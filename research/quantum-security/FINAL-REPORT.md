@@ -607,6 +607,17 @@ starts from two truthy validated-byte source runs, with no separate opcode,
 signature-list, or scan-result premise. It does not establish that those
 supplied bytes are a real spent output or that compiled Core accepts the
 same transactions.
+`validated_runs_erased_scriptSig_classification` now permits two distinct
+source transactions whose original scriptSig bytes differ, provided erasing
+those scripts makes all other transaction fields equal. Under the same
+selected input and valid source wire fields, equality of their reached final
+ALL preimages is still equivalent to equality of the selected dummy-position
+sets. The arbitrary scriptSig evaluator and compiled-Core refinement remain
+outside the theorem. A fourth pinned-Core case in
+`evidence/full-subset-switch-core.json` prepends non-push `OP_1 OP_DROP` to an
+accepted puzzle-relaxed witness; it remains accepted with the same recovered
+keys, and the app's ALL digest is unchanged. The experiment is finite and
+does not execute the three real puzzle checks.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped

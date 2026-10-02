@@ -6,6 +6,9 @@
 'QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq_of_erased' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ReachedSubsetSighash.matched_runs_reached_all_preimage_classification' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -14,6 +17,9 @@
  Quot.sound]
 'QSB.ReachedSubsetSighash.literal_validated_run_eq_static' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ReachedSubsetSighash.validated_runs_reached_all_preimage_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ReachedSubsetSighash.validated_runs_erased_scriptSig_classification' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.DynamicScriptLimits.fixed_width_pushes_length' depends on axioms: [propext, Quot.sound]

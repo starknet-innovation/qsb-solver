@@ -203,6 +203,10 @@ computes that result from the reached stack.
 An exact `CoreCheckedWire.matchesWire` check lets the same theorem start from
 supplied literal script bytes. Real spent-output binding and compiled-Core
 execution remain unproved.
+The checked classification also allows different original scriptSig bytes
+when the source transaction fields agree after script erasure. A finite
+puzzle-relaxed Core case accepts an added non-push `OP_1 OP_DROP` prefix with
+the same recovered keys; see `evidence/full-subset-switch-core.json`.
 A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
 two final subsets on a synthetic two-output transaction. The puzzle-relaxed
 lock accepts each with its recovered keys but rejects reuse of the first

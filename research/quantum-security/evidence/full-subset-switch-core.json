@@ -36,11 +36,18 @@
   "subset_b_script_code_sha256": "ce0f9633c086922c3dbb5d8f720d8eae30b02773e61da1ba95c46fd30d7101d9",
   "subset_a_all_digest_hex": "28a730a965c0a19daef334515935079138dee6144b29b951a39afa24510b6e26",
   "subset_b_all_digest_hex": "2b2c19e9fcef8af65d538bc2c87a4fed342fb01feb01a0997e297a26d5ce413a",
+  "nonpush_prefix_hex": "5175",
+  "script_sig_only_all_digest_unchanged": true,
   "cases": [
     {
       "case": "subset_a_recovered",
       "accepted": true,
       "transaction_sha256": "c63e8ef63e3c5228a6196cc959b5d9b8431d9772ee816feb97172a03ec41e679"
+    },
+    {
+      "case": "subset_a_nonpush_prefix_same_keys",
+      "accepted": true,
+      "transaction_sha256": "7a9e093b144c271f5e79813e6ead010d1852d645937667eb0eb7ee044ee8438e"
     },
     {
       "case": "subset_b_recovered",

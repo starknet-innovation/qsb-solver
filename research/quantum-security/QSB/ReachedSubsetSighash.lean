@@ -133,6 +133,52 @@ theorem reached_all_preimage_eq_iff_selected_set_eq
   · intro same
     rw [FinalSubsetInjective.same_selected_set_equal_scriptCode same]
 
+/-- The original scriptSig bytes may differ between the two attempts. If
+erasing them makes the source transaction fields equal, then the reached
+final ALL preimages still agree exactly when the selected dummy sets agree.
+This says nothing about actual SHA256d digest equality or Core parsing of
+either raw transaction. -/
+theorem reached_all_preimage_eq_iff_selected_set_eq_of_erased
+    (leftTx rightTx : SighashAllWire.TxFields) (selected : Nat)
+    (leftValid : SighashAllWire.valid leftTx)
+    (selectedValid : selected < leftTx.inputs.length)
+    (sameErased : ScriptSigSighash.eraseScripts leftTx =
+      ScriptSigSighash.eraseScripts rightTx)
+    (left right : List Bytes)
+    (leftTrace rightTrace : List (Fin 150 × Bytes))
+    (leftA leftB rightA rightB : Fin 150)
+    (left12 : left[12]? = some (FinalSignedLoop.generatedDummyAt leftB))
+    (left13 : left[13]? = some (FinalSignedLoop.generatedDummyAt leftA))
+    (leftSigned : ∀ j : Nat, j < 7 → left[j + 14]? =
+      (leftTrace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[j]?)
+    (left21 : left[21]? = some PoolRollInvariant.finalNonce)
+    (leftSeven : leftTrace.length = 7)
+    (right12 : right[12]? = some (FinalSignedLoop.generatedDummyAt rightB))
+    (right13 : right[13]? = some (FinalSignedLoop.generatedDummyAt rightA))
+    (rightSigned : ∀ j : Nat, j < 7 → right[j + 14]? =
+      (rightTrace.map (fun p => FinalSignedLoop.generatedDummyAt p.1)).reverse[j]?)
+    (right21 : right[21]? = some PoolRollInvariant.finalNonce)
+    (rightSeven : rightTrace.length = 7) :
+    SighashAllWire.sourceAllPreimage leftTx selected
+      (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+        left 10 10) =
+    SighashAllWire.sourceAllPreimage rightTx selected
+      (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+        right 10 10) ↔
+    (leftA :: leftB :: leftTrace.map Prod.fst).toFinset =
+      (rightA :: rightB :: rightTrace.map Prod.fst).toFinset := by
+  have eraseRight :=
+    ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq
+      leftTx rightTx selected
+      (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+        right 10 10) sameErased
+  rw [← eraseRight]
+  exact reached_all_preimage_eq_iff_selected_set_eq leftTx selected
+    leftValid selectedValid left right leftTrace rightTrace
+    leftA leftB rightA rightB
+    left12 left13 leftSigned left21 leftSeven
+    right12 right13 rightSigned right21 rightSeven
+
 /-- Two successful full literal byte-model runs with explicit successful
 ten-pair scans expose nine distinct selected positions each. Their reached
 source-shaped final ALL preimages, when formed from the same valid transaction
@@ -388,5 +434,74 @@ theorem validated_runs_reached_all_preimage_classification
     ⟨leftStack.reverse, 0⟩ leftFinal ⟨rightStack.reverse, 0⟩ rightFinal
     leftRecords rightRecords leftSuccess rightSuccess
     leftAccepted rightAccepted
+
+/-- The validated-byte result permits different original scriptSig programs
+in the two source transactions. Equal erased transaction fields preserve
+every ALL-committed field, while the reached selected set determines the
+remaining final scriptCode bytes. The scriptSig evaluators and any real Core
+acceptance relation are still outside this theorem. -/
+theorem validated_runs_erased_scriptSig_classification
+    (hashes : Hashes)
+    (leftTx rightTx : SighashAllWire.TxFields) (selected : Nat)
+    (leftValid : SighashAllWire.valid leftTx)
+    (selectedValid : selected < leftTx.inputs.length)
+    (sameErased : ScriptSigSighash.eraseScripts leftTx =
+      ScriptSigSighash.eraseScripts rightTx)
+    (leftScript rightScript : Bytes)
+    (leftMatched : CoreCheckedWire.matchesWire leftScript
+      CoreCheckedWire.literalLock = true)
+    (rightMatched : CoreCheckedWire.matchesWire rightScript
+      CoreCheckedWire.literalLock = true)
+    (leftStack rightStack : List Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftFinal rightFinal : CoreCheckedStep.State)
+    (leftRecords rightRecords : List Bool)
+    (leftSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
+      leftScript leftStack validKey verify = some (leftFinal, leftRecords))
+    (rightSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
+      rightScript rightStack validKey verify = some (rightFinal, rightRecords))
+    (leftAccepted : CoreFinalTruth.castToBool
+      (leftFinal.stack.getLast?.getD []) = true)
+    (rightAccepted : CoreFinalTruth.castToBool
+      (rightFinal.stack.getLast?.getD []) = true) :
+    ∃ (leftTrace rightTrace : List (Fin 150 × Bytes))
+      (leftA leftB rightA rightB : Fin 150)
+      (leftBefore rightBefore : ByteMachine.State),
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨leftStack, leftRecords, 0⟩ = some leftBefore ∧
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨rightStack, rightRecords, 0⟩ = some rightBefore ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).Nodup ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).Nodup ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).toFinset.card = 9 ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).toFinset.card = 9 ∧
+      (SighashAllWire.sourceAllPreimage leftTx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          leftBefore.stack 10 10) =
+       SighashAllWire.sourceAllPreimage rightTx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          rightBefore.stack 10 10) ↔
+       (leftA :: leftB :: leftTrace.map Prod.fst).toFinset =
+         (rightA :: rightB :: rightTrace.map Prod.fst).toFinset) := by
+  obtain ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,
+    leftBefore, rightBefore, leftReached, rightReached,
+    leftNodup, rightNodup, leftCard, rightCard, classification⟩ :=
+      validated_runs_reached_all_preimage_classification
+        hashes leftTx selected leftValid selectedValid
+        leftScript rightScript leftMatched rightMatched
+        leftStack rightStack validKey verify leftFinal rightFinal
+        leftRecords rightRecords leftSuccess rightSuccess
+        leftAccepted rightAccepted
+  refine ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,
+    leftBefore, rightBefore, leftReached, rightReached,
+    leftNodup, rightNodup, leftCard, rightCard, ?_⟩
+  have eraseRight :=
+    ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq
+      leftTx rightTx selected
+      (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+        rightBefore.stack 10 10) sameErased
+  rw [← eraseRight]
+  exact classification
 
 end QSB.ReachedSubsetSighash

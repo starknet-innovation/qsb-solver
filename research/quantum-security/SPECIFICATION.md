@@ -537,6 +537,11 @@ For the literal fixture, a supplied script passing `CoreCheckedWire.matchesWire`
 also feeds the checked-run classification. The byte check fixes the 880
 decoded opcodes; it does not prove spent-output provenance or compiled-Core
 execution.
+If two validated source attempts differ only in original scriptSig bytes,
+`QSB/ReachedSubsetSighash.lean` retains the selected-set classification for
+their reached final ALL preimages. Formally it requires equality after
+erasing all original scriptSigs, the same selected input, and a valid source
+wire domain; actual Core parsing and execution remain external.
 `QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a
