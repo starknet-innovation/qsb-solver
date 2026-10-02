@@ -387,6 +387,9 @@ import QSB.Reduction
 #print axioms QSB.SighashAllWire.unauthorized_sourceAll_distinct_preimage
 #print axioms QSB.SighashAllWire.decodeOutputs_sourceAllPreimage
 #print axioms QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages
+#print axioms QSB.SighashAllWire.encode_length_gt_32
+#print axioms QSB.SighashAllWire.sourceAllPreimage_length_gt_32
+#print axioms QSB.SighashAllWire.sourceAllPreimage_ne_hash_output
 #print axioms QSB.SighashAllWireFixture.fixture_valid
 #print axioms QSB.SighashAllWireFixture.fixture_preimage_bytes
 #print axioms QSB.SighashAllWireFixture.fixture_outputs_parsed

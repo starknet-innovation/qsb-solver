@@ -329,6 +329,9 @@
 'QSB.SighashAllWire.changed_outputs_sourceAll_distinct_preimages' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.SighashAllWire.encode_length_gt_32' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.sourceAllPreimage_length_gt_32' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.sourceAllPreimage_ne_hash_output' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_preimage_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_outputs_parsed' depends on axioms: [propext, Classical.choice, Quot.sound]

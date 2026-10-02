@@ -424,4 +424,76 @@ theorem changed_outputs_sourceAll_distinct_preimages
       releasedScript releasedValid releasedScriptValid] at parsed
   exact changed (Option.some.inj parsed)
 
+private theorem inputCodec_encode_length_ge_32
+    (input : InputFields) (wellFormed : inputCodec.valid input) :
+    32 ≤ (inputCodec.encode input).length := by
+  rcases input with ⟨txid, index, script, sequence⟩
+  change txid.length = 32 ∧ index < 256 ^ 4 ∧
+    script.length < 256 ^ 8 ∧ sequence < 256 ^ 4 at wellFormed
+  simp only [inputCodec, OutputCodec.productCodec,
+    OutputCodec.fixedBytesCodec, List.length_append, id_eq,
+    wellFormed.1]
+  omega
+
+/-- Any valid source-shaped ALL preimage with at least one input contains
+the four-byte version and a complete 32-byte previous txid, so it is longer
+than an SHA-256 output even before counting the other transaction fields. -/
+theorem encode_length_gt_32 (tx : TxFields)
+    (wellFormed : valid tx) (nonempty : tx.inputs ≠ []) :
+    32 < (encode tx).length := by
+  have versionLength :
+      ((WireIntegers.fixedLECodec 4).encode tx.version).length = 4 := by
+    exact WireIntegers.leBytes_length 4 tx.version wellFormed.1
+  cases inputsEq : tx.inputs with
+  | nil => exact (nonempty inputsEq).elim
+  | cons input rest =>
+      have validInput : inputCodec.valid input :=
+        wellFormed.2.2.1 input (by simp [inputsEq])
+      have inputLength := inputCodec_encode_length_ge_32 input validInput
+      unfold encode
+      rw [inputsEq]
+      simp only [OutputCodec.encodeItems, List.length_append]
+      omega
+
+/-- A real selected source input supplies the nonempty input-vector premise
+for the ALL preimage length bound. The scriptCode contents are arbitrary. -/
+theorem sourceAllPreimage_length_gt_32
+    (tx : TxFields) (selected : Nat) (scriptCode : Bytes)
+    (wellFormed : valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (scriptCodeValid : scriptCode.length < 256 ^ 8) :
+    32 < (sourceAllPreimage tx selected scriptCode).length := by
+  have preparedValid := prepareAll_valid tx selected scriptCode
+    wellFormed scriptCodeValid
+  have count : (prepareAll tx selected scriptCode).inputs.length =
+      tx.inputs.length := by
+    simp [prepareAll, prepareInputsAt_length]
+  have preparedNonempty :
+      (prepareAll tx selected scriptCode).inputs ≠ [] := by
+    intro empty
+    have zero : (prepareAll tx selected scriptCode).inputs.length = 0 := by
+      simp [empty]
+    rw [count] at zero
+    omega
+  exact encode_length_gt_32 (prepareAll tx selected scriptCode)
+    preparedValid preparedNonempty
+
+/-- In the source wire model, an ALL transaction preimage can never equal
+the 32-byte output of the shared SHA-256 oracle. This separates the first
+and second SHA256d input roles by byte length, not by independent oracles. -/
+theorem sourceAllPreimage_ne_hash_output
+    (H : Bytes → Bytes) (H_width : ∀ input, (H input).length = 32)
+    (tx : TxFields) (selected : Nat) (scriptCode : Bytes)
+    (wellFormed : valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (scriptCodeValid : scriptCode.length < 256 ^ 8)
+    (otherInput : Bytes) :
+    sourceAllPreimage tx selected scriptCode ≠ H otherInput := by
+  intro same
+  have lengths := congrArg List.length same
+  have long := sourceAllPreimage_length_gt_32 tx selected scriptCode
+    wellFormed selectedValid scriptCodeValid
+  rw [H_width] at lengths
+  omega
+
 end QSB.SighashAllWire

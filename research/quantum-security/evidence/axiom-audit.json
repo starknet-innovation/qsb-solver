@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1335,
+  "theorem_count": 1338,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4993,6 +4993,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.SighashAllWire.encode_length_gt_32": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SighashAllWire.equal_sourceAllPreimage_committedFields": [
       "Classical.choice",
       "Quot.sound",
@@ -5021,6 +5026,16 @@
       "propext"
     ],
     "QSB.SighashAllWire.prepareInputsAt_valid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.sourceAllPreimage_length_gt_32": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.sourceAllPreimage_ne_hash_output": [
       "Classical.choice",
       "Quot.sound",
       "propext"
