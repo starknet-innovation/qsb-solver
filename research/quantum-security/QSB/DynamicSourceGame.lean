@@ -30,8 +30,9 @@ private def search (functions : JointSourceChecks.Functions)
   DynamicCheckedCertificate.search (JointSourceChecks.hashes functions)
     lock attempt.stack validKey (checker functions ecdsa attempt)
 
-/-- The game extractor reads only the submitted source-model attempt and the
-public lock and checker functions. It does not receive setup secrets. -/
+/-- The game extractor reads the submitted source-model attempt and supplied
+lock/checker functions. There is no explicit secret-map argument; independence
+and query cost of those functions are not proved by this type. -/
 def extractor (functions : JointSourceChecks.Functions)
     (lock : DynamicCheckedCertificate.Lock)
     (validKey : Bytes → Bool)
@@ -255,8 +256,8 @@ theorem source_unauthorized_joint_or_bad_setup
 
 /-- The source event can be stated against actual HORS setup values from the
 same H and R used by its key puzzles and SHA256d calls. The setup equality is
-explicit and the extractor does not receive the secret map. This remains a
-pointwise statement, not a query-success bound. -/
+explicit; no secret map is passed as an argument to the extractor. Independence
+of supplied functions and their query cost remain open. -/
 theorem source_unauthorized_oracle_joint_or_bad_setup
     (functions : JointSourceChecks.Functions)
     (lock : DynamicCheckedCertificate.Lock)

@@ -118,6 +118,7 @@ import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
+import QSB.DynamicRawSource
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1361,6 +1362,14 @@ import QSB.Reduction
 #print axioms QSB.DynamicSourceGame.source_unauthorized_fresh_or_two_puzzle
 #print axioms QSB.DynamicSourceGame.source_unauthorized_joint_or_bad_setup
 #print axioms QSB.DynamicSourceGame.source_unauthorized_oracle_joint_or_bad_setup
+#print axioms QSB.DynamicRawSource.scriptSigAt_some_selected_valid
+#print axioms QSB.DynamicRawSource.prepare_provenance
+#print axioms QSB.DynamicRawSource.prepare_selected_input
+#print axioms QSB.DynamicRawSource.prepare_projection
+#print axioms QSB.DynamicRawSource.source_extraction
+#print axioms QSB.DynamicRawSource.source_unauthorized_fresh_or_two_puzzle
+#print axioms QSB.DynamicRawSource.source_unauthorized_joint_or_bad_setup
+#print axioms QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

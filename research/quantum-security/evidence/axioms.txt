@@ -1502,6 +1502,18 @@
 'QSB.DynamicSourceGame.source_unauthorized_oracle_joint_or_bad_setup' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.DynamicRawSource.scriptSigAt_some_selected_valid' depends on axioms: [propext]
+'QSB.DynamicRawSource.prepare_provenance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRawSource.prepare_selected_input' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRawSource.prepare_projection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRawSource.source_extraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRawSource.source_unauthorized_fresh_or_two_puzzle' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.DynamicRawSource.source_unauthorized_joint_or_bad_setup' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

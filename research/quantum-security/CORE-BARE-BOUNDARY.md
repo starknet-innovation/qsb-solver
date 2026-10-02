@@ -147,6 +147,13 @@ applies FindAndDelete for every reached signature to one scriptCode before the o
 pair scan, then cleans up the counted arguments and checks NULLDUMMY. The
 Lean source model follows that order; source inspection and the isolated
 native cases do not prove the universal C++-to-Lean relation.
+`QSB/DynamicRawSource.lean` now obtains the selected scriptSig from a complete
+raw transaction through the Lean envelope parser. It accepts any evaluator
+function for that scriptSig, including one capable of non-push opcodes, and
+feeds its returned stack to the checked-source extractor. The exact missing
+claim is that Core parses the same transaction and that its successful
+scriptSig and bare-lock executions produce this modeled result. The spent
+output's script bytes must also be supplied from the same ledger context.
 
 The disposable witness has an exact modeled lower-stack capacity threshold:
 `QSB.ByteStackFrame.canonical_arbitrary_bottom_tail` proves that any suffix

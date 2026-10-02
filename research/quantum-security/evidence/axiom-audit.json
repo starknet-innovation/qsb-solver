@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1267,
+  "theorem_count": 1275,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2041,6 +2041,44 @@
       "propext"
     ],
     "QSB.DynamicJointTransaction.search_two_key_joint_hit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.prepare_projection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.prepare_provenance": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.prepare_selected_input": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.scriptSigAt_some_selected_valid": [
+      "propext"
+    ],
+    "QSB.DynamicRawSource.source_extraction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.source_unauthorized_fresh_or_two_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.source_unauthorized_joint_or_bad_setup": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup": [
       "Classical.choice",
       "Quot.sound",
       "propext"

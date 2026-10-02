@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,267 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,275 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -883,9 +883,23 @@ one-budget quantum event bound remain unproved.
 Without the good-setup premise, the same modeled unauthorized event implies
 the joint failure event or an explicitly DER-shaped second-round commitment.
 With the explicit setup equality `commitment_i = R(H(secret_i))`, Lean states
-the fresh-opening event against those same-world commitments; the extractor
-still receives no secret map. No small probability is silently assigned to
-either branch.
+the fresh-opening event against those same-world commitments. The extractor
+has no explicit secret-map argument, but the supplied checker functions are
+not proved independent of those secrets or charged to a query budget. No
+small probability is silently assigned to either branch.
+`QSB/DynamicRawSource.lean` now starts the same *source-model* extractor from
+submitted raw transaction bytes, selected input number, and separately
+supplied spent-output script bytes. The Lean transaction-envelope parser
+recovers legacy or SegWit fields and selects that input's actual scriptSig;
+an explicit evaluator supplies its post-scriptSig stack. Lean proves the raw
+bytes re-encode to the parsed envelope, the selected input exists, and the
+owner-facing projection equals the parsed transaction's projection. For a
+good-setup truthy checked-source run, the raw-byte extractor discharges the
+game's extraction interface. Without the good-setup premise, the modeled
+unauthorized event again implies a joint failure or DER-shaped commitment;
+with setup equality, the opening target is `R(H(secret_i))` in the same world.
+The scriptSig evaluator, Core transaction parsing and lock execution, and
+the link from a real spent output to the supplied script remain unproved.
 The pinned local Core adapter's three early-exit cases and 22 isolated
 ten-signature cases were rerun; their outputs matched the committed
 `evidence/multisig-early-exit.json` and

@@ -186,6 +186,12 @@ calls and the selected nine positions. It proves the abstract extraction and
 fresh-opening-or-two-puzzle reduction for every good-setup truthy checked
 source attempt. The attempt starts with decoded stack cells, so this does not
 yet prove extraction from arbitrary consensus-accepted raw transactions.
+`QSB.DynamicRawSource` recovers the selected input's scriptSig and transaction
+fields from a complete raw legacy or SegWit envelope, then calls an explicit
+arbitrary-scriptSig evaluator. Its raw-byte extractor proves the same modeled
+game event with the submitted bytes determining the selected input, stack
+source, and owner-facing projection. The evaluator and Core parser/execution
+refinement are still external; source-model success is not consensus success.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

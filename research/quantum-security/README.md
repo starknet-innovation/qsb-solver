@@ -349,8 +349,9 @@ and a quantum bound remain open.
 two bonus positions into the abstract `RoundWitness` shape. An executable
 lookup supplies opening bytes, and Lean proves their HASH160 equalities. The
 earlier bridge's witness key was a caller input; the reached-key theorem below
-removes that freedom inside the byte model. Transaction-bound nonce semantics,
-a transaction-byte extractor, and Core refinement are still open.
+removes that freedom inside the byte model. The later raw-byte frontend is
+conditional on an external scriptSig evaluator and checked-source run;
+consensus-bound extraction and Core refinement remain open.
 
 `QSB/ByteLayout.lean` is a second generated view of the same exact lock. It
 retains literal push bytes for all 880 instructions; Lean checks that each of
@@ -452,6 +453,12 @@ key to discharge the abstract game extraction interface for truthy checked
 source attempts on a good setup. Its resulting fresh-opening-or-two-puzzle
 event has no source-model extraction gap. A raw transaction-to-model
 refinement and a shared-query quantum bound are still required.
+`QSB/DynamicRawSource.lean` begins with a complete raw transaction and selects
+the scriptSig of the stated input through the Lean legacy/SegWit envelope
+parser. Given an explicit evaluator for that arbitrary scriptSig, it computes
+the checked-source attempt and proves the same game event. Core parser and
+execution correspondence, actual spent-output lookup, and the quantum bound
+remain unproved.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,
