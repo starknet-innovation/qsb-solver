@@ -687,4 +687,53 @@ theorem pin_all_preimage_ne_final_all_preimage_cross_tx
     firstCommitment secondCommitment firstWidth secondWidth
     pinShort nonce0Short nonce1Short differentPush ids codes
 
+/-- For parameterized pin and final candidate ALL calls on valid selected
+inputs, the two first-round SHA-256 inputs are distinct and cannot alias
+either 32-byte second-round input. Thus the shared H sees four distinct
+inputs unless the first-round outputs already collide. The selected final
+dummy positions and both transactions may differ. -/
+theorem pin_final_two_stage_nodup_or_first_collision
+    (H : Bytes → Bytes) (H_width : ∀ input, (H input).length = 32)
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      noncePattern nonce1)
+    (left right : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat)
+    (leftValid : SighashAllWire.valid left)
+    (rightValid : SighashAllWire.valid right)
+    (leftSelectedValid : leftSelected < left.inputs.length)
+    (rightSelectedValid : rightSelected < right.inputs.length)
+    (ids : List (Fin 150)) :
+    let pinPre := SighashAllWire.sourceAllPreimage left leftSelected
+      (pinDeletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment)
+    let finalPre := SighashAllWire.sourceAllPreimage right rightSelected
+      (deletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment ids)
+    H pinPre = H finalPre ∨
+      [pinPre, finalPre, H pinPre, H finalPre].Nodup := by
+  dsimp
+  exact SighashAllWire.sourceAllPreimages_two_stage_nodup_or_first_collision
+    H H_width left right leftSelected rightSelected
+    (pinDeletedScript pin nonce0 nonce1 firstCommitment secondCommitment)
+    (deletedScript pin nonce0 nonce1 firstCommitment secondCommitment ids)
+    leftValid rightValid leftSelectedValid rightSelectedValid
+    (pinDeletedScript_width pin nonce0 nonce1 firstCommitment
+      secondCommitment firstWidth secondWidth pinShort nonce0Short
+      nonce1Short)
+    (deletedScript_width pin nonce0 nonce1 firstCommitment
+      secondCommitment firstWidth secondWidth pinShort nonce0Short
+      nonce1Short ids)
+    (pin_all_preimage_ne_final_all_preimage_cross_tx
+      pin nonce0 nonce1 firstCommitment secondCommitment
+      firstWidth secondWidth pinShort nonce0Short nonce1Short
+      differentPush left right leftSelected rightSelected
+      leftValid rightValid leftSelectedValid ids)
+
 end QSB.ParameterizedFinalSubset

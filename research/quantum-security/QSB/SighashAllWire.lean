@@ -496,4 +496,47 @@ theorem sourceAllPreimage_ne_hash_output
   rw [H_width] at lengths
   omega
 
+/-- For two distinct valid source ALL preimages, the first and second SHA256d
+input roles cannot alias. Either their first H outputs collide, or all four
+inputs addressed by the two double-hash evaluations are distinct. This uses
+one shared H and says nothing about the probability of either branch. -/
+theorem sourceAllPreimages_two_stage_nodup_or_first_collision
+    (H : Bytes → Bytes) (H_width : ∀ input, (H input).length = 32)
+    (left right : TxFields) (leftSelected rightSelected : Nat)
+    (leftScript rightScript : Bytes)
+    (leftValid : valid left) (rightValid : valid right)
+    (leftSelectedValid : leftSelected < left.inputs.length)
+    (rightSelectedValid : rightSelected < right.inputs.length)
+    (leftScriptValid : leftScript.length < 256 ^ 8)
+    (rightScriptValid : rightScript.length < 256 ^ 8)
+    (distinct : sourceAllPreimage left leftSelected leftScript ≠
+      sourceAllPreimage right rightSelected rightScript) :
+    H (sourceAllPreimage left leftSelected leftScript) =
+        H (sourceAllPreimage right rightSelected rightScript) ∨
+      [sourceAllPreimage left leftSelected leftScript,
+        sourceAllPreimage right rightSelected rightScript,
+        H (sourceAllPreimage left leftSelected leftScript),
+        H (sourceAllPreimage right rightSelected rightScript)].Nodup := by
+  let leftPre := sourceAllPreimage left leftSelected leftScript
+  let rightPre := sourceAllPreimage right rightSelected rightScript
+  have leftFirst : leftPre ≠ H leftPre :=
+    sourceAllPreimage_ne_hash_output H H_width left leftSelected
+      leftScript leftValid leftSelectedValid leftScriptValid leftPre
+  have leftSecond : leftPre ≠ H rightPre :=
+    sourceAllPreimage_ne_hash_output H H_width left leftSelected
+      leftScript leftValid leftSelectedValid leftScriptValid rightPre
+  have rightFirst : rightPre ≠ H leftPre :=
+    sourceAllPreimage_ne_hash_output H H_width right rightSelected
+      rightScript rightValid rightSelectedValid rightScriptValid leftPre
+  have rightSecond : rightPre ≠ H rightPre :=
+    sourceAllPreimage_ne_hash_output H H_width right rightSelected
+      rightScript rightValid rightSelectedValid rightScriptValid rightPre
+  have preDistinct : leftPre ≠ rightPre := distinct
+  by_cases firstCollision : H leftPre = H rightPre
+  · exact Or.inl firstCollision
+  · right
+    change [leftPre, rightPre, H leftPre, H rightPre].Nodup
+    simp [List.nodup_cons, preDistinct, leftFirst, leftSecond,
+      rightFirst, rightSecond, firstCollision]
+
 end QSB.SighashAllWire

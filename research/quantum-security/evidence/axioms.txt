@@ -31,10 +31,19 @@
 'QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage_cross_tx' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ParameterizedFinalSubset.pin_final_two_stage_nodup_or_first_collision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ParameterizedReachedSubsetSighash.reached_pin_final_all_preimages_disjoint' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_pin_final_two_stage_nodup_or_first_collision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_final_disjoint_from_pin_all_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_reached_two_stage_nodup_or_first_collision' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both' depends on axioms: [propext,
@@ -332,6 +341,9 @@
 'QSB.SighashAllWire.encode_length_gt_32' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.sourceAllPreimage_length_gt_32' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWire.sourceAllPreimage_ne_hash_output' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.SighashAllWire.sourceAllPreimages_two_stage_nodup_or_first_collision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.SighashAllWireFixture.fixture_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_preimage_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.SighashAllWireFixture.fixture_outputs_parsed' depends on axioms: [propext, Classical.choice, Quot.sound]

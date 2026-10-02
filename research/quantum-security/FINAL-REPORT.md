@@ -661,6 +661,14 @@ source transaction or selected input. This removes a caller-chosen final
 subset from the cross-role byte separation. It still assumes the validated
 parameterized lock, a nonaliasing pin/final push pair, and the source checker;
 compiled-Core acceptance and the one-budget quantum bound remain open.
+Lean also proves that each valid source-shaped ALL preimage is longer than a
+32-byte SHA-256 output. Combining that length fact with the reached pin/final
+preimage separation gives an exact shared-H input classification: either the
+two first SHA-256 outputs collide, or the four inputs used by the two SHA256d
+calls are pairwise distinct. The raw-source theorem obtains its final
+scriptCode from the checked reached stack. This is a statement about which
+oracle inputs can alias, not independence of adaptive calls or a quantum
+query-success bound.
 `QSB/ReachedSubsetSighash.lean` now applies that classification to the ten
 signature bytes in two reached final CHECKMULTISIG stacks. A successful full
 literal byte-model run with an explicit nonempty, DER-sound successful

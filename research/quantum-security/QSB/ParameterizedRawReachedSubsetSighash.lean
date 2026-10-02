@@ -212,4 +212,79 @@ theorem accepted_raw_final_disjoint_from_pin_all_preimages
     prepared, found, reached, stackEq, ?_⟩
   simpa [DynamicCheckedCertificate.wire] using different
 
+/-- On a good-setup accepted raw source attempt, the reached final ALL call
+and any valid modeled pin ALL call address four distinct shared-H inputs,
+unless their first SHA-256 outputs already collide. The raw parser,
+scriptSig evaluator, checked interpreter, and ECDSA checker remain source
+models rather than compiled-Core consensus semantics. -/
+theorem accepted_raw_reached_two_stage_nodup_or_first_collision
+    (functions : JointSourceChecks.Functions)
+    (lock : DynamicCheckedCertificate.Lock)
+    (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (evalScriptSig : DynamicRawSource.EvalScriptSig)
+    (raw : DynamicRawSource.RawAttempt)
+    (accepted : DynamicRawSource.sourceAccepted functions lock
+      validKey ecdsa evalScriptSig raw)
+    (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (pinShort : lock.pin.length < 76)
+    (nonce0Short : lock.nonce0.length < 76)
+    (nonce1Short : lock.nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern lock.pin ≠
+      ParameterizedFinalSubset.noncePattern lock.nonce1)
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false)
+    (pinTx : SighashAllWire.TxFields) (pinSelected : Nat)
+    (pinValid : SighashAllWire.valid pinTx)
+    (pinSelectedValid : pinSelected < pinTx.inputs.length) :
+    ∃ (attempt : DynamicSourceGame.Attempt)
+      (firstRound : Bool) (beforeCheck : CoreOpcodeStep.State)
+      (w : ParameterizedReachedSubsetSighash.Reached lock.nonce1),
+      DynamicRawSource.prepare evalScriptSig raw = some attempt ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial attempt.stack firstRound) =
+          some beforeCheck ∧
+      w.stack = beforeCheck.stack.reverse ∧
+      (let pinPre := SighashAllWire.sourceAllPreimage pinTx pinSelected
+          (ParameterizedFinalSubset.pinDeletedScript lock.pin lock.nonce0
+            lock.nonce1 lock.firstCommitment lock.secondCommitment)
+       let finalPre := SighashAllWire.sourceAllPreimage attempt.tx
+          attempt.selected (CoreMultisigSourceScan.deletedScript
+            (DynamicCheckedCertificate.wire lock) w.stack 10 10)
+       functions.H pinPre = functions.H finalPre ∨
+         [pinPre, finalPre, functions.H pinPre,
+           functions.H finalPre].Nodup) := by
+  obtain ⟨attempt, firstRound, _final, beforeCheck, w,
+    prepared, _found, reached, stackEq, _different⟩ :=
+    accepted_raw_final_disjoint_from_pin_all_preimages functions lock
+      validKey ecdsa evalScriptSig raw accepted firstWidth secondWidth
+      pinShort nonce0Short nonce1Short differentPush noCommitmentDER
+      pinTx pinSelected pinValid pinSelectedValid
+  obtain ⟨sourceAttempt, sourcePrepared, source⟩ := accepted
+  have sameAttempt : sourceAttempt = attempt := by
+    rw [prepared] at sourcePrepared
+    exact (Option.some.inj sourcePrepared).symm
+  subst sourceAttempt
+  obtain ⟨attemptValid, _matched, _sourceFinal, _records,
+    _run, _truth⟩ := source
+  obtain ⟨_envelope, _scriptSig, _decoded, _txEq, selectedEq,
+    _supplied, _scriptAt, _evaluated, _rawBytes⟩ :=
+    DynamicRawSource.prepare_provenance evalScriptSig raw attempt prepared
+  have selectedValid : attempt.selected < attempt.tx.inputs.length := by
+    rw [selectedEq]
+    exact DynamicRawSource.prepare_selected_input evalScriptSig raw
+      attempt prepared
+  have stage :=
+    ParameterizedReachedSubsetSighash.reached_pin_final_two_stage_nodup_or_first_collision
+      functions.H functions.H_width lock.pin lock.nonce0 lock.nonce1
+      lock.firstCommitment lock.secondCommitment firstWidth secondWidth
+      pinShort nonce0Short nonce1Short differentPush
+      pinTx attempt.tx pinSelected attempt.selected pinValid attemptValid
+      pinSelectedValid selectedValid w
+  refine ⟨attempt, firstRound, beforeCheck, w, prepared, reached,
+    stackEq, ?_⟩
+  simpa [DynamicCheckedCertificate.wire] using stage
+
 end QSB.ParameterizedRawReachedSubsetSighash

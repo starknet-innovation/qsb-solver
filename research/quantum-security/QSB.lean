@@ -154,8 +154,11 @@ import QSB.Reduction
 #print axioms QSB.ParameterizedFinalSubset.pin_scriptCode_ne_final_scriptCode
 #print axioms QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage
 #print axioms QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage_cross_tx
+#print axioms QSB.ParameterizedFinalSubset.pin_final_two_stage_nodup_or_first_collision
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_pin_final_all_preimages_disjoint
+#print axioms QSB.ParameterizedReachedSubsetSighash.reached_pin_final_two_stage_nodup_or_first_collision
 #print axioms QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_final_disjoint_from_pin_all_preimages
+#print axioms QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_reached_two_stage_nodup_or_first_collision
 #print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
 #print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script
@@ -390,6 +393,7 @@ import QSB.Reduction
 #print axioms QSB.SighashAllWire.encode_length_gt_32
 #print axioms QSB.SighashAllWire.sourceAllPreimage_length_gt_32
 #print axioms QSB.SighashAllWire.sourceAllPreimage_ne_hash_output
+#print axioms QSB.SighashAllWire.sourceAllPreimages_two_stage_nodup_or_first_collision
 #print axioms QSB.SighashAllWireFixture.fixture_valid
 #print axioms QSB.SighashAllWireFixture.fixture_preimage_bytes
 #print axioms QSB.SighashAllWireFixture.fixture_outputs_parsed

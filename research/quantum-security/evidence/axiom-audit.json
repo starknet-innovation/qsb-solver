@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1338,
+  "theorem_count": 1342,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4447,6 +4447,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ParameterizedFinalSubset.pin_final_two_stage_nodup_or_first_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ParameterizedFinalSubset.pin_scriptCode_ne_final_scriptCode": [
       "Classical.choice",
       "Quot.sound",
@@ -4490,6 +4495,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_reached_two_stage_nodup_or_first_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ParameterizedReachedSubsetSighash.checked_search_pair_all_preimage_classification": [
       "Classical.choice",
       "Quot.sound",
@@ -4521,6 +4531,11 @@
       "propext"
     ],
     "QSB.ParameterizedReachedSubsetSighash.reached_pin_final_all_preimages_disjoint": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.reached_pin_final_two_stage_nodup_or_first_collision": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -5036,6 +5051,11 @@
       "propext"
     ],
     "QSB.SighashAllWire.sourceAllPreimage_ne_hash_output": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.SighashAllWire.sourceAllPreimages_two_stage_nodup_or_first_collision": [
       "Classical.choice",
       "Quot.sound",
       "propext"

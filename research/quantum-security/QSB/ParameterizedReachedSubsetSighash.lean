@@ -215,6 +215,47 @@ theorem reached_pin_final_all_preimages_disjoint
     differentPush leftTx rightTx leftSelected rightSelected
     leftValid rightValid leftSelectedValid (selectedIds w)
 
+/-- The reached final stack, rather than a caller-chosen deletion list,
+determines the second ALL preimage. Its two SHA256d calls address four
+distinct inputs of the shared H unless the first H outputs collide. -/
+theorem reached_pin_final_two_stage_nodup_or_first_collision
+    (H : Bytes → Bytes) (H_width : ∀ input, (H input).length = 32)
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      ParameterizedFinalSubset.noncePattern nonce1)
+    (leftTx rightTx : SighashAllWire.TxFields)
+    (leftSelected rightSelected : Nat)
+    (leftValid : SighashAllWire.valid leftTx)
+    (rightValid : SighashAllWire.valid rightTx)
+    (leftSelectedValid : leftSelected < leftTx.inputs.length)
+    (rightSelectedValid : rightSelected < rightTx.inputs.length)
+    (w : Reached nonce1) :
+    let pinPre := SighashAllWire.sourceAllPreimage leftTx leftSelected
+      (ParameterizedFinalSubset.pinDeletedScript pin nonce0 nonce1
+        firstCommitment secondCommitment)
+    let finalPre := SighashAllWire.sourceAllPreimage rightTx rightSelected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicFullSerialized.fullWire pin nonce0 nonce1
+          firstCommitment secondCommitment) w.stack 10 10)
+    H pinPre = H finalPre ∨
+      [pinPre, finalPre, H pinPre, H finalPre].Nodup := by
+  dsimp
+  rw [reached_deleted_script_of_witness pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short w]
+  exact ParameterizedFinalSubset.pin_final_two_stage_nodup_or_first_collision
+    H H_width pin nonce0 nonce1 firstCommitment secondCommitment
+    firstWidth secondWidth pinShort nonce0Short nonce1Short
+    differentPush leftTx rightTx leftSelected rightSelected
+    leftValid rightValid leftSelectedValid rightSelectedValid
+    (selectedIds w)
+
 /-- Two reached modeled final stacks for one parameterized Config A lock
 have equal source-shaped ALL preimages iff their selected dummy sets agree.
 The nonce ALL flag excludes aliasing with a generated SINGLE dummy. -/
