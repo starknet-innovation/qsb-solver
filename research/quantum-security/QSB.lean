@@ -1106,6 +1106,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicSerializedRound.parse_simple_chunks
 #print axioms QSB.DynamicSerializedRound.serialized_final_round_parses
 #print axioms QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks
+#print axioms QSB.DynamicSerializedRound.parseCoreChunks_sound
 #print axioms QSB.DynamicSerializedRound.parseCoreOps_eq_parseOps
 #print axioms QSB.DynamicSerializedRound.mapM_of_map_some
 #print axioms QSB.DynamicSerializedRound.serialized_final_round_decodes
@@ -1272,6 +1273,7 @@ import QSB.Reduction
 #print axioms QSB.CoreGetOp.parse_simple_chunk
 #print axioms QSB.CoreGetOp.parse_matches_model_simple
 #print axioms QSB.CoreGetOp.parse_eq_parseOne
+#print axioms QSB.CoreGetOp.parseChunks_sound
 #print axioms QSB.CoreGetOp.literal_parse_stable
 #print axioms QSB.CoreGetOp.scan_eq_model_scan_all
 #print axioms QSB.CoreGetOp.literal_selected_delete

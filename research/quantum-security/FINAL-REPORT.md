@@ -942,7 +942,10 @@ repeated patterns. The proof uses checked simple-opcode and complete-match
 properties; the literal script also has no `OP_CODESEPARATOR` opcode.
 `QSB/CoreGetOp.lean` adds a separate source-shaped model of Core v27.2's
 opcode iterator advance. Lean proves it equals the existing parser for every
-byte string, including malformed or truncated PUSHDATA1/2/4 inputs. The two
+byte string, including malformed or truncated PUSHDATA1/2/4 inputs. The
+Core-shaped complete-chunk parser also reconstructs the exact input bytes
+from every successful arbitrary-chunk decomposition, including noncanonical
+PUSHDATA forms; this does not execute a scriptSig. The two
 source-shaped sequential deletion loops consequently agree for every byte
 script and ordered pattern list. Applied to the literal lock, this gives the
 same final scriptCode for any chosen final-signature index list and the

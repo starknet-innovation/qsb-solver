@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1368,
+  "theorem_count": 1370,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -981,6 +981,11 @@
       "propext"
     ],
     "QSB.CoreGetOp.literal_selected_delete": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreGetOp.parseChunks_sound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -2262,6 +2267,11 @@
       "propext"
     ],
     "QSB.DynamicSerializedRound.parseCoreChunks_eq_parseChunks": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSerializedRound.parseCoreChunks_sound": [
       "Classical.choice",
       "Quot.sound",
       "propext"

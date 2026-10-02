@@ -194,6 +194,16 @@ theorem parseCoreChunks_eq_parseChunks (fuel : Nat) (wire : Bytes) :
           | some pair =>
               simp [ih]
 
+/-- Any complete decomposition by the independent Core-shaped GetOp width
+parser reconstructs the supplied bytes. This also applies to arbitrary
+scriptSig bytes, though executing those opcodes is a separate obligation. -/
+theorem parseCoreChunks_sound (fuel : Nat) (wire : Bytes)
+    (chunks : List Bytes)
+    (parsed : parseCoreChunks fuel wire = some chunks) :
+    chunks.flatten = wire := by
+  rw [parseCoreChunks_eq_parseChunks] at parsed
+  exact CoreGetOp.parseChunks_sound fuel wire chunks parsed
+
 def parseCoreOps (fuel : Nat) (wire : Bytes) : Option (List Op) := do
   let parsed ← parseCoreChunks fuel wire
   parsed.mapM decodeChunk

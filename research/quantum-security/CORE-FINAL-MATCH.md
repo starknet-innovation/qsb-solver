@@ -166,7 +166,10 @@ advance in Core v27.2's
 [`GetScriptOp`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.cpp#L289-L340).
 It proves that this parser and the prior parser return the same result for
 *every byte string*, including malformed and truncated PUSHDATA1/2/4
-encodings. The two fuelled source-shaped Lean FindAndDelete loops therefore
+encodings. A successful complete-chunk parse under either parser reconstructs
+the exact supplied bytes, including arbitrary scriptSig byte strings; this
+does not evaluate those opcodes. The two fuelled source-shaped Lean
+FindAndDelete loops therefore
 agree on any script and ordered pattern list. Combined with the literal-lock
 chunk-filter theorem, this gives the selected final and fixed pin scriptCodes.
 `QSB/CoreFindAndDelete.lean` also models Core's delayed copy of the previously

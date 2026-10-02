@@ -213,6 +213,45 @@ theorem parse_split (script chunk rest : Bytes)
       subst rest
       exact List.take_append_drop count script
 
+/-- Any successful source-shaped opcode decomposition reconstructs the exact
+input bytes, including arbitrary PUSHDATA forms in a scriptSig. This is a
+parser provenance fact; it does not execute the decoded opcodes or establish
+that compiled Core uses this Lean parser. -/
+theorem parseChunks_sound (fuel : Nat) (script : Bytes)
+    (chunks : List Bytes)
+    (parsed : EncodedScript.parseChunks fuel script = some chunks) :
+    chunks.flatten = script := by
+  induction fuel generalizing script chunks with
+  | zero =>
+      cases script with
+      | nil =>
+          simp [EncodedScript.parseChunks] at parsed
+          subst chunks
+          rfl
+      | cons op rest => simp [EncodedScript.parseChunks] at parsed
+  | succ fuel ih =>
+      cases script with
+      | nil =>
+          simp [EncodedScript.parseChunks] at parsed
+          subst chunks
+          rfl
+      | cons op rest =>
+          simp only [EncodedScript.parseChunks] at parsed
+          cases first : parseOne (op :: rest) with
+          | none => simp [first] at parsed
+          | some value =>
+              rcases value with ⟨chunk, tail⟩
+              cases later : EncodedScript.parseChunks fuel tail with
+              | none => simp [first, later] at parsed
+              | some following =>
+                  simp [first, later] at parsed
+                  subst chunks
+                  have split : chunk ++ tail = op :: rest :=
+                    parse_split (op :: rest) chunk tail (by
+                      rw [parse_eq_parseOne]
+                      exact first)
+                  simpa [ih tail following later] using split
+
 /-- Source-shaped FindAndDelete never increases script byte length, even
 for malformed scripts, empty patterns, or insufficient loop fuel. -/
 theorem scan_length_le (fuel : Nat) (script pattern : Bytes) :

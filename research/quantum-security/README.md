@@ -434,7 +434,9 @@ its 15 `OP_EQUALVERIFY` instructions immediately follows `OP_HASH160`.
 `QSB/EncodedScript.lean` parses those 9,923 bytes into 880 chunks, decodes
 them back to `ByteLayout.program`, and checks the 151 final signature-push
 patterns. Separate source-shaped Lean `GetOp` and `FindAndDelete` loops now
-agree with the parsed fixture; compiled Core equivalence is still open.
+agree with the parsed fixture. Every successful complete-chunk `GetOp` parse
+of arbitrary bytes reconstructs those exact bytes; scriptSig execution and
+compiled Core equivalence are still open.
 `QSB/FindAndDelete.lean` proves the sequential deletion result for the
 source-shaped Lean byte loop and every selected final-signature list. It does
 the same for the fixed pinning signature's one serialized push. It does not
