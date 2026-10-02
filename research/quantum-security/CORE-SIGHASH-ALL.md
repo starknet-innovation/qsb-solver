@@ -7,12 +7,12 @@ unauthorized-spend probability bound.
 
 ## Source contract
 
-For a base-script signature, [Core's legacy serializer](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1242-L1339)
+For a base-script signature, [Core's legacy serializer](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1147-L1238)
 serializes the transaction version, all input prevouts and sequences, all
 outputs in order, and locktime when the hash type is exactly `0x01`.
 It substitutes the selected `scriptCode` for the signed input's `scriptSig`
 and an empty script for every other input. The hash type is appended before
-hashing in [`SignatureHash`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1616-L1632).
+hashing in [`SignatureHash`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1449-L1509).
 Each [output serialization](https://github.com/bitcoin/bitcoin/blob/v27.2/src/primitives/transaction.h#L1308-L1329)
 contains its value and scriptPubKey. This is a statement about the bytes
 Core hashes, not about whether one fixed ECDSA key can verify only one hash.

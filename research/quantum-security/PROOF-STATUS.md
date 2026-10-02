@@ -336,6 +336,14 @@ empty, zero, negative-zero, and truthy cells left by an isolated bare
 `CORE-BARE-BOUNDARY.md` explains why arbitrary scriptSig stack production can
 be abstracted for the first modeled commitment-origin theorem. This is not a
 Core-to-Lean execution refinement or a QSB-lock acceptance test.
+`scriptsig-isolation-core.json` adds seven checksum-verified Core 27.2
+macOS consensus-library cases for a synthetic bare CHECKSIG lock. The same
+fixed ALL signature and key verify after `OP_CODESEPARATOR` before or after
+the key push, after executed `EQUALVERIFY` or `ADD; DROP`, and with an extra
+lower stack cell; a wrong-key control rejects. The app's modeled ALL digest
+is unchanged across those scriptSig variants. This corroborates separate
+`EvalScript` invocations and a fresh locking-script code-separator origin for
+these cases, but does not test the QSB lock or establish universal refinement.
 
 `sighash-types.json` records 256 isolated `CHECKSIG` transactions with fixed
 valid DER integers, one for each possible trailing sighash byte. For each byte,

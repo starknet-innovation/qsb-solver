@@ -6,11 +6,11 @@ Config A output is a **bare legacy script** (see `SPECIFICATION.md` and
 `bitcoinconsensus_verify_script_with_spent_outputs` with the official Core
 27.2 `VERIFY_ALL` flag set for both inputs. Its build script downloads the
 checksummed Core 27.2 release. These facts identify the intended interpreter;
-the experiment below uses the pinned local native binary and image.
+the experiments below use checksum-verified native builds.
 
 ## What Core does at this boundary
 
-In [Core 27.2 `VerifyScript`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1956-L2025), the `SIGPUSHONLY` test is conditional
+In [Core 27.2 `VerifyScript`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1805-L1915), the `SIGPUSHONLY` test is conditional
 on its flag. The [consensus API `VERIFY_ALL` definition](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/bitcoinconsensus.h#L48-L62)
 does **not** contain `SIGPUSHONLY`, `MINIMALDATA`, `NULLFAIL`, or `CLEANSTACK`.
 The P2SH-specific push-only check and redeem-script stack pop occur only when
@@ -20,13 +20,15 @@ opcodes may create any stack allowed by Core's other consensus checks.
 
 `VerifyScript` first evaluates `scriptSig`, then evaluates `scriptPubKey` on the
 same stack. Failure in the first call aborts verification. The
-[Core 27.2 `EvalScript` body](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L414-L467)
-creates its own `nOpCount = 0` and local altstack on each invocation. The
-scriptSig's counted operations therefore do not consume the bare lock's
-201-opcode budget, and its altstack does not carry into the lock. A successful
-scriptSig supplies an ordinary byte-vector stack at the lock entrance. Core
+[Core 27.2 `EvalScript` body](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L378-L403)
+creates its own `nOpCount = 0`, local altstack, and `pbegincodehash` at the
+start of the supplied script on each invocation. The scriptSig's counted
+operations therefore do not consume the bare lock's
+201-opcode budget, and its altstack or `OP_CODESEPARATOR` position does not
+carry into the lock. A successful scriptSig supplies an ordinary byte-vector
+stack at the lock entrance. Core
 checks the combined main/altstack size after each instruction
-([source](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1216-L1223)).
+([source](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1124-L1129)).
 
 The [Core 27.2 `CScriptNum` constructor and `set_vch`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.h#L226-L396)
 reject more than four operand bytes, optionally enforce minimal encoding, and
@@ -76,7 +78,18 @@ are accepted. A 202nd counted opcode in either script is rejected. These are
 source corroboration and boundary tests, **not** full QSB acceptance or a
 formal interpreter equivalence proof.
 
-Seven of those isolated cases leave scriptSig-supplied bytes on top through a
+`analysis/check_scriptsig_isolation_core.py` adds seven isolated
+`SIGHASH_ALL` CHECKSIG cases against the checksum-verified Core 27.2 macOS
+consensus library (`evidence/scriptsig-isolation-core.json`). A fixed
+signature and key verify with a push-only scriptSig, with
+`OP_CODESEPARATOR` before or after the key, with executed `EQUALVERIFY` or
+`ADD; DROP` before that separator, and with an extra lower stack cell. A
+wrong-key control rejects. The app's source-shaped ALL digest stays equal
+across all seven scriptSig variants; Core accepts the six valid-key cases.
+This corroborates the separate-`EvalScript` boundary for these synthetic
+inputs, not the generated QSB lock or a universal Core-to-Lean proof.
+
+Seven of the earlier fifteen cases leave scriptSig-supplied bytes on top through a
 bare `OP_NOP` lock and check [Core's final `CastToBool`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L32-L45)
 decision, including empty, zero, negative-zero, and noncanonical truthy
 encodings. `QSB/CoreFinalTruth.lean` models that source loop and proves a
@@ -142,7 +155,7 @@ computes the nine-position good-setup witness from that checked source-model
 run and retains the two DER puzzle hits and fixed ALL verifier calls. The
 computation has no arbitrary Core transaction parser or compiled-Core
 refinement. Core 27.2's
-[multisignature source case](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1104-L1214)
+[multisignature source case](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1022-L1120)
 applies FindAndDelete for every reached signature to one scriptCode before the ordered
 pair scan, then cleans up the counted arguments and checks NULLDUMMY. The
 Lean source model follows that order; source inspection and the isolated

@@ -1,0 +1,75 @@
+{
+  "scope": "isolated CHECKSIG lock; not QSB acceptance or universal refinement",
+  "core_version": "27.2",
+  "core_api_version": 2,
+  "core_flags": 134677,
+  "app_builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "app_secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+  "core_archive_sha256": "8f2247f4786f3559d37189b58452c91623efc5fa6886c975fa9386f9ff3f1001",
+  "archived_library_sha256": "3d1e6886adda2f06eaaad74418859ef25760d36b6c0fad2988584c45164559ec",
+  "loaded_library_sha256": "ab16061a9158dedc3bf11f4c0581a6283d7457e6c940224cb5fab7f629559788",
+  "adapter_source_sha256": "745f9586118e77cc23a65bce82d6dbaeadeca5b20990b871a034f8dadce1c15c",
+  "lock_hex": "093006020101020111017cac",
+  "script_code_hex": "7cac",
+  "sighash_all_digest_hex": "0bd7f9279feb170ecc1eadb11ab3addf3aa6deea5060427b22b24e182af6eac4",
+  "signature_hex": "300602010102011101",
+  "pubkey_hex": "03b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+  "cases": [
+    {
+      "name": "push_only_baseline",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "2103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "6159a4cd2561fc1df2554dde737682a4ac525ed8fd218da74876c6dcd4e4590b",
+      "core_error": 0
+    },
+    {
+      "name": "scriptsig_codeseparator_before_key",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "ab2103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "9bcea593b38ef6b0656ceb3b4e6de207f5cb388dc8961fb19fc0c21ca1ba4ea4",
+      "core_error": 0
+    },
+    {
+      "name": "scriptsig_codeseparator_after_key",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "2103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37ab",
+      "raw_tx_sha256": "d894499b89c3e991ceedc1818d0f093ae999d4c729d351e48f0fd242f096b3b1",
+      "core_error": 0
+    },
+    {
+      "name": "scriptsig_equalverify_then_codeseparator",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "515188ab2103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "4186b604fe25a850d556027720058860f0a6e696cdded2c930fe4ea6eb0e93b2",
+      "core_error": 0
+    },
+    {
+      "name": "scriptsig_add_drop_then_codeseparator",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "51519375ab2103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "f7be84ed968d56bcca1c2bea0989637f6fc2e0abb9715123e8992d8e73f2afc0",
+      "core_error": 0
+    },
+    {
+      "name": "scriptsig_extra_stack_cell",
+      "accepted": true,
+      "expected": true,
+      "script_sig_hex": "5151932103b3c0d8d9fb65c6004eb9a50f5832ae62939394d42c7ce01ccdc90dc7e17bcb37",
+      "raw_tx_sha256": "c382bf2d4c1ad919ddc0afc63a2ff2877e99d94a24e185a1b9d79f4e16580bca",
+      "core_error": 0
+    },
+    {
+      "name": "wrong_key_after_codeseparator",
+      "accepted": false,
+      "expected": false,
+      "script_sig_hex": "ab210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "raw_tx_sha256": "bc9076eae2c0562be4996f192ab7ba5e714b2f8c4b255ab1f569c1ffc8e7eddf",
+      "core_error": 0
+    }
+  ]
+}
