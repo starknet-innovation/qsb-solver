@@ -203,6 +203,18 @@ ALL preimage equality. The classification also permits different original
 scriptSigs when the remaining transaction fields agree after erasure. It does
 not identify Core-accepted subsets or bound SHA256d collisions or quantum
 queries.
+`QSB/ParameterizedReachedSubsetSighash.lean` derives the deletion list from
+the reached final signature slots of successful parameterized checked-source
+searches on a good setup. It returns nine distinct selected dummy indices per
+run and classifies their source ALL preimages for supplied valid transaction
+fields equal after scriptSig erasure. The transaction fields are not yet
+derived from those searches' raw inputs, and Core acceptance remains open.
+`QSB/ParameterizedRawReachedSubsetSighash.lean` links those source
+transaction fields and initial stacks to two strict-parsed raw submissions.
+For source-accepted attempts with equal selected input and equal fields after
+scriptSig erasure, it proves the reached final-preimage classification under
+the good-setup and serializer premises. The arbitrary scriptSig evaluator,
+checked source interpreter and transaction parser still need Core refinement.
 `QSB/ReachedSubsetSighash.lean` derives the same preimage classification from
 signature bytes reached by two successful full byte-model runs with explicit
 successful ten-pair scan premises. Core acceptance and actual digest behavior

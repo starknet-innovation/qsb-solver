@@ -534,6 +534,21 @@ in `0x01`, excluding aliasing with `SIGHASH_SINGLE` dummy pushes. The preimage
 result persists across original scriptSig changes when erased transaction
 fields agree. Which sets are Core-reachable and the compiled-Core and joint
 QROM bounds remain open.
+`QSB/ParameterizedReachedSubsetSighash.lean` uses the reached ten-signature
+stack of two successful parameterized checked-source searches against one
+lock. With the no-DER-commitment good-setup premise, it derives nine distinct
+dummy indices per run and applies the selected-set preimage classification to
+their source-shaped final scriptCodes. The supplied transaction fields must
+be valid and equal after original scriptSig erasure. Linking those fields to
+each search's raw input, compiled-Core execution, and joint quantum-query
+probability remain separate obligations.
+`QSB/ParameterizedRawReachedSubsetSighash.lean` further obtains each
+transaction and initial stack from its own strict-parsed raw source attempt.
+For two source-accepted attempts, equal selected input and equal fields after
+scriptSig erasure yield the same reached selected-set preimage classification.
+The supplied scriptSig evaluator and checked interpreter remain external to
+compiled Core; this theorem is not an arbitrary consensus-accepted-witness
+extraction or a hash-query bound.
 `QSB/ReachedSubsetSighash.lean` derives the same equality classification from
 two reached final stacks in successful literal byte-model runs under explicit
 successful ten-pair scan premises. The selected sets each have nine distinct

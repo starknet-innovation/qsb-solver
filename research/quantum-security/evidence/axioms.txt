@@ -21,6 +21,27 @@
 'QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_deleted_script' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_deleted_script_of_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq_of_erased' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.checked_search_reached' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedReachedSubsetSighash.checked_search_pair_all_preimage_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_pair_preimage_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ReachedSubsetSighash.reached_script_eq_iff_selected_set_eq' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

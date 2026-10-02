@@ -76,6 +76,22 @@ so its push cannot alias a generated `SIGHASH_SINGLE` dummy. Original
 scriptSig bytes may differ if the transaction fields agree after erasure.
 These parameterized source theorems do not determine accepted Core subsets,
 rule out SHA256d collisions, or give a quantum-query bound.
+`QSB/ParameterizedReachedSubsetSighash.lean` connects the candidate
+classification to ten signature bytes at the reached final stack of two
+successful parameterized checked-source searches. A good-setup premise
+excludes DER-shaped second-round commitments; the theorem returns nine
+distinct selected dummy indices for each run. It classifies preimages for
+supplied valid source transactions equal after scriptSig erasure. Those
+transaction fields are not yet tied to the search inputs by raw preparation,
+and the searches use external key/ECDSA checkers rather than compiled Core.
+`QSB/ParameterizedRawReachedSubsetSighash.lean` closes the transaction
+provenance gap within the raw source model: both transaction fields and
+initial stacks come from their corresponding strict-parsed raw attempts and
+supplied scriptSig evaluator, and the lock bytes pass an exact wire check.
+For two source-accepted attempts with equal selected input and erased fields,
+the same reached final-preimage classification follows under the explicit
+good-setup and width premises. This does not establish that Core parses or
+accepts either raw transaction in the same way.
 `QSB/ReachedSubsetSighash.lean` applies this exact equality classification to
 two reached modeled final stacks. Successful full byte-model execution plus
 explicit nonempty, DER-sound successful scans supplies nine distinct selected

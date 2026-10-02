@@ -597,6 +597,26 @@ covers transactions equal after original scriptSig erasure. The fixed final
 nonce's `SIGHASH_ALL` byte prevents aliasing with generated `SIGHASH_SINGLE`
 dummies. These results do not determine Core-accepted subsets or refine
 compiled Core, and preimage inequality does not rule out SHA256d collisions.
+`QSB/ParameterizedReachedSubsetSighash.lean` now takes the actual ten
+signature bytes at a parameterized checked-source search's reached final
+stack. Under the good-setup no-DER-commitment premise, it constructs nine
+distinct selected dummy indices and proves that the reached final ALL
+preimages of two successful source searches have the same equality classes,
+for supplied valid transactions equal after scriptSig erasure. Both searches
+share the lock and hash functions; their external key/ECDSA checkers may
+differ. The source transaction fields are not yet derived from each search's
+raw input, and actual Core acceptance and SHA256d collision resistance remain
+unproved.
+`QSB/ParameterizedRawReachedSubsetSighash.lean` composes that theorem with
+two raw-byte source attempts. Each attempt's transaction fields, selected
+input and initial lock stack come from its own successful strict Lean parse
+and supplied arbitrary-scriptSig evaluator; the supplied lock bytes pass an
+exact wire equality check. If both source runs accept, select the same input,
+and their decoded fields agree after scriptSig erasure, their reached final
+source ALL preimages agree exactly when their nine selected dummy sets agree.
+This removes independent transaction-field choice inside the raw source
+model. The parser, scriptSig evaluator, checker and execution are still not
+proved equivalent to compiled Bitcoin Core.
 `QSB/ReachedSubsetSighash.lean` now applies that classification to the ten
 signature bytes in two reached final CHECKMULTISIG stacks. A successful full
 literal byte-model run with an explicit nonempty, DER-sound successful

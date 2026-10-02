@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1312,
+  "theorem_count": 1319,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4415,6 +4415,41 @@
       "propext"
     ],
     "QSB.ParameterizedFindAndDelete.runMany_eq_chunk_filter": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_pair_preimage_classification": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.checked_search_pair_all_preimage_classification": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.checked_search_reached": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq_of_erased": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.reached_deleted_script": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedReachedSubsetSighash.reached_deleted_script_of_witness": [
       "Classical.choice",
       "Quot.sound",
       "propext"
