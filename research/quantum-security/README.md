@@ -661,6 +661,7 @@ tar -xzf /tmp/qsb-bitcoin-27.2-arm64.tar.gz -C /tmp/qsb-core-27.2-macos bitcoin-
 codesign --force --sign - /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib
 python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --consensus-library /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib --core-archive /tmp/qsb-bitcoin-27.2-arm64.tar.gz --output evidence/full-two-outputs-core-macos.json
 python3 analysis/compare_full_core_runs.py --linux-report evidence/full-two-outputs-core.json --host-report evidence/full-two-outputs-core-macos.json --output evidence/full-two-outputs-core-parity.json
+python3 analysis/check_first_round_replay_core.py --app-root /path/to/qsb-app --consensus-library /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib --core-archive /tmp/qsb-bitcoin-27.2-arm64.tar.gz --output evidence/first-round-replay-core.json
 ```
 
 The recorded host and Linux case objects match exactly for all 28 cases.

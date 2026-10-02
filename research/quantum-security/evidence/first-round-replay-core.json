@@ -1,0 +1,113 @@
+{
+  "scope": "MODIFIED lock: pin/final puzzles relaxed, first DUP/SHA256 replaced by NOP/fixed DER push; first puzzle CHECKSIGVERIFY and both multisignatures active; not an unmodified-lock spend",
+  "app_builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "core_archive_sha256": "8f2247f4786f3559d37189b58452c91623efc5fa6886c975fa9386f9ff3f1001",
+  "original_core_library_sha256": "3d1e6886adda2f06eaaad74418859ef25760d36b6c0fad2988584c45164559ec",
+  "loaded_core_library_sha256": "ab16061a9158dedc3bf11f4c0581a6283d7457e6c940224cb5fab7f629559788",
+  "adapter_sha256": "745f9586118e77cc23a65bce82d6dbaeadeca5b20990b871a034f8dadce1c15c",
+  "exact_lock_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
+  "modified_lock_sha256": "da6a600e313fdf97469b7e0e6834994a831d79b1e3b89953db717e51760107fe",
+  "exact_lock_bytes": 9923,
+  "modified_lock_bytes": 9955,
+  "modified_lock_runtime_ops": 200,
+  "first_hash_opcode_offset": 4952,
+  "first_dup_opcode_offset": 4951,
+  "original_checksigverify_offsets": [
+    58,
+    61,
+    4957,
+    9881
+  ],
+  "modified_checksigverify_offsets": [
+    58,
+    4989
+  ],
+  "first_puzzle_signature_hex": "301d020102021801000000000000000000000000000000000000000000000001",
+  "reused_first_nonce_key_hex": "0243ad5a735eac4fae7cfeb9d65fea366f9e9a106e6c07509b8b1e748d05ed379f",
+  "first_puzzle_key_old_hex": "021d20a27d2e7a8c843cf5610a21447a4fb67f9ba6b7ce33ca62c751eefb417b8b",
+  "first_puzzle_key_new_hex": "02b115adfae1c27181f42389369dec1c98b2e44bc253e2643524af0f8f4883aa03",
+  "old_puzzle_key_verifies_new_digest": false,
+  "old_nonce_key_verifies_new_digest": false,
+  "cases": [
+    {
+      "name": "original_first_puzzle",
+      "accepted": true,
+      "expected": true,
+      "core": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": true
+          }
+        ]
+      },
+      "transaction_sha256": "8f833bccaf0d517765b6c9a41ef0787bc2921b124bb6b0fd9b8715b10f26029a"
+    },
+    {
+      "name": "changed_recovered_puzzle_key",
+      "accepted": true,
+      "expected": true,
+      "core": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": true
+          }
+        ]
+      },
+      "transaction_sha256": "69b95fa6ae7ac9192c0cfa90ec10b0fedd4a41f4c5eac638abcda7581d69d89a"
+    },
+    {
+      "name": "changed_stale_puzzle_key",
+      "accepted": false,
+      "expected": false,
+      "core": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": false
+          }
+        ]
+      },
+      "transaction_sha256": "acfa998b040061a6c7019d9244c23d5d4be9f8509464b6066327af3f9407e252"
+    },
+    {
+      "name": "changed_stale_final_nonce_key",
+      "accepted": false,
+      "expected": false,
+      "core": {
+        "api_version": 2,
+        "flags": 134677,
+        "inputs": [
+          {
+            "error": 0,
+            "valid": true
+          },
+          {
+            "error": 0,
+            "valid": false
+          }
+        ]
+      },
+      "transaction_sha256": "20111ff11a0b64856321fe6754933eaa27ad012235c20629bfd12dfad27fed83"
+    }
+  ]
+}

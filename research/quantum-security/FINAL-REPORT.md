@@ -172,27 +172,40 @@ first-round hash-to-signature hit for each new pinned transaction. The emitted
 lock does not enforce the first-round `CHECKMULTISIG` result, so that factor
 cannot be charged after a valid spend has disclosed its first-round witness.
 The attacker can retain the released first-round HORS openings, indices, and
-nonce key. Its `RIPEMD160(nonce key)` remains the same DER-shaped signature.
-For a changed transaction, the attacker can recover a new public key for that
-fixed puzzle signature and the new puzzle sighash. The fixed first-round
-`SIGHASH_ALL` nonce signature and dummy signatures may then fail inside the
+nonce key. In the pinned Config A builder, its `SHA256(nonce key)` remains the
+same DER-shaped signature; the paper instead describes RIPEMD160 puzzles.
+For a changed transaction with an admissible recovered key, the attacker can
+use a new public key for that fixed puzzle signature and the new puzzle
+sighash. The fixed first-round `SIGHASH_ALL` nonce signature and dummy
+signatures may then fail inside the
 unchecked multisignature. Pinning and the final-round multisignature still
 have to pass. `QSB/Layout.lean` checks the discarded-Boolean stack behavior,
 `QSB/Nonce.lean` checks public-key recovery algebra for any new message under
-an admissible recovery point, and the disposable pinned-Core case
+an admissible recovery point. The disposable pinned-Core case
 `changed_destination_reused_round1_nonce` accepts a changed destination even
-though an independent check finds the retained nonce key fails its new
-first-round `SIGHASH_ALL` message. That Core fixture relaxes all three
-hash-to-signature checks; it does not solve or spend the unmodified lock.
+though the retained nonce key fails its new first-round `SIGHASH_ALL` message;
+that older fixture relaxes all three hash-to-signature checks. A sharper
+four-case Core probe in `evidence/first-round-replay-core.json` keeps the
+first-round puzzle's real `CHECKSIGVERIFY`, inserts one fixed DER puzzle
+signature in place of `OP_DUP; OP_SHA256`, and relaxes only the pin/final
+puzzle checks. It accepts the changed destination with the old, valid SEC
+first-round nonce key and a newly recovered puzzle verification key, and
+rejects the same changed transaction with either the stale puzzle key or a
+stale final-round nonce key. The old first-round nonce key independently fails
+its new ALL digest. The substituted constant signature bypasses the first
+hash search, so these are finite control-flow and ECDSA observations, not an
+unmodified-lock spend.
 
-Using **only the paper's own independent-hit work heuristic** for comparison,
-let `p ≈ 2^-46.425` be the DER-shaped-output density. A fresh first-round
-search with one bonus index contributes roughly `142p` per pinned attempt;
-the final round with two bonus indices contributes roughly
+Using **only an independent-hit work heuristic** for comparison, a fresh
+first-round search with one bonus index contributes roughly `142p` per pinned
+attempt, and the final round with two bonus indices contributes roughly
 `C(143,2)p = 10153p`. Reusing the disclosed first-round puzzle removes the
-`142p` factor. The resulting illustrative pin-plus-final estimate is
-`1/(p · 10153p) ≈ 2^79.54` hash-work units, versus approximately
-`1/(p · 142p · 10153p) ≈ 2^118.82` if a fresh first-round hit were required.
+`142p` factor. With the paper's 20-byte RIPEMD160 target expression
+`p20 = 390405/2^65 ≈ 2^-46.425`, illustrative pin-plus-final work is
+`1/(p20 · 10153p20) ≈ 2^79.54`, compared with about `2^118.82` if all
+three hits were renewed. For the pinned builder's 32-byte SHA256 puzzles,
+the syntax-count expression `p32 = 780555/2^65 ≈ 2^-45.426` instead gives
+about `2^77.54` versus `2^115.82` under the same heuristic.
 These are comparisons within a simplified classical heuristic, **not** a
 proved attack complexity, a full-lock unauthorized spend, or a QROM success
 bound. In particular, Core extraction, shared-oracle correlations, adaptive

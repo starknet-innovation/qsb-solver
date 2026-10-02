@@ -248,6 +248,22 @@ is independently checked as invalid by the CPU EC implementation. This rules
 out treating first-round success as a necessary condition in this experiment.
 It does not solve the real hash puzzles or change a real payment destination.
 
+`first-round-replay-core.json` adds four pinned macOS Core 27.2 cases to
+isolate public-key recovery for the first-round puzzle after a destination
+change. The disposable lock replaces the pin and final puzzle checks with
+`OP_2DROP`, and substitutes a fixed 32-byte DER signature for the first
+`OP_DUP; OP_SHA256` pair; its first puzzle `CHECKSIGVERIFY`, both
+multisignatures, fixed nonce signature bytes, and HORS comparisons remain in
+the script. Core accepts the old
+transaction and the changed destination when the old valid SEC first-round
+nonce key is retained but the puzzle key is recovered for the new sighash.
+It rejects a stale puzzle key and a stale final-round nonce key. Independent
+ECDSA checks confirm that the old first-round nonce key and old puzzle key
+fail their new ALL digests. The report pins the builder, official Core archive,
+loaded library, adapter, and exact/modified lock hashes. This is finite
+evidence of replay mechanics with the hash search bypassed, not an accepted
+unmodified-lock spend, a universal Core refinement, or a quantum bound.
+
 `core-semantics.json` records isolated fixed-signature scripts, with no relaxed
 opcodes. Compressed, uncompressed, and correct-parity hybrid encodings verify;
 wrong-parity hybrid encoding fails. Changing the destination with a fixed ALL

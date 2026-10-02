@@ -17,6 +17,10 @@ its numerical security estimates as proved bounds. The actual emitted script,
 its first-round Boolean handling, and an explicit joint quantum oracle game
 must first be reconciled with the intended construction. Paper estimates are
 not Lean theorems and are not a substitute for that reconciliation.
+The paper's RIPEMD160 puzzle density is also distinct from the pinned worker's
+Config A, which selects `hash_mode='sha256'` in `qsb_pipeline.py`; the worker
+names its RIPEMD160 variant `Ar`. The report states separate illustrative
+DER-20 and DER-32 calculations and treats neither as a spend bound.
 
 ## Quantum subset cover
 
