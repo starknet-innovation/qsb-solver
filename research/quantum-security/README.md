@@ -193,6 +193,11 @@ not inferred from preimage inequality.
 selected dummy-position sets and source-shaped final ALL preimages have the
 same equality classes for fixed valid transaction fields and selected input.
 The result does not count reachable Core-accepted subsets or quantum queries.
+A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
+two final subsets on a synthetic two-output transaction. The puzzle-relaxed
+lock accepts each with its recovered keys but rejects reuse of the first
+subset's final nonce key for the second. Three puzzle checks are disabled, so
+this is not an accepted spend of the unmodified lock.
 `QSB/JointSourceChecks.lean` also proves that an out-of-range SINGLE checker
 call keeps the raw constant digest after any output-list replacement that
 leaves the selected input past the last output. A cross-checked test adapter

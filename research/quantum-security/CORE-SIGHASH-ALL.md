@@ -65,6 +65,19 @@ scriptCodes, and therefore equal valid fixed-transaction ALL preimages, occur
 exactly for equal selected position sets. Permuting or repeating selected
 positions does not change that set. The theorem does not show which sets an
 accepted Core execution can reach or assign a quantum-query probability.
+An additional [full-lock differential](evidence/full-subset-switch-core.json)
+checks two such sets against the pinned Core 27.2 adapter. In one synthetic,
+unfunded two-input/two-output transaction, with QSB at input 1, replacing
+final dummy position 8 with 9 changes the shared final scriptCode and its
+in-range ALL digest. The puzzle-relaxed 880-opcode lock accepts each subset
+with freshly recovered keys and rejects the second subset when it retains
+the first subset's final nonce key. Pinning, HORS comparisons, and both
+multisignature checks execute; the three hash-to-signature puzzle
+CHECKSIGVERIFY sites are replaced by OP_2DROP. This is finite evidence for
+the witness-dependent scriptCode boundary, not acceptance by the real lock
+or a same-key rejection theorem. Reproduce it with
+`analysis/check_full_subset_switch_core.py` and the pinned app/native paths
+recorded in that script and report.
 The remaining step is to identify Core's C++ preimage for every accepted
 transaction with this source-shaped encoding, including its reached
 FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the

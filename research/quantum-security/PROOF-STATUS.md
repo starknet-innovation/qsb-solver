@@ -376,6 +376,13 @@ Core binary and library in a recorded arm64 Ubuntu image. The original 22
 case records stayed unchanged. These outcomes corroborate the count,
 cleanup, encoding, and simultaneous-deletion source distinctions;
 the base test lock is 1,560 bytes and does not execute the full QSB lock.
+`full-subset-switch-core.json` extends this distinction to the complete
+880-opcode puzzle-relaxed lock: two final dummy-position sets each pass with
+fresh recovered keys on a synthetic in-range ALL transaction, while the
+second set fails with the first set's final nonce key. Pinning, HORS, and both
+multisignatures execute, but three puzzle checks are disabled. The finite
+test neither proves arbitrary Core acceptance extraction nor gives a quantum
+probability bound.
 
 `literal-find-and-delete.json` regenerates the disposable Config A lock and
 checks its 9,923-byte script SHA-256 against the byte-layout fixture. At its

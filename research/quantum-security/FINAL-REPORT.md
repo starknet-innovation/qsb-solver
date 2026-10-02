@@ -1113,6 +1113,13 @@ byte-model run and the explicit nonempty, encoding-sound successful-scan
 premises, their order is second bonus, first bonus, seven gathered dummies in
 reverse draw order, then the fixed nonce. Permuting that list to the nine
 original dummy positions plus nonce leaves the resulting scriptCode unchanged.
+For two distinct final dummy-position sets, a pinned Core 27.2 differential
+on the 880-opcode puzzle-relaxed lock now accepts separately recovered key
+lists and rejects the second list when its final nonce key is retained from
+the first. The in-range final ALL digests differ. This is a synthetic,
+unfunded two-output test with three puzzle checks changed to `OP_2DROP`;
+see `evidence/full-subset-switch-core.json`. It does not establish a real-lock
+spend, a universal Core extraction theorem, or a probability bound.
 The theorem also identifies `SIGHASH_SINGLE` on each of the nine reached
 dummy signatures and the fixed `SIGHASH_ALL` nonce in slot ten.
 The successful equal-count scan verifies every corresponding reached key pair;
