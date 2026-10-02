@@ -539,6 +539,13 @@ nonce ALL premise cannot be omitted from that general theorem: a SINGLE
 nonce equal to one generated dummy causes distinct selected-position sets
 to produce the same source scriptCode. This is a formal theorem-boundary
 counterexample, not an unauthorized spend of the intended lock.
+For another byte-level boundary, `QSB/ParameterizedAliasDeletion.lean` proves
+that a final nonce equal to a 20-byte second-round commitment causes the
+source-shaped deletion loop to remove both original push chunks. If that
+nonce is DER-valid, the commitment is part of the explicit bad-setup event.
+The isolated Core check confirms the double-push behavior for a valid
+20-byte signature; it does not supply a HORS preimage or Core refinement of
+the full QSB lock.
 `QSB/ParameterizedReachedSubsetSighash.lean` uses the reached ten-signature
 stack of two successful parameterized checked-source searches against one
 lock. With the no-DER-commitment good-setup premise, it derives nine distinct

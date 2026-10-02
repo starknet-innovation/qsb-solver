@@ -3,11 +3,12 @@
   "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
   "signature_hex": "300602010102011101",
   "pin_signature_hex": "3035022100cd5d30548bce1250c3c711be4b9a92d2716a8942d44d60954bfc8cd784658fa9021046a0e8dfe7826f5522c56def38a8f75e01",
+  "twenty_byte_alias_signature_hex": "3011020101020c01000000000000000000001101",
   "pinned_source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
   "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
-  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
-  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
+  "image": "ubuntu@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7",
   "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
   "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
   "cases": [
@@ -114,6 +115,19 @@
       "negative_accepted": false,
       "positive_tx_sha256": "762ec6e0f7e5b509cb35b79433ad4e440dfca6429bd440f0c35b6565237a60e2",
       "negative_tx_sha256": "db2861e4616c6e6d90f6bcae2674d796ba660c25e5781d65f387fe21d79e5e4d"
+    },
+    {
+      "name": "twenty_byte_nonce_commitment_alias",
+      "lock_hex": "143011020101020c0100000000000000000000110175143011020101020c0100000000000000000000110175ac",
+      "signature_hex": "3011020101020c01000000000000000000001101",
+      "script_code_hex": "7575ac",
+      "wrong_script_code_hex": "143011020101020c0100000000000000000000110175143011020101020c0100000000000000000000110175ac",
+      "correct_pubkey_hex": "03588ddb69e3769109782a779669232467e85900dc40c87b7279fbd01ff2a41647",
+      "wrong_pubkey_hex": "0243f7f8b00cb90574454ea323c274f637a42a9aa34489d43bbf7ea426f8bcf213",
+      "positive_accepted": true,
+      "negative_accepted": false,
+      "positive_tx_sha256": "9c678d4d97497b78552e353b7095a41b08339d828cac7698a32caaee0681cab6",
+      "negative_tx_sha256": "66b4463f1985a696970fbab6779b08beed8190180ed5c6a34e24d42b6d33b536"
     }
   ]
 }

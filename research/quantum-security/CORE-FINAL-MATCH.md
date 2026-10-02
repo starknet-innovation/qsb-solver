@@ -124,12 +124,19 @@ every signature in a true ten-of-ten result is strict DER and below 76 bytes,
 and `finalTenEval_success_generic_scan` connects that success to the generic
 serializer. The pinned native evidence is in
 `evidence/multisig-push-serialization.json`.
-`QSB/CorePushFindAndDelete.literal_many_pushes` also proves that any ordered
-list of these canonical patterns removes only complete original chunks of
-this particular 880-opcode lock, including patterns for skipped signatures.
-Consequently the fuel of 880 used by the Lean deletion loop suffices after
-each removal. This is a literal-lock source-model theorem, not a C++
-refinement or a statement about arbitrary generated QSB setups.
+`QSB/CorePushFindAndDelete.simple_many_pushes` proves that any ordered list
+of canonical signature patterns removes only complete original chunks of a
+simple-chunk script when its original chunk count fits the deletion fuel,
+including patterns for skipped signatures. Its literal and
+`QSB/ParameterizedFindAndDelete.runMany_eq_chunk_filter` specializations
+establish this 880-step source-model result for the fixture and parameterized
+Config A wire under the stated width and short-fixed-push premises. This is
+still not compiled-C++ refinement or a universal Python-builder theorem.
+`QSB/ParameterizedAliasDeletion.lean` makes one cross-pool consequence
+explicit: a 20-byte final nonce equal to a second-round commitment gives at
+least two identical push chunks, both removed by the final nonce pattern.
+When that nonce is DER-valid, the alias is inside the stated good-setup
+exception. No HORS preimage for the aliased commitment is constructed.
 For the one literal lock, Lean proves that all 150 generated final dummy
 signature bytes are pairwise distinct, so the nine selected dummy signatures
 in the conditional full-run theorem are distinct. Lean alone does not rule out
@@ -200,14 +207,15 @@ exception. This is a finite corpus, not a proof of predicate equivalence.
 
 `analysis/check_find_and_delete_boundary.py` uses the app's
 `bitcoin_tx.find_and_delete` to calculate a scriptCode and publicly recovers
-a verification key for its sighash. The pinned adapter accepts all eight
+a verification key for its sighash. The pinned adapter accepts all nine
 isolated cases: one canonical signature push, two separated canonical pushes,
 two adjacent canonical pushes, a
 signature-push byte pattern embedded inside another push, noncanonical
-`PUSHDATA1/2/4` pushes, and the literal pinning signature in an isolated lock. For
+`PUSHDATA1/2/4` pushes, the literal pinning signature, and two copies of one
+valid 20-byte `SIGHASH_ALL` signature push in isolated locks. For
 each case, a key recovered for a deliberately wrong scriptCode is rejected.
 The embedded and noncanonical pushes remain in the correct scriptCode;
-canonical boundary pushes are removed. These 16 native outcomes test selected
+canonical boundary pushes are removed. These 18 native outcomes test selected
 paths, not the whole generated QSB lock.
 
 `analysis/check_ten_signature_findanddelete.py` adds an isolated 10-of-10

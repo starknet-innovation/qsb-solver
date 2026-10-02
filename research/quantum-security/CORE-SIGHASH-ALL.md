@@ -81,6 +81,13 @@ flag is a real condition of the selected-set theorem: replacing the nonce
 with a generated SINGLE dummy makes the empty selection and the singleton
 selection of that dummy delete the same source scriptCode. This is a
 counterexample to dropping a theorem premise, not to the real lock's safety.
+`QSB/ParameterizedAliasDeletion.lean` proves that if a 20-byte final nonce
+equals a second-round commitment, the nonce push pattern occurs at least
+twice in the full source wire and no occurrence remains after final deletion.
+If the nonce is DER-valid, this is a DER-shaped-commitment bad setup. The
+isolated pinned-Core double-push check in
+`evidence/find-and-delete-boundary.json` corroborates the byte behavior but
+does not execute a valid QSB HORS comparison.
 `QSB/ParameterizedReachedSubsetSighash.lean` connects the candidate
 classification to ten signature bytes at the reached final stack of two
 successful parameterized checked-source searches. A good-setup premise

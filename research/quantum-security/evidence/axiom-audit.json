@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1320,
+  "theorem_count": 1322,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4373,6 +4373,14 @@
       "propext"
     ],
     "QSB.OutputCodec.sourceShapedOutputs_injective_on": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup": [
+      "propext"
+    ],
+    "QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

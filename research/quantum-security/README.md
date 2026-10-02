@@ -207,6 +207,11 @@ Lean also checks a counterexample if the final nonce uses the bytes of a
 generated SINGLE dummy: selecting that dummy adds no deletion pattern, so
 different selected sets have the same source scriptCode. The actual theorem
 requires a nonce ending in `SIGHASH_ALL`; this counterexample is not a spend.
+`QSB/ParameterizedAliasDeletion.lean` separately proves that a final nonce
+equal to a 20-byte second-round commitment deletes both matching pushes from
+the source scriptCode. A DER-valid alias falls in the stated bad-setup event.
+An isolated pinned-Core double-push case corroborates deletion for a valid
+20-byte signature; it has no matching HORS preimage or full QSB spend.
 `QSB/ParameterizedReachedSubsetSighash.lean` derives the deletion list from
 the reached final signature slots of successful parameterized checked-source
 searches on a good setup. It returns nine distinct selected dummy indices per

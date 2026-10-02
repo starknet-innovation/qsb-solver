@@ -72,6 +72,13 @@ def main() -> None:
     locks.append(("literal_pinning_signature_push",
                   pin_pattern + drop_checksig,
                   pin_pattern + drop_checksig))
+    alias_r, alias_s = 1, (1 << 88) + 17
+    alias_sig = ec.encode_der_sig(alias_r, alias_s, sighash=1)
+    assert len(alias_sig) == 20
+    alias_pattern = bt.push_data(alias_sig)
+    alias_lock = alias_pattern + b"\x75" + alias_pattern + drop_checksig
+    locks.append(("twenty_byte_nonce_commitment_alias",
+                  alias_lock, alias_lock))
     native = args.native_root.resolve()
 
     def recovered_pubkey(script_code: bytes, sig_r: int, sig_s: int) -> bytes:
@@ -98,8 +105,12 @@ def main() -> None:
 
     cases = []
     for name, lock, wrong_code in locks:
-        case_sig = pin_sig if name == "literal_pinning_signature_push" else sig
-        case_r, case_s = (pin_r, pin_s) if case_sig == pin_sig else (r, s)
+        if name == "literal_pinning_signature_push":
+            case_sig, case_r, case_s = pin_sig, pin_r, pin_s
+        elif name == "twenty_byte_nonce_commitment_alias":
+            case_sig, case_r, case_s = alias_sig, alias_r, alias_s
+        else:
+            case_sig, case_r, case_s = sig, r, s
         script_code = bt.find_and_delete(lock, case_sig)
         assert script_code != wrong_code
         correct_pub = recovered_pubkey(script_code, case_r, case_s)
@@ -126,6 +137,7 @@ def main() -> None:
         "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
         "signature_hex": sig.hex(),
         "pin_signature_hex": pin_sig.hex(),
+        "twenty_byte_alias_signature_hex": alias_sig.hex(),
         "pinned_source_revision": pinned["revision"],
         "builder_sha256": source_hash,
         "secp256k1_sha256": ec_hash,

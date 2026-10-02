@@ -542,12 +542,14 @@ conditional interface: successful pair verification must imply both nonempty
 signature bytes and acceptance by that gate before it concludes strict DER and
 the nine-position shape. The corpus does not prove the interface for Core's
 full final multisignature scan or all possible signature bytes.
-Eight further isolated `FindAndDelete` cases each pass with a public key
+Nine further isolated `FindAndDelete` cases each pass with a public key
 recovered for the app's opcode-boundary scriptCode and fail with a key
 recovered for a deliberately wrong scriptCode. They cover separated and
 adjacent repeated canonical
-signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1/2/4`, and the
-literal 56-byte pinning signature in an isolated lock.
+signature pushes, an embedded byte pattern, noncanonical `PUSHDATA1/2/4`, the
+literal 56-byte pinning signature, and two copies of one valid 20-byte
+`SIGHASH_ALL` signature push. The last case is an isolated analogue of a
+nonce/commitment alias, not a valid QSB HORS commitment.
 An additional six-pair pinned-Core differential uses valid 32-byte DER
 signatures with trailing sighash bytes `0x01`, `0x03`, and `0xff`: a lock
 without a push-32 opcode accepts the key recovered for its unchanged
@@ -603,6 +605,12 @@ equal one generated `SIGHASH_SINGLE` dummy, selecting that dummy or omitting
 it gives the same source scriptCode despite different selected-position sets.
 This is outside the stated final-nonce premise and is not an accepted QSB
 spend.
+`QSB/ParameterizedAliasDeletion.lean` checks a different alias boundary:
+when a 20-byte final nonce equals a second-round commitment, the full
+parameterized source wire contains at least two copies of that canonical
+push, and final FindAndDelete removes all copies. If the nonce passes the
+source DER predicate, the commitment necessarily belongs to the explicit
+bad-setup event. This does not construct a HORS preimage for that commitment.
 `QSB/ParameterizedReachedSubsetSighash.lean` now takes the actual ten
 signature bytes at a parameterized checked-source search's reached final
 stack. Under the good-setup no-DER-commitment premise, it constructs nine

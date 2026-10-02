@@ -126,6 +126,7 @@ import QSB.ReachedSubsetSighash
 import QSB.RawReachedSubsetSighash
 import QSB.ParameterizedFindAndDelete
 import QSB.ParameterizedFinalSubset
+import QSB.ParameterizedAliasDeletion
 import QSB.ParameterizedReachedSubsetSighash
 import QSB.ParameterizedRawReachedSubsetSighash
 import QSB.FinalRoundWitness
@@ -149,6 +150,8 @@ import QSB.Reduction
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased
 #print axioms QSB.ParameterizedFinalSubset.nonce_alias_counterexample
+#print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
+#print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script_of_witness
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq

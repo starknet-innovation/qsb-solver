@@ -22,6 +22,10 @@
  Classical.choice,
  Quot.sound]
 'QSB.ParameterizedFinalSubset.nonce_alias_counterexample' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup' depends on axioms: [propext]
 'QSB.ParameterizedReachedSubsetSighash.reached_deleted_script' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
