@@ -18,6 +18,9 @@ image, without rebuilding it:
 - Descriptor: [qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c](promotion/releases/qsb-ranked-v2-40b5d9f9f741-6b4ac63b897c.json).
 - Relation to v0.2.0: the same pinning and subset binaries, with Ubuntu updates
   applied to the runtime at build and the Runpod transport retired.
+- Served: on 2 October 2026 an uncached `/api/config` of the eu-west-2 deployment
+  reported this release ID, and a bounded AWS Batch preflight on its job definition
+  (`nvidia-smi` only) ran image digest `sha256:6b4ac63b…`.
 - Consumer enrollment: the identical descriptor and its generated registry import
   are present in [qsb-app at 6082b55](https://github.com/starknet-innovation/qsb-app/tree/6082b55ae7aa9ce46b9da84fcda845bc02f04337/src/lib/releases).
 
@@ -32,11 +35,10 @@ image, without rebuilding it:
 - Consumer enrollment: the identical descriptor and its generated registry import
   are also present in [qsb-app at 6082b55](https://github.com/starknet-innovation/qsb-app/tree/6082b55ae7aa9ce46b9da84fcda845bc02f04337/src/lib/releases).
 
-qsb-app's status page lists `combined-aws-sm86-v0.2.0` as the served release; serving
-v0.3.0 needs its own ECR copy, job-definition revision and `solver_release_id`.
-Enrollment is verified repository state. Live deployment, selected runtime digest,
-mainnet activation and transaction execution were not checked by this documentation
-audit and cannot be inferred from enrollment.
+v0.2.0 stays enrolled in qsb-app for rollback. Enrollment is verified repository
+state, and the served release and runtime digest above were checked on 2 October.
+Mainnet activation and transaction execution were not checked by this documentation
+audit and cannot be inferred from enrollment or serving.
 
 ## Evidence and limits
 
