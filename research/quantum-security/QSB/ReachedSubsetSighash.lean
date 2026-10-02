@@ -2,6 +2,7 @@ import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
 import QSB.CoreMultisigSourceScan
 import QSB.CoreCheckedStep
+import QSB.CoreCheckedWire
 
 /-!
 The selected-set ALL-preimage classification is applied to signatures read
@@ -272,5 +273,120 @@ theorem checked_runs_reached_all_preimage_classification
       leftTrace rightTrace leftA leftB rightA rightB
       left12 left13 leftSigned left21 leftSeven
       right12 right13 rightSigned right21 rightSeven⟩
+
+private theorem literal_wire_eq :
+    DynamicCheckedCertificate.wire CoreCheckedWire.literalLock =
+      EncodedLayout.chunks.flatten :=
+  (CoreCheckedWire.matchesWire_sound EncodedLayout.chunks.flatten
+    CoreCheckedWire.literalLock
+    CoreCheckedWire.literal_fixture_matches).symm
+
+private theorem literal_program_eq :
+    DynamicCheckedCertificate.program CoreCheckedWire.literalLock =
+      ByteLayout.program := by
+  change DynamicWholeSource.fullProgram
+    (DynamicFullSerialized.priorOps
+      DynamicFullSerialized.literalPin
+      DynamicFullSerialized.literalFirstNonce
+      DynamicFullSerialized.literalFirstCommitment)
+    PoolRollInvariant.finalNonce
+    FinalSignedLoop.generatedCommitmentAt = ByteLayout.program
+  rw [DynamicFullSerialized.literal_prior_ops]
+  exact DynamicWholeSource.literal_full_program
+
+private theorem literal_first_width :
+    ∀ i : Fin 150,
+      (CoreCheckedWire.literalLock.firstCommitment i).length = 20 := by
+  decide
+
+private theorem literal_second_width :
+    ∀ i : Fin 150,
+      (CoreCheckedWire.literalLock.secondCommitment i).length = 20 := by
+  decide
+
+private theorem literal_pin_short :
+    CoreCheckedWire.literalLock.pin.length < 76 := by decide
+
+private theorem literal_nonce0_short :
+    CoreCheckedWire.literalLock.nonce0.length < 76 := by decide
+
+private theorem literal_nonce1_short :
+    CoreCheckedWire.literalLock.nonce1.length < 76 := by decide
+
+/-- Exact byte validation of a supplied literal lock makes the parsed
+checked-wire run identical to the fixed 880-opcode checked-source run. The
+validator does not assert that a real spent output supplied these bytes or
+that compiled Core executes the Lean transition function. -/
+theorem literal_validated_run_eq_static
+    (hashes : Hashes) (supplied : Bytes)
+    (wireMatched : CoreCheckedWire.matchesWire supplied
+      CoreCheckedWire.literalLock = true)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA) :
+    CoreCheckedWire.run hashes CoreCheckedWire.literalLock supplied
+      stack validKey verify =
+    CoreCheckedStep.run hashes EncodedLayout.chunks.flatten
+      validKey verify ByteLayout.program ⟨stack.reverse, 0⟩ := by
+  rw [CoreCheckedWire.run_eq_model hashes CoreCheckedWire.literalLock
+    supplied wireMatched literal_first_width literal_second_width
+    literal_pin_short literal_nonce0_short literal_nonce1_short
+    stack validKey verify]
+  rw [literal_wire_eq, literal_program_eq]
+
+/-- Two accepted *source-model* runs of supplied, exactly validated literal
+locking bytes have final ALL preimages classified by the nine selected dummy
+positions. This closes byte identity and caller-chosen scan/list premises
+inside the model. A compiled-Core acceptance implication is still required. -/
+theorem validated_runs_reached_all_preimage_classification
+    (hashes : Hashes)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (txValid : SighashAllWire.valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (leftScript rightScript : Bytes)
+    (leftMatched : CoreCheckedWire.matchesWire leftScript
+      CoreCheckedWire.literalLock = true)
+    (rightMatched : CoreCheckedWire.matchesWire rightScript
+      CoreCheckedWire.literalLock = true)
+    (leftStack rightStack : List Bytes)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftFinal rightFinal : CoreCheckedStep.State)
+    (leftRecords rightRecords : List Bool)
+    (leftSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
+      leftScript leftStack validKey verify = some (leftFinal, leftRecords))
+    (rightSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
+      rightScript rightStack validKey verify = some (rightFinal, rightRecords))
+    (leftAccepted : CoreFinalTruth.castToBool
+      (leftFinal.stack.getLast?.getD []) = true)
+    (rightAccepted : CoreFinalTruth.castToBool
+      (rightFinal.stack.getLast?.getD []) = true) :
+    ∃ (leftTrace rightTrace : List (Fin 150 × Bytes))
+      (leftA leftB rightA rightB : Fin 150)
+      (leftBefore rightBefore : ByteMachine.State),
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨leftStack, leftRecords, 0⟩ = some leftBefore ∧
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨rightStack, rightRecords, 0⟩ = some rightBefore ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).Nodup ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).Nodup ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).toFinset.card = 9 ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).toFinset.card = 9 ∧
+      (SighashAllWire.sourceAllPreimage tx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          leftBefore.stack 10 10) =
+       SighashAllWire.sourceAllPreimage tx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          rightBefore.stack 10 10) ↔
+       (leftA :: leftB :: leftTrace.map Prod.fst).toFinset =
+         (rightA :: rightB :: rightTrace.map Prod.fst).toFinset) := by
+  rw [literal_validated_run_eq_static hashes leftScript leftMatched
+    leftStack validKey verify] at leftSuccess
+  rw [literal_validated_run_eq_static hashes rightScript rightMatched
+    rightStack validKey verify] at rightSuccess
+  simpa using checked_runs_reached_all_preimage_classification
+    hashes tx selected txValid selectedValid validKey verify
+    ⟨leftStack.reverse, 0⟩ leftFinal ⟨rightStack.reverse, 0⟩ rightFinal
+    leftRecords rightRecords leftSuccess rightSuccess
+    leftAccepted rightAccepted
 
 end QSB.ReachedSubsetSighash

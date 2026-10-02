@@ -200,6 +200,9 @@ still require separate justification.
 For two truthy `CoreCheckedStep.run` executions, the same classification now
 holds without a caller-supplied final scan result; the checked source model
 computes that result from the reached stack.
+An exact `CoreCheckedWire.matchesWire` check lets the same theorem start from
+supplied literal script bytes. Real spent-output binding and compiled-Core
+execution remain unproved.
 A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
 two final subsets on a synthetic two-output transaction. The puzzle-relaxed
 lock accepts each with its recovered keys but rejects reuse of the first

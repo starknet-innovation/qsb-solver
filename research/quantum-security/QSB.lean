@@ -136,6 +136,8 @@ import QSB.Reduction
 #print axioms QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.ReachedSubsetSighash.matched_runs_reached_all_preimage_classification
 #print axioms QSB.ReachedSubsetSighash.checked_runs_reached_all_preimage_classification
+#print axioms QSB.ReachedSubsetSighash.literal_validated_run_eq_static
+#print axioms QSB.ReachedSubsetSighash.validated_runs_reached_all_preimage_classification
 #print axioms QSB.DynamicScriptLimits.fixed_width_pushes_length
 #print axioms QSB.DynamicScriptLimits.commitment_pushes_length
 #print axioms QSB.DynamicScriptLimits.full_wire_length

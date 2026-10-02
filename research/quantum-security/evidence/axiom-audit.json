@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1296,
+  "theorem_count": 1298,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4518,6 +4518,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ReachedSubsetSighash.literal_validated_run_eq_static": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ReachedSubsetSighash.matched_runs_reached_all_preimage_classification": [
       "Classical.choice",
       "Quot.sound",
@@ -4534,6 +4539,11 @@
       "propext"
     ],
     "QSB.ReachedSubsetSighash.reached_script_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ReachedSubsetSighash.validated_runs_reached_all_preimage_classification": [
       "Classical.choice",
       "Quot.sound",
       "propext"

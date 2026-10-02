@@ -600,6 +600,13 @@ final multisignature result from its reached stack, so this theorem no longer
 supplies a successful scan separately. It remains conditional on the model's
 external key parser and ECDSA/transaction checker and does not turn compiled
 Core acceptance into a checked run.
+`literal_validated_run_eq_static` checks that supplied bytes matching the
+literal wire fixture decode to the exact 880-opcode checked-source program.
+The resulting `validated_runs_reached_all_preimage_classification` theorem
+starts from two truthy validated-byte source runs, with no separate opcode,
+signature-list, or scan-result premise. It does not establish that those
+supplied bytes are a real spent output or that compiled Core accepts the
+same transactions.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped
