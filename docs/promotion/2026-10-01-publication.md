@@ -1,6 +1,6 @@
 # Publication record: combined sm86 AWS release, 1 October 2026
 
-Status: **published on 2 October 2026 at 05:19:08 UTC as `combined-aws-sm86-v0.3.0`, targeting `490e21af84b95ed13aa5b3dae7260422f96718db` (verified 2 October).** Publication was approved by @adrienlacombe on 1 October 2026, conditional on the native component check, which passed. The descriptor is enrolled in qsb-app at `6082b55` ([qsb-app#131](https://github.com/starknet-innovation/qsb-app/pull/131)), not served; see [verified status](../README.md).
+Status: **published on 2 October 2026 at 05:19:08 UTC as `combined-aws-sm86-v0.3.0`, targeting `490e21af84b95ed13aa5b3dae7260422f96718db` (verified 2 October).** Publication was approved by @adrienlacombe on 1 October 2026, conditional on the native component check, which passed. The descriptor is enrolled in qsb-app at `6082b55` ([qsb-app#131](https://github.com/starknet-innovation/qsb-app/pull/131)) and has been served in eu-west-2 since 2 October 2026; see [verified status](../README.md).
 
 ## What changed since combined-aws-sm86-v0.2.0
 
