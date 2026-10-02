@@ -15,6 +15,7 @@ import random
 import struct
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 
 from check_round_results import opcodes
@@ -29,17 +30,51 @@ PINNED_NATIVE_SHA256 = {
     "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
     "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
 }
+PINNED_MACOS_ARCHIVE_SHA256 = (
+    "8f2247f4786f3559d37189b58452c91623efc5fa6886c975fa9386f9ff3f1001"
+)
+PINNED_MACOS_ORIGINAL_LIBRARY_SHA256 = (
+    "3d1e6886adda2f06eaaad74418859ef25760d36b6c0fad2988584c45164559ec"
+)
+PINNED_MACOS_RESIGNED_LIBRARY_SHA256 = (
+    "ab16061a9158dedc3bf11f4c0581a6283d7457e6c940224cb5fab7f629559788"
+)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--app-root", type=Path, required=True)
-    parser.add_argument("--native-root", type=Path, required=True)
-    parser.add_argument("--image", required=True)
+    parser.add_argument("--native-root", type=Path)
+    parser.add_argument("--image")
+    parser.add_argument("--consensus-library", type=Path,
+                        help="Pinned host-native libbitcoinconsensus; bypass Docker")
+    parser.add_argument("--core-archive", type=Path,
+                        help="Official Core 27.2 macOS archive for host mode provenance")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     app_root = args.app_root.resolve()
-    native_root = args.native_root.resolve()
+    if args.consensus_library is None:
+        assert args.native_root is not None and args.image is not None
+        assert args.core_archive is None
+        native_root = args.native_root.resolve()
+    else:
+        assert args.native_root is None and args.image is None
+        assert args.core_archive is not None
+        native_root = None
+    consensus_library = (args.consensus_library.resolve()
+                         if args.consensus_library is not None else None)
+    core_archive_sha = None
+    archived_library_sha = None
+    if consensus_library is not None:
+        core_archive = args.core_archive.resolve()
+        core_archive_sha = hashlib.sha256(core_archive.read_bytes()).hexdigest()
+        assert core_archive_sha == PINNED_MACOS_ARCHIVE_SHA256
+        with tarfile.open(core_archive, "r:gz") as archive:
+            original = archive.extractfile(
+                "bitcoin-27.2/lib/libbitcoinconsensus.0.dylib")
+            assert original is not None
+            archived_library_sha = hashlib.sha256(original.read()).hexdigest()
+        assert archived_library_sha == PINNED_MACOS_ORIGINAL_LIBRARY_SHA256
     source_sha = hashlib.sha256(
         (app_root / "worker/cpu/bitcoin_tx.py").read_bytes()).hexdigest()
     assert source_sha == PINNED_BUILDER_SHA256
@@ -48,11 +83,16 @@ def main() -> None:
         for name in PINNED_HELPER_SHA256
     }
     assert helper_hashes == PINNED_HELPER_SHA256
-    native_hashes = {
-        name: hashlib.sha256((native_root / name).read_bytes()).hexdigest()
-        for name in PINNED_NATIVE_SHA256
-    }
-    assert native_hashes == PINNED_NATIVE_SHA256
+    if consensus_library is None:
+        native_hashes = {
+            name: hashlib.sha256((native_root / name).read_bytes()).hexdigest()
+            for name in PINNED_NATIVE_SHA256
+        }
+        assert native_hashes == PINNED_NATIVE_SHA256
+    else:
+        loaded_hash = hashlib.sha256(consensus_library.read_bytes()).hexdigest()
+        assert loaded_hash == PINNED_MACOS_RESIGNED_LIBRARY_SHA256
+        native_hashes = {consensus_library.name: loaded_hash}
     sys.path.insert(0, str(app_root / "worker/cpu"))
     import bitcoin_tx as bt
     import secp256k1 as ec
@@ -175,6 +215,9 @@ def main() -> None:
         return bytes(script_sig)
 
     def core_accepts(tx: bt.Transaction) -> bool:
+        if consensus_library is not None:
+            return all(item["valid"] for item in
+                       variable_core_result(tx, 1)["inputs"])
         payload = f"{tx.serialize().hex()}\n2\n1000\n51\n100000\n{lock.hex()}\n"
         process = subprocess.run([
             "docker", "run", "--rm", "--network", "none", "--read-only",
@@ -202,14 +245,19 @@ def main() -> None:
                 "script_pubkey_hex": lock.hex(), "value": 100000}
         payload = json.dumps({"transaction_hex": (raw_tx or tx.serialize()).hex(),
                               "spent_outputs": spent}) + "\n"
-        process = subprocess.run([
-            "docker", "run", "--rm", "--network", "none", "--read-only",
-            "--cap-drop=ALL", "--security-opt=no-new-privileges",
-            "--platform=linux/arm64", "-i",
-            "-v", f"{native_root}:/native:ro",
-            "-v", f"{variable_adapter}:/adapter.py:ro", args.image,
-            "python3", "/adapter.py"], input=payload, text=True,
-            capture_output=True, timeout=30)
+        if consensus_library is not None:
+            command = [sys.executable, str(variable_adapter),
+                       "--library", str(consensus_library)]
+        else:
+            command = [
+                "docker", "run", "--rm", "--network", "none", "--read-only",
+                "--cap-drop=ALL", "--security-opt=no-new-privileges",
+                "--platform=linux/arm64", "-i",
+                "-v", f"{native_root}:/native:ro",
+                "-v", f"{variable_adapter}:/adapter.py:ro", args.image,
+                "python3", "/adapter.py"]
+        process = subprocess.run(command, input=payload, text=True,
+                                 capture_output=True, timeout=30)
         if process.returncode:
             raise RuntimeError(
                 f"Pinned variable-input adapter failed: {process.stderr}")
@@ -410,12 +458,15 @@ def main() -> None:
                    three_index_two, 2, True)
 
     report = {
-        "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. Original two-input cases use the pinned wrapper; new two-input controls and three-input cases use a cross-checked test-only adapter with the same pinned library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Mixed SegWit cases add a P2WSH companion input, a valid witness-only mutation, and a wrong-witness control. Not a full QSB spend or universal Core refinement.",
+        "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. All cases use a pinned Core 27.2 consensus library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Mixed SegWit cases add a P2WSH companion input, a valid witness-only mutation, and a wrong-witness control. Not a full QSB spend or universal Core refinement.",
         "builder_sha256": source_sha,
         "helper_files_sha256": helper_hashes,
         "exact_lock_sha256": hashlib.sha256(exact).hexdigest(),
         "test_lock_sha256": hashlib.sha256(lock).hexdigest(),
         "native_files_sha256": native_hashes,
+        "core_archive_sha256": core_archive_sha,
+        "archived_library_sha256": archived_library_sha,
+        "adapter_mode": "host-library" if consensus_library else "docker",
         "variable_adapter_sha256": variable_adapter_sha,
         "image": args.image,
         "bug_message_scalar_hex": f"{bug_digest:064x}",

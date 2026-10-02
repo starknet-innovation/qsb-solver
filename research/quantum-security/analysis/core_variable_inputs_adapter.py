@@ -3,8 +3,8 @@
 Reads one JSON object on stdin with ``transaction_hex`` and ordered
 ``spent_outputs`` (each with ``script_pubkey_hex`` and ``value``). It calls the
 pinned libbitcoinconsensus API version 2 for every input and prints its raw
-valid/error results. Run inside the same Linux image as the pinned two-input
-wrapper with the pinned library mounted at /native. No RPC or broadcast path.
+valid/error results. The default path runs in the pinned Linux image; pass
+``--library`` to use a verified host-native library. No RPC or broadcast path.
 
 The ctypes layout and flag values mirror Core v27.2's
 src/script/bitcoinconsensus.h. This adapter is finite-test instrumentation,
@@ -12,6 +12,7 @@ not a source-level proof or an alternative consensus implementation.
 """
 
 import ctypes
+import argparse
 import json
 import sys
 
@@ -33,6 +34,10 @@ def byte_array(data: bytes):
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--library", default=LIBRARY,
+                        help="Path to pinned libbitcoinconsensus shared library")
+    args = parser.parse_args()
     request = json.load(sys.stdin)
     transaction = bytes.fromhex(request["transaction_hex"])
     outputs = request["spent_outputs"]
@@ -46,10 +51,11 @@ def main() -> None:
     ])
     tx_array = byte_array(transaction)
 
-    # The official 27.2 library is normally loaded by the statically linked
-    # C++ wrapper. Python must expose libstdc++ RTTI symbols first.
-    ctypes.CDLL("libstdc++.so.6", mode=ctypes.RTLD_GLOBAL)
-    library = ctypes.CDLL(LIBRARY)
+    # The pinned Linux library needs libstdc++ RTTI symbols before ctypes
+    # loads it; the host macOS dylib uses libc++ instead.
+    if sys.platform.startswith("linux"):
+        ctypes.CDLL("libstdc++.so.6", mode=ctypes.RTLD_GLOBAL)
+    library = ctypes.CDLL(args.library)
     library.bitcoinconsensus_version.argtypes = []
     library.bitcoinconsensus_version.restype = ctypes.c_uint
     version = library.bitcoinconsensus_version()

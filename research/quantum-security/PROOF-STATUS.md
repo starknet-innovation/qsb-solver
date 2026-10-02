@@ -297,6 +297,14 @@ all input results, raw error codes, selected input index, transaction hashes,
 and both rounds' dummy SINGLE message scalars. The adapter does not expose
 intermediate Core stacks;
 these are finite full-path tests with the same three puzzle opcodes relaxed.
+The checksum-verified Core 27.2 macOS ARM library also ran all 28 cases
+through the test-only ctypes adapter when Docker Desktop was unavailable.
+`evidence/full-two-outputs-core-macos.json` records the official archive and
+original-library hashes plus the loaded, locally re-signed dylib hash;
+`evidence/full-two-outputs-core-parity.json` checks every case record equals
+the prior Linux report, including transaction hashes, acceptance, and input
+errors. This cross-platform agreement is finite experimental evidence, not
+an arbitrary-witness compiled-Core extraction proof.
 
 `bare-script-boundary.json` records fifteen isolated native tests of the
 `scriptSig`/bare-output boundary. A non-push-only `OP_1 OP_1 OP_ADD` scriptSig

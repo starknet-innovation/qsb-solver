@@ -1350,6 +1350,14 @@ change to both output values rejects with the old fixed ALL keys, then accepts
 with those keys rederived while the original final-round nine dummy keys stay.
 The recorded per-input Core results and message scalars make the distinction
 reproducible.
+The official Core 27.2 macOS ARM consensus library independently reran all
+28 disposable cases when Docker Desktop was unavailable. The archive and
+original dylib hashes were pinned; macOS required ad hoc re-signing of the
+temporary extracted library, and the loaded hash is recorded. All 28 case
+records match the prior Linux report byte-for-byte in
+`evidence/full-two-outputs-core-parity.json`. This strengthens finite native
+differential evidence but does not expose interpreter stacks or prove
+arbitrary-witness Core refinement.
 The same pinned adapter also accepts these two QSB input positions inside a
 SegWit-serialized transaction whose separate input spends a valid P2WSH
 `OP_DROP OP_TRUE` script. Changing only the consumed P2WSH witness datum

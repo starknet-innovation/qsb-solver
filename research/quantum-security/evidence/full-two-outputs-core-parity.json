@@ -1,0 +1,11 @@
+{
+  "all_case_records_identical": true,
+  "host_archive_sha256": "8f2247f4786f3559d37189b58452c91623efc5fa6886c975fa9386f9ff3f1001",
+  "host_loaded_library_sha256": {
+    "libbitcoinconsensus.0.dylib": "ab16061a9158dedc3bf11f4c0581a6283d7457e6c940224cb5fab7f629559788"
+  },
+  "host_original_library_sha256": "3d1e6886adda2f06eaaad74418859ef25760d36b6c0fad2988584c45164559ec",
+  "host_report_sha256": "1a8870c1c04c662e10e572ee5b99c0e44e72a73223dad5dc5cba735a3b047161",
+  "linux_report_sha256": "31980df410c0547ab4163b1ae5a292da6f41f17be1fb828d9321cff3cfec6510",
+  "matching_cases": 28
+}

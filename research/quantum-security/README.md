@@ -645,6 +645,28 @@ the three-input cases. Its two-input positive and negative controls are
 cross-checked against the original native wrapper; the evidence records the
 adapter source hash and per-input Core results.
 
+When Docker Desktop is unavailable on Apple Silicon, the same disposable
+full-lock cases can use the official Core 27.2 macOS consensus library. The
+script checks the archive SHA-256 against the pinned value and checks the
+library's original archive bytes before loading the local copy. On this host,
+macOS rejected the archive's embedded ad hoc library signature; re-sign only
+the extracted copy in a temporary directory. This changes the loaded file's
+hash, which the resulting evidence records. These commands require a local
+`qsb-app` checkout at the pinned source-file hashes:
+
+```sh
+curl --fail --location https://bitcoincore.org/bin/bitcoin-core-27.2/bitcoin-27.2-arm64-apple-darwin.tar.gz -o /tmp/qsb-bitcoin-27.2-arm64.tar.gz
+mkdir -p /tmp/qsb-core-27.2-macos
+tar -xzf /tmp/qsb-bitcoin-27.2-arm64.tar.gz -C /tmp/qsb-core-27.2-macos bitcoin-27.2/lib/libbitcoinconsensus.0.dylib
+codesign --force --sign - /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib
+python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --consensus-library /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib --core-archive /tmp/qsb-bitcoin-27.2-arm64.tar.gz --output evidence/full-two-outputs-core-macos.json
+python3 analysis/compare_full_core_runs.py --linux-report evidence/full-two-outputs-core.json --host-report evidence/full-two-outputs-core-macos.json --output evidence/full-two-outputs-core-parity.json
+```
+
+The recorded host and Linux case objects match exactly for all 28 cases.
+The library is called through the consensus API, which does not expose the
+intermediate interpreter trace or prove a universal Core-to-Lean refinement.
+
 The recorded source inventory identifies exactly the files analyzed. The app
 checkout was clean at capture. The solver baseline was
 `8fe127790397b6903640f8949219c1ef34a92db2`; the app inventory and Core
