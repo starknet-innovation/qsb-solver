@@ -529,6 +529,10 @@ successful ten-pair scan premises. The selected sets each have nine distinct
 positions; source-shaped FindAndDelete uses the ten reached signature bytes.
 This closes the caller-chosen deletion-list step inside that model, not the
 compiled-Core or shared-query probability obligations.
+The companion checked-run theorem removes the separate successful-scan
+premise for two truthy runs of `CoreCheckedStep.run`; that source interpreter
+computes its own signature outcomes. The external key and transaction checker
+and compiled-Core refinement are still required.
 `QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a

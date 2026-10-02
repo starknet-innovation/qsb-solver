@@ -71,6 +71,9 @@ explicit nonempty, DER-sound successful scans supplies nine distinct selected
 positions per stack; source-shaped FindAndDelete then removes the ten reached
 signature pushes. The theorem does not identify compiled-Core preimages or
 establish SHA256d collision resistance.
+Its checked-run corollary uses two truthy full `CoreCheckedStep.run` results
+and derives each final scan from that interpreter, while retaining the
+external key/ECDSA checker and compiled-Core refinement obligations.
 An additional [full-lock differential](evidence/full-subset-switch-core.json)
 checks two such sets against the pinned Core 27.2 adapter. In one synthetic,
 unfunded two-input/two-output transaction, with QSB at input 1, replacing

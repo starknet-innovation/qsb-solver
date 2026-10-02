@@ -197,6 +197,9 @@ The result does not count reachable Core-accepted subsets or quantum queries.
 signature bytes reached by two successful full byte-model runs with explicit
 successful ten-pair scan premises. Core acceptance and actual digest behavior
 still require separate justification.
+For two truthy `CoreCheckedStep.run` executions, the same classification now
+holds without a caller-supplied final scan result; the checked source model
+computes that result from the reached stack.
 A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
 two final subsets on a synthetic two-output transaction. The puzzle-relaxed
 lock accepts each with its recovered keys but rejects reuse of the first

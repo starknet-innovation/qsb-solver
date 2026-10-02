@@ -1,6 +1,7 @@
 import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
 import QSB.CoreMultisigSourceScan
+import QSB.CoreCheckedStep
 
 /-!
 The selected-set ALL-preimage classification is applied to signatures read
@@ -195,6 +196,74 @@ theorem matched_runs_reached_all_preimage_classification
       FinalBonusIndices.matched_full_run_nine_positions_verify_all
         hashes rightInitial rightFinal rightAccepted verify
         verifyNonempty verifyEncoding rightMatched
+  exact ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,
+    leftBefore, rightBefore, leftReached, rightReached,
+    leftNodup, rightNodup, leftCard, rightCard,
+    reached_all_preimage_eq_iff_selected_set_eq tx selected
+      txValid selectedValid leftBefore.stack rightBefore.stack
+      leftTrace rightTrace leftA leftB rightA rightB
+      left12 left13 leftSigned left21 leftSeven
+      right12 right13 rightSigned right21 rightSeven⟩
+
+/-- The literal checked-source interpreter computes its own signature-site
+outcomes. Two truthy checked runs therefore yield reached nine-position sets
+whose source-shaped final ALL preimages agree exactly when those sets agree,
+without separately postulating a successful pair scan. The remaining bridge
+is from arbitrary compiled-Core acceptance to this checked source run. -/
+theorem checked_runs_reached_all_preimage_classification
+    (hashes : Hashes)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (txValid : SighashAllWire.valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (validKey : Bytes → Bool)
+    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftInitial leftFinal rightInitial rightFinal : CoreCheckedStep.State)
+    (leftRecords rightRecords : List Bool)
+    (leftSuccess : CoreCheckedStep.run hashes
+      EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+      leftInitial = some (leftFinal, leftRecords))
+    (rightSuccess : CoreCheckedStep.run hashes
+      EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+      rightInitial = some (rightFinal, rightRecords))
+    (leftAccepted : CoreFinalTruth.castToBool
+      (leftFinal.stack.getLast?.getD []) = true)
+    (rightAccepted : CoreFinalTruth.castToBool
+      (rightFinal.stack.getLast?.getD []) = true) :
+    ∃ (leftTrace rightTrace : List (Fin 150 × Bytes))
+      (leftA leftB rightA rightB : Fin 150)
+      (leftBefore rightBefore : ByteMachine.State),
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨leftInitial.stack.reverse, leftRecords, leftInitial.ops⟩ =
+          some leftBefore ∧
+      ByteMachine.run hashes (ByteLayout.program.take 879)
+        ⟨rightInitial.stack.reverse, rightRecords, rightInitial.ops⟩ =
+          some rightBefore ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).Nodup ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).Nodup ∧
+      (leftA :: leftB :: leftTrace.map Prod.fst).toFinset.card = 9 ∧
+      (rightA :: rightB :: rightTrace.map Prod.fst).toFinset.card = 9 ∧
+      (SighashAllWire.sourceAllPreimage tx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          leftBefore.stack 10 10) =
+       SighashAllWire.sourceAllPreimage tx selected
+        (CoreMultisigSourceScan.deletedScript EncodedLayout.chunks.flatten
+          rightBefore.stack 10 10) ↔
+       (leftA :: leftB :: leftTrace.map Prod.fst).toFinset =
+         (rightA :: rightB :: rightTrace.map Prod.fst).toFinset) := by
+  obtain ⟨leftTrace, leftA, leftB, leftBefore, leftReached,
+    left13, left12, leftSigned, left21, _leftDummy,
+    leftSeven, _leftHits, _leftDifferent, _leftAFresh, _leftBFresh,
+    leftNodup, leftCard, _leftExtract⟩ :=
+      CoreCheckedStep.literal_checked_run_nine_positions hashes
+        validKey verify leftInitial leftFinal leftRecords
+        leftSuccess leftAccepted
+  obtain ⟨rightTrace, rightA, rightB, rightBefore, rightReached,
+    right13, right12, rightSigned, right21, _rightDummy,
+    rightSeven, _rightHits, _rightDifferent, _rightAFresh, _rightBFresh,
+    rightNodup, rightCard, _rightExtract⟩ :=
+      CoreCheckedStep.literal_checked_run_nine_positions hashes
+        validKey verify rightInitial rightFinal rightRecords
+        rightSuccess rightAccepted
   exact ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,
     leftBefore, rightBefore, leftReached, rightReached,
     leftNodup, rightNodup, leftCard, rightCard,

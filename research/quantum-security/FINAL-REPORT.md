@@ -594,6 +594,12 @@ the reached final ALL preimages are equal exactly when the position sets are
 equal. The theorem derives the deletion list from reached slots; it still
 assumes the modeled scan and does not refine compiled Core or show that
 distinct preimages have distinct SHA256d digests.
+The stronger `checked_runs_reached_all_preimage_classification` theorem takes
+two truthy checked-source interpreter runs. That interpreter computes the
+final multisignature result from its reached stack, so this theorem no longer
+supplies a successful scan separately. It remains conditional on the model's
+external key parser and ECDSA/transaction checker and does not turn compiled
+Core acceptance into a checked run.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped
