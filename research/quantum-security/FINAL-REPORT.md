@@ -177,11 +177,16 @@ same DER-shaped signature; the paper instead describes RIPEMD160 puzzles.
 For a changed transaction with an admissible recovered key, the attacker can
 use a new public key for that fixed puzzle signature and the new puzzle
 sighash. The fixed first-round `SIGHASH_ALL` nonce signature and dummy
-signatures may then fail inside the
-unchecked multisignature. Pinning and the final-round multisignature still
-have to pass. `QSB/Layout.lean` checks the discarded-Boolean stack behavior,
-`QSB/Nonce.lean` checks public-key recovery algebra for any new message under
-an admissible recovery point. The disposable pinned-Core case
+signatures may then fail inside the unchecked multisignature. Pinning and the
+final-round multisignature still have to pass. `QSB/Layout.lean` checks the
+discarded-Boolean stack behavior.
+`QSB.public_recovery_for_changed_message` checks that one fixed
+signature and recovery point yield public verification keys for two messages,
+and that the keys differ if those messages differ. A further checked lemma
+isolates the one message point `s • R` that gives the identity key for that
+recovery point. These results assume an admissible recovery point and say
+nothing about accepted key encodings or Core execution.
+The disposable pinned-Core case
 `changed_destination_reused_round1_nonce` accepts a changed destination even
 though the retained nonce key fails its new first-round `SIGHASH_ALL` message;
 that older fixture relaxes all three hash-to-signature checks. A sharper

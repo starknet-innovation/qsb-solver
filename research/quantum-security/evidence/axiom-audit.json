@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1358,
+  "theorem_count": 1361,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5574,8 +5574,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.public_recovery_for_changed_message": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.public_recovery_nonidentity_for_new_message": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.public_scalar_satisfies": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.recovery_identity_key_iff": [
       "Quot.sound",
       "propext"
     ],

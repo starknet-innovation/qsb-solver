@@ -108,6 +108,54 @@ theorem recovery_iff_message_for_point (r s : F) (R Z Q : G) :
     rw [h]
     exact (sub_add_cancel (s • R) (r • Q)).symm
 
+/-- A fixed signature and admissible recovery point allow public recovery for
+both messages. If the message group elements differ, their recovered keys
+must differ. This says nothing about whether either key has an accepted
+Bitcoin encoding, or whether a transaction reaches the corresponding Script
+check; those are separate Core/refinement obligations. -/
+theorem public_recovery_for_changed_message (r s : F) (R Z₁ Z₂ : G)
+    (hr : r ≠ 0) :
+    ∃ Q₁ Q₂ : G,
+      RecoveryEquation r s R Z₁ Q₁ ∧
+      RecoveryEquation r s R Z₂ Q₂ ∧
+      (Z₁ ≠ Z₂ → Q₁ ≠ Q₂) := by
+  let Q₁ : G := r⁻¹ • (s • R - Z₁)
+  let Q₂ : G := r⁻¹ • (s • R - Z₂)
+  have first : RecoveryEquation r s R Z₁ Q₁ := by
+    dsimp [Q₁]
+    exact public_recovery_for_any_message r s R Z₁ hr
+  have second : RecoveryEquation r s R Z₂ Q₂ := by
+    dsimp [Q₂]
+    exact public_recovery_for_any_message r s R Z₂ hr
+  refine ⟨Q₁, Q₂, first, second, ?_⟩
+  intro different equal
+  apply different
+  have firstTarget := (recovery_iff_message_for_point r s R Z₁ Q₁).mp first
+  have secondTarget := (recovery_iff_message_for_point r s R Z₂ Q₂).mp second
+  exact firstTarget.trans
+    ((congrArg (messageForPoint r s R) equal).trans secondTarget.symm)
+
+/-- For one fixed recovery point, the recovered public key is the group
+identity only at the single message point `s • R`. This isolates one algebraic
+exception; Core key encodings and all other verifier conditions remain
+external. -/
+theorem recovery_identity_key_iff (r s : F) (R Z : G) :
+    RecoveryEquation r s R Z 0 ↔ Z = s • R := by
+  simp [RecoveryEquation, eq_comm]
+
+theorem public_recovery_nonidentity_for_new_message (r s : F) (R Z : G)
+    (hr : r ≠ 0) (notExceptional : Z ≠ s • R) :
+    ∃ Q : G, RecoveryEquation r s R Z Q ∧ Q ≠ 0 := by
+  let Q : G := r⁻¹ • (s • R - Z)
+  have recovered : RecoveryEquation r s R Z Q := by
+    dsimp [Q]
+    exact public_recovery_for_any_message r s R Z hr
+  refine ⟨Q, recovered, ?_⟩
+  intro identity
+  have exceptional : Z = s • R :=
+    (recovery_identity_key_iff r s R Z).mp (identity ▸ recovered)
+  exact notExceptional exceptional
+
 /-- If both `R` and `-R` are admissible for the same signature scalar `r`,
 they give two different message targets unless `sR` is 2-torsion. On
 secp256k1 a point and its negation share an x-coordinate; admissibility and

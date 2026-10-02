@@ -271,6 +271,9 @@ import QSB.Reduction
 #print axioms QSB.common_key_requires_equal_recoveries
 #print axioms QSB.equal_recoveries_give_common_key
 #print axioms QSB.recovery_iff_message_for_point
+#print axioms QSB.public_recovery_for_changed_message
+#print axioms QSB.recovery_identity_key_iff
+#print axioms QSB.public_recovery_nonidentity_for_new_message
 #print axioms QSB.opposite_points_distinct_messages
 #print axioms QSB.messageTargets_card_le
 #print axioms QSB.recovery_in_messageTargets
