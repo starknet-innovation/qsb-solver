@@ -330,6 +330,14 @@ the prior Linux report, including transaction hashes, acceptance, and input
 errors. This cross-platform agreement is finite experimental evidence, not
 an arbitrary-witness compiled-Core extraction proof.
 
+The optional 33-case macOS extension in
+`evidence/full-two-outputs-scriptsig-core-macos.json` reuses that same
+puzzle-relaxed full lock and adds five stack-preserving `scriptSig` tails.
+It accepts 201 trailing NOPs, a trailing code separator, a skipped SHA256
+branch, and an altstack round-trip, while 202 trailing NOPs reject. The
+default 28-case harness output still matches the prior macOS evidence exactly.
+This checks more of the actual scriptSig/lock boundary but remains finite.
+
 `bare-script-boundary.json` records fifteen isolated native tests of the
 `scriptSig`/bare-output boundary. A non-push-only `OP_1 OP_1 OP_ADD` scriptSig
 passes a value of 2 to `OP_2 OP_EQUAL`, and each script can separately use

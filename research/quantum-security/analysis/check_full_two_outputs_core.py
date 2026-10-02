@@ -50,6 +50,8 @@ def main() -> None:
                         help="Pinned host-native libbitcoinconsensus; bypass Docker")
     parser.add_argument("--core-archive", type=Path,
                         help="Official Core 27.2 macOS archive for host mode provenance")
+    parser.add_argument("--extra-scriptsig-cases", action="store_true",
+                        help="Add full-lock scriptSig isolation boundary cases")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     app_root = args.app_root.resolve()
@@ -368,6 +370,20 @@ def main() -> None:
     # for this bare output, and a 520-byte push reaches the element limit.
     two_outputs.inputs[1].script_sig = b"\x51\x51\x93" + canonical_witness
     check("two_outputs_nonpush_bottom_prefix", two_outputs, True)
+    if args.extra_scriptsig_cases:
+        # These mutate the same complete witness without changing its entry
+        # stack. EvalScript starts a fresh opcode budget and code-separator
+        # cursor for the bare lock. The scriptSig may exhaust its own count.
+        two_outputs.inputs[1].script_sig = canonical_witness + b"\x61" * 201
+        check("two_outputs_scriptsig_201_nops", two_outputs, True)
+        two_outputs.inputs[1].script_sig = canonical_witness + b"\x61" * 202
+        check("two_outputs_scriptsig_202_nops", two_outputs, False)
+        two_outputs.inputs[1].script_sig = canonical_witness + b"\xab"
+        check("two_outputs_scriptsig_trailing_codeseparator", two_outputs, True)
+        two_outputs.inputs[1].script_sig = canonical_witness + b"\x00\x63\xa8\x68"
+        check("two_outputs_scriptsig_skipped_sha256", two_outputs, True)
+        two_outputs.inputs[1].script_sig = canonical_witness + b"\x6b\x6c"
+        check("two_outputs_scriptsig_altstack_roundtrip", two_outputs, True)
     two_outputs.inputs[1].script_sig = (
         bt.push_data(b"\x5a" * 520) + canonical_witness)
     check("two_outputs_max_element_bottom_prefix", two_outputs, True)
@@ -473,6 +489,8 @@ def main() -> None:
         "in_range_message_scalar_hex": f"{in_range_digest:064x}",
         "cases": cases,
     }
+    if args.extra_scriptsig_cases:
+        report["extra_scriptsig_cases"] = True
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(json.dumps({"cases": [{"name": c["name"], "accepted": c["accepted"]}

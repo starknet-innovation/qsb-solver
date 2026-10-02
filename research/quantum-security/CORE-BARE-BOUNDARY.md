@@ -204,3 +204,15 @@ the false first-round multisignature result. Its lower-stack frame and overflow
 corollaries also agree. This removes a one-way model-composition gap, but the
 source-shaped interpreter is still a mathematical translation of inspected
 Core cases, not a proof about the compiled C++ interpreter or ECDSA outcomes.
+
+The optional full-lock `scriptSig` extension to
+`analysis/check_full_two_outputs_core.py` tests the same canonical disposable
+witness with five stack-preserving non-push tails. The checksum-verified
+Core 27.2 macOS library accepts 201 trailing `OP_NOP`s, a trailing
+`OP_CODESEPARATOR`, a skipped SHA256 branch, and a TOALTSTACK/FROMALTSTACK
+round-trip; it rejects 202 trailing `OP_NOP`s. The 33-case report is
+`evidence/full-two-outputs-scriptsig-core-macos.json`. Running the harness
+without the option reproduces the original 28-case macOS report byte-for-byte.
+Three puzzle CHECKSIGVERIFY sites are still replaced by OP_2DROP in this
+experiment. These are finite checks of the scriptSig/lock separation on the
+otherwise complete stack path, not a universal compiled-Core refinement.
