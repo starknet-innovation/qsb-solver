@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,257 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,259 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -844,15 +844,20 @@ derives the two strict-DER key puzzles and fixed `SIGHASH_ALL` calls; on a good
 setup it derives the seven `R(H(opening))` equations and final ALL call. The
 arbitrary transaction-to-checked-run implication, builder equivalence, real
 checker semantics, and joint quantum bound remain unproved.
-`QSB/CoreCheckedWire.lean` now starts the same implication from the complete
-serialized Lean lock: its source-shaped `GetOp` parser recovers the parameterized
-opcode program for 20-byte commitments and short fixed signatures. A truthy
-wire-decoded checked run consequently yields both DER key hits and fixed ALL
-calls; on a good setup it also yields seven reached `R(H(opening))` equations
-and nine distinct positions. The pinned builder source-shape audit and four
-disposable full-lock byte comparisons were rerun successfully. Neither those
-finite checks nor the Lean parser theorem proves universal Python-builder
-equality, compiled-Core execution, or actual ECDSA/key parsing.
+`QSB/CoreCheckedWire.lean` now accepts supplied locking-script bytes rather
+than silently regenerating them for execution. Its executable `matchesWire`
+check proves exact equality with a claimed parameterized Lean lock. When that
+check succeeds, the source-shaped `GetOp` parser recovers the opcode program
+for 20-byte commitments and short fixed signatures. A truthy checked run of
+those supplied bytes yields both DER key hits and fixed ALL calls; on a good
+setup it also yields seven reached `R(H(opening))` equations and nine distinct
+positions. This per-script equality check can replace a universal Python
+builder theorem for an individually validated lock, but no theorem yet takes
+the spent output bytes from a Core-accepted transaction into this check or
+refines Core execution and ECDSA/key parsing. The pinned builder source-shape
+audit and four disposable full-lock byte comparisons remain finite evidence.
+Lean also checks that the literal disposable 880-chunk fixture passes the
+new exact-byte validator; this fixture is not a production spent output.
 The pinned local Core adapter's three early-exit cases and 22 isolated
 ten-signature cases were rerun; their outputs matched the committed
 `evidence/multisig-early-exit.json` and

@@ -433,12 +433,14 @@ transaction yields both DER key puzzles and fixed `SIGHASH_ALL` calls under the
 shared `H`; on a good setup it also yields seven `R(H(opening))` equations and
 the final ALL call. This remains a deterministic modeled event, without a
 shared-query probability bound.
-`QSB/CoreCheckedWire.lean` makes that checked run start from the serialized
-Lean lock bytes: the source-shaped parser recovers the parameterized opcode
-program for 20-byte commitments and short fixed signatures. The same joint
-event follows from a truthy decoded run. The pinned Python-builder audit and
-four disposable full-lock byte comparisons pass, but universal builder equality,
-compiled-Core refinement, and real ECDSA/key parsing remain open.
+`QSB/CoreCheckedWire.lean` accepts supplied locking-script bytes and checks
+exact equality against a claimed parameterized Lean lock. For 20-byte
+commitments and short fixed signatures, its source-shaped parser recovers the
+opcode program, and the same joint event follows from a truthy checked run.
+This validates an individual script without assuming universal Python-builder
+equality. The spent-output-byte connection, compiled-Core refinement, and
+real ECDSA/key parsing remain open; the pinned builder audit and four finite
+byte comparisons are only corroboration.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

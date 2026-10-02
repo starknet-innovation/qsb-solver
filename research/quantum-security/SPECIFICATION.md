@@ -165,13 +165,14 @@ source sites and final evaluator, and enters the parameterized two-candidate
 search. `QSB.CoreCheckedJointTransaction` composes the resulting certificate
 with the shared-hash transaction checker to expose both DER key puzzles, fixed
 ALL calls, and the good-setup final HORS event from one modeled run.
-`QSB.CoreCheckedWire` now decodes the complete parameterized Lean lock bytes
-before that checked run. For 20-byte commitments and short fixed signatures,
-the decoded run equals the opcode-model run; a truthy wire-decoded run therefore
-forces the same two-key joint event, and on a good setup the seven opening
-equations and nine positions. The wire is the Lean serializer's output.
-Universal equality with the Python builder, compiled-Core trace refinement,
-and real key/ECDSA checker semantics remain separate obligations.
+`QSB.CoreCheckedWire` now accepts supplied locking-script bytes and checks
+their exact equality to a claimed parameterized Lean lock before the run. For
+20-byte commitments and short fixed signatures, the validated decoded run
+equals the opcode-model run; a truthy result therefore forces the same two-key
+joint event, and on a good setup the seven opening equations and nine
+positions. An individual lock can be validated without proving universal
+Python-builder equality. The actual spent-output-byte connection, compiled-
+Core trace refinement, and real key/ECDSA checker semantics remain open.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

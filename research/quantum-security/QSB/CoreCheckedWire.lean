@@ -1,33 +1,50 @@
 import QSB.CoreCheckedJointTransaction
 
 /-!
-Execute the checked Config A source model from its serialized lock bytes.
-The parser and checker are Lean source-shaped models. This bridges the
-parameterized wire and opcode theorems without claiming that the Python
-builder or compiled Bitcoin Core refines either model.
+Execute the checked Config A source model from supplied locking-script bytes.
+An executable equality check ties those bytes to the parameterized Lean lock;
+it can be run for an individual output without assuming universal Python
+builder equivalence. The parser and checker remain Lean source-shaped models,
+not a refinement of compiled Bitcoin Core.
 -/
 namespace QSB.CoreCheckedWire
 open ByteMachine
+set_option maxRecDepth 50000
+set_option maxHeartbeats 10000000
 
 def chunkCount (lock : DynamicCheckedCertificate.Lock) : Nat :=
   (DynamicWireSource.fullChunks
     (DynamicFullSerialized.priorChunks lock.pin lock.nonce0
       lock.firstCommitment) lock.nonce1 lock.secondCommitment).length
 
-/-- Decode the actual modeled wire before running the checked source model. -/
+/-- The caller can validate exact equality for a particular supplied script. -/
+def matchesWire (supplied : Bytes)
+    (lock : DynamicCheckedCertificate.Lock) : Bool :=
+  decide (supplied = DynamicCheckedCertificate.wire lock)
+
+theorem matchesWire_sound (supplied : Bytes)
+    (lock : DynamicCheckedCertificate.Lock)
+    (wireMatched : matchesWire supplied lock = true) :
+    supplied = DynamicCheckedCertificate.wire lock := by
+  simpa only [matchesWire, decide_eq_true_eq] using wireMatched
+
+/-- Decode supplied script bytes before running the checked source model. -/
 def run (hashes : Hashes) (lock : DynamicCheckedCertificate.Lock)
+    (supplied : Bytes)
     (stack : List Bytes) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA) :
     Option (CoreCheckedStep.State × List Bool) := do
   let ops ← DynamicSerializedRound.parseCoreOps
-    (chunkCount lock) (DynamicCheckedCertificate.wire lock)
-  CoreCheckedStep.run hashes (DynamicCheckedCertificate.wire lock)
+    (chunkCount lock) supplied
+  CoreCheckedStep.run hashes supplied
     validKey verify ops ⟨stack.reverse, 0⟩
 
-/-- On the admitted fixed-signature/commitment widths, decoding the modeled
-wire produces exactly the program used by the checker-derived extraction. -/
+/-- If the supplied bytes pass the exact wire check, decoding and executing
+them gives the opcode-model run for admitted signature and commitment widths. -/
 theorem run_eq_model (hashes : Hashes)
     (lock : DynamicCheckedCertificate.Lock)
+    (supplied : Bytes)
+    (wireMatched : matchesWire supplied lock = true)
     (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
     (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
     (pinShort : lock.pin.length < 76)
@@ -35,10 +52,12 @@ theorem run_eq_model (hashes : Hashes)
     (nonce1Short : lock.nonce1.length < 76)
     (stack : List Bytes) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA) :
-    run hashes lock stack validKey verify =
+    run hashes lock supplied stack validKey verify =
       CoreCheckedStep.run hashes (DynamicCheckedCertificate.wire lock)
         validKey verify (DynamicCheckedCertificate.program lock)
         ⟨stack.reverse, 0⟩ := by
+  have wireEq := matchesWire_sound supplied lock wireMatched
+  subst supplied
   have parsed := DynamicFullSerialized.full_wire_decodes
     lock.pin lock.nonce0 lock.nonce1 lock.firstCommitment
     lock.secondCommitment firstWidth secondWidth pinShort
@@ -51,10 +70,12 @@ theorem run_eq_model (hashes : Hashes)
           (DynamicCheckedCertificate.wire lock) validKey verify ops
           ⟨stack.reverse, 0⟩) parsed
 
-/-- A truthy wire-decoded run yields the same executable certificate search
-without a caller-supplied opcode program or signature-result list. -/
+/-- A truthy run of validated supplied bytes yields the executable certificate
+search without a caller-supplied opcode or signature-result list. -/
 theorem run_search_succeeds (hashes : Hashes)
     (lock : DynamicCheckedCertificate.Lock)
+    (supplied : Bytes)
+    (wireMatched : matchesWire supplied lock = true)
     (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
     (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
     (pinShort : lock.pin.length < 76)
@@ -63,25 +84,27 @@ theorem run_search_succeeds (hashes : Hashes)
     (stack : List Bytes) (validKey : Bytes → Bool)
     (verify : CoreChecksigEval.VerifyECDSA)
     (final : CoreCheckedStep.State) (records : List Bool)
-    (success : run hashes lock stack validKey verify =
+    (success : run hashes lock supplied stack validKey verify =
       some (final, records))
     (accepted : CoreFinalTruth.castToBool
       (final.stack.getLast?.getD []) = true) :
     ∃ firstRound sourceFinal,
       DynamicCheckedCertificate.search hashes lock stack validKey verify =
         some (firstRound, sourceFinal) := by
-  rw [run_eq_model hashes lock firstWidth secondWidth pinShort
+  rw [run_eq_model hashes lock supplied wireMatched firstWidth secondWidth pinShort
     nonce0Short nonce1Short stack validKey verify] at success
   exact CoreCheckedDynamic.checked_run_search_succeeds hashes lock
     stack validKey verify final records success accepted
 
-/-- A wire-decoded, truthy transaction run forces the two strict-DER key
+/-- A validated supplied-byte transaction run forces the two strict-DER key
 hits and fixed pin/final ALL checker calls in one shared H/R world. This is
 still conditional on the source-shaped checker and its external ECDSA. -/
 theorem run_two_key_joint_hit
     (functions : JointSourceChecks.Functions)
     (tx : SighashAllWire.TxFields) (selected : Nat)
     (lock : DynamicCheckedCertificate.Lock)
+    (supplied : Bytes)
+    (wireMatched : matchesWire supplied lock = true)
     (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
     (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
     (pinShort : lock.pin.length < 76)
@@ -90,7 +113,7 @@ theorem run_two_key_joint_hit
     (stack : List Bytes) (validKey : Bytes → Bool)
     (ecdsa : Bytes → Bytes → Bytes → Bool)
     (final : CoreCheckedStep.State) (records : List Bool)
-    (success : run (JointSourceChecks.hashes functions) lock stack
+    (success : run (JointSourceChecks.hashes functions) lock supplied stack
       validKey (JointSourceChecks.checker functions tx selected ecdsa) =
         some (final, records))
     (accepted : CoreFinalTruth.castToBool
@@ -131,7 +154,7 @@ theorem run_two_key_joint_hit
             (CoreMultisigSourceScan.deletedScript
               (DynamicCheckedCertificate.wire lock)
               beforeCheck.stack.reverse 10 10)))) = true := by
-  rw [run_eq_model (JointSourceChecks.hashes functions) lock
+  rw [run_eq_model (JointSourceChecks.hashes functions) lock supplied wireMatched
     firstWidth secondWidth pinShort nonce0Short nonce1Short
     stack validKey (JointSourceChecks.checker functions tx selected ecdsa)]
     at success
@@ -140,12 +163,14 @@ theorem run_two_key_joint_hit
     final records success accepted pinAll nonceAll
 
 /-- Off the explicit DER-shaped-commitment setup exception, the same
-wire-decoded run yields seven reached HORS equations, nine distinct positions,
+validated supplied-byte run yields seven HORS equations, nine positions,
 and the final DER/ALL event. This remains a source-model implication. -/
 theorem run_good_setup_joint_final_event
     (functions : JointSourceChecks.Functions)
     (tx : SighashAllWire.TxFields) (selected : Nat)
     (lock : DynamicCheckedCertificate.Lock)
+    (supplied : Bytes)
+    (wireMatched : matchesWire supplied lock = true)
     (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
     (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
     (pinShort : lock.pin.length < 76)
@@ -154,7 +179,7 @@ theorem run_good_setup_joint_final_event
     (stack : List Bytes) (validKey : Bytes → Bool)
     (ecdsa : Bytes → Bytes → Bytes → Bool)
     (final : CoreCheckedStep.State) (records : List Bool)
-    (success : run (JointSourceChecks.hashes functions) lock stack
+    (success : run (JointSourceChecks.hashes functions) lock supplied stack
       validKey (JointSourceChecks.checker functions tx selected ecdsa) =
         some (final, records))
     (accepted : CoreFinalTruth.castToBool
@@ -191,7 +216,7 @@ theorem run_good_setup_joint_final_event
             (CoreMultisigSourceScan.deletedScript
               (DynamicCheckedCertificate.wire lock)
               beforeCheck.stack.reverse 10 10)))) = true := by
-  rw [run_eq_model (JointSourceChecks.hashes functions) lock
+  rw [run_eq_model (JointSourceChecks.hashes functions) lock supplied wireMatched
     firstWidth secondWidth pinShort nonce0Short nonce1Short
     stack validKey (JointSourceChecks.checker functions tx selected ecdsa)]
     at success
@@ -199,5 +224,18 @@ theorem run_good_setup_joint_final_event
     functions tx selected lock firstWidth secondWidth pinShort nonce0Short
     nonce1Short stack validKey ecdsa final records success accepted
     noCommitmentDER nonceAll
+
+/-- Disposable pinned byte fixture, used only to exercise the exact wire
+validator. It is not a production spent output or a security witness. -/
+def literalLock : DynamicCheckedCertificate.Lock where
+  pin := DynamicFullSerialized.literalPin
+  nonce0 := DynamicFullSerialized.literalFirstNonce
+  nonce1 := PoolRollInvariant.finalNonce
+  firstCommitment := DynamicFullSerialized.literalFirstCommitment
+  secondCommitment := FinalSignedLoop.generatedCommitmentAt
+
+theorem literal_fixture_matches :
+    matchesWire EncodedLayout.chunks.flatten literalLock = true := by
+  decide
 
 end QSB.CoreCheckedWire

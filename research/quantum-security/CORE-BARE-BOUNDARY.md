@@ -129,6 +129,21 @@ seven final HORS openings and the final signature-source slots from an
 arbitrary initial byte stack. Core execution and signature-checker refinement,
 the nonce and puzzle relations, and the joint quantum hash bound remain open.
 
+`QSB/CoreCheckedWire.lean` supplies an exact-byte validation boundary for an
+individual lock. Its executable `matchesWire` checks supplied script bytes
+against the parameterized Lean serialization, and Lean proves that a truthy
+checked execution of matching bytes has the joint source event. The literal
+disposable 880-chunk fixture passes this check in Lean. This removes a
+universal Python-builder theorem from the *individual validated-lock* path,
+but a real transaction's spent-output bytes still need to be supplied and
+checked, and compiled Core's execution must still refine the Lean parser,
+stack transitions, and signature checker. Core 27.2's
+[multisignature source case](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1104-L1214)
+applies FindAndDelete for every reached signature to one scriptCode before the ordered
+pair scan, then cleans up the counted arguments and checks NULLDUMMY. The
+Lean source model follows that order; source inspection and the isolated
+native cases do not prove the universal C++-to-Lean relation.
+
 The disposable witness has an exact modeled lower-stack capacity threshold:
 `QSB.ByteStackFrame.canonical_arbitrary_bottom_tail` proves that any suffix
 of at most 385 byte cells preserves final truth, while

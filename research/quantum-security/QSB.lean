@@ -1345,6 +1345,8 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedDynamic.checked_run_search_succeeds
 #print axioms QSB.CoreCheckedJointTransaction.checked_run_two_key_joint_hit
 #print axioms QSB.CoreCheckedJointTransaction.checked_run_good_setup_joint_final_event
+#print axioms QSB.CoreCheckedWire.matchesWire_sound
+#print axioms QSB.CoreCheckedWire.literal_fixture_matches
 #print axioms QSB.CoreCheckedWire.run_eq_model
 #print axioms QSB.CoreCheckedWire.run_search_succeeds
 #print axioms QSB.CoreCheckedWire.run_two_key_joint_hit

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1257,
+  "theorem_count": 1259,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -787,6 +787,12 @@
     ],
     "QSB.CoreCheckedStep.step_record_length": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.literal_fixture_matches": [
+      "propext"
+    ],
+    "QSB.CoreCheckedWire.matchesWire_sound": [
       "propext"
     ],
     "QSB.CoreCheckedWire.run_eq_model": [
