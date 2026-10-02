@@ -123,6 +123,7 @@ import QSB.CoreCheckedRunCertificate
 import QSB.CoreCheckedDynamic
 import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
+import QSB.LockOpcodeInventory
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -149,6 +150,16 @@ import QSB.Reduction
 #print axioms QSB.ScriptSigQueryBudget.event_joint_le_twice_op
 #print axioms QSB.ScriptSigQueryBudget.trace_joint_le_twice_ops
 #print axioms QSB.ScriptSigQueryBudget.trace_joint_le_402
+#print axioms QSB.LockOpcodeInventory.pushed_skeleton
+#print axioms QSB.LockOpcodeInventory.prior_skeleton
+#print axioms QSB.LockOpcodeInventory.data_skeleton
+#print axioms QSB.LockOpcodeInventory.literal_program
+#print axioms QSB.LockOpcodeInventory.program_skeleton
+#print axioms QSB.LockOpcodeInventory.literal_inventory
+#print axioms QSB.LockOpcodeInventory.program_inventory
+#print axioms QSB.LockOpcodeInventory.counted_skeleton
+#print axioms QSB.LockOpcodeInventory.literal_counted_ops
+#print axioms QSB.LockOpcodeInventory.program_counted_ops
 #print axioms QSB.ReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.CorePushFindAndDelete.simple_push_rigid
 #print axioms QSB.CorePushFindAndDelete.simple_many_pushes

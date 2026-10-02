@@ -205,6 +205,16 @@ corollaries also agree. This removes a one-way model-composition gap, but the
 source-shaped interpreter is still a mathematical translation of inspected
 Core cases, not a proof about the compiled C++ interpreter or ECDSA outcomes.
 
+`QSB.LockOpcodeInventory.program_skeleton` proves that every parameterized
+Lean Config A lock has the fixture's exact ordered opcode kinds. Its checked
+counts are 699 pushes, 90 ROLL, 18 MIN, 17 DUP, 15 each of ADD, HASH160 and
+EQUALVERIFY, four CHECKSIGVERIFY, three SHA256, two CHECKMULTISIG, and one
+each of OVER and SWAP. These total 880 instructions; 181 exceed `OP_16` and
+consume Core's ordinary opcode count. Reached CHECKMULTISIG key counts are
+charged separately. This identifies the finite Core source cases that need
+transition refinement for every admitted lock shape; it does not itself prove
+that the compiled C++ interpreter implements the Lean steps.
+
 The optional full-lock `scriptSig` extension to
 `analysis/check_full_two_outputs_core.py` tests the same canonical disposable
 witness with five stack-preserving non-push tails. The checksum-verified

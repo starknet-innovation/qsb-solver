@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1429,
+  "theorem_count": 1439,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4589,6 +4589,36 @@
     "QSB.LegacyTxWireFixture.fixture_valid": [
       "Classical.choice",
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.counted_skeleton": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.data_skeleton": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.literal_counted_ops": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.literal_inventory": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.literal_program": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.prior_skeleton": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.program_counted_ops": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.program_inventory": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.program_skeleton": [
+      "propext"
+    ],
+    "QSB.LockOpcodeInventory.pushed_skeleton": [
       "propext"
     ],
     "QSB.Multisig.equal_counts_success_iff_pairs": [
