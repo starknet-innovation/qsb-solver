@@ -119,6 +119,7 @@ import QSB.CoreCheckedWire
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
+import QSB.ScriptSigSighash
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1370,6 +1371,15 @@ import QSB.Reduction
 #print axioms QSB.DynamicRawSource.source_unauthorized_fresh_or_two_puzzle
 #print axioms QSB.DynamicRawSource.source_unauthorized_joint_or_bad_setup
 #print axioms QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup
+#print axioms QSB.ScriptSigSighash.sourceAllPreimage_eraseScripts
+#print axioms QSB.ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq
+#print axioms QSB.ScriptSigSighash.sourceAllPreimage_injective_scriptCode
+#print axioms QSB.ScriptSigSighash.literal_dummy_zero_one_delete_different
+#print axioms QSB.ScriptSigSighash.literal_dummy_deletions_distinct_all_preimages
+#print axioms QSB.ScriptSigSighash.selected_nine_lengths
+#print axioms QSB.ScriptSigSighash.selected_nine_nodup
+#print axioms QSB.ScriptSigSighash.selected_nine_ten_deletions_different
+#print axioms QSB.ScriptSigSighash.selected_nine_distinct_all_preimages
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

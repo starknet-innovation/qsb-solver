@@ -52,6 +52,13 @@ The model now also blanks original input scripts and substitutes a supplied
 round-trips with arbitrary original scriptSigs and selected scriptCode in the
 wire domain. A generated fixture checks that this preparation yields the
 same pinned 139-byte preimage from different original scriptSig bytes.
+`QSB/ScriptSigSighash.lean` proves this erasure for arbitrary source-shaped
+transactions at **fixed** selected input and scriptCode. It also proves that
+different supplied scriptCodes give different preimages on the valid domain.
+Two complete candidate final-signature lists delete different pushes from the
+literal generated lock, so fixed transaction fields do not by themselves fix
+the final ALL preimage. Those lists are not established as accepted QSB
+witnesses; unequal preimages do not rule out a SHA256d collision.
 The remaining step is to identify Core's C++ preimage for every accepted
 transaction with this source-shaped encoding, including its reached
 FindAndDelete `scriptCode`. The Lean theorems combine same-key verification with the

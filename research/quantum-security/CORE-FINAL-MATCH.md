@@ -225,8 +225,8 @@ gate as predicted by the source. The adapter reports only acceptance, so the
 specific error code is inferred from the pinned source. Seven more cases
 accept nonminimal encodings of either or both ten-count cells and reject a
 nonempty NULLDUMMY, negative or 21-key count, and eleven signatures against
-ten keys. These 22 outcomes do
-not execute the full 9,923-byte QSB lock or prove
+ten keys. The later 25-case rerun adds three subset-switch controls. These
+outcomes do not execute the full 9,923-byte QSB lock or prove
 Core/Lean equivalence.
 
 `analysis/check_literal_findanddelete.py` regenerates the exact disposable

@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,275 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,284 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -564,6 +564,16 @@ both reached puzzle sites and the fixed pinning check. In particular, the
 hash-derived signatures are **not** assumed to end in `SIGHASH_ALL`.
 The successful-checker premises, actual Core-to-Lean equivalence, and
 transaction sighash/ECDSA refinement remain open.
+`QSB/ScriptSigSighash.lean` proves a more precise ALL distinction. Erasing
+original scriptSig bytes leaves the source-shaped preimage unchanged when the
+selected input and scriptCode are held fixed. For a valid selected input, the
+same preimage is injective in the supplied scriptCode. Two complete candidate
+final-signature lists, differing in one generated dummy and sharing the other
+eight dummies and fixed nonce, delete different chunks from the literal lock
+and therefore produce different ALL preimages with all transaction fields
+held fixed. These are source-model preimages, not a claim that their SHA256d
+digests differ or that both candidate lists are reachable in accepted QSB
+spends. The witness-dependent scriptCode remains part of the joint hash event.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped
@@ -576,7 +586,7 @@ post-scriptSig stack projects to the byte-model run. This narrows the
 remaining bridge to the compiled interpreter, actual signature outcomes,
 transaction sighashes, and consensus context. The isolated ten-signature
 Core differential also passed three nonminimal-count positives and four
-count/dummy negatives, for 22 cases total.
+count/dummy negatives, plus three subset-switch controls, for 25 cases total.
 This corroborates the selected source behavior but does not compute the final
 QSB scriptCode for arbitrary Core-accepted witnesses. `CORE-FINAL-MATCH.md` records the exact
 remaining Core-to-Lean final-checker bridge.
@@ -587,10 +597,12 @@ wrong-code controls, including one that retains each selected push in turn.
 The two-input, two-output transaction exercises in-range `SIGHASH_SINGLE`
 as well as `SIGHASH_ALL`. A `CHECKMULTISIG; DROP; TRUE` variant accepts an empty
 first-scanned signature but rejects a malformed nonempty one, consistent with
-the source encoding gate. The adapter does not expose the error code. These
-22 cases are native evidence for selected
-source behavior, not
-full-lock acceptance or a proof of arbitrary-witness refinement.
+the source encoding gate. Two nine-dummy selections sharing the fixed final
+nonce give distinct scriptCodes and ALL digests; Core accepts a separately
+recovered key list for each and rejects the second list when only its nonce
+key is replaced with the first list's nonce key. The adapter does not expose
+the error code. These 25 cases are native evidence for selected source
+behavior, not full-lock acceptance or a proof of arbitrary-witness refinement.
 The new source-shaped final evaluator checks the reached ten-count cells,
 strict-DER gate, nonempty signatures, key-skip scan, shared ten-signature
 FindAndDelete scriptCode, and NULLDUMMY. Lean now composes its successful
@@ -900,10 +912,12 @@ unauthorized event again implies a joint failure or DER-shaped commitment;
 with setup equality, the opening target is `R(H(secret_i))` in the same world.
 The scriptSig evaluator, Core transaction parsing and lock execution, and
 the link from a real spent output to the supplied script remain unproved.
-The pinned local Core adapter's three early-exit cases and 22 isolated
-ten-signature cases were rerun; their outputs matched the committed
-`evidence/multisig-early-exit.json` and
-`evidence/ten-signature-find-and-delete.json` byte for byte. These finite
+The pinned local Core adapter's three early-exit cases were rerun and matched
+`evidence/multisig-early-exit.json` byte for byte. A later 25-case isolated
+ten-signature rerun used the same hash-pinned Core adapter and library in the
+recorded arm64 Ubuntu image. All 22 earlier case records stayed unchanged;
+the three added subset-switch outcomes appear in
+`evidence/ten-signature-find-and-delete.json`. These finite
 probes corroborate the relevant source behavior but do not refine every
 compiled-Core execution to the Lean interpreter.
 `QSB/CoreCheckedCertificate.lean` searches the two possible first-round

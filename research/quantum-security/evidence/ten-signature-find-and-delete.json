@@ -1,11 +1,11 @@
 {
-  "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, plus two DROP; TRUE encoding-gate cases; not full QSB acceptance",
+  "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, subset-switch controls, and two DROP; TRUE encoding-gate cases; not full QSB acceptance",
   "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
-  "source_revision": "4389e25077d48354dd85347391b6ca6a47888bd5",
+  "source_revision": "3eef7c39ecbe897ac55251841e9f2ec3764e04ad",
   "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
   "secp256k1_sha256": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
   "fixture_script_sha256": "44f34e665e756e239aed514a530c136f582a0812437c4f32140a1ebe83628bba",
-  "image": "sha256:06da5a3362eda00c5114227ac81abe56dd9b943395553b7c64a310457f4d9e2b",
+  "image": "ubuntu@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7",
   "native_executable_sha256": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
   "native_library_sha256": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983",
   "selected_dummy_ids": [
@@ -24,6 +24,34 @@
   "parser_gate_lock_sha256": "b3df557bba3db174123e7fb8280c248dcbfd098236628584a01224f2b83c1542",
   "shared_script_code_sha256": "6511684c11111fa941087cb1c78c824fdbb36d613b4ed6ca02a6d7998085783d",
   "both_sighash_types_in_range": true,
+  "subset_switch": {
+    "a_ids": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "b_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "a_script_code_sha256": "0014da8238efe0fdce33666490b11b7560c407f79c05145a5000cab12dda51b4",
+    "b_script_code_sha256": "0615dc8e2c4e7cf43450311112714a08272f55db607362d5bdf9abb08d943fa4",
+    "a_all_digest_hex": "cd588247f4670d096748c5cfac9449054e437365926ecc7b02facbebe60cf4b4",
+    "b_all_digest_hex": "b49904fd8754c8faa25f4f59a5998e36c59415ceeb317d36149602371bc15dba"
+  },
   "cases": [
     {
       "case": "shared_code",
@@ -102,6 +130,24 @@
       "accepted": false,
       "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
       "transaction_sha256": "f657cad307cc1eb2314028f16353d22b01d3aee04f974eea54244129f0359798"
+    },
+    {
+      "case": "subset_a_recovered",
+      "accepted": true,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "39735d3b6b236bf02e7fd6c9321aaf4a88b4e562ccb676bb1f2bd532ec3a6926"
+    },
+    {
+      "case": "subset_b_recovered",
+      "accepted": true,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "8b745201c04cde7fdc5c28a89d43f85d11b78819c815af25caf122fa8325bb24"
+    },
+    {
+      "case": "subset_b_old_nonce_key",
+      "accepted": false,
+      "lock_sha256": "c817e6c2bca1fc39d8e2edf2f3590e9cf61f104e7d73b7396d65a49a21978286",
+      "transaction_sha256": "e72e973bc2d0432669162ee6798e1308582e2d1bb0b947e7bc3853be3bcf5ec1"
     },
     {
       "case": "empty_first_drop_true",

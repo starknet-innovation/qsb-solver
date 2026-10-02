@@ -1514,6 +1514,21 @@
 'QSB.DynamicRawSource.source_unauthorized_oracle_joint_or_bad_setup' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.ScriptSigSighash.sourceAllPreimage_eraseScripts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ScriptSigSighash.sourceAllPreimage_injective_scriptCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigSighash.literal_dummy_zero_one_delete_different' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ScriptSigSighash.literal_dummy_deletions_distinct_all_preimages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ScriptSigSighash.selected_nine_lengths' depends on axioms: [propext, Quot.sound]
+'QSB.ScriptSigSighash.selected_nine_nodup' depends on axioms: [propext, Quot.sound]
+'QSB.ScriptSigSighash.selected_nine_ten_deletions_different' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigSighash.selected_nine_distinct_all_preimages' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

@@ -4,8 +4,9 @@ This is an isolated bare CHECKMULTISIG lock, not a full QSB spend. It places
 the fixture's 151 possible signature pushes in a nonexecuted branch, so Core
 must delete the ten reached signatures from one shared legacy scriptCode.
 Both SINGLE and ALL checks use in-range, transaction-dependent sighashes.
-The final cases probe nonminimal count ScriptNums, count bounds, and
-NULLDUMMY on the same isolated lock.
+Three controls switch one selected dummy while keeping the fixed nonce and
+transaction fields. The final cases probe nonminimal count ScriptNums, count
+bounds, and NULLDUMMY on the same isolated lock.
 """
 
 import argparse
@@ -53,7 +54,13 @@ def main() -> None:
     library_hash = hashlib.sha256((native / "libbitcoinconsensus.so.0").read_bytes()).hexdigest()
     assert wrapper_hash == pinned_core["native_executable_sha256"]
     assert library_hash == pinned_core["native_library_sha256"]
-    assert args.image == pinned_core["image"]
+    # The original experiment image may be absent from a later Docker cache.
+    # This explicit arm64 Ubuntu 22.04 image identity was used for the
+    # subset-switch rerun with the same hash-pinned Core binary and library.
+    assert args.image in (
+        pinned_core["image"],
+        "ubuntu@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7",
+    )
 
     builder = bt.QSBScriptBuilder(150, 8, 1, 7, 2, hash_mode="sha256")
     rng = random.Random("QSB security analysis: PUBLIC DISPOSABLE TEST MATERIAL")
@@ -166,6 +173,42 @@ def main() -> None:
         cases.append(check(f"retain_selected_push_{omitted}", missing_one_keys))
     assert [case["accepted"] for case in cases] == [True] + [False] * 12, cases
 
+    # Change one of nine selected generated dummies while retaining the same
+    # lock, transaction fields, and fixed ALL nonce signature. The first nine
+    # keys are recovered for the second selection in the negative control;
+    # only the old nonce key is reused. This isolates the final ALL digest's
+    # dependence on the reached FindAndDelete signature set.
+    subset_a_ids = [0] + list(range(2, 10))
+    subset_b_ids = [1] + list(range(2, 10))
+
+    def subset_code(ids: list[int]) -> tuple[list[bytes], bytes]:
+        signatures = [all_sigs[i] for i in ids] + [final_nonce]
+        result = lock
+        for signature in reversed(signatures):
+            result = bt.find_and_delete(result, signature)
+        return signatures, result
+
+    subset_a, subset_a_code = subset_code(subset_a_ids)
+    subset_b, subset_b_code = subset_code(subset_b_ids)
+    assert len(subset_a) == len(subset_b) == 10
+    assert subset_a_code != subset_b_code
+    subset_a_digest = tx.sighash(1, subset_a_code, 1)
+    subset_b_digest = tx.sighash(1, subset_b_code, 1)
+    assert subset_a_digest != subset_b_digest
+    subset_a_keys = [recovered_key(sig, subset_a_code) for sig in subset_a]
+    subset_b_keys = [recovered_key(sig, subset_b_code) for sig in subset_b]
+    assert subset_a_keys[-1] != subset_b_keys[-1]
+    subset_b_old_nonce_keys = subset_b_keys.copy()
+    subset_b_old_nonce_keys[-1] = subset_a_keys[-1]
+    subset_cases = [
+        check("subset_a_recovered", subset_a_keys, subset_a),
+        check("subset_b_recovered", subset_b_keys, subset_b),
+        check("subset_b_old_nonce_key", subset_b_old_nonce_keys, subset_b),
+    ]
+    assert [case["accepted"] for case in subset_cases] == [
+        True, True, False], subset_cases
+    cases.extend(subset_cases)
+
     # DROP; TRUE distinguishes a CHECKMULTISIG false result from an encoding
     # abort. The last pushed signature is the first one scanned by Core.
     lock_drop_true = lock + b"\x75\x51"
@@ -198,7 +241,7 @@ def main() -> None:
     cases.extend(structural_cases)
 
     report = {
-        "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, plus two DROP; TRUE encoding-gate cases; not full QSB acceptance",
+        "scope": "isolated bare ten-signature CHECKMULTISIG with fixture pushes in a false branch, subset-switch controls, and two DROP; TRUE encoding-gate cases; not full QSB acceptance",
         "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
         "source_revision": subprocess.check_output(
             ["git", "-C", str(app), "rev-parse", "HEAD"], text=True).strip(),
@@ -214,6 +257,14 @@ def main() -> None:
         "parser_gate_lock_sha256": hashlib.sha256(lock_drop_true).hexdigest(),
         "shared_script_code_sha256": hashlib.sha256(code).hexdigest(),
         "both_sighash_types_in_range": True,
+        "subset_switch": {
+            "a_ids": subset_a_ids,
+            "b_ids": subset_b_ids,
+            "a_script_code_sha256": hashlib.sha256(subset_a_code).hexdigest(),
+            "b_script_code_sha256": hashlib.sha256(subset_b_code).hexdigest(),
+            "a_all_digest_hex": f"{subset_a_digest:064x}",
+            "b_all_digest_hex": f"{subset_b_digest:064x}",
+        },
         "cases": cases,
     }
     args.output.write_text(json.dumps(report, indent=2) + "\n")

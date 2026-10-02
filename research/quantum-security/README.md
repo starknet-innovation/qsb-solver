@@ -183,6 +183,12 @@ outputs, and locktime. It also proves that input-script preparation preserves
 those committed input fields. One 139-byte Lean fixture matches the pinned
 app's baseline preimage used in the Core probe. The actual Core serializer
 and ledger resolution remain separate refinement obligations.
+`QSB/ScriptSigSighash.lean` separates original scriptSig erasure at fixed
+scriptCode from witness-dependent final FindAndDelete. Two complete candidate
+final-signature selections of the literal lock produce distinct source-shaped
+ALL preimages even with identical transaction fields. Neither selection is
+proved accepted by the unmodified lock, and SHA256d collision resistance is
+not inferred from preimage inequality.
 `QSB/JointSourceChecks.lean` also proves that an out-of-range SINGLE checker
 call keeps the raw constant digest after any output-list replacement that
 leaves the selected input past the last output. A cross-checked test adapter
@@ -554,7 +560,7 @@ python3 analysis/check_multisig_early_exit.py --app-root /path/to/qsb-app --nati
 python3 analysis/check_multisig_push_serialization.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/multisig-push-serialization.json
 python3 analysis/check_find_and_delete_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/find-and-delete-boundary.json
 python3 analysis/check_pin_puzzle_scriptcode_core.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/pin-puzzle-scriptcode-core.json
-python3 analysis/check_ten_signature_findanddelete.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/ten-signature-find-and-delete.json
+python3 analysis/check_ten_signature_findanddelete.py --app-root /path/to/qsb-app --native-root /path/to/native --image ubuntu@sha256:b1066385161d28ddf6bc7e7b28a9170eec11484c821d1a5150d176cbde41d7f7 --output evidence/ten-signature-find-and-delete.json
 python3 analysis/check_literal_findanddelete.py --app-root /path/to/qsb-app --output evidence/literal-find-and-delete.json
 python3 analysis/check_bonus_overshoot.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-overshoot.json
 python3 analysis/check_bonus_indices.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bonus-indices.json

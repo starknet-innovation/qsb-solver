@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1275,
+  "theorem_count": 1284,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4629,6 +4629,49 @@
       "propext"
     ],
     "QSB.ScriptNumExtensional.source_roll_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.literal_dummy_deletions_distinct_all_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.literal_dummy_zero_one_delete_different": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.selected_nine_distinct_all_preimages": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.selected_nine_lengths": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.selected_nine_nodup": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.selected_nine_ten_deletions_different": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.sourceAllPreimage_eq_of_erased_scripts_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.sourceAllPreimage_eraseScripts": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigSighash.sourceAllPreimage_injective_scriptCode": [
       "Classical.choice",
       "Quot.sound",
       "propext"
