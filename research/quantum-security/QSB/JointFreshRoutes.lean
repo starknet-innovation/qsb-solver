@@ -77,6 +77,40 @@ theorem fresh_failure_routes
     · exact Or.inr (Or.inl ⟨i, candidate, reached, same, sameH⟩)
     · exact Or.inr (Or.inr ⟨i, candidate, reached, sameH⟩)
 
+theorem reached_opening_fresh
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω)
+    (i : Index) (candidate : Bytes)
+    (reached : reachedOpening e ω i candidate) :
+    FreshFailure (e.extractor ω)
+      (JointOracleReduction.hashSecret e ω)
+      (JointOracleReduction.commitments e ω)
+      (ForbiddenMessage (e.projection ω) (e.authorized ω))
+      (e.disclosed ω) (e.output ω) := by
+  obtain ⟨forbidden, pinKey, w, membership, extracted,
+    undisclosed, candidateEq, matched⟩ := reached
+  refine ⟨forbidden, pinKey, w, extracted, i, membership,
+    undisclosed, ?_⟩
+  simpa [JointOracleReduction.hashSecret,
+    JointOracleReduction.commitments, candidateEq] using matched
+
+/-- The three events are an exact partition by equality cases of the reached
+fresh-opening event; none introduces an unrelated oracle collision. -/
+theorem fresh_failure_iff_routes
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω) :
+    FreshFailure (e.extractor ω)
+      (JointOracleReduction.hashSecret e ω)
+      (JointOracleReduction.commitments e ω)
+      (ForbiddenMessage (e.projection ω) (e.authorized ω))
+      (e.disclosed ω) (e.output ω) ↔
+    exactSecret e ω ∨ reachedHCollision e ω ∨ reachedRCollision e ω := by
+  constructor
+  · exact fresh_failure_routes e ω
+  · intro route
+    rcases route with ⟨i, candidate, reached, _⟩ |
+      ⟨i, candidate, reached, _, _⟩ |
+      ⟨i, candidate, reached, _⟩
+    all_goals exact reached_opening_fresh e ω i candidate reached
+
 theorem joint_failure_routes
     (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω)
     (bad : JointOracleReduction.jointFailure e ω) :
@@ -88,6 +122,22 @@ theorem joint_failure_routes
     · exact Or.inr (Or.inl hCollision)
     · exact Or.inr (Or.inr (Or.inl rCollision))
   · exact Or.inr (Or.inr (Or.inr puzzle))
+
+theorem joint_failure_iff_routes
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω) :
+    JointOracleReduction.jointFailure e ω ↔
+      exactSecret e ω ∨ reachedHCollision e ω ∨
+        reachedRCollision e ω ∨ puzzleFailure e ω := by
+  constructor
+  · exact joint_failure_routes e ω
+  · intro route
+    rcases route with exact | hCollision | rCollision | puzzle
+    · exact Or.inl ((fresh_failure_iff_routes e ω).2 (Or.inl exact))
+    · exact Or.inl ((fresh_failure_iff_routes e ω).2
+        (Or.inr (Or.inl hCollision)))
+    · exact Or.inl ((fresh_failure_iff_routes e ω).2
+        (Or.inr (Or.inr rCollision)))
+    · exact Or.inr puzzle
 
 /-- The existing unauthorized-spend reduction can be refined into reached
 opening routes, the unsplit two-puzzle event, or the explicit extraction gap.

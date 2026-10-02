@@ -126,7 +126,10 @@
  Classical.choice,
  Quot.sound]
 'QSB.JointFreshRoutes.fresh_failure_routes' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshRoutes.reached_opening_fresh' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshRoutes.fresh_failure_iff_routes' depends on axioms: [propext, Quot.sound]
 'QSB.JointFreshRoutes.joint_failure_routes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshRoutes.joint_failure_iff_routes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointFreshRoutes.unauthorized_routes_or_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointFreshRoutes.unauthorized_measure_bound_routes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptNumExtensional.four_byte_positive_parses' depends on axioms: [propext, Quot.sound]

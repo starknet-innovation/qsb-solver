@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1385,
+  "theorem_count": 1388,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4105,12 +4105,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointFreshRoutes.fresh_failure_iff_routes": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointFreshRoutes.fresh_failure_routes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.joint_failure_iff_routes": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "QSB.JointFreshRoutes.joint_failure_routes": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.reached_opening_fresh": [
       "Quot.sound",
       "propext"
     ],

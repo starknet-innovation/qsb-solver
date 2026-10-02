@@ -208,7 +208,10 @@ import QSB.Reduction
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup
 #print axioms QSB.JointFreshRoutes.fresh_failure_routes
+#print axioms QSB.JointFreshRoutes.reached_opening_fresh
+#print axioms QSB.JointFreshRoutes.fresh_failure_iff_routes
 #print axioms QSB.JointFreshRoutes.joint_failure_routes
+#print axioms QSB.JointFreshRoutes.joint_failure_iff_routes
 #print axioms QSB.JointFreshRoutes.unauthorized_routes_or_gap
 #print axioms QSB.JointFreshRoutes.unauthorized_measure_bound_routes
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
