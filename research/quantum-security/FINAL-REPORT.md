@@ -585,6 +585,15 @@ exactly those same equality classes. This does not prove that every subset is
 reachable by an accepted witness, that actual Core computes these bytes for
 every witness, or that SHA256d outputs are distinct. The number of possible
 preimages must not be read as independent quantum search trials.
+`QSB/ReachedSubsetSighash.lean` now applies that classification to the ten
+signature bytes in two reached final CHECKMULTISIG stacks. A successful full
+literal byte-model run with an explicit nonempty, DER-sound successful
+ten-pair scan yields nine distinct original dummy positions. For any two such
+runs and the same valid source-shaped transaction fields and selected input,
+the reached final ALL preimages are equal exactly when the position sets are
+equal. The theorem derives the deletion list from reached slots; it still
+assumes the modeled scan and does not refine compiled Core or show that
+distinct preimages have distinct SHA256d digests.
 The final ten-pair source model now also exposes each reached signature's
 actual last-byte hash type and external ECDSA/sighash checker call on the
 same selected scriptCode. This is conditional on successful source-shaped

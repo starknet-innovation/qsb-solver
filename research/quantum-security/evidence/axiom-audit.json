@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1291,
+  "theorem_count": 1295,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4509,6 +4509,26 @@
       "propext"
     ],
     "QSB.RandomOracleSetup.shared_function_union_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ReachedSubsetSighash.matched_runs_reached_all_preimage_classification": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ReachedSubsetSighash.reached_deleted_script": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ReachedSubsetSighash.reached_script_eq_iff_selected_set_eq": [
       "Classical.choice",
       "Quot.sound",
       "propext"

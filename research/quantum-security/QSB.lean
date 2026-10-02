@@ -122,6 +122,7 @@ import QSB.DynamicRawSource
 import QSB.ScriptSigSighash
 import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
+import QSB.ReachedSubsetSighash
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
 import QSB.DERHeaderBound
@@ -130,6 +131,10 @@ import QSB.Game
 import QSB.Reduction
 
 #print axioms QSB.DynamicScriptLimits.short_push_length
+#print axioms QSB.ReachedSubsetSighash.reached_deleted_script
+#print axioms QSB.ReachedSubsetSighash.reached_script_eq_iff_selected_set_eq
+#print axioms QSB.ReachedSubsetSighash.reached_all_preimage_eq_iff_selected_set_eq
+#print axioms QSB.ReachedSubsetSighash.matched_runs_reached_all_preimage_classification
 #print axioms QSB.DynamicScriptLimits.fixed_width_pushes_length
 #print axioms QSB.DynamicScriptLimits.commitment_pushes_length
 #print axioms QSB.DynamicScriptLimits.full_wire_length

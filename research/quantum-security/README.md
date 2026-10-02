@@ -193,6 +193,10 @@ not inferred from preimage inequality.
 selected dummy-position sets and source-shaped final ALL preimages have the
 same equality classes for fixed valid transaction fields and selected input.
 The result does not count reachable Core-accepted subsets or quantum queries.
+`QSB/ReachedSubsetSighash.lean` derives the same preimage classification from
+signature bytes reached by two successful full byte-model runs with explicit
+successful ten-pair scan premises. Core acceptance and actual digest behavior
+still require separate justification.
 A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
 two final subsets on a synthetic two-output transaction. The puzzle-relaxed
 lock accepts each with its recovered keys but rejects reuse of the first

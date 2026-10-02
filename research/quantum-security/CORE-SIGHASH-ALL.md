@@ -65,6 +65,12 @@ scriptCodes, and therefore equal valid fixed-transaction ALL preimages, occur
 exactly for equal selected position sets. Permuting or repeating selected
 positions does not change that set. The theorem does not show which sets an
 accepted Core execution can reach or assign a quantum-query probability.
+`QSB/ReachedSubsetSighash.lean` applies this exact equality classification to
+two reached modeled final stacks. Successful full byte-model execution plus
+explicit nonempty, DER-sound successful scans supplies nine distinct selected
+positions per stack; source-shaped FindAndDelete then removes the ten reached
+signature pushes. The theorem does not identify compiled-Core preimages or
+establish SHA256d collision resistance.
 An additional [full-lock differential](evidence/full-subset-switch-core.json)
 checks two such sets against the pinned Core 27.2 adapter. In one synthetic,
 unfunded two-input/two-output transaction, with QSB at input 1, replacing

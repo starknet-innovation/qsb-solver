@@ -523,6 +523,12 @@ equal across two candidate lists exactly when they select the same set of
 generated dummy positions. This removes draw-order and duplicate-list
 multiplicity from that source-model message family. It does not identify the
 Core-reachable subsets, rule out SHA256d collisions, or bound quantum search.
+`QSB/ReachedSubsetSighash.lean` derives the same equality classification from
+two reached final stacks in successful literal byte-model runs under explicit
+successful ten-pair scan premises. The selected sets each have nine distinct
+positions; source-shaped FindAndDelete uses the ten reached signature bytes.
+This closes the caller-chosen deletion-list step inside that model, not the
+compiled-Core or shared-query probability obligations.
 `QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a
