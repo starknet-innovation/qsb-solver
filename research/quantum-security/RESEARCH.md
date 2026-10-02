@@ -112,6 +112,15 @@ the same H whenever a reused fixed signature/key verifies on a distinct ALL
 preimage with the approved `SHA256d` digest. Applying a collision theorem to
 the complete QSB game still requires accounting for how the approved call
 and disclosure transcript were generated, as well as Core refinement.
+`QSB/JointFreshRoutes.lean` separately decomposes a *reached* undisclosed
+HORS opening into exact setup-secret recovery, an H collision on the opening
+and setup-secret bytes, or an R collision on distinct H outputs. Its pair is
+specified by the extracted witness and sampled setup, so it is a candidate
+output for a causal collision reduction. It does not itself supply that
+reduction: the algorithm must produce the reached pair with all honest and
+adversarial oracle calls charged, and exact-secret recovery needs its own
+bound. The decomposition avoids the vacuous event that some collision exists
+anywhere in an enormous sampled function.
 
 Kai-Min Chung, Serge Fehr, Yu-Hsuan Huang, and Tai-Ning Liao,
 [*On the Compressed-Oracle Technique, and Post-Quantum Security of Proofs of

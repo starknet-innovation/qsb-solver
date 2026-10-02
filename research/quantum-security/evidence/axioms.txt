@@ -125,6 +125,10 @@
 'QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.JointFreshRoutes.fresh_failure_routes' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshRoutes.joint_failure_routes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshRoutes.unauthorized_routes_or_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshRoutes.unauthorized_measure_bound_routes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptNumExtensional.four_byte_positive_parses' depends on axioms: [propext, Quot.sound]
 'QSB.ScriptNumExtensional.five_byte_positive_rejected' depends on axioms: [propext]
 'QSB.ScriptNumExtensional.roll_step_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]

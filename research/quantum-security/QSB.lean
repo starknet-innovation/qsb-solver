@@ -90,6 +90,7 @@ import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
 import QSB.DynamicSetupReduction
 import QSB.JointOracleReduction
+import QSB.JointFreshRoutes
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -206,6 +207,10 @@ import QSB.Reduction
 #print axioms QSB.JointOracleReduction.unauthorized_joint_or_gap
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound
 #print axioms QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup
+#print axioms QSB.JointFreshRoutes.fresh_failure_routes
+#print axioms QSB.JointFreshRoutes.joint_failure_routes
+#print axioms QSB.JointFreshRoutes.unauthorized_routes_or_gap
+#print axioms QSB.JointFreshRoutes.unauthorized_measure_bound_routes
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
 #print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
 #print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional

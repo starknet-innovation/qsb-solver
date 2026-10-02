@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1381,
+  "theorem_count": 1385,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4101,6 +4101,25 @@
       "propext"
     ],
     "QSB.Game.disclosedAt_card_le_min": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.fresh_failure_routes": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.joint_failure_routes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.unauthorized_measure_bound_routes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshRoutes.unauthorized_routes_or_gap": [
       "Classical.choice",
       "Quot.sound",
       "propext"
