@@ -187,7 +187,20 @@ theorem wire_good_setup_two_puzzles_round_witness
     (pinAll : lock.pin.getLast? = some 0x01)
     (nonceAll : lock.nonce1.getLast? = some 0x01) :
     ∃ (w : RoundWitness (Fin 150) Bytes Bytes)
-      (pinKey : Bytes) (beforePin beforeCheck : CoreOpcodeStep.State),
+      (pinKey : Bytes) (beforePin beforeCheck : CoreOpcodeStep.State)
+      (firstRound : Bool) (sourceFinal : CoreOpcodeStep.State),
+      DynamicCheckedCertificate.search
+        (JointSourceChecks.hashes functions) lock stack validKey
+        (JointSourceChecks.checker functions tx selected ecdsa) =
+          some (firstRound, sourceFinal) ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 2)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforePin ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
       extract (JointSourceChecks.hashes functions) lock stack validKey
         (JointSourceChecks.checker functions tx selected ecdsa) = some w ∧
       FinalRoundShape w ∧
@@ -218,7 +231,7 @@ theorem wire_good_setup_two_puzzles_round_witness
       nonce1Short stack validKey ecdsa final records success accepted
       noCommitmentDER nonceAll
   obtain ⟨pinKey, _finalKey, beforePin, beforeFromPin,
-    _reachedPin, pinCheckReached, fixedPin, reachedPinKey,
+    reachedPin, pinCheckReached, fixedPin, reachedPinKey,
     _nonceSlot, _finalKeyAt, pinDER, _otherFinalDER,
     _otherInputValid, pinVerified, _otherFinalVerified⟩ :=
     DynamicJointTransaction.search_two_key_joint_hit functions tx selected
@@ -227,7 +240,8 @@ theorem wire_good_setup_two_puzzles_round_witness
   have sameBefore : beforeCheck = beforeFromPin :=
     Option.some.inj (reachedCheck.symm.trans pinCheckReached)
   subst beforeFromPin
-  refine ⟨w, pinKey, beforePin, beforeCheck, computed, shape,
+  refine ⟨w, pinKey, beforePin, beforeCheck, firstRound, sourceFinal,
+    found, reachedPin, reachedCheck, computed, shape,
     openings, fixedPin, reachedPinKey, wKey, pinDER, finalDER,
     inputValid, pinVerified, finalVerified⟩
 

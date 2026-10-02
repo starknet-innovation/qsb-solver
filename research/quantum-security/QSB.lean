@@ -117,6 +117,7 @@ import QSB.CoreCheckedDynamic
 import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
 import QSB.DynamicRoundWitness
+import QSB.DynamicSourceGame
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1356,6 +1357,10 @@ import QSB.Reduction
 #print axioms QSB.DynamicRoundWitness.search_good_setup_extracts
 #print axioms QSB.DynamicRoundWitness.wire_good_setup_round_and_final_all
 #print axioms QSB.DynamicRoundWitness.wire_good_setup_two_puzzles_round_witness
+#print axioms QSB.DynamicSourceGame.source_extraction
+#print axioms QSB.DynamicSourceGame.source_unauthorized_fresh_or_two_puzzle
+#print axioms QSB.DynamicSourceGame.source_unauthorized_joint_or_bad_setup
+#print axioms QSB.DynamicSourceGame.source_unauthorized_oracle_joint_or_bad_setup
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

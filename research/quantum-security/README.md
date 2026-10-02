@@ -447,6 +447,11 @@ two bonus positions, and the reached final key. The validated supplied-wire
 theorem keeps both strict-DER puzzle hits and both fixed ALL checker calls in
 the same hash world. This remains conditional on the source-model run and
 external checker functions; it is not a Core-acceptance or quantum bound.
+`QSB/DynamicSourceGame.lean` uses that executable witness and the reached pin
+key to discharge the abstract game extraction interface for truthy checked
+source attempts on a good setup. Its resulting fresh-opening-or-two-puzzle
+event has no source-model extraction gap. A raw transaction-to-model
+refinement and a shared-query quantum bound are still required.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

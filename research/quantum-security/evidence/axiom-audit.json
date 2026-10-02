@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1263,
+  "theorem_count": 1267,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2439,6 +2439,26 @@
       "propext"
     ],
     "QSB.DynamicSignedTransition.preimage_front_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGame.source_extraction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGame.source_unauthorized_fresh_or_two_puzzle": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGame.source_unauthorized_joint_or_bad_setup": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceGame.source_unauthorized_oracle_joint_or_bad_setup": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

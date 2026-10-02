@@ -180,6 +180,12 @@ supplied-wire theorem retains both strict-DER key hits and both fixed ALL
 verifier calls under the same hash functions. This is a conditional source-
 model result; actual Core-accepted transaction extraction and the joint
 quantum probability bound remain open.
+`QSB.DynamicSourceGame` supplies a source-model attempt type, deterministic
+pin-and-round extractor, and relations retaining both fixed ALL verifier
+calls and the selected nine positions. It proves the abstract extraction and
+fresh-opening-or-two-puzzle reduction for every good-setup truthy checked
+source attempt. The attempt starts with decoded stack cells, so this does not
+yet prove extraction from arbitrary consensus-accepted raw transactions.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

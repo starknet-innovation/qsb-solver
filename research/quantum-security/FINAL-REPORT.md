@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,263 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,267 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -869,6 +869,23 @@ shared `H`/`R` world; the two keys may coincide. This is a modeled source-run
 necessity with external hash, key, and ECDSA functions. It does not extract a
 witness from arbitrary Core-accepted transaction bytes or prove a joint
 quantum-query probability bound.
+`QSB/DynamicSourceGame.lean` packages the supplied-wire checked run as a
+source-model attempt containing transaction fields, selected input, supplied
+lock bytes, and already-decoded initial stack cells. Its deterministic game
+extractor returns the reached pin key and final-round witness. The pin and
+round relations retain the actual fixed ALL verifier calls; the round relation
+identifies the nine positions selected by that source run. Under the explicit
+good-setup and lock-shape premises, Lean proves `SourceExtraction` and the
+fresh-opening-or-two-puzzle disjunction for this *checked source model*. That
+removes its internal extraction gap, not the game gap for consensus-accepted
+raw transactions. A Core-to-source refinement, real key/ECDSA semantics, and
+one-budget quantum event bound remain unproved.
+Without the good-setup premise, the same modeled unauthorized event implies
+the joint failure event or an explicitly DER-shaped second-round commitment.
+With the explicit setup equality `commitment_i = R(H(secret_i))`, Lean states
+the fresh-opening event against those same-world commitments; the extractor
+still receives no secret map. No small probability is silently assigned to
+either branch.
 The pinned local Core adapter's three early-exit cases and 22 isolated
 ten-signature cases were rerun; their outputs matched the committed
 `evidence/multisig-early-exit.json` and
