@@ -30,6 +30,23 @@ stack at the lock entrance. Core
 checks the combined main/altstack size after each instruction
 ([source](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1124-L1129)).
 
+For later oracle accounting, `QSB/ScriptSigQueryBudget.lean` gives a
+source-shaped trace bound for one successful BASE `scriptSig` evaluation.
+Core counts every opcode above `OP_16`, including those in skipped branches,
+and caps this count at [201](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.h#L24-L31).
+Its executed [hash cases](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L943-L969)
+are SHA256, RIPEMD160, HASH160, HASH256, and SHA1; the first four cost at
+most two combined idealized H/R calls each, while SHA1 is outside that pair.
+One CHECKSIG attempt costs at most two H calls through legacy
+[SignatureHash](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1495-L1508)
+and [`HashWriter::GetHash`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/hash.h#L100-L118).
+The [CHECKMULTISIG loop](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1022-L1089)
+charges its declared key count to `nOpCount` before making at most that many
+ECDSA attempts. Lean therefore proves `H_calls + R_calls ≤ 402` for a trace
+classified by these source cases and satisfying the 201-count premise. This
+does not extract an event trace from compiled Core, cover hashes outside this
+one `EvalScript` invocation, or bound the adversary's coherent queries.
+
 The [Core 27.2 `CScriptNum` constructor and `set_vch`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.h#L226-L396)
 reject more than four operand bytes, optionally enforce minimal encoding, and
 assemble the remaining little-endian bytes by OR-ing disjoint shifted lanes.

@@ -1,4 +1,7 @@
 'QSB.DynamicScriptLimits.short_push_length' depends on axioms: [propext]
+'QSB.ScriptSigQueryBudget.event_joint_le_twice_op' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigQueryBudget.trace_joint_le_twice_ops' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigQueryBudget.trace_joint_le_402' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ReachedSubsetSighash.reached_deleted_script' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_push_rigid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_many_pushes' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1426,
+  "theorem_count": 1429,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5173,6 +5173,21 @@
       "propext"
     ],
     "QSB.ScriptNumExtensional.source_roll_parse_extensional": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigQueryBudget.event_joint_le_twice_op": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigQueryBudget.trace_joint_le_402": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigQueryBudget.trace_joint_le_twice_ops": [
       "Classical.choice",
       "Quot.sound",
       "propext"

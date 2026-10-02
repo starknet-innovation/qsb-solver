@@ -3,6 +3,7 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.TaggedOracle
+import QSB.ScriptSigQueryBudget
 import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
@@ -145,6 +146,9 @@ import QSB.Game
 import QSB.Reduction
 
 #print axioms QSB.DynamicScriptLimits.short_push_length
+#print axioms QSB.ScriptSigQueryBudget.event_joint_le_twice_op
+#print axioms QSB.ScriptSigQueryBudget.trace_joint_le_twice_ops
+#print axioms QSB.ScriptSigQueryBudget.trace_joint_le_402
 #print axioms QSB.ReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.CorePushFindAndDelete.simple_push_rigid
 #print axioms QSB.CorePushFindAndDelete.simple_many_pushes
