@@ -566,8 +566,16 @@ same world. For this source-model game, Lean proves that unauthorized
 acceptance lies in the one joint failure event or the DER-shaped commitment
 setup event, and therefore that supplied bounds `εjoint` and `εsetup` imply
 `Pr[SourceUnauthorized] ≤ εjoint + εsetup`. Neither event bound is supplied by
-that theorem. The scriptSig evaluator, actual Core acceptance, real
-key/ECDSA semantics, and shared coherent-query accounting remain external.
+that theorem. A second checked theorem transfers the same inequality to an
+external selected-target Core-acceptance predicate if **every** such accepted
+submission in **every** world implies the ledger-bound raw source acceptance
+predicate for the same bytes and selected input. The event still uses the
+source-defined target test and authorization projection; those must also be
+validated against consensus and the chosen ledger state. The transfer adds no
+probability loss;
+the universal Core-to-source refinement itself is not proved. The scriptSig
+evaluator, real key/ECDSA semantics, and shared coherent-query accounting
+remain external.
 `QSB/OracleDependentSelection.lean` isolates a further limit of that
 interface. Across four equally likely Boolean functions, a fixed input hits
 the target in two worlds, but an input selected after seeing one oracle value

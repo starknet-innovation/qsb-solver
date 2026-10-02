@@ -59,6 +59,7 @@
 'QSB.JointRawSourceWorld.jointFailure_iff_source' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointRawSourceWorld.unauthorized_joint_or_bad_setup' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointRawSourceWorld.unauthorized_measure_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointRawSourceWorld.core_unauthorized_measure_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]

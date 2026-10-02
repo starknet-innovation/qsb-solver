@@ -377,7 +377,13 @@ coherent query budget. Core/sighash/ECDSA instantiation remains open.
 submissions under an explicit same-world setup-commitment equality. It proves
 a source-model bound from one joint-event and one setup-exception bound, while
 leaving scriptSig evaluation, Core acceptance, and both probability premises
-external.
+external. Its Core-transfer theorem makes the missing universal acceptance
+refinement explicit: each selected-target Core-accepted submission must
+satisfy that same ledger-bound raw source predicate in the same oracle world.
+Its target test and authorization projection are still source-defined.
+Conditional on this premise, the bound transfers with no added probability
+term; no proof of
+the premise is supplied.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

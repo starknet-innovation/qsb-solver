@@ -154,7 +154,10 @@ shared coherent-query theorem is proved.
 `QSB/JointRawSourceWorld.lean` instantiates that interface with ledger-bound
 raw source submissions under explicit same-world setup equality. Its
 conditional source-model measure bound still needs scriptSig/Core refinement
-and separate joint-event and setup-event probability premises.
+and separate joint-event and setup-event probability premises. A further
+theorem transfers the bound to a supplied selected-target Core-acceptance
+predicate only under an explicit pointwise Core-to-source refinement premise,
+which remains open.
 
 `QSB/Nonce.lean` models fixed-signature ECDSA recovery targets, including the
 possibility that opposite recovery points admit different message scalars for

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1370,
+  "theorem_count": 1371,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4121,6 +4121,11 @@
       "propext"
     ],
     "QSB.JointRawSourceWorld.commitments_eq_lock": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointRawSourceWorld.core_unauthorized_measure_bound": [
       "Classical.choice",
       "Quot.sound",
       "propext"

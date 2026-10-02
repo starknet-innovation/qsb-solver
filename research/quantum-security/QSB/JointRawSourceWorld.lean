@@ -148,4 +148,58 @@ theorem unauthorized_measure_bound [MeasurableSpace Ω]
   exact (measure_mono cover).trans
     ((measure_union_le _ _).trans (add_le_add jointBound setupBound))
 
+/-- This event uses an external predicate for consensus acceptance of the
+selected target input. Target identification and authorization projection are
+the source-model functions below. A real Core-to-Lean theorem must relate all
+three to the same transaction and ledger state. -/
+def coreUnauthorized (w : World Ω)
+    (coreAcceptedTarget : Ω → LedgerBoundRawSource.Submission → Prop)
+    (ω : Ω) : Prop :=
+  Game.Unauthorized (coreAcceptedTarget ω)
+    (LedgerBoundRawSource.spendsTarget (w.target ω))
+    (LedgerBoundRawSource.projection (w.ledger ω))
+    (w.authorized ω) (w.output ω)
+
+/-- Once actual selected-target consensus acceptance is shown to imply the
+checked raw-source run for the same bytes, selected input, ledger, and oracle
+world, the source measure bound transfers without a separate probability
+loss. This theorem does not identify the source-defined target/projection
+functions with Core's consensus and UTXO state; that belongs in `coreRefines`
+and the chosen external acceptance predicate. The joint-query bound is also
+an explicit premise. -/
+theorem core_unauthorized_measure_bound [MeasurableSpace Ω]
+    (w : World Ω) (μ : Measure Ω)
+    (coreAcceptedTarget : Ω → LedgerBoundRawSource.Submission → Prop)
+    (coreRefines : ∀ ω raw, coreAcceptedTarget ω raw →
+      LedgerBoundRawSource.sourceAccepted (w.functions ω) (w.lock ω)
+        (w.validKey ω) (w.ecdsa ω) (w.evalScriptSig ω)
+        (w.ledger ω) (w.target ω) raw)
+    (setupEq : SetupMatches w)
+    (firstWidth : ∀ ω i, ((w.lock ω).firstCommitment i).length = 20)
+    (secondWidth : ∀ ω i, ((w.lock ω).secondCommitment i).length = 20)
+    (pinShort : ∀ ω, (w.lock ω).pin.length < 76)
+    (nonce0Short : ∀ ω, (w.lock ω).nonce0.length < 76)
+    (nonce1Short : ∀ ω, (w.lock ω).nonce1.length < 76)
+    (pinAll : ∀ ω, (w.lock ω).pin.getLast? = some 0x01)
+    (nonceAll : ∀ ω, (w.lock ω).nonce1.getLast? = some 0x01)
+    (honest : ∀ ω, AuthorizedRelease
+      (LedgerBoundRawSource.projection (w.ledger ω))
+      (w.authorized ω) (w.released ω))
+    (εjoint εsetup : ENNReal)
+    (jointBound : μ {ω | JointOracleReduction.jointFailure
+      (experiment w) ω} ≤ εjoint)
+    (setupBound : μ {ω | DynamicSourceGame.badSetup (w.lock ω)} ≤
+      εsetup) :
+    μ {ω | coreUnauthorized w coreAcceptedTarget ω} ≤
+      εjoint + εsetup := by
+  have inclusion :
+      {ω | coreUnauthorized w coreAcceptedTarget ω} ⊆
+        {ω | JointOracleReduction.unauthorized (experiment w) ω} := by
+    intro ω bad
+    exact ⟨coreRefines ω (w.output ω) bad.1, bad.2.1, bad.2.2⟩
+  exact (measure_mono inclusion).trans
+    (unauthorized_measure_bound w μ setupEq firstWidth secondWidth
+      pinShort nonce0Short nonce1Short pinAll nonceAll honest
+      εjoint εsetup jointBound setupBound)
+
 end QSB.JointRawSourceWorld

@@ -173,6 +173,7 @@ import QSB.Reduction
 #print axioms QSB.JointRawSourceWorld.jointFailure_iff_source
 #print axioms QSB.JointRawSourceWorld.unauthorized_joint_or_bad_setup
 #print axioms QSB.JointRawSourceWorld.unauthorized_measure_bound
+#print axioms QSB.JointRawSourceWorld.core_unauthorized_measure_bound
 #print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
 #print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script
