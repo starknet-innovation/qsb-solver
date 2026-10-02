@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1342,
+  "theorem_count": 1349,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4234,6 +4234,41 @@
       "propext"
     ],
     "QSB.Layout.matched_external_passes_first_comparison": [
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.accepted_spends_target": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.accepted_target_script_matches": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.bindRaw_sound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.projection_eq_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.rejects_other_target_script": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.source_extraction": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawSource.source_unauthorized_joint_or_bad_setup": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.LegacySighashWire.all_preimage": [

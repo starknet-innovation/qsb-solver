@@ -120,6 +120,7 @@ import QSB.CoreCheckedWire
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
+import QSB.LedgerBoundRawSource
 import QSB.ScriptSigSighash
 import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
@@ -159,6 +160,13 @@ import QSB.Reduction
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_pin_final_two_stage_nodup_or_first_collision
 #print axioms QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_final_disjoint_from_pin_all_preimages
 #print axioms QSB.ParameterizedRawReachedSubsetSighash.accepted_raw_reached_two_stage_nodup_or_first_collision
+#print axioms QSB.LedgerBoundRawSource.bindRaw_sound
+#print axioms QSB.LedgerBoundRawSource.accepted_spends_target
+#print axioms QSB.LedgerBoundRawSource.accepted_target_script_matches
+#print axioms QSB.LedgerBoundRawSource.rejects_other_target_script
+#print axioms QSB.LedgerBoundRawSource.source_extraction
+#print axioms QSB.LedgerBoundRawSource.projection_eq_bound
+#print axioms QSB.LedgerBoundRawSource.source_unauthorized_joint_or_bad_setup
 #print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
 #print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script

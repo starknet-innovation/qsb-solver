@@ -1049,6 +1049,17 @@ unauthorized event again implies a joint failure or DER-shaped commitment;
 with setup equality, the opening target is `R(H(secret_i))` in the same world.
 The scriptSig evaluator, Core transaction parsing and lock execution, and
 the link from a real spent output to the supplied script remain unproved.
+`QSB/LedgerBoundRawSource.lean` tightens the source frontend: the attacker
+submits only raw transaction bytes and a selected input, while a fixed ledger
+function supplies the script for the selected target prevout. Lean checks the
+parsed prevout equals that target and proves that source acceptance forces
+the ledger's script to equal the validated QSB wire; a different target
+script cannot pass. The same ledger function supplies the authorization
+projection; the game also checks the parsed selected prevout as its target-
+spend predicate. The good-setup source extraction and joint-event reduction
+carry through. This removes an independently caller-chosen spent script from
+that *source-model* game. It does not establish UTXO existence, unspent
+status, other Core transaction checks, or Core-to-Lean execution refinement.
 `QSB/RawReachedSubsetSighash.lean` now compares two raw submissions that both
 pass this literal checked-source acceptance predicate. It obtains each
 transaction and initial stack from that submission's successful `prepare`
