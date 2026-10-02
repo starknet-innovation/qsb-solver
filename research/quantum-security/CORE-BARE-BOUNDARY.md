@@ -137,7 +137,11 @@ disposable 880-chunk fixture passes this check in Lean. This removes a
 universal Python-builder theorem from the *individual validated-lock* path,
 but a real transaction's spent-output bytes still need to be supplied and
 checked, and compiled Core's execution must still refine the Lean parser,
-stack transitions, and signature checker. Core 27.2's
+stack transitions, and signature checker. `QSB/DynamicRoundWitness.lean`
+computes the nine-position good-setup witness from that checked source-model
+run and retains the two DER puzzle hits and fixed ALL verifier calls. The
+computation has no arbitrary Core transaction parser or compiled-Core
+refinement. Core 27.2's
 [multisignature source case](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp#L1104-L1214)
 applies FindAndDelete for every reached signature to one scriptCode before the ordered
 pair scan, then cleans up the counted arguments and checks NULLDUMMY. The

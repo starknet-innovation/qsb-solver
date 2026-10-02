@@ -1400,6 +1400,9 @@
  Quot.sound]
 'QSB.FinalRoundWitness.openingAt_sound' depends on axioms: [propext]
 'QSB.FinalRoundWitness.openingAt_complete' depends on axioms: [propext, Quot.sound]
+'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings_for' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.FinalRoundWitness.findDummyIn_exact' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.findDummy_exact' depends on axioms: [propext, Quot.sound]
 'QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1484,6 +1487,11 @@
 'QSB.CoreCheckedWire.run_search_succeeds' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedWire.run_two_key_joint_hit' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreCheckedWire.run_good_setup_joint_final_event' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRoundWitness.search_good_setup_extracts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRoundWitness.wire_good_setup_round_and_final_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRoundWitness.wire_good_setup_two_puzzles_round_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.CoreSourceExtraction.checked_source_run_pin_and_final' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final' depends on axioms: [propext,
  Classical.choice,

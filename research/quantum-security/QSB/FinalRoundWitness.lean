@@ -107,16 +107,18 @@ def extractMatchedWitness (hashes : Hashes) (initial : State) :
   let key ← beforeCheck.stack[10]?
   some (witnessFromTrace trace a b key)
 
-/-- The trace-to-abstract bridge retains real opening bytes and the exact
-seven-plus-two shape; it makes no claim about the arbitrary `key` argument. -/
-theorem witnessFromTrace_shape_and_openings
-    (hashes : Hashes) (trace : List (Fin 150 × Bytes))
+/-- The trace-to-abstract bridge works for any commitment map and secret hash.
+It retains actual opening bytes and the exact seven-plus-two shape, without
+claiming anything about the arbitrary `key` argument. -/
+theorem witnessFromTrace_shape_and_openings_for
+    (hashSecret : Bytes → Bytes) (commitmentAt : Fin 150 → Bytes)
+    (trace : List (Fin 150 × Bytes))
     (a b : Fin 150) (key : Bytes)
     (seven : trace.length = 7)
     (distinct : (a :: b :: trace.map Prod.fst).Nodup)
-    (hits : ∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) :
+    (hits : ∀ p ∈ trace, hashSecret p.2 = commitmentAt p.1) :
     FinalRoundShape (witnessFromTrace trace a b key) ∧
-    OpeningsValid hashes.h160 generatedCommitmentAt
+    OpeningsValid hashSecret commitmentAt
       (witnessFromTrace trace a b key).signed
       (witnessFromTrace trace a b key).opening := by
   classical
@@ -150,6 +152,20 @@ theorem witnessFromTrace_shape_and_openings
     have inTrace := openingAt_sound trace i value found
     have matched := hits (i, value) inTrace
     simpa [witnessFromTrace, traceValue, found] using matched
+
+/-- Literal generated commitments specialize the generic trace bridge. -/
+theorem witnessFromTrace_shape_and_openings
+    (hashes : Hashes) (trace : List (Fin 150 × Bytes))
+    (a b : Fin 150) (key : Bytes)
+    (seven : trace.length = 7)
+    (distinct : (a :: b :: trace.map Prod.fst).Nodup)
+    (hits : ∀ p ∈ trace, hashes.h160 p.2 = generatedCommitmentAt p.1) :
+    FinalRoundShape (witnessFromTrace trace a b key) ∧
+    OpeningsValid hashes.h160 generatedCommitmentAt
+      (witnessFromTrace trace a b key).signed
+      (witnessFromTrace trace a b key).opening :=
+  witnessFromTrace_shape_and_openings_for hashes.h160
+    generatedCommitmentAt trace a b key seven distinct hits
 
 /-- The literal full byte-model run supplies the shape and opening-equality
 fields of the reduction's `RoundWitness`. The caller supplies `key` freely:

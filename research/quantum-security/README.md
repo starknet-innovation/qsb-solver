@@ -441,6 +441,12 @@ This validates an individual script without assuming universal Python-builder
 equality. The spent-output-byte connection, compiled-Core refinement, and
 real ECDSA/key parsing remain open; the pinned builder audit and four finite
 byte comparisons are only corroboration.
+`QSB/DynamicRoundWitness.lean` computes a good-setup final-round witness from
+the returned checked-source certificate, including seven reached openings,
+two bonus positions, and the reached final key. The validated supplied-wire
+theorem keeps both strict-DER puzzle hits and both fixed ALL checker calls in
+the same hash world. This remains conditional on the source-model run and
+external checker functions; it is not a Core-acceptance or quantum bound.
 `QSB/ByteMachine.lean` models these byte comparisons with arbitrary hash
 functions and a source-shaped ScriptNum parser. It proves that if an arbitrary
 stack reaches a `HASH160; EQUALVERIFY` pair and the remaining program succeeds,

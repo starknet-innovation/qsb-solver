@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,259 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks 1,263 theorem dependency lists with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -858,6 +858,17 @@ refines Core execution and ECDSA/key parsing. The pinned builder source-shape
 audit and four disposable full-lock byte comparisons remain finite evidence.
 Lean also checks that the literal disposable 880-chunk fixture passes the
 new exact-byte validator; this fixture is not a production spent output.
+`QSB/DynamicRoundWitness.lean` now computes a parameterized `RoundWitness`
+from a returned good-setup source certificate. It reads seven opening pairs
+from the executable trace, decodes two bonus indices from reached dummy
+signature bytes, and reads the final key from the reached tenth key slot.
+Lean proves the nine-position shape, opening equations, and strict-DER hit for
+that key. The supplied-wire theorem combines this same computed witness with
+both pin and final strict-DER hits and both fixed ALL verifier calls under one
+shared `H`/`R` world; the two keys may coincide. This is a modeled source-run
+necessity with external hash, key, and ECDSA functions. It does not extract a
+witness from arbitrary Core-accepted transaction bytes or prove a joint
+quantum-query probability bound.
 The pinned local Core adapter's three early-exit cases and 22 isolated
 ten-signature cases were rerun; their outputs matched the committed
 `evidence/multisig-early-exit.json` and
@@ -872,9 +883,9 @@ returned flag equals both this scan and the structural run's reached outcome
 cursor. The finite search is sound and complete relative to candidates with
 this direct-match condition, then derives the fixed `SIGHASH_ALL` obligations
 from a returned certificate. The search returns a Boolean and final source
-state; the `RoundWitness` in the extraction theorem is still existential and
-has not been implemented as an efficient parser of adversarial transaction
-bytes. Hash functions, key
+state; the parameterized good-setup `RoundWitness` is now computed from that
+source-model result, but there is no parser of adversarial transaction bytes.
+Hash functions, key
 parsing, and ECDSA remain explicit inputs; this search is not a compiled-Core
 acceptance proof or a quantum query bound.
 The first version of this generic scanner reused the final-round

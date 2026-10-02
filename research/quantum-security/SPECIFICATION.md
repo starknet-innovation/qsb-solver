@@ -173,6 +173,13 @@ joint event, and on a good setup the seven opening equations and nine
 positions. An individual lock can be validated without proving universal
 Python-builder equality. The actual spent-output-byte connection, compiled-
 Core trace refinement, and real key/ECDSA checker semantics remain open.
+`QSB.DynamicRoundWitness` turns a returned good-setup checked-source
+certificate into an executable final-round `RoundWitness`: seven reached
+openings, two decoded bonus positions, and the reached final key. Its
+supplied-wire theorem retains both strict-DER key hits and both fixed ALL
+verifier calls under the same hash functions. This is a conditional source-
+model result; actual Core-accepted transaction extraction and the joint
+quantum probability bound remain open.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

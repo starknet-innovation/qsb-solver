@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1259,
+  "theorem_count": 1263,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2116,6 +2116,21 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRoundWitness.search_good_setup_extracts": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRoundWitness.wire_good_setup_round_and_final_all": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRoundWitness.wire_good_setup_two_puzzles_round_witness": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicScriptLimits.commitment_pushes_length": [
       "Quot.sound",
       "propext"
@@ -2852,6 +2867,11 @@
       "propext"
     ],
     "QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings_for": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -836,7 +836,12 @@ theorem search_good_setup_reached_final_slots (hashes : Hashes) (lock : Lock)
       beforeCheck.stack.reverse[21]? = some lock.nonce1 ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = lock.secondCommitment p.1) ∧
-      (a :: b :: trace.map Prod.fst).Nodup := by
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      DynamicWholeSource.extractTrace hashes
+        (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+          lock.firstCommitment)
+        ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          some trace := by
   obtain ⟨fullRun, _truth, _sites, checked⟩ :=
     search_sound hashes lock stack validKey verify firstRound final found
   obtain ⟨beforeCheck, reached, finalEval⟩ :=
@@ -860,7 +865,7 @@ theorem search_good_setup_reached_final_slots (hashes : Hashes) (lock : Lock)
     subst before
     simpa [sourceBeforeShape, CoreOpcodeStep.ofByte] using finalEval
   obtain ⟨trace, a, b, modelBefore, modelReached, slotB, slotA,
-    signed, nonceSlot, seven, hits, distinct⟩ :=
+    signed, nonceSlot, seven, hits, distinct, extracted⟩ :=
     DynamicWholeSource.accepted_whole_good_setup_nine_reached_slots
       hashes
       (DynamicFullSerialized.priorOps lock.pin lock.nonce0
@@ -891,7 +896,7 @@ theorem search_good_setup_reached_final_slots (hashes : Hashes) (lock : Lock)
     rw [sourceBeforeShape]
     simpa [CoreOpcodeStep.ofByte] using nonceSlot
   exact ⟨trace, a, b, beforeCheck, reached, sourceB, sourceA,
-    sourceSigned, sourceNonce, seven, hits, distinct⟩
+    sourceSigned, sourceNonce, seven, hits, distinct, extracted⟩
 
 /-- On a good setup, all nine source-addressed signature bytes before the
 fixed final nonce are generated `SIGHASH_SINGLE` dummies. This identifies
@@ -913,7 +918,7 @@ theorem search_good_setup_nine_dummy_signatures (hashes : Hashes) (lock : Lock)
         CoreMultisigStack.signatureAt beforeCheck.stack 10 j.val =
           some (FinalSignedLoop.generatedDummyAt id) := by
   obtain ⟨trace, a, b, beforeCheck, reached, slotB, slotA,
-    signed, nonceSlot, seven, _hits, _distinct⟩ :=
+    signed, nonceSlot, seven, _hits, _distinct, _extracted⟩ :=
     search_good_setup_reached_final_slots hashes lock stack validKey verify
       firstRound final found secondWidth noCommitmentDER
   have enough : 22 ≤ beforeCheck.stack.reverse.length := by

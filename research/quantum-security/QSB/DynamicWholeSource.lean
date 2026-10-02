@@ -322,7 +322,8 @@ theorem accepted_whole_good_setup_nine_reached_slots (hashes : Hashes)
       beforeCheck.stack[21]? = some nonce ∧
       trace.length = 7 ∧
       (∀ p ∈ trace, hashes.h160 p.2 = commitmentAt p.1) ∧
-      (a :: b :: trace.map Prod.fst).Nodup := by
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      extractTrace hashes priorOps initial = some trace := by
   obtain ⟨result, tail, outcomes, cost, firstRun, finalRun⟩ :=
     accepted_first_boundary hashes priorOps nonce commitmentAt initial final
       accepted
@@ -341,7 +342,7 @@ theorem accepted_whole_good_setup_nine_reached_slots (hashes : Hashes)
     exact reached
   obtain ⟨trace, a, b, beforeCheck, checkRun, slotA, slotB,
       signed, nonceSlot, _dummySlot, seven, hits,
-      _different, _freshA, _freshB, distinct, _count, _traceExtract⟩ :=
+      _different, _freshA, _freshB, distinct, _count, traceExtract⟩ :=
     DynamicSourceGate.nine_positions_of_source_eval hashes nonce
       (boolBytes result) commitmentAt width
       (first_result_wrong_width result) tail outcomes cost final finalRun
@@ -354,7 +355,10 @@ theorem accepted_whole_good_setup_nine_reached_slots (hashes : Hashes)
         some beforeCheck
     rw [run_append, firstRun]
     exact checkRun
+  have extracted : extractTrace hashes priorOps initial = some trace := by
+    simp only [extractTrace, firstRun]
+    exact traceExtract
   exact ⟨trace, a, b, beforeCheck, reached, slotB, slotA, signed,
-    nonceSlot, seven, hits, distinct⟩
+    nonceSlot, seven, hits, distinct, extracted⟩
 
 end QSB.DynamicWholeSource

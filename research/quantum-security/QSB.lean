@@ -116,6 +116,7 @@ import QSB.CoreCheckedRunCertificate
 import QSB.CoreCheckedDynamic
 import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
+import QSB.DynamicRoundWitness
 import QSB.FinalScriptCode
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
@@ -1283,6 +1284,7 @@ import QSB.Reduction
 #print axioms QSB.FinalScriptCode.matched_run_reached_scriptCode_verify_all
 #print axioms QSB.FinalRoundWitness.openingAt_sound
 #print axioms QSB.FinalRoundWitness.openingAt_complete
+#print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings_for
 #print axioms QSB.FinalRoundWitness.findDummyIn_exact
 #print axioms QSB.FinalRoundWitness.findDummy_exact
 #print axioms QSB.FinalRoundWitness.witnessFromTrace_shape_and_openings
@@ -1351,6 +1353,9 @@ import QSB.Reduction
 #print axioms QSB.CoreCheckedWire.run_search_succeeds
 #print axioms QSB.CoreCheckedWire.run_two_key_joint_hit
 #print axioms QSB.CoreCheckedWire.run_good_setup_joint_final_event
+#print axioms QSB.DynamicRoundWitness.search_good_setup_extracts
+#print axioms QSB.DynamicRoundWitness.wire_good_setup_round_and_final_all
+#print axioms QSB.DynamicRoundWitness.wire_good_setup_two_puzzles_round_witness
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final
