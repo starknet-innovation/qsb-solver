@@ -86,10 +86,87 @@ theorem observed_fiber_times_pair_card [Fintype X] [Fintype Y] [Fintype Z]
   simp only [Nat.card_prod]
   ring
 
+/-- A fixed first coordinate leaves precisely the second coordinate free.
+This is the response-fiber parameter for a projected-H collision theorem. -/
+def firstProjectionFiberEquiv (target : Y) :
+    {response : Y × Z // response.1 = target} ≃ Z where
+  toFun response := response.1.2
+  invFun filler := ⟨(target, filler), rfl⟩
+  left_inv := by
+    intro response
+    apply Subtype.ext
+    rcases response with ⟨⟨y, z⟩, same⟩
+    cases same
+    rfl
+  right_inv := by intro filler; rfl
+
+/-- A fixed second coordinate leaves precisely the first coordinate free. -/
+def secondProjectionFiberEquiv (target : Z) :
+    {response : Y × Z // response.2 = target} ≃ Y where
+  toFun response := response.1.1
+  invFun filler := ⟨(filler, target), rfl⟩
+  left_inv := by
+    intro response
+    apply Subtype.ext
+    rcases response with ⟨⟨y, z⟩, same⟩
+    cases same
+    rfl
+  right_inv := by intro filler; rfl
+
+theorem first_projection_fiber_card (target : Y) :
+    Nat.card {response : Y × Z // response.1 = target} = Nat.card Z :=
+  Nat.card_congr (firstProjectionFiberEquiv target)
+
+theorem second_projection_fiber_card (target : Z) :
+    Nat.card {response : Y × Z // response.2 = target} = Nat.card Y :=
+  Nat.card_congr (secondProjectionFiberEquiv target)
+
 section QuerySimulation
 
 /-- Fixed-width bit registers for the two ideal hash outputs. -/
 abbrev Bits (width : Nat) := Fin width → Bool
+
+theorem bits_card (width : Nat) : Nat.card (Bits width) = 2 ^ width := by
+  classical
+  simp [Bits, Nat.card_eq_fintype_card]
+
+theorem h256_projection_fiber_card (target : Bits 256) :
+    Nat.card {response : Bits 256 × Bits 160 // response.1 = target} =
+      2 ^ 160 := by
+  rw [first_projection_fiber_card, bits_card]
+
+theorem r160_projection_fiber_card (target : Bits 160) :
+    Nat.card {response : Bits 256 × Bits 160 // response.2 = target} =
+      2 ^ 256 := by
+  rw [second_projection_fiber_card, bits_card]
+
+theorem joint_response_card :
+    Nat.card (Bits 256 × Bits 160) = 2 ^ 416 := by
+  rw [Nat.card_prod, bits_card, bits_card]
+  rw [show (416 : Nat) = 256 + 160 by decide, pow_add]
+
+/-- Fixed projection functions for the generalized collision relation. They
+ignore the tag, so the response-fiber count is uniform over *all* distinct
+tagged input pairs, including any candidate pair a reduction may output. -/
+def projectedH (_input : Sum X X) (response : Bits 256 × Bits 160) :
+    Bits 256 := response.1
+
+def projectedR (_input : Sum X X) (response : Bits 256 × Bits 160) :
+    Bits 160 := response.2
+
+theorem projectedH_fiber_card (left right : Sum X X)
+    (targetResponse : Bits 256 × Bits 160) :
+    Nat.card {response : Bits 256 × Bits 160 |
+      projectedH left response = projectedH right targetResponse} =
+        2 ^ 160 := by
+  exact h256_projection_fiber_card targetResponse.1
+
+theorem projectedR_fiber_card (left right : Sum X X)
+    (targetResponse : Bits 256 × Bits 160) :
+    Nat.card {response : Bits 256 × Bits 160 |
+      projectedR left response = projectedR right targetResponse} =
+        2 ^ 256 := by
+  exact r160_projection_fiber_card targetResponse.2
 
 def zeroBits (width : Nat) : Bits width := fun _ => false
 

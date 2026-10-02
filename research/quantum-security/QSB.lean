@@ -304,6 +304,14 @@ import QSB.Reduction
 #print axioms QSB.TaggedOracle.split_observed
 #print axioms QSB.TaggedOracle.observed_fiber_card
 #print axioms QSB.TaggedOracle.observed_fiber_times_pair_card
+#print axioms QSB.TaggedOracle.first_projection_fiber_card
+#print axioms QSB.TaggedOracle.second_projection_fiber_card
+#print axioms QSB.TaggedOracle.bits_card
+#print axioms QSB.TaggedOracle.h256_projection_fiber_card
+#print axioms QSB.TaggedOracle.r160_projection_fiber_card
+#print axioms QSB.TaggedOracle.joint_response_card
+#print axioms QSB.TaggedOracle.projectedH_fiber_card
+#print axioms QSB.TaggedOracle.projectedR_fiber_card
 #print axioms QSB.TaggedOracle.xorBits_zero_right
 #print axioms QSB.TaggedOracle.xorBits_zero_left
 #print axioms QSB.TaggedOracle.xorBits_self

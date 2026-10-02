@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1418,
+  "theorem_count": 1426,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5419,7 +5419,27 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.TaggedOracle.bits_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.first_projection_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.TaggedOracle.fullQuery_twice": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.h256_projection_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.joint_response_card": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -5429,6 +5449,26 @@
       "propext"
     ],
     "QSB.TaggedOracle.observed_fiber_times_pair_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.projectedH_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.projectedR_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.r160_projection_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.second_projection_fiber_card": [
       "Classical.choice",
       "Quot.sound",
       "propext"

@@ -155,6 +155,23 @@ to verify the relation must be reported or obtained by explicitly charged
 queries. The paper's preimage and collision estimates are examples for their
 own relations, not bounds for QSB.
 
+Its Theorem 5.30 gives a generalized collision bound of order
+`q³·Γ/M` for a fixed function `f(input, oracleResponse)` and a uniform
+`M`-element response set, with `Γ` the largest response fiber that can match
+another input's `f` value. For the product-valued tagged ideal oracle,
+`QSB/TaggedOracle.lean` proves that the full 256-plus-160-bit response space
+has `M = 2^416` elements. Taking `f` to be the first coordinate gives
+`Γ = 2^160`, or `Γ/M = 2^-256`; taking the second gives
+`Γ = 2^256`, or `Γ/M = 2^-160`. The counts hold uniformly over tagged inputs,
+so they cover the distinct H-tag and R-tag collision pairs extracted above.
+This identifies a *candidate* bound for those two routes only. The theorem
+cannot yet be instantiated for QSB: the current world-indexed game has no
+causal q-query algorithm, the honest signing transcript may use many H
+queries, coherent H/R-to-tagged simulation needs its own charged budget,
+and the source byte oracles still need a finite-register bit encoding.
+Exact setup-secret recovery and the two-puzzle route require separate
+quantum arguments, and compiled-Core refinement remains open.
+
 An applicability test for QSB has four concrete obligations:
 
 1. Express the ideal H256 and R160 pair as one jointly sampled oracle game
