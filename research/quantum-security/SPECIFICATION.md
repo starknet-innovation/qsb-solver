@@ -366,12 +366,18 @@ The good-setup extraction and all three quantum event bounds remain external
 premises. In particular, the count theorem supplies only the final setup
 term and cannot justify setting the other terms to zero.
 `JointOracleReduction` instead samples `H`, `R`, setup secrets,
-`R(H(secret))` commitments, adaptive disclosures, and the attacker output in
-one world. Its checked game inequality uses a single bound on the joint
+`R(H(secret))` commitments, adaptive disclosures, the ledger-dependent
+authorization projection, and the attacker output in one world. Its checked
+game inequality uses a single bound on the joint
 fresh-opening-or-two-puzzle event: `Pr[Unauthorized] ≤ εjoint + εgap`, or
 `≤ εjoint + 150·12/256^6` under good-setup extraction and the explicit
 product-uniform setup marginal. It does not establish `εjoint` or model a
 coherent query budget. Core/sighash/ECDSA instantiation remains open.
+`JointRawSourceWorld` specializes this interface to ledger-bound raw source
+submissions under an explicit same-world setup-commitment equality. It proves
+a source-model bound from one joint-event and one setup-exception bound, while
+leaving scriptSig evaluation, Core acceptance, and both probability premises
+external.
 For that same accepted byte-model run, `QSB/FinalBonusIndices.lean` identifies
 both reached bonus signature bytes as generated dummies at original HORS
 positions disjoint from the seven signed opening positions. The union has nine

@@ -20,13 +20,15 @@ variable {Ω Index SignedTx : Type*} [DecidableEq Index]
 
 /-- Everything that may depend on one sampled hash-oracle world and its
 adaptive transcript. `functions` is one pair (H,R); source ECDSA relations
-must still be tied to its H for SHA256d. -/
+must still be tied to its H for SHA256d. The projection also depends on the
+world because it includes authenticated previous outputs, whose locking
+scripts can contain this world's sampled commitments. -/
 structure Experiment (Ω Index SignedTx : Type*) [DecidableEq Index] where
   functions : Ω → JointSourceChecks.Functions
   secrets : Ω → Index → Bytes
   accepted : Ω → SignedTx → Prop
   spendsTarget : Ω → SignedTx → Prop
-  projection : SignedTx → Game.Projection
+  projection : Ω → SignedTx → Game.Projection
   authorized : Ω → Set Game.Projection
   extractor : Ω → Extractor Index Bytes Bytes SignedTx
   pinRelation : Ω → SignedTx → Bytes → Prop
@@ -45,7 +47,7 @@ def strictDERTarget : Set Bytes :=
   {signature | DERSyntax.valid signature = true}
 
 def unauthorized (e : Experiment Ω Index SignedTx) (ω : Ω) : Prop :=
-  Game.Unauthorized (e.accepted ω) (e.spendsTarget ω) e.projection
+  Game.Unauthorized (e.accepted ω) (e.spendsTarget ω) (e.projection ω)
     (e.authorized ω) (e.output ω)
 
 /-- The one joint source failure event. Both alternatives are evaluated in
@@ -53,15 +55,15 @@ the same sampled world, with the same H and R and the same terminal history.
 The relations still need a Core/sighash/ECDSA source instantiation. -/
 def jointFailure (e : Experiment Ω Index SignedTx) (ω : Ω) : Prop :=
   FreshFailure (e.extractor ω) (hashSecret e ω) (commitments e ω)
-      (ForbiddenMessage e.projection (e.authorized ω))
+      (ForbiddenMessage (e.projection ω) (e.authorized ω))
       (e.disclosed ω) (e.output ω) ∨
     TwoPuzzleFailure (e.extractor ω) (e.pinRelation ω)
       (e.roundRelation ω) (e.functions ω).H strictDERTarget
-      (ForbiddenMessage e.projection (e.authorized ω))
+      (ForbiddenMessage (e.projection ω) (e.authorized ω))
       (e.released ω) (e.disclosed ω) (e.output ω)
 
 def extractionGap (e : Experiment Ω Index SignedTx) (ω : Ω) : Prop :=
-  ExtractionGap (e.accepted ω) (e.spendsTarget ω) e.projection
+  ExtractionGap (e.accepted ω) (e.spendsTarget ω) (e.projection ω)
     (e.authorized ω) (e.extractor ω) (hashSecret e ω)
     (commitments e ω) (e.pinRelation ω) (e.roundRelation ω)
     (e.functions ω).H strictDERTarget (e.output ω)
@@ -70,7 +72,7 @@ def extractionGap (e : Experiment Ω Index SignedTx) (ω : Ω) : Prop :=
 Every argument, including Core acceptance, may vary with the oracle world. -/
 theorem unauthorized_joint_or_gap (e : Experiment Ω Index SignedTx)
     (ω : Ω)
-    (honest : AuthorizedRelease e.projection (e.authorized ω)
+    (honest : AuthorizedRelease (e.projection ω) (e.authorized ω)
       (e.released ω))
     (bad : unauthorized e ω) :
     jointFailure e ω ∨ extractionGap e ω := by
@@ -92,7 +94,7 @@ shared coherent query budget; this theorem supplies no such bound. -/
 theorem unauthorized_measure_bound
     [MeasurableSpace Ω]
     (e : Experiment Ω Index SignedTx) (μ : Measure Ω)
-    (honest : ∀ ω, AuthorizedRelease e.projection (e.authorized ω)
+    (honest : ∀ ω, AuthorizedRelease (e.projection ω) (e.authorized ω)
       (e.released ω))
     (εjoint εgap : ENNReal)
     (jointBound : μ {ω | jointFailure e ω} ≤ εjoint)
@@ -123,7 +125,7 @@ theorem unauthorized_measure_bound_with_uniform_setup
     (setupUniform : Measure.map setup μ =
       ProbabilityTheory.uniformOn
         (Set.univ : Set (Ξ × (X → (Fin 20 → UInt8)))))
-    (honest : ∀ ω, AuthorizedRelease e.projection (e.authorized ω)
+    (honest : ∀ ω, AuthorizedRelease (e.projection ω) (e.authorized ω)
       (e.released ω))
     (goodExtraction : ∀ ω,
       ¬DynamicBonusSetup.BadDERSetup source (setup ω) →

@@ -122,6 +122,7 @@ import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
 import QSB.LedgerBoundRawSource
+import QSB.JointRawSourceWorld
 import QSB.ScriptSigSighash
 import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
@@ -168,6 +169,10 @@ import QSB.Reduction
 #print axioms QSB.LedgerBoundRawSource.source_extraction
 #print axioms QSB.LedgerBoundRawSource.projection_eq_bound
 #print axioms QSB.LedgerBoundRawSource.source_unauthorized_joint_or_bad_setup
+#print axioms QSB.JointRawSourceWorld.commitments_eq_lock
+#print axioms QSB.JointRawSourceWorld.jointFailure_iff_source
+#print axioms QSB.JointRawSourceWorld.unauthorized_joint_or_bad_setup
+#print axioms QSB.JointRawSourceWorld.unauthorized_measure_bound
 #print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
 #print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script

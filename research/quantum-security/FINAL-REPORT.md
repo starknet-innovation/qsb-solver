@@ -557,6 +557,17 @@ events in that one sampled world. No coherent-query algorithm, shared query
 budget theorem, nontrivial `εjoint`, or Core extraction is supplied; the
 source ECDSA relations remain external. This interface avoids accidentally
 treating sampled oracle functions as constants of the terminal measure.
+The authorization projection is now world-indexed too: its authenticated
+previous outputs include the QSB script, whose setup commitments can depend
+on the sampled oracle world. `QSB/JointRawSourceWorld.lean` instantiates this
+interface with ledger-bound raw source submissions. Its explicit setup equality
+ties the checked second-round lock commitments to `R(H(secret_i))` in that
+same world. For this source-model game, Lean proves that unauthorized
+acceptance lies in the one joint failure event or the DER-shaped commitment
+setup event, and therefore that supplied bounds `εjoint` and `εsetup` imply
+`Pr[SourceUnauthorized] ≤ εjoint + εsetup`. Neither event bound is supplied by
+that theorem. The scriptSig evaluator, actual Core acceptance, real
+key/ECDSA semantics, and shared coherent-query accounting remain external.
 `QSB/OracleDependentSelection.lean` isolates a further limit of that
 interface. Across four equally likely Boolean functions, a fixed input hits
 the target in two worlds, but an input selected after seeing one oracle value

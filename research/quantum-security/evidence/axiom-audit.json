@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1364,
+  "theorem_count": 1368,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4106,6 +4106,26 @@
       "propext"
     ],
     "QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointRawSourceWorld.commitments_eq_lock": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointRawSourceWorld.jointFailure_iff_source": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointRawSourceWorld.unauthorized_joint_or_bad_setup": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointRawSourceWorld.unauthorized_measure_bound": [
       "Classical.choice",
       "Quot.sound",
       "propext"
