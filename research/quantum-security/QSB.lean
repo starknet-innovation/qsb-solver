@@ -151,6 +151,8 @@ import QSB.Reduction
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq
 #print axioms QSB.ParameterizedFinalSubset.all_preimage_eq_iff_selected_set_eq_of_erased
 #print axioms QSB.ParameterizedFinalSubset.nonce_alias_counterexample
+#print axioms QSB.ParameterizedFinalSubset.pin_scriptCode_ne_final_scriptCode
+#print axioms QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage
 #print axioms QSB.ParameterizedAliasDeletion.nonce_commitment_alias_removes_both
 #print axioms QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup
 #print axioms QSB.ParameterizedReachedSubsetSighash.reached_deleted_script
@@ -1431,6 +1433,8 @@ import QSB.Reduction
 #print axioms QSB.FinalSubsetInjective.scriptCode_eq_iff_selected_set_eq
 #print axioms QSB.FinalSubsetInjective.distinct_selected_sets_distinct_all_preimages
 #print axioms QSB.FinalSubsetInjective.all_preimage_eq_iff_selected_set_eq
+#print axioms QSB.FinalSubsetInjective.pin_scriptCode_ne_final_scriptCode
+#print axioms QSB.FinalSubsetInjective.pin_all_preimage_ne_final_all_preimage
 #print axioms QSB.CoreSourceExtraction.checked_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.checked_reached_source_run_pin_and_final
 #print axioms QSB.CoreSourceExtraction.necessary_checks_extract_pin_and_final

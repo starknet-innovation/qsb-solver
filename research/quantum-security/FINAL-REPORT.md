@@ -599,6 +599,18 @@ covers transactions equal after original scriptSig erasure. The fixed final
 nonce's `SIGHASH_ALL` byte prevents aliasing with generated `SIGHASH_SINGLE`
 dummies. These results do not determine Core-accepted subsets or refine
 compiled Core, and preimage inequality does not rule out SHA256d collisions.
+The pin/final separation is now checked too. On the literal lock, the final
+nonce push survives pin-signature deletion but is removed from every final
+candidate scriptCode, even for an empty or repeated index list. On a
+parameterized lock, the same result holds whenever the pin and final nonce
+have different serialized push patterns. For any valid selected source input,
+the two modeled ALL preimage byte strings are therefore distinct. Applying
+this to the actual fixed signature checks also requires their `0x01` hash-type
+flags and the Core-to-source sighash refinement. This is a prerequisite for
+reasoning about two hash evaluations, not a claim
+that their SHA256d values or recovered keys differ: one key can still verify
+two different fixed signatures/messages under the recovery equations. The
+universal compiled-Core and shared-query quantum arguments remain open.
 `ParameterizedFinalSubset.nonce_alias_counterexample` checks the ALL-flag
 boundary of the arbitrary-list theorem: if the final nonce bytes instead
 equal one generated `SIGHASH_SINGLE` dummy, selecting that dummy or omitting

@@ -449,4 +449,170 @@ theorem nonce_alias_counterexample
     simp [selectedPatterns]
   · simp
 
+/-- Source-shaped deletion for the parameterized pin signature. -/
+def pinDeletedScript (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes) : Bytes :=
+  CoreFindAndDelete.run 880
+    (DynamicFullSerialized.fullWire pin nonce0 nonce1
+      firstCommitment secondCommitment)
+    (CorePushSerialize.pushPattern pin)
+
+private def pinResidualChunks (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes) :
+    List Bytes :=
+  (ParameterizedFindAndDelete.chunks pin nonce0 nonce1
+    firstCommitment secondCommitment).filter
+      (fun chunk => chunk ∉ [CorePushSerialize.pushPattern pin])
+
+private theorem pin_scriptCode_eq_residual (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76) :
+    pinDeletedScript pin nonce0 nonce1 firstCommitment
+      secondCommitment =
+      (pinResidualChunks pin nonce0 nonce1 firstCommitment
+        secondCommitment).flatten := by
+  simpa only [pinDeletedScript, pinResidualChunks,
+    ScriptCodeSelection.stripEncodedChunks, List.map_singleton,
+    CoreFindAndDelete.runMany] using
+    ParameterizedFindAndDelete.runMany_eq_chunk_filter
+      pin nonce0 nonce1 firstCommitment secondCommitment
+      firstWidth secondWidth pinShort nonce0Short nonce1Short [pin]
+
+private theorem pin_residual_parse (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76) :
+    EncodedScript.parseChunks 880
+      (pinDeletedScript pin nonce0 nonce1
+        firstCommitment secondCommitment) =
+      some (pinResidualChunks pin nonce0 nonce1
+        firstCommitment secondCommitment) := by
+  rw [pin_scriptCode_eq_residual pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short]
+  apply parse_simple_chunks_fuel
+  · intro chunk present
+    exact ParameterizedFindAndDelete.chunks_simple
+      pin nonce0 nonce1 firstCommitment secondCommitment
+      firstWidth secondWidth pinShort nonce0Short nonce1Short
+      chunk (List.mem_filter.mp present).1
+  · exact (List.length_filter_le _ _).trans (by
+      rw [ParameterizedFindAndDelete.chunks_length])
+
+private theorem nonce_pattern_in_chunks (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes) :
+    noncePattern nonce1 ∈ ParameterizedFindAndDelete.chunks
+      pin nonce0 nonce1 firstCommitment secondCommitment := by
+  have datum : nonce1 ∈ DynamicSerializedRound.dataValues
+      nonce1 secondCommitment := by
+    simp [DynamicSerializedRound.dataValues]
+  have pushed : CorePushSerialize.pushPattern nonce1 ∈
+      (DynamicSerializedRound.dataValues nonce1 secondCommitment).map
+        CorePushSerialize.pushPattern := List.mem_map_of_mem datum
+  simp only [ParameterizedFindAndDelete.chunks,
+    DynamicWireSource.fullChunks, DynamicSerializedRound.chunks,
+    List.mem_append]
+  exact Or.inr (Or.inl pushed)
+
+/-- If the pin and final nonce have different serialized pushes, their
+source-shaped scriptCodes cannot alias for any selected dummy-index list.
+The final nonce push survives pin deletion but not final deletion. -/
+theorem pin_scriptCode_ne_final_scriptCode
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      noncePattern nonce1)
+    (ids : List (Fin 150)) :
+    pinDeletedScript pin nonce0 nonce1 firstCommitment
+      secondCommitment ≠
+    deletedScript pin nonce0 nonce1 firstCommitment secondCommitment ids := by
+  intro same
+  have parsed := congrArg (EncodedScript.parseChunks 880) same
+  rw [pin_residual_parse pin nonce0 nonce1 firstCommitment
+      secondCommitment firstWidth secondWidth pinShort nonce0Short
+      nonce1Short,
+    residual_parse pin nonce0 nonce1 firstCommitment
+      secondCommitment firstWidth secondWidth pinShort nonce0Short
+      nonce1Short ids] at parsed
+  have residualEq := Option.some.inj parsed
+  have inPin : noncePattern nonce1 ∈ pinResidualChunks
+      pin nonce0 nonce1 firstCommitment secondCommitment := by
+    exact List.mem_filter.mpr ⟨nonce_pattern_in_chunks pin nonce0 nonce1
+      firstCommitment secondCommitment,
+      by simpa using differentPush.symm⟩
+  have notFinal : noncePattern nonce1 ∉ residualChunks pin nonce0
+      nonce1 firstCommitment secondCommitment ids := by
+    simp [residualChunks, selectedPatterns_eq]
+  exact notFinal (residualEq ▸ inPin)
+
+private theorem pinDeletedScript_width (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76) :
+    (pinDeletedScript pin nonce0 nonce1 firstCommitment
+      secondCommitment).length < 256 ^ 8 := by
+  have reduced := CoreFindAndDelete.run_length_le 880
+    (DynamicFullSerialized.fullWire pin nonce0 nonce1
+      firstCommitment secondCommitment)
+    (CorePushSerialize.pushPattern pin)
+  have bounded := (DynamicScriptLimits.full_wire_below_core_limit
+    pin nonce0 nonce1 firstCommitment secondCommitment
+    firstWidth secondWidth pinShort nonce0Short nonce1Short).1
+  change (pinDeletedScript pin nonce0 nonce1 firstCommitment
+    secondCommitment).length ≤
+      (DynamicFullSerialized.fullWire pin nonce0 nonce1
+        firstCommitment secondCommitment).length at reduced
+  omega
+
+/-- The parameterized pin and final fixed-ALL source preimages differ on
+any valid selected input under the explicit nonaliasing premise. Different
+preimages can still have equal SHA256d digests or verify under one key. -/
+theorem pin_all_preimage_ne_final_all_preimage
+    (pin nonce0 nonce1 : Bytes)
+    (firstCommitment secondCommitment : Fin 150 → Bytes)
+    (firstWidth : ∀ i, (firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (secondCommitment i).length = 20)
+    (pinShort : pin.length < 76)
+    (nonce0Short : nonce0.length < 76)
+    (nonce1Short : nonce1.length < 76)
+    (differentPush : CorePushSerialize.pushPattern pin ≠
+      noncePattern nonce1)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (txValid : SighashAllWire.valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (ids : List (Fin 150)) :
+    SighashAllWire.sourceAllPreimage tx selected
+      (pinDeletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment) ≠
+    SighashAllWire.sourceAllPreimage tx selected
+      (deletedScript pin nonce0 nonce1 firstCommitment
+        secondCommitment ids) := by
+  intro same
+  exact pin_scriptCode_ne_final_scriptCode pin nonce0 nonce1
+    firstCommitment secondCommitment firstWidth secondWidth
+    pinShort nonce0Short nonce1Short differentPush ids
+    (ScriptSigSighash.sourceAllPreimage_injective_scriptCode
+      tx selected _ _ txValid selectedValid
+      (pinDeletedScript_width pin nonce0 nonce1 firstCommitment
+        secondCommitment firstWidth secondWidth pinShort nonce0Short
+        nonce1Short)
+      (deletedScript_width pin nonce0 nonce1 firstCommitment
+        secondCommitment firstWidth secondWidth pinShort nonce0Short
+        nonce1Short ids) same)
+
 end QSB.ParameterizedFinalSubset

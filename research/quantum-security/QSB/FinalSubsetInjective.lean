@@ -282,4 +282,84 @@ theorem all_preimage_eq_iff_selected_set_eq
   · intro same
     rw [same_selected_set_equal_scriptCode same]
 
+/-- Source-shaped FindAndDelete bytes for the fixed pin signature on the
+literal 880-chunk lock. -/
+def pinDeletedScript : Bytes :=
+  CoreFindAndDelete.run 880 EncodedLayout.chunks.flatten
+    FindAndDelete.pinPattern
+
+private def pinResidualChunks : List Bytes :=
+  EncodedLayout.chunks.filter (fun chunk =>
+    chunk ∉ [FindAndDelete.pinPattern])
+
+private theorem pin_residual_simple :
+    ∀ chunk ∈ pinResidualChunks,
+      FindAndDelete.simpleChunk chunk = true := by
+  intro chunk present
+  exact List.all_eq_true.mp FindAndDelete.literal_simple_chunks chunk
+    (List.mem_filter.mp present).1
+
+private theorem pin_residual_length :
+    pinResidualChunks.length ≤ 880 := by
+  exact (List.length_filter_le _ _).trans (by
+    simp [EncodedLayout.chunks_length])
+
+private theorem pin_residual_parse :
+    EncodedScript.parseChunks 880 pinDeletedScript =
+      some pinResidualChunks := by
+  unfold pinDeletedScript
+  rw [CoreFindAndDelete.pin_scriptCode_run]
+  change EncodedScript.parseChunks 880 pinResidualChunks.flatten =
+    some pinResidualChunks
+  exact parse_simple_chunks_fuel pinResidualChunks 880
+    pin_residual_simple pin_residual_length
+
+private theorem nonce_pattern_in_chunks :
+    noncePattern ∈ EncodedLayout.chunks := by decide
+
+private theorem nonce_pattern_ne_pin :
+    noncePattern ≠ FindAndDelete.pinPattern := by decide
+
+/-- The fixed final nonce push survives pin-signature deletion but is
+removed by every final multisignature deletion list. Thus even an empty or
+repeated selected-index list cannot alias the pin scriptCode. -/
+theorem pin_scriptCode_ne_final_scriptCode (ids : List (Fin 150)) :
+    pinDeletedScript ≠ ScriptSigSighash.tenDeletedScript ids := by
+  intro same
+  have parsed := congrArg (EncodedScript.parseChunks 880) same
+  rw [pin_residual_parse, residual_from_scriptCode] at parsed
+  have residualEq := Option.some.inj parsed
+  have inPin : noncePattern ∈ pinResidualChunks := by
+    exact List.mem_filter.mpr ⟨nonce_pattern_in_chunks,
+      by simp [nonce_pattern_ne_pin]⟩
+  have notFinal : noncePattern ∉ residualChunks ids := by
+    simp [residualChunks, selectedPatterns_eq]
+  exact notFinal (residualEq ▸ inPin)
+
+private theorem pinDeletedScript_width :
+    pinDeletedScript.length < 256 ^ 8 := by
+  have bounded := CoreFindAndDelete.run_length_le 880
+    EncodedLayout.chunks.flatten FindAndDelete.pinPattern
+  have lockLength := EncodedLayout.script_length
+  change pinDeletedScript.length ≤ EncodedLayout.chunks.flatten.length
+    at bounded
+  omega
+
+/-- On any valid selected input, the pin and final fixed-SIGHASH_ALL
+source preimages are different for every final selected-index list. This
+does not imply distinct SHA256d digests or distinct verification keys. -/
+theorem pin_all_preimage_ne_final_all_preimage
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (txValid : SighashAllWire.valid tx)
+    (selectedValid : selected < tx.inputs.length)
+    (ids : List (Fin 150)) :
+    SighashAllWire.sourceAllPreimage tx selected pinDeletedScript ≠
+      SighashAllWire.sourceAllPreimage tx selected
+        (ScriptSigSighash.tenDeletedScript ids) := by
+  intro same
+  exact pin_scriptCode_ne_final_scriptCode ids
+    (ScriptSigSighash.sourceAllPreimage_injective_scriptCode
+      tx selected _ _ txValid selectedValid
+      pinDeletedScript_width (tenDeletedScript_width ids) same)
+
 end QSB.FinalSubsetInjective

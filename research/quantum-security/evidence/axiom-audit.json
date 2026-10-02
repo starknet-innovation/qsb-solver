@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1326,
+  "theorem_count": 1330,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -3397,6 +3397,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FinalSubsetInjective.pin_all_preimage_ne_final_all_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FinalSubsetInjective.pin_scriptCode_ne_final_scriptCode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FinalSubsetInjective.residual_from_scriptCode": [
       "Classical.choice",
       "Quot.sound",
@@ -4418,6 +4428,16 @@
       "propext"
     ],
     "QSB.ParameterizedFinalSubset.nonce_alias_counterexample": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.pin_all_preimage_ne_final_all_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParameterizedFinalSubset.pin_scriptCode_ne_final_scriptCode": [
       "Classical.choice",
       "Quot.sound",
       "propext"
