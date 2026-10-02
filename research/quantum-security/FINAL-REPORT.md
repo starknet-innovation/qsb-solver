@@ -956,6 +956,16 @@ unauthorized event again implies a joint failure or DER-shaped commitment;
 with setup equality, the opening target is `R(H(secret_i))` in the same world.
 The scriptSig evaluator, Core transaction parsing and lock execution, and
 the link from a real spent output to the supplied script remain unproved.
+`QSB/RawReachedSubsetSighash.lean` now compares two raw submissions that both
+pass this literal checked-source acceptance predicate. It obtains each
+transaction and initial stack from that submission's successful `prepare`
+call, so the stacks are tied to the parsed scriptSig through the supplied
+evaluator. If the selected input is the same and the decoded transactions
+agree after erasing original scriptSigs, their reached final source-shaped
+ALL preimages are equal exactly when their nine selected dummy-position sets
+are equal. Each run has its own transaction-dependent external ECDSA checker;
+the H/R functions are shared. This is still a source-model implication,
+not a statement about compiled Core or SHA256d digest injectivity.
 The pinned local Core adapter's three early-exit cases were rerun and matched
 `evidence/multisig-early-exit.json` byte for byte. A later 25-case isolated
 ten-signature rerun used the same hash-pinned Core adapter and library in the

@@ -82,6 +82,10 @@ their reached final ALL preimages have the selected-set equality classes.
 The fourth finite full-lock differential case adds a non-push scriptSig
 prefix without changing the app's ALL digest or the pinned Core result; the
 three puzzle checks remain disabled.
+The raw-source corollary obtains each stack from the selected parsed scriptSig
+through an explicit evaluator and permits a separate transaction-dependent
+checker for each run. The evaluator and compiled-Core correspondence remain
+external obligations.
 An additional [full-lock differential](evidence/full-subset-switch-core.json)
 checks two such sets against the pinned Core 27.2 adapter. In one synthetic,
 unfunded two-input/two-output transaction, with QSB at input 1, replacing

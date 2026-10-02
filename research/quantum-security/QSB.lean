@@ -123,6 +123,7 @@ import QSB.ScriptSigSighash
 import QSB.FinalSubsetInjective
 import QSB.FinalScriptCode
 import QSB.ReachedSubsetSighash
+import QSB.RawReachedSubsetSighash
 import QSB.FinalRoundWitness
 import QSB.SourceWitness
 import QSB.DERHeaderBound
@@ -140,6 +141,7 @@ import QSB.Reduction
 #print axioms QSB.ReachedSubsetSighash.literal_validated_run_eq_static
 #print axioms QSB.ReachedSubsetSighash.validated_runs_reached_all_preimage_classification
 #print axioms QSB.ReachedSubsetSighash.validated_runs_erased_scriptSig_classification
+#print axioms QSB.RawReachedSubsetSighash.accepted_raw_pair_preimage_classification
 #print axioms QSB.DynamicScriptLimits.fixed_width_pushes_length
 #print axioms QSB.DynamicScriptLimits.commitment_pushes_length
 #print axioms QSB.DynamicScriptLimits.full_wire_length

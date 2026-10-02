@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1300,
+  "theorem_count": 1301,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4509,6 +4509,11 @@
       "propext"
     ],
     "QSB.RandomOracleSetup.shared_function_union_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RawReachedSubsetSighash.accepted_raw_pair_preimage_classification": [
       "Classical.choice",
       "Quot.sound",
       "propext"

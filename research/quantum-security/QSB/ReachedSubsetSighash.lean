@@ -263,14 +263,14 @@ theorem checked_runs_reached_all_preimage_classification
     (txValid : SighashAllWire.valid tx)
     (selectedValid : selected < tx.inputs.length)
     (validKey : Bytes → Bool)
-    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftVerify rightVerify : CoreChecksigEval.VerifyECDSA)
     (leftInitial leftFinal rightInitial rightFinal : CoreCheckedStep.State)
     (leftRecords rightRecords : List Bool)
     (leftSuccess : CoreCheckedStep.run hashes
-      EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+      EncodedLayout.chunks.flatten validKey leftVerify ByteLayout.program
       leftInitial = some (leftFinal, leftRecords))
     (rightSuccess : CoreCheckedStep.run hashes
-      EncodedLayout.chunks.flatten validKey verify ByteLayout.program
+      EncodedLayout.chunks.flatten validKey rightVerify ByteLayout.program
       rightInitial = some (rightFinal, rightRecords))
     (leftAccepted : CoreFinalTruth.castToBool
       (leftFinal.stack.getLast?.getD []) = true)
@@ -302,14 +302,14 @@ theorem checked_runs_reached_all_preimage_classification
     leftSeven, _leftHits, _leftDifferent, _leftAFresh, _leftBFresh,
     leftNodup, leftCard, _leftExtract⟩ :=
       CoreCheckedStep.literal_checked_run_nine_positions hashes
-        validKey verify leftInitial leftFinal leftRecords
+        validKey leftVerify leftInitial leftFinal leftRecords
         leftSuccess leftAccepted
   obtain ⟨rightTrace, rightA, rightB, rightBefore, rightReached,
     right13, right12, rightSigned, right21, _rightDummy,
     rightSeven, _rightHits, _rightDifferent, _rightAFresh, _rightBFresh,
     rightNodup, rightCard, _rightExtract⟩ :=
       CoreCheckedStep.literal_checked_run_nine_positions hashes
-        validKey verify rightInitial rightFinal rightRecords
+        validKey rightVerify rightInitial rightFinal rightRecords
         rightSuccess rightAccepted
   exact ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,
     leftBefore, rightBefore, leftReached, rightReached,
@@ -395,13 +395,13 @@ theorem validated_runs_reached_all_preimage_classification
       CoreCheckedWire.literalLock = true)
     (leftStack rightStack : List Bytes)
     (validKey : Bytes → Bool)
-    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftVerify rightVerify : CoreChecksigEval.VerifyECDSA)
     (leftFinal rightFinal : CoreCheckedStep.State)
     (leftRecords rightRecords : List Bool)
     (leftSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
-      leftScript leftStack validKey verify = some (leftFinal, leftRecords))
+      leftScript leftStack validKey leftVerify = some (leftFinal, leftRecords))
     (rightSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
-      rightScript rightStack validKey verify = some (rightFinal, rightRecords))
+      rightScript rightStack validKey rightVerify = some (rightFinal, rightRecords))
     (leftAccepted : CoreFinalTruth.castToBool
       (leftFinal.stack.getLast?.getD []) = true)
     (rightAccepted : CoreFinalTruth.castToBool
@@ -426,11 +426,11 @@ theorem validated_runs_reached_all_preimage_classification
        (leftA :: leftB :: leftTrace.map Prod.fst).toFinset =
          (rightA :: rightB :: rightTrace.map Prod.fst).toFinset) := by
   rw [literal_validated_run_eq_static hashes leftScript leftMatched
-    leftStack validKey verify] at leftSuccess
+    leftStack validKey leftVerify] at leftSuccess
   rw [literal_validated_run_eq_static hashes rightScript rightMatched
-    rightStack validKey verify] at rightSuccess
+    rightStack validKey rightVerify] at rightSuccess
   simpa using checked_runs_reached_all_preimage_classification
-    hashes tx selected txValid selectedValid validKey verify
+    hashes tx selected txValid selectedValid validKey leftVerify rightVerify
     ⟨leftStack.reverse, 0⟩ leftFinal ⟨rightStack.reverse, 0⟩ rightFinal
     leftRecords rightRecords leftSuccess rightSuccess
     leftAccepted rightAccepted
@@ -454,13 +454,13 @@ theorem validated_runs_erased_scriptSig_classification
       CoreCheckedWire.literalLock = true)
     (leftStack rightStack : List Bytes)
     (validKey : Bytes → Bool)
-    (verify : CoreChecksigEval.VerifyECDSA)
+    (leftVerify rightVerify : CoreChecksigEval.VerifyECDSA)
     (leftFinal rightFinal : CoreCheckedStep.State)
     (leftRecords rightRecords : List Bool)
     (leftSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
-      leftScript leftStack validKey verify = some (leftFinal, leftRecords))
+      leftScript leftStack validKey leftVerify = some (leftFinal, leftRecords))
     (rightSuccess : CoreCheckedWire.run hashes CoreCheckedWire.literalLock
-      rightScript rightStack validKey verify = some (rightFinal, rightRecords))
+      rightScript rightStack validKey rightVerify = some (rightFinal, rightRecords))
     (leftAccepted : CoreFinalTruth.castToBool
       (leftFinal.stack.getLast?.getD []) = true)
     (rightAccepted : CoreFinalTruth.castToBool
@@ -490,7 +490,7 @@ theorem validated_runs_erased_scriptSig_classification
       validated_runs_reached_all_preimage_classification
         hashes leftTx selected leftValid selectedValid
         leftScript rightScript leftMatched rightMatched
-        leftStack rightStack validKey verify leftFinal rightFinal
+        leftStack rightStack validKey leftVerify rightVerify leftFinal rightFinal
         leftRecords rightRecords leftSuccess rightSuccess
         leftAccepted rightAccepted
   refine ⟨leftTrace, rightTrace, leftA, leftB, rightA, rightB,

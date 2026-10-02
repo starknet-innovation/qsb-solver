@@ -22,6 +22,9 @@
 'QSB.ReachedSubsetSighash.validated_runs_erased_scriptSig_classification' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.RawReachedSubsetSighash.accepted_raw_pair_preimage_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.DynamicScriptLimits.fixed_width_pushes_length' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicScriptLimits.commitment_pushes_length' depends on axioms: [propext, Quot.sound]
 'QSB.DynamicScriptLimits.full_wire_length' depends on axioms: [propext, Quot.sound]

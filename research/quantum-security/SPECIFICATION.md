@@ -542,6 +542,11 @@ If two validated source attempts differ only in original scriptSig bytes,
 their reached final ALL preimages. Formally it requires equality after
 erasing all original scriptSigs, the same selected input, and a valid source
 wire domain; actual Core parsing and execution remain external.
+`QSB/RawReachedSubsetSighash.lean` lifts this result to two source-accepted
+raw submissions: strict Lean decoding and the supplied scriptSig evaluator
+produce each attempt's fields and initial lock stack. Equal erased decoded
+fields and selected input give the same final-preimage classification, with
+separate transaction-dependent ECDSA checkers and shared H/R functions.
 `QSB/DynamicJointTransaction.search_two_key_joint_hit` combines both DER hits
 with both fixed-signature `H(H(sourceAllPreimage))` calls from one certificate;
 the pin and final keys may coincide. These statements do not yet supply a

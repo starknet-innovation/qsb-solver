@@ -207,6 +207,10 @@ The checked classification also allows different original scriptSig bytes
 when the source transaction fields agree after script erasure. A finite
 puzzle-relaxed Core case accepts an added non-push `OP_1 OP_DROP` prefix with
 the same recovered keys; see `evidence/full-subset-switch-core.json`.
+`QSB/RawReachedSubsetSighash.lean` ties both stacks to the parsed raw
+transactions through the explicit scriptSig evaluator in the checked source
+game. Equal fields after scriptSig erasure retain the selected-set preimage
+classification. The evaluator and Core-to-Lean refinement remain external.
 A [pinned full-lock differential](evidence/full-subset-switch-core.json) tests
 two final subsets on a synthetic two-output transaction. The puzzle-relaxed
 lock accepts each with its recovered keys but rejects reuse of the first
