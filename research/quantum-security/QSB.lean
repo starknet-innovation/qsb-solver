@@ -221,6 +221,12 @@ import QSB.Reduction
 #print axioms QSB.JointFreshCandidates.exact_secret_in_pairs
 #print axioms QSB.JointFreshCandidates.reached_h_collision_in_pairs
 #print axioms QSB.JointFreshCandidates.reached_r_collision_in_pairs
+#print axioms QSB.JointFreshCandidates.firstPassing_finds
+#print axioms QSB.JointFreshCandidates.firstPassing_count_le
+#print axioms QSB.JointFreshCandidates.reached_h_collision_post_succeeds
+#print axioms QSB.JointFreshCandidates.reached_r_collision_post_succeeds
+#print axioms QSB.JointFreshCandidates.hCollisionPost_count_le
+#print axioms QSB.JointFreshCandidates.rCollisionPost_count_le
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
 #print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
 #print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional

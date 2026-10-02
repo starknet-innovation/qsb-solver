@@ -124,10 +124,13 @@ anywhere in an enormous sampled function.
 `QSB/JointFreshCandidates.lean` enumerates every extracted signed
 opening/secret pair in index order, with at most 150 pairs in the concrete
 game. It also enumerates their H-image pairs for an R-collision output. A
-reached route is guaranteed to occur in the corresponding list; no
-oracle-dependent successful index is chosen for free. A QROM reduction still
-has to account for the H-image evaluations, the final selection or
-multi-output verification, and the actual source extractor's cost.
+reached route is guaranteed to occur in the corresponding list. A checked
+classical postprocessor tests candidates in order and outputs a valid pair on
+either collision route, after at most 150 predicate evaluations in the
+concrete game. Its counter is not yet an oracle-query count. A QROM reduction
+still has to charge the H-image evaluations, the predicate's H or R calls,
+and the actual source extractor's cost; the postprocessor cannot be treated
+as free oracle-dependent selection.
 
 Kai-Min Chung, Serge Fehr, Yu-Hsuan Huang, and Tai-Ning Liao,
 [*On the Compressed-Oracle Technique, and Post-Quantum Security of Proofs of

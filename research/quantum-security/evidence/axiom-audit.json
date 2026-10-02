@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1394,
+  "theorem_count": 1400,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4109,7 +4109,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointFreshCandidates.firstPassing_count_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.firstPassing_finds": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.hCollisionPost_count_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointFreshCandidates.openingPairs_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.rCollisionPost_count_le": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -4121,11 +4140,19 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointFreshCandidates.reached_h_collision_post_succeeds": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointFreshCandidates.reached_pair_mem": [
       "Quot.sound",
       "propext"
     ],
     "QSB.JointFreshCandidates.reached_r_collision_in_pairs": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.reached_r_collision_post_succeeds": [
       "Quot.sound",
       "propext"
     ],

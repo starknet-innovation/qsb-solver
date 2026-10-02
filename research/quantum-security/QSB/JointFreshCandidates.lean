@@ -97,4 +97,103 @@ theorem reached_r_collision_in_pairs
     (e.functions ω).H (e.secrets ω i)), rMember,
     differentH, matched⟩
 
+/-- Measured classical postprocessing of a candidate list. The counter is
+the number of predicate evaluations, not an oracle-query count. -/
+def firstPassing {α : Type*} (test : α → Bool) :
+    List α → Option α × Nat
+  | [] => (none, 0)
+  | candidate :: rest =>
+      if test candidate then (some candidate, 1)
+      else
+        let result := firstPassing test rest
+        (result.1, result.2 + 1)
+
+theorem firstPassing_finds {α : Type*} (test : α → Bool)
+    (items : List α)
+    (present : ∃ candidate ∈ items, test candidate = true) :
+    ∃ candidate count,
+      firstPassing test items = (some candidate, count) ∧
+      candidate ∈ items ∧ test candidate = true := by
+  induction items with
+  | nil => simp at present
+  | cons head tail ih =>
+      by_cases headPasses : test head = true
+      · exact ⟨head, 1, by simp [firstPassing, headPasses],
+          List.mem_cons_self, headPasses⟩
+      · obtain ⟨candidate, member, passes⟩ := present
+        rcases List.mem_cons.mp member with same | inTail
+        · subst candidate
+          exact False.elim (headPasses passes)
+        · obtain ⟨found, count, result, foundMember, foundPasses⟩ :=
+            ih ⟨candidate, inTail, passes⟩
+          exact ⟨found, count + 1,
+            by simp [firstPassing, headPasses, result],
+            List.mem_cons_of_mem _ foundMember, foundPasses⟩
+
+theorem firstPassing_count_le {α : Type*} (test : α → Bool)
+    (items : List α) :
+    (firstPassing test items).2 ≤ items.length := by
+  induction items with
+  | nil => simp [firstPassing]
+  | cons head tail ih =>
+      by_cases headPasses : test head = true
+      · simp [firstPassing, headPasses]
+      · simpa [firstPassing, headPasses] using Nat.succ_le_succ ih
+
+def hCollisionPost (e : JointOracleReduction.Experiment Ω Index SignedTx)
+    (ω : Ω) : Option (Bytes × Bytes) × Nat :=
+  firstPassing
+    (fun pair => decide (pair.1 ≠ pair.2 ∧
+      (e.functions ω).H pair.1 = (e.functions ω).H pair.2))
+    (openingPairs e ω)
+
+def rCollisionPost (e : JointOracleReduction.Experiment Ω Index SignedTx)
+    (ω : Ω) : Option (Bytes × Bytes) × Nat :=
+  firstPassing
+    (fun pair => decide (pair.1 ≠ pair.2 ∧
+      (e.functions ω).R pair.1 = (e.functions ω).R pair.2))
+    (rInputPairs e ω)
+
+theorem reached_h_collision_post_succeeds
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω)
+    (collision : JointFreshRoutes.reachedHCollision e ω) :
+    ∃ pair count, hCollisionPost e ω = (some pair, count) ∧
+      pair.1 ≠ pair.2 ∧
+      (e.functions ω).H pair.1 = (e.functions ω).H pair.2 := by
+  obtain ⟨witness, member, different, equalH⟩ :=
+    reached_h_collision_in_pairs e ω collision
+  obtain ⟨pair, count, result, _member, passes⟩ :=
+    firstPassing_finds
+      (fun (pair : Bytes × Bytes) => decide (pair.1 ≠ pair.2 ∧
+        (e.functions ω).H pair.1 = (e.functions ω).H pair.2))
+      (openingPairs e ω)
+      ⟨witness, member, by simp [different, equalH]⟩
+  exact ⟨pair, count, result, by simpa using passes⟩
+
+theorem reached_r_collision_post_succeeds
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω)
+    (collision : JointFreshRoutes.reachedRCollision e ω) :
+    ∃ pair count, rCollisionPost e ω = (some pair, count) ∧
+      pair.1 ≠ pair.2 ∧
+      (e.functions ω).R pair.1 = (e.functions ω).R pair.2 := by
+  obtain ⟨witness, member, different, equalR⟩ :=
+    reached_r_collision_in_pairs e ω collision
+  obtain ⟨pair, count, result, _member, passes⟩ :=
+    firstPassing_finds
+      (fun (pair : Bytes × Bytes) => decide (pair.1 ≠ pair.2 ∧
+        (e.functions ω).R pair.1 = (e.functions ω).R pair.2))
+      (rInputPairs e ω)
+      ⟨witness, member, by simp [different, equalR]⟩
+  exact ⟨pair, count, result, by simpa using passes⟩
+
+theorem hCollisionPost_count_le [Fintype Index]
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω) :
+    (hCollisionPost e ω).2 ≤ Fintype.card Index :=
+  (firstPassing_count_le _ _).trans (openingPairs_length_le e ω)
+
+theorem rCollisionPost_count_le [Fintype Index]
+    (e : JointOracleReduction.Experiment Ω Index SignedTx) (ω : Ω) :
+    (rCollisionPost e ω).2 ≤ Fintype.card Index :=
+  (firstPassing_count_le _ _).trans (rInputPairs_length_le e ω)
+
 end QSB.JointFreshCandidates
