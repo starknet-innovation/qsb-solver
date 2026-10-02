@@ -1233,6 +1233,12 @@ have been queried or exposed elsewhere, so that branch is not yet an
 oracle-fresh event. The list must contain all relevant approvals to represent
 a complete disclosure transcript. The result is deterministic; causal
 transcript modeling and a shared-query quantum bound are still missing.
+`history_event_public_case` refines the classification using a supplied set
+of publicly disclosed keys. An unmatched pair whose key is in that set is
+charged to the at-most-eight digest-target branch even if the approved-call
+list has no record for it. Only a key absent from both sets remains in the
+DER-key branch. Completeness of the supplied disclosure set is external, and
+absence still does not establish an unqueried or independent oracle input.
 On a good setup, `search_good_setup_joint_history_event` places those two
 checks and their three cases alongside the seven reached `R(H(opening))`
 equations and two distinct

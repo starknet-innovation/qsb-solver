@@ -477,6 +477,88 @@ theorem classify_checked_call
         selected scriptCode attemptedValid scriptCodeValid forbidden
         releasedChecked
 
+/-- A supplied set of publicly disclosed keys, which may contain more than
+the keys in the approved-call list. Completeness is an external premise. -/
+def PublicKnownKey
+    {functions : JointSourceChecks.Functions}
+    {ecdsa : Bytes → Bytes → Bytes → Bool}
+    {ledger : Game.Outpoint → Game.Output}
+    {authorized : Set Game.Projection}
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (publicKeys : Set Bytes) (key : Bytes) : Prop :=
+  key ∈ publicKeys ∨ KeyInHistory history key
+
+/-- A call with no exact approved signature/key record has a new DER-key
+branch only relative to the supplied public-key set. If the key is
+already public, its checked digest is instead charged to at most eight ECDSA
+wire targets. Exact-pair reuse retains the reached collision/seven-target
+split. This deterministic event makes no oracle-query or independence claim. -/
+def PublicHistoryCallEvent
+    (functions : JointSourceChecks.Functions)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : DynamicDisclosureEvent.ECDSATargets ecdsa)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (publicKeys : Set Bytes)
+    (sig key : Bytes)
+    (attempted : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes) : Prop :=
+  (findRelease history sig key = none ∧
+    ¬PublicKnownKey history publicKeys key ∧
+    SighashAllWire.sourceAllPreimage attempted selected scriptCode ∉
+      DynamicDisclosureEvent.approvedAllPreimages ledger authorized ∧
+    DERSyntax.valid (functions.H key) = true ∧
+    ecdsa sig key (functions.H (functions.H
+      (SighashAllWire.sourceAllPreimage attempted selected scriptCode))) = true) ∨
+  (findRelease history sig key = none ∧
+    PublicKnownKey history publicKeys key ∧
+    SighashAllWire.sourceAllPreimage attempted selected scriptCode ∉
+      DynamicDisclosureEvent.approvedAllPreimages ledger authorized ∧
+    DERSyntax.valid (functions.H key) = true ∧
+    functions.H (functions.H
+      (SighashAllWire.sourceAllPreimage attempted selected scriptCode)) ∈
+        contract.targets sig key ∧
+    (contract.targets sig key).card ≤ 8) ∨
+  (∃ released, findRelease history sig key = some released ∧
+    RetargetEvent functions ecdsa contract ledger authorized released
+      attempted selected scriptCode)
+
+theorem history_event_public_case
+    (functions : JointSourceChecks.Functions)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : DynamicDisclosureEvent.ECDSATargets ecdsa)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (publicKeys : Set Bytes)
+    (sig key : Bytes)
+    (attempted : SighashAllWire.TxFields) (selected : Nat)
+    (scriptCode : Bytes)
+    (event : HistoryCallEvent functions ecdsa contract ledger authorized
+      history sig key attempted selected scriptCode) :
+    PublicHistoryCallEvent functions ecdsa contract ledger authorized
+      history publicKeys sig key attempted selected scriptCode := by
+  unfold HistoryCallEvent at event
+  unfold PublicHistoryCallEvent
+  rcases event with ⟨missing, noHistory, fresh, der, checked⟩ |
+      ⟨released, found, retarget⟩ |
+      ⟨missing, otherSignature, fresh, der, targetHit, targetCount⟩
+  · by_cases isPublished : key ∈ publicKeys
+    · exact Or.inr (Or.inl ⟨missing, Or.inl isPublished, fresh, der,
+        contract.sound sig key _ checked, contract.card_le_eight sig key⟩)
+    · have unknown : ¬PublicKnownKey history publicKeys key := by
+        intro known
+        rcases known with published | recorded
+        · exact isPublished published
+        · exact noHistory recorded
+      exact Or.inl ⟨missing, unknown, fresh, der, checked⟩
+  · exact Or.inr (Or.inr ⟨released, found, retarget⟩)
+  · obtain ⟨released, member, sameKey, _otherSig⟩ := otherSignature
+    exact Or.inr (Or.inl ⟨missing,
+      Or.inr ⟨released, member, sameKey⟩,
+      fresh, der, targetHit, targetCount⟩)
+
 /-- Apply the transcript classification to the two actual modeled source
 checks, preserving their reached signature/key roles and scriptCode bytes.
 This is a deterministic source-search implication; a Core acceptance bridge

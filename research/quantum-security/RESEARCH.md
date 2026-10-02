@@ -72,6 +72,10 @@ approved-call record uses the key, absence from that list does not establish
 that the key was unqueried or oracle-independent. Thus the distinct-input
 theorem still cannot be applied to the complete QSB event without a causal
 transcript and shared-query argument.
+`history_event_public_case` additionally takes a supplied public-key set.
+It routes an unmatched pair using an already disclosed key to the finite
+digest-target branch, even without an approved-call record. The set's
+completeness and any quantum oracle-query history remain external premises.
 
 Qipeng Liu, [*Non-uniformity and Quantum Advice in the Quantum Random Oracle
 Model*](https://arxiv.org/abs/2210.06693), treats oracle-dependent advice as

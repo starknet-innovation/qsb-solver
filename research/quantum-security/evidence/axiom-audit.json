@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1350,
+  "theorem_count": 1351,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2138,6 +2138,11 @@
       "propext"
     ],
     "QSB.DynamicRetarget.fixed_width_global_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRetarget.history_event_public_case": [
       "Classical.choice",
       "Quot.sound",
       "propext"

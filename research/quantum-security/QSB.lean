@@ -232,6 +232,7 @@ import QSB.Reduction
 #print axioms QSB.DynamicRetarget.reused_fixed_call_hash_collision_or_alternative
 #print axioms QSB.DynamicRetarget.reused_fixed_call_witnessed_collision_or_alternative
 #print axioms QSB.DynamicRetarget.classify_checked_call
+#print axioms QSB.DynamicRetarget.history_event_public_case
 #print axioms QSB.DynamicRetarget.search_pin_final_history_cases
 #print axioms QSB.DynamicRetarget.search_good_setup_joint_history_event
 

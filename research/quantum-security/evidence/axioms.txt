@@ -164,6 +164,7 @@
  Classical.choice,
  Quot.sound]
 'QSB.DynamicRetarget.classify_checked_call' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.DynamicRetarget.history_event_public_case' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.search_pin_final_history_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.DynamicRetarget.search_good_setup_joint_history_event' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.openings_fresh_or_covered' depends on axioms: [propext, Quot.sound]
