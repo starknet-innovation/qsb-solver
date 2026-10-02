@@ -264,6 +264,13 @@ import QSB.Reduction
 #print axioms QSB.TaggedOracle.split_observed
 #print axioms QSB.TaggedOracle.observed_fiber_card
 #print axioms QSB.TaggedOracle.observed_fiber_times_pair_card
+#print axioms QSB.TaggedOracle.xorBits_zero_right
+#print axioms QSB.TaggedOracle.xorBits_zero_left
+#print axioms QSB.TaggedOracle.xorBits_self
+#print axioms QSB.TaggedOracle.xorBits_twice
+#print axioms QSB.TaggedOracle.fullQuery_twice
+#print axioms QSB.TaggedOracle.simulateH_correct
+#print axioms QSB.TaggedOracle.simulateR_correct
 #print axioms QSB.OracleDependentSelection.disclosure_true_count
 #print axioms QSB.OracleDependentSelection.fixed_hit_count
 #print axioms QSB.OracleDependentSelection.inspected_hit_count

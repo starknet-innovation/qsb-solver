@@ -134,12 +134,13 @@ An applicability test for QSB has four concrete obligations:
    a finite-domain sampling fact: a uniform product-valued function on
    disjoint H/R input tags has constant-size fibers over every observed H/R
    pair, hence a uniform observed pair. This is an idealization, not an
-   identity about real SHA-256 and RIPEMD-160. A quantum simulation must still
-   implement an H-only or R-only XOR query using the product-valued oracle
-   coherently and charge its cost; computing and then uncomputing the unused
-   coordinate can cost two product-oracle queries per original query. Every
-   SHA256d inner/outer call and HASH160 inner/outer call must preserve repeated
-   inputs and use the same aggregate budget. The cited theorem has finite
+   identity about real SHA-256 and RIPEMD-160. The same Lean module checks the
+   computational-basis identity for an H-only or R-only XOR query implemented
+   by two product-oracle calls with clean scratch. Lifting that circuit to a
+   coherent-query semantics and charging its two calls in a causal attack
+   game remain external. Every SHA256d inner/outer call and HASH160
+   inner/outer call must preserve repeated inputs and use the same aggregate
+   budget. The cited theorem has finite
    input and output sets; an application must justify a finite input-register
    domain for the attack under analysis instead of silently applying it to
    all byte strings.

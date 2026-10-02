@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1374,
+  "theorem_count": 1381,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5260,6 +5260,10 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.TaggedOracle.fullQuery_twice": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.TaggedOracle.observed_fiber_card": [
       "Classical.choice",
       "Quot.sound",
@@ -5270,7 +5274,31 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.TaggedOracle.simulateH_correct": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.simulateR_correct": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.TaggedOracle.split_observed": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.xorBits_self": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.xorBits_twice": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.xorBits_zero_left": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.xorBits_zero_right": [
       "Quot.sound",
       "propext"
     ],

@@ -86,4 +86,89 @@ theorem observed_fiber_times_pair_card [Fintype X] [Fintype Y] [Fintype Z]
   simp only [Nat.card_prod]
   ring
 
+section QuerySimulation
+
+/-- Fixed-width bit registers for the two ideal hash outputs. -/
+abbrev Bits (width : Nat) := Fin width → Bool
+
+def zeroBits (width : Nat) : Bits width := fun _ => false
+
+def xorBits {width : Nat} (left right : Bits width) : Bits width :=
+  fun i => left i != right i
+
+theorem xorBits_zero_right {width : Nat} (value : Bits width) :
+    xorBits value (zeroBits width) = value := by
+  funext i
+  simp [xorBits, zeroBits]
+
+theorem xorBits_zero_left {width : Nat} (value : Bits width) :
+    xorBits (zeroBits width) value = value := by
+  funext i
+  simp [xorBits, zeroBits]
+
+theorem xorBits_self {width : Nat} (value : Bits width) :
+    xorBits value value = zeroBits width := by
+  funext i
+  simp [xorBits, zeroBits]
+
+theorem xorBits_twice {width : Nat} (value mask : Bits width) :
+    xorBits (xorBits value mask) mask = value := by
+  funext i
+  cases valueBit : value i <;> cases maskBit : mask i <;>
+    simp [xorBits, valueBit, maskBit]
+
+/-- The standard XOR query to the product-valued tagged function. -/
+def fullQuery {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : Sum X X) (target : Bits widthH × Bits widthR) :
+    Bits widthH × Bits widthR :=
+  (xorBits target.1 (oracle input).1,
+   xorBits target.2 (oracle input).2)
+
+theorem fullQuery_twice {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : Sum X X) (target : Bits widthH × Bits widthR) :
+    fullQuery oracle input (fullQuery oracle input target) = target := by
+  simp only [fullQuery, xorBits_twice]
+
+/-- Query the product oracle into zero scratch, copy only the H-tag output
+to the adversary's target, and query again to erase both scratch coordinates.
+This is a computational-basis identity for the two-query circuit. -/
+def simulateH {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : X) (target : Bits widthH) :
+    Bits widthH × (Bits widthH × Bits widthR) :=
+  let scratch := fullQuery oracle (.inl input)
+    (zeroBits widthH, zeroBits widthR)
+  (xorBits target scratch.1, fullQuery oracle (.inl input) scratch)
+
+theorem simulateH_correct {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : X) (target : Bits widthH) :
+    simulateH oracle input target =
+      (xorBits target ((observed oracle).1 input),
+        (zeroBits widthH, zeroBits widthR)) := by
+  simp [simulateH, fullQuery, observed, xorBits_zero_left,
+    xorBits_self]
+
+/-- The corresponding R-tag circuit uses the same product oracle. -/
+def simulateR {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : X) (target : Bits widthR) :
+    Bits widthR × (Bits widthH × Bits widthR) :=
+  let scratch := fullQuery oracle (.inr input)
+    (zeroBits widthH, zeroBits widthR)
+  (xorBits target scratch.2, fullQuery oracle (.inr input) scratch)
+
+theorem simulateR_correct {widthH widthR : Nat}
+    (oracle : Sum X X → Bits widthH × Bits widthR)
+    (input : X) (target : Bits widthR) :
+    simulateR oracle input target =
+      (xorBits target ((observed oracle).2 input),
+        (zeroBits widthH, zeroBits widthR)) := by
+  simp [simulateR, fullQuery, observed, xorBits_zero_left,
+    xorBits_self]
+
+end QuerySimulation
+
 end QSB.TaggedOracle
