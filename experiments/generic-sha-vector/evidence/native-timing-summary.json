@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "samples": 24,
+  "resultSha256": "c96670925fbb9d60294b57689cf8033b864094348c7dfe0acf993073e5adfe58",
+  "summary": {
+    "taproot-round1": {
+      "seconds": {
+        "baseline": [
+          14.593709397000026,
+          12.556579567000028,
+          12.602556386000003
+        ],
+        "candidate": [
+          12.945066167999983,
+          12.572747559999982,
+          12.616160391999983
+        ]
+      },
+      "throughputGainPercent": -0.10783000197592818,
+      "wallTimeReductionPercent": -0.10794640058180427,
+      "projectedFullRangeSeconds": {
+        "baseline": 466.99870070400084,
+        "candidate": 414.24211737599944
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "taproot-round2": {
+      "seconds": {
+        "baseline": [
+          7.150868519000028,
+          7.162650544999963,
+          7.138637475999985
+        ],
+        "candidate": [
+          7.166666288999977,
+          7.210979909000002,
+          7.171365646999959
+        ]
+      },
+      "throughputGainPercent": -0.28581903376390105,
+      "wallTimeReductionPercent": -0.28663830058501816,
+      "projectedFullRangeSeconds": {
+        "baseline": 229.2048174399988,
+        "candidate": 230.75135708800008
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "wpkh-round1": {
+      "seconds": {
+        "baseline": [
+          12.508810378000021,
+          12.501352019999956,
+          12.493105753000009
+        ],
+        "candidate": [
+          12.50775861400001,
+          12.512552322000033,
+          12.47465070100003
+        ]
+      },
+      "throughputGainPercent": -0.05122095970803153,
+      "wallTimeReductionPercent": -0.05124720902032198,
+      "projectedFullRangeSeconds": {
+        "baseline": 400.2819320960007,
+        "candidate": 400.40167430400106
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "wpkh-round2": {
+      "seconds": {
+        "baseline": [
+          7.067869223999992,
+          7.0356777619999775,
+          7.056206226000029
+        ],
+        "candidate": [
+          7.081990342999973,
+          7.092768904000025,
+          7.066539108999962
+        ]
+      },
+      "throughputGainPercent": -0.3640800926173138,
+      "wallTimeReductionPercent": -0.3654104794292623,
+      "projectedFullRangeSeconds": {
+        "baseline": 226.17181516799974,
+        "candidate": 226.9686049280008
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    }
+  },
+  "controllerCommit": "b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb",
+  "candidateCommit": "aa898b66326706d24e56688eef907ea97bd66f41",
+  "scope": "24 startup-inclusive interleaved samples on one A10G; no whole-domain or fresh withdrawal claim",
+  "adoptionDecision": "Do not promote: no measured throughput benefit in this bounded experiment",
+  "interpretation": "Three startup-inclusive pairs per case; small negative differences do not establish statistically significant regression."
+}

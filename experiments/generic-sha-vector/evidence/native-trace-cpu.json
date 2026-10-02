@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "nativeResultSha256": "8c376571eb56e48d125bdec7de6b0df91d4972f28b4228f4cd1486961fb43e04",
+  "candidateSha256": "0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b",
+  "rows": [
+    {
+      "name": "wpkh-r1-0",
+      "candidates": 1,
+      "hashes": 2
+    },
+    {
+      "name": "wpkh-r1-7",
+      "candidates": 7,
+      "hashes": 14
+    },
+    {
+      "name": "wpkh-r1-255",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "wpkh-r1-1099511627899",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "wpkh-r1-82947113348843",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "wpkh-r2-0",
+      "candidates": 1,
+      "hashes": 2
+    },
+    {
+      "name": "wpkh-r2-7",
+      "candidates": 7,
+      "hashes": 14
+    },
+    {
+      "name": "wpkh-r2-255",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "wpkh-r2-1099511627899",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "wpkh-r2-82947113348843",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r1-0",
+      "candidates": 1,
+      "hashes": 2
+    },
+    {
+      "name": "taproot-r1-7",
+      "candidates": 7,
+      "hashes": 14
+    },
+    {
+      "name": "taproot-r1-255",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r1-1099511627899",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r1-82947113348843",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r2-0",
+      "candidates": 1,
+      "hashes": 2
+    },
+    {
+      "name": "taproot-r2-7",
+      "candidates": 7,
+      "hashes": 14
+    },
+    {
+      "name": "taproot-r2-255",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r2-1099511627899",
+      "candidates": 257,
+      "hashes": 514
+    },
+    {
+      "name": "taproot-r2-82947113348843",
+      "candidates": 257,
+      "hashes": 514
+    }
+  ],
+  "candidates": 3116,
+  "hashes": 6232,
+  "freshWithdrawal": false,
+  "grantsRangeCredit": false,
+  "scope": "Diagnostic CPU/full-transaction differential plus separately sampled exact binary; not whole-domain proof"
+}

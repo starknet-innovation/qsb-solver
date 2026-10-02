@@ -21,7 +21,7 @@ def load_config():
         return value
     value = json.loads(path.read_text(), object_pairs_hook=unique)
     patterns = dict(account=r'[0-9]{12}', profile=r'[A-Za-z0-9_.-]+',
-                    region=r'eu-west-1', ami=r'ami-[a-f0-9]{8,17}',
+                    region=r'eu-west-[12]', ami=r'ami-[a-f0-9]{8,17}',
                     subnet=r'subnet-[a-f0-9]{8,17}', vpc=r'vpc-[a-f0-9]{8,17}')
     if not isinstance(value, dict) or set(value) != set(patterns):
         raise ValueError('Unexpected operator configuration fields')

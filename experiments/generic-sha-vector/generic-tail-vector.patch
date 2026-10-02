@@ -1,0 +1,30 @@
+--- a/subset/tests/gpu_epochs/tree.cu
++++ b/subset/tests/gpu_epochs/tree.cu
+@@ -1506,16 +1506,19 @@
+ __device__ __forceinline__ void qsb_compress_generic_tail(uint32_t *state,int block){
+     const uint32_t *w=QSB_GENERIC_TAIL_SCHEDULE+(size_t)block*64;
+     uint32_t a=state[0],b=state[1],c=state[2],d=state[3],e=state[4],f=state[5],g=state[6],h=state[7],t1,t2;
++    // cudaMalloc base and 256-byte block strides preserve 16-byte alignment.
+     #pragma unroll 1
+     for(int j=0;j<64;j+=8){
+-        S2Round(a,b,c,d,e,f,g,h,0,w[j]);
+-        S2Round(h,a,b,c,d,e,f,g,0,w[j+1]);
+-        S2Round(g,h,a,b,c,d,e,f,0,w[j+2]);
+-        S2Round(f,g,h,a,b,c,d,e,0,w[j+3]);
+-        S2Round(e,f,g,h,a,b,c,d,0,w[j+4]);
+-        S2Round(d,e,f,g,h,a,b,c,0,w[j+5]);
+-        S2Round(c,d,e,f,g,h,a,b,0,w[j+6]);
+-        S2Round(b,c,d,e,f,g,h,a,0,w[j+7]);
++        const uint4 first = reinterpret_cast<const uint4 *>(w)[j/4];
++        const uint4 second = reinterpret_cast<const uint4 *>(w)[j/4+1];
++        S2Round(a,b,c,d,e,f,g,h,0,first.x);
++        S2Round(h,a,b,c,d,e,f,g,0,first.y);
++        S2Round(g,h,a,b,c,d,e,f,0,first.z);
++        S2Round(f,g,h,a,b,c,d,e,0,first.w);
++        S2Round(e,f,g,h,a,b,c,d,0,second.x);
++        S2Round(d,e,f,g,h,a,b,c,0,second.y);
++        S2Round(c,d,e,f,g,h,a,b,0,second.z);
++        S2Round(b,c,d,e,f,g,h,a,0,second.w);
+     }
+     state[0]+=a;state[1]+=b;state[2]+=c;state[3]+=d;state[4]+=e;state[5]+=f;state[6]+=g;state[7]+=h;
+ }

@@ -1,0 +1,22 @@
+{
+  "unmodifiedBinarySha256": "0fe47c3bd6b5b3671f02af242095922acd418ea5ab7c2f13647b0b386782ea7b",
+  "unmodifiedTreeSha256": "14f574832dcea8f8f454af45a1849430e4229a09cee148ff9bf1021adc6cdc2c",
+  "diagnosticTreeSha256": "5f9f1c20bd9df81c52f542352396a8804b3ac657f8e287bc62e2e119554b566b",
+  "flags": [
+    "-O3",
+    "-arch=sm_86",
+    "-DZLAB_TRIM=0",
+    "-DZLAB_K2S=0",
+    "-DQSB_PAIR_SHARED=0",
+    "-DQSB_SPEC_FINISH=0",
+    "-DZLAB_DUAL_EPOCH_SHA=0",
+    "-std=c++17"
+  ],
+  "files": {
+    "candidate-trace": "42ad9574cef271c80181ece261d680fe771f4c21a383c5c72570f6e8f1d08018",
+    "candidate-trace.diff": "4fe815abec190a38882d480391a3211795b1d089818d79a87bae8758752694a4"
+  },
+  "status": "UNEXECUTED",
+  "cpuVerified": false,
+  "scope": "Diagnostic derivative; does not attest execution of the unmodified binary"
+}

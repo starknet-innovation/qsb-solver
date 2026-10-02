@@ -1,0 +1,69 @@
+name: Isolated SHA vector compile
+on:
+  push:
+    paths:
+      - experiments/generic-sha-vector/**
+      - tests/test_sha_vector*.py
+      - .github/workflows/sha-vector-compile.yml
+  pull_request:
+    paths:
+      - experiments/generic-sha-vector/**
+      - tests/test_sha_vector*.py
+      - .github/workflows/sha-vector-compile.yml
+permissions:
+  contents: read
+jobs:
+  native-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test experiment guards and timing evidence validation
+        run: python3 -m unittest discover -s tests -p 'test_sha_vector*.py'
+      - name: Extract hash-bound baseline and vector candidate
+        run: |
+          mkdir gate results
+          python3 experiments/generic-sha-vector/prepare.py gate/gate.cu
+          sha256sum gate/gate.cu > results/source.sha256
+      - name: Compile sm86 without GPU or network
+        run: |
+          image=nvidia/cuda:12.8.1-devel-ubuntu22.04@sha256:6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7
+          docker pull "$image"
+          docker run --rm --user "$(id -u):$(id -g)" --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
+            --tmpfs /tmp:rw,exec,nosuid,nodev,size=512m \
+            --mount "type=bind,src=$PWD/gate,dst=/gate,readonly" \
+            --mount "type=bind,src=$PWD/results,dst=/results" \
+            --entrypoint bash "$image" -c '
+              set -euo pipefail
+              nvcc --version > /results/compiler.txt
+              command -v compute-sanitizer > /results/memory-checker.txt
+              timeout 180 nvcc -O3 -arch=sm_86 -std=c++17 -Xptxas=-v /gate/gate.cu -o /results/gate
+              sha256sum /results/gate > /results/binary.sha256
+              cuobjdump --dump-sass /results/gate > /results/gate.sass
+            ' > results/compile.log 2>&1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sha-vector-compile
+          path: results/
+          retention-days: 14
+  isolated-solver-pair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Build both sm86 solvers without running them
+        run: |
+          docker build -f experiments/generic-sha-vector/Dockerfile -t qsb-sha-pair .
+          id=$(docker create qsb-sha-pair)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sha-vector-solver-pair
+          path: results/
+          retention-days: 14
