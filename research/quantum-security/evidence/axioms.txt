@@ -144,6 +144,30 @@
 'QSB.JointFreshCandidates.reached_r_collision_post_succeeds' depends on axioms: [propext, Quot.sound]
 'QSB.JointFreshCandidates.hCollisionPost_count_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.JointFreshCandidates.rCollisionPost_count_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshPostprocessing.queryPairs_values' depends on axioms: [propext]
+'QSB.JointFreshPostprocessing.queryPairs_trace' depends on axioms: [propext]
+'QSB.JointFreshPostprocessing.queryPairs_trace_length' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.queryPairs_response_mem' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.hStage_trace_length_le' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.rStages_h_trace_length_le' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.rStages_r_trace_length_le' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.rStages_total_trace_length_le' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_h_trace_length_le_300' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_r_total_trace_length_le_600' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.JointFreshPostprocessing.hPostTranscript_result' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.rPostTranscript_result' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_h_post_trace_length_le_300' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_r_post_total_trace_length_le_600' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.JointFreshPostprocessing.h_route_cached_post_succeeds' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.r_route_cached_post_succeeds' depends on axioms: [propext, Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_h_route_post_success' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointFreshPostprocessing.concrete_r_route_post_success' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ScriptNumExtensional.four_byte_positive_parses' depends on axioms: [propext, Quot.sound]
 'QSB.ScriptNumExtensional.five_byte_positive_rejected' depends on axioms: [propext]
 'QSB.ScriptNumExtensional.roll_step_parse_extensional' depends on axioms: [propext, Classical.choice, Quot.sound]

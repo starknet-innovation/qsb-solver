@@ -92,6 +92,7 @@ import QSB.DynamicSetupReduction
 import QSB.JointOracleReduction
 import QSB.JointFreshRoutes
 import QSB.JointFreshCandidates
+import QSB.JointFreshPostprocessing
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -227,6 +228,24 @@ import QSB.Reduction
 #print axioms QSB.JointFreshCandidates.reached_r_collision_post_succeeds
 #print axioms QSB.JointFreshCandidates.hCollisionPost_count_le
 #print axioms QSB.JointFreshCandidates.rCollisionPost_count_le
+#print axioms QSB.JointFreshPostprocessing.queryPairs_values
+#print axioms QSB.JointFreshPostprocessing.queryPairs_trace
+#print axioms QSB.JointFreshPostprocessing.queryPairs_trace_length
+#print axioms QSB.JointFreshPostprocessing.queryPairs_response_mem
+#print axioms QSB.JointFreshPostprocessing.hStage_trace_length_le
+#print axioms QSB.JointFreshPostprocessing.rStages_h_trace_length_le
+#print axioms QSB.JointFreshPostprocessing.rStages_r_trace_length_le
+#print axioms QSB.JointFreshPostprocessing.rStages_total_trace_length_le
+#print axioms QSB.JointFreshPostprocessing.concrete_h_trace_length_le_300
+#print axioms QSB.JointFreshPostprocessing.concrete_r_total_trace_length_le_600
+#print axioms QSB.JointFreshPostprocessing.hPostTranscript_result
+#print axioms QSB.JointFreshPostprocessing.rPostTranscript_result
+#print axioms QSB.JointFreshPostprocessing.concrete_h_post_trace_length_le_300
+#print axioms QSB.JointFreshPostprocessing.concrete_r_post_total_trace_length_le_600
+#print axioms QSB.JointFreshPostprocessing.h_route_cached_post_succeeds
+#print axioms QSB.JointFreshPostprocessing.r_route_cached_post_succeeds
+#print axioms QSB.JointFreshPostprocessing.concrete_h_route_post_success
+#print axioms QSB.JointFreshPostprocessing.concrete_r_route_post_success
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
 #print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
 #print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional

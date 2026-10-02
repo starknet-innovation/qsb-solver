@@ -131,6 +131,15 @@ concrete game. Its counter is not yet an oracle-query count. A QROM reduction
 still has to charge the H-image evaluations, the predicate's H or R calls,
 and the actual source extractor's cost; the postprocessor cannot be treated
 as free oracle-dependent selection.
+`QSB/JointFreshPostprocessing.lean` replaces those implicit evaluations with
+ordered query-input traces and cached responses. Conditional on an available
+extractor result and setup secrets, the concrete H-collision route needs at
+most 300 further classical H calls; the R-collision route needs at most 300 H
+and 300 R calls. The cached selector then makes only byte comparisons. These
+are additional calls after the attack output is measured, not bounds on the
+honest or adversarial work. The `Experiment` record still permits arbitrary
+oracle-dependent extraction/output, so a causal QROM algorithm and its full
+shared budget must be built before applying a quantum collision theorem.
 
 Kai-Min Chung, Serge Fehr, Yu-Hsuan Huang, and Tai-Ning Liao,
 [*On the Compressed-Oracle Technique, and Post-Quantum Security of Proofs of

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1400,
+  "theorem_count": 1418,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4153,6 +4153,82 @@
       "propext"
     ],
     "QSB.JointFreshCandidates.reached_r_collision_post_succeeds": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_h_post_trace_length_le_300": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_h_route_post_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_h_trace_length_le_300": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_r_post_total_trace_length_le_600": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_r_route_post_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.concrete_r_total_trace_length_le_600": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.hPostTranscript_result": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.hStage_trace_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.h_route_cached_post_succeeds": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.queryPairs_response_mem": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.queryPairs_trace": [
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.queryPairs_trace_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.queryPairs_values": [
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.rPostTranscript_result": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.rStages_h_trace_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.rStages_r_trace_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.rStages_total_trace_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshPostprocessing.r_route_cached_post_succeeds": [
       "Quot.sound",
       "propext"
     ],
