@@ -121,6 +121,13 @@ reduction: the algorithm must produce the reached pair with all honest and
 adversarial oracle calls charged, and exact-secret recovery needs its own
 bound. The decomposition avoids the vacuous event that some collision exists
 anywhere in an enormous sampled function.
+`QSB/JointFreshCandidates.lean` enumerates every extracted signed
+opening/secret pair in index order, with at most 150 pairs in the concrete
+game. It also enumerates their H-image pairs for an R-collision output. A
+reached route is guaranteed to occur in the corresponding list; no
+oracle-dependent successful index is chosen for free. A QROM reduction still
+has to account for the H-image evaluations, the final selection or
+multi-output verification, and the actual source extractor's cost.
 
 Kai-Min Chung, Serge Fehr, Yu-Hsuan Huang, and Tai-Ning Liao,
 [*On the Compressed-Oracle Technique, and Post-Quantum Security of Proofs of

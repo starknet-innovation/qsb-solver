@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1388,
+  "theorem_count": 1394,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4102,6 +4102,30 @@
     ],
     "QSB.Game.disclosedAt_card_le_min": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.exact_secret_in_pairs": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.openingPairs_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.rInputPairs_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.reached_h_collision_in_pairs": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.reached_pair_mem": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointFreshCandidates.reached_r_collision_in_pairs": [
       "Quot.sound",
       "propext"
     ],
