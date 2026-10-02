@@ -76,6 +76,9 @@ transcript and shared-query argument.
 It routes an unmatched pair using an already disclosed key to the finite
 digest-target branch, even without an approved-call record. The set's
 completeness and any quantum oracle-query history remain external premises.
+`search_good_setup_joint_public_history_event` applies that split to both
+reached calls in one good-setup source certificate alongside the seven
+opening equations, with one shared H/R pair and no independence assumption.
 
 Qipeng Liu, [*Non-uniformity and Quantum Advice in the Quantum Random Oracle
 Model*](https://arxiv.org/abs/2210.06693), treats oracle-dependent advice as

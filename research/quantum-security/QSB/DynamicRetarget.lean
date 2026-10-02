@@ -742,4 +742,89 @@ theorem search_good_setup_joint_history_event
     distinct, count, pinReached, checkReached, pinSig, pinKeyAt,
     nonceSig, finalKeyAt, pinCase, finalCase⟩
 
+/-- The same good-setup source certificate classifies both reached ALL calls
+relative to one supplied terminal public-key set. A disclosed key with no
+approved-call record takes the finite digest-target branch. This does not
+prove that an undisclosed key is fresh to a quantum oracle transcript. -/
+theorem search_good_setup_joint_public_history_event
+    (functions : JointSourceChecks.Functions)
+    (tx : SighashAllWire.TxFields) (selected : Nat)
+    (lock : DynamicCheckedCertificate.Lock)
+    (firstWidth : ∀ i, (lock.firstCommitment i).length = 20)
+    (secondWidth : ∀ i, (lock.secondCommitment i).length = 20)
+    (pinShort : lock.pin.length < 76)
+    (nonce0Short : lock.nonce0.length < 76)
+    (nonce1Short : lock.nonce1.length < 76)
+    (stack : List Bytes) (validKey : Bytes → Bool)
+    (ecdsa : Bytes → Bytes → Bytes → Bool)
+    (contract : DynamicDisclosureEvent.ECDSATargets ecdsa)
+    (firstRound : Bool) (final : CoreOpcodeStep.State)
+    (found : DynamicCheckedCertificate.search
+      (JointSourceChecks.hashes functions) lock stack validKey
+      (JointSourceChecks.checker functions tx selected ecdsa) =
+        some (firstRound, final))
+    (noCommitmentDER : ∀ id : Fin 150,
+      DERSyntax.valid (lock.secondCommitment id) = false)
+    (pinAll : lock.pin.getLast? = some 0x01)
+    (nonceAll : lock.nonce1.getLast? = some 0x01)
+    (ledger : Game.Outpoint → Game.Output)
+    (authorized : Set Game.Projection)
+    (history : List (ReleasedAllCall functions ecdsa ledger authorized))
+    (publicKeys : Set Bytes)
+    (txValid : SighashAllWire.valid tx)
+    (forbidden : SighashAllWire.projectionWithLedger ledger tx ∉
+      authorized) :
+    ∃ (trace : List (Fin 150 × Bytes)) (a b : Fin 150)
+      (pinKey finalKey : Bytes)
+      (beforePin beforeCheck : CoreOpcodeStep.State),
+      DynamicWholeSource.extractTrace (JointSourceChecks.hashes functions)
+        (DynamicFullSerialized.priorOps lock.pin lock.nonce0
+          lock.firstCommitment)
+        ⟨stack, CoreCheckedCertificate.outcomes firstRound, 0⟩ =
+          some trace ∧
+      trace.length = 7 ∧
+      (∀ p ∈ trace,
+        functions.R (functions.H p.2) = lock.secondCommitment p.1) ∧
+      (a :: b :: trace.map Prod.fst).Nodup ∧
+      (a :: b :: trace.map Prod.fst).toFinset.card = 9 ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        ((DynamicCheckedCertificate.program lock).take 2)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforePin ∧
+      CoreStructuralRun.run (JointSourceChecks.hashes functions)
+        (DynamicCheckedCertificate.beforeFinalProgram lock)
+        (DynamicCheckedCertificate.initial stack firstRound) =
+          some beforeCheck ∧
+      DynamicJointTransaction.reachedPinSignature beforePin = lock.pin ∧
+      DynamicJointTransaction.reachedPinKey beforePin = pinKey ∧
+      CoreMultisigStack.signatureAt beforeCheck.stack 10 9 =
+        some lock.nonce1 ∧
+      CoreMultisigStack.keyAt beforeCheck.stack 9 = some finalKey ∧
+      PublicHistoryCallEvent functions ecdsa contract ledger authorized
+        history publicKeys lock.pin.dropLast pinKey tx selected
+        (DynamicJointTransaction.reachedPinScriptCode lock beforePin) ∧
+      PublicHistoryCallEvent functions ecdsa contract ledger authorized
+        history publicKeys lock.nonce1.dropLast finalKey tx selected
+        (CoreMultisigSourceScan.deletedScript
+          (DynamicCheckedCertificate.wire lock)
+          beforeCheck.stack.reverse 10 10) := by
+  obtain ⟨trace, a, b, pinKey, finalKey, beforePin, beforeCheck,
+    extracted, seven, hits, distinct, count, pinReached, checkReached,
+    pinSig, pinKeyAt, nonceSig, finalKeyAt, pinCase, finalCase⟩ :=
+      search_good_setup_joint_history_event functions tx selected lock
+        firstWidth secondWidth pinShort nonce0Short nonce1Short stack
+        validKey ecdsa contract firstRound final found noCommitmentDER
+        pinAll nonceAll ledger authorized history txValid forbidden
+  exact ⟨trace, a, b, pinKey, finalKey, beforePin, beforeCheck,
+    extracted, seven, hits, distinct, count, pinReached, checkReached,
+    pinSig, pinKeyAt, nonceSig, finalKeyAt,
+    history_event_public_case functions ecdsa contract ledger authorized
+      history publicKeys lock.pin.dropLast pinKey tx selected
+      (DynamicJointTransaction.reachedPinScriptCode lock beforePin) pinCase,
+    history_event_public_case functions ecdsa contract ledger authorized
+      history publicKeys lock.nonce1.dropLast finalKey tx selected
+      (CoreMultisigSourceScan.deletedScript
+        (DynamicCheckedCertificate.wire lock)
+        beforeCheck.stack.reverse 10 10) finalCase⟩
+
 end QSB.DynamicRetarget

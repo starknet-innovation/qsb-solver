@@ -638,8 +638,12 @@ an exact match. This list must be complete before its unmatched branch can
 be read as absent from the actual disclosure transcript; no causal quantum
 transcript bound follows from the list lookup alone.
 On a good setup, `QSB/DynamicRetarget.search_good_setup_joint_history_event`
-combines both cases with seven reached `R(H(opening))` equations and two
-distinct bonus positions from that same modeled certificate and shared H/R.
+combines the approved-call cases with seven reached `R(H(opening))` equations
+and two distinct bonus positions from that same modeled certificate and
+shared H/R. `search_good_setup_joint_public_history_event` additionally
+classifies both reached calls against one supplied public-key set: an
+unmatched pair using an already disclosed key takes the at-most-eight digest
+target branch. Completeness of that set and oracle query history are external.
 This still needs a causal adaptive-transcript game and quantum bounds for
 both branches. Merely counting eight targets does not make them independent
 of the shared oracle.

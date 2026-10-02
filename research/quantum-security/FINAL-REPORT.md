@@ -1239,6 +1239,10 @@ charged to the at-most-eight digest-target branch even if the approved-call
 list has no record for it. Only a key absent from both sets remains in the
 DER-key branch. Completeness of the supplied disclosure set is external, and
 absence still does not establish an unqueried or independent oracle input.
+The checked `search_good_setup_joint_public_history_event` applies this
+classification to both reached calls in one good-setup certificate while
+retaining the seven opening equations, nine distinct positions, and shared
+H/R functions. Its supplied public-key set is not a modeled query transcript.
 On a good setup, `search_good_setup_joint_history_event` places those two
 checks and their three cases alongside the seven reached `R(H(opening))`
 equations and two distinct
