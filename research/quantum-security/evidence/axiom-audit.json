@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1371,
+  "theorem_count": 1374,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5257,6 +5257,20 @@
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.observed_fiber_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.observed_fiber_times_pair_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracle.split_observed": [
       "Quot.sound",
       "propext"
     ],

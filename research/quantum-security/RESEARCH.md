@@ -113,6 +113,61 @@ preimage with the approved `SHA256d` digest. Applying a collision theorem to
 the complete QSB game still requires accounting for how the approved call
 and disclosure transcript were generated, as well as Core refinement.
 
+Kai-Min Chung, Serge Fehr, Yu-Hsuan Huang, and Tai-Ning Liao,
+[*On the Compressed-Oracle Technique, and Post-Quantum Security of Proofs of
+Sequential Work*, Theorems 5.7 and 5.9](https://eprint.iacr.org/2020/1305.pdf),
+give a candidate framework for the *whole* terminal event. Their Theorem 5.7
+starts with one fixed relation between the algorithm's reported oracle inputs
+and outputs. It bounds the square root of success probability by a sum of
+compressed-database transition capacities and an output-recording term. It
+does not license replacing each adaptive QSB subevent by its fixed-input
+density. Theorem 5.9 handles an algorithm that reports only inputs, with an
+additional terminal transition capacity; alternatively, all responses needed
+to verify the relation must be reported or obtained by explicitly charged
+queries. The paper's preimage and collision estimates are examples for their
+own relations, not bounds for QSB.
+
+An applicability test for QSB has four concrete obligations:
+
+1. Express the ideal H256 and R160 pair as one jointly sampled oracle game
+   with one *aggregate* coherent-query budget. `QSB/TaggedOracle.lean` proves
+   a finite-domain sampling fact: a uniform product-valued function on
+   disjoint H/R input tags has constant-size fibers over every observed H/R
+   pair, hence a uniform observed pair. This is an idealization, not an
+   identity about real SHA-256 and RIPEMD-160. A quantum simulation must still
+   implement an H-only or R-only XOR query using the product-valued oracle
+   coherently and charge its cost; computing and then uncomputing the unused
+   coordinate can cost two product-oracle queries per original query. Every
+   SHA256d inner/outer call and HASH160 inner/outer call must preserve repeated
+   inputs and use the same aggregate budget. The cited theorem has finite
+   input and output sets; an application must justify a finite input-register
+   domain for the attack under analysis instead of silently applying it to
+   all byte strings.
+2. Make setup, honest releases, disclosure choices, and the attacker's output
+   one causal oracle algorithm. Count honest oracle calls or prove a separate
+   advice theorem that permits the actual oracle-correlated transcript. A
+   sampled-world selector such as `JointOracleReduction.Experiment.output` or
+   `.disclosed` has no such cost today.
+3. Define one fixed, oracle-independent relation over a reported transcript,
+   selected transaction, and enough oracle input/output pairs to verify the
+   *reached* seven opening equations and both signature-puzzle routes. It must
+   include equal pin/final key bytes, released keys, ECDSA message retargets,
+   shared SHA256d inputs, and the actual authorization projection. An
+   unrestricted global collision property is too broad: `DynamicRetarget`
+   shows it is already true for every fixed-width whole function, even when
+   the reached transaction has no collision.
+4. Bound the relation's per-query compressed-database transitions, including
+   output verification, by explicit local response sets. A small DER target
+   density or an at-most-eight ECDSA digest fiber for a *fixed* key does not
+   establish those transition capacities when keys, targets, and disclosures
+   depend on earlier oracle responses. `OracleDependentSelection` gives finite
+   counterexamples to that shortcut. Only after this bound can Theorem 5.7 or
+   5.9 yield a nontrivial `εjoint` for `JointRawSourceWorld`.
+
+The current Lean reduction establishes an event inclusion and conditional
+measure inequality. It supplies none of these four QROM obligations; in
+particular, no numerical QSB query bound follows from the cited theorem yet.
+
 ## Elliptic-curve threat
 
 Peter Shor,

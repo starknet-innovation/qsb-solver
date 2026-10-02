@@ -2,6 +2,7 @@ import QSB.Disclosure
 import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
+import QSB.TaggedOracle
 import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
@@ -260,6 +261,9 @@ import QSB.Reduction
 #print axioms QSB.RandomOracleSetup.fixed_input_hit_count
 #print axioms QSB.RandomOracleSetup.independent_source_hit_count
 #print axioms QSB.RandomOracleSetup.shared_function_union_hit_count
+#print axioms QSB.TaggedOracle.split_observed
+#print axioms QSB.TaggedOracle.observed_fiber_card
+#print axioms QSB.TaggedOracle.observed_fiber_times_pair_card
 #print axioms QSB.OracleDependentSelection.disclosure_true_count
 #print axioms QSB.OracleDependentSelection.fixed_hit_count
 #print axioms QSB.OracleDependentSelection.inspected_hit_count
