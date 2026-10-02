@@ -167,7 +167,7 @@ recovery, alternate transaction layouts, policy, and chain inclusion.
 
 ## What Lean proves
 
-The pinned Lean 4.30.0/mathlib build checks 1,291 theorem dependency lists with
+The pinned Lean 4.30.0/mathlib build checks every project theorem dependency list with
 no project axioms, `sorry`, `admit`, or native decision oracle. The reported
 dependencies are only the standard Lean foundations listed in
 `evidence/axiom-audit.json`. The proved statements include disclosure-union
@@ -1065,6 +1065,14 @@ spend predicate. The good-setup source extraction and joint-event reduction
 carry through. This removes an independently caller-chosen spent script from
 that *source-model* game. It does not establish UTXO existence, unspent
 status, other Core transaction checks, or Core-to-Lean execution refinement.
+`QSB/RawPublicHistoryEvent.lean` now carries the public-key-aware history
+classification through this ledger-bound raw frontend. On a good setup and
+an owner-forbidden source projection, one successful prepared attempt has the
+seven reached HORS equations, nine positions, and both reached ALL calls in
+the same H/R world, classified against the same supplied public-key set and
+approved-call list. The proof is conditional on source-model acceptance and
+the `ECDSATargets` verifier contract; actual consensus acceptance, public
+transcript completeness, and a causal shared-query bound are still missing.
 `QSB/RawReachedSubsetSighash.lean` now compares two raw submissions that both
 pass this literal checked-source acceptance predicate. It obtains each
 transaction and initial stack from that submission's successful `prepare`

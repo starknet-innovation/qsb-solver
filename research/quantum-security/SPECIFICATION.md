@@ -199,6 +199,13 @@ arbitrary-scriptSig evaluator. Its raw-byte extractor proves the same modeled
 game event with the submitted bytes determining the selected input, stack
 source, and owner-facing projection. The evaluator and Core parser/execution
 refinement are still external; source-model success is not consensus success.
+`QSB.RawPublicHistoryEvent` further carries the reached pin/final history
+classification from a truthy checked-source run through the ledger-bound raw
+frontend. It keeps the parsed target input, supplied scriptSig evaluator,
+seven HORS equations, and two actual ALL calls in one event. A consensus
+claim would require a universal implication from Core acceptance of those
+raw bytes to this exact source acceptance predicate; neither the finite
+native tests nor the Lean frontend proves that implication.
 One final-suffix invariant is now proved for arbitrary underlying stacks:
 successful execution of the ten fixed public-key rolls preserves the pushed
 signature count 10 at CHECKMULTISIG's count position, and the final push makes

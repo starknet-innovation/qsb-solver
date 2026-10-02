@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1356,
+  "theorem_count": 1358,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4752,6 +4752,16 @@
       "propext"
     ],
     "QSB.RandomOracleSetup.shared_function_union_hit_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RawPublicHistoryEvent.raw_source_accepted_good_setup_event": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RawPublicHistoryEvent.source_accepted_good_setup_event": [
       "Classical.choice",
       "Quot.sound",
       "propext"

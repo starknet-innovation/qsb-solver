@@ -83,6 +83,7 @@ import QSB.DynamicCoreFinalTruth
 import QSB.DynamicJointTransaction
 import QSB.DynamicDisclosureEvent
 import QSB.DynamicRetarget
+import QSB.RawPublicHistoryEvent
 import QSB.WireECDSATargets
 import QSB.DynamicBonusSetup
 import QSB.DynamicBonusProbability
@@ -236,6 +237,8 @@ import QSB.Reduction
 #print axioms QSB.DynamicRetarget.search_pin_final_history_cases
 #print axioms QSB.DynamicRetarget.search_good_setup_joint_history_event
 #print axioms QSB.DynamicRetarget.search_good_setup_joint_public_history_event
+#print axioms QSB.RawPublicHistoryEvent.source_accepted_good_setup_event
+#print axioms QSB.RawPublicHistoryEvent.raw_source_accepted_good_setup_event
 
 #print axioms QSB.openings_fresh_or_covered
 #print axioms QSB.one_disclosure_fresh_or_same
