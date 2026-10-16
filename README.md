@@ -55,3 +55,10 @@ release. Publication and app enrollment each require explicit user approval.
 AWS Batch is the only transport. Releases use the `aws` target of `worker/Dockerfile` and CUDA architecture 86 (A10G). The Runpod transport was retired on 1 October 2026: `v*` and non-sm86 `candidate-*` tags no longer publish, and the earlier Runpod releases (`v0.1.0`, `candidate-20260925-1`, `candidate-20260925-2`) remain immutable records. The development AWS artifact workflow uses that same Docker target; its tarball alone is not an enrolled release.
 
 After CI succeeds, verify the generated descriptor's GHCR digest and source commit with `gh attestation verify`. To mirror it into a private registry, use a digest-preserving registry copy (for example `crane copy GHCR_IMAGE@sha256:DIGEST ECR_REPOSITORY:RELEASE_TAG`) and verify the destination manifest digest equals the attested digest before registering a Batch job definition. Keep the public descriptor's canonical GHCR identity; operator registry/account configuration belongs outside this repository. Never substitute a digest from a `docker load`/`push` round trip or treat the mirror's name as provenance. Consumer enrollment and deployment remain separate steps requiring that exact digest and fresh runtime verification.
+
+## Corrected first-round signature binding
+
+The [CHECKMULTISIGVERIFY migration](docs/promotion/CHECKMULTISIGVERIFY-MIGRATION.md)
+adds an explicit corrected script contract and public compatibility vectors.
+New corrected candidates remain HOLD pending native and full-predicate qualification;
+historical image identities and ranked-v2 partitions are unchanged.

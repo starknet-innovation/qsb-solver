@@ -1,0 +1,218 @@
+[
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "6af038090b1be2f35e7e4a580475a31a1ddbdfe5b1de3b61c3368dbc895e75fe",
+    "sighash": "c80bdd4d4e4354a844615e601675e16fff478ee1e5479c868b26de4a99cad401"
+  },
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "6af038090b1be2f35e7e4a580475a31a1ddbdfe5b1de3b61c3368dbc895e75fe",
+    "sighash": "b937f1eafd0136e112f5dc38c2fb651c3bf4f93a50634df2ace611d10060ca16"
+  },
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "1498bc89ea0dc1e01980751425840542dc628a423aaf34b297136b4a8789b684",
+    "sighash": "be952803ac91d48ff6f3a2d94fae52c334dced3a187144bd46d5b6fa21f01f49"
+  },
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "1498bc89ea0dc1e01980751425840542dc628a423aaf34b297136b4a8789b684",
+    "sighash": "d966b77e994c96a32a799b6bba37b1899aee022885714bcc0b4f81e3af4cf8f1"
+  },
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      0,
+      3,
+      11,
+      38,
+      64,
+      71,
+      98,
+      132,
+      149
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "cd0f0837ef85918c33bd0f7042223b55607c79e6ecd198f8bdbbc3dcb9258a56",
+    "sighash": "8a69bab6d894ee4d1a3d76d0a005bc606fc30e8541963af3862b8b63c457ff79"
+  },
+  {
+    "round": 1,
+    "subsetPoolIndices": [
+      0,
+      3,
+      11,
+      38,
+      64,
+      71,
+      98,
+      132,
+      149
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "cd0f0837ef85918c33bd0f7042223b55607c79e6ecd198f8bdbbc3dcb9258a56",
+    "sighash": "b28f7fcfd3a6cd32e1e3995d7c1d58b2dab87aa77f6fd9ec344378a459799139"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "73f05ea46656337ce400dff6d36ddc119b06b566151a67ea69ed9e66f931f213",
+    "sighash": "8a9120642e764b0f0854324444683dbe8f21882e61a45400237f663051350555"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "73f05ea46656337ce400dff6d36ddc119b06b566151a67ea69ed9e66f931f213",
+    "sighash": "8b201cff6e557d8f79f2c9166f5ddb707da2d27713c1d7407c643488cfe4f009"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "2c85f680e61fea3dcf47cc322a744da98f190d7cef4a7b052f566044ca20ff8f",
+    "sighash": "54a0f61eb05b3c4cf5c747ef1628053b3fec331367f9fe8b0b6469073271b35f"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "2c85f680e61fea3dcf47cc322a744da98f190d7cef4a7b052f566044ca20ff8f",
+    "sighash": "c7dc96b31c1f606a98845075acfceb487294c0efbbbb5d212c9ed26cd0658309"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      0,
+      3,
+      11,
+      38,
+      64,
+      71,
+      98,
+      132,
+      149
+    ],
+    "sequence": 2147483648,
+    "locktime": 500000000,
+    "scriptCodeSha256": "98de8be6271536d86f7b1dcbb0046bde40073ce60872b55ba28257c44b19f686",
+    "sighash": "502c116bf06f8d514072d21f1e60a641f8947af09bb5334ebf72fb6c9e203d7d"
+  },
+  {
+    "round": 2,
+    "subsetPoolIndices": [
+      0,
+      3,
+      11,
+      38,
+      64,
+      71,
+      98,
+      132,
+      149
+    ],
+    "sequence": 4294967295,
+    "locktime": 1744599999,
+    "scriptCodeSha256": "98de8be6271536d86f7b1dcbb0046bde40073ce60872b55ba28257c44b19f686",
+    "sighash": "506c33e15317e9cac5d791e5952d6ca4bee4b7b2cd989e1666b58315550273bd"
+  }
+]

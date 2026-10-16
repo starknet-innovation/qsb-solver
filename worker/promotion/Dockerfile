@@ -26,7 +26,8 @@ COPY --from=optimized /opt/qsb-validation/source-build /opt/qsb/optimized-source
 COPY worker/promotion/prepare_pinning.py worker/promotion/pinning_output.h worker/promotion/Dockerfile /opt/qsb/source/promotion-build/
 COPY worker/handler.py /opt/qsb/historical_handler.py
 COPY worker/promotion/handler.py worker/promotion/bind.py /opt/qsb/
-RUN CUDA_ARCH=${CUDA_ARCH} python3 /opt/qsb/bind.py && rm /opt/qsb/bind.py
+ARG SCRIPT_VERSION=qsb-config-a-legacy-v1
+RUN SCRIPT_VERSION=${SCRIPT_VERSION} CUDA_ARCH=${CUDA_ARCH} python3 /opt/qsb/bind.py && rm /opt/qsb/bind.py
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # HISTORICAL_IMAGE must be the aws target of worker/Dockerfile, which provides the Batch entrypoint.

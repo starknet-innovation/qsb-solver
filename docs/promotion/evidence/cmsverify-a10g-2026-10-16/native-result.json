@@ -1,0 +1,496 @@
+{
+  "status": "BOUNDED_NATIVE_PASS",
+  "planSha256": "1a71aef260042dce7cc819ba9e922e053df1cdaba9657bd6e8b3146d01a7c6ad",
+  "gpu": "NVIDIA A10G, GPU-5b9a8597-a232-6f63-d827-fc2dfee15908, 595.91.07",
+  "traceReceipt": {
+    "sourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3",
+    "sourceFiles": {
+      "subset/GPUHash.h": "c8415e1ddc839e078421a1ee347a9db5036f84714b03edb700aa2e635e05fedd",
+      "subset/hit_filter_field_sc.cuh": "5ec82f6653d6fb515687d8cb969ee56a491b2fb4f44d5bd12626706d44498db1",
+      "subset/chain_replay_field.cuh": "7390f456f1f8c4cdbf0df2d9e42e8f88935b09e26e1f0be6af6ddbfa59ce4bd9",
+      "subset/GPUMath.h": "86ade5d707770870ba29994c20cbd12c3d98a29036fb7f48d93ba00c13bd3b12",
+      "subset/square32.cuh": "a973d1dd58bf760ce5cbff79e69cbe8cd725d8ad1a642741e936fb2d948be771",
+      "subset/subset.cu": "e2bead6006809470d21f6beb8de58a5efe7af483ffcf74f31596a9da108446ef",
+      "subset/hit_filter_field.cuh": "1efd238ee80935f8a7c0559eafce15e7d1e5a813a04173efd54e0f87074e3a45",
+      "subset/tests/gpu_epochs/seed_x3_audit.cu": "a8129be10bcf4435bdfb4fd34c1939a8f7c68a5b98429fd58b0dcb93e23f0764",
+      "subset/tests/gpu_epochs/canonical_add_audit.cu": "fd0bb33786a042b6e830428cb464a31e7804a83042bfbb4b92e555d73208728e",
+      "subset/tests/gpu_epochs/window_schedule_shared.cuh": "6fea598df6faf72a7c458ca42af7fe20c97bbf0229e887e68019681d79552cc1",
+      "subset/tests/gpu_epochs/pair_finish_audit.cu": "ce76d53a0ae76bfaaca1bbd12ff87d7f268ca7dea187c1f733da14cebb9b261a",
+      "subset/tests/gpu_epochs/hm39_pair_inverse.cuh": "ab3856bd2a3f59ead639571da34d6604882e4e864b35e57e67b676b0ff1ad474",
+      "subset/tests/gpu_epochs/first_stage_audit.cu": "c9405ec70d3dc3f2572a10c5831dd1137179b8182a3983009dbc660d54e472de",
+      "subset/tests/gpu_epochs/exact_resolve.cuh": "6111b3da9697866d67fed78d1595f3d85e5dc9a4b6865699888066142b68ccbe",
+      "subset/tests/gpu_epochs/tree.cu": "71e4b01469b2d2327c32bc62d4b20d1a6276c20c994cf6c3e8a082e9abac7cdb",
+      "subset/tests/gpu_epochs/tree_inverse.cuh": "8df5ceb6b173c3ec6523820525d2f884089044990dde6a8f1f4bf68dbad324a3",
+      "subset/tests/gpu_epochs/scalar_audit.cu": "439f21c09c9b4fbf8e199eece7b439774d701f26c955544f9de8f3f7156966c4",
+      "subset/tests/gpu_epochs/chain_replay_audit.cu": "dd1e7aa486a4895e431ccefbabc064db8646bc2a202a83410f4850210f910a00",
+      "subset/tests/gpu_epochs/hm43_warp_inverse.cuh": "dd932513b003b115546a4edb5e159643d8768c32d1e13e377058a929eb3ceb3d",
+      "subset/tests/gpu_epochs/point_predicate_audit.cu": "b8427c62a23c55070839548f28ce89c8309a47a6dc38d33ba594d3a120cc5c63",
+      "subset/tests/gpu_epochs/point_audit.cu": "abc998ea5fc4f2180fc4690b209fc6ecb27a1189a8f884ead4607f06e82b315e",
+      "subset/tests/gpu_epochs/dirdig_audit.cu": "9b4a85157256cb32170ad26ab94ec09a80706b9219e956a82d4c83f40c02e69b",
+      "subset/tests/gpu_epochs/hm39_divstep.cuh": "59cb33f81db4605bde47377fd8b8381ea3102479df68c3223e83eca6427d9bc8",
+      "subset/tests/gpu_epochs/hm41_quad_inverse.cuh": "4a238168917e34084db4a9f2372f47b947a62cfcec89c66f4fc830300f3f7a15",
+      "subset/tests/gpu_epochs/exact_recovery.h": "5dd8c071d0f0cc9a88d7b43b894da035a0e9942a704ee3c4c123bad1ebe32836",
+      "subset/tests/gpu_epochs/prefix_cache.cuh": "921d166bebdfd478b99f9b125374189c3fc5423b02445b78befee2d7a2a8ad35",
+      "subset/tests/gpu_epochs/pair_shared.cuh": "f1bf61886d4c4c79de2df3d709321547c7424ded6f16ea083d79ed42dcf9a73c",
+      "subset/tests/gpu_epochs/openssl_checked.h": "82de4a9eaa07c7e9b93bfce060067cbcc32c858c10e1c6d77475b168c1cc069b",
+      "subset/tests/gpu_epochs/tree_audit.cu": "f839ab3f24dca4e49ac4670044b6a2eaeabb2ea0a7e74741df8408ef7104d2de",
+      "subset/tests/gpu_epochs/cuda_checked.h": "c0594449d61cd9e899c9d09a2aaa3899fcf13ea0a7f9f183edec1714cebebc71",
+      "subset/tests/gpu_epochs/by_table_matrix_audit.cu": "940cb53feb731f966adb79d08c415c51e119c0f544ac26944bc580c2f287df4e",
+      "subset/tests/gpu_epochs/zinv32.cuh": "12303e74b178d2cfc45951ddc0c6c31b634646bacc55ea5a43097997bdd51689"
+    },
+    "flags": [
+      "-O3",
+      "-arch=sm_86",
+      "-DZLAB_TRIM=0",
+      "-DZLAB_K2S=0",
+      "-DQSB_PAIR_SHARED=0",
+      "-DQSB_SPEC_FINISH=0",
+      "-DZLAB_DUAL_EPOCH_SHA=0",
+      "-std=c++17"
+    ],
+    "architecture": "sm_86",
+    "compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+    "unmodifiedBinarySha256": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15",
+    "files": {
+      "trace-subset": "39ae10764dba342accc67f678a02525506e19a51e3bee46463481574fddcfb03",
+      "trace.diff": "99dcc20baa017e136443bf88deb193f0bbf62e3d853c8c58d28f76fc8a3d4941"
+    },
+    "scope": "Trace-only derivative with unchanged predicates; not final binary coverage attestation",
+    "status": "UNEXECUTED"
+  },
+  "binaries": {
+    "trace": "39ae10764dba342accc67f678a02525506e19a51e3bee46463481574fddcfb03",
+    "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15",
+    "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62"
+  },
+  "ranges": [
+    {
+      "name": "r1-2147483648-0",
+      "trace": {
+        "seconds": 1.707721577000001,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=0 hash=1f301beaa0325cc11709e1cf53fb08697e770bbf56d840ff578351add07a91aa\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=0 hash=0be2b35b4a580d65ceb71920d4960e5d297a43e79c45e3d2e782a91a92c23612\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=0 hash=e443e70333fde2f32b89cddae5f366597f34a0537e2c48cf37e5897c40d9e252\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=0 hash=787a1862631582e04638ebb6eca944269c66206f44e5e99d1e4c0998556b76e0\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=1 hash=f8b49274890f0599f436f5049c397511fe88e4927fa72af219b5a81942d20caf\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=1 hash=0ca9448183b8100c1f7f8bb818be60e625a88433f7f8f6d563fb6cac6e9d7fc9\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=1 hash=3482b0578a258592f2bad1e19ccbcaae9b28e3f12132acef395581bb1840c295\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=1 hash=5556b6dc1fd6e9e5978c66f834cabb4e71c4be5ebf9786a78d86ced188308bc4\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6244858020000095,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-2147483648-63",
+      "trace": {
+        "seconds": 0.6342752699999892,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=0 hash=a89e270727bb5ba4bbb3570fb73713b10f72f6e3887056f354b3a0b22a0d2fb3\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=0 hash=3bf716d4e86ab6cc1a39505e4b12a181d9c307c3fb475386910e52d13b98f722\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=0 hash=439d9433825cb02fc2906cfd9ab522ecda87680c40d83d2c249415d2f6308e57\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=0 hash=ac97c27f426a887d22b09e9e56bd1ceca1339a1c042abc82096d76d4dbef4634\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=1 hash=2ba7806e9107a4a78767dc88d474358c022a5dae6e38bfcbc086f73af4acca95\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=1 hash=077395a91d302dfdc9ffc788606bfdd422fe1c132fc6562dd5b8ff7836c3499b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=1 hash=67461b4ef9a008d41ccbca3d4a30b3996e1bfb03aaedd7508e019fee886d9011\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=1 hash=30c03944417563bb84defdef0bebcf3eb25bbf6b6965b74afcef293792695b60\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6231744180000192,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-2147483648-127",
+      "trace": {
+        "seconds": 0.6332209949999879,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=0 hash=b9612035ecb1546e047089f770fe190860c5470d2b66082c4a8e47c260506a2f\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=0 hash=027cccaaf299d45b93f5e64924e98fe35cc99af1e9db5098d9e0fc66491833f6\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=0 hash=2a96aac2c3211084241a2f8416496ad31bf33fb0b8ba894124564aaa28bebdfe\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=0 hash=687a13ca3f78f385308ef7299a54acee1c8b71e72adbeb1f1cd6fbc8aa087f5b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=1 hash=242e8885b5dca017d881440623e12b7fa5aa65b599cb801aa62dece014e1e6b6\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=1 hash=aae5b2caaba809a69ca574f6cd4f31f480033e122836ec1082799ea6d8e871ec\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=1 hash=27bdb7b7181d1050fc802a6f34971067e40963ffedeb4b5c60622311b028200d\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=1 hash=f0a6de6763edb3de5d9bd77c33418ca14bbafea82b3218a52e8bdad5a06ef5d8\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6221585239999854,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-2147483648-82947113349096",
+      "trace": {
+        "seconds": 0.6272685750000164,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=0 hash=f2db5ea355d99a4a778797d41f814054ed5b595ec5d9efb4dc36bf9213428d6c\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=0 hash=d0d3e030dde94273d16d07e9a22e1affe15ec830438aeb9e5e72e306496b0e64\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=0 hash=8a4f1806b551692b21574723a7394eba48e1f03ec9c9aebc9b0a7b933a090a2a\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=0 hash=bf485eefc97650fe902e90fc999f622e524b27fa485faf5089eabd4ea16c8379\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=1 hash=94c7f000955bc30bea8c7dd171e79d3b7436b9b7679eb167c0deeab03f763734\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=1 hash=3f333c3cc80b6ba4d5d258f41394761cc0070b0d36656e9fe91af9fbf77c6e3e\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=1 hash=7d23289148db187752af6d17600bfc4e5b1037020ddea359a6fcb14a306e1315\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=1 hash=058150af947ea7bca73419b4bf2f445eb8affc5f07aed271dbbadbf246be5953\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6232998129999885,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-4294967295-0",
+      "trace": {
+        "seconds": 0.6281521550000093,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=0 hash=5958e81b33d22dd82a502487631502ef6293ca71652ea8ca5a20618f1b45b6ad\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=0 hash=f3edbeeca0bb2745203d17ea72a9e1626966efd5fdd68f3d8a37579c1817e904\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=0 hash=8baca48f15c533362f8ee7f0bc66e77dffe71a278a1d74edc004957b61181fe1\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=0 hash=a188bc1ae4fa0147d7c654ef050c29318d555429ef677a0effc424d77f87b0a2\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=1 hash=dbed7f3b274a521dc25470a46a57419dc9118565cee593bf46bd5cac775862ff\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=1 hash=83a34dd20352063be3672a1901bea4a8e482e1df0b02f8711cc33bc78e80db96\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=1 hash=16f5ada34dd8b0e1c96ba2c70f6c709e32fd540743617fad7cc987f48179171f\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=1 hash=2c4151c2fc9684c6ec25fc95ae395fb8e22f54165799eb0691eff04b848fb409\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6200436830000058,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-4294967295-63",
+      "trace": {
+        "seconds": 0.6286545709999984,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=0 hash=760de06d970cf100d521c57b438544d7a13c4f2bccd4cbf82555545194e494f2\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=0 hash=a5a0f78c52d96170a3cc22d23f4d9e1031860deba8cd4fe80454dc225a3f0e31\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=0 hash=70d098d2d9d50be705352d6181d636c0726c2f535fcd731ea8fa31a453fab72c\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=0 hash=5815d492b55bb2037e0105da06c5c051bec1714738ab9f5004fe0198784b52b9\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=1 hash=055539eb120afe48ff045b72dd8da0080f3638a23fc1ae90414f309a6b8adea8\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=1 hash=59e63084bab9d905611dfd197a8c6c6bf88c953cb7f05452a916249b45dd27a3\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=1 hash=dfbb17ee15f38972b8176afab6a5988c54219d80087c4fc2a3d287d784b7bfee\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=1 hash=1be903627d681db87e274a4064e79cf93a8ef41d14fa4ca62b699fb31f1880c5\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6231365269999856,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-4294967295-127",
+      "trace": {
+        "seconds": 0.6282712479999759,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=0 hash=c5010444c12b5822b5534aed670c0fbb1f88a593a4a1f8a0f7bd00879dbc6f5b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=0 hash=ec654b2d95b9c1e644f1e1ebcecbb19b624f7172e3846b77594e83271947f28a\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=0 hash=0d390e995b9efcf595f06ea6a597371486faccb4b1ff577a5004edf8714c4ba4\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=0 hash=cee51b8b2131e2072e8f4a5315b69097c184e0499251f3d8152128df233fc669\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=1 hash=bd2856ff694ce498a89f3cd1cd61b0ffe2005852c7137e857acda30ac7b1ea8b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=1 hash=18f20bca6295b4819067cae7c81d5d841b93213b619eca9f98948e78966183a4\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=1 hash=dfb92b99d8eac16b3b4e9d1419f7bace869d68a33d81b638eb0fe6d5b04712dc\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=1 hash=2cf64901b4a8a2415db8a40c033d3e0a52e3f1309547267ca97e8233580fd34c\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6278391639999938,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r1-4294967295-82947113349096",
+      "trace": {
+        "seconds": 0.6333005270000172,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=0 hash=5fa4f36b0347abc97b14824657eca2210dd9b2d8879a6fe8436c276c4976c0a0\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=0 hash=67d70fce6d1846d380cc5fcb3e99842d05f68f982694f0bf772d8cb5e47987d0\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=0 hash=0728278084e3d1458db822a2fa82b3fe9c44339bd98f540e4d5401e07c8fe856\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=0 hash=0f6f2685679d80d959a77dd0cfc6ee06fc68ed8c8c29f4c7fdc8205b42d72b44\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=1 hash=b5516968de59860bab6019d5ee846e3d5a9f552a78c4beac09d2131ba959fced\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=1 hash=e24c389d1b5d4df5c960fe06c6a5a9c2ce4966aa4ada584fcc76464e9a2898b8\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=1 hash=1704d9c3b856e77f9af81994dab564d082abe97a884bcccf6e76e8eca1b8aa81\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=1 hash=845d96d58efc0634bf6164bded2570d54d3a3e00c787451256dd5a8c3ef8532d\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6270071659999985,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-2147483648-0",
+      "trace": {
+        "seconds": 0.6289727710000079,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=0 hash=b5ff8e339494beea17e9b9a47d55a4ca75fcc0c6d75e0cc20ecd82e81b360c4e\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=0 hash=0a1ad22cc9053ee31a80bfdef97970cea29a38349641276f5b4eae8b7194ce65\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=0 hash=b27c98863da781bf4a4492a3e8408ee14252a6a98d9f5580937c984dee734159\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=0 hash=172ffc203d97090bb33db9637ad08175187578a361ffb1b1fd00ee85dc4c82cb\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=1 hash=b14a1658253f7dbbe38f455c13df9e194f4ed75618144f09f5f7185cbc137ef3\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=1 hash=c10a2d04b8f242b8dcc248532f13a5a11e7c52ef5bb72b3dcedd3cdce57f8ec3\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=1 hash=a93877bd06aae8349f5fffb07bdf83bee6e1d021cc787502c58de67bdf3df51b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=1 hash=1b3c842ddcd439f3f2a2fdd383b683533cd7fad6640d8f9cf9de034235fb9fb9\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6203611239999987,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-2147483648-63",
+      "trace": {
+        "seconds": 0.632012933999988,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=0 hash=be16f1165050aa9fc6263228366b8edfb9b93dc4ee1947ee6dc6e6259e9e9093\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=0 hash=db48130d76a59becfbbf779e002701ba9e72721dd1b559077364e1e083159eb8\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=0 hash=bc0d06adb6f58ebdde30adc7c320cdc8b7e975a6f24da8f9057a37f781b43c58\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=0 hash=7a97506085233a20535155dce1f48dae116ea553fdf51c8bb46d17d1667be741\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=1 hash=1b4886064aef12f5ae114b0c8e2f73881e9b92d48e9d83b7866c6c533265ce1b\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=1 hash=510887b79cd8987f4c2057fa8952d66ac916eacf1907f2e6c63fd545fda9658f\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=1 hash=5e37c020623539769d525559c2eaf602ffc4f60554fdb4fec540a37e080ff3e0\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=1 hash=c883edea665ea076db29d487835620b1881094852bc55e1dca917eec25aa21ba\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6209802750000222,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-2147483648-127",
+      "trace": {
+        "seconds": 0.6297440980000033,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=0 hash=124b9b63b88b5f6a0495ee717ff98f5ee235ebf0e7e85b47be2179b088e6213c\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=0 hash=db7533ec54b4563bab190e3b6bcb60433454d7bc075e46d0124abff4fd0102a4\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=0 hash=207a9f99ac0665531f7180ef5f22b173570198de21da9e0f3dd5812d5bc0f637\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=0 hash=035831e89b0f647b4db804505f0c78b57e8bd3991579d91c6d086e50aeb17504\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=1 hash=0662e787743dbb231b26febc39452d06f99d8d236b3c5d4b12abc0207a287a93\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=1 hash=287c3c92e32b9b2dda32bafe2624389f63aa567d47228a021c73193bd8546f9c\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=1 hash=a7cbf626c5fc4176c474e0005410b1e6c89ef4cb300ca63b76fbbfb19e51bbe5\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=1 hash=a0314274a6b5fc44a255aebb13815b2de8ba48978cf0930a1289c9c9e28ceb27\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.623258241000002,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-2147483648-82947113349096",
+      "trace": {
+        "seconds": 0.6280492690000017,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=0 hash=e4a77c6e2185357533d16b60c7dee15e166a714b8033dd39602d8ceb3d456003\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=0 hash=cac8088f2ac8650395d0a340080d738cb411cfc46be13203ca5c7ee6f3ead29e\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=0 hash=8f28bf3c8efe8648765fa4ace8c13cb43788fd3efec82a45907d62c3c61bafac\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=0 hash=2d92f6c961099c3caac635aab103626cbc349364efe50b1d89315c48efe979bc\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=1 hash=681fcf1b10a33b9bb1d1b54ce976d75d7795cc43a50de6f4611f0ba48899598e\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=1 hash=a42dea4b9e7e6f2a0cc3e92f3f97a1330e91206ff8fc3b7d7221a935d63595f7\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=1 hash=dd9cd9465aea047936e786fde9f95fb2c7d1012c9da250567043f4388229f55e\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=1 hash=c2b18505203bd2880ef70a7b26ef558db8ddce2ef545e40a9a6bd94ad8702b2e\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6235928430000115,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-4294967295-0",
+      "trace": {
+        "seconds": 0.6336614310000073,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=0 hash=d4d6ea021d4eda9530cedcb76e1d52f456d00bbde34615a64ed64e879d94b9cc\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=0 hash=07f59ca866e60f8ac60eba3d7a36051dc007d7deb1fd0898989adf9b09fd2098\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=0 hash=d6515b9180a9a8bfc9a7e2689470f13e5064a7bf2a589ba71e0b6974a9d132c3\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=0 hash=0ecc2a4ab1f7bb981302e0fa729a17d965e822f90e37bbcde830c92eedbf08b9\nTRACE_SUB indices=0,1,2,3,4,5,6,7,8 recid=1 hash=5df4304362d6f7ce97cd96c9d448edf9a73d5fc47ce5ba61d211952afc8fbab2\nTRACE_SUB indices=0,1,2,3,4,5,6,7,9 recid=1 hash=66be33eaf34488f2abfc55d06e3ba22bb181c2365e6a2948e9174861f831d567\nTRACE_SUB indices=0,1,2,3,4,5,6,7,10 recid=1 hash=62c384de23288062e806d969d1f18d3aae27e56a6966d310b754ef99061973f4\nTRACE_SUB indices=0,1,2,3,4,5,6,7,11 recid=1 hash=a6d4543c860678fd67686d976041811e43793be4d8010e1d08f0e40abbd0dd41\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.620891266000001,
+        "count": 4,
+        "rank": 0,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-4294967295-63",
+      "trace": {
+        "seconds": 0.6293453199999988,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=0 hash=c2806f06fedaddb37b7d5ed0d1715e5cdba0d67a82da7d2dc9b9235830fe415d\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=0 hash=df8d9e9d91b0b0d93774b154ebcc3a2ab97f1f73a90d215a86d2950b34a94876\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=0 hash=01691fb1d6bc35012b33c0401a5a467df57f5db8fd5e75409e6abb45f457bf32\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=0 hash=5c7eca5f6ea3d59279fcc6d29149c7e52fad5befd0ba856583dffa240ce3d308\nTRACE_SUB indices=0,1,2,3,4,5,6,7,71 recid=1 hash=75b99df644820d70defc8db09c5b5b1f746edc318ff3e98c8dd62014ba7dc9bd\nTRACE_SUB indices=0,1,2,3,4,5,6,7,72 recid=1 hash=abdafc061fca5da4c5cd657337a6aa36ebb04c2916e041cb294f4aba69c0dfd7\nTRACE_SUB indices=0,1,2,3,4,5,6,7,73 recid=1 hash=597ce53cebd1719cb374250b7a09f9992100ee087f526728aa0ca1d557837441\nTRACE_SUB indices=0,1,2,3,4,5,6,7,74 recid=1 hash=322ce292879000192ff9c1b25380e735d4c9b05ca8daf7f3b91e005f33917e33\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6199996869999893,
+        "count": 4,
+        "rank": 63,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-4294967295-127",
+      "trace": {
+        "seconds": 0.6268373890000021,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=0 hash=d5645c32e69dfe0d34d5bccabeeae18e04543f16a1f309eca3bc380540c54137\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=0 hash=eb3d78a2508bde95a05851eed55e6dffcd43477d4f4ab17906e98c2d6c12dba8\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=0 hash=1141110ff5f71e1876f36ea613109c8103fbb6ab5bc4fbd29b0e147252fdc7fc\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=0 hash=387421f8449fdbbb2aec51ce99d923fcf8219897ebe832a0fd04d7e39db1fb38\nTRACE_SUB indices=0,1,2,3,4,5,6,7,135 recid=1 hash=c66a0cc8454251eec4310217ae9a0e9b1dea637eb02547c69b3d23d0a961be77\nTRACE_SUB indices=0,1,2,3,4,5,6,7,136 recid=1 hash=cf75642884bbf5fe0e3d75baf8cca300424c58baef69437958516115a285a483\nTRACE_SUB indices=0,1,2,3,4,5,6,7,137 recid=1 hash=69c397c6f62e554f7ba78821edc4792ebd95eab3e1cf3bb25209ce8315269554\nTRACE_SUB indices=0,1,2,3,4,5,6,7,138 recid=1 hash=bd89b2f3615b5857715e8b141f02f8ab76f55ca163e2a2c783bc079b1c8655ca\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6219413590000045,
+        "count": 4,
+        "rank": 127,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    },
+    {
+      "name": "r2-4294967295-82947113349096",
+      "trace": {
+        "seconds": 0.6365220239999871,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=0 hash=f373eb7a2ed0023739611bbe3b1df4cf4f142fc5af3ab2a07c840f3260517e8d\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=0 hash=cbf82e5251df76d345b146ad3744a04231421f3cbbccde6890e88b586c43b946\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=0 hash=6a1fa84d394ca600670c7491c1dc3b2c14994d37faff90a43855892db65f762c\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=0 hash=46d1f6c6abd195d140bfe2918dbf0b7a278d1e7d2234b07166ef074a28086d19\nTRACE_SUB indices=140,141,142,144,145,146,147,148,149 recid=1 hash=5416ed28306f710bb573452a1b12dd450cb4115d2638da39d5fd57c82bcb4f90\nTRACE_SUB indices=140,141,143,144,145,146,147,148,149 recid=1 hash=38a2acdae636378f70754aafa613699bacb413226a12fbe05ca34299cfb6d5d0\nTRACE_SUB indices=140,142,143,144,145,146,147,148,149 recid=1 hash=4bebb87cd84b73a4fff28fecab4f624388be00aebd80f57728ef2edd78a45011\nTRACE_SUB indices=141,142,143,144,145,146,147,148,149 recid=1 hash=2ac7ff3a60a5fdecd2604cee6e81c4b27fb2bcb692676529c3bc489258b371d6\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n",
+        "cpuHashesVerified": 8
+      },
+      "subset": {
+        "seconds": 0.6217986850000159,
+        "count": 4,
+        "rank": 82947113349096,
+        "hit": "",
+        "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0xFFFFFFFF (off=0) lt=1744599999 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 0M in 0s (0.0M/s)\n"
+      }
+    }
+  ],
+  "pinning": [
+    {
+      "sequence": 2147483648,
+      "locktime": 500000000,
+      "exit": 0,
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0x80000000\n\n  === Search: lt=[500000000,1744600000] (1), seq=[0x80000000+], GPU 0 (global 0 of 1) ===\n\n  Done: 0M in 0s (0.0M/s), found=0\n\n",
+      "hits": {}
+    },
+    {
+      "sequence": 4294967295,
+      "locktime": 1744599999,
+      "exit": 0,
+      "log": "QSB Real Pinning Search (seq+lt) [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: preimage=9995, suffix=75, seq@31, lt@67\n  GTable built on GPU in 0.19s (1048576 points, 64 MiB total, spot check passed)\n  Full suffix: 75 bytes, seq@31, lt@67\n  Mode: REAL\n  SHA path: per-sequence midstate + one static tail block\n  L2 persistence: 4 MiB pinned (max 4 MiB, window 128 MiB) ok\n  Pipeline checkpoints: 1024 MiB state + 0 MiB tree + 8 MiB roots + 4.02 MiB root tree\n  seq_start override: 0xffffffff\n\n  === Search: lt=[1744599999,1744600000] (1), seq=[0xFFFFFFFF+], GPU 0 (global 0 of 1) ===\n\n  Done: 0M in 0s (0.0M/s), found=0\n\n",
+      "hits": {}
+    }
+  ],
+  "performance": [
+    {
+      "round": 1,
+      "sample": 0,
+      "binary": "baseline",
+      "seconds": 8.38055036999998,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 8s (34.7M/s)\n"
+    },
+    {
+      "round": 1,
+      "sample": 0,
+      "binary": "candidate",
+      "seconds": 6.516913503000012,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 6s (45.4M/s)\n"
+    },
+    {
+      "round": 1,
+      "sample": 1,
+      "binary": "candidate",
+      "seconds": 6.531966261999969,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 6s (45.4M/s)\n"
+    },
+    {
+      "round": 1,
+      "sample": 1,
+      "binary": "baseline",
+      "seconds": 8.389300554000044,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 8s (34.6M/s)\n"
+    },
+    {
+      "round": 1,
+      "sample": 2,
+      "binary": "baseline",
+      "seconds": 8.39722868399997,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 8s (34.6M/s)\n"
+    },
+    {
+      "round": 1,
+      "sample": 2,
+      "binary": "candidate",
+      "seconds": 6.5522964219999835,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 6s (45.4M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 0,
+      "binary": "baseline",
+      "seconds": 3.8778120339999873,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (82.5M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 0,
+      "binary": "candidate",
+      "seconds": 3.8091818309999894,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (83.7M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 1,
+      "binary": "candidate",
+      "seconds": 3.8235309419999908,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (83.9M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 1,
+      "binary": "baseline",
+      "seconds": 3.895756161999998,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (82.2M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 2,
+      "binary": "baseline",
+      "seconds": 3.866931689000012,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (82.4M/s)\n"
+    },
+    {
+      "round": 2,
+      "sample": 2,
+      "binary": "candidate",
+      "seconds": 3.8487382399999888,
+      "count": 268435456,
+      "rank": 0,
+      "hit": "",
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.35s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 268M in 3s (83.7M/s)\n"
+    }
+  ],
+  "baselineSha256": "672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d",
+  "freshWithdrawal": false
+}

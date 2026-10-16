@@ -1,0 +1,39 @@
+{
+  "status": "BOUNDED_NATIVE_PASS_RELEASE_HOLD",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:d22c9b5842eca2eca1d8f27f45d7760f213fdaa4e01511de1eda77541ef51e47",
+  "solverCommit": "7ebebd05e2bea3cb4ca48cbd3f47b0fe0c6641d1",
+  "gpu": "NVIDIA A10G, GPU-5b9a8597-a232-6f63-d827-fc2dfee15908, 595.91.07",
+  "hashesVerified": 128,
+  "subsetRanges": 16,
+  "pinningBoundarySmokes": 2,
+  "performance": [
+    {
+      "round": 1,
+      "medianProcessSeconds": {
+        "baseline": 8.389300554000044,
+        "candidate": 6.531966261999969
+      },
+      "throughputIncreasePercent": 28.434535903916224
+    },
+    {
+      "round": 2,
+      "medianProcessSeconds": {
+        "baseline": 3.8778120339999873,
+        "candidate": 3.8235309419999908
+      },
+      "throughputIncreasePercent": 1.4196587610614042
+    }
+  ],
+  "freshWithdrawal": false,
+  "cleanupStatus": "Independently verified terminated instance and zero scoped temporary resources",
+  "files": {
+    "baseline-build-receipt.json": "6dda3da4a6b0aa98296278da089d46216ab7db1ba1335f0513898323c32bd424",
+    "native-result.json": "6a0c007192905103800084538c46a8b44eae9c5353c09b07331b0c25bd7ce9cb",
+    "optimized-build-receipt.json": "cca8efb1742178250b873195b8b2ed7cd824c470d541120802c209e047b9022b",
+    "pipeline.json": "97115f05cdddbfee2087f674a5110cb9a1d107eef0e4f9364abba8f000b4c7c2",
+    "public-plan.json": "1a71aef260042dce7cc819ba9e922e053df1cdaba9657bd6e8b3146d01a7c6ad",
+    "trace-source-commit.txt": "2cff6617f592ae332413de7726d308feea5742c5a02b89c03fac3fff72cefe13",
+    "trace.diff": "99dcc20baa017e136443bf88deb193f0bbf62e3d853c8c58d28f76fc8a3d4941",
+    "cleanup.json": "457f335508f937e28adf4a6c78bf0065838816495b0bb7f173161bb2df14eb6c"
+  }
+}

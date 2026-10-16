@@ -1,0 +1,21 @@
+{
+  "architecture": "sm_86",
+  "binarySha256": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15",
+  "compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+  "flags": [
+    "-O3",
+    "-arch=sm_86",
+    "-DZLAB_TRIM=0",
+    "-DZLAB_K2S=0",
+    "-DQSB_PAIR_SHARED=0",
+    "-DQSB_SPEC_FINISH=0",
+    "-DZLAB_DUAL_EPOCH_SHA=0",
+    "-std=c++17"
+  ],
+  "historicalBinaryAttestation": false,
+  "packages": "g++\t4:11.2.0-1ubuntu1\ngcc\t4:11.2.0-1ubuntu1\nlibssl-dev:amd64\t3.0.2-0ubuntu1.30\n",
+  "runtimeHash": "1725f49b29aa775289c01e4cf520ce2b972ca090a6c549d6072669622f8bb58b",
+  "solverReleaseSha256": "79b954e95c559104d14a3403dd2eba3a0712f8276aed9e6f7fcce8052d4c53bc",
+  "sourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3",
+  "status": "HOLD"
+}

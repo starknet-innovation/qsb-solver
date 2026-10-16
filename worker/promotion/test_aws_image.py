@@ -24,6 +24,7 @@ class S3:
 raw=b'public synthetic parameters'*4
 for stage in ('pinning','round1','round2'):
     request=dict(protocol='qsb-config-a-v1',stage=stage,parameterBase64=base64.b64encode(raw).decode(),parameterSha256=hashlib.sha256(raw).hexdigest(),manifestHash='a'*64,attempt=0,sequence=2147483648,locktime=500000000,kernelCommit=binding['solverCommit'],searchVersion='ranked-v2')
+    if 'scriptVersion' in binding: request['scriptVersion']=binding['scriptVersion']
     data=json.dumps(dict(input=request)).encode()
     s3=S3(data)
     env=dict(AWS_BATCH_JOB_ID=job,QSB_JOB_BUCKET='public-test',QSB_INPUT_KEY='inputs/'+job+'.json',QSB_INPUT_SHA256=hashlib.sha256(data).hexdigest())

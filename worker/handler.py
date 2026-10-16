@@ -18,10 +18,20 @@ from search_ranges import VERSION, work_range
 PINNED_KERNEL = '2791ed0588f5014ccd688d48ba5502df2879f2f1'
 FILES = {'pinning': 'pinning.bin', 'round1': 'digest_r1.bin', 'round2': 'digest_r2.bin'}
 
-def validate_request(data):
-    allowed = {'protocol', 'stage', 'parameterBase64', 'parameterSha256', 'sequence', 'locktime', 'attempt', 'manifestHash', 'kernelCommit', 'searchVersion'}
+LEGACY_SCRIPT_VERSION = "qsb-config-a-legacy-v1"
+CORRECTED_SCRIPT_VERSION = "qsb-config-a-cmsverify-v1"
+
+
+def validate_request(data, script_version=LEGACY_SCRIPT_VERSION):
+    allowed = {'protocol', 'stage', 'parameterBase64', 'parameterSha256', 'sequence', 'locktime', 'attempt', 'manifestHash', 'kernelCommit', 'searchVersion', 'scriptVersion'}
     if set(data) - allowed:
         raise ValueError('Unknown or potentially private fields are forbidden')
+    if script_version not in (LEGACY_SCRIPT_VERSION, CORRECTED_SCRIPT_VERSION):
+        raise ValueError('Unsupported installed script version')
+    # Only old wire requests may omit this field. A corrected build never guesses.
+    supplied = data.get('scriptVersion', LEGACY_SCRIPT_VERSION)
+    if supplied != script_version:
+        raise ValueError('Locking script version mismatch')
     if data['protocol'] != 'qsb-config-a-v1' or data['kernelCommit'] != PINNED_KERNEL:
         raise ValueError('Protocol or kernel mismatch')
     if data.get('searchVersion') != VERSION:
@@ -35,9 +45,9 @@ def validate_request(data):
     work_range(data['stage'], attempt)
     return raw
 
-def handler(event):
+def handler(event, script_version=LEGACY_SCRIPT_VERSION):
     data = event['input']
-    raw = validate_request(data)
+    raw = validate_request(data, script_version)
     stage = data['stage']
     unit = work_range(stage, data.get('attempt', 0))
     with tempfile.TemporaryDirectory(prefix='qsb-public-') as directory:
@@ -76,8 +86,11 @@ def handler(event):
                 status = 'failed'  # Never silently omit candidates then skip a range.
                 break
             hits.append(file.read_text())
-        return {'status':status,'stage':stage,'manifestHash':data['manifestHash'],
+        result = {'status':status,'stage':stage,'manifestHash':data['manifestHash'],
                 'attempt':data.get('attempt',0),'elapsedSeconds':time.monotonic()-start,
                 'candidates':hits,'verified':False,'kernelCommit':PINNED_KERNEL,
                 'workRange':unit,
                 'checkpoint':'range-complete' if status=='completed' else 'requires-verification-or-resume'}
+        if script_version != LEGACY_SCRIPT_VERSION or 'scriptVersion' in data:
+            result['scriptVersion'] = script_version
+        return result

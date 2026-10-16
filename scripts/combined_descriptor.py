@@ -23,12 +23,16 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
     """Inputs must be extracted from the separately provenance-verified image."""
     pipeline = json.loads(pipeline_bytes)
     receipt = json.loads(receipt_bytes)
-    if (not isinstance(pipeline, dict) or set(pipeline) not in (PIPELINE_KEYS, PIPELINE_KEYS | {'architecture'})
-            or pipeline['format'] != 'qsb-combined-candidate-v1'
+    if (not isinstance(pipeline, dict) or set(pipeline) not in (PIPELINE_KEYS, PIPELINE_KEYS | {'architecture'}, PIPELINE_KEYS | {'architecture', 'scriptVersion'})
+            or pipeline['format'] not in ('qsb-combined-candidate-v1', 'qsb-combined-candidate-v2')
             or pipeline['status'] != 'HOLD' or pipeline['searchVersion'] != 'ranked-v2'
             or pipeline['solverCommit'] != source_commit
             or not hex_value(source_commit, 40)):
         raise ValueError('Invalid or mismatched combined pipeline')
+    corrected = pipeline['format'] == 'qsb-combined-candidate-v2'
+    if ((corrected and pipeline.get('scriptVersion') != 'qsb-config-a-cmsverify-v1')
+            or (not corrected and 'scriptVersion' in pipeline)):
+        raise ValueError('Invalid script version binding')
     for field in ['pinningUpstreamCommit', 'subsetUpstreamCommit']:
         if not hex_value(pipeline[field], 40):
             raise ValueError('Invalid upstream identity')
@@ -61,7 +65,10 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
     value = descriptor(source_commit, image_digest)
     # The combined worker echoes its own source commit, not an upstream lineage.
     value['kernelCommit'] = source_commit
-    value['schemaVersion'] = 3
+    value['schemaVersion'] = 4 if corrected else 3
+    if corrected:
+        value['scriptVersion'] = pipeline['scriptVersion']
+        value['generatorCommit'] = 'b22f81c093488d09b9cd59c171c79b6c40812cf1'
     contract = json.loads(contract_bytes)
     if not isinstance(contract, dict) or contract.get('searchVersion') != 'ranked-v2':
         raise ValueError('Invalid source search contract')
@@ -78,7 +85,7 @@ def proposal(pipeline_bytes, receipt_bytes, source_commit, image_digest, contrac
                         'files': files,
                         'subsetSourceLockSha256': pipeline['subsetSourceLockSha256']},
             'remainingApproval': ['independent-final-review', 'native-sm86-correctness-and-matched-a10g-performance',
-                                  'reviewed-publication-and-app-enrollment']}
+                                  'reviewed-publication-and-app-enrollment'] + (['corrected-script-cpu-gpu-differential', 'fresh-corrected-full-predicate-core-proof'] if corrected else [])}
 
 
 def main():

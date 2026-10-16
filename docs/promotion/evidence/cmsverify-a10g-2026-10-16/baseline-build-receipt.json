@@ -1,0 +1,32 @@
+{
+  "status": "UNEXECUTED",
+  "purpose": "matched-performance-baseline-only",
+  "sourceCommit": "7ebebd05e2bea3cb4ca48cbd3f47b0fe0c6641d1",
+  "architecture": "sm_86",
+  "flags": [
+    "-O3",
+    "-arch=sm_86",
+    "-DZLAB_TRIM=0",
+    "-DZLAB_K2S=0"
+  ],
+  "files": {
+    "Dockerfile": "5bd5d5ae26bb340014ca00414e1f9eb5852085c9987923768fccc73ff9529e5e",
+    "compiler.txt": "68f8b0a1301428031e307cf5260142a517bff25cc232a09eae2734be475d721f",
+    "prepare_kernels.py": "689c6cd2b0667ef396e5f42efb126405a529625920028125276dd99a1e870ad9",
+    "provenance.json": "2b71eb211a1ec2c72aed4b2d3c3a2b2de47c73269785f3a3312a2b24ead9b175",
+    "source/COPYING": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "source/GPUHash.h": "d29adbbdb331b164aa16f19611c9f95d412105febaef9417de185ba486a72692",
+    "source/GPUMath.h": "b93fa266439d2b71d56f7ac85cea06460b92d8d9f5ec5281008d755bbd090b9c",
+    "source/TREE_INVERSE.md": "4457a27fbbd4af653045efe5f1d3507871b698eaf9e28d5a4de21fcb3bde318a",
+    "source/square32.cuh": "a973d1dd58bf760ce5cbff79e69cbe8cd725d8ad1a642741e936fb2d948be771",
+    "source/subset.cu": "e2bead6006809470d21f6beb8de58a5efe7af483ffcf74f31596a9da108446ef",
+    "source/tests/gpu_epochs/dirdig_audit.cu": "5c0290f674063a2b793a26cafa0072b40bb9185ed3494af79d5c4ea6d30fe6a8",
+    "source/tests/gpu_epochs/prefix_cache.cuh": "2b289341d3ed1136c4ea157d2d68c2924da2b5a6538cf4ea49e8c720712977b5",
+    "source/tests/gpu_epochs/tree.cu": "25b02772efe831d489ec3b2083b437a8136962fbb0613e281b12fcc73729ca29",
+    "source/tests/gpu_epochs/tree_audit.cu": "25ec22761b2724f62896c1a621516ca00ba5fe52d50f03239167ea7ea45034d4",
+    "source/tests/gpu_epochs/tree_inverse.cuh": "afa07a330119b2bd55c01de275b1a78766e9d2026113acb8f658be7c9311d1a6",
+    "source/tests/gpu_epochs/window_schedule_shared.cuh": "94aab78aa0ce08788b0c6cd2593e31be689d6b0363934f18085bae3779c97d0a",
+    "source/tests/gpu_epochs/zinv32.cuh": "8249034e5bff1526de31ebd64efd923d0b0c18683d71f7f6c7ed4fe70ca31807",
+    "subset": "672cf6689fd6e0c71d992ab2a6df2687ac9b2b0d5c7de42d63db6b51b69c6b5d"
+  }
+}
