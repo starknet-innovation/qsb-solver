@@ -215,6 +215,21 @@ charged separately. This identifies the finite Core source cases that need
 transition refinement for every admitted lock shape; it does not itself prove
 that the compiled C++ interpreter implements the Lean steps.
 
+`QSB.ByteMachineQueries.lock_queries_le_33` adds the hash-opcode oracle
+accounting for the same inventory: the byte-model run of every parameterized
+lock records at most 33 idealized calls, 15 H plus 15 R from `HASH160` and
+3 H from `SHA256`, and `run_congr` proves the run depends on the hash
+functions only at those recorded inputs. Under the `scriptSig` budget's
+source-shaped convention of at most two H calls per legacy signature
+attempt, the four `CHECKSIGVERIFY` sites and the two ten-key
+`CHECKMULTISIG` sites would add at most 48 further H calls per lock run,
+but those checker calls are not yet traced in Lean. The literal fixture's two
+`CHECKMULTISIG` sites each declare ten keys, so its opcode count with key
+charges is 201, exactly Core's cap; the skeleton theorem fixes the push
+positions but does not by itself prove that those two key-count pushes are
+unchanged in every parameterized lock. These are statements about the Lean
+models, not about compiled Core.
+
 The optional full-lock `scriptSig` extension to
 `analysis/check_full_two_outputs_core.py` tests the same canonical disposable
 witness with five stack-preserving non-push tails. The checksum-verified

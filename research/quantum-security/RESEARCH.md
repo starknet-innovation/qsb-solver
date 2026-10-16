@@ -201,9 +201,14 @@ An applicability test for QSB has four concrete obligations:
    the oracle's actual value, and the whole transcript is unchanged by any
    oracle modification outside the recorded queries. Appending the traced
    postprocessor gives at most `budget + 300` classical calls on the H route
-   and `budget + 600` on the R route. The world-indexed source extractor's own
-   hash evaluations are still uncharged, the honest machine is not shown to
-   use the sampled secrets correctly, and no coherent-query version exists.
+   and `budget + 600` on the R route. `QSB/ByteMachineQueries.lean` begins
+   charging the world-indexed source extractor: the byte-model run of any
+   parameterized lock is causal in an explicit trace of at most 33 hash-opcode
+   H/R calls, and the Core-shaped run inherits that causality. The checker's
+   SHA256d calls at the six signature sites, the second search branch, and
+   the scriptSig evaluator are still uncharged, the honest machine is not
+   shown to use the sampled secrets correctly, and no coherent-query version
+   exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
    selected transaction, and enough oracle input/output pairs to verify the
    *reached* seven opening equations and both signature-puzzle routes. It must

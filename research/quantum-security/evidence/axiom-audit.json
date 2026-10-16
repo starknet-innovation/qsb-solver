@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1469,
+  "theorem_count": 1488,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -350,6 +350,76 @@
       "propext"
     ],
     "QSB.ByteMachine.successful_hash_comparison_in_context": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.answer_H": [],
+    "QSB.ByteMachineQueries.answer_R": [],
+    "QSB.ByteMachineQueries.literal_budget": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.lock_budget": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.lock_queries_le_33": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.opBudget_skeleton": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.restQueries_mem_runQueries": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.runQueries_append": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.runQueries_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.run_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.stepQueries_length_le": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.stepQueries_mem_runQueries": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_hash160": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_hash160_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_no_hash": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_sha256": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.step_sha256_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.structural_run_congr": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

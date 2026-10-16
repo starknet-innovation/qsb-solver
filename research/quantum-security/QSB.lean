@@ -96,6 +96,7 @@ import QSB.JointFreshRoutes
 import QSB.JointFreshCandidates
 import QSB.JointFreshPostprocessing
 import QSB.CausalQueryAlgorithm
+import QSB.ByteMachineQueries
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -275,6 +276,25 @@ import QSB.Reduction
 #print axioms QSB.CausalQueryAlgorithm.released_of_halted
 #print axioms QSB.CausalQueryAlgorithm.h_route_classical_calls_le
 #print axioms QSB.CausalQueryAlgorithm.r_route_classical_calls_le
+#print axioms QSB.ByteMachineQueries.stepQueries_length_le
+#print axioms QSB.ByteMachineQueries.runQueries_length_le
+#print axioms QSB.ByteMachineQueries.answer_H
+#print axioms QSB.ByteMachineQueries.answer_R
+#print axioms QSB.ByteMachineQueries.step_no_hash
+#print axioms QSB.ByteMachineQueries.step_hash160
+#print axioms QSB.ByteMachineQueries.step_sha256
+#print axioms QSB.ByteMachineQueries.step_hash160_nil
+#print axioms QSB.ByteMachineQueries.step_sha256_nil
+#print axioms QSB.ByteMachineQueries.step_congr
+#print axioms QSB.ByteMachineQueries.stepQueries_mem_runQueries
+#print axioms QSB.ByteMachineQueries.restQueries_mem_runQueries
+#print axioms QSB.ByteMachineQueries.run_congr
+#print axioms QSB.ByteMachineQueries.runQueries_append
+#print axioms QSB.ByteMachineQueries.opBudget_skeleton
+#print axioms QSB.ByteMachineQueries.literal_budget
+#print axioms QSB.ByteMachineQueries.lock_budget
+#print axioms QSB.ByteMachineQueries.lock_queries_le_33
+#print axioms QSB.ByteMachineQueries.structural_run_congr
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
 #print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
 #print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional
