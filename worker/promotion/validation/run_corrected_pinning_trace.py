@@ -112,7 +112,7 @@ def run(plan_path, plan_sha, receipt_path, receipt_sha, normal, output, deadline
                 if row['exit'] or row['hits'] or 'Mode: REAL' not in row['log'] or 'Done:' not in row['log'] or 'QSB_RANGE_INCOMPLETE' in row['log']:
                     raise ValueError('Timing failed or real hit requires independent CPU validation')
             result['timingSummary']=timing_summary(result['timing'])
-        result['status']='BOUNDED_PINNING_NATIVE_PASS' 
+        result['status']='BOUNDED_PINNING_NATIVE_PASS'
     except Exception as exc:
         result['status']='FAILED';result['error']=str(exc)
         raise
