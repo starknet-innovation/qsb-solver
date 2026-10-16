@@ -235,6 +235,23 @@ acceptance. Native acceptance of the fixture corroborates the count at that
 boundary for the fixture only. These are statements about the Lean models,
 not about compiled Core.
 
+The optional lock-side extension to `analysis/check_full_two_outputs_core.py`
+(`--extra-lock-opcount-cases`) probes that boundary from the lock side with
+the same disposable puzzle-relaxed full lock. Each `OP_2DROP` relaxation
+counts one opcode, as the replaced `CHECKSIGVERIFY` did, so the test lock also
+totals 181 counted opcodes plus two ten-key charges. Each case rebuilds the
+witness for its changed lock. The checksum-verified Core 27.2 macOS library
+accepts the unchanged lock; rejects it with one `OP_NOP` appended after the
+final `CHECKMULTISIG`, where that NOP is the 202nd ordinary count; rejects it
+with one `OP_NOP` prepended before the first push, where every ordinary count
+stays within the cap and only the final ten-key charge can exceed it; and
+accepts an appended uncounted `OP_1`. The 32-case report is
+`evidence/full-two-outputs-opcount-core-macos.json`. The harness without
+either option still reproduces the 28-case macOS report byte-for-byte, and
+with `--extra-scriptsig-cases` the 33-case report. This is a finite fixture
+check that Core's `nOpCount`, including the key-count charge, reaches exactly
+201 on this lock; it is not a universal refinement of the modeled count.
+
 The optional full-lock `scriptSig` extension to
 `analysis/check_full_two_outputs_core.py` tests the same canonical disposable
 witness with five stack-preserving non-push tails. The checksum-verified

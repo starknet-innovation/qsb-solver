@@ -4,8 +4,10 @@ Three hash-to-signature puzzle CHECKSIGVERIFY sites are changed to OP_2DROP.
 Pinning, all 15 HORS comparisons, and both CHECKMULTISIGs remain real. All
 secrets and signatures are disposable public test data; no transaction is
 broadcast or funded. The original two-input wrapper and a test-only variable-
-input adapter call the same pinned library. This is a finite consensus-
-interpreter experiment, not an actual QSB spend or a universal refinement.
+input adapter call the same pinned library. Optional lock-side cases add one
+byte to the bare lock itself and rebuild the witness for the changed lock to
+probe Core's 201-opcode cap. This is a finite consensus-interpreter
+experiment, not an actual QSB spend or a universal refinement.
 """
 
 import argparse
@@ -52,6 +54,8 @@ def main() -> None:
                         help="Official Core 27.2 macOS archive for host mode provenance")
     parser.add_argument("--extra-scriptsig-cases", action="store_true",
                         help="Add full-lock scriptSig isolation boundary cases")
+    parser.add_argument("--extra-lock-opcount-cases", action="store_true",
+                        help="Add bare-lock opcode-count boundary cases")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     app_root = args.app_root.resolve()
@@ -188,12 +192,13 @@ def main() -> None:
         return canonical_index(round_index, position, value)
 
     def witness(tx: bt.Transaction, dummy_context: bt.Transaction,
-                index_encoder=canonical_index, spending_index: int = 1) -> bytes:
+                index_encoder=canonical_index, spending_index: int = 1,
+                lock_script: bytes = lock) -> bytes:
         script_sig = bytearray()
         for round_index in (1, 0):
             selected = [builder.dummy_sigs[round_index][j]
                         for j in subsets[round_index]]
-            script_code = bt.find_and_delete(lock, nonces[round_index])
+            script_code = bt.find_and_delete(lock_script, nonces[round_index])
             for sig in selected:
                 script_code = bt.find_and_delete(script_code, sig)
             nonce_key = recover(nonces[round_index],
@@ -211,7 +216,7 @@ def main() -> None:
                 value = indices[round_index][position]
                 script_sig += index_encoder(round_index, position, value)
         pin_key = recover(pin, tx.sighash(
-            spending_index, bt.find_and_delete(lock, pin), 1))
+            spending_index, bt.find_and_delete(lock_script, pin), 1))
         script_sig += bt.push_data(ec.compress_pubkey(ec.G))
         script_sig += bt.push_data(pin_key)
         return bytes(script_sig)
@@ -310,6 +315,46 @@ def main() -> None:
         if raw_tx is not None:
             record["transaction_encoding"] = "segwit_marker_flag_and_witness"
         cases.append(record)
+
+    def modeled_opcode_count(script: bytes) -> dict:
+        # Core counts every opcode above OP_16 once and adds each reached
+        # CHECKMULTISIG key count. Both lock key counts are OP_10 pushes.
+        parsed = list(opcodes(script))
+        counted = sum(1 for _, op in parsed if op > bt.OP_16)
+        key_charges = 0
+        for position, (_, op) in enumerate(parsed):
+            if op == bt.OP_CHECKMULTISIG:
+                assert parsed[position - 1][1] == 0x5a  # OP_10
+                key_charges += 10
+        return {"counted_opcodes": counted,
+                "multisig_key_charges": key_charges,
+                "modeled_opcode_total": counted + key_charges}
+
+    def check_lock(name: str, probe_lock: bytes, mutation: str,
+                   expected: bool) -> None:
+        tx = transaction(True)
+        tx.inputs[1].script_sig = witness(tx, tx, lock_script=probe_lock)
+        spent = [{"script_pubkey_hex": "51", "value": 1000},
+                 {"script_pubkey_hex": probe_lock.hex(), "value": 100000}]
+        result = variable_core_result(tx, 1, spent=spent)
+        accepted = all(item == {"valid": True, "error": 0}
+                       for item in result["inputs"])
+        assert accepted == expected, (name, result, expected)
+        cases.append({
+            "name": name,
+            "accepted": accepted,
+            "expected": expected,
+            "input_count": len(tx.inputs),
+            "spending_index": 1,
+            "input_results": result["inputs"],
+            "lock_sha256": hashlib.sha256(probe_lock).hexdigest(),
+            "lock_length": len(probe_lock),
+            "lock_mutation": mutation,
+            **modeled_opcode_count(probe_lock),
+            "output_count": len(tx.outputs),
+            "script_sig_length": len(tx.inputs[1].script_sig),
+            "transaction_sha256": hashlib.sha256(tx.serialize()).hexdigest(),
+        })
 
     def serialize_segwit(tx: bt.Transaction,
                          witnesses: list[list[bytes]]) -> bytes:
@@ -473,6 +518,26 @@ def main() -> None:
     check_variable("three_inputs_qsb_index_two_changed_both_outputs_same_dummy_keys",
                    three_index_two, 2, True)
 
+    if args.extra_lock_opcount_cases:
+        # The byte model charges every parameterized lock 181 counted opcodes
+        # plus two ten-key CHECKMULTISIG counts, exactly Core's 201 cap. The
+        # OP_2DROP relaxations count once each, as the replaced
+        # CHECKSIGVERIFYs did, so this test lock totals 201 too. Each probe
+        # rebuilds the witness for its changed lock. An appended OP_NOP is
+        # the 202nd ordinary count; a prepended OP_NOP keeps every ordinary
+        # count within the cap and can only fail at the final ten-key charge.
+        # An appended OP_1 is not counted and leaves a true top, so it is the
+        # accepted control for a rebuilt witness on a changed lock.
+        assert modeled_opcode_count(lock)["modeled_opcode_total"] == 201
+        check_lock("two_outputs_lock_unchanged_control", lock, "none", True)
+        check_lock("two_outputs_lock_appended_nop_rejected", lock + b"\x61",
+                   "OP_NOP appended after the final CHECKMULTISIG", False)
+        check_lock("two_outputs_lock_prepended_nop_rejected", b"\x61" + lock,
+                   "OP_NOP prepended before the first push", False)
+        check_lock("two_outputs_lock_appended_op_1_accepted", lock + b"\x51",
+                   "uncounted OP_1 appended after the final CHECKMULTISIG",
+                   True)
+
     report = {
         "scope": "Disposable full lock with three puzzle CHECKSIGVERIFY sites relaxed; 15 HORS comparisons, pinning and both CHECKMULTISIGs remain real. All cases use a pinned Core 27.2 consensus library. Input 1 with two outputs has in-range SINGLE; input 2 with two outputs uses the SINGLE bug digest. Mixed SegWit cases add a P2WSH companion input, a valid witness-only mutation, and a wrong-witness control. Not a full QSB spend or universal Core refinement.",
         "builder_sha256": source_sha,
@@ -491,6 +556,8 @@ def main() -> None:
     }
     if args.extra_scriptsig_cases:
         report["extra_scriptsig_cases"] = True
+    if args.extra_lock_opcount_cases:
+        report["extra_lock_opcount_cases"] = True
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(json.dumps({"cases": [{"name": c["name"], "accepted": c["accepted"]}
