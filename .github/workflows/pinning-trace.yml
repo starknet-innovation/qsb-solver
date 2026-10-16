@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/pinning-trace.yml
       - worker/promotion/validation/build_pinning_trace.py
+      - worker/promotion/validation/corrected_pinning_trace.py
       - worker/promotion/prepare_pinning.py
       - worker/promotion/pinning_output.h
       - worker/promotion/Dockerfile
