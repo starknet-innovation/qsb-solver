@@ -18,9 +18,11 @@ import time
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT/'worker'))
-from search_ranges import work_range
+from search_ranges import work_range, SEQUENCES
 from candidate_range import validate_candidates_in_range
 VERSION='qsb-config-a-cmsverify-v1'
+MAX_LOG=1<<20
+MAX_SNAPSHOT=256<<20
 CPU_FILES={'handler.py','bitcoin_tx.py','qsb_pipeline.py','secp256k1.py','verify_hit.py','gpu_emulator.py'}
 
 
@@ -76,6 +78,9 @@ def resume_status(root,binding):
         if record['workRange']!=work_range('pinning',record['attempt']):raise ValueError('Range partition changed')
         if record['status'] in ('complete','verified-hit') and sha(path.parent/'result.json')!=record.get('resultSha256'):
             raise ValueError('Completed result missing or changed')
+        if record['status'] in ('complete','verified-hit'):
+            result=json.loads((path.parent/'result.json').read_text())
+            if sha(path.parent/'compute.log')!=result['logSha256']:raise ValueError('Completed log changed')
         records.append(record)
     records.sort(key=lambda r:r['attempt'])
     for attempt,record in enumerate(records):
@@ -95,13 +100,21 @@ def compute(binary,raw,unit,directory,timeout):
     with (directory/'compute.log').open('w') as output:
         process=subprocess.Popen(command,cwd=directory,stdout=output,stderr=subprocess.STDOUT,start_new_session=True,
                                  env={'PATH':os.environ.get('PATH',''),'HOME':'/tmp'})
-        try:process.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
+        try:
+            while process.poll() is None:
+                if (directory/'compute.log').stat().st_size>MAX_LOG:
+                    raise OverflowError('Log capacity exceeded; range uncredited')
+                remaining=timeout-(time.monotonic()-started)
+                if remaining<=0:raise subprocess.TimeoutExpired(command,timeout)
+                try:process.wait(timeout=min(.2,remaining))
+                except subprocess.TimeoutExpired:pass
+        except (subprocess.TimeoutExpired,OverflowError) as exc:
             os.killpg(process.pid,signal.SIGTERM)
             try:process.wait(timeout=5)
             except subprocess.TimeoutExpired:os.killpg(process.pid,signal.SIGKILL);process.wait()
-            raise TimeoutError('Range timed out; preserved partial logs; no automatic retry')
+            raise RuntimeError('Range stopped; preserved partial logs; no automatic retry: '+str(exc))
         finally:output.flush();os.fsync(output.fileno())
+    if (directory/'compute.log').stat().st_size>MAX_LOG:raise ValueError('Log capacity exceeded')
     log=(directory/'compute.log').read_text()
     if process.returncode!=0 or 'Done:' not in log or 'QSB_RANGE_INCOMPLETE' in log:
         raise ValueError('Range failed or completion absent')
@@ -126,9 +139,26 @@ def checked_solution(public,candidates,unit,verify):
     return solutions[0] if solutions else None
 
 
+def await_intent_ack(record_path,ack_dir,binding,attempt,timeout=60):
+    expected={"recordPath":f"range-{attempt:08d}/record.json","recordSha256":sha(record_path),"binding":binding}
+    ack=ack_dir/f"{binding}-{attempt:08d}.json"
+    until=time.monotonic()+timeout
+    while time.monotonic()<until:
+        if ack.exists():
+            if json.loads(ack.read_text())!=expected:raise ValueError("Intent acknowledgement mismatch")
+            return
+        time.sleep(min(.1,max(0,until-time.monotonic())))
+    raise TimeoutError("Off-host intent acknowledgement missing; compute refused")
+
+
 def run(args):
     root=args.output.resolve();root.mkdir(parents=True,exist_ok=True)
-    lock=(root/'.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    with (root/'.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        return run_locked(args,root)
+
+
+def run_locked(args,root):
     binary=args.binary.resolve();reference=args.reference.resolve()
     sources=json.loads(args.reference_hashes.read_text());public=json.loads(args.public.read_text())
     verify_artifacts(binary,args.binary_sha256,reference,sources)
@@ -151,6 +181,9 @@ def run(args):
         if solution:return {'status':'verified-hit','solution':solution}
         if args.deadline-time.time()<=args.range_timeout+90:
             return {'status':'deadline-stop','nextAttempt':attempt,'binding':binding}
+        if attempt*SEQUENCES>=1<<31:return {'status':'exhausted','nextAttempt':attempt,'binding':binding}
+        if sum(p.stat().st_size for p in root.rglob('*') if p.is_file())>MAX_SNAPSHOT-2*MAX_LOG:
+            return {'status':'snapshot-capacity-stop','nextAttempt':attempt,'binding':binding}
         unit=work_range('pinning',attempt)
         directory=root/f'range-{attempt:08d}';directory.mkdir()
         record={'status':'prepared','binding':binding,'attempt':attempt,'workRange':unit,'preparedAt':time.time()}
@@ -169,6 +202,7 @@ def run(args):
     record.update(status='compute-intent',startedAt=time.time())
     save(directory/'record.json',record)
     try:
+        await_intent_ack(directory/'record.json',args.intent_ack_dir,binding,attempt)
         result=compute(binary,raw,unit,directory,args.range_timeout)
         save(directory/'result.json',result)
         solution=checked_solution(public,result['candidates'],unit,lambda event:cpu(reference,event))
@@ -186,6 +220,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['prepare','execute'])
     parser.add_argument('--attempt',type=int)
+    parser.add_argument('--intent-ack-dir',type=Path,required=True)
     for name in ('public','binary','reference','reference-hashes','output'):parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--binary-sha256',required=True)
     parser.add_argument('--deadline',type=int,required=True)

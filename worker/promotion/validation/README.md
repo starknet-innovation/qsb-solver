@@ -103,3 +103,15 @@ never the container or public receipts. A remotely recovered prepared intent is
 **uncertain**, not authorization to execute again: reconcile it first. This
 protocol preserves coverage and unknown attempts if the watchdog deletes EBS.
 No continuous loop is built into the container runner.
+
+Execution additionally requires `--intent-ack-dir`. After fsyncing the
+`compute-intent` record and before starting the binary, it waits at most 60 seconds
+for `{binding}-{attempt:08d}.json` in that directory. The trusted host supervisor
+must first upload a snapshot containing those exact record bytes, then atomically
+write an acknowledgement with exactly `recordPath` (`range-NNNNNNNN/record.json`),
+`recordSha256`, and `binding`. A missing or mismatching acknowledgement prevents
+compute and leaves a failed intent. The campaign binding distinguishes stages or
+fixtures even when attempt numbers repeat. Credential URLs stay outside both
+mounts. Public logs are capped at 1 MiB per process (checked during execution),
+and preparation stops before retained snapshots approach 256 MiB. Completed
+records require their retained log hash as well as their result hash on resume.
