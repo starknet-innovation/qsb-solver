@@ -79,7 +79,15 @@ records, not cryptographic cloud attestations; retain original tool receipts.
 
 `arm` freezes the 25-minute deadline and cleanup ZIP hash. `Code.ZipFile` in the
 emitted JSON is a base64 transport representation; decode to SDK bytes at the
-MCP boundary. Wait for the Lambda to be Active and its exact hash/configuration
+MCP boundary **only if the transport preserves binary SDK arguments**. The
+2026-10-16 MCP transport did not; passing a Python bytes value corrupted the ZIP.
+The tested alternative uploaded the exact ZIP through a presigned URL to a
+temporary private S3 bucket, then used `Code.S3Bucket`/`Code.S3Key`. Record that
+transport substitution separately from the planner's emitted request, retain the
+ZIP SHA256, and require the returned Lambda `CodeSha256` to match the original
+ZIP before arming. Never claim the substituted request was byte-identical to the
+planner output. Delete the temporary objects and bucket during cleanup. Do not
+print or publish presigned URLs. Wait for the Lambda to be Active and its exact hash/configuration
 to match before executing the scheduled-cleanup call. Do not extend or re-arm.
 
 `launch --evidence preflight.json` requires fresh (at most 60 seconds old)
