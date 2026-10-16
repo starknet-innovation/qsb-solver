@@ -115,3 +115,11 @@ fixtures even when attempt numbers repeat. Credential URLs stay outside both
 mounts. Public logs are capped at 1 MiB per process (checked during execution),
 and preparation stops before retained snapshots approach 256 MiB. Completed
 records require their retained log hash as well as their result hash on resume.
+
+### Public subset-stage advancement
+
+`fresh_subset_search.py` extends the one-shot public search protocol after a CPU-verified pin. Supply the original public `export-pinning.json`, the prior public `solution.json`, `--stage round1` or `--stage round2`, the frozen subset binary/hash, six-file CPU reference/hash inventory, and a separate output/ack directory for each stage. Other prepare/execute, attempt, deadline and range-timeout arguments match `fresh_pinning_search.py`.
+
+Round 1 requires exactly public sequence/locktime. Round 2 additionally requires the nine round-1 CPU/HORS indices. Every invocation independently verifies the pin and, for round 2, the prior subset before exporting parameters from the same public transaction manifest. No recovery state is needed remotely. The exported parameter digest, previous solution, stage, CPU inventory, binary and fixed deadline are included in the durable binding.
+
+A host supervisor must save the prepare and compute-intent records off-host and return the exact acknowledgement before each single execute; it must save completion evidence before preparing another range. Failed/uncertain intents refuse resubmission. A verified hit returns a cumulative public solution with CPU/HORS indices, suitable for the next stage or eventual local offline Core verification. Stop rather than automatically changing the pin on domain exhaustion; any restarted pin needs separate public context and complete coverage accounting within the original campaign cap. The runner neither allocates resources nor signs or spends a fixture.
