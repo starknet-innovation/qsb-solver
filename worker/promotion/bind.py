@@ -5,7 +5,9 @@ import os
 import pathlib
 import re
 
-def bind(ROOT, commit, architecture):
+def bind(ROOT, commit, architecture, script_version="qsb-config-a-legacy-v1"):
+    if script_version not in ("qsb-config-a-legacy-v1", "qsb-config-a-cmsverify-v1"):
+        raise ValueError("Unsupported script version")
     if not re.fullmatch('[a-f0-9]{40}', commit):
         raise ValueError('An exact source commit is required')
     receipt = json.loads((ROOT / 'optimized-build-receipt.json').read_text())
@@ -26,7 +28,9 @@ def bind(ROOT, commit, architecture):
         'files': {name: sha(ROOT / name) for name in (
             'pinning', 'subset', 'handler.py', 'historical_handler.py', 'search_ranges.py')},
     }
+    if script_version == 'qsb-config-a-cmsverify-v1':
+        binding.update(format='qsb-combined-candidate-v2', scriptVersion=script_version)
     (ROOT / 'pipeline.json').write_text(json.dumps(binding, sort_keys=True, indent=2) + '\n')
 
 if __name__=='__main__':
-    bind(pathlib.Path('/opt/qsb'),os.environ['SOLVER_COMMIT'],os.environ['CUDA_ARCH'])
+    bind(pathlib.Path('/opt/qsb'),os.environ['SOLVER_COMMIT'],os.environ['CUDA_ARCH'],os.environ.get('SCRIPT_VERSION', 'qsb-config-a-legacy-v1'))

@@ -29,6 +29,12 @@ jobs:
             candidate-sm86-*) echo "CUDA_ARCH=86" >> "$GITHUB_ENV"; echo "TRANSPORT=aws" >> "$GITHUB_ENV" ;;
             *) echo "Only candidate-sm86-* tags build a candidate (AWS A10G)." >&2; exit 1 ;;
           esac
+      - name: Select explicit locking-script contract
+        run: |
+          case "$GITHUB_REF_NAME" in
+            candidate-sm86-cmsverify-*) echo "SCRIPT_VERSION=qsb-config-a-cmsverify-v1" >> "$GITHUB_ENV" ;;
+            *) echo "SCRIPT_VERSION=qsb-config-a-legacy-v1" >> "$GITHUB_ENV" ;;
+          esac
       - name: Compile and bind both stages
         env:
           IMAGE: ghcr.io/starknet-innovation/qsb-solver:${{ github.ref_name }}
@@ -37,6 +43,7 @@ jobs:
           docker build -f worker/optimized/Dockerfile --target runtime --build-arg CUDA_ARCH="$CUDA_ARCH" -t qsb-optimized:build .
           docker build -f worker/promotion/Dockerfile --target "$TRANSPORT" \
             --build-arg CUDA_ARCH="$CUDA_ARCH" \
+            --build-arg SCRIPT_VERSION="$SCRIPT_VERSION" \
             --build-arg HISTORICAL_IMAGE=qsb-historical:build \
             --build-arg OPTIMIZED_IMAGE=qsb-optimized:build \
             --build-arg SOLVER_COMMIT="$GITHUB_SHA" -t "$IMAGE" .

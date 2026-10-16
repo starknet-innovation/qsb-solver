@@ -85,3 +85,18 @@ class CombinedDescriptorTests(unittest.TestCase):
                     dict(config,Entrypoint=['sh']), dict(config,Entrypoint=['/opt/nvidia/nvidia_entrypoint.sh','sh']),
                     dict(config,Entrypoint=['/bin/sh','-c']), dict(config,WorkingDir='/tmp')):
             with self.assertRaises(ValueError): aws(cfg=bad)
+
+    def test_corrected_descriptor_is_separate_from_range_contract(self):
+        p = dict(self.pipeline, format='qsb-combined-candidate-v2', architecture='sm_86',
+                 scriptVersion='qsb-config-a-cmsverify-v1')
+        r = dict(self.receipt, architecture='sm_86', flags=['-arch=sm_86'])
+        result = self.build(pipeline=p, receipt=r)
+        self.assertEqual(result['solver']['schemaVersion'], 4)
+        self.assertEqual(result['solver']['scriptVersion'], p['scriptVersion'])
+        self.assertEqual(result['solver']['generatorCommit'], 'b22f81c093488d09b9cd59c171c79b6c40812cf1')
+        self.assertEqual(result['solver']['searchContract'], self.build()['solver']['searchContract'])
+        self.assertIn('fresh-corrected-full-predicate-core-proof', result['remainingApproval'])
+        for bad in (dict(p, scriptVersion='qsb-config-a-legacy-v1'),
+                    dict(p, format='qsb-combined-candidate-v1'),
+                    {k: v for k, v in p.items() if k != 'scriptVersion'}):
+            with self.assertRaises(ValueError): self.build(pipeline=bad, receipt=r)

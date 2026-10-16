@@ -13,6 +13,7 @@ try: handler.handler({'input':dict(request, kernelCommit='0'*40)})
 except ValueError: pass
 else: raise AssertionError('Wrong release accepted')
 for stage in ('pinning','round1','round2'):
+    if 'scriptVersion' in b: request['scriptVersion']=b['scriptVersion']
     result=handler.handler({'input':dict(request,stage=stage)})
     assert result['status']=='failed', result
     assert result['checkpoint']=='requires-verification-or-resume', result

@@ -1,0 +1,28 @@
+{
+  "scriptVersion": "qsb-config-a-cmsverify-v1",
+  "generatorCommit": "b22f81c093488d09b9cd59c171c79b6c40812cf1",
+  "seed": 719,
+  "purpose": "synthetic nonexistent-outpoint CPU compatibility vectors; no GPU or consensus qualification",
+  "sourceFiles": {
+    "public/qsb/bitcoin_tx.py": "63477558c4545815e6fca7e30b1d6602489887ba96dda2ea8e091f087d04f886",
+    "public/qsb/bridge.py": "9300e0e0098df22fdda80bb7545d57cc1ca2dfd42e60c79d289847c76948920d",
+    "public/qsb/qsb_pipeline.py": "3d32fd82ead536b1aa12e1127e87310fe34a7d07ffff73b55dddafec67873567",
+    "public/qsb/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "worker/cpu/bitcoin_tx.py": "63477558c4545815e6fca7e30b1d6602489887ba96dda2ea8e091f087d04f886",
+    "worker/cpu/gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+    "worker/cpu/handler.py": "4bd216272467aa17a854f1938f8d00eb08ba0a27863e361d8bf75dfc7364c5ca",
+    "worker/cpu/qsb_pipeline.py": "3d32fd82ead536b1aa12e1127e87310fe34a7d07ffff73b55dddafec67873567",
+    "worker/cpu/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "worker/cpu/verify_hit.py": "9f9e60952db15c054871403b60266d04c50d012e882bcd52a30f4bd3ba831fba"
+  },
+  "files": {
+    "digest_r1.bin": "d918bd357b822613e185f815e6b3af0d6903c33b03469a9fe8bf9d23095e5c97",
+    "digest_r2.bin": "0ddad5e54135e483b2138bc83f8cd7203410a90b7d878999358c0f689a1d0c27",
+    "gpu_digest_r1_params.json": "d42771cfc5d73eea034d7b8d464917cb87faf7a8e230d42a91ede1852ae034ef",
+    "gpu_digest_r2_params.json": "f1da3c2dcc01da7108fc6fccec75aa5550f18900f6ea5361551d9d63958d7731",
+    "gpu_pinning_params.json": "e1758978793b86cef9902356429cc992faec4da5498470699716acb3ade6ca07",
+    "pinning.bin": "923872379e27711a3f097cf58758989498843eae5706c7cadc46fed678b0a9e4",
+    "public-state.json": "bd4b6e458c793afe3aa5a06e1699b0c467b095e86ab226a2c0deaf2b3d6e6648",
+    "sighash-vectors.json": "3787bf14a304e077cc60d14e754e9b8fd2fb326287f242a307821784ad1995ee"
+  }
+}

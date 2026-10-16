@@ -73,3 +73,23 @@ class PromotionTests(unittest.TestCase):
                 self.assertEqual(combined.handler(event), {'status': 'failed'})
                 run.assert_called_with(event)
                 self.assertEqual(historical.PINNED_KERNEL, self.binding['solverCommit'])
+
+    def test_corrected_binding_requires_exact_version(self):
+        self.binding.update(format='qsb-combined-candidate-v2',
+                            scriptVersion='qsb-config-a-cmsverify-v1')
+        self.save()
+        self.assertEqual(combined.release_binding(self.root), self.binding)
+        with patch.object(combined, 'release_binding', return_value=self.binding), \
+                patch.object(historical, 'handler', return_value={'status': 'failed'}) as run:
+            combined.handler({'input': {}})
+            run.assert_called_once_with({'input': {}}, script_version='qsb-config-a-cmsverify-v1')
+        for value in (None, 'qsb-config-a-legacy-v1', 'unknown'):
+            self.binding['scriptVersion'] = value
+            self.save()
+            with self.assertRaisesRegex(ValueError, 'script binding'):
+                combined.release_binding(self.root)
+        self.binding['format'] = 'qsb-combined-candidate-v1'
+        self.binding['scriptVersion'] = 'qsb-config-a-cmsverify-v1'
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'script binding'):
+            combined.release_binding(self.root)
