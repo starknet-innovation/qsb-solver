@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1488,
+  "theorem_count": 1510,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4707,6 +4707,86 @@
       "propext"
     ],
     "QSB.LegacyTxWireFixture.fixture_valid": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.finalMiddle_no_multisig": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.firstDataOps_no_multisig": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.lock_rejects_extra_counted_op": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.lock_run_ops": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.lock_run_ops_from_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.parse_ten": [],
+    "QSB.LockOpcodeBudget.pinOps_no_multisig": [
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.priorPrefix_no_multisig": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.program_split": [
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.pushes_counted_zero": [
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.pushes_no_multisig": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.run_counted": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.run_keyCheck": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.split_counted": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.static_counted": [
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.static_final_key_check": [],
+    "QSB.LockOpcodeBudget.static_first_key_push": [],
+    "QSB.LockOpcodeBudget.static_no_multisig": [],
+    "QSB.LockOpcodeBudget.step_counted": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.step_multisig_ten": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.step_over_budget": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.structural_lock_run_ops": [
       "Classical.choice",
       "Quot.sound",
       "propext"

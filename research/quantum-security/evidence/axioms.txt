@@ -12,6 +12,28 @@
 'QSB.LockOpcodeInventory.counted_skeleton' depends on axioms: [propext]
 'QSB.LockOpcodeInventory.literal_counted_ops' depends on axioms: [propext]
 'QSB.LockOpcodeInventory.program_counted_ops' depends on axioms: [propext]
+'QSB.LockOpcodeBudget.step_counted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.parse_ten' does not depend on any axioms
+'QSB.LockOpcodeBudget.step_multisig_ten' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.run_counted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.run_keyCheck' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.static_first_key_push' does not depend on any axioms
+'QSB.LockOpcodeBudget.static_final_key_check' does not depend on any axioms
+'QSB.LockOpcodeBudget.program_split' depends on axioms: [propext]
+'QSB.LockOpcodeBudget.pushes_no_multisig' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.static_no_multisig' does not depend on any axioms
+'QSB.LockOpcodeBudget.pinOps_no_multisig' depends on axioms: [propext]
+'QSB.LockOpcodeBudget.firstDataOps_no_multisig' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.priorPrefix_no_multisig' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.finalMiddle_no_multisig' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.pushes_counted_zero' depends on axioms: [propext]
+'QSB.LockOpcodeBudget.static_counted' depends on axioms: [propext]
+'QSB.LockOpcodeBudget.split_counted' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.lock_run_ops' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.lock_run_ops_from_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.step_over_budget' depends on axioms: [propext, Quot.sound]
+'QSB.LockOpcodeBudget.lock_rejects_extra_counted_op' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.structural_lock_run_ops' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.ReachedSubsetSighash.reached_deleted_script' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_push_rigid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_many_pushes' depends on axioms: [propext, Classical.choice, Quot.sound]

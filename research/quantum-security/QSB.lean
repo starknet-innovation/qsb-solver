@@ -127,6 +127,7 @@ import QSB.CoreCheckedDynamic
 import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
 import QSB.LockOpcodeInventory
+import QSB.LockOpcodeBudget
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -163,6 +164,28 @@ import QSB.Reduction
 #print axioms QSB.LockOpcodeInventory.counted_skeleton
 #print axioms QSB.LockOpcodeInventory.literal_counted_ops
 #print axioms QSB.LockOpcodeInventory.program_counted_ops
+#print axioms QSB.LockOpcodeBudget.step_counted
+#print axioms QSB.LockOpcodeBudget.parse_ten
+#print axioms QSB.LockOpcodeBudget.step_multisig_ten
+#print axioms QSB.LockOpcodeBudget.run_counted
+#print axioms QSB.LockOpcodeBudget.run_keyCheck
+#print axioms QSB.LockOpcodeBudget.static_first_key_push
+#print axioms QSB.LockOpcodeBudget.static_final_key_check
+#print axioms QSB.LockOpcodeBudget.program_split
+#print axioms QSB.LockOpcodeBudget.pushes_no_multisig
+#print axioms QSB.LockOpcodeBudget.static_no_multisig
+#print axioms QSB.LockOpcodeBudget.pinOps_no_multisig
+#print axioms QSB.LockOpcodeBudget.firstDataOps_no_multisig
+#print axioms QSB.LockOpcodeBudget.priorPrefix_no_multisig
+#print axioms QSB.LockOpcodeBudget.finalMiddle_no_multisig
+#print axioms QSB.LockOpcodeBudget.pushes_counted_zero
+#print axioms QSB.LockOpcodeBudget.static_counted
+#print axioms QSB.LockOpcodeBudget.split_counted
+#print axioms QSB.LockOpcodeBudget.lock_run_ops
+#print axioms QSB.LockOpcodeBudget.lock_run_ops_from_zero
+#print axioms QSB.LockOpcodeBudget.step_over_budget
+#print axioms QSB.LockOpcodeBudget.lock_rejects_extra_counted_op
+#print axioms QSB.LockOpcodeBudget.structural_lock_run_ops
 #print axioms QSB.ReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.CorePushFindAndDelete.simple_push_rigid
 #print axioms QSB.CorePushFindAndDelete.simple_many_pushes

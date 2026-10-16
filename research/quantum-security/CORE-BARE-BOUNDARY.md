@@ -223,12 +223,17 @@ functions only at those recorded inputs. Under the `scriptSig` budget's
 source-shaped convention of at most two H calls per legacy signature
 attempt, the four `CHECKSIGVERIFY` sites and the two ten-key
 `CHECKMULTISIG` sites would add at most 48 further H calls per lock run,
-but those checker calls are not yet traced in Lean. The literal fixture's two
-`CHECKMULTISIG` sites each declare ten keys, so its opcode count with key
-charges is 201, exactly Core's cap; the skeleton theorem fixes the push
-positions but does not by itself prove that those two key-count pushes are
-unchanged in every parameterized lock. These are statements about the Lean
-models, not about compiled Core.
+but those checker calls are not yet traced in Lean.
+`QSB.LockOpcodeBudget.lock_run_ops_from_zero` proves that both ten-key
+`CHECKMULTISIG` count pushes are static, so every successful byte-model run of
+every parameterized lock ends with the opcode counter at exactly 201, Core's
+cap, and `lock_rejects_extra_counted_op` shows that one further counted
+opcode is rejected by the modeled cap. The lock therefore sits exactly on
+Core's `MAX_OPS_PER_SCRIPT` boundary: any discrepancy between the modeled
+count and Core's `nOpCount`, including the key-count charge, would change
+acceptance. Native acceptance of the fixture corroborates the count at that
+boundary for the fixture only. These are statements about the Lean models,
+not about compiled Core.
 
 The optional full-lock `scriptSig` extension to
 `analysis/check_full_two_outputs_core.py` tests the same canonical disposable
