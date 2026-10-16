@@ -1,0 +1,60 @@
+{
+  "status": "CAPACITY_BLOCKED",
+  "approvedGpuHours": 24,
+  "approvedTotalUsd": 30,
+  "campaignGpuHoursConsumed": 0,
+  "fixtureStatus": "UNSOLVED_UNSPENT_OFFLINE_REGTEST",
+  "candidateImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:d22c9b5842eca2eca1d8f27f45d7760f213fdaa4e01511de1eda77541ef51e47",
+  "attempts": [
+    {
+      "zone": "eu-west-1a",
+      "outcome": "InsufficientInstanceCapacity",
+      "allocatedInstances": 0,
+      "cleanup": {
+        "instances": 0,
+        "schedules": 0,
+        "functions": 0,
+        "profiles": 0,
+        "roles": 0,
+        "groups": 0,
+        "buckets": 0
+      },
+      "launchReceiptSha256": "c1582d3af953d46752436a8efbd2566bc285c2c1c909707df2a0def61fbeb6ba",
+      "cleanupReceiptSha256": "e14ff189299bfb9c51ab23d4bcd7ec59f05769c086894343c372169e76d6b8f0"
+    },
+    {
+      "zone": "eu-west-1b",
+      "outcome": "InsufficientInstanceCapacity",
+      "allocatedInstances": 0,
+      "cleanup": {
+        "instances": 0,
+        "schedules": 0,
+        "functions": 0,
+        "profiles": 0,
+        "roles": 0,
+        "groups": 0,
+        "buckets": 0
+      },
+      "launchReceiptSha256": "87f9720c7478cdc90b5df7ebfc0ca1dc897e5dd6bb5359841c509adfe2ed89cc",
+      "cleanupReceiptSha256": "e14ff189299bfb9c51ab23d4bcd7ec59f05769c086894343c372169e76d6b8f0"
+    },
+    {
+      "zone": "eu-west-1c",
+      "outcome": "InsufficientInstanceCapacity",
+      "allocatedInstances": 0,
+      "cleanup": {
+        "instances": 0,
+        "schedules": 0,
+        "functions": 0,
+        "profiles": 0,
+        "roles": 0,
+        "groups": 0,
+        "buckets": 0
+      },
+      "launchReceiptSha256": "9772e1e9ff6e0347db8a97e8c86d5db7b38d22cb3036894b0fc9029179d9739d",
+      "cleanupReceiptSha256": "e14ff189299bfb9c51ab23d4bcd7ec59f05769c086894343c372169e76d6b8f0"
+    }
+  ],
+  "retryPolicy": "Never reuse rejected states or tokens; reconcile and create a fresh bounded intent only when trying available capacity; budget persists",
+  "pinningHashGate": "BUILT_NOT_EXECUTED"
+}

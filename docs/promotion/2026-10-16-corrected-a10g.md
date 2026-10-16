@@ -81,3 +81,26 @@ local verified-receipt capture at 08:22:18.55 UTC bounds elapsed host lifetime b
 12 minutes 29 seconds; capture time is not the exact termination timestamp.
 At the quoted $1.123/hour compute tariff this is below $0.234 compute, excluding
 EBS, network and control-plane costs. This is an upper estimate, not a provider bill.
+
+## Fresh proof campaign handoff
+
+The user approved a separate ceiling of 24 aggregate GPU-hours and $30 total,
+one A10G at a time. The reviewed controller reserves $29.3067 at the observed
+tariffs, stops the host at 23 hours and arms independent termination at 23h15.
+Public-only pinning and subset runners persist each intent, require a successful
+off-host snapshot acknowledgement before compute, verify every hit with the
+independent CPU reference, and checkpoint completion before admitting more work.
+Private fixture recovery and final offline Core signing remain local.
+
+The subsequent launch was explicitly rejected for insufficient `g5.xlarge`
+capacity in all three Ireland zones. Token reconciliation found no instances;
+all temporary resources were independently confirmed deleted. The
+[capacity receipt](evidence/cmsverify-a10g-2026-10-16/campaign-capacity.json)
+records zero campaign GPU-hours. No fresh search or withdrawal ran.
+
+The next gate is built but **unexecuted**: 80 corrected pinning full-transaction
+hash comparisons and bounded pinning timing calibration. Its normal executable
+hash matches the candidate. After that gate passes and the measured range fits
+the timeout, the prepared public-only campaign may start under the recorded
+budget. Rejected launch states/tokens must never be reused. Remaining broader
+qualification and release HOLD conditions above still apply.
