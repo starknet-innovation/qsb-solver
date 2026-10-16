@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1439,
+  "theorem_count": 1457,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -5460,6 +5460,95 @@
       "propext"
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.collision_mem_databaseResponses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.databaseResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.filter_first_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.filter_second_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.localProbability_databaseResponses_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.localProbability_pairResponses_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.mem_databaseResponses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.mem_pairResponses": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedH_databaseResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedH_database_localProbability_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedH_fiberBound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedH_pairResponses_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedH_pair_localProbability": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedR_databaseResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedR_database_localProbability_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedR_fiberBound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedR_pairResponses_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedLocalResponses.projectedR_pair_localProbability": [
       "Classical.choice",
       "Quot.sound",
       "propext"

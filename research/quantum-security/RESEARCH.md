@@ -207,7 +207,17 @@ An applicability test for QSB has four concrete obligations:
    density or an at-most-eight ECDSA digest fiber for a *fixed* key does not
    establish those transition capacities when keys, targets, and disclosures
    depend on earlier oracle responses. `OracleDependentSelection` gives finite
-   counterexamples to that shortcut. Only after this bound can Theorem 5.7 or
+   counterexamples to that shortcut. `QSB/TaggedLocalResponses.lean` checks
+   the paper's local response sets for the two projected collision relations
+   only: a further query against a recorded database of length `s` collides
+   with a recorded entry for at most `s·2^160` of the `2^416` responses on the
+   H projection and at most `s·2^256` on the R projection, so the paper's
+   per-query estimates `Γ/M` and `s·Γ/M` are `2^-256` and `s·2^-256` for H
+   and `2^-160` and `s·2^-160` for R. These are the classical counting
+   inputs to Example 5.28's capacity estimate, not the transition-capacity
+   theorem itself, and they say nothing about the oracle-dependent key,
+   target, and disclosure selections of the two-puzzle route or about the
+   exact-secret route. Only after this bound can Theorem 5.7 or
    5.9 yield a nontrivial `εjoint` for `JointRawSourceWorld`.
 
 The current Lean reduction establishes an event inclusion and conditional

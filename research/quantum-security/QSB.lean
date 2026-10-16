@@ -3,6 +3,7 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.TaggedOracle
+import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
 import QSB.OracleDependentSelection
 import QSB.Nonce
@@ -334,6 +335,24 @@ import QSB.Reduction
 #print axioms QSB.TaggedOracle.fullQuery_twice
 #print axioms QSB.TaggedOracle.simulateH_correct
 #print axioms QSB.TaggedOracle.simulateR_correct
+#print axioms QSB.TaggedLocalResponses.mem_pairResponses
+#print axioms QSB.TaggedLocalResponses.mem_databaseResponses
+#print axioms QSB.TaggedLocalResponses.collision_mem_databaseResponses
+#print axioms QSB.TaggedLocalResponses.databaseResponses_card_le
+#print axioms QSB.TaggedLocalResponses.localProbability_pairResponses_le
+#print axioms QSB.TaggedLocalResponses.localProbability_databaseResponses_le
+#print axioms QSB.TaggedLocalResponses.filter_first_card
+#print axioms QSB.TaggedLocalResponses.filter_second_card
+#print axioms QSB.TaggedLocalResponses.projectedH_pairResponses_card
+#print axioms QSB.TaggedLocalResponses.projectedR_pairResponses_card
+#print axioms QSB.TaggedLocalResponses.projectedH_fiberBound
+#print axioms QSB.TaggedLocalResponses.projectedR_fiberBound
+#print axioms QSB.TaggedLocalResponses.projectedH_databaseResponses_card_le
+#print axioms QSB.TaggedLocalResponses.projectedR_databaseResponses_card_le
+#print axioms QSB.TaggedLocalResponses.projectedH_pair_localProbability
+#print axioms QSB.TaggedLocalResponses.projectedR_pair_localProbability
+#print axioms QSB.TaggedLocalResponses.projectedH_database_localProbability_le
+#print axioms QSB.TaggedLocalResponses.projectedR_database_localProbability_le
 #print axioms QSB.OracleDependentSelection.disclosure_true_count
 #print axioms QSB.OracleDependentSelection.fixed_hit_count
 #print axioms QSB.OracleDependentSelection.inspected_hit_count

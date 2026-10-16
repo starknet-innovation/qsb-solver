@@ -267,6 +267,34 @@
 'QSB.TaggedOracle.fullQuery_twice' depends on axioms: [propext, Quot.sound]
 'QSB.TaggedOracle.simulateH_correct' depends on axioms: [propext, Quot.sound]
 'QSB.TaggedOracle.simulateR_correct' depends on axioms: [propext, Quot.sound]
+'QSB.TaggedLocalResponses.mem_pairResponses' depends on axioms: [propext, Quot.sound]
+'QSB.TaggedLocalResponses.mem_databaseResponses' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.collision_mem_databaseResponses' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.databaseResponses_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.localProbability_pairResponses_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.localProbability_databaseResponses_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedLocalResponses.filter_first_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.filter_second_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedH_pairResponses_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedR_pairResponses_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedH_fiberBound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedR_fiberBound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedH_databaseResponses_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedLocalResponses.projectedR_databaseResponses_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedLocalResponses.projectedH_pair_localProbability' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedR_pair_localProbability' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedLocalResponses.projectedH_database_localProbability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedLocalResponses.projectedR_database_localProbability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.OracleDependentSelection.disclosure_true_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.OracleDependentSelection.fixed_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.OracleDependentSelection.inspected_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
