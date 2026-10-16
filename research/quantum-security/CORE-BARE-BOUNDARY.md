@@ -228,7 +228,12 @@ but those checker calls are not yet traced in Lean.
 `CHECKMULTISIG` count pushes are static, so every successful byte-model run of
 every parameterized lock ends with the opcode counter at exactly 201, Core's
 cap, and `lock_rejects_extra_counted_op` shows that one further counted
-opcode is rejected by the modeled cap. The lock therefore sits exactly on
+opcode is rejected by the modeled cap. `lock_rejects_prepended_counted_op`
+now models the prepended case as well: one counted opcode before the lock
+leaves the counter at 191 before the final ten-key check, whose charge would
+reach 202, so the modeled run fails, and the native prepended-`OP_NOP` case in
+`evidence/full-two-outputs-opcount-core-macos.json` corroborates this for the
+fixture only. The lock therefore sits exactly on
 Core's `MAX_OPS_PER_SCRIPT` boundary: any discrepancy between the modeled
 count and Core's `nOpCount`, including the key-count charge, would change
 acceptance. Native acceptance of the fixture corroborates the count at that

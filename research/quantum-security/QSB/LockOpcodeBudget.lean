@@ -8,9 +8,11 @@ Every parameterized Config A lock spends exactly Core's 201-opcode budget in
 any successful byte-model run: 181 counted opcodes plus the two ten-key
 `CHECKMULTISIG` charges. Both key-count pushes lie in the static parts of the
 program, so this holds for every pin, nonce, and commitment choice. One more
-counted opcode after the lock is rejected by the modeled cap. These are
-statements about the Lean interpreters; they corroborate the modeled count
-at Core's boundary only together with the native acceptance experiments.
+counted opcode after the lock is rejected by the modeled cap, and so is one
+counted opcode before it: the final ten-key charge then has to pass the cap.
+These are statements about the Lean interpreters; they corroborate the
+modeled count at Core's boundary only together with the native acceptance
+experiments.
 -/
 namespace QSB.LockOpcodeBudget
 open ByteMachine
@@ -251,6 +253,107 @@ theorem lock_rejects_extra_counted_op (hashes : Hashes)
         (lock_run_ops_from_zero hashes lock stack outcomes final lockRun).ge
       simp [run, step_over_budget hashes op final countedOp full]
 
+/-! ### One counted opcode before the lock -/
+
+/-- A successful multisignature charges at least its ordinary count, whatever
+key count it parses. -/
+theorem step_multisig_ops_ge (hashes : Hashes) (s next : State)
+    (success : step hashes .checkmultisig s = some next) :
+    next.ops ≥ s.ops + 1 := by
+  rcases s with ⟨stack, outcomes, ops⟩
+  unfold step at success
+  rcases stack with _ | ⟨rawN, xs⟩ <;>
+    rcases outcomes with _ | ⟨b, rest⟩ <;>
+    simp [Option.bind_eq_some_iff, Option.ite_none_left_eq_some,
+      Option.ite_none_right_eq_some] at success
+  obtain ⟨-, n, -, -, rawM, -, m, -, -, -, rfl⟩ := success
+  simp
+
+/-- Any successful counted step advances the counter by at least one. -/
+theorem step_counted_ge (hashes : Hashes) (op : Op) (s next : State)
+    (countedOp : counted op = 1) (success : step hashes op s = some next) :
+    next.ops ≥ s.ops + 1 := by
+  by_cases multi : op = .checkmultisig
+  · subst multi
+    exact step_multisig_ops_ge hashes s next success
+  · have := step_counted hashes op s next multi success
+    omega
+
+theorem run_counted_op_ge (hashes : Hashes) (op : Op) (s next : State)
+    (countedOp : counted op = 1) (success : run hashes [op] s = some next) :
+    next.ops ≥ s.ops + 1 := by
+  obtain ⟨stepped, stepOk, _, rest⟩ :=
+    FirstAcceptedOrigin.run_cons_success hashes op [] s next success
+  simp [run] at rest
+  subst rest
+  exact step_counted_ge hashes op s stepped countedOp stepOk
+
+/-- With the counter at 191 or more, the ten-key charge of one plus ten
+would pass 201, so the modeled multisignature fails. -/
+theorem step_multisig_ten_over (hashes : Hashes) (xs : List Bytes)
+    (outcomes : List Bool) (ops : Nat) (near : ops ≥ 191) :
+    step hashes .checkmultisig ⟨[0x0a] :: xs, outcomes, ops⟩ = none := by
+  have exceeded : ops + 1 + 10 > 201 := by omega
+  unfold step
+  simp [parse_ten, exceeded]
+
+/-- The key-count push and ten-key check fail from any counter of 191 or
+more; this is the sibling of `step_over_budget` for the final key check. -/
+theorem keyCheck_over_budget (hashes : Hashes) (s : State)
+    (near : s.ops ≥ 191) :
+    run hashes keyCheck s = none := by
+  rcases s with ⟨stack, outcomes, ops⟩
+  simp only at near
+  simp only [keyCheck, run]
+  cases pushed : step hashes (.push [0x0a]) ⟨stack, outcomes, ops⟩ with
+  | none => rfl
+  | some next =>
+      have shape := ByteFinalCounts.push_success_shape hashes _ _ _ _ _ pushed
+      subst shape
+      simp [step_multisig_ten_over hashes stack outcomes ops near]
+
+/-- Started with any positive counter, the lock fails: the prefix, the first
+key check, and the middle add 179 plus 11, so the counter is at least 191
+before the final key check, whose success would force at least 202. -/
+theorem lock_run_from_positive (hashes : Hashes)
+    (lock : DynamicCheckedCertificate.Lock) (s : State) (spent : s.ops ≥ 1) :
+    run hashes (DynamicCheckedCertificate.program lock) s = none := by
+  rw [program_split, run_append]
+  cases beforeRun : run hashes
+      (priorPrefix lock ++ keyCheck ++ finalMiddle lock) s with
+  | none => rfl
+  | some before =>
+      rw [run_append, run_append] at beforeRun
+      obtain ⟨afterFirst, firstRun, middleRun⟩ :=
+        Option.bind_eq_some_iff.mp beforeRun
+      obtain ⟨afterPrefix, prefixRun, firstRun⟩ :=
+        Option.bind_eq_some_iff.mp firstRun
+      have prefixOps := run_counted hashes _ s afterPrefix
+        (priorPrefix_no_multisig lock) prefixRun
+      have firstOps := run_keyCheck hashes _ _ firstRun
+      have middleOps := run_counted hashes _ afterFirst before
+        (finalMiddle_no_multisig lock) middleRun
+      have total := split_counted lock
+      have near : before.ops ≥ 191 := by omega
+      simpa using keyCheck_over_budget hashes before near
+
+/-- One counted opcode before any parameterized lock is rejected by the
+modeled 201-opcode cap: every ordinary count still fits, and only the final
+ten-key charge passes the cap. This is the modeled counterpart of the native
+prepended-`OP_NOP` case. -/
+theorem lock_rejects_prepended_counted_op (hashes : Hashes)
+    (lock : DynamicCheckedCertificate.Lock) (op : Op)
+    (countedOp : counted op = 1) (stack : List Bytes) (outcomes : List Bool) :
+    run hashes ([op] ++ DynamicCheckedCertificate.program lock)
+      ⟨stack, outcomes, 0⟩ = none := by
+  rw [run_append]
+  cases opRun : run hashes [op] ⟨stack, outcomes, 0⟩ with
+  | none => rfl
+  | some mid =>
+      have spent : mid.ops ≥ 1 := by
+        simpa using run_counted_op_ge hashes op _ mid countedOp opRun
+      simpa using lock_run_from_positive hashes lock mid spent
+
 /-- The Core-shaped bottom-first run of the parameterized lock ends with the
 same counter, through the checked structural equivalence. -/
 theorem structural_lock_run_ops (hashes : Hashes)
@@ -264,5 +367,17 @@ theorem structural_lock_run_ops (hashes : Hashes)
   obtain ⟨byteFinal, byteRun, lifted⟩ := Option.map_eq_some_iff.mp success
   rw [← lifted]
   exact lock_run_ops_from_zero hashes lock stack outcomes byteFinal byteRun
+
+/-- The Core-shaped bottom-first run also rejects one counted opcode before
+the parameterized lock, through the checked structural equivalence. -/
+theorem structural_lock_rejects_prepended_counted_op (hashes : Hashes)
+    (lock : DynamicCheckedCertificate.Lock) (op : Op)
+    (countedOp : counted op = 1) (stack : List Bytes) (outcomes : List Bool) :
+    CoreStructuralRun.run hashes
+      ([op] ++ DynamicCheckedCertificate.program lock)
+      (CoreOpcodeStep.ofByte ⟨stack, outcomes, 0⟩) = none := by
+  rw [CoreStructuralEquiv.run_eq_byte,
+    lock_rejects_prepended_counted_op hashes lock op countedOp stack outcomes]
+  rfl
 
 end QSB.LockOpcodeBudget

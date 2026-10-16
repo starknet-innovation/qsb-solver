@@ -185,7 +185,15 @@ import QSB.Reduction
 #print axioms QSB.LockOpcodeBudget.lock_run_ops_from_zero
 #print axioms QSB.LockOpcodeBudget.step_over_budget
 #print axioms QSB.LockOpcodeBudget.lock_rejects_extra_counted_op
+#print axioms QSB.LockOpcodeBudget.step_multisig_ops_ge
+#print axioms QSB.LockOpcodeBudget.step_counted_ge
+#print axioms QSB.LockOpcodeBudget.run_counted_op_ge
+#print axioms QSB.LockOpcodeBudget.step_multisig_ten_over
+#print axioms QSB.LockOpcodeBudget.keyCheck_over_budget
+#print axioms QSB.LockOpcodeBudget.lock_run_from_positive
+#print axioms QSB.LockOpcodeBudget.lock_rejects_prepended_counted_op
 #print axioms QSB.LockOpcodeBudget.structural_lock_run_ops
+#print axioms QSB.LockOpcodeBudget.structural_lock_rejects_prepended_counted_op
 #print axioms QSB.ReachedSubsetSighash.reached_deleted_script
 #print axioms QSB.CorePushFindAndDelete.simple_push_rigid
 #print axioms QSB.CorePushFindAndDelete.simple_many_pushes
