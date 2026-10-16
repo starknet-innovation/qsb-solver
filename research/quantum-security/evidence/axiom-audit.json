@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1510,
+  "theorem_count": 1518,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4719,7 +4719,22 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.LockOpcodeBudget.keyCheck_over_budget": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LockOpcodeBudget.lock_rejects_extra_counted_op": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.lock_rejects_prepended_counted_op": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.lock_run_from_positive": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4757,6 +4772,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.LockOpcodeBudget.run_counted_op_ge": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LockOpcodeBudget.run_keyCheck": [
       "Classical.choice",
       "Quot.sound",
@@ -4777,12 +4797,32 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.LockOpcodeBudget.step_counted_ge": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.step_multisig_ops_ge": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LockOpcodeBudget.step_multisig_ten": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
+    "QSB.LockOpcodeBudget.step_multisig_ten_over": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.LockOpcodeBudget.step_over_budget": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockOpcodeBudget.structural_lock_rejects_prepended_counted_op": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

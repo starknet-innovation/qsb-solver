@@ -33,7 +33,17 @@
 'QSB.LockOpcodeBudget.lock_run_ops_from_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LockOpcodeBudget.step_over_budget' depends on axioms: [propext, Quot.sound]
 'QSB.LockOpcodeBudget.lock_rejects_extra_counted_op' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.step_multisig_ops_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.step_counted_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.run_counted_op_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.step_multisig_ten_over' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.keyCheck_over_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.lock_run_from_positive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.lock_rejects_prepended_counted_op' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.LockOpcodeBudget.structural_lock_run_ops' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LockOpcodeBudget.structural_lock_rejects_prepended_counted_op' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.ReachedSubsetSighash.reached_deleted_script' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_push_rigid' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CorePushFindAndDelete.simple_many_pushes' depends on axioms: [propext, Classical.choice, Quot.sound]
