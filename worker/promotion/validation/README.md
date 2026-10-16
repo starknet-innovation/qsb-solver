@@ -60,3 +60,35 @@ Passing this diagnostic would cover sampled pinning recovered-key arithmetic on
 the corrected transaction. It would not prove exhaustive coverage, a real
 pinning hit, exceptional cases, final-binary internal hashes, fresh withdrawal or
 external miner acceptance. Those remain separate qualification requirements.
+
+### One-GPU fresh pinning search
+
+`fresh_pinning_search.py` runs only the pinning stage against a public
+`export-pinning.json` from qsb-app's offline fixture harness. The six public CPU
+reference modules are separately staged with an explicit filename→SHA256 JSON
+manifest. Only public exports and those modules may reach the GPU host; never
+stage recovery JSON, a wallet, or the full local proof directory.
+
+Supply `--public`, `--binary`, `--binary-sha256`, `--reference`,
+`--reference-hashes`, `--output`, and an absolute `--deadline`. The first run
+requires a deadline no more than 23 hours ahead; resume binds that same deadline,
+request, binary and CPU source hashes. Runtime checks require exactly one GPU.
+This program provisions nothing and is not permission to spend: the operator must
+independently enforce the campaign's aggregate GPU-hour and total-dollar budget,
+pre-arm host and control-plane termination, and use the approved immutable image.
+
+The runner re-exports parameters with the independent CPU reference before GPU
+execution. It uses the existing `ranked-v2` range partition and direct executable
+arguments, records and fsyncs the intent before compute, and preserves each
+range's logs and result. Per-range compute has a maximum 840-second timeout; the
+runner stops launching ranges with less than the timeout plus 90 seconds left.
+Every reported hit is checked for assigned-range membership and independently
+CPU verified. A verified pin writes a public solution and stops; transfer only
+that public solution to the local fixture harness to export the subset rounds.
+No stage advancement or withdrawal assembly occurs remotely.
+
+Failed, interrupted, missing-result or uncertain intents block resumption.
+Completed records must retain their exact result hash and work partition before
+the next attempt is selected. Never edit records or blindly restart a failed
+range. Completion of a pinning range does not solve the full withdrawal. Preserve
+and retrieve all journals before terminating the isolated host.
