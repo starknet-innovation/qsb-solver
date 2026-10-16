@@ -1,0 +1,18 @@
+{
+  "status": "independently-verified-clean",
+  "resources": {
+    "instanceStates": [
+      "terminated"
+    ],
+    "volumes": 0,
+    "schedules": 0,
+    "functions": 0,
+    "profiles": 0,
+    "roles": 0,
+    "groups": 0,
+    "buckets": 0
+  },
+  "sourceReceiptSha256": "e8733422832fda36ea0b29f711fac2ce8d01db7b69a9a17bce29b801e9fc6884",
+  "localReceiptSavedAt": "2026-10-16T08:22:18.552817+00:00",
+  "note": "Counts are scoped temporary resources from this experiment, not all account resources. Receipt-save time is not exact termination time."
+}

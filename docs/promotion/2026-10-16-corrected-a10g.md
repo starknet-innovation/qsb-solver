@@ -70,3 +70,14 @@ not replace diagnostic coverage evidence, and bounded diagnostic evidence does
 not prove full-domain completeness. External miner inclusion remains separate.
 Image publication, release approval, app descriptor enrollment and deployment
 are different steps; this gate does not authorize enrollment or activation.
+
+## Cleanup and cost scope
+
+The independent [cleanup receipt](evidence/cmsverify-a10g-2026-10-16/cleanup.json)
+confirmed the host terminated and its root volume, schedule, cleanup function,
+instance profile, temporary roles, security group and staging bucket were absent.
+Termination was requested promptly after collection. Launch at 08:09:50 UTC to
+local verified-receipt capture at 08:22:18.55 UTC bounds elapsed host lifetime by
+12 minutes 29 seconds; capture time is not the exact termination timestamp.
+At the quoted $1.123/hour compute tariff this is below $0.234 compute, excluding
+EBS, network and control-plane costs. This is an upper estimate, not a provider bill.
