@@ -22,6 +22,14 @@ def plan():
 
 
 class CollectorTests(unittest.TestCase):
+    def test_timing_projection_is_explicitly_not_range_evidence(self):
+        rows=[{'count':n,'seconds':n/100000000+1} for n in c.TIMING_COUNTS]
+        summary=c.timing_summary(rows)
+        self.assertEqual(summary['defaultRangeCandidates'],19913600000)
+        self.assertGreater(summary['projectedSecondsAtLargestProcessRate'],199.136)
+        self.assertIn('extrapolation only',summary['scope'])
+        with self.assertRaises(ValueError):c.timing_summary(rows[:-1])
+
     def test_exact_bounded_inventory(self):
         self.assertEqual(c.validate_plan(plan())['expectedHashes'],80)
 
