@@ -95,6 +95,7 @@ import QSB.JointOracleReduction
 import QSB.JointFreshRoutes
 import QSB.JointFreshCandidates
 import QSB.JointFreshPostprocessing
+import QSB.CausalQueryAlgorithm
 import QSB.FinalSignedChain
 import QSB.FinalOpeningTrace
 import QSB.FinalBonusAccepted
@@ -262,6 +263,18 @@ import QSB.Reduction
 #print axioms QSB.JointFreshPostprocessing.r_route_cached_post_succeeds
 #print axioms QSB.JointFreshPostprocessing.concrete_h_route_post_success
 #print axioms QSB.JointFreshPostprocessing.concrete_r_route_post_success
+#print axioms QSB.CausalQueryAlgorithm.run_length_le
+#print axioms QSB.CausalQueryAlgorithm.run_sound
+#print axioms QSB.CausalQueryAlgorithm.run_congr
+#print axioms QSB.CausalQueryAlgorithm.run_halts_of_step
+#print axioms QSB.CausalQueryAlgorithm.transcript_length_le
+#print axioms QSB.CausalQueryAlgorithm.transcript_sound
+#print axioms QSB.CausalQueryAlgorithm.transcript_causal
+#print axioms QSB.CausalQueryAlgorithm.output_of_halted
+#print axioms QSB.CausalQueryAlgorithm.disclosed_of_halted
+#print axioms QSB.CausalQueryAlgorithm.released_of_halted
+#print axioms QSB.CausalQueryAlgorithm.h_route_classical_calls_le
+#print axioms QSB.CausalQueryAlgorithm.r_route_classical_calls_le
 #print axioms QSB.ScriptNumExtensional.four_byte_positive_parses
 #print axioms QSB.ScriptNumExtensional.five_byte_positive_rejected
 #print axioms QSB.ScriptNumExtensional.roll_step_parse_extensional

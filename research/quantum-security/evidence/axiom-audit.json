@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1457,
+  "theorem_count": 1469,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -510,6 +510,56 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CausalQueryAlgorithm.disclosed_of_halted": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.h_route_classical_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.output_of_halted": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.r_route_classical_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.released_of_halted": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.run_congr": [
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.run_halts_of_step": [
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.run_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.run_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.transcript_causal": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.transcript_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalQueryAlgorithm.transcript_sound": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ConsensusValidityBoundary.duplicateTx_parses": [
       "Classical.choice",
       "Quot.sound",

@@ -165,10 +165,11 @@ has `M = 2^416` elements. Taking `f` to be the first coordinate gives
 `Γ = 2^256`, or `Γ/M = 2^-160`. The counts hold uniformly over tagged inputs,
 so they cover the distinct H-tag and R-tag collision pairs extracted above.
 This identifies a *candidate* bound for those two routes only. The theorem
-cannot yet be instantiated for QSB: the current world-indexed game has no
-causal q-query algorithm, the honest signing transcript may use many H
-queries, coherent H/R-to-tagged simulation needs its own charged budget,
-and the source byte oracles still need a finite-register bit encoding.
+cannot yet be instantiated for QSB: the world-indexed game has only a
+classical bounded-query causal algorithm and no coherent-query one, the
+honest signing transcript may use many H queries, coherent H/R-to-tagged
+simulation needs its own charged budget, and the source byte oracles still
+need a finite-register bit encoding.
 Exact setup-secret recovery and the two-puzzle route require separate
 quantum arguments, and compiled-Core refinement remains open.
 
@@ -191,9 +192,18 @@ An applicability test for QSB has four concrete obligations:
    all byte strings.
 2. Make setup, honest releases, disclosure choices, and the attacker's output
    one causal oracle algorithm. Count honest oracle calls or prove a separate
-   advice theorem that permits the actual oracle-correlated transcript. A
-   sampled-world selector such as `JointOracleReduction.Experiment.output` or
-   `.disclosed` has no such cost today.
+   advice theorem that permits the actual oracle-correlated transcript.
+   `QSB/CausalQueryAlgorithm.lean` supplies the classical form of this
+   obligation: one deterministic machine with an explicit query budget and
+   all other randomness in its initial state produces the attack output, the
+   disclosed set, and the released list from one sampled H/R pair. Its
+   recorded trace has at most `budget` entries, every recorded response is
+   the oracle's actual value, and the whole transcript is unchanged by any
+   oracle modification outside the recorded queries. Appending the traced
+   postprocessor gives at most `budget + 300` classical calls on the H route
+   and `budget + 600` on the R route. The world-indexed source extractor's own
+   hash evaluations are still uncharged, the honest machine is not shown to
+   use the sampled secrets correctly, and no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
    selected transaction, and enough oracle input/output pairs to verify the
    *reached* seven opening equations and both signature-puzzle routes. It must
