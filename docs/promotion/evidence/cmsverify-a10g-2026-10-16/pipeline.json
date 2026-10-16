@@ -1,0 +1,18 @@
+{
+  "architecture": "sm_86",
+  "files": {
+    "handler.py": "d3a549008f5f9ca31aaabfac1037a38bcc8e54ad03aeb8801480c1c33831f98e",
+    "historical_handler.py": "b9f0cfb6be8e7d47ae76af42d21d4a04110113ebec37556f65021d9e938e3b97",
+    "pinning": "cd70b2c2a7bcf129a9259c494413d5b2995368361e294e7bd284380d58df7a62",
+    "search_ranges.py": "07b0c2639e2a61b6a0306bed06a8f261f9f8c71ea1ee5d68806e3044a93c27df",
+    "subset": "673ad624ae1ceba184ed7219abf81641507412134c7bdc4224e3fc9defc5df15"
+  },
+  "format": "qsb-combined-candidate-v2",
+  "pinningUpstreamCommit": "2791ed0588f5014ccd688d48ba5502df2879f2f1",
+  "scriptVersion": "qsb-config-a-cmsverify-v1",
+  "searchVersion": "ranked-v2",
+  "solverCommit": "7ebebd05e2bea3cb4ca48cbd3f47b0fe0c6641d1",
+  "status": "HOLD",
+  "subsetSourceLockSha256": "e5241dc7c547975f6ee81de44fe0463ff0aacc83457b941bf23d24b8912c8ab3",
+  "subsetUpstreamCommit": "1650caf53a32b0ea16aae9e490ebbf5a8686d632"
+}

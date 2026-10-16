@@ -67,6 +67,14 @@ These tests do not execute CUDA or prove that a candidate satisfies real puzzles
 Fixture reproduction runs the local reviewed app reference, not upstream setup
 scripts. Seed-derived public fixtures must never be used for real deposits.
 
+## Current bounded evidence
+
+The [16 October A10G gate](2026-10-16-corrected-a10g.md) executed the freshly
+built corrected candidate: 128 subset CPU/GPU hashes, 16 exact-binary subset
+ranges, two pinning boundary smokes and three alternating performance samples
+per subset round passed. No real hit or fresh withdrawal was produced. This
+narrows, but does not close, the qualification list below.
+
 ## Remaining qualification, before enrollment
 
 1. Build the corrected mode on native Linux/sm86 and preserve exact source,
@@ -84,7 +92,8 @@ scripts. Seed-derived public fixtures must never be used for real deposits.
 5. Publish an attested release and explicitly enroll its exact schema-4 descriptor
    in qsb-app only after approval. No fabricated digest or automatic enrollment.
 
-No GPU, image build, publication, deployment, funded fixture or broadcast was
-performed while preparing this migration. Until those gates pass the corrected
+The original migration preparation performed no GPU work. Subsequent bounded
+native evidence is linked above; no app deployment, funded fixture or broadcast
+is part of that gate. Until the remaining gates pass the corrected
 candidate remains HOLD, and the app must not dispatch new corrected vaults to a
 legacy enrolled image.

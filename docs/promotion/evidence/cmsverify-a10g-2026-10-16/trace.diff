@@ -1,0 +1,10 @@
+--- locked/tree.cu
++++ diagnostic/tree.cu
+@@ -1927,6 +1927,7 @@
+         uint32_t hs[8];_SHA256Initialize(hs);_SHA256Transform(hs,pb);
+         /* Ranked gate reads the state words. Only the easy/calibrate
+          * diagnostics need the digest as bytes, so only they build it. */
++        printf("TRACE_SUB indices=%d,%d,%d,%d,%d,%d,%d,%d,%d recid=%d hash=%08x%08x%08x%08x%08x%08x%08x%08x\n",skip[0],skip[1],skip[2],skip[3],skip[4],skip[5],skip[6],skip[7],skip[8],ri,hs[0],hs[1],hs[2],hs[3],hs[4],hs[5],hs[6],hs[7]);
+         int vv;
+         if (calibrate_flag || easy_flag) {
+             uint8_t h[32];
