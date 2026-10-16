@@ -146,33 +146,46 @@ def run(args):
         if any(p.name!='.lock' for p in root.iterdir()):raise ValueError('New empty campaign directory required')
         if not 0<args.deadline-time.time()<=23*3600:raise ValueError('Deadline must be within23hours')
         save(campaign,{'identity':identity,'binding':binding,'createdAt':time.time(),'gpu':gpu})
-    attempt,solution=resume_status(root,binding)
-    if solution:return {'status':'verified-hit','solution':solution}
-    while args.deadline-time.time()>args.range_timeout+90:
-        verify_artifacts(binary,args.binary_sha256,reference,sources)
+    if args.mode == 'prepare':
+        attempt,solution=resume_status(root,binding)
+        if solution:return {'status':'verified-hit','solution':solution}
+        if args.deadline-time.time()<=args.range_timeout+90:
+            return {'status':'deadline-stop','nextAttempt':attempt,'binding':binding}
         unit=work_range('pinning',attempt)
         directory=root/f'range-{attempt:08d}';directory.mkdir()
-        record={'status':'compute-intent','binding':binding,'attempt':attempt,'workRange':unit,'startedAt':time.time()}
-        save(directory/'record.json',record)  # Persist before any GPU process.
-        try:
-            result=compute(binary,raw,unit,directory,args.range_timeout)
-            save(directory/'result.json',result)
-            solution=checked_solution(public,result['candidates'],unit,lambda event:cpu(reference,event))
-            record.update(status='verified-hit' if solution else 'complete',resultSha256=sha(directory/'result.json'),finishedAt=time.time())
-            if solution:record['solution']=solution
-            save(directory/'record.json',record)
-            if solution:
-                save(root/'solution.json',solution)
-                return {'status':'verified-hit','solution':solution,'attempt':attempt}
-        except BaseException as exc:
-            record.update(status='failed',error=str(exc),finishedAt=time.time());save(directory/'record.json',record)
-            raise
-        attempt+=1
-    return {'status':'deadline-stop','nextAttempt':attempt,'binding':binding}
+        record={'status':'prepared','binding':binding,'attempt':attempt,'workRange':unit,'preparedAt':time.time()}
+        save(directory/'record.json',record)
+        return {'status':'prepared','attempt':attempt,'binding':binding}
+    attempt=args.attempt
+    if attempt is None or attempt<0:raise ValueError('Execute requires prepared attempt')
+    directory=root/f'range-{attempt:08d}'
+    record=json.loads((directory/'record.json').read_text())
+    unit=work_range('pinning',attempt)
+    if record['status']!='prepared' or record['binding']!=binding or record['attempt']!=attempt or record['workRange']!=unit:
+        raise ValueError('Not the exact unexecuted prepared intent; reconcile')
+    if args.deadline-time.time()<=args.range_timeout+90:raise ValueError('Insufficient time')
+    # The host must archive prepared intent before invoking execute exactly once.
+    # Recovered remote prepared records are uncertain, never authorization to retry.
+    record.update(status='compute-intent',startedAt=time.time())
+    save(directory/'record.json',record)
+    try:
+        result=compute(binary,raw,unit,directory,args.range_timeout)
+        save(directory/'result.json',result)
+        solution=checked_solution(public,result['candidates'],unit,lambda event:cpu(reference,event))
+        record.update(status='verified-hit' if solution else 'complete',resultSha256=sha(directory/'result.json'),finishedAt=time.time())
+        if solution:record['solution']=solution
+        save(directory/'record.json',record)
+        if solution:save(root/'solution.json',solution)
+        return {'status':record['status'],'solution':solution,'attempt':attempt,'binding':binding}
+    except BaseException as exc:
+        record.update(status='failed',error=str(exc),finishedAt=time.time());save(directory/'record.json',record)
+        raise
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode',choices=['prepare','execute'])
+    parser.add_argument('--attempt',type=int)
     for name in ('public','binary','reference','reference-hashes','output'):parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--binary-sha256',required=True)
     parser.add_argument('--deadline',type=int,required=True)

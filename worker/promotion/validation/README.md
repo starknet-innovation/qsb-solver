@@ -92,3 +92,14 @@ Completed records must retain their exact result hash and work partition before
 the next attempt is selected. Never edit records or blindly restart a failed
 range. Completion of a pinning range does not solve the full withdrawal. Preserve
 and retrieve all journals before terminating the isolated host.
+
+Each range uses **two explicit commands**: `prepare` persists the next intent
+without launching a GPU process; the host wrapper must successfully archive that
+public intent off-host before `execute --attempt N`. Execute claims that exact
+prepared record locally and can run it only once. After execute, archive all
+public logs/results/journals off-host and require upload success before preparing
+the next range. Keep presigned upload URLs exclusively in the trusted host wrapper,
+never the container or public receipts. A remotely recovered prepared intent is
+**uncertain**, not authorization to execute again: reconcile it first. This
+protocol preserves coverage and unknown attempts if the watchdog deletes EBS.
+No continuous loop is built into the container runner.
