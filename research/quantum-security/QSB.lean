@@ -136,7 +136,14 @@ import QSB.LockSignatureQueryBudget
 import QSB.CheckedRunQueryTrace
 import QSB.FullCheckedRunQueries
 import QSB.FullCheckedRunCausality
+import QSB.FullCheckedRunPrefixCausality
 import QSB.CertificateStructuralQueries
+import QSB.CertificateStructuralPrefixCausality
+import QSB.CertificateSignatureQueries
+import QSB.CertificateCandidateCausality
+import QSB.CertificateSearchCausality
+import QSB.CheckedRunCacheMachine
+import QSB.CheckedRunCacheCompleteness
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -1779,3 +1786,66 @@ import QSB.Reduction
 #print axioms QSB.CertificateStructuralQueries.beforeFinal_budget_le_33
 #print axioms QSB.CertificateStructuralQueries.structuralDependencies_length_le_231
 #print axioms QSB.CertificateStructuralQueries.structural_runs_congr
+#print axioms QSB.CertificateSignatureQueries.sourceChecksigTrace_length_le_two
+#print axioms QSB.CertificateSignatureQueries.sourceChecksigTrace_congr
+#print axioms QSB.CertificateSignatureQueries.evalBaseVerifyAll_source_congr
+#print axioms QSB.CertificateSignatureQueries.finalTenDigestTrace_congr
+#print axioms QSB.CertificateSignatureQueries.finalTenDigestTrace_length_le_20
+#print axioms QSB.CertificateSignatureQueries.finalTenEval_congr
+#print axioms QSB.CheckedRunCacheMachine.lookup_cons_self
+#print axioms QSB.CheckedRunCacheMachine.lookup_mem
+#print axioms QSB.CheckedRunCacheMachine.lookup_none_iff_not_mem
+#print axioms QSB.CheckedRunCacheMachine.completeAnswer_width
+#print axioms QSB.CheckedRunCacheMachine.answer_completed
+#print axioms QSB.CheckedRunCacheMachine.answer_width
+#print axioms QSB.CheckedRunCacheMachine.complete_agrees_of_lookup
+#print axioms QSB.CheckedRunCacheMachine.firstMissing_some_missing
+#print axioms QSB.CheckedRunCacheMachine.firstMissing_none_covered
+#print axioms QSB.CheckedRunCacheMachine.firstMissing_some_prefix
+#print axioms QSB.CheckedRunCacheMachine.firstMissing_true_mem
+#print axioms QSB.CheckedRunCacheMachine.goodCache_nil
+#print axioms QSB.CheckedRunCacheMachine.goodCache_cons
+#print axioms QSB.CheckedRunCacheMachine.goodCache_length_le_trace
+#print axioms QSB.CheckedRunCacheMachine.trace_length_le_81
+#print axioms QSB.CheckedRunCacheMachine.covered_checkedResult_eq
+#print axioms QSB.CheckedRunCacheMachine.halted_result_correct
+#print axioms QSB.CheckedRunCacheMachine.run_halts_of_enough
+#print axioms QSB.CheckedRunCacheMachine.run_81_correct
+#print axioms QSB.FullCheckedRunPrefixCausality.append_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.empty_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.constant_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.two_stage_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.legacyDigestTrace_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.pairDigestTrace_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.checksigDigestTrace_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.opcodeStepQueries_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.scanDigestTrace_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.scanAtStackDigestTrace_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.stepQueries_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.runQueries_prefix
+#print axioms QSB.FullCheckedRunPrefixCausality.checked_lock_prefix_next
+#print axioms QSB.CheckedRunCacheCompleteness.trace_prefix_causal
+#print axioms QSB.CheckedRunCacheCompleteness.run_81_correct
+#print axioms QSB.CertificateCandidateCausality.sourceSites_congr
+#print axioms QSB.CertificateCandidateCausality.finalChecked_congr
+#print axioms QSB.CertificateCandidateCausality.sourceSitesDigestTrace_length_le_48
+#print axioms QSB.CertificateCandidateCausality.finalCheckedDigestTrace_length_le_20
+#print axioms QSB.CertificateCandidateCausality.candidate_congr
+#print axioms QSB.CertificateCandidateCausality.candidateDependencies_length_le_299
+#print axioms QSB.CertificateSearchCausality.searchDependencies_length_le_598
+#print axioms QSB.CertificateSearchCausality.search_congr
+#print axioms QSB.CertificateStructuralPrefixCausality.byteRunQueries_congr
+#print axioms QSB.CertificateStructuralPrefixCausality.byteRunQueries_prefix
+#print axioms QSB.CertificateStructuralPrefixCausality.programs_prefix
+#print axioms QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix
+#print axioms QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix_next
+#print axioms QSB.CertificateStructuralPrefixCausality.sevenResults_congr
+#print axioms QSB.CertificateStructuralPrefixCausality.firstMissing_true_mem
+#print axioms QSB.CertificateStructuralPrefixCausality.goodCache_nil
+#print axioms QSB.CertificateStructuralPrefixCausality.goodCache_cons
+#print axioms QSB.CertificateStructuralPrefixCausality.goodCache_length_le_trace
+#print axioms QSB.CertificateStructuralPrefixCausality.trace_length_le_231
+#print axioms QSB.CertificateStructuralPrefixCausality.covered_sevenResults_eq
+#print axioms QSB.CertificateStructuralPrefixCausality.halted_result_correct
+#print axioms QSB.CertificateStructuralPrefixCausality.run_halts_of_enough
+#print axioms QSB.CertificateStructuralPrefixCausality.run_231_correct

@@ -238,8 +238,13 @@ An applicability test for QSB has four concrete obligations:
    entries. Failed-step guards may make it conservative.
    `QSB/FullCheckedRunCausality.lean` proves the entire checked result and
    list are unchanged when a second H/R world agrees on that list, holding
-   the lock, transaction, key validator, and ECDSA fixed. Effectful bounded
-   oracle instrumentation is still open. External checker functions,
+   the lock, transaction, key validator, and ECDSA fixed.
+   `QSB/FullCheckedRunPrefixCausality.lean` proves that the first `k`
+   replies determine the next checked-run query. The cache machine in
+   `QSB/CheckedRunCacheMachine.lean`, with the premise discharged in
+   `QSB/CheckedRunCacheCompleteness.lean`, reproduces the checked source
+   result in at most 81 actual tagged H/R queries for one fixed input
+   bundle. Construction of that bundle, external checker functions,
    the repeated structural runs inside the source extractor,
    scriptSig evaluation, and honest setup/signing still need to be charged.
    `LedgerBoundRawSource.extractor` reaches `DynamicCheckedCertificate.search`
@@ -251,8 +256,21 @@ An applicability test for QSB has four concrete obligations:
    `QSB/CertificateStructuralQueries.lean` isolates one candidate's seven
    potential structural runs, including repeated prefixes. Its conservative
    dependency list has at most 231 hash-opcode entries and is causal for the
-   structural-run results. The signature checker calls and the rest of the
-   extractor are still uncharged.
+   structural-run results. `QSB/CertificateStructuralPrefixCausality.lean`
+   turns those seven runs into a fixed-input classical cache machine with at
+   most 231 actual H/R requests and the same seven structural results.
+   The signature checker calls and the rest of the extractor are still
+   uncharged. `QSB/CertificateSignatureQueries.lean`
+   separately gives source direct-push CHECKSIGVERIFY and final ten-key
+   multisignature evaluations causal digest traces of at most two and 20 H
+   inputs respectively. `QSB/CertificateCandidateCausality.lean` combines
+   those with the first multisignature scan and seven structural runs in an
+   eager inventory of at most 299 dependencies for one candidate. Agreement
+   preserves its source-model result. This inventory can reorder and include
+   skipped calls. `QSB/CertificateSearchCausality.lean` combines both Boolean
+   candidate inventories into at most 598 entries and preserves the
+   source-model search result under agreement. An actual-query machine for
+   candidate/search remains open.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

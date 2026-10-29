@@ -2010,3 +2010,102 @@
 'QSB.CertificateStructuralQueries.beforeFinal_budget_le_33' depends on axioms: [propext, Quot.sound]
 'QSB.CertificateStructuralQueries.structuralDependencies_length_le_231' depends on axioms: [propext, Quot.sound]
 'QSB.CertificateStructuralQueries.structural_runs_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSignatureQueries.sourceChecksigTrace_length_le_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateSignatureQueries.sourceChecksigTrace_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSignatureQueries.evalBaseVerifyAll_source_congr' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateSignatureQueries.finalTenDigestTrace_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSignatureQueries.finalTenDigestTrace_length_le_20' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateSignatureQueries.finalTenEval_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.lookup_cons_self' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.lookup_mem' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.lookup_none_iff_not_mem' depends on axioms: [propext, Quot.sound]
+'QSB.CheckedRunCacheMachine.completeAnswer_width' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.answer_completed' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.answer_width' does not depend on any axioms
+'QSB.CheckedRunCacheMachine.complete_agrees_of_lookup' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.firstMissing_some_missing' depends on axioms: [propext]
+'QSB.CheckedRunCacheMachine.firstMissing_none_covered' depends on axioms: [propext, Quot.sound]
+'QSB.CheckedRunCacheMachine.firstMissing_some_prefix' depends on axioms: [propext, Quot.sound]
+'QSB.CheckedRunCacheMachine.firstMissing_true_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.goodCache_nil' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.goodCache_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.goodCache_length_le_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.trace_length_le_81' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.covered_checkedResult_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.halted_result_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.run_halts_of_enough' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheMachine.run_81_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.append_prefix' depends on axioms: [propext, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.empty_prefix' depends on axioms: [propext]
+'QSB.FullCheckedRunPrefixCausality.constant_prefix' does not depend on any axioms
+'QSB.FullCheckedRunPrefixCausality.two_stage_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.legacyDigestTrace_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.pairDigestTrace_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.checksigDigestTrace_prefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.opcodeStepQueries_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.scanDigestTrace_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.scanAtStackDigestTrace_prefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.stepQueries_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.runQueries_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunPrefixCausality.checked_lock_prefix_next' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheCompleteness.trace_prefix_causal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CheckedRunCacheCompleteness.run_81_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateCandidateCausality.sourceSites_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateCandidateCausality.finalChecked_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateCandidateCausality.sourceSitesDigestTrace_length_le_48' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateCandidateCausality.finalCheckedDigestTrace_length_le_20' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateCandidateCausality.candidate_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateCandidateCausality.candidateDependencies_length_le_299' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateSearchCausality.searchDependencies_length_le_598' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateSearchCausality.search_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.byteRunQueries_congr' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.byteRunQueries_prefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.programs_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix_next' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.sevenResults_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.firstMissing_true_mem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.goodCache_nil' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.goodCache_cons' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.goodCache_length_le_trace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.trace_length_le_231' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.covered_sevenResults_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.halted_result_correct' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.run_halts_of_enough' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralPrefixCausality.run_231_correct' depends on axioms: [propext, Classical.choice, Quot.sound]

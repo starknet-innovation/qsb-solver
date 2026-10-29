@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1618,
+  "theorem_count": 1681,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -682,6 +682,148 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CertificateCandidateCausality.candidateDependencies_length_le_299": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCausality.candidate_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCausality.finalCheckedDigestTrace_length_le_20": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCausality.finalChecked_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCausality.sourceSitesDigestTrace_length_le_48": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCausality.sourceSites_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCausality.searchDependencies_length_le_598": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCausality.search_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.evalBaseVerifyAll_source_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.finalTenDigestTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.finalTenDigestTrace_length_le_20": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.finalTenEval_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.sourceChecksigTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSignatureQueries.sourceChecksigTrace_length_le_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.byteRunQueries_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.byteRunQueries_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.covered_sevenResults_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.firstMissing_true_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.goodCache_cons": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.goodCache_length_le_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.goodCache_nil": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.halted_result_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.programs_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.run_231_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.run_halts_of_enough": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.sevenResults_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.structuralDependencies_prefix_next": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralPrefixCausality.trace_length_le_231": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CertificateStructuralQueries.beforeFinal_budget_le_33": [
       "Quot.sound",
       "propext"
@@ -698,6 +840,92 @@
       "propext"
     ],
     "QSB.CertificateStructuralQueries.structural_runs_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheCompleteness.run_81_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheCompleteness.trace_prefix_causal": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.answer_completed": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.answer_width": [],
+    "QSB.CheckedRunCacheMachine.completeAnswer_width": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.complete_agrees_of_lookup": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.covered_checkedResult_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.firstMissing_none_covered": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.firstMissing_some_missing": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.firstMissing_some_prefix": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.firstMissing_true_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.goodCache_cons": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.goodCache_length_le_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.goodCache_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.halted_result_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.lookup_cons_self": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.lookup_mem": [
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.lookup_none_iff_not_mem": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.run_81_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.run_halts_of_enough": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunCacheMachine.trace_length_le_81": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4412,6 +4640,64 @@
       "propext"
     ],
     "QSB.FullCheckedRunCausality.step_result_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.append_prefix": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.checked_lock_prefix_next": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.checksigDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.constant_prefix": [],
+    "QSB.FullCheckedRunPrefixCausality.empty_prefix": [
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.legacyDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.opcodeStepQueries_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.pairDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.runQueries_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.scanAtStackDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.scanDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.stepQueries_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunPrefixCausality.two_stage_prefix": [
       "Classical.choice",
       "Quot.sound",
       "propext"
