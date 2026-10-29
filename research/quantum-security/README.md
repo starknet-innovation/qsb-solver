@@ -157,6 +157,10 @@ and 20-byte R responses to 256- and 160-bit registers.
 a finite bit register when a maximum input length `B` is stipulated. The
 source game has not proved such a maximum for every query, and these
 encodings do not supply a coherent QROM reduction.
+`QSB/FiniteBranchingInputBound.lean` instead proves that one fixed classical
+machine and finite query budget have some finite maximum input length across
+their actual runs. This existential width can depend on fixed advice and is
+not uniform across adversarially selected raw submissions.
 `QSB/JointRawSourceWorld.lean` instantiates that interface with ledger-bound
 raw source submissions under explicit same-world setup equality. Its
 conditional source-model measure bound still needs scriptSig/Core refinement
@@ -584,6 +588,10 @@ list of at most 1,697 entries on every result. Under that supplied contract,
 within 1,697 actual classical H/R requests. No concrete scriptSig evaluator
 has been proved to satisfy the contract, and compiled Core and coherent QROM
 accounting remain open.
+`QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
+target: failed target binding needs zero H/R requests, while successful
+binding inherits the conditional 1,697-request raw cache result. A
+world-indexed ledger and its oracle costs remain outside that theorem.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

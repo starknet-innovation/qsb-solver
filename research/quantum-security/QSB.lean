@@ -5,6 +5,7 @@ import QSB.RandomOracleSetup
 import QSB.TaggedOracle
 import QSB.FixedWidthOracleEncoding
 import QSB.BoundedInputEncoding
+import QSB.FiniteBranchingInputBound
 import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
@@ -155,6 +156,7 @@ import QSB.DynamicRawExtractorCausality
 import QSB.WorldIndexedScriptSigExtractor
 import QSB.ScriptSigAllRunRawBound
 import QSB.WorldIndexedRawCacheMachine
+import QSB.LedgerBoundRawCacheMachine
 import QSB.CheckedRunCacheMachine
 import QSB.CheckedRunCacheCompleteness
 import QSB.DynamicRoundWitness
@@ -1982,3 +1984,8 @@ import QSB.Reduction
 #print axioms QSB.BoundedInputEncoding.encode_injective
 #print axioms QSB.BoundedInputEncoding.boundedBytes_card_le
 #print axioms QSB.BoundedInputEncoding.taggedEncode_injective
+#print axioms QSB.FiniteBranchingInputBound.exists_run_input_bound
+#print axioms QSB.FiniteBranchingInputBound.fixed_raw_machine_input_bound
+#print axioms QSB.LedgerBoundRawCacheMachine.bind_failure_zero_queries
+#print axioms QSB.LedgerBoundRawCacheMachine.bind_success_machine_eq
+#print axioms QSB.LedgerBoundRawCacheMachine.run_1697_correct

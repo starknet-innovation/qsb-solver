@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1800,
+  "theorem_count": 1805,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4390,6 +4390,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FiniteBranchingInputBound.exists_run_input_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteBranchingInputBound.fixed_raw_machine_input_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -5675,6 +5685,21 @@
       "propext"
     ],
     "QSB.Layout.matched_external_passes_first_comparison": [
+      "propext"
+    ],
+    "QSB.LedgerBoundRawCacheMachine.bind_failure_zero_queries": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawCacheMachine.bind_success_machine_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LedgerBoundRawCacheMachine.run_1697_correct": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.LedgerBoundRawSource.accepted_spends_target": [

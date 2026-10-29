@@ -2304,3 +2304,8 @@
 'QSB.BoundedInputEncoding.encode_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.BoundedInputEncoding.boundedBytes_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.BoundedInputEncoding.taggedEncode_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteBranchingInputBound.exists_run_input_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteBranchingInputBound.fixed_raw_machine_input_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LedgerBoundRawCacheMachine.bind_failure_zero_queries' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LedgerBoundRawCacheMachine.bind_success_machine_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.LedgerBoundRawCacheMachine.run_1697_correct' depends on axioms: [propext, Classical.choice, Quot.sound]

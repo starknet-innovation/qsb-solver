@@ -182,6 +182,11 @@ need a finite-register encoding. `QSB/BoundedInputEncoding.lean` gives an
 injective bit register when a maximum input length `B` is stipulated, with one
 additional bit for the H/R input tag. The
 source model has not established such a maximum for every H/R query.
+`QSB/FiniteBranchingInputBound.lean` proves a weaker existential fact for one
+fixed classical machine: finite fuel and finite-width replies imply that some
+maximum input length covers every request it actually makes in any oracle
+world. That maximum can depend on the complete fixed machine input, so it
+does not provide a uniform register for attacker-chosen submissions.
 Exact setup-secret recovery and the two-puzzle route require separate
 quantum arguments, and compiled-Core refinement remains open.
 
@@ -320,6 +325,11 @@ An applicability test for QSB has four concrete obligations:
    for fixed raw inputs and callbacks. No concrete scriptSig evaluator has
    been shown to satisfy the stronger contract, and none of these request
    bounds charges coherent queries or queries hidden in callbacks.
+   `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
+   selector: binding failure returns `none` with no H/R requests, and binding
+   success reuses the conditional 1,697-request raw machine. A ledger that
+   varies with the oracle world or carries uncounted oracle work remains
+   outside this fixed-ledger result.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
