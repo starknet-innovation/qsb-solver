@@ -208,8 +208,15 @@ An applicability test for QSB has four concrete obligations:
    result and both traces. The R route records four queries per candidate.
    The world-indexed H and R postprocessors inherit this congruence under
    an explicit equality of their extracted candidate lists. The extractor
-   still supplies that list without a
-   causal construction or query charge. `QSB/ByteMachineQueries.lean` begins
+   still supplies that list without a causal construction or query charge.
+   `QSB/JointCandidateMachine.lean` packages a stronger conditional route:
+   one bounded classical machine returns the transcript and opening pairs;
+   its `Realizes` premise equates both with the world-indexed experiment. That
+   premise plus equal non-oracle initial state and agreement on recorded
+   replies yields candidate equality and causal H/R postprocessing, with
+   combined bounds `budget + 300` or `budget + 600` for 150 positions. The
+   extractor implementation and its query charge remain to be established.
+   `QSB/ByteMachineQueries.lean` begins
    charging the world-indexed source extractor: the byte-model run of any
    parameterized lock is causal in an explicit trace of at most 33 hash-opcode
    H/R calls; a successful run records exactly 18 H and 15 R calls. The
@@ -222,10 +229,18 @@ An applicability test for QSB has four concrete obligations:
    `QSB/CheckedRunQueryTrace.lean` component theorems connect the 33 calls to
    the checked run's computed signature records, bound reached digest calls,
    and prove source-shaped signature-step causality with fixed external key
-   validation and ECDSA. The
-   resulting 81-call lock allowance is not one traced checked run; external
-   checker functions, the second certificate-search branch,
+   validation and ECDSA. `QSB/FullCheckedRunQueries.lean` interleaves those
+   dependencies along the computed checked run and bounds the list by 81
+   entries. Failed-step guards may make it conservative; whole-run congruence
+   and effectful instrumentation are still open. External checker functions,
+   the repeated structural runs inside the source extractor,
    scriptSig evaluation, and honest setup/signing still need to be charged.
+   `LedgerBoundRawSource.extractor` reaches `DynamicCheckedCertificate.search`
+   through raw preparation and `DynamicRoundWitness.extract`; that path can
+   search twice and uses several structural prefixes per candidate rather
+   than one `CoreCheckedStep.run`. The 81-entry theorem therefore cannot be
+   added directly as the extractor budget. External `evalScriptSig`, key
+   validation, and ECDSA still lack finite oracle-call contracts.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

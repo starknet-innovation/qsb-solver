@@ -228,7 +228,7 @@ that the compiled C++ interpreter implements the Lean steps.
 
 `QSB.ByteMachineQueries.lock_queries_le_33` adds the hash-opcode oracle
 accounting for the same inventory: the byte-model run of every parameterized
-lock records at most 33 idealized calls. The new
+lock records at most 33 idealized dependencies, possibly conservatively on a failed step. The new
 `lock_queries_exact_of_success` proves that a successful run records exactly
 33: 15 H plus 15 R from `HASH160` and 3 H from `SHA256`.
 `run_congr` proves the run depends on the hash functions only at those
@@ -241,14 +241,16 @@ most 20 even if the first-round Boolean is false.
 zero H calls for an invalid input or out-of-range SINGLE, and two ordered H
 calls for a present preimage. The four `CHECKSIGVERIFY` sites and two ten-key
 sites reserve at most 48 H calls when each verifier uses one such digest; with
-the 33 opcode calls, the static lock allowance is 81. This is not a
-combined query trace for the checked run: `validKey` and `verify` are external,
-and their own oracle use, the scriptSig, and compiled Core remain outside it.
+the 33 opcode calls, the static lock allowance is 81.
 `QSB.CheckedRunQueryTrace` connects the 33 opcode calls to a successful checked
 run's computed signature records and gives causal digest traces for reached
 CHECKSIGVERIFY and CHECKMULTISIG calls under fixed external key validation and
-ECDSA. It bounds a parsed ten-key scan by 20 digest H calls, but does not yet
-interleave all reached signature and opcode calls into one run trace.
+ECDSA. It bounds a parsed ten-key scan by 20 digest H calls.
+`QSB.FullCheckedRunQueries` interleaves those explicit H/R dependencies along
+the computed checked run and bounds the list by 81 entries. This analytic
+trace can overcount a failed step; it is not yet a causal oracle machine or
+instrumented evaluator. `validKey` and `verify` remain external, and their
+own oracle work, scriptSig, and compiled Core remain outside the bound.
 `QSB.LockOpcodeBudget.lock_run_ops_from_zero` proves that both ten-key
 `CHECKMULTISIG` count pushes are static, so every successful byte-model run of
 every parameterized lock ends with the opcode counter at exactly 201, Core's

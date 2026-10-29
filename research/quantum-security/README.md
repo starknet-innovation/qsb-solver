@@ -509,10 +509,12 @@ sites reserve 48 additional H calls when each verifier uses one such digest.
 `QSB/CheckedRunQueryTrace.lean` now ties the 33 opcode calls to a successful
 checked run's computed signature records and proves per-pair digest traces,
 ten-key scan bounds, and CHECKSIGVERIFY/CHECKMULTISIG congruence for fixed
-external key validation and ECDSA. The combined 81 remains a static
-source-model allowance; a whole ordered checked-run query trace, arbitrary external
-checker calls, scriptSig calls, compiled-Core refinement, and a quantum
-success bound remain open.
+external key validation and ECDSA. `QSB/FullCheckedRunQueries.lean` then
+interleaves these explicit H/R dependencies along the computed checked run
+and proves its list has at most 81 entries. On failed steps the list can
+overcount guarded calls. Whole-run causality or effectful instrumentation,
+arbitrary external checker calls, scriptSig calls, compiled-Core refinement,
+and a quantum success bound remain open.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

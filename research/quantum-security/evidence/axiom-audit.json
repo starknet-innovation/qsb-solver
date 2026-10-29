@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1583,
+  "theorem_count": 1600,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4353,6 +4353,41 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FullCheckedRunQueries.checked_run_queries_le_81": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.keyCheck_queries_le_20": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.lock_queries_le_81": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.runQueries_append": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.runQueries_length_le_append": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.runQueries_length_le_no_multisig": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunQueries.stepQueries_length_le_no_multisig": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.Game.changed_outputs_unauthorized": [],
     "QSB.Game.disclosedAt_append": [
       "Classical.choice",
@@ -4366,6 +4401,53 @@
     ],
     "QSB.Game.disclosedAt_card_le_min": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.candidate_run_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.hCombinedTrace_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.hCombinedTrace_length_le_300": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.hCombinedTrace_length_le_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.hPostTranscript_congr_of_joint_run": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.openingPairs_congr_of_joint_run": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.rCombinedTrace_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.rCombinedTrace_length_le_600": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.rCombinedTrace_length_le_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateMachine.rPostTranscript_congr_of_joint_run": [
       "Quot.sound",
       "propext"
     ],

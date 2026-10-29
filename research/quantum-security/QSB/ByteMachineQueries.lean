@@ -3,12 +3,15 @@ import QSB.LockOpcodeInventory
 import QSB.CoreStructuralEquiv
 
 /-!
-The idealized H/R queries made by the byte-model hash opcodes. Each `HASH160`
-is one H call followed by one R call on its output; each `SHA256` is one H
-call. The trace is defined alongside the existing interpreter rather than by
-changing it, and the interpreter's result is causal in that trace: two
-function pairs agreeing on the recorded queries give the same run. For every
-parameterized Config A lock the trace has at most 33 entries.
+The idealized H/R dependencies of the byte-model hash opcodes. Each executed
+`HASH160` is one H call followed by one R call on its output; each executed
+`SHA256` is one H call. The trace is defined alongside the existing interpreter
+rather than by changing it, and the interpreter's result is causal in that
+trace: two function pairs agreeing on the recorded queries give the same run.
+On a rejected step the trace may conservatively include a hash dependency
+that an earlier guard prevented; successful runs record the actual modeled
+hash calls. For every parameterized Config A lock the trace has at most 33
+entries.
 
 Signature outcomes are supplied to the byte model, so the SHA256d calls made
 by the source-shaped signature checker at the four `CHECKSIGVERIFY` and two
@@ -21,7 +24,8 @@ open CausalQueryAlgorithm (Query answer)
 set_option maxRecDepth 50000
 set_option maxHeartbeats 10000000
 
-/-- Queries made by one opcode step from a given stack, when it executes. -/
+/-- Potential hash queries for one opcode and stack; a failed opcode guard can
+prevent some of them from executing. -/
 def stepQueries (functions : JointSourceChecks.Functions) (op : Op)
     (stack : List Bytes) : List Query :=
   match op, stack with
@@ -29,7 +33,8 @@ def stepQueries (functions : JointSourceChecks.Functions) (op : Op)
   | .sha256, x :: _ => [.H x]
   | _, _ => []
 
-/-- The ordered query trace of a run, stopping where the run stops. -/
+/-- An ordered dependency trace, stopping at a failed step. A failed step can
+contribute potential queries after its guard; a successful run is exact. -/
 def runQueries (functions : JointSourceChecks.Functions) :
     List Op → State → List Query
   | [], _ => []

@@ -97,6 +97,7 @@ import QSB.JointFreshRoutes
 import QSB.JointFreshCandidates
 import QSB.JointFreshPostprocessing
 import QSB.JointPostprocessingCausality
+import QSB.JointCandidateMachine
 import QSB.CausalQueryAlgorithm
 import QSB.ByteMachineQueries
 import QSB.FinalSignedChain
@@ -132,6 +133,7 @@ import QSB.LockOpcodeInventory
 import QSB.LockOpcodeBudget
 import QSB.LockSignatureQueryBudget
 import QSB.CheckedRunQueryTrace
+import QSB.FullCheckedRunQueries
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -1739,3 +1741,20 @@ import QSB.Reduction
 #print axioms QSB.CheckedRunQueryTrace.checksig_eval_congr
 #print axioms QSB.CheckedRunQueryTrace.checkedChecksig_congr
 #print axioms QSB.CheckedRunQueryTrace.checkedMultisig_congr
+#print axioms QSB.JointCandidateMachine.candidate_run_length_le
+#print axioms QSB.JointCandidateMachine.openingPairs_congr_of_joint_run
+#print axioms QSB.JointCandidateMachine.hCombinedTrace_length_le
+#print axioms QSB.JointCandidateMachine.hCombinedTrace_length_le_card
+#print axioms QSB.JointCandidateMachine.hCombinedTrace_length_le_300
+#print axioms QSB.JointCandidateMachine.hPostTranscript_congr_of_joint_run
+#print axioms QSB.JointCandidateMachine.rCombinedTrace_length_le
+#print axioms QSB.JointCandidateMachine.rCombinedTrace_length_le_card
+#print axioms QSB.JointCandidateMachine.rCombinedTrace_length_le_600
+#print axioms QSB.JointCandidateMachine.rPostTranscript_congr_of_joint_run
+#print axioms QSB.FullCheckedRunQueries.stepQueries_length_le_no_multisig
+#print axioms QSB.FullCheckedRunQueries.runQueries_length_le_no_multisig
+#print axioms QSB.FullCheckedRunQueries.keyCheck_queries_le_20
+#print axioms QSB.FullCheckedRunQueries.runQueries_append
+#print axioms QSB.FullCheckedRunQueries.runQueries_length_le_append
+#print axioms QSB.FullCheckedRunQueries.lock_queries_le_81
+#print axioms QSB.FullCheckedRunQueries.checked_run_queries_le_81
