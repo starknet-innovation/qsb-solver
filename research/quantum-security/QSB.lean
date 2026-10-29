@@ -98,6 +98,7 @@ import QSB.JointFreshCandidates
 import QSB.JointFreshPostprocessing
 import QSB.JointPostprocessingCausality
 import QSB.JointCandidateMachine
+import QSB.JointCandidateProductWorld
 import QSB.CausalQueryAlgorithm
 import QSB.ByteMachineQueries
 import QSB.FinalSignedChain
@@ -134,6 +135,8 @@ import QSB.LockOpcodeBudget
 import QSB.LockSignatureQueryBudget
 import QSB.CheckedRunQueryTrace
 import QSB.FullCheckedRunQueries
+import QSB.FullCheckedRunCausality
+import QSB.CertificateStructuralQueries
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -1758,3 +1761,21 @@ import QSB.Reduction
 #print axioms QSB.FullCheckedRunQueries.runQueries_length_le_append
 #print axioms QSB.FullCheckedRunQueries.lock_queries_le_81
 #print axioms QSB.FullCheckedRunQueries.checked_run_queries_le_81
+#print axioms QSB.JointCandidateProductWorld.initialState_congr
+#print axioms QSB.JointCandidateProductWorld.openingPairs_congr_of_product_run
+#print axioms QSB.JointCandidateProductWorld.hPostTranscript_congr_of_product_run
+#print axioms QSB.JointCandidateProductWorld.rPostTranscript_congr_of_product_run
+#print axioms QSB.FullCheckedRunCausality.scanDigestTrace_congr
+#print axioms QSB.FullCheckedRunCausality.scanAtStackDigestTrace_congr
+#print axioms QSB.FullCheckedRunCausality.checksigDigestTrace_congr
+#print axioms QSB.FullCheckedRunCausality.opcodeStepQueries_congr
+#print axioms QSB.FullCheckedRunCausality.stepQueries_congr
+#print axioms QSB.FullCheckedRunCausality.ordinary_step_congr
+#print axioms QSB.FullCheckedRunCausality.step_result_congr
+#print axioms QSB.FullCheckedRunCausality.run_and_queries_congr
+#print axioms QSB.FullCheckedRunCausality.checked_lock_run_and_queries_congr
+#print axioms QSB.CertificateStructuralQueries.prefix_budget_le_33
+#print axioms QSB.CertificateStructuralQueries.program_eq_beforeFinal_append
+#print axioms QSB.CertificateStructuralQueries.beforeFinal_budget_le_33
+#print axioms QSB.CertificateStructuralQueries.structuralDependencies_length_le_231
+#print axioms QSB.CertificateStructuralQueries.structural_runs_congr

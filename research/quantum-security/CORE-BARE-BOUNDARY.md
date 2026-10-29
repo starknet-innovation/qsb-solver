@@ -251,6 +251,10 @@ the computed checked run and bounds the list by 81 entries. This analytic
 trace can overcount a failed step; it is not yet a causal oracle machine or
 instrumented evaluator. `validKey` and `verify` remain external, and their
 own oracle work, scriptSig, and compiled Core remain outside the bound.
+`QSB.FullCheckedRunCausality` proves that agreement on this list preserves
+both the whole checked result and the list itself for fixed inputs and
+external checker functions. It still does not construct an effectful bounded
+oracle machine or refine compiled Core.
 `QSB.LockOpcodeBudget.lock_run_ops_from_zero` proves that both ten-key
 `CHECKMULTISIG` count pushes are static, so every successful byte-model run of
 every parameterized lock ends with the opcode counter at exactly 201, Core's

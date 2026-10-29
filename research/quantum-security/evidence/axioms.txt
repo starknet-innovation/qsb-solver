@@ -1990,3 +1990,23 @@
 'QSB.FullCheckedRunQueries.runQueries_length_le_append' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FullCheckedRunQueries.lock_queries_le_81' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FullCheckedRunQueries.checked_run_queries_le_81' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.JointCandidateProductWorld.initialState_congr' does not depend on any axioms
+'QSB.JointCandidateProductWorld.openingPairs_congr_of_product_run' depends on axioms: [propext, Quot.sound]
+'QSB.JointCandidateProductWorld.hPostTranscript_congr_of_product_run' depends on axioms: [propext, Quot.sound]
+'QSB.JointCandidateProductWorld.rPostTranscript_congr_of_product_run' depends on axioms: [propext, Quot.sound]
+'QSB.FullCheckedRunCausality.scanDigestTrace_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.scanAtStackDigestTrace_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.checksigDigestTrace_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.opcodeStepQueries_congr' depends on axioms: [propext]
+'QSB.FullCheckedRunCausality.stepQueries_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.ordinary_step_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.step_result_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.run_and_queries_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullCheckedRunCausality.checked_lock_run_and_queries_congr' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CertificateStructuralQueries.prefix_budget_le_33' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralQueries.program_eq_beforeFinal_append' depends on axioms: [propext]
+'QSB.CertificateStructuralQueries.beforeFinal_budget_le_33' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralQueries.structuralDependencies_length_le_231' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateStructuralQueries.structural_runs_congr' depends on axioms: [propext, Classical.choice, Quot.sound]

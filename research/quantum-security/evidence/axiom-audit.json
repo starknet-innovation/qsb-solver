@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1600,
+  "theorem_count": 1618,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -679,6 +679,26 @@
       "propext"
     ],
     "QSB.CausalQueryAlgorithm.transcript_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralQueries.beforeFinal_budget_le_33": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralQueries.prefix_budget_le_33": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralQueries.program_eq_beforeFinal_append": [
+      "propext"
+    ],
+    "QSB.CertificateStructuralQueries.structuralDependencies_length_le_231": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateStructuralQueries.structural_runs_congr": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -4353,6 +4373,49 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FullCheckedRunCausality.checked_lock_run_and_queries_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.checksigDigestTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.opcodeStepQueries_congr": [
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.ordinary_step_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.run_and_queries_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.scanAtStackDigestTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.scanDigestTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.stepQueries_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullCheckedRunCausality.step_result_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FullCheckedRunQueries.checked_run_queries_le_81": [
       "Classical.choice",
       "Quot.sound",
@@ -4448,6 +4511,19 @@
       "propext"
     ],
     "QSB.JointCandidateMachine.rPostTranscript_congr_of_joint_run": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateProductWorld.hPostTranscript_congr_of_product_run": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateProductWorld.initialState_congr": [],
+    "QSB.JointCandidateProductWorld.openingPairs_congr_of_product_run": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointCandidateProductWorld.rPostTranscript_congr_of_product_run": [
       "Quot.sound",
       "propext"
     ],

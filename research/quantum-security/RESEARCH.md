@@ -216,6 +216,10 @@ An applicability test for QSB has four concrete obligations:
    replies yields candidate equality and causal H/R postprocessing, with
    combined bounds `budget + 300` or `budget + 600` for 150 positions. The
    extractor implementation and its query charge remain to be established.
+   `QSB/JointCandidateProductWorld.lean` makes the machine's initial state a
+   function of coins alone in a `(coins, H/R functions)` world, so equal coins
+   discharge the pointwise initial-state equality premise. Independence of
+   coins and the oracle under the sampled distribution is still separate.
    `QSB/ByteMachineQueries.lean` begins
    charging the world-indexed source extractor: the byte-model run of any
    parameterized lock is causal in an explicit trace of at most 33 hash-opcode
@@ -231,8 +235,11 @@ An applicability test for QSB has four concrete obligations:
    and prove source-shaped signature-step causality with fixed external key
    validation and ECDSA. `QSB/FullCheckedRunQueries.lean` interleaves those
    dependencies along the computed checked run and bounds the list by 81
-   entries. Failed-step guards may make it conservative; whole-run congruence
-   and effectful instrumentation are still open. External checker functions,
+   entries. Failed-step guards may make it conservative.
+   `QSB/FullCheckedRunCausality.lean` proves the entire checked result and
+   list are unchanged when a second H/R world agrees on that list, holding
+   the lock, transaction, key validator, and ECDSA fixed. Effectful bounded
+   oracle instrumentation is still open. External checker functions,
    the repeated structural runs inside the source extractor,
    scriptSig evaluation, and honest setup/signing still need to be charged.
    `LedgerBoundRawSource.extractor` reaches `DynamicCheckedCertificate.search`
@@ -241,6 +248,11 @@ An applicability test for QSB has four concrete obligations:
    than one `CoreCheckedStep.run`. The 81-entry theorem therefore cannot be
    added directly as the extractor budget. External `evalScriptSig`, key
    validation, and ECDSA still lack finite oracle-call contracts.
+   `QSB/CertificateStructuralQueries.lean` isolates one candidate's seven
+   potential structural runs, including repeated prefixes. Its conservative
+   dependency list has at most 231 hash-opcode entries and is causal for the
+   structural-run results. The signature checker calls and the rest of the
+   extractor are still uncharged.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

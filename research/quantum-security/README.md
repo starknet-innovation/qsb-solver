@@ -512,9 +512,17 @@ ten-key scan bounds, and CHECKSIGVERIFY/CHECKMULTISIG congruence for fixed
 external key validation and ECDSA. `QSB/FullCheckedRunQueries.lean` then
 interleaves these explicit H/R dependencies along the computed checked run
 and proves its list has at most 81 entries. On failed steps the list can
-overcount guarded calls. Whole-run causality or effectful instrumentation,
-arbitrary external checker calls, scriptSig calls, compiled-Core refinement,
-and a quantum success bound remain open.
+overcount guarded calls. `QSB/FullCheckedRunCausality.lean` proves the whole
+checked result and list are unchanged by H/R edits outside that list, with
+fixed external checker functions and inputs. Effectful oracle
+instrumentation, arbitrary external checker calls, scriptSig calls,
+compiled-Core refinement, and a quantum success bound remain open.
+`QSB/CertificateStructuralQueries.lean` separately enumerates the seven
+potential structural runs in one certificate candidate and bounds their
+combined hash-opcode dependency lists by 231 entries, including repeated
+prefixes and skipped short-circuit paths. It proves agreement on this list
+preserves each structural-run result. Signature digest calls and the wider
+extractor remain outside that list.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final
