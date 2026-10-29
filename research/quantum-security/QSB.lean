@@ -4,10 +4,12 @@ import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.TaggedOracle
 import QSB.FixedWidthOracleEncoding
+import QSB.BoundedInputEncoding
 import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
 import QSB.ScriptSigTraceContract
+import QSB.ScriptSigBoundedCausalContract
 import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
@@ -148,8 +150,11 @@ import QSB.CertificateCandidateCacheMachine
 import QSB.CertificateSearchCacheMachine
 import QSB.CertificateSearchCausality
 import QSB.DynamicSourceExtractorCausality
+import QSB.DynamicSourceExtractorCacheMachine
 import QSB.DynamicRawExtractorCausality
 import QSB.WorldIndexedScriptSigExtractor
+import QSB.ScriptSigAllRunRawBound
+import QSB.WorldIndexedRawCacheMachine
 import QSB.CheckedRunCacheMachine
 import QSB.CheckedRunCacheCompleteness
 import QSB.DynamicRoundWitness
@@ -1884,6 +1889,8 @@ import QSB.Reduction
 #print axioms QSB.TaggedFreshCollisionBridge.observed_sourceTagged
 #print axioms QSB.TaggedFreshCollisionBridge.reached_h_tagged_collision
 #print axioms QSB.TaggedFreshCollisionBridge.reached_r_tagged_collision
+#print axioms QSB.TaggedFreshCollisionBridge.reached_h_sourceTagged_collision
+#print axioms QSB.TaggedFreshCollisionBridge.reached_r_sourceTagged_collision
 #print axioms QSB.CertificateCandidateCacheMachine.append_prefix_at
 #print axioms QSB.CertificateCandidateCacheMachine.sourceChecksigTrace_prefix
 #print axioms QSB.CertificateCandidateCacheMachine.finalTenDigestTrace_prefix
@@ -1938,3 +1945,40 @@ import QSB.Reduction
 #print axioms QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_length_le_402_of_prepared
 #print axioms QSB.WorldIndexedScriptSigExtractor.combinedDependencies_length_le_1697_of_prepared
 #print axioms QSB.WorldIndexedScriptSigExtractor.raw_extractor_congr
+#print axioms QSB.DynamicSourceExtractorCacheMachine.append_prefix_of_prefix
+#print axioms QSB.DynamicSourceExtractorCacheMachine.roundContinuation_prefix
+#print axioms QSB.DynamicSourceExtractorCacheMachine.extractorDependencies_prefix
+#print axioms QSB.DynamicSourceExtractorCacheMachine.firstMissing_true_mem
+#print axioms QSB.DynamicSourceExtractorCacheMachine.goodCache_nil
+#print axioms QSB.DynamicSourceExtractorCacheMachine.goodCache_cons
+#print axioms QSB.DynamicSourceExtractorCacheMachine.goodCache_length_le_trace
+#print axioms QSB.DynamicSourceExtractorCacheMachine.trace_length_le_1295
+#print axioms QSB.DynamicSourceExtractorCacheMachine.covered_extractorResult_eq
+#print axioms QSB.DynamicSourceExtractorCacheMachine.halted_result_correct
+#print axioms QSB.DynamicSourceExtractorCacheMachine.run_halts_of_enough
+#print axioms QSB.DynamicSourceExtractorCacheMachine.run_1295_correct
+#print axioms QSB.ScriptSigBoundedCausalContract.trace_length_le_402
+#print axioms QSB.ScriptSigBoundedCausalContract.trace_prefix
+#print axioms QSB.ScriptSigAllRunRawBound.scriptSigDependencies_length_le_402
+#print axioms QSB.ScriptSigAllRunRawBound.scriptSigDependencies_prefix
+#print axioms QSB.ScriptSigAllRunRawBound.downstreamDependencies_length_le_1295
+#print axioms QSB.ScriptSigAllRunRawBound.combinedDependencies_length_le_1697
+#print axioms QSB.ScriptSigAllRunRawBound.combinedDependencies_prefix
+#print axioms QSB.WorldIndexedRawCacheMachine.firstMissing_true_mem
+#print axioms QSB.WorldIndexedRawCacheMachine.goodCache_nil
+#print axioms QSB.WorldIndexedRawCacheMachine.goodCache_cons
+#print axioms QSB.WorldIndexedRawCacheMachine.goodCache_length_le_trace
+#print axioms QSB.WorldIndexedRawCacheMachine.trace_length_le_1697
+#print axioms QSB.WorldIndexedRawCacheMachine.covered_rawResult_eq
+#print axioms QSB.WorldIndexedRawCacheMachine.halted_result_correct
+#print axioms QSB.WorldIndexedRawCacheMachine.run_halts_of_enough
+#print axioms QSB.WorldIndexedRawCacheMachine.run_1697_correct
+#print axioms QSB.BoundedInputEncoding.take_pad
+#print axioms QSB.BoundedInputEncoding.equal_of_length_pad
+#print axioms QSB.BoundedInputEncoding.lengthBits_injective
+#print axioms QSB.BoundedInputEncoding.encodePair_injective
+#print axioms QSB.BoundedInputEncoding.joinBits_injective
+#print axioms QSB.BoundedInputEncoding.joinBits_pair_eq
+#print axioms QSB.BoundedInputEncoding.encode_injective
+#print axioms QSB.BoundedInputEncoding.boundedBytes_card_le
+#print axioms QSB.BoundedInputEncoding.taggedEncode_injective

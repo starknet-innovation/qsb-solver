@@ -167,7 +167,10 @@ so they cover the distinct H-tag and R-tag collision pairs extracted above.
 `QSB/TaggedFreshCollisionBridge.lean` maps the reached postprocessor's
 distinct byte pairs to tagged projected collisions under explicit pointwise
 byte-to-bit realization premises, retaining the additional 300/600-call
-postprocessing allowances.
+postprocessing allowances. It also constructs a deterministic tagged function
+whose observed coordinates are exactly the encoded source H/R functions and
+proves the collision implication directly for that function. This construction
+does not provide a uniformly sampled finite-domain tagged oracle.
 This identifies a *candidate* bound for those two routes only. The theorem
 cannot yet be instantiated for QSB: the world-indexed game has only a
 classical bounded-query causal algorithm and no coherent-query one, the
@@ -175,7 +178,10 @@ honest signing transcript may use many H queries, and coherent H/R-to-tagged
 simulation needs its own charged budget. `QSB/FixedWidthOracleEncoding.lean`
 bijectively encodes the source H/R responses of their proved 32/20-byte
 widths into 256/160-bit registers; arbitrary byte-string query inputs still
-need a finite-register encoding.
+need a finite-register encoding. `QSB/BoundedInputEncoding.lean` gives an
+injective bit register when a maximum input length `B` is stipulated, with one
+additional bit for the H/R input tag. The
+source model has not established such a maximum for every H/R query.
 Exact setup-secret recovery and the two-puzzle route require separate
 quantum arguments, and compiled-Core refinement remains open.
 
@@ -286,9 +292,13 @@ An applicability test for QSB has four concrete obligations:
    `QSB/DynamicSourceExtractorCausality.lean`
    adds the repeated search and three further structural runs for one fixed
    prepared attempt, obtaining a conservative 1,295-entry dependency list
-   and extractor result congruence. This is still analytic accounting; raw
-   parsing, scriptSig, fixed-input construction, and external predicates
-   remain outside the list. `QSB/DynamicRawExtractorCausality.lean` lifts the
+   and extractor result congruence.
+   `QSB/DynamicSourceExtractorCacheMachine.lean` proves this list
+   prefix-causal and constructs a fixed-input classical cache machine that
+   returns the exact optional extractor result within 1,295 actual H/R
+   requests. Raw parsing, scriptSig, fixed-input construction, and external
+   predicates remain outside that machine.
+   `QSB/DynamicRawExtractorCausality.lean` lifts the
    result through fixed raw preparation and ledger target binding, with the
    same downstream 1,295-entry bound; supplied evaluator and ledger calls
    remain uncharged. `QSB/ScriptSigTraceContract.lean` gives a conditional
@@ -299,6 +309,17 @@ An applicability test for QSB has four concrete obligations:
    1,697 entries and preserves the extractor result under oracle agreement.
    Failed scriptSig evaluations are not bounded by the success-only cap,
    and the contract's full-list congruence is not an actual causal machine.
+   `QSB/ScriptSigBoundedCausalContract.lean` adds an all-run cap on the
+   supplied `reached` list and one-step trace causality as explicit
+   assumptions. A concrete evaluator must separately prove that this list
+   faithfully covers its query-bearing execution. Under those
+   stronger assumptions, `QSB/ScriptSigAllRunRawBound.lean` proves the full
+   raw inventory prefix-causal and at most 1,697 entries even on failure.
+   `QSB/WorldIndexedRawCacheMachine.lean` uses that inventory to return the
+   exact optional raw extractor result within 1,697 classical H/R requests
+   for fixed raw inputs and callbacks. No concrete scriptSig evaluator has
+   been shown to satisfy the stronger contract, and none of these request
+   bounds charges coherent queries or queries hidden in callbacks.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

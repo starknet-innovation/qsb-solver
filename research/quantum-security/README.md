@@ -151,6 +151,12 @@ world. Its one-event bound is
 `Pr[Unauthorized] ≤ εjoint + εgap`, or `εjoint + 150·12/256^6` under the
 good-setup extraction and uniform setup premises. No nontrivial `εjoint` or
 shared coherent-query theorem is proved.
+`QSB/FixedWidthOracleEncoding.lean` bijectively maps the idealized 32-byte H
+and 20-byte R responses to 256- and 160-bit registers.
+`QSB/BoundedInputEncoding.lean` injectively encodes H/R-tagged byte inputs in
+a finite bit register when a maximum input length `B` is stipulated. The
+source game has not proved such a maximum for every query, and these
+encodings do not supply a coherent QROM reduction.
 `QSB/JointRawSourceWorld.lean` instantiates that interface with ledger-bound
 raw source submissions under explicit same-world setup equality. Its
 conditional source-model measure bound still needs scriptSig/Core refinement
@@ -554,8 +560,10 @@ additional structural work.
 `QSB/DynamicSourceExtractorCausality.lean` accounts for both searches and
 three further structural runs on one fixed prepared attempt. Its eager list
 has at most 1,295 H/R dependencies, and agreement preserves the extractor
-result. It is an analytic inventory, not a causal machine or a budget for
-raw parsing, scriptSig, and external predicates.
+result. `QSB/DynamicSourceExtractorCacheMachine.lean` proves that eager list
+prefix-causal and returns the exact optional result within 1,295 actual
+classical H/R requests for one fixed prepared attempt. Raw parsing, scriptSig,
+and external predicates remain outside that machine.
 `QSB/DynamicRawExtractorCausality.lean` lifts that result through fixed raw
 preparation and ledger target binding. It retains the 1,295-entry downstream
 bound; oracle work in the supplied scriptSig evaluator and ledger function
@@ -565,8 +573,17 @@ contract: a successful certified 201-opcode trace has at most 402 attributed
 H/R queries. `QSB/WorldIndexedScriptSigExtractor.lean` composes that contract
 with raw extraction, obtaining a conditional 1,697-entry analytic inventory
 after successful preparation. Failed evaluator traces have no such bound,
-and no concrete scriptSig evaluator or actual-query machine satisfies the
-contract yet.
+and this success-only contract does not give a raw actual-query machine.
+`QSB/ScriptSigBoundedCausalContract.lean` states a stronger obligation: the
+supplied `reached` list has at most 201 counted opcodes on every result, and
+its attributed query list is prefix-causal. A future evaluator witness must
+connect that list to actual query-bearing events, including failure paths.
+`QSB/ScriptSigAllRunRawBound.lean` then gives a prefix-causal raw dependency
+list of at most 1,697 entries on every result. Under that supplied contract,
+`QSB/WorldIndexedRawCacheMachine.lean` returns the exact optional raw result
+within 1,697 actual classical H/R requests. No concrete scriptSig evaluator
+has been proved to satisfy the contract, and compiled Core and coherent QROM
+accounting remain open.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final
