@@ -617,9 +617,17 @@ acceptance, not H/R call order or an opcode trace.
 OP_0, direct and PUSHDATA1/2 pushes, and small-number opcodes. It enforces
 source-shaped script, cell, and stack limits, returns the bottom-first cells,
 and witnesses the all-run contract with zero H/R requests and zero counted
-opcodes. These are the opcode forms used by the pinned app's witness builder;
+opcodes. These forms cover the pinned app builder's `push_data` and
+`push_number` outputs within the stated resource limits;
 a formal byte-for-byte builder-to-stack bridge remains to be proved. A
 nonpush attacker scriptSig and compiled Core remain outside this result.
+`QSB/BuilderWitnessPushBridge.lean` proves a source-shaped bridge for short
+data pushes and nonnegative number tokens below 256: each encoded token
+parses to its intended stack cell, and a bounded token list executes to the
+same ordered bottom-first cells with one reached push per token. Script size
+and stack capacity are explicit premises. A concrete 57-cell disposable
+`ByteWitness` fixture and universal byte equality to the Python assembly
+remain separate work; data PUSHDATA forms are not covered by this bridge.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
@@ -629,6 +637,12 @@ evaluator to this fixed-ledger machine: failed binding makes zero H/R
 requests, and either binding outcome returns the exact ledger-bound source
 result within 1,297 actual classical requests. The fixed ledger and callbacks
 remain outside the request charge.
+`QSB/PushOnlyRawCacheMachine.lean` uses the query-free push-only contract to
+reduce the fixed raw extractor's all-outcome allowance to 1,295 actual H/R
+requests. `QSB/PushOnlyLedgerRawCacheMachine.lean` carries this through fixed
+ledger binding: a failed bind needs zero requests, and either bind result is
+exact within 1,295 requests. The general attacker scriptSig and callback
+internals remain outside these bounds.
 `QSB/ClassicalMachineSequence.lean` composes any two halted classical H/R
 machines, allowing the second to depend on the first output. It preserves the
 exact concatenated request log within the sum of their budgets.
@@ -669,6 +683,12 @@ the concrete restricted HASH160 evaluator. The same ordered run needs at most
 `q + 1,297` classical H/R requests. Identifying it with a source world still
 requires pointwise context, evaluator, and output equations. The fragment's
 one-cell stack does not supply a general QSB unlock.
+`QSB/CausalPushOnlyLedgerExtractorSequence.lean` similarly fixes the
+query-free push-only contract by definition and uses the transcript output as
+the ledger-bound submission. Under a halted first stage it preserves the
+ordered first-stage and extractor logs within `q + 1,295` classical H/R
+requests. Pointwise source-world context and evaluator equality remain
+premises, as do oracle-independent setup and first-stage timeout handling.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

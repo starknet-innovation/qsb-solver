@@ -20,7 +20,7 @@ open CausalQueryAlgorithm (Query answer)
 
 /-- Interpret the bytes of one complete source-shaped parsed push opcode.
 `CoreGetOp.parse` checks the data length before this classifier is called. -/
-private def pushedValue : Bytes → Option Bytes
+def pushedValue : Bytes → Option Bytes
   | [] => none
   | op :: payload =>
       let n := op.toNat

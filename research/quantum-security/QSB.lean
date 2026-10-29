@@ -21,6 +21,10 @@ import QSB.ScriptSigBoundedCausalContract
 import QSB.RestrictedScriptSigHash160
 import QSB.RestrictedScriptSigOperationalTrace
 import QSB.PushOnlyScriptSig
+import QSB.BuilderWitnessPushBridge
+import QSB.PushOnlyRawCacheMachine
+import QSB.PushOnlyLedgerRawCacheMachine
+import QSB.CausalPushOnlyLedgerExtractorSequence
 import QSB.RestrictedScriptSigCanonicalWire
 import QSB.RestrictedRawCacheMachine
 import QSB.RestrictedLedgerRawCacheMachine
@@ -2053,3 +2057,28 @@ import QSB.Reduction
 #print axioms QSB.PushOnlyScriptSig.queries_reached_nil
 #print axioms QSB.PushOnlyScriptSig.opCost_reached_zero
 #print axioms QSB.PushOnlyScriptSig.machine_run_zero
+#print axioms QSB.PushOnlyRawCacheMachine.scriptSigDependencies_nil
+#print axioms QSB.PushOnlyRawCacheMachine.trace_length_le_1295
+#print axioms QSB.PushOnlyRawCacheMachine.run_1295_correct
+#print axioms QSB.PushOnlyLedgerRawCacheMachine.bind_failure_zero_queries
+#print axioms QSB.PushOnlyLedgerRawCacheMachine.bind_success_1295_correct
+#print axioms QSB.PushOnlyLedgerRawCacheMachine.run_1295_correct
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.submission_eq_output
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.contract_eq_pushOnly
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_machine_eq
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_result_eq
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_exact
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_length_le
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.ledgerResult_eq_world
+#print axioms QSB.CausalPushOnlyLedgerExtractorSequence.run_world_result
+#print axioms QSB.BuilderWitnessPushBridge.numberBytes_defined
+#print axioms QSB.BuilderWitnessPushBridge.numberBytes_short
+#print axioms QSB.BuilderWitnessPushBridge.numberBytes_small
+#print axioms QSB.BuilderWitnessPushBridge.encode_nonempty
+#print axioms QSB.BuilderWitnessPushBridge.value_length_le_520
+#print axioms QSB.BuilderWitnessPushBridge.parse_data
+#print axioms QSB.BuilderWitnessPushBridge.parse_number
+#print axioms QSB.BuilderWitnessPushBridge.parse_token
+#print axioms QSB.BuilderWitnessPushBridge.token_count_le_script_bytes
+#print axioms QSB.BuilderWitnessPushBridge.runTrace_tokens
+#print axioms QSB.BuilderWitnessPushBridge.execution_tokens

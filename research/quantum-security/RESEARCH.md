@@ -355,9 +355,16 @@ An applicability test for QSB has four concrete obligations:
    evaluator for OP_0, direct/PUSHDATA1/2 pushes and small-number opcodes.
    It enforces 10,000-byte script, 520-byte cell and 1,000-cell stack limits,
    returns bottom-first cells, and witnesses the all-run contract with zero
-   attributed H/R requests and zero counted opcodes. The pinned builder uses
-   these opcode forms, but its exact bytes-to-stack bridge and arbitrary
+   attributed H/R requests and zero counted opcodes. These forms cover the
+   pinned builder's `push_data` and `push_number` outputs within the stated
+   resource limits, but its exact bytes-to-stack bridge and arbitrary
    attacker scriptSig/Core refinement are still unproved.
+   `QSB/BuilderWitnessPushBridge.lean` proves short-data and `Fin 256`
+   number-token serialization/parse roundtrips and exact ordered bottom-first
+   stack production for bounded token lists. It uses OP_0/OP_1..OP_16 or
+   source-shaped ScriptNum bytes as appropriate. The disposable 57-cell
+   witness fixture, universal Python byte equality, PUSHDATA data tokens,
+   arbitrary attacker scriptSig, and compiled Core remain separate.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
@@ -368,6 +375,13 @@ An applicability test for QSB has four concrete obligations:
    requests; all outcomes return the exact restricted ledger result within
    1,297 actual classical requests. Fixed ledger/callback work and general
    scriptSig execution are still external.
+   `QSB/PushOnlyRawCacheMachine.lean` and
+   `QSB/PushOnlyLedgerRawCacheMachine.lean` specialize to the query-free
+   push-only evaluator. The selected scriptSig segment is empty; fixed raw
+   and ledger-bound source results are exact within 1,295 actual classical
+   H/R requests on all outcomes, and failed target binding uses zero.
+   Builder byte equality, arbitrary attacker scriptSig, and hidden
+   ledger/callback work remain separate.
    `QSB/ClassicalMachineSequence.lean` supplies a generic way to run two
    halted classical H/R machines against the same oracle pair, returning
    their two outputs with exactly concatenated query logs within `q+r`
@@ -404,6 +418,13 @@ An applicability test for QSB has four concrete obligations:
    Its source-world identification still requires pointwise context,
    evaluator, and output equations; the one-cell fragment does not provide a
    QSB unlocking witness.
+   `QSB/CausalPushOnlyLedgerExtractorSequence.lean` instead fixes the
+   query-free push-only contract by definition and ties its submission to the
+   first-stage transcript. A halted first stage and the ledger cache form
+   one exact ordered run within `q + 1,295` classical H/R requests. The
+   source-world context/evaluator/output equations remain explicit premises,
+   and this does not handle nonpush attacker scriptSig, hidden callbacks,
+   timeout, Core, or coherent queries.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

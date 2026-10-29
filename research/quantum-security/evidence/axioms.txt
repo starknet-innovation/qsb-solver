@@ -2384,3 +2384,38 @@
 'QSB.PushOnlyScriptSig.queries_reached_nil' depends on axioms: [propext, Quot.sound]
 'QSB.PushOnlyScriptSig.opCost_reached_zero' depends on axioms: [propext]
 'QSB.PushOnlyScriptSig.machine_run_zero' depends on axioms: [propext, Quot.sound]
+'QSB.PushOnlyRawCacheMachine.scriptSigDependencies_nil' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyRawCacheMachine.trace_length_le_1295' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyRawCacheMachine.run_1295_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyLedgerRawCacheMachine.bind_failure_zero_queries' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyLedgerRawCacheMachine.bind_success_1295_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyLedgerRawCacheMachine.run_1295_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.submission_eq_output' depends on axioms: [propext, Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.contract_eq_pushOnly' depends on axioms: [propext, Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_machine_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_result_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_exact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_length_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.ledgerResult_eq_world' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalPushOnlyLedgerExtractorSequence.run_world_result' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.numberBytes_defined' does not depend on any axioms
+'QSB.BuilderWitnessPushBridge.numberBytes_short' does not depend on any axioms
+'QSB.BuilderWitnessPushBridge.numberBytes_small' does not depend on any axioms
+'QSB.BuilderWitnessPushBridge.encode_nonempty' depends on axioms: [propext]
+'QSB.BuilderWitnessPushBridge.value_length_le_520' depends on axioms: [propext, Quot.sound]
+'QSB.BuilderWitnessPushBridge.parse_data' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.parse_number' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.parse_token' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.token_count_le_script_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.runTrace_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.BuilderWitnessPushBridge.execution_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]

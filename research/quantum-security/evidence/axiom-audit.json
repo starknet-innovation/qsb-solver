@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1856,
+  "theorem_count": 1881,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -108,6 +108,46 @@
       "propext"
     ],
     "QSB.BoundedInputEncoding.take_pad": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.encode_nonempty": [
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.execution_tokens": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.numberBytes_defined": [],
+    "QSB.BuilderWitnessPushBridge.numberBytes_short": [],
+    "QSB.BuilderWitnessPushBridge.numberBytes_small": [],
+    "QSB.BuilderWitnessPushBridge.parse_data": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.parse_number": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.parse_token": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.runTrace_tokens": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.token_count_le_script_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessPushBridge.value_length_le_520": [
       "Quot.sound",
       "propext"
     ],
@@ -722,6 +762,44 @@
       "propext"
     ],
     "QSB.CausalLedgerExtractorSequence.submission_eq_output": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.contract_eq_pushOnly": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.ledgerResult_eq_world": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_machine_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.pushOnly_result_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.run_q_plus_1295_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.run_world_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalPushOnlyLedgerExtractorSequence.submission_eq_output": [
       "Quot.sound",
       "propext"
     ],
@@ -6535,6 +6613,36 @@
       "propext"
     ],
     "QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyLedgerRawCacheMachine.bind_failure_zero_queries": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyLedgerRawCacheMachine.bind_success_1295_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyLedgerRawCacheMachine.run_1295_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyRawCacheMachine.run_1295_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyRawCacheMachine.scriptSigDependencies_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyRawCacheMachine.trace_length_le_1295": [
       "Classical.choice",
       "Quot.sound",
       "propext"
