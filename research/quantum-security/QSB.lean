@@ -9,12 +9,16 @@ import QSB.FiniteBranchingInputBound
 import QSB.ActualQueryBitEncoding
 import QSB.ClassicalMachineSequence
 import QSB.CausalRawExtractorSequence
+import QSB.CausalLedgerExtractorSequence
 import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
 import QSB.ScriptSigTraceContract
 import QSB.ScriptSigBoundedCausalContract
 import QSB.RestrictedScriptSigHash160
+import QSB.RestrictedScriptSigCanonicalWire
+import QSB.RestrictedRawCacheMachine
+import QSB.RestrictedLedgerRawCacheMachine
 import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
@@ -2011,3 +2015,19 @@ import QSB.Reduction
 #print axioms QSB.RestrictedScriptSigHash160.machine_run_exact
 #print axioms QSB.RestrictedScriptSigHash160.malformed_after_hash
 #print axioms QSB.RestrictedScriptSigHash160.equality_failure
+#print axioms QSB.RestrictedScriptSigCanonicalWire.directPush_pushPattern
+#print axioms QSB.RestrictedScriptSigCanonicalWire.hashPrefix_canonical
+#print axioms QSB.RestrictedScriptSigCanonicalWire.suffix_canonical
+#print axioms QSB.RestrictedScriptSigCanonicalWire.eval_canonical
+#print axioms QSB.RestrictedRawCacheMachine.scriptSigDependencies_length_le_2
+#print axioms QSB.RestrictedRawCacheMachine.trace_length_le_1297
+#print axioms QSB.RestrictedRawCacheMachine.run_1297_correct
+#print axioms QSB.RestrictedLedgerRawCacheMachine.bind_failure_zero_queries
+#print axioms QSB.RestrictedLedgerRawCacheMachine.bind_success_1297_correct
+#print axioms QSB.RestrictedLedgerRawCacheMachine.run_1297_correct
+#print axioms QSB.CausalLedgerExtractorSequence.submission_eq_output
+#print axioms QSB.CausalLedgerExtractorSequence.run_q_plus_1697_exact
+#print axioms QSB.CausalLedgerExtractorSequence.run_q_plus_1697_length_le
+#print axioms QSB.CausalLedgerExtractorSequence.fixed_combined_machine_input_bound
+#print axioms QSB.CausalLedgerExtractorSequence.ledgerResult_eq_world
+#print axioms QSB.CausalLedgerExtractorSequence.run_world_result

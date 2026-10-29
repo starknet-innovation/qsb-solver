@@ -334,11 +334,29 @@ An applicability test for QSB has four concrete obligations:
    hashing; this is not full opcode-event trace equivalence and does not
    cover arbitrary bare scriptSig. None of these request bounds charges
    coherent queries or queries hidden in callbacks.
+   `QSB/RestrictedRawCacheMachine.lean` specializes the raw response cache
+   to that concrete fragment: zero or two scriptSig requests plus at most
+   1,295 downstream requests give an exact optional raw result within 1,297
+   actual classical H/R requests. The one-cell initial stack is not a QSB
+   unlocking witness, and fixed callbacks may carry oracle advice.
+   `QSB/RestrictedScriptSigCanonicalWire.lean` connects the fragment's parser
+   to source-shaped short-push serialization and proves the canonical bytes'
+   exact evaluator result. Five pinned Core 27.2 acceptance cases in
+   `evidence/restricted-hash160-core.json` check the one-cell handoff and
+   rejection cases; Core also accepts a short PUSHDATA1 opening that this
+   restricted evaluator excludes. The Core API cannot report H/R query order
+   or opcode trace, so this is finite evidence rather than interpreter
+   refinement.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
    varies with the oracle world or carries uncounted oracle work remains
    outside this fixed-ledger result.
+   `QSB/RestrictedLedgerRawCacheMachine.lean` combines fixed binding with the
+   concrete restricted scriptSig evaluator. Binding failure uses zero H/R
+   requests; all outcomes return the exact restricted ledger result within
+   1,297 actual classical requests. Fixed ledger/callback work and general
+   scriptSig execution are still external.
    `QSB/ClassicalMachineSequence.lean` supplies a generic way to run two
    halted classical H/R machines against the same oracle pair, returning
    their two outputs with exactly concatenated query logs within `q+r`
@@ -349,6 +367,15 @@ An applicability test for QSB has four concrete obligations:
    oracle-independent initial state and that this first stage constructs the
    actual QSB lock, ledger context, submission, and evaluator contract;
    a first-stage timeout needs separate fallback handling.
+   `QSB/CausalLedgerExtractorSequence.lean` ties the extractor submission
+   definitionally to the first-stage transcript output and derives the spent
+   script by fixed ledger/target binding. A halted first stage composes with
+   the ledger cache in one ordered log within `q + 1,697` actual H/R requests;
+   explicit pointwise context and output equations identify the result with
+   the source-world extractor. For a fixed first machine/initial state/fuel,
+   its actual query inputs have some finite cross-world byte width. The
+   source-world equations, oracle-independent setup, callback costs, and
+   timeout fallback remain game obligations.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

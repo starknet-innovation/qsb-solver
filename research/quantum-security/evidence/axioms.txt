@@ -2327,3 +2327,27 @@
 'QSB.RestrictedScriptSigHash160.machine_run_exact' depends on axioms: [propext, Quot.sound]
 'QSB.RestrictedScriptSigHash160.malformed_after_hash' depends on axioms: [propext, Quot.sound]
 'QSB.RestrictedScriptSigHash160.equality_failure' depends on axioms: [propext, Quot.sound]
+'QSB.RestrictedScriptSigCanonicalWire.directPush_pushPattern' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedScriptSigCanonicalWire.hashPrefix_canonical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedScriptSigCanonicalWire.suffix_canonical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedScriptSigCanonicalWire.eval_canonical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedRawCacheMachine.scriptSigDependencies_length_le_2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.RestrictedRawCacheMachine.trace_length_le_1297' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedRawCacheMachine.run_1297_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.RestrictedLedgerRawCacheMachine.bind_failure_zero_queries' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.RestrictedLedgerRawCacheMachine.bind_success_1297_correct' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.RestrictedLedgerRawCacheMachine.run_1297_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CausalLedgerExtractorSequence.submission_eq_output' depends on axioms: [propext, Quot.sound]
+'QSB.CausalLedgerExtractorSequence.run_q_plus_1697_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CausalLedgerExtractorSequence.run_q_plus_1697_length_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CausalLedgerExtractorSequence.fixed_combined_machine_input_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalLedgerExtractorSequence.ledgerResult_eq_world' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CausalLedgerExtractorSequence.run_world_result' depends on axioms: [propext, Classical.choice, Quot.sound]

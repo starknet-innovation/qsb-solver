@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1823,
+  "theorem_count": 1839,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -686,6 +686,35 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.CausalLedgerExtractorSequence.fixed_combined_machine_input_bound": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalLedgerExtractorSequence.ledgerResult_eq_world": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalLedgerExtractorSequence.run_q_plus_1697_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalLedgerExtractorSequence.run_q_plus_1697_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalLedgerExtractorSequence.run_world_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalLedgerExtractorSequence.submission_eq_output": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CausalQueryAlgorithm.disclosed_of_halted": [
       "Quot.sound",
       "propext"
@@ -6592,6 +6621,56 @@
       "propext"
     ],
     "QSB.RecoveryCandidates.x_coordinate_candidates": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedLedgerRawCacheMachine.bind_failure_zero_queries": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedLedgerRawCacheMachine.bind_success_1297_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedLedgerRawCacheMachine.run_1297_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedRawCacheMachine.run_1297_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedRawCacheMachine.scriptSigDependencies_length_le_2": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedRawCacheMachine.trace_length_le_1297": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigCanonicalWire.directPush_pushPattern": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigCanonicalWire.eval_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigCanonicalWire.hashPrefix_canonical": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigCanonicalWire.suffix_canonical": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

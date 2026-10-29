@@ -1,0 +1,64 @@
+{
+  "scope": "isolated Core 27.2 acceptance cases; no opcode trace or full QSB refinement",
+  "core_version": "27.2",
+  "core_api_version": 2,
+  "core_flags": "bitcoinconsensus_SCRIPT_FLAGS_VERIFY_ALL",
+  "image": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+  "builder_sha256": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+  "native_files_sha256": {
+    "qsb-consensus": "9497dcf47c464fc49cbf54f806707bd67f04981c789c352bafb3805fe5d6dfcd",
+    "libbitcoinconsensus.so.0": "5d7874783dc4989357600b3f273a44627d8ca6ac037f63d851572ff64a756983"
+  },
+  "cases": [
+    {
+      "name": "canonical_success",
+      "accepted": true,
+      "expected": true,
+      "native_returncode": 0,
+      "native_stdout": "core-27.2-api2-all-inputs-valid",
+      "script_sig_hex": "03112233a914d645d64cedeffdfc2546bc12ffec3ddb08f7e0f2880142",
+      "lock_hex": "014288740087",
+      "raw_tx_sha256": "52dc3f4107ce42942c7737b8ea9262214ea71a9ba60b0bf6ab7d0f4624500385"
+    },
+    {
+      "name": "wrong_digest",
+      "accepted": false,
+      "expected": false,
+      "native_returncode": 1,
+      "native_stdout": "",
+      "script_sig_hex": "03112233a914d745d64cedeffdfc2546bc12ffec3ddb08f7e0f2880142",
+      "lock_hex": "014288740087",
+      "raw_tx_sha256": "58ee6213aba27e353cca3fbb09f77e69f6fd20c0ebd93e5cbd8057eb0549884f"
+    },
+    {
+      "name": "extra_payload_cell",
+      "accepted": false,
+      "expected": false,
+      "native_returncode": 1,
+      "native_stdout": "",
+      "script_sig_hex": "014303112233a914d645d64cedeffdfc2546bc12ffec3ddb08f7e0f2880142",
+      "lock_hex": "014288740087",
+      "raw_tx_sha256": "62aa8ad5b531466db79b2f61ef20018a6b3ba9bf24d3e084f9cf12c09b2791c1"
+    },
+    {
+      "name": "unsupported_nop_suffix",
+      "accepted": false,
+      "expected": false,
+      "native_returncode": 1,
+      "native_stdout": "",
+      "script_sig_hex": "03112233a914d645d64cedeffdfc2546bc12ffec3ddb08f7e0f2610142",
+      "lock_hex": "014288740087",
+      "raw_tx_sha256": "248070b9701eedea1e77e21880c2458001e4c877339477346737882a0990aa7c"
+    },
+    {
+      "name": "pushdata1_opening_outside_fragment",
+      "accepted": true,
+      "expected": true,
+      "native_returncode": 0,
+      "native_stdout": "core-27.2-api2-all-inputs-valid",
+      "script_sig_hex": "4c03112233a914d645d64cedeffdfc2546bc12ffec3ddb08f7e0f2880142",
+      "lock_hex": "014288740087",
+      "raw_tx_sha256": "37a81472d588ee48d1468c635b568fc2dcb5aefec692e70a471ecee531ed3458"
+    }
+  ]
+}

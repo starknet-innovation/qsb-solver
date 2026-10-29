@@ -597,10 +597,27 @@ H/R list is exactly the query projection of a two-request machine's actual
 log, including failures after hashing. This is not a full opcode-event trace
 equivalence or a witness for arbitrary bare scriptSig. Compiled Core and
 coherent QROM accounting remain open.
+For this concrete fragment, `QSB/RestrictedRawCacheMachine.lean` tightens the
+all-run raw inventory to `2 + 1,295 = 1,297` entries and proves exact optional
+raw extractor output within 1,297 actual classical H/R requests. The
+fragment returns only one initial stack cell, so it does not implement a QSB
+unlocking witness; fixed callbacks remain uncharged.
+`QSB/RestrictedScriptSigCanonicalWire.lean` proves that the source-shaped
+Core push serializer decodes as the restricted fragment for short pushes and
+that canonical bytes return `[payload]` exactly on the `R(H(opening))` match.
+Five isolated pinned Core 27.2 acceptance cases are recorded in
+`evidence/restricted-hash160-core.json`; a short PUSHDATA1 opening succeeds in
+Core while lying outside the Lean grammar. The consensus API exposes
+acceptance, not H/R call order or an opcode trace.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
 world-indexed ledger and its oracle costs remain outside that theorem.
+`QSB/RestrictedLedgerRawCacheMachine.lean` supplies the concrete restricted
+evaluator to this fixed-ledger machine: failed binding makes zero H/R
+requests, and either binding outcome returns the exact ledger-bound source
+result within 1,297 actual classical requests. The fixed ledger and callbacks
+remain outside the request charge.
 `QSB/ClassicalMachineSequence.lean` composes any two halted classical H/R
 machines, allowing the second to depend on the first output. It preserves the
 exact concatenated request log within the sum of their budgets.
@@ -611,6 +628,16 @@ exact first-stage and raw-cache logs within `q + 1,697` requests. A game still
 needs an oracle-independent initial state and a first stage whose output is
 the actual lock, ledger context, submission, and evaluator contract. Attacker
 timeout fallback remains separate.
+`QSB/CausalLedgerExtractorSequence.lean` makes the transcript's submitted
+transaction the ledger-bound extractor's submission by construction, so the
+spent script is derived from the supplied ledger and target. Under a halted
+first stage and explicit pointwise source-world context equations, its
+combined run returns the source-world extractor result with exact ordered
+logs and at most `q + 1,697` classical H/R requests, even on binding failure.
+For a fixed first machine and initial state, actual combined requests have
+some finite input width across oracle worlds. That width is existential and
+the source-world equations do not establish oracle-independent setup or
+first-stage timeout behavior.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final
@@ -750,6 +777,7 @@ python3 analysis/source_inventory.py --app-root /path/to/qsb-app --output eviden
 python3 analysis/check_round_results.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/round-results.json
 python3 analysis/check_core_semantics.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/core-semantics.json
 python3 analysis/check_bare_script_boundary.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/bare-script-boundary.json
+python3 analysis/check_restricted_hash160_core.py --app-root /path/to/qsb-app --native-root /path/to/pinned/native --output evidence/restricted-hash160-core.json
 python3 analysis/check_selection_prefix.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/selection-prefix.json
 python3 analysis/check_sighash_types.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/sighash-types.json
 python3 analysis/check_der20_parser.py --app-root /path/to/qsb-app --native-root /path/to/native --image sha256:IMAGE_DIGEST --output evidence/der20-parser.json
