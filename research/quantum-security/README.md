@@ -161,6 +161,11 @@ encodings do not supply a coherent QROM reduction.
 machine and finite query budget have some finite maximum input length across
 their actual runs. This existential width can depend on fixed advice and is
 not uniform across adversarially selected raw submissions.
+`QSB/ActualQueryBitEncoding.lean` uses that width to encode every actual
+tagged H/R request of one fixed raw cache machine in a shared bit register,
+injectively across oracle worlds. The width is noncomputable from the current
+proof and says nothing about skipped eager inventory entries or coherent
+queries.
 `QSB/JointRawSourceWorld.lean` instantiates that interface with ledger-bound
 raw source submissions under explicit same-world setup equality. Its
 conditional source-model measure bound still needs scriptSig/Core refinement
@@ -580,18 +585,32 @@ after successful preparation. Failed evaluator traces have no such bound,
 and this success-only contract does not give a raw actual-query machine.
 `QSB/ScriptSigBoundedCausalContract.lean` states a stronger obligation: the
 supplied `reached` list has at most 201 counted opcodes on every result, and
-its attributed query list is prefix-causal. A future evaluator witness must
+its attributed query list is prefix-causal. A general evaluator witness must
 connect that list to actual query-bearing events, including failure paths.
 `QSB/ScriptSigAllRunRawBound.lean` then gives a prefix-causal raw dependency
 list of at most 1,697 entries on every result. Under that supplied contract,
 `QSB/WorldIndexedRawCacheMachine.lean` returns the exact optional raw result
-within 1,697 actual classical H/R requests. No concrete scriptSig evaluator
-has been proved to satisfy the contract, and compiled Core and coherent QROM
-accounting remain open.
+within 1,697 actual classical H/R requests. The restricted evaluator in
+`QSB/RestrictedScriptSigHash160.lean` witnesses the contract for
+one direct-push `HASH160`/`EQUALVERIFY` fragment. It proves that its attributed
+H/R list is exactly the query projection of a two-request machine's actual
+log, including failures after hashing. This is not a full opcode-event trace
+equivalence or a witness for arbitrary bare scriptSig. Compiled Core and
+coherent QROM accounting remain open.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
 world-indexed ledger and its oracle costs remain outside that theorem.
+`QSB/ClassicalMachineSequence.lean` composes any two halted classical H/R
+machines, allowing the second to depend on the first output. It preserves the
+exact concatenated request log within the sum of their budgets.
+`QSB/CausalRawExtractorSequence.lean` instantiates this with the conditional
+raw extractor: when a first stage halts with complete fixed raw input `p`
+within `q` requests, the combined run returns `(p, rawResult p)` with the
+exact first-stage and raw-cache logs within `q + 1,697` requests. A game still
+needs an oracle-independent initial state and a first stage whose output is
+the actual lock, ledger context, submission, and evaluator contract. Attacker
+timeout fallback remains separate.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

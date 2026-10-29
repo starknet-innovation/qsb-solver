@@ -1,11 +1,26 @@
 {
-  "theorem_count": 1805,
+  "theorem_count": 1823,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
     "propext"
   ],
   "theorems": {
+    "QSB.ActualQueryBitEncoding.encodeActual_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ActualQueryBitEncoding.encode_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ActualQueryBitEncoding.encode_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.BareBoundary.accepted_bare_composition_first_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -721,6 +736,16 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CausalRawExtractorSequence.run_q_plus_1697_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRawExtractorSequence.run_q_plus_1697_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CertificateCandidateCacheMachine.append_prefix_at": [
       "Quot.sound",
       "propext"
@@ -1239,6 +1264,29 @@
     ],
     "QSB.CheckedRunQueryTrace.scan_result_congr": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_add_of_halted": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_first_after_halt": [
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_second": [
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_sequence": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_sequence_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ClassicalMachineSequence.run_succ_of_halted": [
       "Quot.sound",
       "propext"
     ],
@@ -6545,6 +6593,32 @@
     ],
     "QSB.RecoveryCandidates.x_coordinate_candidates": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.equality_failure": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.eval_congr": [
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.machine_run_exact": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.malformed_after_hash": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.queries_congr": [
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.queries_hashPrefixCausal": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigHash160.queries_reached": [
       "propext"
     ],
     "QSB.ScriptCodeSelection.boundary_match_consumes_chunk": [

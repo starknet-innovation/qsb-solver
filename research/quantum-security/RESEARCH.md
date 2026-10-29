@@ -187,6 +187,11 @@ fixed classical machine: finite fuel and finite-width replies imply that some
 maximum input length covers every request it actually makes in any oracle
 world. That maximum can depend on the complete fixed machine input, so it
 does not provide a uniform register for attacker-chosen submissions.
+`QSB/ActualQueryBitEncoding.lean` packages that existential width as a
+bounded tagged-query type and gives an injective bit encoding of every actual
+raw-cache request in every oracle world for the same fixed machine input.
+Equality of encoded values is exactly equality of the H/R-tagged queries.
+The chosen width is noncomputable and no coherent implementation is proved.
 Exact setup-secret recovery and the two-puzzle route require separate
 quantum arguments, and compiled-Core refinement remains open.
 
@@ -322,14 +327,28 @@ An applicability test for QSB has four concrete obligations:
    raw inventory prefix-causal and at most 1,697 entries even on failure.
    `QSB/WorldIndexedRawCacheMachine.lean` uses that inventory to return the
    exact optional raw extractor result within 1,697 classical H/R requests
-   for fixed raw inputs and callbacks. No concrete scriptSig evaluator has
-   been shown to satisfy the stronger contract, and none of these request
-   bounds charges coherent queries or queries hidden in callbacks.
+   for fixed raw inputs and callbacks.
+   `QSB/RestrictedScriptSigHash160.lean` witnesses the stronger contract for
+   a direct-push `HASH160`/`EQUALVERIFY` fragment. Its H/R query projection
+   agrees with a concrete two-request machine on success and failure after
+   hashing; this is not full opcode-event trace equivalence and does not
+   cover arbitrary bare scriptSig. None of these request bounds charges
+   coherent queries or queries hidden in callbacks.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
    varies with the oracle world or carries uncounted oracle work remains
    outside this fixed-ledger result.
+   `QSB/ClassicalMachineSequence.lean` supplies a generic way to run two
+   halted classical H/R machines against the same oracle pair, returning
+   their two outputs with exactly concatenated query logs within `q+r`
+   requests. `QSB/CausalRawExtractorSequence.lean` instantiates it with the
+   conditional raw cache: a first-stage halt with complete raw input `p`
+   within `q` requests yields `(p, rawResult p)` and the exact concatenated
+   log within `q + 1,697` requests. A game must still establish an
+   oracle-independent initial state and that this first stage constructs the
+   actual QSB lock, ledger context, submission, and evaluator contract;
+   a first-stage timeout needs separate fallback handling.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
