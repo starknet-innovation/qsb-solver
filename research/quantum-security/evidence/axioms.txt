@@ -2377,3 +2377,10 @@
  Classical.choice,
  Quot.sound]
 'QSB.RestrictedScriptSigOperationalTrace.run_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteTaggedCombinedRun.observed_restrict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteTaggedCombinedRun.realize_restrict_H' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteTaggedCombinedRun.realize_restrict_R' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteTaggedCombinedRun.run_restrict_realize_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.PushOnlyScriptSig.queries_reached_nil' depends on axioms: [propext, Quot.sound]
+'QSB.PushOnlyScriptSig.opCost_reached_zero' depends on axioms: [propext]
+'QSB.PushOnlyScriptSig.machine_run_zero' depends on axioms: [propext, Quot.sound]

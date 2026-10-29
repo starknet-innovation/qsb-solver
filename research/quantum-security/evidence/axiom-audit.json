@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1849,
+  "theorem_count": 1856,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -4522,6 +4522,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FiniteTaggedCombinedRun.observed_restrict": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedCombinedRun.realize_restrict_H": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedCombinedRun.realize_restrict_R": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedCombinedRun.run_restrict_realize_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FirstAcceptedOrigin.accepted_first_signed_commitment_origin": [
       "Classical.choice",
       "Quot.sound",
@@ -6516,6 +6536,17 @@
     ],
     "QSB.PoolRollInvariant.seven_pool_draws_leave_two_nonempty": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyScriptSig.machine_run_zero": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.PushOnlyScriptSig.opCost_reached_zero": [
+      "propext"
+    ],
+    "QSB.PushOnlyScriptSig.queries_reached_nil": [
       "Quot.sound",
       "propext"
     ],

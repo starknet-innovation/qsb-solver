@@ -8,6 +8,7 @@ import QSB.BoundedInputEncoding
 import QSB.FiniteBranchingInputBound
 import QSB.ActualQueryBitEncoding
 import QSB.ActualCombinedQueryBitEncoding
+import QSB.FiniteTaggedCombinedRun
 import QSB.ClassicalMachineSequence
 import QSB.CausalRawExtractorSequence
 import QSB.CausalLedgerExtractorSequence
@@ -19,6 +20,7 @@ import QSB.ScriptSigTraceContract
 import QSB.ScriptSigBoundedCausalContract
 import QSB.RestrictedScriptSigHash160
 import QSB.RestrictedScriptSigOperationalTrace
+import QSB.PushOnlyScriptSig
 import QSB.RestrictedScriptSigCanonicalWire
 import QSB.RestrictedRawCacheMachine
 import QSB.RestrictedLedgerRawCacheMachine
@@ -2044,3 +2046,10 @@ import QSB.Reduction
 #print axioms QSB.CausalRestrictedLedgerExtractorSequence.ledgerResult_eq_world
 #print axioms QSB.CausalRestrictedLedgerExtractorSequence.run_world_result
 #print axioms QSB.RestrictedScriptSigOperationalTrace.run_exact
+#print axioms QSB.FiniteTaggedCombinedRun.observed_restrict
+#print axioms QSB.FiniteTaggedCombinedRun.realize_restrict_H
+#print axioms QSB.FiniteTaggedCombinedRun.realize_restrict_R
+#print axioms QSB.FiniteTaggedCombinedRun.run_restrict_realize_eq
+#print axioms QSB.PushOnlyScriptSig.queries_reached_nil
+#print axioms QSB.PushOnlyScriptSig.opCost_reached_zero
+#print axioms QSB.PushOnlyScriptSig.machine_run_zero

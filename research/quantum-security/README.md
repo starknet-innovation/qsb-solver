@@ -613,6 +613,13 @@ Five isolated pinned Core 27.2 acceptance cases are recorded in
 `evidence/restricted-hash160-core.json`; a short PUSHDATA1 opening succeeds in
 Core while lying outside the Lean grammar. The consensus API exposes
 acceptance, not H/R call order or an opcode trace.
+`QSB/PushOnlyScriptSig.lean` instead models a push-only scriptSig subset with
+OP_0, direct and PUSHDATA1/2 pushes, and small-number opcodes. It enforces
+source-shaped script, cell, and stack limits, returns the bottom-first cells,
+and witnesses the all-run contract with zero H/R requests and zero counted
+opcodes. These are the opcode forms used by the pinned app's witness builder;
+a formal byte-for-byte builder-to-stack bridge remains to be proved. A
+nonpush attacker scriptSig and compiled Core remain outside this result.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
@@ -649,6 +656,13 @@ equality, and agreement of H and R on all bounded byte inputs fixes the
 entire combined classical output and ordered log. The width may depend on
 fixed first-stage advice and gives no finite sampled-oracle or coherent
 simulation by itself.
+`QSB/FiniteTaggedCombinedRun.lean` now factors that fixed classical run
+through a finite H/R tagged table: it restricts source functions to bounded
+inputs, supplies fixed unused coordinates and out-of-domain defaults, and
+decodes the table back into width-correct total byte functions. The complete
+run, including failure or timeout, is unchanged after restriction and
+realization. This is deterministic; it does not identify a distribution over
+finite or infinite oracle tables or implement coherent queries.
 `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes that
 transcript-linked sequence to a context carrying proof that its contract is
 the concrete restricted HASH160 evaluator. The same ordered run needs at most

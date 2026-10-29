@@ -351,6 +351,13 @@ An applicability test for QSB has four concrete obligations:
    restricted evaluator excludes. The Core API cannot report H/R query order
    or opcode trace, so this is finite evidence rather than interpreter
    refinement.
+   `QSB/PushOnlyScriptSig.lean` provides a separate push-only source
+   evaluator for OP_0, direct/PUSHDATA1/2 pushes and small-number opcodes.
+   It enforces 10,000-byte script, 520-byte cell and 1,000-cell stack limits,
+   returns bottom-first cells, and witnesses the all-run contract with zero
+   attributed H/R requests and zero counted opcodes. The pinned builder uses
+   these opcode forms, but its exact bytes-to-stack bridge and arbitrary
+   attacker scriptSig/Core refinement are still unproved.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
@@ -385,6 +392,12 @@ An applicability test for QSB has four concrete obligations:
    agreement on the selected bounded-byte domain determines the whole
    classical output and log. The existential width can depend on fixed
    advice; no sampled finite-oracle coupling or coherent simulation follows.
+   `QSB/FiniteTaggedCombinedRun.lean` realizes the selected bounded domain as
+   a finite disjoint H/R tagged table with exact-width bit responses. Any
+   source pair can be restricted to this table and realized back as total
+   width-correct byte functions without changing the full fixed classical
+   run, including failure and timeout. This is deterministic factorization,
+   not a finite-oracle sampling law or coherent simulation.
    `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes the same
    transcript-linked composition to a context whose contract is the concrete
    restricted HASH160 witness, reducing the second-stage budget to 1,297.
