@@ -357,14 +357,24 @@ An applicability test for QSB has four concrete obligations:
    returns bottom-first cells, and witnesses the all-run contract with zero
    attributed H/R requests and zero counted opcodes. These forms cover the
    pinned builder's `push_data` and `push_number` outputs within the stated
-   resource limits, but its exact bytes-to-stack bridge and arbitrary
-   attacker scriptSig/Core refinement are still unproved.
+   resource limits, but an exact link to the actual Python-assembled bytes
+   and arbitrary attacker scriptSig/Core refinement are still unproved.
    `QSB/BuilderWitnessPushBridge.lean` proves short-data and `Fin 256`
    number-token serialization/parse roundtrips and exact ordered bottom-first
    stack production for bounded token lists. It uses OP_0/OP_1..OP_16 or
-   source-shaped ScriptNum bytes as appropriate. The disposable 57-cell
-   witness fixture, universal Python byte equality, PUSHDATA data tokens,
-   arbitrary attacker scriptSig, and compiled Core remain separate.
+   source-shaped ScriptNum bytes as appropriate.
+   `QSB/BuilderWitnessRoleOrder.lean` proves the parameterized source-shaped
+   `cmd_assemble` token order and a 57-cell Config A execution result under
+   supplied short-cell and list-length premises. The separate disposable
+   `QSB/ByteWitnessPushFixture.lean` classifies all 57 cells, proves its
+   encoded script is 711 bytes, and recovers its exact bottom-first stack
+   with 57 reached events. Neither result identifies the supplied cells with
+   actual Python recovery or proves Python byte equality.
+   `QSB/CorePushOnlyAcceptance.lean` proves successful narrow push evaluation
+   implies a source-shaped `CScript::IsPushOnly` scan accepts the script.
+   The implication is one-way. Builder-token serialization for data cells of
+   length at least 76 bytes, arbitrary attacker scriptSig, and compiled Core
+   remain separate; the narrow evaluator itself supports PUSHDATA1/2.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
@@ -410,8 +420,12 @@ An applicability test for QSB has four concrete obligations:
    a finite disjoint H/R tagged table with exact-width bit responses. Any
    source pair can be restricted to this table and realized back as total
    width-correct byte functions without changing the full fixed classical
-   run, including failure and timeout. This is deterministic factorization,
-   not a finite-oracle sampling law or coherent simulation.
+   run, including failure and timeout. `QSB/FiniteTaggedRunLaw.lean` then
+   proves the complete run depends only on the observed H/R tables and gives
+   exact constant-fiber counts: a uniform finite tagged table and a uniform
+   pair of observed tables assign every run event the same density. This
+   finite fixed-machine law is not an infinite-oracle coupling or coherent
+   simulation.
    `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes the same
    transcript-linked composition to a context whose contract is the concrete
    restricted HASH160 witness, reducing the second-stage budget to 1,297.
@@ -468,6 +482,7 @@ they do not formalize Shor's algorithm or a quantum circuit.
 
 ## Bitcoin consensus sources
 
+- [Core v27.2 `CScript::IsPushOnly`](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/script.cpp): scans `GetOp` boundaries and rejects opcodes above `OP_16`; the predicate itself permits `OP_RESERVED`, whose execution fails. The Lean implication covers only scripts accepted by its narrower push evaluator, not a compiled Core run.
 - [Core v27.2 interpreter](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp): CHECKMULTISIG result handling, optional NULLFAIL/CLEANSTACK policy checks, FindAndDelete and legacy signature rules. The legacy `SIGHASH_ALL` serializer includes ordered inputs (blanking other input scripts), all outputs, version and locktime; the checker removes the signature's final hashtype byte, computes that sighash, then verifies the ECDSA signature. This source reading does not prove that equal verification for a fixed key forces an equal sighash: opposite ECDSA recovery points permit distinct message scalars.
 - [Core v27.2 consensus API flags](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/bitcoinconsensus.h): flags used by the app adapter.
 - [Core v27.2 strict DER and hashtype checks](https://github.com/bitcoin/bitcoin/blob/v27.2/src/script/interpreter.cpp): the trailing hashtype restriction is guarded by `STRICTENC`, separately from `DERSIG`. The local 256-case Core sweep confirms that the pinned consensus adapter accepts all trailing bytes with recovered verification keys; this concerns isolated scripts, not QSB's complete lock.

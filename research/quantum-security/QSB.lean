@@ -9,6 +9,7 @@ import QSB.FiniteBranchingInputBound
 import QSB.ActualQueryBitEncoding
 import QSB.ActualCombinedQueryBitEncoding
 import QSB.FiniteTaggedCombinedRun
+import QSB.FiniteTaggedRunLaw
 import QSB.ClassicalMachineSequence
 import QSB.CausalRawExtractorSequence
 import QSB.CausalLedgerExtractorSequence
@@ -22,6 +23,9 @@ import QSB.RestrictedScriptSigHash160
 import QSB.RestrictedScriptSigOperationalTrace
 import QSB.PushOnlyScriptSig
 import QSB.BuilderWitnessPushBridge
+import QSB.BuilderWitnessRoleOrder
+import QSB.ByteWitnessPushFixture
+import QSB.CorePushOnlyAcceptance
 import QSB.PushOnlyRawCacheMachine
 import QSB.PushOnlyLedgerRawCacheMachine
 import QSB.CausalPushOnlyLedgerExtractorSequence
@@ -2054,6 +2058,14 @@ import QSB.Reduction
 #print axioms QSB.FiniteTaggedCombinedRun.realize_restrict_H
 #print axioms QSB.FiniteTaggedCombinedRun.realize_restrict_R
 #print axioms QSB.FiniteTaggedCombinedRun.run_restrict_realize_eq
+#print axioms QSB.FiniteTaggedRunLaw.observed_canonicalTable
+#print axioms QSB.FiniteTaggedRunLaw.realize_eq_of_observed_eq
+#print axioms QSB.FiniteTaggedRunLaw.run_eq_canonical_observed
+#print axioms QSB.FiniteTaggedRunLaw.selected_count
+#print axioms QSB.FiniteTaggedRunLaw.table_count
+#print axioms QSB.FiniteTaggedRunLaw.realized_event_count
+#print axioms QSB.FiniteTaggedRunLaw.run_event_count
+#print axioms QSB.FiniteTaggedRunLaw.run_event_density_cross_mul
 #print axioms QSB.PushOnlyScriptSig.queries_reached_nil
 #print axioms QSB.PushOnlyScriptSig.opCost_reached_zero
 #print axioms QSB.PushOnlyScriptSig.machine_run_zero
@@ -2082,3 +2094,19 @@ import QSB.Reduction
 #print axioms QSB.BuilderWitnessPushBridge.token_count_le_script_bytes
 #print axioms QSB.BuilderWitnessPushBridge.runTrace_tokens
 #print axioms QSB.BuilderWitnessPushBridge.execution_tokens
+#print axioms QSB.BuilderWitnessRoleOrder.roundTokens_values_reverse
+#print axioms QSB.BuilderWitnessRoleOrder.scriptTokens_values_reverse
+#print axioms QSB.BuilderWitnessRoleOrder.roundTokens_length
+#print axioms QSB.BuilderWitnessRoleOrder.token_encode_length_le_76
+#print axioms QSB.BuilderWitnessRoleOrder.encodeTokens_length_le_76_times_count
+#print axioms QSB.BuilderWitnessRoleOrder.scriptTokens_length_configA
+#print axioms QSB.BuilderWitnessRoleOrder.execution_configA
+#print axioms QSB.ByteWitnessPushFixture.bottomCells_length
+#print axioms QSB.ByteWitnessPushFixture.tokens_length
+#print axioms QSB.ByteWitnessPushFixture.values_tokens
+#print axioms QSB.ByteWitnessPushFixture.encoded_length
+#print axioms QSB.ByteWitnessPushFixture.execution_tokens_exact
+#print axioms QSB.ByteWitnessPushFixture.reached_length
+#print axioms QSB.CorePushOnlyAcceptance.runTrace_success_isPushOnly
+#print axioms QSB.CorePushOnlyAcceptance.execution_success_isPushOnly
+#print axioms QSB.CorePushOnlyAcceptance.builder_tokens_isPushOnly

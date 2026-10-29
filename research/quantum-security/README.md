@@ -619,15 +619,25 @@ source-shaped script, cell, and stack limits, returns the bottom-first cells,
 and witnesses the all-run contract with zero H/R requests and zero counted
 opcodes. These forms cover the pinned app builder's `push_data` and
 `push_number` outputs within the stated resource limits;
-a formal byte-for-byte builder-to-stack bridge remains to be proved. A
+an exact link to the actual Python-assembled bytes remains to be proved. A
 nonpush attacker scriptSig and compiled Core remain outside this result.
 `QSB/BuilderWitnessPushBridge.lean` proves a source-shaped bridge for short
 data pushes and nonnegative number tokens below 256: each encoded token
 parses to its intended stack cell, and a bounded token list executes to the
 same ordered bottom-first cells with one reached push per token. Script size
-and stack capacity are explicit premises. A concrete 57-cell disposable
-`ByteWitness` fixture and universal byte equality to the Python assembly
-remain separate work; data PUSHDATA forms are not covered by this bridge.
+and stack capacity are explicit premises.
+`QSB/BuilderWitnessRoleOrder.lean` proves that parameterized source-shaped
+builder tokens produce the stated top-first role order and, given Config A
+cell counts and short-cell assumptions, execute 57 pushes within 4,332
+serialized bytes. `QSB/ByteWitnessPushFixture.lean` gives a separate 57-token
+encoding of the disposable `ByteWitness.witness`: exactly 711 source bytes
+produce its bottom-first cells and 57 reached events. Supplied builder cells
+and depths are not identified with actual Python recovery or assembly;
+data PUSHDATA forms and universal Python byte equality remain separate.
+`QSB/CorePushOnlyAcceptance.lean` proves that any successful narrow push-only
+evaluation, including bounded builder-token encodings, passes an independent
+source-shaped model of Core's `CScript::IsPushOnly` scan. This is a one-way
+Lean-model implication, not compiled Core execution.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
@@ -675,8 +685,11 @@ through a finite H/R tagged table: it restricts source functions to bounded
 inputs, supplies fixed unused coordinates and out-of-domain defaults, and
 decodes the table back into width-correct total byte functions. The complete
 run, including failure or timeout, is unchanged after restriction and
-realization. This is deterministic; it does not identify a distribution over
-finite or infinite oracle tables or implement coherent queries.
+realization. `QSB/FiniteTaggedRunLaw.lean` proves an exact finite sampling
+law: for any event on the complete fixed run, uniform tagged product tables
+and uniform observable H/R table pairs have the same event density by a
+constant-fiber count. The existential input cap can depend on fixed advice;
+there is no infinite-oracle coupling or coherent-query implementation.
 `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes that
 transcript-linked sequence to a context carrying proof that its contract is
 the concrete restricted HASH160 evaluator. The same ordered run needs at most

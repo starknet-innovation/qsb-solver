@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1881,
+  "theorem_count": 1905,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -148,6 +148,37 @@
       "propext"
     ],
     "QSB.BuilderWitnessPushBridge.value_length_le_520": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.encodeTokens_length_le_76_times_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.execution_configA": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.roundTokens_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.roundTokens_values_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.scriptTokens_length_configA": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.scriptTokens_values_reverse": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.BuilderWitnessRoleOrder.token_encode_length_le_76": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -736,6 +767,31 @@
       "propext"
     ],
     "QSB.ByteWitness.witness_length": [],
+    "QSB.ByteWitnessPushFixture.bottomCells_length": [
+      "propext"
+    ],
+    "QSB.ByteWitnessPushFixture.encoded_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteWitnessPushFixture.execution_tokens_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteWitnessPushFixture.reached_length": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteWitnessPushFixture.tokens_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteWitnessPushFixture.values_tokens": [
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CausalLedgerExtractorSequence.fixed_combined_machine_input_bound": [
       "Classical.choice",
       "Quot.sound",
@@ -2262,6 +2318,19 @@
     ],
     "QSB.CorePushFindAndDelete.simple_push_rigid": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushOnlyAcceptance.builder_tokens_isPushOnly": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushOnlyAcceptance.execution_success_isPushOnly": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushOnlyAcceptance.runTrace_success_isPushOnly": [
       "Quot.sound",
       "propext"
     ],
@@ -4616,6 +4685,46 @@
       "propext"
     ],
     "QSB.FiniteTaggedCombinedRun.run_restrict_realize_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.observed_canonicalTable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.realize_eq_of_observed_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.realized_event_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.run_eq_canonical_observed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.run_event_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.run_event_density_cross_mul": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.selected_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteTaggedRunLaw.table_count": [
       "Classical.choice",
       "Quot.sound",
       "propext"
