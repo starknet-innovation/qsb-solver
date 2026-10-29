@@ -499,6 +499,17 @@ a certificate, and the pin/final extraction theorem exposes the fixed
 `SIGHASH_ALL` checker calls. The key parser, ECDSA and transaction digest
 remain external functions; compiled-Core refinement and the shared-budget
 quantum bound are still open.
+`QSB/ByteMachineQueries.lean` now proves that every successful parameterized
+byte-model lock run records exactly 33 hash-opcode calls (18 H, 15 R).
+`QSB/LockSignatureQueryBudget.lean` instruments the source-shaped multisig
+scan and proves that both scans in a successful checked parameterized lock run
+attempt at most 20 verifier pairs in total. `QSB/JointLegacyDigestQueries.lean`
+traces one modeled digest with zero or two ordered H calls. The six signature
+sites reserve 48 additional H calls when each verifier uses one such digest.
+The combined 81 is a static
+source-model allowance; a whole checked-run query trace, arbitrary external
+checker calls, scriptSig calls, compiled-Core refinement, and a quantum
+success bound remain open.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

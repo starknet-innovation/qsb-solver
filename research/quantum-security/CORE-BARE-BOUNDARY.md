@@ -217,13 +217,22 @@ that the compiled C++ interpreter implements the Lean steps.
 
 `QSB.ByteMachineQueries.lock_queries_le_33` adds the hash-opcode oracle
 accounting for the same inventory: the byte-model run of every parameterized
-lock records at most 33 idealized calls, 15 H plus 15 R from `HASH160` and
-3 H from `SHA256`, and `run_congr` proves the run depends on the hash
-functions only at those recorded inputs. Under the `scriptSig` budget's
-source-shaped convention of at most two H calls per legacy signature
-attempt, the four `CHECKSIGVERIFY` sites and the two ten-key
-`CHECKMULTISIG` sites would add at most 48 further H calls per lock run,
-but those checker calls are not yet traced in Lean.
+lock records at most 33 idealized calls. The new
+`lock_queries_exact_of_success` proves that a successful run records exactly
+33: 15 H plus 15 R from `HASH160` and 3 H from `SHA256`.
+`run_congr` proves the run depends on the hash functions only at those
+recorded inputs. `QSB.LockSignatureQueryBudget` instruments the source-shaped
+multisignature scan without changing its result and proves at most one verifier
+attempt per reached key. Every successful full parameterized checked run
+reaches both static ten-key fragments, whose combined pair attempts are at
+most 20 even if the first-round Boolean is false.
+`QSB.JointLegacyDigestQueries` gives one modeled legacy digest an exact trace:
+zero H calls for an invalid input or out-of-range SINGLE, and two ordered H
+calls for a present preimage. The four `CHECKSIGVERIFY` sites and two ten-key
+sites reserve at most 48 H calls when each verifier uses one such digest; with
+the 33 opcode calls, the static lock allowance is 81. This is not a
+combined query trace for the checked run: `validKey` and `verify` are external,
+and their own oracle use, the scriptSig, and compiled Core remain outside it.
 `QSB.LockOpcodeBudget.lock_run_ops_from_zero` proves that both ten-key
 `CHECKMULTISIG` count pushes are static, so every successful byte-model run of
 every parameterized lock ends with the opcode counter at exactly 201, Core's

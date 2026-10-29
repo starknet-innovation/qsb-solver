@@ -15,6 +15,7 @@ import QSB.SighashAllWireFixture
 import QSB.LegacySighashWire
 import QSB.LegacySighashWireFixture
 import QSB.JointSourceChecks
+import QSB.JointLegacyDigestQueries
 import QSB.SegwitTxWire
 import QSB.LegacyTxWire
 import QSB.LegacyTxWireFixture
@@ -128,6 +129,7 @@ import QSB.CoreCheckedJointTransaction
 import QSB.CoreCheckedWire
 import QSB.LockOpcodeInventory
 import QSB.LockOpcodeBudget
+import QSB.LockSignatureQueryBudget
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
@@ -1669,3 +1671,36 @@ import QSB.Reduction
 #print axioms QSB.unauthorized_measure_bound_with_gap
 #print axioms QSB.two_puzzle_failure_key_cases
 #print axioms QSB.unauthorized_measure_bound_with_key_cases
+#print axioms QSB.ByteMachineQueries.stepQueries_length_eq_of_success
+#print axioms QSB.ByteMachineQueries.runQueries_length_eq_of_success
+#print axioms QSB.ByteMachineQueries.stepQueries_weights_eq_of_success
+#print axioms QSB.ByteMachineQueries.runQueries_weight_eq_of_success
+#print axioms QSB.ByteMachineQueries.runQueries_h_eq_of_success
+#print axioms QSB.ByteMachineQueries.runQueries_r_eq_of_success
+#print axioms QSB.ByteMachineQueries.hOpBudget_skeleton
+#print axioms QSB.ByteMachineQueries.rOpBudget_skeleton
+#print axioms QSB.ByteMachineQueries.literal_h_budget
+#print axioms QSB.ByteMachineQueries.literal_r_budget
+#print axioms QSB.ByteMachineQueries.lock_h_budget
+#print axioms QSB.ByteMachineQueries.lock_r_budget
+#print axioms QSB.ByteMachineQueries.lock_queries_exact_of_success
+#print axioms QSB.LockSignatureQueryBudget.scanTracked_result
+#print axioms QSB.LockSignatureQueryBudget.scanTracked_calls_le
+#print axioms QSB.LockSignatureQueryBudget.scanAtStackTracked_result
+#print axioms QSB.LockSignatureQueryBudget.scanAtStackTracked_ten_calls_le
+#print axioms QSB.LockSignatureQueryBudget.parse_ten_after_push
+#print axioms QSB.LockSignatureQueryBudget.checkedMultisig_ten_pair_calls_le
+#print axioms QSB.LockSignatureQueryBudget.checked_push_ten_shape
+#print axioms QSB.LockSignatureQueryBudget.checked_keyCheck_pair_calls_le
+#print axioms QSB.LockSignatureQueryBudget.sigHAllowance_skeleton
+#print axioms QSB.LockSignatureQueryBudget.literal_sigHAllowance
+#print axioms QSB.LockSignatureQueryBudget.lock_sigHAllowance
+#print axioms QSB.LockSignatureQueryBudget.lock_total_allowance
+#print axioms QSB.JointLegacyDigestQueries.trace_invalid_input
+#print axioms QSB.JointLegacyDigestQueries.trace_missing_preimage
+#print axioms QSB.JointLegacyDigestQueries.trace_present_preimage
+#print axioms QSB.JointLegacyDigestQueries.trace_length_le_two
+#print axioms QSB.JointLegacyDigestQueries.legacyDigest_congr
+#print axioms QSB.JointLegacyDigestQueries.trace_congr
+#print axioms QSB.LockSignatureQueryBudget.checked_lock_multisig_pair_calls_le_20
+#print axioms QSB.JointLegacyDigestQueries.trace_single_bug

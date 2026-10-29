@@ -204,11 +204,18 @@ An applicability test for QSB has four concrete obligations:
    and `budget + 600` on the R route. `QSB/ByteMachineQueries.lean` begins
    charging the world-indexed source extractor: the byte-model run of any
    parameterized lock is causal in an explicit trace of at most 33 hash-opcode
-   H/R calls, and the Core-shaped run inherits that causality. The checker's
-   SHA256d calls at the six signature sites, the second search branch, and
-   the scriptSig evaluator are still uncharged, the honest machine is not
-   shown to use the sampled secrets correctly, and no coherent-query version
-   exists.
+   H/R calls; a successful run records exactly 18 H and 15 R calls. The
+   Core-shaped run inherits that causality. `QSB/LockSignatureQueryBudget.lean`
+   instruments the source-shaped multisignature pair scan and proves that both
+   ten-key scans in a successful checked lock run attempt at most 20 pairs in
+   total. `QSB/JointLegacyDigestQueries.lean` traces one modeled digest with
+   zero or two H calls and proves causality for that trace. The six signature
+   sites reserve 48 H calls when each verifier uses one such digest. The
+   resulting 81-call lock allowance is not one traced checked run; external
+   checker functions, the second certificate-search branch,
+   scriptSig evaluation, and honest setup/signing still need to be charged.
+   The honest machine is not shown to use the sampled secrets correctly, and
+   no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
    selected transaction, and enough oracle input/output pairs to verify the
    *reached* seven opening equations and both signature-puzzle routes. It must

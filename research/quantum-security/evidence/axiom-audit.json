@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1518,
+  "theorem_count": 1551,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -355,17 +355,40 @@
     ],
     "QSB.ByteMachineQueries.answer_H": [],
     "QSB.ByteMachineQueries.answer_R": [],
+    "QSB.ByteMachineQueries.hOpBudget_skeleton": [
+      "propext"
+    ],
     "QSB.ByteMachineQueries.literal_budget": [
       "propext"
     ],
+    "QSB.ByteMachineQueries.literal_h_budget": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.literal_r_budget": [
+      "propext"
+    ],
     "QSB.ByteMachineQueries.lock_budget": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.lock_h_budget": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.lock_queries_exact_of_success": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.ByteMachineQueries.lock_queries_le_33": [
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteMachineQueries.lock_r_budget": [
+      "propext"
+    ],
     "QSB.ByteMachineQueries.opBudget_skeleton": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.rOpBudget_skeleton": [
       "propext"
     ],
     "QSB.ByteMachineQueries.restQueries_mem_runQueries": [
@@ -375,7 +398,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteMachineQueries.runQueries_h_eq_of_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.runQueries_length_eq_of_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteMachineQueries.runQueries_length_le": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.runQueries_r_eq_of_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.runQueries_weight_eq_of_success": [
       "Quot.sound",
       "propext"
     ],
@@ -384,10 +426,20 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ByteMachineQueries.stepQueries_length_eq_of_success": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ByteMachineQueries.stepQueries_length_le": [
       "propext"
     ],
     "QSB.ByteMachineQueries.stepQueries_mem_runQueries": [
+      "propext"
+    ],
+    "QSB.ByteMachineQueries.stepQueries_weights_eq_of_success": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.ByteMachineQueries.step_congr": [
@@ -4384,6 +4436,41 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.JointLegacyDigestQueries.legacyDigest_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_invalid_input": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_length_le_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_missing_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_present_preimage": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointLegacyDigestQueries.trace_single_bug": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.JointOracleReduction.unauthorized_joint_or_gap": [
       "Classical.choice",
       "Quot.sound",
@@ -4859,6 +4946,61 @@
       "propext"
     ],
     "QSB.LockOpcodeInventory.pushed_skeleton": [
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.checkedMultisig_ten_pair_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.checked_keyCheck_pair_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.checked_lock_multisig_pair_calls_le_20": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.checked_push_ten_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.literal_sigHAllowance": [
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.lock_sigHAllowance": [
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.lock_total_allowance": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.parse_ten_after_push": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.scanAtStackTracked_result": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.scanAtStackTracked_ten_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.scanTracked_calls_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.scanTracked_result": [
+      "propext"
+    ],
+    "QSB.LockSignatureQueryBudget.sigHAllowance_skeleton": [
       "propext"
     ],
     "QSB.Multisig.equal_counts_success_iff_pairs": [

@@ -113,6 +113,139 @@ theorem step_sha256_nil (h : Hashes) (outcomes : List Bool) (ops : Nat) :
   unfold step
   simp
 
+/-- On a successful hash step, the required input cell exists, so its whole
+hash-opcode query budget appears in the trace. -/
+theorem stepQueries_length_eq_of_success
+    (functions : JointSourceChecks.Functions) (op : Op)
+    (s next : State)
+    (success : step (JointSourceChecks.hashes functions) op s = some next) :
+    (stepQueries functions op s.stack).length = opBudget op := by
+  by_cases h160 : op = .hash160
+  · subst op
+    rcases s with ⟨stack, outcomes, ops⟩
+    cases stack with
+    | nil => simp [step_hash160_nil] at success
+    | cons x xs => simp [stepQueries, opBudget]
+  · by_cases h256 : op = .sha256
+    · subst op
+      rcases s with ⟨stack, outcomes, ops⟩
+      cases stack with
+      | nil => simp [step_sha256_nil] at success
+      | cons x xs => simp [stepQueries, opBudget]
+    · cases op <;> cases s.stack <;> simp_all [stepQueries, opBudget]
+
+/-- A successful complete run executes every opcode, so its trace contains
+the full hash-opcode query budget rather than merely satisfying an upper
+bound. -/
+theorem runQueries_length_eq_of_success
+    (functions : JointSourceChecks.Functions) :
+    ∀ (ops : List Op) (s final : State),
+      run (JointSourceChecks.hashes functions) ops s = some final →
+      (runQueries functions ops s).length = (ops.map opBudget).sum
+  | [], s, final, success => by simp [runQueries]
+  | op :: rest, s, final, success => by
+      simp only [run] at success
+      cases hstep : step (JointSourceChecks.hashes functions) op s with
+      | none => simp [hstep] at success
+      | some next =>
+          by_cases large : 1000 < next.stack.length
+          · simp [hstep, large] at success
+          · have tail : run (JointSourceChecks.hashes functions) rest next =
+                some final := by
+              simpa [hstep, large] using success
+            have head := stepQueries_length_eq_of_success functions op s next hstep
+            have later := runQueries_length_eq_of_success functions rest next final tail
+            simp [runQueries, hstep, large, head, later]
+
+/-- Project the joint trace onto calls to H and R. -/
+def hWeight : Query → Nat
+  | .H _ => 1
+  | .R _ => 0
+
+def rWeight : Query → Nat
+  | .H _ => 0
+  | .R _ => 1
+
+def hOpBudget : Op → Nat
+  | .hash160 | .sha256 => 1
+  | _ => 0
+
+def rOpBudget : Op → Nat
+  | .hash160 => 1
+  | _ => 0
+
+/-- An executed hash opcode contributes exactly its H and R calls. -/
+theorem stepQueries_weights_eq_of_success
+    (functions : JointSourceChecks.Functions) (op : Op)
+    (s next : State)
+    (success : step (JointSourceChecks.hashes functions) op s = some next) :
+    ((stepQueries functions op s.stack).map hWeight).sum = hOpBudget op ∧
+    ((stepQueries functions op s.stack).map rWeight).sum = rOpBudget op := by
+  by_cases h160 : op = .hash160
+  · subst op
+    rcases s with ⟨stack, outcomes, ops⟩
+    cases stack with
+    | nil => simp [step_hash160_nil] at success
+    | cons x xs => simp [stepQueries, hWeight, rWeight, hOpBudget, rOpBudget]
+  · by_cases h256 : op = .sha256
+    · subst op
+      rcases s with ⟨stack, outcomes, ops⟩
+      cases stack with
+      | nil => simp [step_sha256_nil] at success
+      | cons x xs => simp [stepQueries, hWeight, rWeight, hOpBudget, rOpBudget]
+    · cases op <;> cases s.stack <;>
+        simp_all [stepQueries, hOpBudget, rOpBudget]
+
+/-- Exact weighted query accounting for every successful run. -/
+theorem runQueries_weight_eq_of_success
+    (functions : JointSourceChecks.Functions)
+    (weight : Query → Nat) (budget : Op → Nat)
+    (stepCost : ∀ op s next,
+      step (JointSourceChecks.hashes functions) op s = some next →
+      ((stepQueries functions op s.stack).map weight).sum = budget op) :
+    ∀ (ops : List Op) (s final : State),
+      run (JointSourceChecks.hashes functions) ops s = some final →
+      ((runQueries functions ops s).map weight).sum =
+        (ops.map budget).sum
+  | [], s, final, success => by simp [runQueries]
+  | op :: rest, s, final, success => by
+      simp only [run] at success
+      cases hstep : step (JointSourceChecks.hashes functions) op s with
+      | none => simp [hstep] at success
+      | some next =>
+          by_cases large : 1000 < next.stack.length
+          · simp [hstep, large] at success
+          · have tail : run (JointSourceChecks.hashes functions) rest next =
+                some final := by
+              simpa [hstep, large] using success
+            have head := stepCost op s next hstep
+            have later := runQueries_weight_eq_of_success functions
+              weight budget stepCost rest next final tail
+            simp [runQueries, hstep, large, List.map_append,
+              List.sum_append, head, later]
+
+theorem runQueries_h_eq_of_success
+    (functions : JointSourceChecks.Functions)
+    (ops : List Op) (s final : State)
+    (success : run (JointSourceChecks.hashes functions) ops s = some final) :
+    ((runQueries functions ops s).map hWeight).sum =
+      (ops.map hOpBudget).sum :=
+  runQueries_weight_eq_of_success functions hWeight hOpBudget
+    (fun op s next h =>
+      (stepQueries_weights_eq_of_success functions op s next h).1)
+    ops s final success
+
+theorem runQueries_r_eq_of_success
+    (functions : JointSourceChecks.Functions)
+    (ops : List Op) (s final : State)
+    (success : run (JointSourceChecks.hashes functions) ops s = some final) :
+    ((runQueries functions ops s).map rWeight).sum =
+      (ops.map rOpBudget).sum :=
+  runQueries_weight_eq_of_success functions rWeight rOpBudget
+    (fun op s next h =>
+      (stepQueries_weights_eq_of_success functions op s next h).2)
+    ops s final success
+
 /-- One step is determined by the oracle values at its recorded queries. -/
 theorem step_congr (functions functions' : JointSourceChecks.Functions)
     (op : Op) (s : State)
@@ -212,8 +345,22 @@ theorem opBudget_skeleton (op : Op) :
     opBudget (LockOpcodeInventory.skeleton op) = opBudget op := by
   cases op <;> rfl
 
+theorem hOpBudget_skeleton (op : Op) :
+    hOpBudget (LockOpcodeInventory.skeleton op) = hOpBudget op := by
+  cases op <;> rfl
+
+theorem rOpBudget_skeleton (op : Op) :
+    rOpBudget (LockOpcodeInventory.skeleton op) = rOpBudget op := by
+  cases op <;> rfl
+
 theorem literal_budget : (ByteLayout.program.map opBudget).sum = 33 := by
   decide
+
+theorem literal_h_budget :
+    (ByteLayout.program.map hOpBudget).sum = 18 := by decide
+
+theorem literal_r_budget :
+    (ByteLayout.program.map rOpBudget).sum = 15 := by decide
 
 /-- The hash-opcode oracle budget of every parameterized lock is 33: 15 H
 plus 15 R from `HASH160` and 3 H from `SHA256`. -/
@@ -223,6 +370,20 @@ theorem lock_budget (lock : DynamicCheckedCertificate.Lock) :
     (fun ops : List Op => (ops.map opBudget).sum)
     (LockOpcodeInventory.program_skeleton lock)
   simpa [List.map_map, opBudget_skeleton, literal_budget] using same
+
+theorem lock_h_budget (lock : DynamicCheckedCertificate.Lock) :
+    ((DynamicCheckedCertificate.program lock).map hOpBudget).sum = 18 := by
+  have same := congrArg
+    (fun ops : List Op => (ops.map hOpBudget).sum)
+    (LockOpcodeInventory.program_skeleton lock)
+  simpa [List.map_map, hOpBudget_skeleton, literal_h_budget] using same
+
+theorem lock_r_budget (lock : DynamicCheckedCertificate.Lock) :
+    ((DynamicCheckedCertificate.program lock).map rOpBudget).sum = 15 := by
+  have same := congrArg
+    (fun ops : List Op => (ops.map rOpBudget).sum)
+    (LockOpcodeInventory.program_skeleton lock)
+  simpa [List.map_map, rOpBudget_skeleton, literal_r_budget] using same
 
 /-- Every parameterized lock makes at most 33 hash-opcode oracle calls from
 any initial byte stack and supplied outcomes. -/
@@ -234,6 +395,29 @@ theorem lock_queries_le_33 (functions : JointSourceChecks.Functions)
     (DynamicCheckedCertificate.program lock) s
   rw [lock_budget] at this
   exact this
+
+/-- Every successful full parameterized-lock run reaches all 15 HASH160 and
+three SHA256 opcodes. Its opcode trace therefore contains exactly 18 H calls
+and 15 R calls, in their execution order. Signature checker calls are not in
+this byte-machine trace. -/
+theorem lock_queries_exact_of_success
+    (functions : JointSourceChecks.Functions)
+    (lock : DynamicCheckedCertificate.Lock) (s final : State)
+    (success : run (JointSourceChecks.hashes functions)
+      (DynamicCheckedCertificate.program lock) s = some final) :
+    (runQueries functions (DynamicCheckedCertificate.program lock) s).length =
+        33 ∧
+      ((runQueries functions (DynamicCheckedCertificate.program lock) s).map
+        hWeight).sum = 18 ∧
+      ((runQueries functions (DynamicCheckedCertificate.program lock) s).map
+        rWeight).sum = 15 := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [runQueries_length_eq_of_success functions _ _ _ success,
+      lock_budget]
+  · rw [runQueries_h_eq_of_success functions _ _ _ success,
+      lock_h_budget]
+  · rw [runQueries_r_eq_of_success functions _ _ _ success,
+      lock_r_budget]
 
 /-- The Core-shaped bottom-first run of any opcode list is equally causal in
 the byte trace, through the checked structural equivalence. -/
