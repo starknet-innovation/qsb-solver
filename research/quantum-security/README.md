@@ -538,12 +538,25 @@ CHECKSIGVERIFY check and final ten-key scan, bounded by two and 20 H inputs.
 `QSB/CertificateCandidateCausality.lean` combines these with the seven
 structural runs and the first multisignature scan: its eager dependency
 inventory has at most 299 entries and preserves the complete candidate
-result under oracle agreement. It is not an actual-query machine or a budget
-for the repeated certificate search.
+result under oracle agreement. That inventory alone is not an actual-query
+machine or a budget for the repeated certificate search.
+`QSB/CertificateCandidateCacheMachine.lean` proves prefix causality for the
+eager list and constructs a fixed-input cache machine that returns the exact
+candidate result within 299 actual tagged H/R requests. Its requests may
+include skipped sites and occur in a different order from source evaluation.
 `QSB/CertificateSearchCausality.lean` combines both Boolean candidate
 inventories, bounds the eager list by 598, and preserves the source-model
 search result under agreement. The raw extractor can search again and does
 additional structural work.
+`QSB/DynamicSourceExtractorCausality.lean` accounts for both searches and
+three further structural runs on one fixed prepared attempt. Its eager list
+has at most 1,295 H/R dependencies, and agreement preserves the extractor
+result. It is an analytic inventory, not a causal machine or a budget for
+raw parsing, scriptSig, and external predicates.
+`QSB/DynamicRawExtractorCausality.lean` lifts that result through fixed raw
+preparation and ledger target binding. It retains the 1,295-entry downstream
+bound; oracle work in the supplied scriptSig evaluator and ledger function
+is still uncharged.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final
@@ -573,6 +586,12 @@ final truth. It proves that an external trace satisfying these premises yields
 source acceptance. A world-specific certificate packages those premises and
 discharges the existing conditional `coreRefines` measure-transfer premise;
 no compiled-Core trace is proved to satisfy them yet.
+`QSB/CoreCheckedTraceReplay.lean` provides a finite executable checker for
+claimed post-opcode states and signature records. A successful replay equals
+the checked source run and, with exact wire, valid transaction, and final
+truth premises, gives source acceptance. The current Core adapter exposes
+acceptance only, so these frames do not yet come from an authenticated Core
+trace.
 `QSB/DynamicRoundWitness.lean` computes a good-setup final-round witness from
 the returned checked-source certificate, including seven reached openings,
 two bonus positions, and the reached final key. The validated supplied-wire

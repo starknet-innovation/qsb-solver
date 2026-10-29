@@ -269,8 +269,20 @@ An applicability test for QSB has four concrete obligations:
    preserves its source-model result. This inventory can reorder and include
    skipped calls. `QSB/CertificateSearchCausality.lean` combines both Boolean
    candidate inventories into at most 598 entries and preserves the
-   source-model search result under agreement. An actual-query machine for
-   candidate/search remains open.
+   source-model search result under agreement.
+   `QSB/CertificateCandidateCacheMachine.lean` proves the 299-entry eager
+   candidate list prefix-causal and constructs a fixed-input classical cache
+   machine that returns the exact candidate result within 299 actual H/R
+   requests. An actual-query machine for the two-trial search remains open.
+   `QSB/DynamicSourceExtractorCausality.lean`
+   adds the repeated search and three further structural runs for one fixed
+   prepared attempt, obtaining a conservative 1,295-entry dependency list
+   and extractor result congruence. This is still analytic accounting; raw
+   parsing, scriptSig, fixed-input construction, and external predicates
+   remain outside the list. `QSB/DynamicRawExtractorCausality.lean` lifts the
+   result through fixed raw preparation and ledger target binding, with the
+   same downstream 1,295-entry bound; supplied evaluator and ledger calls
+   remain uncharged.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,

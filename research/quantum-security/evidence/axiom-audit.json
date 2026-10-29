@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1681,
+  "theorem_count": 1721,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -682,6 +682,165 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.CertificateCandidateCacheMachine.append_prefix_at": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.candidateDependencies_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.covered_candidateResult_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.digestTail_prefix_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.finalCheckedDigestTrace_congr_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.finalCheckedDigestTrace_prefix_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.finalTenDigestTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.firstMissing_true_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.firstScanTrace_congr_of_runEq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.firstScanTrace_prefix_of_runEq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.goodCache_cons": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.goodCache_length_le_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.goodCache_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.halted_result_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.programs_query_trace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.run_299_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.run_halts_of_enough": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sigTraceAt_congr_of_runEq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sigTraceAt_prefix_of_runEq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceChecksigTrace_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSiteList_congr_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSiteList_prefix_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSiteProgram_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSiteTrace_congr_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSiteTrace_prefix_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSite_run_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSitesDigestTrace_congr_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSitesDigestTrace_prefix_of_structural_agree": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSites_eq_flatMap": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.sourceSites_replica": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.structuralDependencies_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateCandidateCacheMachine.trace_length_le_299": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.CertificateCandidateCausality.candidateDependencies_length_le_299": [
       "Classical.choice",
       "Quot.sound",
@@ -1288,6 +1447,15 @@
       "propext"
     ],
     "QSB.CoreCheckedStep.step_record_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedTraceReplay.replay_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreCheckedTraceReplay.sourceAccepted_of_replay": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -2594,6 +2762,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.DynamicRawExtractorCausality.ledgerDependencies_length_le_1295": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawExtractorCausality.ledger_extractor_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawExtractorCausality.rawDependencies_length_le_1295": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicRawExtractorCausality.raw_extractor_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.DynamicRawSource.prepare_projection": [
       "Classical.choice",
       "Quot.sound",
@@ -3046,6 +3234,16 @@
       "propext"
     ],
     "QSB.DynamicSignedTransition.preimage_front_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceExtractorCausality.extractorDependencies_length_le_1295": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.DynamicSourceExtractorCausality.extractor_congr": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
