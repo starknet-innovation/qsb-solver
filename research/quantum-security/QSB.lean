@@ -3,8 +3,11 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.TaggedOracle
+import QSB.FixedWidthOracleEncoding
+import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
+import QSB.ScriptSigTraceContract
 import QSB.OracleDependentSelection
 import QSB.Nonce
 import QSB.OutputCodec
@@ -142,9 +145,11 @@ import QSB.CertificateStructuralPrefixCausality
 import QSB.CertificateSignatureQueries
 import QSB.CertificateCandidateCausality
 import QSB.CertificateCandidateCacheMachine
+import QSB.CertificateSearchCacheMachine
 import QSB.CertificateSearchCausality
 import QSB.DynamicSourceExtractorCausality
 import QSB.DynamicRawExtractorCausality
+import QSB.WorldIndexedScriptSigExtractor
 import QSB.CheckedRunCacheMachine
 import QSB.CheckedRunCacheCompleteness
 import QSB.DynamicRoundWitness
@@ -1861,6 +1866,24 @@ import QSB.Reduction
 #print axioms QSB.DynamicRawExtractorCausality.raw_extractor_congr
 #print axioms QSB.DynamicRawExtractorCausality.ledgerDependencies_length_le_1295
 #print axioms QSB.DynamicRawExtractorCausality.ledger_extractor_congr
+#print axioms QSB.ScriptSigTraceContract.query_length_eq_counts
+#print axioms QSB.ScriptSigTraceContract.event_query_length_le_twice_op
+#print axioms QSB.ScriptSigTraceContract.queries_length_le_twice_ops
+#print axioms QSB.ScriptSigTraceContract.successful_eval_queries_le_402
+#print axioms QSB.CertificateSearchCacheMachine.prefixCausal_congr
+#print axioms QSB.CertificateSearchCacheMachine.searchDependencies_prefix
+#print axioms QSB.CertificateSearchCacheMachine.firstMissing_true_mem
+#print axioms QSB.CertificateSearchCacheMachine.goodCache_nil
+#print axioms QSB.CertificateSearchCacheMachine.goodCache_cons
+#print axioms QSB.CertificateSearchCacheMachine.goodCache_length_le_trace
+#print axioms QSB.CertificateSearchCacheMachine.trace_length_le_598
+#print axioms QSB.CertificateSearchCacheMachine.covered_searchResult_eq
+#print axioms QSB.CertificateSearchCacheMachine.halted_result_correct
+#print axioms QSB.CertificateSearchCacheMachine.run_halts_of_enough
+#print axioms QSB.CertificateSearchCacheMachine.run_598_correct
+#print axioms QSB.TaggedFreshCollisionBridge.observed_sourceTagged
+#print axioms QSB.TaggedFreshCollisionBridge.reached_h_tagged_collision
+#print axioms QSB.TaggedFreshCollisionBridge.reached_r_tagged_collision
 #print axioms QSB.CertificateCandidateCacheMachine.append_prefix_at
 #print axioms QSB.CertificateCandidateCacheMachine.sourceChecksigTrace_prefix
 #print axioms QSB.CertificateCandidateCacheMachine.finalTenDigestTrace_prefix
@@ -1893,3 +1916,25 @@ import QSB.Reduction
 #print axioms QSB.CertificateCandidateCacheMachine.halted_result_correct
 #print axioms QSB.CertificateCandidateCacheMachine.run_halts_of_enough
 #print axioms QSB.CertificateCandidateCacheMachine.run_299_correct
+#print axioms QSB.FixedWidthOracleEncoding.byteBits_injective
+#print axioms QSB.FixedWidthOracleEncoding.byteBits_bijective
+#print axioms QSB.FixedWidthOracleEncoding.byteAt_injective
+#print axioms QSB.FixedWidthOracleEncoding.encode_injective
+#print axioms QSB.FixedWidthOracleEncoding.encodingEquiv_apply
+#print axioms QSB.FixedWidthOracleEncoding.encode_bijective
+#print axioms QSB.FixedWidthOracleEncoding.encode_decode
+#print axioms QSB.FixedWidthOracleEncoding.decode_encode
+#print axioms QSB.FixedWidthOracleEncoding.encodeH_injective
+#print axioms QSB.FixedWidthOracleEncoding.encodeR_injective
+#print axioms QSB.FixedWidthOracleEncoding.encodeH_bijective
+#print axioms QSB.FixedWidthOracleEncoding.encodeR_bijective
+#print axioms QSB.FixedWidthOracleEncoding.hOutput_card
+#print axioms QSB.FixedWidthOracleEncoding.rOutput_card
+#print axioms QSB.FixedWidthOracleEncoding.encodeHValue_eq_iff
+#print axioms QSB.FixedWidthOracleEncoding.encodeRValue_eq_iff
+#print axioms QSB.WorldIndexedScriptSigExtractor.prepare_congr
+#print axioms QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_congr
+#print axioms QSB.WorldIndexedScriptSigExtractor.combined_eq_scriptSig_of_prepare_none
+#print axioms QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_length_le_402_of_prepared
+#print axioms QSB.WorldIndexedScriptSigExtractor.combinedDependencies_length_le_1697_of_prepared
+#print axioms QSB.WorldIndexedScriptSigExtractor.raw_extractor_congr

@@ -546,7 +546,10 @@ candidate result within 299 actual tagged H/R requests. Its requests may
 include skipped sites and occur in a different order from source evaluation.
 `QSB/CertificateSearchCausality.lean` combines both Boolean candidate
 inventories, bounds the eager list by 598, and preserves the source-model
-search result under agreement. The raw extractor can search again and does
+search result under agreement.
+`QSB/CertificateSearchCacheMachine.lean` proves that list prefix-causal and
+returns the exact two-trial search result within 598 actual classical H/R
+requests for fixed inputs. The raw extractor can search again and does
 additional structural work.
 `QSB/DynamicSourceExtractorCausality.lean` accounts for both searches and
 three further structural runs on one fixed prepared attempt. Its eager list
@@ -557,6 +560,13 @@ raw parsing, scriptSig, and external predicates.
 preparation and ledger target binding. It retains the 1,295-entry downstream
 bound; oracle work in the supplied scriptSig evaluator and ledger function
 is still uncharged.
+`QSB/ScriptSigTraceContract.lean` makes the scriptSig charge explicit as a
+contract: a successful certified 201-opcode trace has at most 402 attributed
+H/R queries. `QSB/WorldIndexedScriptSigExtractor.lean` composes that contract
+with raw extraction, obtaining a conditional 1,697-entry analytic inventory
+after successful preparation. Failed evaluator traces have no such bound,
+and no concrete scriptSig evaluator or actual-query machine satisfies the
+contract yet.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

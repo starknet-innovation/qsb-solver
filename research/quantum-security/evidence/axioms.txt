@@ -2123,6 +2123,24 @@
  Classical.choice,
  Quot.sound]
 'QSB.DynamicRawExtractorCausality.ledger_extractor_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigTraceContract.query_length_eq_counts' depends on axioms: [propext, Quot.sound]
+'QSB.ScriptSigTraceContract.event_query_length_le_twice_op' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigTraceContract.queries_length_le_twice_ops' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ScriptSigTraceContract.successful_eval_queries_le_402' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.prefixCausal_congr' depends on axioms: [propext, Quot.sound]
+'QSB.CertificateSearchCacheMachine.searchDependencies_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.firstMissing_true_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.goodCache_nil' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.goodCache_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.goodCache_length_le_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.trace_length_le_598' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.covered_searchResult_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.halted_result_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.run_halts_of_enough' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CertificateSearchCacheMachine.run_598_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedFreshCollisionBridge.observed_sourceTagged' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedFreshCollisionBridge.reached_h_tagged_collision' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedFreshCollisionBridge.reached_r_tagged_collision' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CertificateCandidateCacheMachine.append_prefix_at' depends on axioms: [propext, Quot.sound]
 'QSB.CertificateCandidateCacheMachine.sourceChecksigTrace_prefix' depends on axioms: [propext,
  Classical.choice,
@@ -2195,3 +2213,33 @@
 'QSB.CertificateCandidateCacheMachine.halted_result_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CertificateCandidateCacheMachine.run_halts_of_enough' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CertificateCandidateCacheMachine.run_299_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.byteBits_injective' depends on axioms: [propext, Quot.sound]
+'QSB.FixedWidthOracleEncoding.byteBits_bijective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.byteAt_injective' depends on axioms: [propext, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encode_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodingEquiv_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encode_bijective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encode_decode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.decode_encode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeH_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeR_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeH_bijective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeR_bijective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.hOutput_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.rOutput_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeHValue_eq_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FixedWidthOracleEncoding.encodeRValue_eq_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.prepare_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_congr' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.combined_eq_scriptSig_of_prepare_none' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_length_le_402_of_prepared' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.combinedDependencies_length_le_1697_of_prepared' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.WorldIndexedScriptSigExtractor.raw_extractor_congr' depends on axioms: [propext, Classical.choice, Quot.sound]

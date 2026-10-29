@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1721,
+  "theorem_count": 1761,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -867,6 +867,60 @@
       "propext"
     ],
     "QSB.CertificateCandidateCausality.sourceSites_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.covered_searchResult_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.firstMissing_true_mem": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.goodCache_cons": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.goodCache_length_le_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.goodCache_nil": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.halted_result_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.prefixCausal_congr": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.run_598_correct": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.run_halts_of_enough": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.searchDependencies_prefix": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CertificateSearchCacheMachine.trace_length_le_598": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -4799,6 +4853,84 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FixedWidthOracleEncoding.byteAt_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.byteBits_bijective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.byteBits_injective": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.decode_encode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeHValue_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeH_bijective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeH_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeRValue_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeR_bijective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodeR_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encode_bijective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encode_decode": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encode_injective": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.encodingEquiv_apply": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.hOutput_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FixedWidthOracleEncoding.rOutput_card": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FullCheckedRunCausality.checked_lock_run_and_queries_congr": [
       "Classical.choice",
       "Quot.sound",
@@ -6435,6 +6567,25 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ScriptSigTraceContract.event_query_length_le_twice_op": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigTraceContract.queries_length_le_twice_ops": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigTraceContract.query_length_eq_counts": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ScriptSigTraceContract.successful_eval_queries_le_402": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.SegwitTxWire.decode_encode": [
       "Classical.choice",
       "Quot.sound",
@@ -6625,6 +6776,21 @@
       "propext"
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedFreshCollisionBridge.observed_sourceTagged": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedFreshCollisionBridge.reached_h_tagged_collision": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedFreshCollisionBridge.reached_r_tagged_collision": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -6974,6 +7140,36 @@
       "propext"
     ],
     "QSB.WireOutputs.encode_injective_on": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.combinedDependencies_length_le_1697_of_prepared": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.combined_eq_scriptSig_of_prepare_none": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.prepare_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.raw_extractor_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.WorldIndexedScriptSigExtractor.scriptSigDependencies_length_le_402_of_prepared": [
       "Classical.choice",
       "Quot.sound",
       "propext"

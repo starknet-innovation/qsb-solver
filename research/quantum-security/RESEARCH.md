@@ -164,12 +164,18 @@ has `M = 2^416` elements. Taking `f` to be the first coordinate gives
 `Γ = 2^160`, or `Γ/M = 2^-256`; taking the second gives
 `Γ = 2^256`, or `Γ/M = 2^-160`. The counts hold uniformly over tagged inputs,
 so they cover the distinct H-tag and R-tag collision pairs extracted above.
+`QSB/TaggedFreshCollisionBridge.lean` maps the reached postprocessor's
+distinct byte pairs to tagged projected collisions under explicit pointwise
+byte-to-bit realization premises, retaining the additional 300/600-call
+postprocessing allowances.
 This identifies a *candidate* bound for those two routes only. The theorem
 cannot yet be instantiated for QSB: the world-indexed game has only a
 classical bounded-query causal algorithm and no coherent-query one, the
-honest signing transcript may use many H queries, coherent H/R-to-tagged
-simulation needs its own charged budget, and the source byte oracles still
-need a finite-register bit encoding.
+honest signing transcript may use many H queries, and coherent H/R-to-tagged
+simulation needs its own charged budget. `QSB/FixedWidthOracleEncoding.lean`
+bijectively encodes the source H/R responses of their proved 32/20-byte
+widths into 256/160-bit registers; arbitrary byte-string query inputs still
+need a finite-register encoding.
 Exact setup-secret recovery and the two-puzzle route require separate
 quantum arguments, and compiled-Core refinement remains open.
 
@@ -252,7 +258,8 @@ An applicability test for QSB has four concrete obligations:
    search twice and uses several structural prefixes per candidate rather
    than one `CoreCheckedStep.run`. The 81-entry theorem therefore cannot be
    added directly as the extractor budget. External `evalScriptSig`, key
-   validation, and ECDSA still lack finite oracle-call contracts.
+   validation, and ECDSA still lack implementations with proved finite
+   oracle-call contracts.
    `QSB/CertificateStructuralQueries.lean` isolates one candidate's seven
    potential structural runs, including repeated prefixes. Its conservative
    dependency list has at most 231 hash-opcode entries and is causal for the
@@ -273,7 +280,9 @@ An applicability test for QSB has four concrete obligations:
    `QSB/CertificateCandidateCacheMachine.lean` proves the 299-entry eager
    candidate list prefix-causal and constructs a fixed-input classical cache
    machine that returns the exact candidate result within 299 actual H/R
-   requests. An actual-query machine for the two-trial search remains open.
+   requests. `QSB/CertificateSearchCacheMachine.lean` composes the two eager
+   candidate lists and returns the exact two-trial search result within 598
+   actual classical H/R requests for fixed inputs.
    `QSB/DynamicSourceExtractorCausality.lean`
    adds the repeated search and three further structural runs for one fixed
    prepared attempt, obtaining a conservative 1,295-entry dependency list
@@ -282,7 +291,14 @@ An applicability test for QSB has four concrete obligations:
    remain outside the list. `QSB/DynamicRawExtractorCausality.lean` lifts the
    result through fixed raw preparation and ledger target binding, with the
    same downstream 1,295-entry bound; supplied evaluator and ledger calls
-   remain uncharged.
+   remain uncharged. `QSB/ScriptSigTraceContract.lean` gives a conditional
+   402-entry allowance for a successfully evaluated, certified scriptSig
+   trace with at most 201 counted opcodes.
+   `QSB/WorldIndexedScriptSigExtractor.lean` composes that contract with raw
+   extraction: after successful preparation its analytic list has at most
+   1,697 entries and preserves the extractor result under oracle agreement.
+   Failed scriptSig evaluations are not bounded by the success-only cap,
+   and the contract's full-list congruence is not an actual causal machine.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
