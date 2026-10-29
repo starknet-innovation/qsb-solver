@@ -77,6 +77,19 @@ theorem batchResponses_card_le (f : I → Resp → T) (Γ : Nat)
     _ = (db.length + (k - 1)) * Γ := by
       rw [Nat.add_mul]
 
+/-- The finite uniform-response density of one batch local set is bounded
+by its old-plus-peer fiber count. No conditional independence is assumed. -/
+theorem localProbability_batchResponses_le (f : I → Resp → T)
+    (Γ : Nat) (bound : FiberBound f Γ)
+    (queries : Fin k → I) (replies : Fin k → Option Resp)
+    (db : List (I × Resp)) (i : Fin k) :
+    localProbability (batchResponses f queries replies db i) ≤
+      (((db.length + (k - 1) : Nat) : ℚ) * Γ) /
+        Nat.card Resp := by
+  unfold localProbability
+  gcongr
+  exact_mod_cast batchResponses_card_le f Γ bound queries replies db i
+
 end General
 
 section Tagged
@@ -98,6 +111,37 @@ theorem projectedR_batchResponses_card_le
     (batchResponses (projectedR (X := X)) queries replies db i).card ≤
       (db.length + (k - 1)) * 2 ^ 256 :=
   batchResponses_card_le _ _ projectedR_fiberBound queries replies db i
+
+/-- H-projection local density for a batch coordinate, with the supplied
+other replies and old database held fixed. -/
+theorem projectedH_batch_localProbability_le
+    (queries : Fin k → Sum X X)
+    (replies : Fin k → Option (Bits 256 × Bits 160))
+    (db : List (Sum X X × (Bits 256 × Bits 160))) (i : Fin k) :
+    localProbability
+      (batchResponses (projectedH (X := X)) queries replies db i) ≤
+      ((db.length + (k - 1) : Nat) : ℚ) / 2 ^ 256 := by
+  refine (localProbability_batchResponses_le _ _
+    projectedH_fiberBound queries replies db i).trans (le_of_eq ?_)
+  rw [TaggedOracle.joint_response_card, Nat.cast_pow, Nat.cast_pow,
+    Nat.cast_ofNat, show (416 : Nat) = 160 + 256 from rfl,
+    pow_add, mul_comm ((2 : ℚ) ^ 160) (2 ^ 256),
+    mul_div_mul_right _ _ (by positivity)]
+
+/-- R-projection local density for a batch coordinate. -/
+theorem projectedR_batch_localProbability_le
+    (queries : Fin k → Sum X X)
+    (replies : Fin k → Option (Bits 256 × Bits 160))
+    (db : List (Sum X X × (Bits 256 × Bits 160))) (i : Fin k) :
+    localProbability
+      (batchResponses (projectedR (X := X)) queries replies db i) ≤
+      ((db.length + (k - 1) : Nat) : ℚ) / 2 ^ 160 := by
+  refine (localProbability_batchResponses_le _ _
+    projectedR_fiberBound queries replies db i).trans (le_of_eq ?_)
+  rw [TaggedOracle.joint_response_card, Nat.cast_pow, Nat.cast_pow,
+    Nat.cast_ofNat, show (416 : Nat) = 256 + 160 from rfl,
+    pow_add, mul_comm ((2 : ℚ) ^ 256) (2 ^ 160),
+    mul_div_mul_right _ _ (by positivity)]
 
 end Tagged
 

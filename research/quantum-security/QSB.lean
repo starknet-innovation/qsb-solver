@@ -3,6 +3,7 @@ import QSB.Extraction
 import QSB.Probability
 import QSB.RandomOracleSetup
 import QSB.TaggedOracle
+import QSB.TaggedOracleLinearCircuit
 import QSB.FixedWidthOracleEncoding
 import QSB.BoundedInputEncoding
 import QSB.FiniteBranchingInputBound
@@ -460,6 +461,13 @@ import QSB.Reduction
 #print axioms QSB.TaggedOracle.fullQuery_twice
 #print axioms QSB.TaggedOracle.simulateH_correct
 #print axioms QSB.TaggedOracle.simulateR_correct
+#print axioms QSB.TaggedOracleLinearCircuit.h_basis_circuit
+#print axioms QSB.TaggedOracleLinearCircuit.r_basis_circuit
+#print axioms QSB.TaggedOracleLinearCircuit.program_full_query_count
+#print axioms QSB.TaggedOracleLinearCircuit.h_linear_circuit
+#print axioms QSB.TaggedOracleLinearCircuit.r_linear_circuit
+#print axioms QSB.TaggedOracleLinearCircuit.h_operator_eq
+#print axioms QSB.TaggedOracleLinearCircuit.r_operator_eq
 #print axioms QSB.TaggedLocalResponses.mem_pairResponses
 #print axioms QSB.TaggedLocalResponses.mem_databaseResponses
 #print axioms QSB.TaggedLocalResponses.collision_mem_databaseResponses
@@ -485,6 +493,9 @@ import QSB.Reduction
 #print axioms QSB.ParallelLocalResponses.batchResponses_card_le
 #print axioms QSB.ParallelLocalResponses.projectedH_batchResponses_card_le
 #print axioms QSB.ParallelLocalResponses.projectedR_batchResponses_card_le
+#print axioms QSB.ParallelLocalResponses.localProbability_batchResponses_le
+#print axioms QSB.ParallelLocalResponses.projectedH_batch_localProbability_le
+#print axioms QSB.ParallelLocalResponses.projectedR_batch_localProbability_le
 #print axioms QSB.TaggedCollisionBatchLocal.new_collision_hits_batchResponses
 #print axioms QSB.TaggedCollisionBatchLocal.projectedH_new_collision_hits_batchResponses
 #print axioms QSB.TaggedCollisionBatchLocal.projectedR_new_collision_hits_batchResponses

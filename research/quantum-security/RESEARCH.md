@@ -204,9 +204,13 @@ An applicability test for QSB has four concrete obligations:
    pair, hence a uniform observed pair. This is an idealization, not an
    identity about real SHA-256 and RIPEMD-160. The same Lean module checks the
    computational-basis identity for an H-only or R-only XOR query implemented
-   by two product-oracle calls with clean scratch. Lifting that circuit to a
-   coherent-query semantics and charging its two calls in a causal attack
-   game remain external. Every SHA256d inner/outer call and HASH160
+   by two product-oracle calls with clean scratch.
+   `QSB/TaggedOracleLinearCircuit.lean` lifts this identity to linear
+   operators on arbitrary finitely supported complex amplitudes for one
+   fixed tagged table, with scratch restored and exactly two full-query
+   gates. A completed Hilbert-space oracle model, table sampling in an
+   adaptive quantum game, and charging those gates across the causal attack
+   remain external. Every SHA256d inner/outer call and HASH160
    inner/outer call must preserve repeated inputs and use the same aggregate
    budget. The cited theorem has finite
    input and output sets; an application must justify a finite input-register
@@ -490,7 +494,9 @@ An applicability test for QSB has four concrete obligations:
    response that belongs to the local pair fiber is actually changed.
    `QSB/ParallelLocalResponses.lean` bounds the corresponding old-or-peer
    response union for one coordinate of a `k`-query batch by
-   `(s + k - 1)·Γ`, with `s` the supplied old-entry count.
+   `(s + k - 1)·Γ`, with `s` the supplied old-entry count. With other replies
+   fixed, the corresponding uniform-response densities are at most
+   `(s+k-1)·2^-256` for H and `(s+k-1)·2^-160` for R.
    `QSB/TaggedCollisionBatchLocal.lean` composes the two: every newly created
    distinct-input projected collision yields a *changed* queried response
    in its own batch local set, with the H/R cardinality bounds attached.

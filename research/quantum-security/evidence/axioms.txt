@@ -330,6 +330,13 @@
 'QSB.TaggedOracle.fullQuery_twice' depends on axioms: [propext, Quot.sound]
 'QSB.TaggedOracle.simulateH_correct' depends on axioms: [propext, Quot.sound]
 'QSB.TaggedOracle.simulateR_correct' depends on axioms: [propext, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.h_basis_circuit' depends on axioms: [propext, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.r_basis_circuit' depends on axioms: [propext, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.program_full_query_count' does not depend on any axioms
+'QSB.TaggedOracleLinearCircuit.h_linear_circuit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.r_linear_circuit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.h_operator_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedOracleLinearCircuit.r_operator_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.TaggedLocalResponses.mem_pairResponses' depends on axioms: [propext, Quot.sound]
 'QSB.TaggedLocalResponses.mem_databaseResponses' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.TaggedLocalResponses.collision_mem_databaseResponses' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -371,6 +378,15 @@
  Classical.choice,
  Quot.sound]
 'QSB.ParallelLocalResponses.projectedR_batchResponses_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParallelLocalResponses.localProbability_batchResponses_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParallelLocalResponses.projectedH_batch_localProbability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParallelLocalResponses.projectedR_batch_localProbability_le' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 'QSB.TaggedCollisionBatchLocal.new_collision_hits_batchResponses' depends on axioms: [propext,

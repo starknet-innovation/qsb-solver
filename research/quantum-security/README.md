@@ -166,6 +166,11 @@ tagged H/R request of one fixed raw cache machine in a shared bit register,
 injectively across oracle worlds. The width is noncomputable from the current
 proof and says nothing about skipped eager inventory entries or coherent
 queries.
+`QSB/TaggedOracleLinearCircuit.lean` lifts the fixed tagged-table
+compute/copy/uncompute circuit to arbitrary finitely supported complex
+amplitudes. On zero-initialized scratch it equals the ideal projected H or R
+XOR operator, restores scratch, and uses two full tagged query gates. This
+does not establish an adaptive QROM game or a common superposition input cap.
 `QSB/JointRawSourceWorld.lean` instantiates that interface with ledger-bound
 raw source submissions under explicit same-world setup equality. Its
 conditional source-model measure bound still needs scriptSig/Core refinement

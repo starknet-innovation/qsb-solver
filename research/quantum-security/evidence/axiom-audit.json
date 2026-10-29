@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1939,
+  "theorem_count": 1949,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -6579,6 +6579,11 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ParallelLocalResponses.localProbability_batchResponses_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ParallelLocalResponses.peerResponses_card_le": [
       "Classical.choice",
       "Quot.sound",
@@ -6589,7 +6594,17 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ParallelLocalResponses.projectedH_batch_localProbability_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ParallelLocalResponses.projectedR_batchResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParallelLocalResponses.projectedR_batch_localProbability_le": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -7741,6 +7756,35 @@
       "propext"
     ],
     "QSB.TaggedOracle.xorBits_zero_right": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.h_basis_circuit": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.h_linear_circuit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.h_operator_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.program_full_query_count": [],
+    "QSB.TaggedOracleLinearCircuit.r_basis_circuit": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.r_linear_circuit": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedOracleLinearCircuit.r_operator_eq": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
