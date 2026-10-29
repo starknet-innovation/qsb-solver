@@ -2351,3 +2351,29 @@
  Quot.sound]
 'QSB.CausalLedgerExtractorSequence.ledgerResult_eq_world' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.CausalLedgerExtractorSequence.run_world_result' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ActualCombinedQueryBitEncoding.encodeActual_eq_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ActualCombinedQueryBitEncoding.run_congr_on_bounded_inputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.submission_eq_output' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.restricted_machine_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.restricted_result_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_exact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_length_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.ledgerResult_eq_world' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.CausalRestrictedLedgerExtractorSequence.run_world_result' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.RestrictedScriptSigOperationalTrace.run_exact' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -7,15 +7,18 @@ import QSB.FixedWidthOracleEncoding
 import QSB.BoundedInputEncoding
 import QSB.FiniteBranchingInputBound
 import QSB.ActualQueryBitEncoding
+import QSB.ActualCombinedQueryBitEncoding
 import QSB.ClassicalMachineSequence
 import QSB.CausalRawExtractorSequence
 import QSB.CausalLedgerExtractorSequence
+import QSB.CausalRestrictedLedgerExtractorSequence
 import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
 import QSB.ScriptSigQueryBudget
 import QSB.ScriptSigTraceContract
 import QSB.ScriptSigBoundedCausalContract
 import QSB.RestrictedScriptSigHash160
+import QSB.RestrictedScriptSigOperationalTrace
 import QSB.RestrictedScriptSigCanonicalWire
 import QSB.RestrictedRawCacheMachine
 import QSB.RestrictedLedgerRawCacheMachine
@@ -2031,3 +2034,13 @@ import QSB.Reduction
 #print axioms QSB.CausalLedgerExtractorSequence.fixed_combined_machine_input_bound
 #print axioms QSB.CausalLedgerExtractorSequence.ledgerResult_eq_world
 #print axioms QSB.CausalLedgerExtractorSequence.run_world_result
+#print axioms QSB.ActualCombinedQueryBitEncoding.encodeActual_eq_iff
+#print axioms QSB.ActualCombinedQueryBitEncoding.run_congr_on_bounded_inputs
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.submission_eq_output
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.restricted_machine_eq
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.restricted_result_eq
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_exact
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_length_le
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.ledgerResult_eq_world
+#print axioms QSB.CausalRestrictedLedgerExtractorSequence.run_world_result
+#print axioms QSB.RestrictedScriptSigOperationalTrace.run_exact

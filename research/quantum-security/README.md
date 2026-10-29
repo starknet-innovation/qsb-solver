@@ -594,9 +594,13 @@ within 1,697 actual classical H/R requests. The restricted evaluator in
 `QSB/RestrictedScriptSigHash160.lean` witnesses the contract for
 one direct-push `HASH160`/`EQUALVERIFY` fragment. It proves that its attributed
 H/R list is exactly the query projection of a two-request machine's actual
-log, including failures after hashing. This is not a full opcode-event trace
-equivalence or a witness for arbitrary bare scriptSig. Compiled Core and
-coherent QROM accounting remain open.
+log, including failures after hashing. `QSB/RestrictedScriptSigOperationalTrace.lean`
+adds an instrumented interpreter that independently builds the recognized
+event list and proves it equals the restricted evaluator's full `reached`
+list on all results. The first direct push and HASH160 are validated
+atomically, so this is not a byte-by-byte Core opcode trace or a witness for
+arbitrary bare scriptSig. Compiled Core and coherent QROM accounting remain
+open.
 For this concrete fragment, `QSB/RestrictedRawCacheMachine.lean` tightens the
 all-run raw inventory to `2 + 1,295 = 1,297` entries and proves exact optional
 raw extractor output within 1,297 actual classical H/R requests. The
@@ -638,6 +642,19 @@ For a fixed first machine and initial state, actual combined requests have
 some finite input width across oracle worlds. That width is existential and
 the source-world equations do not establish oracle-independent setup or
 first-stage timeout behavior.
+`QSB/ActualCombinedQueryBitEncoding.lean` uses the fixed combined machine's
+existential input-width bound to encode every actual H/R request in one tagged
+bit register across oracle worlds. Encoded equality is exactly tagged-query
+equality, and agreement of H and R on all bounded byte inputs fixes the
+entire combined classical output and ordered log. The width may depend on
+fixed first-stage advice and gives no finite sampled-oracle or coherent
+simulation by itself.
+`QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes that
+transcript-linked sequence to a context carrying proof that its contract is
+the concrete restricted HASH160 evaluator. The same ordered run needs at most
+`q + 1,297` classical H/R requests. Identifying it with a source world still
+requires pointwise context, evaluator, and output equations. The fragment's
+one-cell stack does not supply a general QSB unlock.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
 every parameterized Lean Config A lock. A truthy checked run reaches the
 ten-key, ten-signature, empty-NULLDUMMY layout and passes the actual final

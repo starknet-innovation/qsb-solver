@@ -1,11 +1,21 @@
 {
-  "theorem_count": 1839,
+  "theorem_count": 1849,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
     "propext"
   ],
   "theorems": {
+    "QSB.ActualCombinedQueryBitEncoding.encodeActual_eq_iff": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ActualCombinedQueryBitEncoding.run_congr_on_bounded_inputs": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ActualQueryBitEncoding.encodeActual_eq_iff": [
       "Classical.choice",
       "Quot.sound",
@@ -771,6 +781,41 @@
       "propext"
     ],
     "QSB.CausalRawExtractorSequence.run_q_plus_1697_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.ledgerResult_eq_world": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.restricted_machine_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.restricted_result_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.run_q_plus_1297_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.run_world_result": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CausalRestrictedLedgerExtractorSequence.submission_eq_output": [
       "Classical.choice",
       "Quot.sound",
       "propext"
@@ -6698,6 +6743,11 @@
       "propext"
     ],
     "QSB.RestrictedScriptSigHash160.queries_reached": [
+      "propext"
+    ],
+    "QSB.RestrictedScriptSigOperationalTrace.run_exact": [
+      "Classical.choice",
+      "Quot.sound",
       "propext"
     ],
     "QSB.ScriptCodeSelection.boundary_match_consumes_chunk": [

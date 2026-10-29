@@ -331,8 +331,12 @@ An applicability test for QSB has four concrete obligations:
    `QSB/RestrictedScriptSigHash160.lean` witnesses the stronger contract for
    a direct-push `HASH160`/`EQUALVERIFY` fragment. Its H/R query projection
    agrees with a concrete two-request machine on success and failure after
-   hashing; this is not full opcode-event trace equivalence and does not
-   cover arbitrary bare scriptSig. None of these request bounds charges
+   hashing. `QSB/RestrictedScriptSigOperationalTrace.lean` separately proves
+   that an instrumented interpreter's complete recognized event list equals
+   the restricted evaluator's `reached` list, including failures after the
+   hash. Its first push and HASH160 are validated atomically, so this is not
+   byte-by-byte Core opcode-trace equivalence or arbitrary bare scriptSig.
+   None of these request bounds charges
    coherent queries or queries hidden in callbacks.
    `QSB/RestrictedRawCacheMachine.lean` specializes the raw response cache
    to that concrete fragment: zero or two scriptSig requests plus at most
@@ -376,6 +380,17 @@ An applicability test for QSB has four concrete obligations:
    its actual query inputs have some finite cross-world byte width. The
    source-world equations, oracle-independent setup, callback costs, and
    timeout fallback remain game obligations.
+   `QSB/ActualCombinedQueryBitEncoding.lean` encodes every actual request of
+   this fixed combined run in one finite tagged register and proves that H/R
+   agreement on the selected bounded-byte domain determines the whole
+   classical output and log. The existential width can depend on fixed
+   advice; no sampled finite-oracle coupling or coherent simulation follows.
+   `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes the same
+   transcript-linked composition to a context whose contract is the concrete
+   restricted HASH160 witness, reducing the second-stage budget to 1,297.
+   Its source-world identification still requires pointwise context,
+   evaluator, and output equations; the one-cell fragment does not provide a
+   QSB unlocking witness.
    The honest machine is not shown to use the sampled secrets correctly, and
    no coherent-query version exists.
 3. Define one fixed, oracle-independent relation over a reported transcript,
