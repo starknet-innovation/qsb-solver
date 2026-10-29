@@ -10,12 +10,16 @@ import QSB.ActualQueryBitEncoding
 import QSB.ActualCombinedQueryBitEncoding
 import QSB.FiniteTaggedCombinedRun
 import QSB.FiniteTaggedRunLaw
+import QSB.FiniteClassicalRunLaw
 import QSB.ClassicalMachineSequence
 import QSB.CausalRawExtractorSequence
 import QSB.CausalLedgerExtractorSequence
 import QSB.CausalRestrictedLedgerExtractorSequence
 import QSB.TaggedFreshCollisionBridge
 import QSB.TaggedLocalResponses
+import QSB.ParallelLocalResponses
+import QSB.TaggedCollisionTransition
+import QSB.TaggedCollisionBatchLocal
 import QSB.ScriptSigQueryBudget
 import QSB.ScriptSigTraceContract
 import QSB.ScriptSigBoundedCausalContract
@@ -23,9 +27,12 @@ import QSB.RestrictedScriptSigHash160
 import QSB.RestrictedScriptSigOperationalTrace
 import QSB.PushOnlyScriptSig
 import QSB.BuilderWitnessPushBridge
+import QSB.FullBuilderPushBridge
 import QSB.BuilderWitnessRoleOrder
 import QSB.ByteWitnessPushFixture
 import QSB.CorePushOnlyAcceptance
+import QSB.CorePushEvalRefinement
+import QSB.FullBuilderCorePushExecution
 import QSB.PushOnlyRawCacheMachine
 import QSB.PushOnlyLedgerRawCacheMachine
 import QSB.CausalPushOnlyLedgerExtractorSequence
@@ -471,6 +478,16 @@ import QSB.Reduction
 #print axioms QSB.TaggedLocalResponses.projectedR_pair_localProbability
 #print axioms QSB.TaggedLocalResponses.projectedH_database_localProbability_le
 #print axioms QSB.TaggedLocalResponses.projectedR_database_localProbability_le
+#print axioms QSB.TaggedCollisionTransition.new_collision_local
+#print axioms QSB.TaggedCollisionTransition.projectedH_new_collision_local
+#print axioms QSB.TaggedCollisionTransition.projectedR_new_collision_local
+#print axioms QSB.ParallelLocalResponses.peerResponses_card_le
+#print axioms QSB.ParallelLocalResponses.batchResponses_card_le
+#print axioms QSB.ParallelLocalResponses.projectedH_batchResponses_card_le
+#print axioms QSB.ParallelLocalResponses.projectedR_batchResponses_card_le
+#print axioms QSB.TaggedCollisionBatchLocal.new_collision_hits_batchResponses
+#print axioms QSB.TaggedCollisionBatchLocal.projectedH_new_collision_hits_batchResponses
+#print axioms QSB.TaggedCollisionBatchLocal.projectedR_new_collision_hits_batchResponses
 #print axioms QSB.OracleDependentSelection.disclosure_true_count
 #print axioms QSB.OracleDependentSelection.fixed_hit_count
 #print axioms QSB.OracleDependentSelection.inspected_hit_count
@@ -2066,6 +2083,18 @@ import QSB.Reduction
 #print axioms QSB.FiniteTaggedRunLaw.realized_event_count
 #print axioms QSB.FiniteTaggedRunLaw.run_event_count
 #print axioms QSB.FiniteTaggedRunLaw.run_event_density_cross_mul
+#print axioms QSB.FiniteClassicalRunLaw.queryCap_covers
+#print axioms QSB.FiniteClassicalRunLaw.realize_restrict_H
+#print axioms QSB.FiniteClassicalRunLaw.realize_restrict_R
+#print axioms QSB.FiniteClassicalRunLaw.run_restrict_realize_eq
+#print axioms QSB.FiniteClassicalRunLaw.observed_canonicalTable
+#print axioms QSB.FiniteClassicalRunLaw.realize_eq_of_observed_eq
+#print axioms QSB.FiniteClassicalRunLaw.run_eq_canonical_observed
+#print axioms QSB.FiniteClassicalRunLaw.selected_count
+#print axioms QSB.FiniteClassicalRunLaw.table_count
+#print axioms QSB.FiniteClassicalRunLaw.run_event_count
+#print axioms QSB.FiniteClassicalRunLaw.run_event_density_cross_mul
+#print axioms QSB.FiniteClassicalRunLaw.pushOnly_run_event_density_cross_mul
 #print axioms QSB.PushOnlyScriptSig.queries_reached_nil
 #print axioms QSB.PushOnlyScriptSig.opCost_reached_zero
 #print axioms QSB.PushOnlyScriptSig.machine_run_zero
@@ -2094,6 +2123,13 @@ import QSB.Reduction
 #print axioms QSB.BuilderWitnessPushBridge.token_count_le_script_bytes
 #print axioms QSB.BuilderWitnessPushBridge.runTrace_tokens
 #print axioms QSB.BuilderWitnessPushBridge.execution_tokens
+#print axioms QSB.FullBuilderPushBridge.parse_data_520
+#print axioms QSB.FullBuilderPushBridge.token_encode_nonempty
+#print axioms QSB.FullBuilderPushBridge.token_value_length_le_520
+#print axioms QSB.FullBuilderPushBridge.parse_token
+#print axioms QSB.FullBuilderPushBridge.token_count_le_script_bytes
+#print axioms QSB.FullBuilderPushBridge.runTrace_tokens
+#print axioms QSB.FullBuilderPushBridge.execution_tokens
 #print axioms QSB.BuilderWitnessRoleOrder.roundTokens_values_reverse
 #print axioms QSB.BuilderWitnessRoleOrder.scriptTokens_values_reverse
 #print axioms QSB.BuilderWitnessRoleOrder.roundTokens_length
@@ -2110,3 +2146,8 @@ import QSB.Reduction
 #print axioms QSB.CorePushOnlyAcceptance.runTrace_success_isPushOnly
 #print axioms QSB.CorePushOnlyAcceptance.execution_success_isPushOnly
 #print axioms QSB.CorePushOnlyAcceptance.builder_tokens_isPushOnly
+#print axioms QSB.CorePushEvalRefinement.runTrace_success
+#print axioms QSB.CorePushEvalRefinement.execution_success
+#print axioms QSB.CorePushEvalRefinement.pushdata4_empty_boundary
+#print axioms QSB.CorePushEvalRefinement.minimaldata_singleton_boundary
+#print axioms QSB.FullBuilderCorePushExecution.execution_tokens

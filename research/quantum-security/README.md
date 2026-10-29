@@ -626,6 +626,10 @@ data pushes and nonnegative number tokens below 256: each encoded token
 parses to its intended stack cell, and a bounded token list executes to the
 same ordered bottom-first cells with one reached push per token. Script size
 and stack capacity are explicit premises.
+`QSB/FullBuilderPushBridge.lean` extends data tokens through the 520-byte
+stack-cell limit. It proves exact parser and stack results for direct,
+PUSHDATA1, and PUSHDATA2 source-shaped encodings under the same script and
+stack limits.
 `QSB/BuilderWitnessRoleOrder.lean` proves that parameterized source-shaped
 builder tokens produce the stated top-first role order and, given Config A
 cell counts and short-cell assumptions, execute 57 pushes within 4,332
@@ -633,11 +637,20 @@ serialized bytes. `QSB/ByteWitnessPushFixture.lean` gives a separate 57-token
 encoding of the disposable `ByteWitness.witness`: exactly 711 source bytes
 produce its bottom-first cells and 57 reached events. Supplied builder cells
 and depths are not identified with actual Python recovery or assembly;
-data PUSHDATA forms and universal Python byte equality remain separate.
+universal Python byte equality remains separate.
 `QSB/CorePushOnlyAcceptance.lean` proves that any successful narrow push-only
 evaluation, including bounded builder-token encodings, passes an independent
 source-shaped model of Core's `CScript::IsPushOnly` scan. This is a one-way
 Lean-model implication, not compiled Core execution.
+`QSB/CorePushEvalRefinement.lean` strengthens the source-model comparison:
+every successful narrow execution has the same ordered cells and push count
+in a separately classified Core-shaped BASE push interpreter with MINIMALDATA
+disabled. The models share `CoreGetOp` parsing. PUSHDATA4 and MINIMALDATA
+examples mark the one-way boundary; full `VerifyScript` and compiled Core
+remain outside the proof.
+`QSB/FullBuilderCorePushExecution.lean` composes the full data-token parser
+bridge with that implication: bounded builder tokens produce their exact
+ordered stack and push count in the Core-shaped BASE fragment.
 `QSB/LedgerBoundRawCacheMachine.lean` further binds one fixed ledger and
 target: failed target binding needs zero H/R requests, while successful
 binding inherits the conditional 1,697-request raw cache result. A
@@ -690,6 +703,11 @@ law: for any event on the complete fixed run, uniform tagged product tables
 and uniform observable H/R table pairs have the same event density by a
 constant-fiber count. The existential input cap can depend on fixed advice;
 there is no infinite-oracle coupling or coherent-query implementation.
+`QSB/FiniteClassicalRunLaw.lean` generalizes this finite restriction and
+constant-fiber event law to any one fixed finite-fuel classical H/R machine.
+Its explicit push-only instance covers the transcript and ledger extractor
+at `q + 1,295` fuel. The first machine and initial state must be fixed before
+sampling, and this supplies no cap for adversary superposition inputs.
 `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes that
 transcript-linked sequence to a context carrying proof that its contract is
 the concrete restricted HASH160 evaluator. The same ordered run needs at most

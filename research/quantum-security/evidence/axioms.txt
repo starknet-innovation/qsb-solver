@@ -358,6 +358,30 @@
 'QSB.TaggedLocalResponses.projectedR_database_localProbability_le' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'QSB.TaggedCollisionTransition.new_collision_local' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.TaggedCollisionTransition.projectedH_new_collision_local' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedCollisionTransition.projectedR_new_collision_local' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParallelLocalResponses.peerResponses_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ParallelLocalResponses.batchResponses_card_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.ParallelLocalResponses.projectedH_batchResponses_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.ParallelLocalResponses.projectedR_batchResponses_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedCollisionBatchLocal.new_collision_hits_batchResponses' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedCollisionBatchLocal.projectedH_new_collision_hits_batchResponses' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'QSB.TaggedCollisionBatchLocal.projectedR_new_collision_hits_batchResponses' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.OracleDependentSelection.disclosure_true_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.OracleDependentSelection.fixed_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.OracleDependentSelection.inspected_hit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -2389,6 +2413,20 @@
 'QSB.FiniteTaggedRunLaw.realized_event_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FiniteTaggedRunLaw.run_event_count' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.FiniteTaggedRunLaw.run_event_density_cross_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.queryCap_covers' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.realize_restrict_H' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.realize_restrict_R' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.run_restrict_realize_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.observed_canonicalTable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.realize_eq_of_observed_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.run_eq_canonical_observed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.selected_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.table_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.run_event_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.run_event_density_cross_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FiniteClassicalRunLaw.pushOnly_run_event_density_cross_mul' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'QSB.PushOnlyScriptSig.queries_reached_nil' depends on axioms: [propext, Quot.sound]
 'QSB.PushOnlyScriptSig.opCost_reached_zero' depends on axioms: [propext]
 'QSB.PushOnlyScriptSig.machine_run_zero' depends on axioms: [propext, Quot.sound]
@@ -2427,6 +2465,13 @@
 'QSB.BuilderWitnessPushBridge.token_count_le_script_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.BuilderWitnessPushBridge.runTrace_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.BuilderWitnessPushBridge.execution_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullBuilderPushBridge.parse_data_520' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullBuilderPushBridge.token_encode_nonempty' depends on axioms: [propext]
+'QSB.FullBuilderPushBridge.token_value_length_le_520' depends on axioms: [propext, Quot.sound]
+'QSB.FullBuilderPushBridge.parse_token' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullBuilderPushBridge.token_count_le_script_bytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullBuilderPushBridge.runTrace_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.FullBuilderPushBridge.execution_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]
 'QSB.BuilderWitnessRoleOrder.roundTokens_values_reverse' depends on axioms: [propext, Quot.sound]
 'QSB.BuilderWitnessRoleOrder.scriptTokens_values_reverse' depends on axioms: [propext, Quot.sound]
 'QSB.BuilderWitnessRoleOrder.roundTokens_length' depends on axioms: [propext, Quot.sound]
@@ -2445,3 +2490,8 @@
 'QSB.CorePushOnlyAcceptance.runTrace_success_isPushOnly' depends on axioms: [propext, Quot.sound]
 'QSB.CorePushOnlyAcceptance.execution_success_isPushOnly' depends on axioms: [propext, Quot.sound]
 'QSB.CorePushOnlyAcceptance.builder_tokens_isPushOnly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'QSB.CorePushEvalRefinement.runTrace_success' depends on axioms: [propext, Quot.sound]
+'QSB.CorePushEvalRefinement.execution_success' depends on axioms: [propext, Quot.sound]
+'QSB.CorePushEvalRefinement.pushdata4_empty_boundary' depends on axioms: [propext]
+'QSB.CorePushEvalRefinement.minimaldata_singleton_boundary' depends on axioms: [propext]
+'QSB.FullBuilderCorePushExecution.execution_tokens' depends on axioms: [propext, Classical.choice, Quot.sound]

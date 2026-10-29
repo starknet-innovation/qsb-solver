@@ -363,6 +363,10 @@ An applicability test for QSB has four concrete obligations:
    number-token serialization/parse roundtrips and exact ordered bottom-first
    stack production for bounded token lists. It uses OP_0/OP_1..OP_16 or
    source-shaped ScriptNum bytes as appropriate.
+   `QSB/FullBuilderPushBridge.lean` extends the data-token bridge through
+   the 520-byte stack-cell limit, including PUSHDATA1 and PUSHDATA2. Its
+   parser and list-execution theorems preserve exact payloads and order under
+   script and stack limits.
    `QSB/BuilderWitnessRoleOrder.lean` proves the parameterized source-shaped
    `cmd_assemble` token order and a 57-cell Config A execution result under
    supplied short-cell and list-length premises. The separate disposable
@@ -372,9 +376,19 @@ An applicability test for QSB has four concrete obligations:
    actual Python recovery or proves Python byte equality.
    `QSB/CorePushOnlyAcceptance.lean` proves successful narrow push evaluation
    implies a source-shaped `CScript::IsPushOnly` scan accepts the script.
-   The implication is one-way. Builder-token serialization for data cells of
-   length at least 76 bytes, arbitrary attacker scriptSig, and compiled Core
-   remain separate; the narrow evaluator itself supports PUSHDATA1/2.
+   The implication is one-way. Universal Python byte equality, arbitrary
+   attacker scriptSig, and compiled Core remain separate.
+   `QSB/CorePushEvalRefinement.lean` proves the stronger one-way source-model
+   statement that every successful narrow execution has exactly the same
+   ordered stack cells and push count in a separately classified BASE
+   push-fragment interpreter, with MINIMALDATA disabled and script, cell, and
+   stack bounds enforced. Both share `CoreGetOp`; PUSHDATA4 and MINIMALDATA
+   finite counterexamples delimit the implication. This is not full
+   `VerifyScript` or compiled Core refinement.
+   `QSB/FullBuilderCorePushExecution.lean` composes this implication with
+   the full data-token bridge for an exact bounded builder-token stack and
+   push count in the Core-shaped BASE fragment. Python assembly equality and
+   full Core execution are still not established.
    `QSB/LedgerBoundRawCacheMachine.lean` adds one fixed ledger and target
    selector: binding failure returns `none` with no H/R requests, and binding
    success reuses the conditional 1,697-request raw machine. A ledger that
@@ -426,6 +440,12 @@ An applicability test for QSB has four concrete obligations:
    pair of observed tables assign every run event the same density. This
    finite fixed-machine law is not an infinite-oracle coupling or coherent
    simulation.
+   `QSB/FiniteClassicalRunLaw.lean` proves the same finite restriction,
+   realization, and constant-fiber run-event law for any one fixed classical
+   H/R machine at finite fuel. Its explicit push-only instance uses the
+   transcript/ledger machine at `q + 1,295`. The machine and initial state
+   must be fixed before table sampling; adversary superposition inputs,
+   infinite-oracle coupling, and a coherent query charge remain open.
    `QSB/CausalRestrictedLedgerExtractorSequence.lean` specializes the same
    transcript-linked composition to a context whose contract is the concrete
    restricted HASH160 witness, reducing the second-stage budget to 1,297.
@@ -461,9 +481,24 @@ An applicability test for QSB has four concrete obligations:
    H projection and at most `s·2^256` on the R projection, so the paper's
    per-query estimates `Γ/M` and `s·Γ/M` are `2^-256` and `s·2^-256` for H
    and `2^-160` and `s·2^-160` for R. These are the classical counting
-   inputs to Example 5.28's capacity estimate, not the transition-capacity
-   theorem itself, and they say nothing about the oracle-dependent key,
-   target, and disclosure selections of the two-puzzle route or about the
+   inputs to Example 5.28's capacity estimate. The finite partial-database
+   theorem in `QSB/TaggedCollisionTransition.lean` also proves that a new
+   distinct-input projected collision after a parallel batch involves either
+   two queried positions or one changed queried response and a populated old
+   entry outside the batch. Its old-entry list needs explicit coverage and
+   has no derived size bound. The pair alternative orients the witness so the
+   response that belongs to the local pair fiber is actually changed.
+   `QSB/ParallelLocalResponses.lean` bounds the corresponding old-or-peer
+   response union for one coordinate of a `k`-query batch by
+   `(s + k - 1)·Γ`, with `s` the supplied old-entry count.
+   `QSB/TaggedCollisionBatchLocal.lean` composes the two: every newly created
+   distinct-input projected collision yields a *changed* queried response
+   in its own batch local set, with the H/R cardinality bounds attached.
+   The peer replies are the after-state values, and old-entry coverage is
+   still an explicit premise. These are finite classical counts, not the
+   quantum transition-capacity
+   theorem. None of these results addresses the oracle-dependent key,
+   target, and disclosure selections of the two-puzzle route or the
    exact-secret route. Only after this bound can Theorem 5.7 or
    5.9 yield a nontrivial `εjoint` for `JointRawSourceWorld`.
 

@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1905,
+  "theorem_count": 1939,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -2298,6 +2298,20 @@
       "propext"
     ],
     "QSB.CoreOpcodeStep.supported_of_segment": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushEvalRefinement.execution_success": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CorePushEvalRefinement.minimaldata_singleton_boundary": [
+      "propext"
+    ],
+    "QSB.CorePushEvalRefinement.pushdata4_empty_boundary": [
+      "propext"
+    ],
+    "QSB.CorePushEvalRefinement.runTrace_success": [
       "Quot.sound",
       "propext"
     ],
@@ -4669,6 +4683,66 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.FiniteClassicalRunLaw.observed_canonicalTable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.pushOnly_run_event_density_cross_mul": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.queryCap_covers": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.realize_eq_of_observed_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.realize_restrict_H": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.realize_restrict_R": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.run_eq_canonical_observed": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.run_event_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.run_event_density_cross_mul": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.run_restrict_realize_eq": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.selected_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FiniteClassicalRunLaw.table_count": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.FiniteTaggedCombinedRun.observed_restrict": [
       "Classical.choice",
       "Quot.sound",
@@ -5365,6 +5439,43 @@
     ],
     "QSB.FixedWidthOracleEncoding.rOutput_card": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderCorePushExecution.execution_tokens": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.execution_tokens": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.parse_data_520": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.parse_token": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.runTrace_tokens": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.token_count_le_script_bytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.token_encode_nonempty": [
+      "propext"
+    ],
+    "QSB.FullBuilderPushBridge.token_value_length_le_520": [
       "Quot.sound",
       "propext"
     ],
@@ -6463,6 +6574,26 @@
       "Quot.sound",
       "propext"
     ],
+    "QSB.ParallelLocalResponses.batchResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParallelLocalResponses.peerResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParallelLocalResponses.projectedH_batchResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.ParallelLocalResponses.projectedR_batchResponses_card_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "QSB.ParameterizedAliasDeletion.der_nonce_commitment_alias_is_bad_setup": [
       "propext"
     ],
@@ -7383,6 +7514,36 @@
       "propext"
     ],
     "QSB.SourceWitness.matched_run_pin_and_final_der_puzzles": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionBatchLocal.new_collision_hits_batchResponses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionBatchLocal.projectedH_new_collision_hits_batchResponses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionBatchLocal.projectedR_new_collision_hits_batchResponses": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionTransition.new_collision_local": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionTransition.projectedH_new_collision_local": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.TaggedCollisionTransition.projectedR_new_collision_local": [
       "Classical.choice",
       "Quot.sound",
       "propext"
