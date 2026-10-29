@@ -1,5 +1,5 @@
 {
-  "theorem_count": 1551,
+  "theorem_count": 1583,
   "allowed_foundations": [
     "Classical.choice",
     "Quot.sound",
@@ -679,6 +679,66 @@
       "propext"
     ],
     "QSB.CausalQueryAlgorithm.transcript_sound": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.checkedChecksig_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.checkedMultisig_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.checked_run_opcode_trace_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.checksigDigestTrace_length_le_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.checksig_eval_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.pairDigestTrace_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.pairDigestTrace_length_le_two": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.pair_checker_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.scanAtStackDigestTrace_ten_le_20": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.scanAtStack_result_congr": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.scanDigestTrace_length_le": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CheckedRunQueryTrace.scan_result_congr": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],
@@ -1696,6 +1756,38 @@
     ],
     "QSB.CoreStructuralRun.successful_prefix": [
       "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.checkedWire_run_of_core_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.coreRefines_of_certificates": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.core_unauthorized_measure_bound_of_certificates": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.ledger_sourceAccepted_of_core_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.run_refines": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.sourceAccepted_of_core_trace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.CoreTraceSimulation.step_refines": [
       "propext"
     ],
     "QSB.DERHeaderBound.bounded_target_setup_union_count": [
@@ -4483,6 +4575,55 @@
     ],
     "QSB.JointOracleReduction.unauthorized_measure_bound_with_uniform_setup": [
       "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedHPost_congr": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedHPost_eq_hPostTranscript": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedHStage_congr": [
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedHTaggedTrace_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRPost_congr": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRPost_congr_tagged": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRPost_eq_rPostTranscript": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRStages_congr": [
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRTaggedTrace_congr": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.fixedRTaggedTrace_length": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.hPostTranscript_congr_of_candidates_eq": [
+      "Quot.sound",
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.queryPairs_congr": [
+      "propext"
+    ],
+    "QSB.JointPostprocessingCausality.rPostTranscript_congr_of_candidates_eq": [
       "Quot.sound",
       "propext"
     ],

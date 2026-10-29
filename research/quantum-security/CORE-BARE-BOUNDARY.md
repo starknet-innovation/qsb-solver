@@ -159,6 +159,17 @@ seven final HORS openings and the final signature-source slots from an
 arbitrary initial byte stack. Core execution and signature-checker refinement,
 the nonce and puzzle relations, and the joint quantum hash bound remain open.
 
+`QSB/CoreTraceSimulation.lean` now states that bridge as local obligations:
+ordinary opcode steps, both signature-check families, the Core total-cell
+limit, exact supplied lock bytes, scriptSig stack and fresh-counter handoff,
+raw transaction preparation, ledger binding, and final truth. An induction
+proves that a successful abstract Core trace satisfying those obligations
+gives the checked source run and ledger-bound source acceptance. Compiled
+Core's actual parser, trace, and checker have not been shown to satisfy the
+contract. A world-specific certificate now discharges the conditional
+`coreRefines` measure-transfer premise, but no compiled-Core execution is
+proved to provide that certificate, so this does not close `ExtractionGap`.
+
 `QSB/CoreCheckedWire.lean` supplies an exact-byte validation boundary for an
 individual lock. Its executable `matchesWire` checks supplied script bytes
 against the parameterized Lean serialization, and Lean proves that a truthy
@@ -233,6 +244,11 @@ sites reserve at most 48 H calls when each verifier uses one such digest; with
 the 33 opcode calls, the static lock allowance is 81. This is not a
 combined query trace for the checked run: `validKey` and `verify` are external,
 and their own oracle use, the scriptSig, and compiled Core remain outside it.
+`QSB.CheckedRunQueryTrace` connects the 33 opcode calls to a successful checked
+run's computed signature records and gives causal digest traces for reached
+CHECKSIGVERIFY and CHECKMULTISIG calls under fixed external key validation and
+ECDSA. It bounds a parsed ten-key scan by 20 digest H calls, but does not yet
+interleave all reached signature and opcode calls into one run trace.
 `QSB.LockOpcodeBudget.lock_run_ops_from_zero` proves that both ten-key
 `CHECKMULTISIG` count pushes are static, so every successful byte-model run of
 every parameterized lock ends with the opcode counter at exactly 201, Core's
@@ -277,3 +293,11 @@ without the option reproduces the original 28-case macOS report byte-for-byte.
 Three puzzle CHECKSIGVERIFY sites are still replaced by OP_2DROP in this
 experiment. These are finite checks of the scriptSig/lock separation on the
 otherwise complete stack path, not a universal compiled-Core refinement.
+An additional pinned Linux rerun in
+`evidence/full-two-outputs-scriptsig-core-linux-20261029.json` adds a reached
+scriptSig `CHECKSIGVERIFY` with a disposable fixed-key `SIGHASH_ALL`
+signature. Core accepts the full puzzle-relaxed lock after that check leaves
+the witness stack intact, and rejects a version with the check's public-key
+push replaced; that replacement also changes scriptCode and digest. Its 35
+cases include the prior 33 scriptSig cases. The
+adapter still reports acceptance rather than an opcode-by-opcode trace.

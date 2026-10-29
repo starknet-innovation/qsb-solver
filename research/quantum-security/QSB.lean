@@ -96,6 +96,7 @@ import QSB.JointOracleReduction
 import QSB.JointFreshRoutes
 import QSB.JointFreshCandidates
 import QSB.JointFreshPostprocessing
+import QSB.JointPostprocessingCausality
 import QSB.CausalQueryAlgorithm
 import QSB.ByteMachineQueries
 import QSB.FinalSignedChain
@@ -130,10 +131,12 @@ import QSB.CoreCheckedWire
 import QSB.LockOpcodeInventory
 import QSB.LockOpcodeBudget
 import QSB.LockSignatureQueryBudget
+import QSB.CheckedRunQueryTrace
 import QSB.DynamicRoundWitness
 import QSB.DynamicSourceGame
 import QSB.DynamicRawSource
 import QSB.LedgerBoundRawSource
+import QSB.CoreTraceSimulation
 import QSB.JointRawSourceWorld
 import QSB.ScriptSigSighash
 import QSB.FinalSubsetInjective
@@ -1704,3 +1707,35 @@ import QSB.Reduction
 #print axioms QSB.JointLegacyDigestQueries.trace_congr
 #print axioms QSB.LockSignatureQueryBudget.checked_lock_multisig_pair_calls_le_20
 #print axioms QSB.JointLegacyDigestQueries.trace_single_bug
+#print axioms QSB.JointPostprocessingCausality.queryPairs_congr
+#print axioms QSB.JointPostprocessingCausality.fixedHStage_congr
+#print axioms QSB.JointPostprocessingCausality.fixedRStages_congr
+#print axioms QSB.JointPostprocessingCausality.fixedHPost_congr
+#print axioms QSB.JointPostprocessingCausality.fixedRPost_congr
+#print axioms QSB.JointPostprocessingCausality.fixedRTaggedTrace_length
+#print axioms QSB.JointPostprocessingCausality.fixedRPost_congr_tagged
+#print axioms QSB.JointPostprocessingCausality.fixedRTaggedTrace_congr
+#print axioms QSB.JointPostprocessingCausality.fixedHPost_eq_hPostTranscript
+#print axioms QSB.JointPostprocessingCausality.fixedRPost_eq_rPostTranscript
+#print axioms QSB.CoreTraceSimulation.step_refines
+#print axioms QSB.CoreTraceSimulation.run_refines
+#print axioms QSB.CoreTraceSimulation.checkedWire_run_of_core_trace
+#print axioms QSB.CoreTraceSimulation.sourceAccepted_of_core_trace
+#print axioms QSB.CoreTraceSimulation.ledger_sourceAccepted_of_core_trace
+#print axioms QSB.JointPostprocessingCausality.fixedHTaggedTrace_length
+#print axioms QSB.JointPostprocessingCausality.hPostTranscript_congr_of_candidates_eq
+#print axioms QSB.JointPostprocessingCausality.rPostTranscript_congr_of_candidates_eq
+#print axioms QSB.CoreTraceSimulation.coreRefines_of_certificates
+#print axioms QSB.CoreTraceSimulation.core_unauthorized_measure_bound_of_certificates
+#print axioms QSB.CheckedRunQueryTrace.checked_run_opcode_trace_exact
+#print axioms QSB.CheckedRunQueryTrace.pairDigestTrace_length_le_two
+#print axioms QSB.CheckedRunQueryTrace.pair_checker_congr
+#print axioms QSB.CheckedRunQueryTrace.pairDigestTrace_congr
+#print axioms QSB.CheckedRunQueryTrace.scanDigestTrace_length_le
+#print axioms QSB.CheckedRunQueryTrace.scan_result_congr
+#print axioms QSB.CheckedRunQueryTrace.scanAtStackDigestTrace_ten_le_20
+#print axioms QSB.CheckedRunQueryTrace.scanAtStack_result_congr
+#print axioms QSB.CheckedRunQueryTrace.checksigDigestTrace_length_le_two
+#print axioms QSB.CheckedRunQueryTrace.checksig_eval_congr
+#print axioms QSB.CheckedRunQueryTrace.checkedChecksig_congr
+#print axioms QSB.CheckedRunQueryTrace.checkedMultisig_congr

@@ -201,7 +201,15 @@ An applicability test for QSB has four concrete obligations:
    the oracle's actual value, and the whole transcript is unchanged by any
    oracle modification outside the recorded queries. Appending the traced
    postprocessor gives at most `budget + 300` classical calls on the H route
-   and `budget + 600` on the R route. `QSB/ByteMachineQueries.lean` begins
+   and `budget + 600` on the R route.
+   `QSB/JointPostprocessingCausality.lean` proves that this postprocessor is
+   causal once its raw candidate list is fixed: H responses select the later
+   R-query inputs, and agreement on one tagged trace preserves the cached
+   result and both traces. The R route records four queries per candidate.
+   The world-indexed H and R postprocessors inherit this congruence under
+   an explicit equality of their extracted candidate lists. The extractor
+   still supplies that list without a
+   causal construction or query charge. `QSB/ByteMachineQueries.lean` begins
    charging the world-indexed source extractor: the byte-model run of any
    parameterized lock is causal in an explicit trace of at most 33 hash-opcode
    H/R calls; a successful run records exactly 18 H and 15 R calls. The
@@ -211,6 +219,10 @@ An applicability test for QSB has four concrete obligations:
    total. `QSB/JointLegacyDigestQueries.lean` traces one modeled digest with
    zero or two H calls and proves causality for that trace. The six signature
    sites reserve 48 H calls when each verifier uses one such digest. The
+   `QSB/CheckedRunQueryTrace.lean` component theorems connect the 33 calls to
+   the checked run's computed signature records, bound reached digest calls,
+   and prove source-shaped signature-step causality with fixed external key
+   validation and ECDSA. The
    resulting 81-call lock allowance is not one traced checked run; external
    checker functions, the second certificate-search branch,
    scriptSig evaluation, and honest setup/signing still need to be charged.

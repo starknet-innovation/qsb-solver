@@ -429,6 +429,46 @@ def main() -> None:
         check("two_outputs_scriptsig_skipped_sha256", two_outputs, True)
         two_outputs.inputs[1].script_sig = canonical_witness + b"\x6b\x6c"
         check("two_outputs_scriptsig_altstack_roundtrip", two_outputs, True)
+        # A reached CHECKSIGVERIFY in scriptSig consumes only its own
+        # signature and key, leaving the full-lock witness stack intact.
+        # Its legacy scriptCode is the entire scriptSig after deleting that
+        # signature push; the lock's later checks use their own scriptCode.
+        script_sig_private = 7  # Disposable public fixture scalar.
+        script_sig_pubkey = ec.compress_pubkey(
+            ec.point_mul(script_sig_private, ec.G))
+        script_sig_code = (canonical_witness +
+                           bt.push_data(script_sig_pubkey) +
+                           bytes([bt.OP_CHECKSIGVERIFY]))
+        script_sig_digest = two_outputs.sighash(1, script_sig_code, 1)
+        script_sig_r, script_sig_s = ec.ecdsa_sign_with_k(
+            script_sig_private, script_sig_digest, 13)
+        script_sig_signature = ec.encode_der_sig(
+            script_sig_r, script_sig_s, sighash=1)
+        assert ec.ecdsa_verify(ec.point_mul(script_sig_private, ec.G),
+                               script_sig_digest, script_sig_r, script_sig_s)
+        two_outputs.inputs[1].script_sig = (
+            canonical_witness + bt.push_data(script_sig_signature) +
+            bt.push_data(script_sig_pubkey) +
+            bytes([bt.OP_CHECKSIGVERIFY]))
+        assert bt.find_and_delete(two_outputs.inputs[1].script_sig,
+                                  script_sig_signature) == script_sig_code
+        check("two_outputs_scriptsig_checksigverify_preserves_stack",
+              two_outputs, True)
+        wrong_script_sig_pubkey = ec.compress_pubkey(ec.G)
+        assert wrong_script_sig_pubkey != script_sig_pubkey
+        wrong_script_sig_code = (canonical_witness +
+                                 bt.push_data(wrong_script_sig_pubkey) +
+                                 bytes([bt.OP_CHECKSIGVERIFY]))
+        wrong_script_sig_digest = two_outputs.sighash(
+            1, wrong_script_sig_code, 1)
+        assert not ec.ecdsa_verify(ec.G, wrong_script_sig_digest,
+                                   script_sig_r, script_sig_s)
+        two_outputs.inputs[1].script_sig = (
+            canonical_witness + bt.push_data(script_sig_signature) +
+            bt.push_data(wrong_script_sig_pubkey) +
+            bytes([bt.OP_CHECKSIGVERIFY]))
+        check("two_outputs_scriptsig_checksigverify_wrong_key",
+              two_outputs, False)
     two_outputs.inputs[1].script_sig = (
         bt.push_data(b"\x5a" * 520) + canonical_witness)
     check("two_outputs_max_element_bottom_prefix", two_outputs, True)
@@ -556,6 +596,14 @@ def main() -> None:
     }
     if args.extra_scriptsig_cases:
         report["extra_scriptsig_cases"] = True
+        report["scriptsig_checksigverify_fixture"] = {
+            "public_key_hex": script_sig_pubkey.hex(),
+            "signature_hex": script_sig_signature.hex(),
+            "script_code_sha256": hashlib.sha256(script_sig_code).hexdigest(),
+            "sighash_all_digest_hex":
+                script_sig_digest.to_bytes(32, "big").hex(),
+            "wrong_public_key_hex": wrong_script_sig_pubkey.hex(),
+        }
     if args.extra_lock_opcount_cases:
         report["extra_lock_opcount_cases"] = True
     args.output.parent.mkdir(parents=True, exist_ok=True)

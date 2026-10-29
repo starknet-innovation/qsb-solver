@@ -506,8 +506,11 @@ scan and proves that both scans in a successful checked parameterized lock run
 attempt at most 20 verifier pairs in total. `QSB/JointLegacyDigestQueries.lean`
 traces one modeled digest with zero or two ordered H calls. The six signature
 sites reserve 48 additional H calls when each verifier uses one such digest.
-The combined 81 is a static
-source-model allowance; a whole checked-run query trace, arbitrary external
+`QSB/CheckedRunQueryTrace.lean` now ties the 33 opcode calls to a successful
+checked run's computed signature records and proves per-pair digest traces,
+ten-key scan bounds, and CHECKSIGVERIFY/CHECKMULTISIG congruence for fixed
+external key validation and ECDSA. The combined 81 remains a static
+source-model allowance; a whole ordered checked-run query trace, arbitrary external
 checker calls, scriptSig calls, compiled-Core refinement, and a quantum
 success bound remain open.
 `QSB/CoreCheckedDynamic.lean` extends the checker-derived final result to
@@ -532,6 +535,13 @@ This validates an individual script without assuming universal Python-builder
 equality. The spent-output-byte connection, compiled-Core refinement, and
 real ECDSA/key parsing remain open; the pinned builder audit and four finite
 byte comparisons are only corroboration.
+`QSB/CoreTraceSimulation.lean` decomposes the remaining Core-to-Lean step into
+local ordinary and signature-opcode correspondence, total stack accounting,
+wire equality, scriptSig handoff, transaction validity, ledger binding, and
+final truth. It proves that an external trace satisfying these premises yields
+source acceptance. A world-specific certificate packages those premises and
+discharges the existing conditional `coreRefines` measure-transfer premise;
+no compiled-Core trace is proved to satisfy them yet.
 `QSB/DynamicRoundWitness.lean` computes a good-setup final-round witness from
 the returned checked-source certificate, including seven reached openings,
 two bonus positions, and the reached final key. The validated supplied-wire
@@ -686,6 +696,15 @@ python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --co
 python3 analysis/compare_full_core_runs.py --linux-report evidence/full-two-outputs-core.json --host-report evidence/full-two-outputs-core-macos.json --output evidence/full-two-outputs-core-parity.json
 python3 analysis/check_first_round_replay_core.py --app-root /path/to/qsb-app --consensus-library /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib --core-archive /tmp/qsb-bitcoin-27.2-arm64.tar.gz --output evidence/first-round-replay-core.json
 python3 analysis/check_scriptsig_isolation_core.py --app-root /path/to/qsb-app --consensus-library /tmp/qsb-core-27.2-macos/bitcoin-27.2/lib/libbitcoinconsensus.0.dylib --core-archive /tmp/qsb-bitcoin-27.2-arm64.tar.gz --output evidence/scriptsig-isolation-core.json
+```
+
+The later Linux full-lock scriptSig report adds a reached
+`CHECKSIGVERIFY` and wrong-key control. Reproduce it with the same pinned
+native files and app source hashes, using a Python container because the
+test-only variable-input adapter needs Python:
+
+```sh
+python3 analysis/check_full_two_outputs_core.py --app-root /path/to/qsb-app --native-root /path/to/pinned/native --image python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 --extra-scriptsig-cases --output evidence/full-two-outputs-scriptsig-core-linux-20261029.json
 ```
 
 The recorded host and Linux case objects match exactly for all 28 cases.
