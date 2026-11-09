@@ -1,7 +1,10 @@
 # A10G native plan for the SHA rotate-add candidate
 
-Status: **plan only, not authorized**. Nothing here has been launched, reserved or
-requested. This document is not a launch permission, and earlier campaign budgets,
+Status: **authorized on 9 November 2026, not yet launched**. The owner authorized
+exactly this plan: at most three one-shot sessions, a USD 15 reservation cap, a
+60-minute lifetime per session, in Ireland or London. Nothing has been launched or
+reserved. The authorization covers this plan only; it does not extend to reruns,
+other candidates, a larger budget or any release step. Earlier campaign budgets,
 schedules and approvals do not carry over to it. Operator configuration, account
 details and private receipts stay outside Git, as for every earlier run.
 
@@ -147,7 +150,7 @@ Between sessions:
 A session that fails, or whose result cannot be collected, is recorded as failed and
 is not rerun under this plan.
 
-## Budget to authorize
+## Budget (authorized as proposed)
 
 | Item | Proposal |
 | --- | --- |
@@ -165,16 +168,15 @@ rejected for insufficient capacity. Those attempts allocated nothing and were
 verified clean. If that repeats, the plan stops and waits; it does not widen scope
 to another instance type.
 
-## Decisions needed from the owner
+## Owner decisions
 
 1. **Controller: decided on 9 November.** The research-branch controller, pinned at
    `b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`. Choosing it is not a launch
    authorization, and its 30 September 60-minute lifetime approval was for that
    campaign only.
-2. **Authorization and cap:** the budget above, or a different one, including the
+2. **Authorization and cap: granted on 9 November** as proposed, including the
    60-minute lifetime per session.
-3. **Region:** Ireland or London, the two the controller accepts, within the approved
-   operator scope.
+3. **Region: Ireland or London**, as authorized, within the approved operator scope.
 
 ## After the run
 
