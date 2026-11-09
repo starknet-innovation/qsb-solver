@@ -1,7 +1,7 @@
 # Isolated SHA-256 rotate-add rounds (audit row 8)
 
-Status: **HOLD, unexecuted**. This experiment has not been compiled by `nvcc` or run
-on a GPU. Production sources, `worker/optimized/source-lock.json`, binaries, images and
+Status: **HOLD, unexecuted**. The variants compiled for sm_86 in CI on 9 November
+2026 (result below); no binary has been run on a GPU. Production sources, `worker/optimized/source-lock.json`, binaries, images and
 descriptors are unchanged. There is no correctness or performance claim.
 
 ## What it is
@@ -81,7 +81,44 @@ an `#error`.
 Not run: the Docker build (the CUDA compiler does not run under emulation on the
 development machine), any CUDA harness, any GPU.
 
-## If the code shape improves
+## Compile result, 9 November 2026
+
+Native Linux CI run
+[42687871125](https://github.com/starknet-innovation/qsb-solver/actions/runs/42687871125)
+at source commit `4d403e1`, CUDA 12.8.93, sm_86. No binary was executed. The retained
+receipts are in [evidence/](evidence/): `build.json`, `sass-comparison.json` and
+`artifact.sha256`, which lists the SHA-256 of every file in the downloaded artifact.
+The binaries, SASS listings and `ptxas` logs themselves are in the CI artifact only,
+which expires after 14 days.
+
+| Variant | Binary SHA-256 | Instructions, all kernels | Instructions, `kernel_digest` | `LEA*` opcodes vs baseline |
+| --- | --- | --- | --- | --- |
+| `baseline` | `8664f41f3deeeb91…` | 48,112 | 36,752 | — |
+| `control` | `50abec355a44bff7…` | 48,112 | 36,752 | 0 |
+| `candidate` | `bba9c4af12d65de4…` | 45,560 (−5.3%) | 34,496 (−6.1%) | +2,366 |
+| `candidate-ord0` | `b4e3cef8bf6e1294…` | 45,560 (−5.3%) | 34,496 (−6.1%) | +2,366 |
+
+- **The patch is inert when off.** The control's SASS is identical to the baseline's
+  (`1e13e1493970…`). Its binary hash differs, which is consistent with host-side
+  differences such as the build path, and was not investigated further.
+- **sm_86 does fold the rotations.** `kernel_digest` gains 1,726 `LEA.HI` and drops
+  2,256 instructions. The three small SHA kernels shrink too.
+- **Operand order does not matter for size here.** Both candidates have the same
+  counts, with slightly different SASS.
+- **No resource change.** `kernel_digest` stays at 128 registers and 272 bytes of
+  stack in every variant.
+- **Cross-check.** The baseline binary and SASS hashes equal the ones recorded by the
+  earlier `generic-sha-vector` experiment for the same source and flags.
+
+Limits: these are static counts over every path compiled into the kernel, not only
+the instructions the ranked workload executes. They are not a timing, and the
+candidate binary has not run, so nothing here shows it is correct or faster on an
+A10G. The earlier SHA experiment changed seven instructions and showed no benefit;
+this one changes about 6% of the kernel, which is the reason to measure it.
+
+## Next steps
+
+The native run is planned, not authorized, in [A10G-PLAN.md](A10G-PLAN.md).
 
 1. Review the artifact and record the hashes here.
 2. Run the existing native component checks on the candidate binary.

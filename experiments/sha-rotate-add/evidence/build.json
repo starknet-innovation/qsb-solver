@@ -1,0 +1,82 @@
+{
+  "compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0\n",
+  "controlMatchesBaseline": true,
+  "experiment": {
+    "baselineGpuHashSha256": "c8415e1ddc839e078421a1ee347a9db5036f84714b03edb700aa2e635e05fedd",
+    "patchSha256": "7cdc50b6ded50ba415e7c0f47753872c712a9c9756dfeaed3c5b2ba80968a7a1",
+    "patchedGpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+    "status": "HOLD",
+    "upstreamBase": "1650caf53a32b0ea16aae9e490ebbf5a8686d632",
+    "upstreamFile": "candidates/subset/GPUHash.h",
+    "upstreamHead": "582a99408761f904f7f92a5d64d9ca0dcc76924a",
+    "upstreamRepository": "https://github.com/Layr-Labs/quantum-safe-bitcoin-challenge"
+  },
+  "gpuExecuted": false,
+  "packages": "g++\t4:11.2.0-1ubuntu1\ngcc\t4:11.2.0-1ubuntu1\nlibssl-dev:amd64\t3.0.2-0ubuntu1.30\n",
+  "scope": "Compile-only comparison. No solver was run; no correctness or performance is established.",
+  "status": "UNEXECUTED",
+  "variants": {
+    "baseline": {
+      "binarySha256": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+      "flags": [
+        "-O3",
+        "-arch=sm_86",
+        "-DZLAB_TRIM=0",
+        "-DZLAB_K2S=0",
+        "-DQSB_PAIR_SHARED=0",
+        "-DQSB_SPEC_FINISH=0",
+        "-DZLAB_DUAL_EPOCH_SHA=0",
+        "-std=c++17"
+      ],
+      "gpuHashSha256": "c8415e1ddc839e078421a1ee347a9db5036f84714b03edb700aa2e635e05fedd",
+      "patched": false
+    },
+    "candidate": {
+      "binarySha256": "bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1",
+      "flags": [
+        "-O3",
+        "-arch=sm_86",
+        "-DZLAB_TRIM=0",
+        "-DZLAB_K2S=0",
+        "-DQSB_PAIR_SHARED=0",
+        "-DQSB_SPEC_FINISH=0",
+        "-DZLAB_DUAL_EPOCH_SHA=0",
+        "-std=c++17"
+      ],
+      "gpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+      "patched": true
+    },
+    "candidate-ord0": {
+      "binarySha256": "b4e3cef8bf6e12942e13fa2e63ce6c699ff88511725bb5af2c9c7ac48336fc52",
+      "flags": [
+        "-O3",
+        "-arch=sm_86",
+        "-DZLAB_TRIM=0",
+        "-DZLAB_K2S=0",
+        "-DQSB_PAIR_SHARED=0",
+        "-DQSB_SPEC_FINISH=0",
+        "-DZLAB_DUAL_EPOCH_SHA=0",
+        "-std=c++17",
+        "-DQSB_LEA_ORD=0"
+      ],
+      "gpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+      "patched": true
+    },
+    "control": {
+      "binarySha256": "50abec355a44bff7802c01df3754da56dbff8975ce9f2d5a0cf0288a5353a49e",
+      "flags": [
+        "-O3",
+        "-arch=sm_86",
+        "-DZLAB_TRIM=0",
+        "-DZLAB_K2S=0",
+        "-DQSB_PAIR_SHARED=0",
+        "-DQSB_SPEC_FINISH=0",
+        "-DZLAB_DUAL_EPOCH_SHA=0",
+        "-std=c++17",
+        "-DQSB_SHA_LEA=0"
+      ],
+      "gpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+      "patched": true
+    }
+  }
+}
