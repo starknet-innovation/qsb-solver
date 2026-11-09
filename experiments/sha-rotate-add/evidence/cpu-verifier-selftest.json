@@ -1,0 +1,12 @@
+{
+  "candidates": 128,
+  "candidatesPerCaseLimit": 8,
+  "cases": 20,
+  "control": "CPU-generated, not GPU evidence",
+  "corruptHashRejected": true,
+  "hashes": 256,
+  "missingRecordRejected": true,
+  "positive": true,
+  "referenceFilesChecked": 9,
+  "traceFixturesSha256": "e9e4f2abfdb27195f9e67d18b86990fc9419008084a9a142f24e127a89be1104"
+}

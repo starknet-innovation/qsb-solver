@@ -10,11 +10,12 @@ import sys
 import zlib
 
 ROOT=Path(__file__).resolve().parents[2]
-# Frozen after the single build that also produces the trace variant. None means not frozen: render refuses.
-ZIP_SHA=None
+# Frozen from CI run 42690353515 at 8ba7d03fffd76f6a997ee1debd626f5a854af5f7; see evidence/frozen-build.json.
+# None means not frozen: render refuses.
+ZIP_SHA='85bedf30cc8da6eaa18fdb33f2ee9531490d6de82ed23febbac5be8e0cf46284'
 BINARIES={'baseline':'8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c',
           'candidate':'bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1',
-          'candidate-trace':None}
+          'candidate-trace':'9a465e2dba84fc245e4e15b55ac652c12b7b8b6ea2e40d10810c2e63542885ad'}
 
 def payload(commit, stage='ranges'):
     files={}

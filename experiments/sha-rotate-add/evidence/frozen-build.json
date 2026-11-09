@@ -1,0 +1,31 @@
+{
+  "compiler": "Cuda compilation tools, release 12.8, V12.8.93",
+  "controlMatchesBaseline": true,
+  "gpuExecuted": false,
+  "pair": {
+    "baseline": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+    "candidate": "bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1",
+    "candidate-trace": "9a465e2dba84fc245e4e15b55ac652c12b7b8b6ea2e40d10810c2e63542885ad",
+    "candidate-trace.diff": "3921f7f65a6a434ee91c2af5d9eefc76153fa8bc764446377968c267424260f7",
+    "trace-receipt.json": "90132f1e822149d9a5173762bcec7f978a6f847ea79c57428f3ef48eb9b570a7"
+  },
+  "pairArtifact": {
+    "bytes": 2354201,
+    "expiresAt": "2026-11-23T20:12:43Z",
+    "id": 13706796853,
+    "name": "sha-rotate-add-pair",
+    "zipSha256": "85bedf30cc8da6eaa18fdb33f2ee9531490d6de82ed23febbac5be8e0cf46284"
+  },
+  "reproducesFirstBuild": {
+    "baseline": true,
+    "baselineSass": true,
+    "candidate": true,
+    "candidateSass": true,
+    "run": 42687871125
+  },
+  "scope": "Frozen compile outputs for a later native run. Nothing was executed.",
+  "sourceCommit": "8ba7d03fffd76f6a997ee1debd626f5a854af5f7",
+  "status": "UNEXECUTED",
+  "traceReceiptSha256": "90132f1e822149d9a5173762bcec7f978a6f847ea79c57428f3ef48eb9b570a7",
+  "workflowRun": 42690353515
+}

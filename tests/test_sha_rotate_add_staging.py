@@ -38,8 +38,9 @@ class StagingTests(unittest.TestCase):
         with self.assertRaises(AssertionError):self.run_stage(True)
     def test_timing_handoff_shell_and_archive(self):self.run_stage(gate="timing")
     def test_unfrozen_identities_refuse(self):
-        self.assertIsNone(stage.ZIP_SHA);self.assertIsNone(stage.BINARIES['candidate-trace'])
-        with self.assertRaisesRegex(ValueError,'not frozen'):stage.render('a'*40,'https://example.invalid/x','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
+        arguments=('a'*40,'https://example.invalid/x','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
+        with patch.object(stage,'ZIP_SHA',None),self.assertRaisesRegex(ValueError,'not frozen'):stage.render(*arguments)
+        with patch.object(stage,'BINARIES',{**stage.BINARIES,'candidate-trace':None}),self.assertRaisesRegex(ValueError,'not frozen'):stage.render('a'*40,'https://example.invalid/x','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
     def test_moving_runtime_rejected(self):
         with self.assertRaises(ValueError):stage.render('a'*40,'https://example.invalid/x','image:latest','trace','b'*64)
 

@@ -89,7 +89,9 @@ at source commit `4d403e1`, CUDA 12.8.93, sm_86. No binary was executed. The ret
 receipts are in [evidence/](evidence/): `build.json`, `sass-comparison.json` and
 `artifact.sha256`, which lists the SHA-256 of every file in the downloaded artifact.
 The binaries, SASS listings and `ptxas` logs themselves are in the CI artifact only,
-which expires after 14 days.
+which expires after 14 days. Run 42690353515 at `8ba7d03` rebuilt everything, reproduced
+the baseline and candidate binaries and SASS byte for byte, and added the diagnostic
+trace binary; `evidence/` now holds that run's receipts and `frozen-build.json`.
 
 | Variant | Binary SHA-256 | Instructions, all kernels | Instructions, `kernel_digest` | `LEA*` opcodes vs baseline |
 | --- | --- | --- | --- | --- |

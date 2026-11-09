@@ -1,0 +1,23 @@
+{
+  "unmodifiedBinarySha256": "bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1",
+  "unmodifiedTreeSha256": "71e4b01469b2d2327c32bc62d4b20d1a6276c20c994cf6c3e8a082e9abac7cdb",
+  "unmodifiedGpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+  "diagnosticTreeSha256": "6b4e0258ebcf4c98b2429bdf430d8d06d6100a5efb0cc678a253db69c038f892",
+  "flags": [
+    "-O3",
+    "-arch=sm_86",
+    "-DZLAB_TRIM=0",
+    "-DZLAB_K2S=0",
+    "-DQSB_PAIR_SHARED=0",
+    "-DQSB_SPEC_FINISH=0",
+    "-DZLAB_DUAL_EPOCH_SHA=0",
+    "-std=c++17"
+  ],
+  "files": {
+    "candidate-trace": "9a465e2dba84fc245e4e15b55ac652c12b7b8b6ea2e40d10810c2e63542885ad",
+    "candidate-trace.diff": "3921f7f65a6a434ee91c2af5d9eefc76153fa8bc764446377968c267424260f7"
+  },
+  "status": "UNEXECUTED",
+  "cpuVerified": false,
+  "scope": "Diagnostic derivative; does not attest execution of the unmodified binary"
+}

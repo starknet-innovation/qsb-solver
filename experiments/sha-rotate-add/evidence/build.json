@@ -13,6 +13,13 @@
   },
   "gpuExecuted": false,
   "packages": "g++\t4:11.2.0-1ubuntu1\ngcc\t4:11.2.0-1ubuntu1\nlibssl-dev:amd64\t3.0.2-0ubuntu1.30\n",
+  "pair": {
+    "baseline": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+    "candidate": "bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1",
+    "candidate-trace": "9a465e2dba84fc245e4e15b55ac652c12b7b8b6ea2e40d10810c2e63542885ad",
+    "candidate-trace.diff": "3921f7f65a6a434ee91c2af5d9eefc76153fa8bc764446377968c267424260f7",
+    "trace-receipt.json": "90132f1e822149d9a5173762bcec7f978a6f847ea79c57428f3ef48eb9b570a7"
+  },
   "scope": "Compile-only comparison. No solver was run; no correctness or performance is established.",
   "status": "UNEXECUTED",
   "variants": {
