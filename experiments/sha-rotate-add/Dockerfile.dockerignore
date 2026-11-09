@@ -1,0 +1,12 @@
+**
+!research/
+!research/optimized-subset/
+!research/optimized-subset/**
+!worker/
+!worker/optimized/
+!worker/optimized/source-lock.json
+!experiments/
+!experiments/sha-rotate-add/
+!experiments/sha-rotate-add/**
+**/__pycache__
+**/*.pyc

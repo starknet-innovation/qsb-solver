@@ -1,0 +1,37 @@
+name: Isolated SHA rotate-add compile
+on:
+  push:
+    paths:
+      - experiments/sha-rotate-add/**
+      - tests/test_sha_rotate_add.py
+      - .github/workflows/sha-rotate-add-compile.yml
+  pull_request:
+    paths:
+      - experiments/sha-rotate-add/**
+      - tests/test_sha_rotate_add.py
+      - .github/workflows/sha-rotate-add-compile.yml
+permissions:
+  contents: read
+jobs:
+  sm86-variants:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Test the patch identity, round model and SASS comparison
+        run: python3 -m unittest discover -s tests -p 'test_sha_rotate_add.py' -v
+      - name: Build sm86 variants without running them
+        run: |
+          docker build -f experiments/sha-rotate-add/Dockerfile -t qsb-sha-rotate-add .
+          id=$(docker create qsb-sha-rotate-add)
+          trap 'docker rm "$id"' EXIT
+          docker cp "$id:/results" results
+          cat results/build.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sha-rotate-add-variants
+          path: results/
+          retention-days: 14
