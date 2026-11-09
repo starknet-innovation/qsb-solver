@@ -1,9 +1,11 @@
 # One-shot optimized A10G gate
 
-This documents the controller shipped on `main`, with its original Ireland scope
-and 25-minute deadline. Later research-branch controllers and campaign permissions
-do not change this implementation. The recorded gate is historical; do not restart
-it from these instructions. See [release status](../../docs/README.md).
+On this research branch the controller is the research one, ported from
+`b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`: Ireland or London, a 60-minute absolute
+deadline, and the `operate.py` adapter. `main` still ships the original Ireland-only,
+25-minute controller. Nothing here is a launch permission, and the recorded gates
+are historical; do not restart them from these instructions. See
+[release status](../../docs/README.md).
 
 Adapted from the completed qsb-app AWS execution controller at c8c6f21833798900ae1e6a21f0b5d10d2adab291.
 This operator-specific experiment uses one g5.xlarge in an explicitly authorized region (eu-west-1 or eu-west-2). No app activation.

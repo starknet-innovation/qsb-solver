@@ -2,8 +2,9 @@
 
 Never changes production sources or locks, never runs a solver, never needs a GPU.
 """
-import hashlib, json, pathlib, shutil, subprocess
+import difflib, hashlib, json, pathlib, shutil, subprocess
 import compare_sass
+from trace_source import instrument
 
 ROOT = pathlib.Path('/src'); SRC = ROOT / 'research/optimized-subset'
 HERE = ROOT / 'experiments/sha-rotate-add'; OUT = pathlib.Path('/results')
@@ -33,6 +34,35 @@ def verified_flags():
     return [f.replace('-arch=sm_89', '-arch=sm_86') for f in lock['flags']]
 
 
+def compile_solver(name, work, flags):
+    binary = OUT / name
+    command = ['nvcc', *flags, '-Xptxas=-v', '-o', str(binary), str(work / 'subset/subset.cu'), '-lcrypto', '-lm']
+    with (OUT / (name + '.log')).open('w') as log:
+        done = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=600)
+    if done.returncode:
+        print((OUT / (name + '.log')).read_text()[-6000:])
+        raise SystemExit(f'{name}: nvcc exited {done.returncode}')
+    return binary
+
+
+def build_trace(flags, records):
+    """Diagnostic derivative of the candidate. The unmodified candidate above stays the binary under test."""
+    work = pathlib.Path('/tmp/candidate-trace'); shutil.copytree(pathlib.Path('/tmp/candidate'), work)
+    tree = work / 'subset/tests/gpu_epochs/tree.cu'
+    original = tree.read_text(); changed = instrument(original); tree.write_text(changed)
+    (OUT / 'candidate-trace.diff').write_text(''.join(difflib.unified_diff(
+        original.splitlines(True), changed.splitlines(True), fromfile='candidate/tree.cu', tofile='trace/tree.cu')))
+    compile_solver('candidate-trace', work, flags)
+    (OUT / 'trace-receipt.json').write_text(json.dumps(dict(
+        unmodifiedBinarySha256=records['candidate']['binarySha256'],
+        unmodifiedTreeSha256=hashlib.sha256(original.encode()).hexdigest(),
+        unmodifiedGpuHashSha256=records['candidate']['gpuHashSha256'],
+        diagnosticTreeSha256=hashlib.sha256(changed.encode()).hexdigest(), flags=flags,
+        files={name: sha(OUT / name) for name in ['candidate-trace', 'candidate-trace.diff']},
+        status='UNEXECUTED', cpuVerified=False,
+        scope='Diagnostic derivative; does not attest execution of the unmodified binary'), indent=2) + '\n')
+
+
 def main():
     flags = verified_flags(); OUT.mkdir(exist_ok=False); records = {}
     for name, (patched, extra) in VARIANTS.items():
@@ -40,17 +70,16 @@ def main():
         if patched:
             subprocess.run(['patch', '--batch', '-p1', '-i', str(HERE / 'sha-rotate-add.patch')], cwd=work, check=True)
             if sha(work / 'subset/GPUHash.h') != EXPERIMENT['patchedGpuHashSha256']: raise ValueError('Patched source mismatch')
-        binary = OUT / name
-        command = ['nvcc', *flags, *extra, '-Xptxas=-v', '-o', str(binary), str(work / 'subset/subset.cu'), '-lcrypto', '-lm']
-        with (OUT / (name + '.log')).open('w') as log:
-            done = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=600)
-        if done.returncode:
-            print((OUT / (name + '.log')).read_text()[-6000:])
-            raise SystemExit(f'{name}: nvcc exited {done.returncode}')
+        binary = compile_solver(name, work, [*flags, *extra])
         with (OUT / (name + '.sass')).open('w') as sass:
             subprocess.run(['cuobjdump', '-sass', str(binary)], stdout=sass, check=True, timeout=300)
         records[name] = {'binarySha256': sha(binary), 'gpuHashSha256': sha(work / 'subset/GPUHash.h'),
                          'flags': [*flags, *extra], 'patched': patched}
+    build_trace(flags, records)
+    # The frozen pair handed to a native run: small enough for the bounded staging download.
+    pair = OUT / 'pair'; pair.mkdir()
+    for name in ['baseline', 'candidate', 'candidate-trace', 'candidate-trace.diff', 'trace-receipt.json']:
+        shutil.copy2(OUT / name, pair / name)
     baseline = compare_sass.summarise((OUT / 'baseline.sass').read_text())
     report = {'scope': 'Static instruction counts. Not a timing or correctness result.', 'baseline': baseline, 'variants': {}}
     for name in VARIANTS:
@@ -60,6 +89,7 @@ def main():
     (OUT / 'sass-comparison.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n')
     (OUT / 'build.json').write_text(json.dumps({
         'experiment': EXPERIMENT, 'variants': records,
+        'pair': {name: sha(OUT / 'pair' / name) for name in sorted(p.name for p in (OUT / 'pair').iterdir())},
         'compiler': subprocess.check_output(['nvcc', '--version'], text=True),
         'packages': subprocess.check_output(['dpkg-query', '-W', 'gcc', 'g++', 'libssl-dev'], text=True),
         'controlMatchesBaseline': report['variants']['control']['delta']['identicalSass'],

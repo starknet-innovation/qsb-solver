@@ -1,0 +1,14 @@
+{
+  "files": {
+    "reference/gpu_emulator.py": "449312593576ec4e59d8abe1b2f601d9c2d74d58c99dfe88924442a6cab4e896",
+    "reference/secp256k1.py": "d2cebd1410b75cad606806cf02d7bee3e24724d5fcb7a53a07f598fcbc8afece",
+    "reference/bitcoin_tx.py": "c7e52af90bd0d9fce9834fce26dcd67aee0d7751ee228d9730873c4d12659a5c",
+    "fixtures/wpkh/qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901",
+    "fixtures/wpkh/gpu_digest_r1_params.json": "122924cc3b68017c1f666cf0931a718f868ac9ca29459522233d4788dcff6083",
+    "fixtures/wpkh/gpu_digest_r2_params.json": "ab0f0b8113bf7f1665cf5edede014cc595a6ffbe2c7dc205cac18e2a8892e357",
+    "fixtures/taproot/qsb_state.json": "574587e02b642558cbcced1fec260b8422ffa193ff01a4d79b4bc09494021901",
+    "fixtures/taproot/gpu_digest_r1_params.json": "264a217284897f973dc79cb40b4f326829664bae6db08f8eb02604f34ea18638",
+    "fixtures/taproot/gpu_digest_r2_params.json": "fafcf31017e12fd64f8cbfbf50c57edf5c0a1691904881e7b18d7b07d460a29a"
+  },
+  "scope": "Existing public synthetic transaction reference fixtures and CPU implementation; no wallet material"
+}
