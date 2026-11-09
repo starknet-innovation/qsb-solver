@@ -110,8 +110,8 @@ upstream candidates has CPU-test, compiler or native evidence from this reposito
 | 5 | Lossy shortcuts (`HIGH15_NOFB`, `LOSS_*`, `C31`) | both | Absent | A | Rejected for complete-range use | Author-declared hit loss; conflicts with `ranked-v2` completeness. Retain only with the switch off or an exactness proof |
 | 6 | Run-time adaptive switches (`*_RT`) | subset | Absent | A | Incompatible as shipped | Tuned to a 20-minute run; fixed form could be reviewed separately |
 | 7 | Draw markers | both | Absent | — | Rejected | No runtime effect |
-| 8 | Subset SHA rotate-add rounds (`QSB_SHA_LEA`, `sha_gate_fma.cuh`) | round 1, round 2 | Absent | O, A ("exact") | Retain for review | Described as instruction-level and exact. Applicability to the generic path and to sm_86 codegen is unknown. See the note on prior SHA work below |
-| 9 | Subset inversion-tree and table layout (`TREE_ROW128`, `TREE_LANEMASK`, `DIVSTEP_4LANE`, `YOFF_S`, `inverse_limbs.cuh`) | round 1, round 2 | Absent | O, A | Retain for review | Described as layout changes with a start-up readback check. `YOFF_S` changes table contents, so table validation must be re-established |
+| 8 | Subset SHA rotate-add rounds (`QSB_SHA_LEA`, `sha_gate_fma.cuh`) | round 1, round 2 | Absent | O, A ("exact") | Retain for review | Reviewed: the `GPUHash.h` round macros reach the generic path and are an exact identity. The gate, outer and callee parts are pair-path only. sm_86 codegen is unknown |
+| 9 | Subset inversion-tree and table layout (`TREE_ROW128`, `TREE_LANEMASK`, `DIVSTEP_4LANE`, `YOFF_S`, `inverse_limbs.cuh`) | round 1, round 2 | Absent | O, A | Retain for review, conditional | Reviewed: the tree switches reach the generic path but are exact only with the exact tree multiply, which upstream head replaces by default. `YOFF_S` needs the GLV table and moves to row 11 |
 | 10 | Subset point-add and pair-sum rewrites (`ZZ3_LATE`, `YP_MAC`, `YP_DC`, `FOLD_REG`, `FMUL_LEAN`, `EC_PSI_ZZ`, `y_pair_sc.cuh`, `point_add_f8_zz3.cuh`) | round 1, round 2 | Absent | O, A | Awaiting evidence | Field arithmetic with dropped normalisations. Each needs an exactness argument before any paid run; several sit next to the `LOSS_*` family |
 | 11 | Subset GLV scalar split (`GLVScalar.cuh`, `Q_MIX`) | round 1, round 2 | Absent | O, A | Awaiting evidence | A different table and decode architecture, and the home of `HIGH15_NOFB`. An earlier assessment found no isolated refinement that applies to the current worker |
 | 12 | Pinning device changes since `2791ed0` (ASICBoost-style shared tail schedule, fused roots, `sha_pinsha.cuh`, `WarpInverse.cuh`, `*_mac.cuh`) | pinning | Absent | O, A | Awaiting evidence, low priority | Pinning is about 105–115 s of a projected 730–745 s of GPU time per layout. Entangled with the carrier, `C31` and `ISO_XR` |
@@ -139,6 +139,8 @@ Read from the heads of `origin/research/generic-sha-vector` (`7d22686`),
 - **Scalar SHA constant indexing:** shelved without GPU execution; the function was
   unreachable for the ranked workload.
 
+Rows 8 and 9 have a [source review](2026-11-09-yukon-rows-8-9-review.md).
+
 ## Where the cost is
 
 From the [26 September A10G results](../promotion/2026-09-26-a10g-performance.md),
@@ -160,11 +162,10 @@ what was reviewed then, not new imports. This needs legal review before reliance
 
 - **Cost:** none. No cloud resource was requested or launched, so there is nothing to
   clean up or reconcile.
-- **Next gap:** a source review of rows 8 and 9 against the generic path in
-  `research/optimized-subset/subset/tests/gpu_epochs/tree.cu`, answering for each
-  switch: does it compile with `ZLAB_TRIM=0` and `QSB_PAIR_SHARED=0`, is it exact, and
-  does it depend on the carrier. That is local work and needs no GPU.
-- **After that:** an sm_86 build in CI and the existing native component checks, then
+- **Next gap:** the source review of rows 8 and 9 is done; see its next steps. The
+  first is an sm_86 CI build of the row 8 SHA change with a disassembly comparison,
+  which needs no GPU.
+- **After that:** the existing native component checks, then
   one matched A10G run against v0.3.0 with interleaved samples. The paid run needs a
   complete test and collection plan first and explicit authorization.
 - **Not planned:** any change to `searchVersion`. Adopting the short-epoch geometry

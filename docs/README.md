@@ -67,7 +67,7 @@ artifact-specific applicability assessment.
 - [AWS build compatibility](promotion/AWS-OPTIMIZED.md): architecture and transport identity.
 - [Standalone optimized subset](../worker/optimized/README.md): a separate build target, not the complete published image.
 - [A10G method record](promotion/A10G-PERFORMANCE.md): retained preparation methodology for the completed September gate.
-- [Yukon upstream audit, 9 November](research/2026-11-09-yukon-audit.md): candidate assessment at upstream `582a994`; assessment only, every candidate on HOLD.
+- [Yukon upstream audit, 9 November](research/2026-11-09-yukon-audit.md): candidate assessment at upstream `582a994`; assessment only, every candidate on HOLD. Rows 8 and 9 have a [static source review](research/2026-11-09-yukon-rows-8-9-review.md).
 - [AWS controller on main](../ops/aws-gpu-execution/README.md): historical scoped controller, not a standing launch authorization.
 - [Licensing](../LICENSES.md): upstream notices and redistribution scope.
 
