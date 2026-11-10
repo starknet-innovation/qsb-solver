@@ -1,0 +1,30 @@
+{
+  "controllerCommit": "6fa7e8b17786920c66fc352d5e20cef8db88fa3c",
+  "gpu": "NVIDIA A10G, driver 595.91.07",
+  "instanceType": "g5.xlarge",
+  "providerBillingKnown": false,
+  "region": "eu-west-1",
+  "reservedUsd": 10,
+  "scope": "Public synthetic inputs. Sampled ranges and a 3,116-candidate CPU differential; not whole-domain proof, no range credit, no fresh withdrawal.",
+  "sessionA": {
+    "cleanupVerified": true,
+    "launched": "2026-11-10T06:12:54Z",
+    "resultSha256": "2bb26076526dcc2cc39e2e9503e2a8186fc8027ad06b00f6f54baef694fe308d",
+    "samples": 32,
+    "stage": "ranges",
+    "status": "completed",
+    "terminationRequested": "2026-11-10T06:18:10Z"
+  },
+  "sessionB": {
+    "candidates": 3116,
+    "cleanupVerified": true,
+    "cpuSummarySha256": "0af420a8f8cbf71eaae82d815d2e25811b4d5328760ca732d1b8918fb066e167",
+    "hashes": 6232,
+    "launched": "2026-11-10T06:26:43Z",
+    "nativeResultSha256": "ecbc605c5465f432fddad5b4ef81312ce8877455b03e619555adb3232f20b9e1",
+    "stage": "trace",
+    "status": "passed",
+    "terminationRequested": "2026-11-10T06:33:03Z",
+    "unlaunchedAttempt": "A first scope failed at arm before launch (new IAM role not yet assumable); zero instances were created; it was cleaned up and verified."
+  }
+}

@@ -124,9 +124,9 @@ def save(path,result):
     sync_directory(path.parent)
 
 
-# SHA-256 of the committed session A and B receipts. None until those sessions have run and been reviewed:
-# timing refuses to start without them.
-PREREQUISITES = {'native-trace-cpu.json': None, 'native-ranges.json': None}
+# SHA-256 of the committed session A and B receipts (evidence/), frozen on 10 November 2026 after both passed.
+# A None value means not frozen: timing refuses to start.
+PREREQUISITES = {'native-trace-cpu.json': '0af420a8f8cbf71eaae82d815d2e25811b4d5328760ca732d1b8918fb066e167', 'native-ranges.json': '2bb26076526dcc2cc39e2e9503e2a8186fc8027ad06b00f6f54baef694fe308d'}
 
 
 def decide(summary):

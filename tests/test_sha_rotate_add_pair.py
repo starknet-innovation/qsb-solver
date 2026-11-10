@@ -36,9 +36,16 @@ class PairTests(unittest.TestCase):
    self.assertFalse((p/'output.json').exists())
 
  def test_unfrozen_prerequisites_refuse(self):
-  self.assertTrue(all(v is None for v in m.PREREQUISITES.values()))
-  with tempfile.TemporaryDirectory() as d:
+  with tempfile.TemporaryDirectory() as d,patch.object(m,'PREREQUISITES',{'native-trace-cpu.json':None,'native-ranges.json':'0'*64}):
    with self.assertRaisesRegex(ValueError,'not frozen'):m.check_prerequisites(pathlib.Path(d))
+
+ def test_committed_receipts_satisfy_the_frozen_prerequisites(self):
+  evidence=ROOT/'experiments/sha-rotate-add/evidence'
+  with tempfile.TemporaryDirectory() as d:
+   bundle=pathlib.Path(d)
+   for name in m.PREREQUISITES:(bundle/name).write_bytes((evidence/name).read_bytes())
+   (bundle/'regression.json').write_bytes((evidence/'native-ranges.json').read_bytes())
+   self.assertEqual(m.check_prerequisites(bundle),m.PREREQUISITES)
 
  def test_frozen_prerequisites_accept_and_tampering_rejects(self):
   import hashlib,json
