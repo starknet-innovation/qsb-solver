@@ -64,6 +64,27 @@ class ChunkResultsTests(unittest.TestCase):
         self.assertEqual(calls.count('send-command'),1)
         self.assertEqual(calls.count('get-command-invocation'),3)
 
+    def test_a_stuck_chunk_uses_only_its_share_of_the_remaining_time(self):
+        from unittest.mock import patch
+        import random
+        data,meta=self.envelope({'log':random.Random(3).randbytes(30000).hex()})
+        chunks=-(-len(data)//18000);self.assertGreaterEqual(chunks,3)
+        clock=[1000.0]
+        def aws(*args):
+            if args[1]=='send-command':return {'Command':{'CommandId':'c'}}
+            return {'CommandId':'c','InstanceId':'i','Status':'InProgress'}
+        def sleep(seconds):clock[0]+=seconds
+        with tempfile.TemporaryDirectory() as tmp,patch('chunk_results.time.time',side_effect=lambda:clock[0]):
+            out='QSB_PUBLIC_RESULT_META='+json.dumps(meta)
+            # 30 s per chunk are available before the 120 s reserve; the first chunk never completes.
+            with self.assertRaises(TimeoutError):collect(Path(tmp)/'chunks','i',out,aws,1000.0+120+30*chunks,sleep=sleep)
+        self.assertLessEqual(clock[0]-1000.0,32)
+        clock[0]=1000.0
+        with tempfile.TemporaryDirectory() as tmp,patch('chunk_results.time.time',side_effect=lambda:clock[0]):
+            # With ample time the cap is still 90 s for one chunk.
+            with self.assertRaises(TimeoutError):collect(Path(tmp)/'chunks','i',out,aws,1000.0+100000,sleep=sleep)
+        self.assertTrue(88<=clock[0]-1000.0<=92,clock[0])
+
     def test_multiple_chunks_and_truncation(self):
         import random
         value={'log':random.Random(7).randbytes(50000).hex()}

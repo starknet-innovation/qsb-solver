@@ -50,7 +50,8 @@ def collect(directory, instance, stdout, aws, deadline, sleep=time.sleep):
     meta = metadata(stdout)
     directory.mkdir(exist_ok=True)
     chunks = []
-    for start in range(0, meta['bytes'], 18000):
+    starts = list(range(0, meta['bytes'], 18000))
+    for position, start in enumerate(starts):
         if time.time() + 120 >= deadline: raise TimeoutError('collection deadline')
         count = min(18000, meta['bytes'] - start)
         intent = directory / f'{start}-intent.json'
@@ -70,7 +71,10 @@ def collect(directory, instance, stdout, aws, deadline, sleep=time.sleep):
         if result.exists():
             row = json.loads(result.read_text())
         else:
-            end = min(time.time() + 90, deadline - 120)
+            # Share the time left before the collection reserve evenly over the chunks still to read,
+            # capped at 90 s. One slow chunk can then use only its own share, never the others'.
+            now = time.time()
+            end = now + min(90, (deadline - 120 - now) / (len(starts) - position))
             while True:
                 if time.time() >= end: raise TimeoutError('chunk read timed out')
                 sleep(2)

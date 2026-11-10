@@ -16,7 +16,8 @@ already collected and always requests termination again. `record` resumes the sa
 way for a matching allocation receipt. `control.py launch` now requires 2,460 s before
 the deadline, so an instance that could not reach the send gate is never allocated.
 The chunk collector retries a lookup that fails because a just-sent command is not
-yet visible, without resending it. Nothing here is a launch permission, and the recorded gates
+yet visible, without resending it, and gives each chunk an even share of the time
+left before its reserve (at most 90 s), so one slow chunk cannot use the others' time. Nothing here is a launch permission, and the recorded gates
 are historical; do not restart them from these instructions. See
 [release status](../../docs/README.md).
 
