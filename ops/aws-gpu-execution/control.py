@@ -18,7 +18,9 @@ from launch import boot_script
 sys.path.append(str(Path(__file__).resolve().parent))
 from operator_config import load_config, expected_account
 _ACTIVE_CONFIG = None
-MIN_LAUNCH_SECONDS = 2160 + 300  # operate.py MIN_SEND_SECONDS plus boot allowance
+# operate.py MIN_SEND_SECONDS (which already includes the 660 s the sent command spends staging on the host)
+# plus an allowance for boot, SSM registration and rendering the template.
+MIN_LAUNCH_SECONDS = 2160 + 300
 
 
 def aws(service, operation, **request):

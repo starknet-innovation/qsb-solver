@@ -46,11 +46,16 @@ if mode=='record':
   raise ValueError('existing allocation receipt is for a different allocation')
  s['volumeIds']=volumes;replace_state(s);print(i['State']['Name'])
 elif mode=='ready':
+ # SSM registration only. It is not host readiness: the staged host command must still run ready.sh,
+ # which checks the boot marker and shutdown timer, before any compute. Exit non-zero unless online.
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
+ rows=r.get('InstanceInformationList',[])
+ if len(rows)!=1 or rows[0].get('InstanceId')!=s['instanceId'] or rows[0].get('PingStatus')!='Online':raise SystemExit(3)
 elif mode=='send':
- # The host gate needs 1,500 s when it starts, after staging. Staging is bounded by a 120 s archive
- # download, up to eleven 30 s runner-file fetches and a 180 s readiness wait: 630 s, reserved as 660 s,
- # so an accepted one-shot command is not rejected on the host.
+ # The host gate needs 1,500 s when it starts. Before it, the sent command itself stages on the host:
+ # a 120 s archive download, up to eleven 30 s runner-file fetches and a 180 s readiness wait, 630 s,
+ # reserved as 660 s. That staging runs after this check, inside the command, so it is part of
+ # MIN_SEND_SECONDS; rendering the template on the operator side beforehand takes seconds.
  assert time.time()+MIN_SEND_SECONDS<s['deadline'];assert not (p/'send-intent.json').exists()
  # The staging step records the digest of the template it rendered. Refuse a template that is missing
  # that record or no longer matches it, so an edited or replaced file is never executed remotely.
@@ -83,5 +88,9 @@ elif mode=='poll':
   finally:
    # Termination is idempotent: always request it, keep the first response.
    save_once('terminate-response.json',aws('ec2','terminate-instances','--instance-ids',s['instanceId']))
+  # Only a successful command with a collected result is a success. Termination above has already
+  # been requested; the exit status must not let automation treat anything else as a passed gate.
+  if (p/'collection-error.json').exists() or not (p/'public-results.json').exists():raise SystemExit(4)
+  if r['Status']!='Success' or r.get('ResponseCode')!=0:raise SystemExit(5)
 elif mode=='terminate':
  print(json.dumps(aws('ec2','terminate-instances','--instance-ids',s['instanceId'])))
