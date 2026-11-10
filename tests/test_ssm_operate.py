@@ -61,6 +61,26 @@ class OperateTests(unittest.TestCase):
             self.assertEqual(sum('terminate-instances' in a for a in calls),2)
             (p/'terminal.json').write_text(json.dumps(dict(invocation,Status='Failed')))
             with self.assertRaises(ValueError):self.invoke(p,'poll',fake)
+    def test_record_replaces_state_atomically_and_keeps_identities(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p)
+            state=json.loads((p/'execution.json').read_text());state.update(token='tok',name='qsb-bench-test',securityGroup='sg-test')
+            (p/'execution.json').write_text(json.dumps(state))
+            instance=dict(ClientToken='tok',InstanceType='g5.xlarge',State={'Name':'running'},BlockDeviceMappings=[{'Ebs':{'VolumeId':'vol-test'}}])
+            def fake(args,**kwargs):
+                if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                if 'describe-instances' in args:return json.dumps({'Reservations':[{'Instances':[instance]}]})
+                self.fail(str(args))
+            self.invoke(p,'record',fake)
+            after=json.loads((p/'execution.json').read_text())
+            self.assertEqual(after['volumeIds'],['vol-test'])
+            self.assertEqual({k:after[k] for k in state},state)
+            self.assertFalse((p/'execution.json.tmp').exists())
+            # A failure while writing the replacement leaves the original state intact.
+            (p/'allocated.json').unlink()
+            before=(p/'execution.json').read_text()
+            with patch('os.replace',side_effect=OSError('interrupted')),self.assertRaises(OSError):self.invoke(p,'record',fake)
+            self.assertEqual((p/'execution.json').read_text(),before)
     def test_unknown_mode_fails_before_any_call(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)

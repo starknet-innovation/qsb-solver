@@ -19,6 +19,15 @@ def save(name,data):
  fd=os.open(p,os.O_RDONLY)
  try:os.fsync(fd)
  finally:os.close(fd)
+def replace_state(state):
+ # execution.json holds the token and every temporary resource identity that cleanup needs.
+ # Replace it atomically so an interrupted write can never leave it truncated.
+ tmp=p/'execution.json.tmp'
+ with tmp.open('w') as f:json.dump(state,f,indent=2);f.flush();os.fsync(f.fileno())
+ os.replace(tmp,p/'execution.json')
+ fd=os.open(p,os.O_RDONLY)
+ try:os.fsync(fd)
+ finally:os.close(fd)
 def save_once(name,data):
  # A rerun after an interrupted terminal step must resume, not fail on a receipt that already exists.
  if (p/name).exists():return json.loads((p/name).read_text())
@@ -30,7 +39,7 @@ mode=sys.argv[2]
 if mode=='record':
  r=aws('ec2','describe-instances','--instance-ids',s['instanceId']);i=r['Reservations'][0]['Instances'][0];assert i['ClientToken']==s['token'];assert i['InstanceType']=='g5.xlarge'
  s['volumeIds']=[x['Ebs']['VolumeId'] for x in i['BlockDeviceMappings']];assert s['volumeIds'];save('allocated.json',r)
- (p/'execution.json').write_text(json.dumps(s,indent=2));print(i['State']['Name'])
+ replace_state(s);print(i['State']['Name'])
 elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
