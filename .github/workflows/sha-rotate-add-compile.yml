@@ -3,11 +3,15 @@ on:
   push:
     paths:
       - experiments/sha-rotate-add/**
+      - research/optimized-subset/**
+      - worker/optimized/source-lock.json
       - tests/test_sha_rotate_add*.py
       - .github/workflows/sha-rotate-add-compile.yml
   pull_request:
     paths:
       - experiments/sha-rotate-add/**
+      - research/optimized-subset/**
+      - worker/optimized/source-lock.json
       - tests/test_sha_rotate_add*.py
       - .github/workflows/sha-rotate-add-compile.yml
 permissions:

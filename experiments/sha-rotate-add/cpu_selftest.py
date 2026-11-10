@@ -1,7 +1,8 @@
 """CPU-only control for verify_trace.py: no GPU, no solver binary, not native evidence.
 
 Builds trace lines from the hash-verified public CPU reference itself, then checks that the
-verifier accepts them and rejects a corrupted hash and a missing record.
+verifier accepts them and rejects a corrupted hash, a missing record and two hashes
+swapped between recovery ids.
 Usage: cpu_selftest.py CPU_REFERENCE_ROOT OUTPUT [MAX_CANDIDATES_PER_CASE]
 """
 import hashlib, json, sys, tempfile
@@ -27,7 +28,7 @@ def main():
         from gpu_emulator import emulate_digest_round
         from bitcoin_tx import Transaction, TxIn, TxOut, find_and_delete
         tools = (emulate_digest_round, Transaction, TxIn, TxOut, find_and_delete)
-        rows = []; rejected = {'corruptHash': 0, 'missingRecord': 0}
+        rows = []; rejected = {'corruptHash': 0, 'missingRecord': 0, 'swappedRecid': 0}; swappable = 0
         for plan in json.loads(plan_raw)['cases']:
             plan = dict(plan, count=min(plan['count'], limit))
             prefix = 'fixtures/' + plan['case'] + '/'
@@ -46,15 +47,21 @@ def main():
             good = '\n'.join(lines)
             rows.append(verify_trace.check_case(plan, dict(trace=sample(good), exact=sample('')), state, params, *tools))
             flipped = lines[0][:-1] + ('0' if lines[0][-1] != '0' else '1')
-            for key, log in (('corruptHash', '\n'.join([flipped, *lines[1:]])), ('missingRecord', '\n'.join(lines[1:]))):
+            first, second = lines[0].rsplit('hash=', 1), lines[1].rsplit('hash=', 1)
+            swapped = [first[0] + 'hash=' + second[1], second[0] + 'hash=' + first[1], *lines[2:]]
+            distinct = first[1] != second[1]; swappable += distinct
+            trials = [('corruptHash', '\n'.join([flipped, *lines[1:]])), ('missingRecord', '\n'.join(lines[1:]))]
+            if distinct: trials.append(('swappedRecid', '\n'.join(swapped)))
+            for key, log in trials:
                 try: verify_trace.check_case(plan, dict(trace=sample(log), exact=sample('')), state, params, *tools)
                 except ValueError: rejected[key] += 1
     cases = len(rows)
     result = dict(control='CPU-generated, not GPU evidence', positive=True, cases=cases, candidatesPerCaseLimit=limit,
                   candidates=sum(r['candidates'] for r in rows), hashes=sum(r['hashes'] for r in rows),
                   corruptHashRejected=rejected['corruptHash'] == cases, missingRecordRejected=rejected['missingRecord'] == cases,
+                  swappedRecidRejected=swappable > 0 and rejected['swappedRecid'] == swappable, swappedRecidCases=swappable,
                   referenceFilesChecked=len(data), traceFixturesSha256=FIXTURES)
-    if not (result['corruptHashRejected'] and result['missingRecordRejected']): raise SystemExit('verifier accepted a bad trace')
+    if not (result['corruptHashRejected'] and result['missingRecordRejected'] and result['swappedRecidRejected']): raise SystemExit('verifier accepted a bad trace')
     with output.open('x') as stream: json.dump(result, stream, indent=2, sort_keys=True); stream.write('\n')
     print(json.dumps(result, sort_keys=True))
 

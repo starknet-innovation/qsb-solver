@@ -13,7 +13,7 @@ class OperateTests(unittest.TestCase):
     def setup_state(self,p):
         config=dict(profile='test',region='eu-west-2',account='123')
         (p/'operator.json').write_text(json.dumps(config))
-        (p/'execution.json').write_text(json.dumps(dict(operatorConfig=config,instanceId='i-test',deadline=int(time.time())+1500)))
+        (p/'execution.json').write_text(json.dumps(dict(operatorConfig=config,instanceId='i-test',deadline=int(time.time())+2000)))
     def stage(self,p,text='set -euo pipefail\necho __DEADLINE__'):
         import hashlib
         (p/'host-template.sh').write_text(text)
@@ -29,6 +29,38 @@ class OperateTests(unittest.TestCase):
                 else:(p/'host-template.sh').write_text('echo replaced')
                 with self.assertRaises((ValueError,FileNotFoundError)):self.invoke(p,'send',self.refuse)
                 self.assertFalse((p/'send-intent.json').exists())
+    def test_send_reserves_staging_time(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p);self.stage(p)
+            state=json.loads((p/'execution.json').read_text());state['deadline']=int(time.time())+1400
+            (p/'execution.json').write_text(json.dumps(state))
+            with self.assertRaises(AssertionError):self.invoke(p,'send',self.refuse)
+            self.assertFalse((p/'send-intent.json').exists())
+    def test_interrupted_terminal_poll_resumes_and_still_terminates(self):
+        import base64,gzip
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p)
+            (p/'send-response.json').write_text(json.dumps({'Command':{'CommandId':'cmd-test'}}))
+            body=base64.b64encode(gzip.compress(json.dumps({'result.json':'{}'}).encode())).decode()
+            import hashlib
+            out='RESULT_SHA256='+hashlib.sha256(body.encode()).hexdigest()+'\nRESULT_BASE64='+body+'\n'
+            invocation=dict(CommandId='cmd-test',InstanceId='i-test',Status='Success',ResponseCode=0,StandardOutputContent=out,StandardErrorContent='')
+            # The earlier run stored the terminal receipt, then stopped before collecting or terminating.
+            (p/'terminal.json').write_text(json.dumps(invocation))
+            calls=[]
+            def fake(args,**kwargs):
+                calls.append(args)
+                if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                if 'get-command-invocation' in args:return json.dumps(invocation)
+                if 'terminate-instances' in args:return json.dumps({'TerminatingInstances':[{'InstanceId':'i-test'}]})
+                self.fail(str(args))
+            self.invoke(p,'poll',fake)
+            self.assertEqual(json.loads((p/'public-results.json').read_text()),{'result.json':'{}'})
+            self.assertTrue((p/'terminate-response.json').exists())
+            self.invoke(p,'poll',fake)
+            self.assertEqual(sum('terminate-instances' in a for a in calls),2)
+            (p/'terminal.json').write_text(json.dumps(dict(invocation,Status='Failed')))
+            with self.assertRaises(ValueError):self.invoke(p,'poll',fake)
     def test_unknown_mode_fails_before_any_call(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)
@@ -66,7 +98,7 @@ class OperateTests(unittest.TestCase):
                 self.assertTrue(command.startswith("exec /bin/bash -s <<'"))
                 self.assertNotIn('__DEADLINE__',command)
                 timeout=int(intent['request']['Parameters']['executionTimeout'][0])
-                self.assertTrue(1020<=timeout<=1440,timeout)
+                self.assertEqual(timeout,1800)
                 return json.dumps({'Command':{'CommandId':'cmd-test'}})
             self.invoke(p,'send',fake)
             self.assertTrue((p/'send-response.json').exists())

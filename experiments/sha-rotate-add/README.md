@@ -142,7 +142,9 @@ synthetic inputs only. Receipts are in [evidence/](evidence/): `native-ranges.js
 - Ranges: 32 of 32 samples complete. Baseline and candidate reported the same
   exhausted counts and no hits on four ranges in each of the four contexts.
 - CPU differential: the candidate's recovered-key hashes matched qsb-app's CPU
-  reference for all 3,116 candidates (6,232 hashes) across the 20 trace fixtures. The
+  reference for all 3,116 candidates (6,232 hashes) across the 20 trace fixtures,
+  each hash under its own recovery id (re-verified after the verifier was tightened
+  in review; the summary is byte-identical). The
   trace came from the diagnostic build; the unmodified candidate ran the same ranges.
 
 **Timing: a small gain that meets the rule fixed in advance.** Startup-inclusive wall

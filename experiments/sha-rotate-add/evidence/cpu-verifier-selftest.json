@@ -8,5 +8,7 @@
   "missingRecordRejected": true,
   "positive": true,
   "referenceFilesChecked": 9,
+  "swappedRecidCases": 20,
+  "swappedRecidRejected": true,
   "traceFixturesSha256": "e9e4f2abfdb27195f9e67d18b86990fc9419008084a9a142f24e127a89be1104"
 }

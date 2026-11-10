@@ -19,6 +19,10 @@ def save(name,data):
  fd=os.open(p,os.O_RDONLY)
  try:os.fsync(fd)
  finally:os.close(fd)
+def save_once(name,data):
+ # A rerun after an interrupted terminal step must resume, not fail on a receipt that already exists.
+ if (p/name).exists():return json.loads((p/name).read_text())
+ save(name,data);return data
 def aws(*args):
  return json.loads(subprocess.check_output(['aws','--profile',config['profile'],'--region',config['region'],'--output','json',*args],text=True,timeout=60,env={**os.environ,'AWS_MAX_ATTEMPTS':'1'}))
 assert aws('sts','get-caller-identity')['Account']==config['account']
@@ -30,7 +34,9 @@ if mode=='record':
 elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
- assert time.time()+1080<s['deadline'];assert not (p/'send-intent.json').exists()
+ # The host gate needs 1,080 s when it starts, after staging (archive download, runner files, readiness).
+ # Reserve 420 s for that staging so an accepted one-shot command is not rejected on the host.
+ assert time.time()+1500<s['deadline'];assert not (p/'send-intent.json').exists()
  # The staging step records the digest of the template it rendered. Refuse a template that is missing
  # that record or no longer matches it, so an edited or replaced file is never executed remotely.
  template=(p/'host-template.sh').read_bytes();expected=(p/'host-template.sh.sha256').read_text().split()
@@ -46,18 +52,21 @@ elif mode=='poll':
  cid=json.loads((p/'send-response.json').read_text())['Command']['CommandId'];r=aws('ssm','get-command-invocation','--command-id',cid,'--instance-id',s['instanceId'])
  assert r['CommandId']==cid and r['InstanceId']==s['instanceId'];print(r['Status'])
  if r['Status'] in ['Success','Failed','Cancelled','TimedOut']:
-  save('terminal.json',r)
-  out=r['StandardOutputContent']; print(out[-2000:]); print(r['StandardErrorContent'][-1000:])
+  kept=save_once('terminal.json',r)
+  if (kept['CommandId'],kept['InstanceId'],kept['Status'])!=(r['CommandId'],r['InstanceId'],r['Status']):raise ValueError('terminal receipt differs from the command state')
+  r=kept;out=r['StandardOutputContent']; print(out[-2000:]); print(r['StandardErrorContent'][-1000:])
   try:
-   if 'QSB_PUBLIC_RESULT_META=' in out:
-    value=collect(p/'chunks',s['instanceId'],out,aws,s['deadline'])
-   else:
-    value=decode_result(out)
-   save('public-results.json',value)
+   if not (p/'public-results.json').exists():
+    if 'QSB_PUBLIC_RESULT_META=' in out:
+     value=collect(p/'chunks',s['instanceId'],out,aws,s['deadline'])
+    else:
+     value=decode_result(out)
+    save('public-results.json',value)
   except Exception as error:
-   save('collection-error.json',{'error':str(error),'ssmStatus':r['Status'],'responseCode':r['ResponseCode']})
+   save_once('collection-error.json',{'error':str(error),'ssmStatus':r['Status'],'responseCode':r['ResponseCode']})
    print('Result collection failed; raw terminal evidence retained')
   finally:
-   save('terminate-response.json',aws('ec2','terminate-instances','--instance-ids',s['instanceId']))
+   # Termination is idempotent: always request it, keep the first response.
+   save_once('terminate-response.json',aws('ec2','terminate-instances','--instance-ids',s['instanceId']))
 elif mode=='terminate':
  print(json.dumps(aws('ec2','terminate-instances','--instance-ids',s['instanceId'])))

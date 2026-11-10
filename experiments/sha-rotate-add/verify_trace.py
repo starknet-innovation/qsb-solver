@@ -24,8 +24,14 @@ def check_case(plan,row,state,params,emulate,Transaction,TxIn,TxOut,find_and_del
         tx.add_output(TxOut(sp['output']['value'],bytes.fromhex(sp['output']['script_pubkey'])))
         if tx.sighash(1,sc,1).to_bytes(32,'big')!=emulated['sighash']:
             raise ValueError('full transaction/emulator mismatch')
-        if {records[(gpu,b)] for b in [0,1]}!={c['puzzle_hash'].hex() for c in emulated['candidates']}:
-            raise ValueError('CPU/GPU recovery hash mismatch')
+        # Bind each hash to its recovery id: an unordered comparison would accept the two hashes swapped,
+        # and an emitted hit carries the recovery id.
+        expected={c['recid']:c['puzzle_hash'].hex() for c in emulated['candidates']}
+        if len(emulated['candidates'])!=2 or set(expected)!={0,1}:
+            raise ValueError('CPU reference did not produce exactly one candidate per recovery id')
+        for recid in (0,1):
+            if records[(gpu,recid)]!=expected[recid]:
+                raise ValueError('CPU/GPU recovery hash mismatch')
     return dict(name=plan['name'],candidates=plan['count'],hashes=plan['count']*2)
 
 
