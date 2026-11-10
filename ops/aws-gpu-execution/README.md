@@ -120,7 +120,8 @@ collection failure retains raw terminal evidence and still requests termination.
 These transport checks do not validate solver output or grant range credit.
 
 The pinned CUDA development base lacks Python. The validation-only Dockerfile at
-`experiments/generic-sha-vector/Dockerfile.validation` adds the interpreter needed
+`experiments/generic-sha-vector/Dockerfile.validation`, on the
+`research/generic-sha-vector` branch and not on `main`, adds the interpreter needed
 by the Python runners. A build is not an approved runtime: record and verify its
 immutable registry digest, dependency checks and host handoff before allocation.
 Do not replace the frozen solver binaries with artifacts built in that image.
