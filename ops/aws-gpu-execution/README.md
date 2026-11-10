@@ -78,7 +78,12 @@ considered separately before any requested history rewrite.
 ## SSM shell and early-failure collection
 
 Use the committed `operate.py STATE_DIRECTORY MODE` adapter for future scoped
-experiments (`record`, `ready`, `send`, `poll`, `terminate`). Do not copy historical
+experiments (`record`, `ready`, `send`, `poll`, `terminate`). `ready` checks SSM
+registration only and exits non-zero unless the instance is online; it does not
+replace `ready.sh`, which the staged host command must run before any compute.
+`poll` exits 0 only for a successful command whose result was collected; a
+collection failure exits 4 and a failed command exits 5, both after termination
+has been requested. Do not copy historical
 operational adapters into a new run. `send` wraps the host template in an explicit
 `exec /bin/bash -s` with a quoted, collision-checked heredoc: AWS-RunShellScript's
 outer `/bin/sh` must never interpret Bash-only options, arrays or conditionals.

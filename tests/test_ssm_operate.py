@@ -61,6 +61,37 @@ class OperateTests(unittest.TestCase):
             self.assertEqual(sum('terminate-instances' in a for a in calls),2)
             (p/'terminal.json').write_text(json.dumps(dict(invocation,Status='Failed')))
             with self.assertRaises(ValueError):self.invoke(p,'poll',fake)
+    def test_failed_command_with_a_collected_result_is_not_a_success(self):
+        import base64,gzip,hashlib
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p)
+            (p/'send-response.json').write_text(json.dumps({'Command':{'CommandId':'cmd-test'}}))
+            body=base64.b64encode(gzip.compress(json.dumps({'exit-code.txt':'1'}).encode())).decode()
+            out='RESULT_SHA256='+hashlib.sha256(body.encode()).hexdigest()+'\nRESULT_BASE64='+body+'\n'
+            invocation=dict(CommandId='cmd-test',InstanceId='i-test',Status='Failed',ResponseCode=1,StandardOutputContent=out,StandardErrorContent='')
+            calls=[]
+            def fake(args,**kwargs):
+                calls.append(args)
+                if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                if 'get-command-invocation' in args:return json.dumps(invocation)
+                if 'terminate-instances' in args:return json.dumps({'TerminatingInstances':[{'InstanceId':'i-test'}]})
+                self.fail(str(args))
+            with self.assertRaises(SystemExit) as caught:self.invoke(p,'poll',fake)
+            self.assertEqual(caught.exception.code,5)
+            self.assertTrue((p/'public-results.json').exists())
+            self.assertEqual(sum('terminate-instances' in a for a in calls),1)
+    def test_ready_exits_nonzero_unless_the_instance_is_online(self):
+        for rows,code in (([],3),([{'InstanceId':'i-test','PingStatus':'ConnectionLost'}],3),([{'InstanceId':'i-other','PingStatus':'Online'}],3),([{'InstanceId':'i-test','PingStatus':'Online'}],None)):
+            with self.subTest(rows=rows),tempfile.TemporaryDirectory() as d:
+                p=Path(d);self.setup_state(p)
+                def fake(args,**kwargs):
+                    if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                    if 'describe-instance-information' in args:return json.dumps({'InstanceInformationList':rows})
+                    self.fail(str(args))
+                if code is None:self.invoke(p,'ready',fake)
+                else:
+                    with self.assertRaises(SystemExit) as caught:self.invoke(p,'ready',fake)
+                    self.assertEqual(caught.exception.code,code)
     def test_record_replaces_state_atomically_and_keeps_identities(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)
@@ -124,7 +155,8 @@ class OperateTests(unittest.TestCase):
                 if 'get-command-invocation' in args:return json.dumps(dict(CommandId='cmd-test',InstanceId='i-test',Status='Failed',ResponseCode=2,StandardOutputContent='',StandardErrorContent='set: Illegal option -o pipefail'))
                 if 'terminate-instances' in args:return json.dumps({'TerminatingInstances':[{'InstanceId':'i-test'}]})
                 self.fail(str(args))
-            self.invoke(p,'poll',fake)
+            with self.assertRaises(SystemExit) as caught:self.invoke(p,'poll',fake)
+            self.assertEqual(caught.exception.code,4)
             self.assertEqual(json.loads((p/'terminal.json').read_text())['ResponseCode'],2)
             self.assertIn('missing',json.loads((p/'collection-error.json').read_text())['error'])
             self.assertTrue((p/'terminate-response.json').exists())
