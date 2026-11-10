@@ -7,7 +7,7 @@ if not __debug__: raise RuntimeError("Run this operator without Python optimizat
 from ssm_command import bash_command, decode_result
 from chunk_results import collect
 MODES=('record','ready','send','poll','terminate')
-MIN_SEND_SECONDS=1620  # host gate minimum (1,200 s) plus a 420 s staging reserve; control.py launch allows for this
+MIN_SEND_SECONDS=2160  # host gate minimum (1,500 s) plus a 660 s staging reserve; control.py launch allows for this
 # A mistyped mode must fail loudly before any call: a silent no-op could leave a paid instance running.
 if len(sys.argv)!=3 or sys.argv[2] not in MODES:raise SystemExit('usage: operate.py STATE_DIRECTORY {'+'|'.join(MODES)+'}')
 p=pathlib.Path(sys.argv[1]).resolve()
@@ -48,8 +48,9 @@ if mode=='record':
 elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
- # The host gate needs 1,200 s when it starts, after staging (archive download, runner files, readiness).
- # Reserve 420 s for that staging so an accepted one-shot command is not rejected on the host.
+ # The host gate needs 1,500 s when it starts, after staging. Staging is bounded by a 120 s archive
+ # download, up to eleven 30 s runner-file fetches and a 180 s readiness wait: 630 s, reserved as 660 s,
+ # so an accepted one-shot command is not rejected on the host.
  assert time.time()+MIN_SEND_SECONDS<s['deadline'];assert not (p/'send-intent.json').exists()
  # The staging step records the digest of the template it rendered. Refuse a template that is missing
  # that record or no longer matches it, so an edited or replaced file is never executed remotely.

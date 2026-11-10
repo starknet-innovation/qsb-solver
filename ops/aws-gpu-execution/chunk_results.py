@@ -6,6 +6,7 @@ import io
 import json
 import os
 from pathlib import Path
+import subprocess
 import time
 from ssm_command import bash_command
 
@@ -73,7 +74,12 @@ def collect(directory, instance, stdout, aws, deadline, sleep=time.sleep):
             while True:
                 if time.time() >= end: raise TimeoutError('chunk read timed out')
                 sleep(2)
-                row = aws('ssm', 'get-command-invocation', '--command-id', cid, '--instance-id', instance)
+                # Run Command is eventually consistent: a just-sent command may not be visible yet.
+                # This is a read of an already persisted command, so retry it; never resend.
+                try:
+                    row = aws('ssm', 'get-command-invocation', '--command-id', cid, '--instance-id', instance)
+                except subprocess.CalledProcessError:
+                    continue
                 if row['CommandId'] != cid or row['InstanceId'] != instance: raise ValueError('chunk identity mismatch')
                 if row['Status'] in ('Pending', 'InProgress', 'Delayed'): continue
                 save(result, row); break

@@ -6,13 +6,15 @@ deadline, and the `operate.py` adapter. `main` still ships the original Ireland-
 25-minute controller. Review hardenings were added on top of that commit.
 `operate.py` rejects unknown modes before any call, syncs the state directory
 after writing each receipt and replaces `execution.json` atomically. `send` refuses a host template that does not match the
-digest its staging step recorded (`host-template.sh.sha256`), requires 1,620 s before
-the deadline so staging cannot eat into the 1,200 s the host gate needs, and lets the
+digest its staging step recorded (`host-template.sh.sha256`), requires 2,160 s before
+the deadline so staging cannot eat into the 1,500 s the host gate needs, and lets the
 SSM command run for up to 30 minutes, bounded by the instance deadline. `poll` can be
 rerun after an interruption: it reuses a stored terminal receipt, skips a result
 already collected and always requests termination again. `record` resumes the same
-way for a matching allocation receipt. `control.py launch` now requires 1,920 s before
-the deadline, so an instance that could not reach the send gate is never allocated. Nothing here is a launch permission, and the recorded gates
+way for a matching allocation receipt. `control.py launch` now requires 2,460 s before
+the deadline, so an instance that could not reach the send gate is never allocated.
+The chunk collector retries a lookup that fails because a just-sent command is not
+yet visible, without resending it. Nothing here is a launch permission, and the recorded gates
 are historical; do not restart them from these instructions. See
 [release status](../../docs/README.md).
 

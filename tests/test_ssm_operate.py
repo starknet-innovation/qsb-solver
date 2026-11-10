@@ -13,7 +13,7 @@ class OperateTests(unittest.TestCase):
     def setup_state(self,p):
         config=dict(profile='test',region='eu-west-2',account='123')
         (p/'operator.json').write_text(json.dumps(config))
-        (p/'execution.json').write_text(json.dumps(dict(operatorConfig=config,instanceId='i-test',deadline=int(time.time())+2000)))
+        (p/'execution.json').write_text(json.dumps(dict(operatorConfig=config,instanceId='i-test',deadline=int(time.time())+2600)))
     def stage(self,p,text='set -euo pipefail\necho __DEADLINE__'):
         import hashlib
         (p/'host-template.sh').write_text(text)
@@ -107,10 +107,14 @@ class OperateTests(unittest.TestCase):
         self.assertIn("<MIN_LAUNCH_SECONDS: raise ValueError('Insufficient time before deadline')",control)
         host=(ROOT/'experiments/sha-rotate-add/host-full.sh').read_text()
         before,after=[int(x) for x in re.findall(r'-ge (\d+) \]',host)]
-        self.assertEqual((before,after),(1200,900))
-        self.assertGreaterEqual(after,720+120+60)      # gate timeout, collector reserve, packaging
-        self.assertGreaterEqual(before,after+300)      # image pull limit
-        self.assertGreaterEqual(send,before+420)       # staging reserve
+        self.assertEqual((before,after),(1500,1200))
+        limit=int(re.search(r'len\(data\)>(\d+):raise ValueError\(\'encoded result too large\'\)',host).group(1))
+        chunks=-(-limit//18000)
+        self.assertGreaterEqual(after,720+60+chunks*8+120)  # gate, packaging, largest collection, collector reserve
+        self.assertGreaterEqual(before,after+300)           # image pull limit
+        stage=(ROOT/'experiments/sha-rotate-add/stage_full.py').read_text()
+        self.assertIn('--max-time 120',stage);self.assertIn('timeout=30',stage)
+        self.assertGreaterEqual(send,before+120+11*30+180)  # archive, at most eleven runner files, readiness
     def test_unknown_mode_fails_before_any_call(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)

@@ -48,6 +48,22 @@ class ChunkResultsTests(unittest.TestCase):
             (p/'0-result.json').write_text(json.dumps(r))
             with self.assertRaises(ValueError):collect(p,'i',out,aws,time.time()+600)
 
+    def test_lookup_before_the_command_is_visible_is_retried_without_resending(self):
+        import subprocess
+        data,meta=self.envelope({'result.json':'a public result'})
+        row={'CommandId':'c','InstanceId':'i','Status':'Success','ResponseCode':0,'StandardOutputContent':data.decode()}
+        calls=[]
+        def aws(*args):
+            calls.append(args[1])
+            if args[1]=='send-command':return {'Command':{'CommandId':'c'}}
+            if calls.count('get-command-invocation')<3:raise subprocess.CalledProcessError(254,'aws')
+            return row
+        with tempfile.TemporaryDirectory() as tmp:
+            out='QSB_PUBLIC_RESULT_META='+json.dumps(meta)
+            self.assertEqual(collect(Path(tmp)/'chunks','i',out,aws,time.time()+600,sleep=lambda _:None),{'result.json':'a public result'})
+        self.assertEqual(calls.count('send-command'),1)
+        self.assertEqual(calls.count('get-command-invocation'),3)
+
     def test_multiple_chunks_and_truncation(self):
         import random
         value={'log':random.Random(7).randbytes(50000).hex()}
