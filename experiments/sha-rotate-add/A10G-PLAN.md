@@ -121,7 +121,9 @@ state directory outside Git, which is never reused.
    script from a pushed commit. It downloads the frozen pair archive, checks its hash
    and every binary hash, fetches the runner files from that commit by hash, runs
    `ready.sh`, then `host-full.sh`.
-4. `operate.py STATE send` saves the literal command and its hash, then sends it once.
+4. `operate.py STATE send` checks the template against the digest staging recorded
+   (added after the run, in review), saves the literal command and its hash, then
+   sends it once.
    A saved send intent is never resent.
 5. `operate.py STATE poll` saves the terminal SSM record, collects the result in
    bounded chunks against the digest the host printed, and requests termination in

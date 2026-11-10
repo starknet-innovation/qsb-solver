@@ -2,15 +2,21 @@
 
 Status: **HOLD**. The candidate compiled for sm_86 on 9 November 2026 and passed
 native correctness checks on an A10G on 10 November, with a 3% round 1 gain (results
-below). It is not in any image and nothing is released. Production sources, `worker/optimized/source-lock.json`, binaries, images and
-descriptors are unchanged. There is no correctness or performance claim.
+below). It is not in any image and nothing is released.
+
+On this branch the patch **is applied** to `research/optimized-subset/subset/GPUHash.h`
+and `worker/optimized/source-lock.json` is updated for that file; see
+[the candidate record](../../docs/promotion/2026-11-10-rotate-add-candidate.md).
+Published binaries, images and descriptors are unchanged. The correctness and timing
+results below are for the isolated experiment binaries only and do not attest any
+image. Sections dated 9 November describe the experiment as it ran, when the patch was
+applied to a temporary copy and the committed source was untouched.
 
 ## What it is
 
-On the `candidate/sha-rotate-add` branch the patch is applied to the committed subset
-source; see [the candidate record](../../docs/promotion/2026-11-10-rotate-add-candidate.md).
-There the build below reverses the patch to rebuild the baseline. The description
-that follows is how the experiment ran.
+Because the committed source now carries the patch, the build described below
+reverses it to rebuild the baseline. The description that follows is how the
+experiment ran.
 
 `sha-rotate-add.patch` is upstream's change to `candidates/subset/GPUHash.h` between
 `1650caf53a32b0ea16aae9e490ebbf5a8686d632` and
@@ -178,8 +184,8 @@ new authorization. If the owner wants the gain:
 
 1. Decide whether about 2% of projected subset GPU time justifies a new release
    identity and its evidence.
-2. If yes, apply the patch to `research/optimized-subset`, regenerate the source lock,
-   add the provenance to `LICENSES.md` (needs legal review before reliance), and build
-   a `candidate-sm86-*` image.
+2. Source preparation is done on this branch: the patch is applied, the source lock
+   is regenerated and `LICENSES.md` records the provenance (needs legal review before
+   reliance). What remains is tagging a `candidate-sm86-*` image, which publishes it.
 3. That image is a new binary: it needs its own native component checks and a matched
    run before any descriptor. This experiment's receipts do not transfer to it.

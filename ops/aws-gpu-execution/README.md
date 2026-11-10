@@ -3,7 +3,12 @@
 On this research branch the controller is the research one, ported from
 `b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`: Ireland or London, a 60-minute absolute
 deadline, and the `operate.py` adapter. `main` still ships the original Ireland-only,
-25-minute controller. Nothing here is a launch permission, and the recorded gates
+25-minute controller. Three review hardenings were added on top of that commit:
+`operate.py` rejects unknown modes before any call, syncs the state directory after
+writing each receipt, and `send` refuses a host template that does not match the
+digest its staging step recorded (`host-template.sh.sha256`). `send` also lets the
+SSM command run for up to 30 minutes, bounded by the instance deadline, so the host
+script's own limits are not cut short. Nothing here is a launch permission, and the recorded gates
 are historical; do not restart them from these instructions. See
 [release status](../../docs/README.md).
 

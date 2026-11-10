@@ -41,6 +41,16 @@ class StagingTests(unittest.TestCase):
         arguments=('a'*40,'https://example.invalid/x','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
         with patch.object(stage,'ZIP_SHA',None),self.assertRaisesRegex(ValueError,'not frozen'):stage.render(*arguments)
         with patch.object(stage,'BINARIES',{**stage.BINARIES,'candidate-trace':None}),self.assertRaisesRegex(ValueError,'not frozen'):stage.render('a'*40,'https://example.invalid/x','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
+    def test_command_line_writes_template_and_digest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);url=root/'url.txt';url.write_text('https://example.invalid/archive\n');out=root/'host-template.sh'
+            argv=['stage_full.py','a'*40,str(url),'ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64,str(out)]
+            import runpy
+            with patch('sys.argv',argv),patch('subprocess.check_output',return_value=b'public bytes'):
+                runpy.run_path(str(PATH),run_name='__main__')
+            self.assertEqual((root/'host-template.sh.sha256').read_text().strip(),hashlib.sha256(out.read_bytes()).hexdigest())
+            with patch('sys.argv',argv),patch('subprocess.check_output',return_value=b'public bytes'),self.assertRaises(FileExistsError):
+                runpy.run_path(str(PATH),run_name='__main__')
     def test_moving_runtime_rejected(self):
         with self.assertRaises(ValueError):stage.render('a'*40,'https://example.invalid/x','image:latest','trace','b'*64)
 

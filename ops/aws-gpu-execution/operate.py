@@ -6,12 +6,19 @@ import json,pathlib,subprocess,sys,hashlib,time,os
 if not __debug__: raise RuntimeError("Run this operator without Python optimization")
 from ssm_command import bash_command, decode_result
 from chunk_results import collect
+MODES=('record','ready','send','poll','terminate')
+# A mistyped mode must fail loudly before any call: a silent no-op could leave a paid instance running.
+if len(sys.argv)!=3 or sys.argv[2] not in MODES:raise SystemExit('usage: operate.py STATE_DIRECTORY {'+'|'.join(MODES)+'}')
 p=pathlib.Path(sys.argv[1]).resolve()
 s=json.loads((p/'execution.json').read_text());config=json.loads((p/'operator.json').read_text())
 assert s['operatorConfig']==config
 
 def save(name,data):
  with (p/name).open('x') as f:json.dump(data,f,indent=2);f.flush();os.fsync(f.fileno())
+ # The directory entry must be durable too: a lost send intent could allow a second submission.
+ fd=os.open(p,os.O_RDONLY)
+ try:os.fsync(fd)
+ finally:os.close(fd)
 def aws(*args):
  return json.loads(subprocess.check_output(['aws','--profile',config['profile'],'--region',config['region'],'--output','json',*args],text=True,timeout=60,env={**os.environ,'AWS_MAX_ATTEMPTS':'1'}))
 assert aws('sts','get-caller-identity')['Account']==config['account']
@@ -24,8 +31,15 @@ elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
  assert time.time()+1080<s['deadline'];assert not (p/'send-intent.json').exists()
- command=bash_command((p/'host-template.sh').read_text().replace('__DEADLINE__',str(s['deadline'])))
- req={'InstanceIds':[s['instanceId']],'DocumentName':'AWS-RunShellScript','Parameters':{'commands':[command],'executionTimeout':['1200']},'TimeoutSeconds':60}
+ # The staging step records the digest of the template it rendered. Refuse a template that is missing
+ # that record or no longer matches it, so an edited or replaced file is never executed remotely.
+ template=(p/'host-template.sh').read_bytes();expected=(p/'host-template.sh.sha256').read_text().split()
+ if len(expected)!=1 or hashlib.sha256(template).hexdigest()!=expected[0]:raise ValueError('host template does not match its staged digest')
+ command=bash_command(template.decode().replace('__DEADLINE__',str(s['deadline'])))
+ # The host script's own limits (downloads, readiness, image pull, gate) can add up to about 30 minutes.
+ # SSM must not cut it short; the absolute instance deadline remains the hard bound.
+ execution_timeout=min(1800,int(s['deadline']-time.time())-60)
+ req={'InstanceIds':[s['instanceId']],'DocumentName':'AWS-RunShellScript','Parameters':{'commands':[command],'executionTimeout':[str(execution_timeout)]},'TimeoutSeconds':60}
  save('send-intent.json',{'request':req,'sha256':hashlib.sha256(command.encode()).hexdigest()})
  r=aws('ssm','send-command','--cli-input-json',json.dumps(req));save('send-response.json',r);print(r['Command']['CommandId'])
 elif mode=='poll':

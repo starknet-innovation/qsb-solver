@@ -68,3 +68,5 @@ if __name__=='__main__':
     commit,url_file,image,stage,receipt_sha,output=sys.argv[1:]
     script=render(commit,Path(url_file).read_text().strip(),image,stage,receipt_sha)
     with Path(output).open('x') as stream:stream.write(script)
+    # operate.py send refuses a template whose bytes no longer match this digest.
+    with Path(output+'.sha256').open('x') as stream:stream.write(hashlib.sha256(script.encode()).hexdigest()+'\n')
