@@ -17,8 +17,11 @@ esac
 systemctl is-active --quiet qsb-benchmark-expire.timer
 cd /opt/qsb-a10g-gate
 sha256sum -c SHA256SUMS
-mkdir /var/tmp/qsb-a10g-results
+# Host receipts live in $results and are never exposed to the container. The container gets its
+# own empty $output directory, and only result.json is taken from it afterwards.
+mkdir /var/tmp/qsb-a10g-results /var/tmp/qsb-a10g-output
 results=/var/tmp/qsb-a10g-results
+output=/var/tmp/qsb-a10g-output
 printf '%s\n' "$deadline" > "$results/deadline.txt"
 # No compute can begin before the pinned image is present and time is rechecked.
 # After the pull: the 720 s gate, 60 s to package, collection of the largest permitted result
@@ -38,19 +41,20 @@ timeout --signal=TERM --kill-after=10s 720 docker run --name qsb-full-gate --rm 
  --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
  --tmpfs /tmp:rw,exec,nosuid,nodev,size=512m \
  --mount type=bind,src=/opt/qsb-a10g-gate,dst=/gate,readonly \
- --mount type=bind,src="$results",dst=/results \
+ --mount type=bind,src="$output",dst=/results \
  --entrypoint python3 "$image" "/gate/tools/$runner" "${args[@]}" > "$results/gate.log" 2>&1
 status=$?
 set -e
 docker rm -f qsb-full-gate >/dev/null 2>&1 || true
 printf '%s\n' "$status" > "$results/exit-code.txt"
-python3 - "$results" <<'PY'
+python3 - "$results" "$output" <<'PY'
 import base64,gzip,hashlib,json,os,pathlib,stat,sys
-root=pathlib.Path(sys.argv[1]);files={};total=0
-# The container could write here. Never follow a link out of the results directory: accept
-# regular files only, and open them without following symlinks. Stop as soon as the entry
-# count or the cumulative size passes its limit, before more is read into memory.
-for p in sorted(root.iterdir()):
+root=pathlib.Path(sys.argv[1]);output=pathlib.Path(sys.argv[2]);files={};total=0
+# Never follow a link out of either directory: accept regular files only, and open them
+# without following symlinks. Stop as soon as the entry count or the cumulative size passes
+# its limit, before more is read into memory.
+def take(p):
+    global total
     if len(files)>=32:raise ValueError('too many result entries')
     if not stat.S_ISREG(os.lstat(p).st_mode):raise ValueError('non-regular result entry: '+p.name)
     fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW)
@@ -59,6 +63,11 @@ for p in sorted(root.iterdir()):
         data=f.read(8000001-total);total+=len(data)
         if total>8000000:raise ValueError('result too large')
         files[p.name]=data.decode()
+# Host receipts first: the container never had access to this directory.
+for p in sorted(root.iterdir()):take(p)
+if 'result.json' in files:raise ValueError('host receipts must not contain result.json')
+# From the container's directory take result.json only; anything else it wrote is ignored.
+if os.path.lexists(output/'result.json'):take(output/'result.json')
 raw=json.dumps(files).encode()
 if len(raw)>8000000:raise ValueError('result too large')
 data=base64.b64encode(gzip.compress(raw))
