@@ -42,6 +42,23 @@ from the experiment's candidate (`bba9c4af12d6…`), exactly as the published su
 binary differs from the experiment's baseline. The experiment shows the source change
 is sound and worth building; it is not a receipt for the image.
 
+## Build check on this branch
+
+CI run 42777354221 rebuilt the experiment variants from the committed source, with
+the baseline produced by reversing the patch.
+
+- **Device code is identical** to the measured binaries: the SASS hashes equal the
+  frozen ones (`1e13e1493970…` baseline, `78c18c758b14…` candidate).
+- **The file hashes are not.** Baseline and candidate each differ from the frozen
+  binaries by one byte, in a compiler temporary name (`tmpxft_…`) that embeds a
+  process counter. Moving the patch step from the candidate to the baseline shifted
+  that counter. The control variant, whose position in the build did not change, kept
+  its hash.
+
+So a binary hash identifies one build, not the source, and two builds of the same
+source can differ. Compare disassembly when the question is whether device code
+changed, and keep binding evidence to the exact binary hash that ran.
+
 ## Gates before any descriptor
 
 Each is a separate step. The first publishes and the third and fourth cost money, so
