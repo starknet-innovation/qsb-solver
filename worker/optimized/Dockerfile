@@ -9,9 +9,16 @@ ARG CUDA_ARCH=89
 RUN CUDA_ARCH=${CUDA_ARCH} python3 /src/worker/optimized/build.py
 FROM nvidia/cuda:12.8.1-runtime-ubuntu22.04@sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd AS runtime
 # Same Ubuntu-only update as worker/Dockerfile: the pinned CUDA user-space packages stay unchanged.
-RUN apt-get -o Dir::Etc::SourceParts=/nonexistent update \
- && DEBIAN_FRONTEND=noninteractive apt-get -o Dir::Etc::SourceParts=/nonexistent upgrade -y \
- && apt-get -o Dir::Etc::SourceParts=/nonexistent install -y --no-install-recommends python3 libssl3 \
+# Ubuntu's mirrors are briefly inconsistent after a package is superseded (index lists a file
+# that is already gone). Refresh the index and try again, at most three times.
+RUN for attempt in 1 2 3; do \
+      apt-get -o Dir::Etc::SourceParts=/nonexistent update \
+   && DEBIAN_FRONTEND=noninteractive apt-get -o Dir::Etc::SourceParts=/nonexistent upgrade -y \
+   && apt-get -o Dir::Etc::SourceParts=/nonexistent install -y --no-install-recommends python3 libssl3 \
+   && break; \
+      [ "$attempt" -lt 3 ] || exit 1; \
+      sleep 20; \
+    done \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=build /opt/qsb-validation /opt/qsb-validation
 # Preserve GPL terms referenced by GPUMath/GPUHash as well as the top-level Apache license.
