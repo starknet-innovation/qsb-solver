@@ -18,6 +18,10 @@ class OperatorConfigTests(unittest.TestCase):
         p=patch.dict(os.environ,QSB_AWS_OPERATOR_CONFIG=str(self.path));p.start();self.addCleanup(p.stop)
     def test_exact_external_configuration(self):
         self.assertEqual(m.load_config(),self.value)
+    def test_explicit_london_configuration(self):
+        self.value['region']='eu-west-2'
+        self.path.write_text(json.dumps(self.value))
+        self.assertEqual(m.load_config(),self.value)
     def test_missing_configuration_rejected(self):
         with patch.dict(os.environ,{},clear=True):
             with self.assertRaises(ValueError):m.load_config()

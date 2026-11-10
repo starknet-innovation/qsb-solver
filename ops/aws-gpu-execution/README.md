@@ -1,15 +1,30 @@
 # One-shot optimized A10G gate
 
-This documents the controller shipped on `main`, with its original Ireland scope
-and 25-minute deadline. Later research-branch controllers and campaign permissions
-do not change this implementation. The recorded gate is historical; do not restart
-it from these instructions. See [release status](../../docs/README.md).
+This is the research controller, ported from
+`b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`: Ireland or London, a 60-minute absolute
+deadline, and the `operate.py` adapter. It replaces the original Ireland-only,
+25-minute controller, whose recorded gates keep their original deadlines. Review
+hardenings were added on top of that commit.
+`operate.py` rejects unknown modes before any call, syncs the state directory
+after writing each receipt and replaces `execution.json` atomically. `send` refuses a host template that does not match the
+digest its staging step recorded (`host-template.sh.sha256`, one hex SHA-256 line written
+when the template is rendered; a staging step that does not write it cannot be sent), requires 2,160 s before
+the deadline so staging cannot eat into the 1,500 s the host gate needs, and lets the
+SSM command run for up to 30 minutes, bounded by the instance deadline. `poll` can be
+rerun after an interruption: it reuses a stored terminal receipt, skips a result
+already collected and always requests termination again. `record` resumes the same
+way for a matching allocation receipt. `control.py launch` now requires 2,460 s before
+the deadline, so an instance that could not reach the send gate is never allocated.
+The chunk collector retries a lookup that fails because a just-sent command is not
+yet visible, without resending it. Nothing here is a launch permission, and the recorded gates
+are historical; do not restart them from these instructions. See
+[release status](../../docs/README.md).
 
 Adapted from the completed qsb-app AWS execution controller at c8c6f21833798900ae1e6a21f0b5d10d2adab291.
-This operator-specific experiment uses one g5.xlarge in eu-west-1. No app activation.
+This operator-specific experiment uses one g5.xlarge in an explicitly authorized region (eu-west-1 or eu-west-2). No app activation.
 Before launch: verify price, effective quota, zero other test GPUs, clean pushed
 controller source and exact candidate attestation. Prepare creates dedicated SSM-only
-host access and a tagged-instance cleanup role. Arm records an absolute 25-minute
+host access and a tagged-instance cleanup role. Arm records an absolute 60-minute
 deadline; the independent Scheduler invokes cleanup in the following full minute
 (to avoid an early minute-precision invocation). Guest shutdown shares the deadline.
 Control-plane latency is not a guaranteed billing ceiling. Terminate immediately
@@ -50,7 +65,7 @@ The file contains exactly `account`, `profile`, `region`, `ami`, `subnet`, and
 ```
 
 These are placeholders, not launch configuration. The controller verifies STS
-against the configured account and restricts the region to Ireland. New external
+against the configured account and restricts the region to Ireland or London. Regional AMI/network values must be independently verified; existing execution state cannot change region. New external
 execution receipts freeze the configuration; resume rejects changes or legacy
 state without that binding. Never mutate an old receipt to bypass that check:
 reconcile prior resources using their original committed controller and scope.
@@ -58,3 +73,55 @@ No prior experiment is authorized to relaunch by this configuration change.
 Keep original private operational receipts outside Git; public evidence uses
 hashes and cleanup counts. Earlier branch history remains unchanged and must be
 considered separately before any requested history rewrite.
+
+## SSM shell and early-failure collection
+
+Use the committed `operate.py STATE_DIRECTORY MODE` adapter for future scoped
+experiments (`record`, `ready`, `send`, `poll`, `terminate`). Do not copy historical
+operational adapters into a new run. `send` wraps the host template in an explicit
+`exec /bin/bash -s` with a quoted, collision-checked heredoc: AWS-RunShellScript's
+outer `/bin/sh` must never interpret Bash-only options, arrays or conditionals.
+The literal wrapped command and its hash are saved before the single SSM send.
+An existing send intent is still non-retryable until reconciled.
+
+On terminal SSM failure, raw output is saved even if the host failed before emitting
+its result envelope. Missing, duplicate, oversized or malformed result envelopes
+produce a separate collection-error receipt; instance termination remains in the
+`finally` path. A result-envelope error never counts as a successful GPU gate.
+
+The 30 September allocated experiment failed at its first `set -o pipefail` under
+`/bin/sh`; no GPU test ran. Its instance, root volume and temporary infrastructure
+were independently confirmed deleted. Original execution receipts remain unchanged.
+Six local transport/operator regression tests cover the shell failure, literal
+payload preservation, pipeline failure status, result validation, durable send
+intent and termination after missing results. These tests use inert local Bash
+and mocked AWS responses, not a new cloud execution. The capacity watcher remains
+paused; correcting this adapter does not automatically authorize another paid run.
+
+## Extended multi-region capacity watch
+
+The operator authorized sequential London and Ireland capacity checks and a maximum
+60-minute host lifetime on 30 September. Each new scope keeps one g5.xlarge,
+independent cleanup and the same absolute guest deadline. Never extend an active
+deadline. Terminate immediately when the prepared gate finishes or fails. Existing
+25-minute receipts retain their original deadlines. A longer lifetime is not an
+advance capacity reservation and does not change the 12-minute outer compute limit
+or authorize additional paid experiments after an allocated attempt.
+
+## Large public validation results
+
+The adapter also accepts a single `QSB_PUBLIC_RESULT_META` line binding the byte
+length and SHA256 of `/var/tmp/qsb-a10g-results/public-result.b64`. It reads at most
+2 MB of encoded output in 18 KB SSM chunks, checks command/instance identities,
+then verifies the assembled checksum before decoding at most 8 MB of flat text
+files. Every read submission has a durable intent. An uncertain send is never
+retried automatically. Collection must leave two minutes before host shutdown;
+collection failure retains raw terminal evidence and still requests termination.
+These transport checks do not validate solver output or grant range credit.
+
+The pinned CUDA development base lacks Python. The validation-only Dockerfile at
+`experiments/generic-sha-vector/Dockerfile.validation`, on the
+`research/generic-sha-vector` branch and not on `main`, adds the interpreter needed
+by the Python runners. A build is not an approved runtime: record and verify its
+immutable registry digest, dependency checks and host handoff before allocation.
+Do not replace the frozen solver binaries with artifacts built in that image.
