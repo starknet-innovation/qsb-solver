@@ -1,0 +1,540 @@
+{
+  "status": "completed",
+  "baselineSha256": "8664f41f3deeeb91b3d189db3df469570c83e90610e4b54a955e2a625486606c",
+  "candidateSha256": "bba9c4af12d65de4ffeea7c202ae2f830e815855a1f45a9f62f398730a9e65e1",
+  "gpu": "NVIDIA A10G, 595.91.07",
+  "prerequisiteSha256": {
+    "native-trace-cpu.json": "0af420a8f8cbf71eaae82d815d2e25811b4d5328760ca732d1b8918fb066e167",
+    "native-ranges.json": "2bb26076526dcc2cc39e2e9503e2a8186fc8027ad06b00f6f54baef694fe308d"
+  },
+  "fixtureSha256": "e7975d3061ccd7246c0d4548eeab201710a93959b63a2fcbd3a602e9790b99b9",
+  "regressionSha256": "2bb26076526dcc2cc39e2e9503e2a8186fc8027ad06b00f6f54baef694fe308d",
+  "samples": [
+    {
+      "name": "taproot-round1",
+      "sample": 0,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 14.277464021000014,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.61s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (44.9M/s)\n",
+      "summary": "STARTED 1794293764 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293776 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 0,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.427662902000009,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (46.4M/s)\n",
+      "summary": "STARTED 1794293778 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293789 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 1,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.194230315000027,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (46.5M/s)\n",
+      "summary": "STARTED 1794293790 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293801 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 1,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.597828628000002,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.0M/s)\n",
+      "summary": "STARTED 1794293802 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293814 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 2,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.561286812999981,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.0M/s)\n",
+      "summary": "STARTED 1794293815 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293827 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 2,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.224453649999987,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (46.4M/s)\n",
+      "summary": "STARTED 1794293827 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293839 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 3,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.195010260000004,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (46.5M/s)\n",
+      "summary": "STARTED 1794293839 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293851 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round1",
+      "sample": 3,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.515386525999986,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9917, tail=5154, suffix=56, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.2M/s)\n",
+      "summary": "STARTED 1794293852 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293863 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 0,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.150585059000036,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (82.6M/s)\n",
+      "summary": "STARTED 1794293864 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293871 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 0,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.106287518999977,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.2M/s)\n",
+      "summary": "STARTED 1794293871 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293878 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 1,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.099211860000025,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.1M/s)\n",
+      "summary": "STARTED 1794293878 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293885 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 1,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.135984977000021,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (82.6M/s)\n",
+      "summary": "STARTED 1794293885 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293892 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 2,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.134817287000033,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (82.7M/s)\n",
+      "summary": "STARTED 1794293893 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293899 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 2,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.1371583060000034,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.0M/s)\n",
+      "summary": "STARTED 1794293900 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293906 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 3,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.106323955999983,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.1M/s)\n",
+      "summary": "STARTED 1794293907 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293913 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "taproot-round2",
+      "sample": 3,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.153932998000016,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9918, tail=218, suffix=56, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=48) tx_suffix_len=56\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 7s (82.5M/s)\n",
+      "summary": "STARTED 1794293914 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293921 total_attempts=536870912 elapsed_s=7 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 0,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.477467633000003,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.4M/s)\n",
+      "summary": "STARTED 1794293921 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293933 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 0,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.123001889000022,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 11s (46.8M/s)\n",
+      "summary": "STARTED 1794293934 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293945 total_attempts=536870912 elapsed_s=11 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 1,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.084965007999983,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 11s (46.9M/s)\n",
+      "summary": "STARTED 1794293946 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293957 total_attempts=536870912 elapsed_s=11 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 1,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.47325761899998,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.4M/s)\n",
+      "summary": "STARTED 1794293958 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293970 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 2,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.440697416999967,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.5M/s)\n",
+      "summary": "STARTED 1794293970 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293982 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 2,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.088050984999995,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 11s (46.9M/s)\n",
+      "summary": "STARTED 1794293983 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794293994 total_attempts=536870912 elapsed_s=11 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 3,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.105916809000007,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 11s (46.8M/s)\n",
+      "summary": "STARTED 1794293995 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294006 total_attempts=536870912 elapsed_s=11 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round1",
+      "sample": 3,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 12.484116667999956,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9905, tail=5154, suffix=44, prefix_rem=33\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 80 complete blocks, alignment 35\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 12s (45.3M/s)\n",
+      "summary": "STARTED 1794294007 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294019 total_attempts=536870912 elapsed_s=12 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 0,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.095200810999984,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.6M/s)\n",
+      "summary": "STARTED 1794294020 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294026 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 0,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.0184425369999985,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (84.1M/s)\n",
+      "summary": "STARTED 1794294027 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294033 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 1,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.027201493999996,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.36s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (84.0M/s)\n",
+      "summary": "STARTED 1794294034 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294040 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 1,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.0769604530000265,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.5M/s)\n",
+      "summary": "STARTED 1794294041 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294047 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 2,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.072524057999999,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.5M/s)\n",
+      "summary": "STARTED 1794294048 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294054 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 2,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.030042762999983,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (84.1M/s)\n",
+      "summary": "STARTED 1794294055 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294061 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 3,
+      "binary": "candidate",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.031633042000067,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (84.0M/s)\n",
+      "summary": "STARTED 1794294062 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294068 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    },
+    {
+      "name": "wpkh-round2",
+      "sample": 3,
+      "binary": "baseline",
+      "count": 536870912,
+      "rank": 0,
+      "seconds": 7.06089968099991,
+      "exit": 0,
+      "timedOut": false,
+      "log": "QSB Digest Search [GPU 0]\n  GPU: NVIDIA A10G (80 SMs)\n  Loaded: n=150, t=9, preimage=9906, tail=218, suffix=44, prefix_rem=42\n  Patched tx_suffix: seq=0x80000000 (off=0) lt=500000000 (off=36) tx_suffix_len=44\n  GTable built on GPU in 0.37s (1048576 points, 64 MiB total, spot check passed)\nGeneric tail cache: 3 complete blocks, alignment 44\n  Mode: REAL, GPU 0 (global 0 of 1)\n  Batch: 8388608 combos per kernel launch\n  Search space (GLOBAL): C(150,9) = 82947113349100 combos\n  Search space (this GPU's slice): 82947113349100 combos (100.000% of global)\n  Using GPU-enum fast path (no CPU fill, base-linear)\n\n  [GPU 0] Done enum: 536M in 6s (83.6M/s)\n",
+      "summary": "STARTED 1794294069 gpu=0 seq=0x80000000 lt=500000000 calibrate=0 easy=0 single_hash=1\n# Sanity check: this line proves the file is writable.\n# Format: STARTED|PROGRESS|HIT|STATUS=...\n# Hits are also written to digest_hit_<gpu>.txt and digest_calibrate_<gpu>.txt\nSTATUS=EXHAUSTED 1794294075 total_attempts=536870912 elapsed_s=6 hits=0\n",
+      "hitFiles": {}
+    }
+  ],
+  "freshWithdrawal": false,
+  "grantsRangeCredit": false,
+  "summary": {
+    "taproot-round1": {
+      "seconds": {
+        "baseline": [
+          14.277464021000014,
+          12.597828628000002,
+          12.561286812999981,
+          12.515386525999986
+        ],
+        "candidate": [
+          12.427662902000009,
+          12.194230315000027,
+          12.224453649999987,
+          12.195010260000004
+        ]
+      },
+      "firstPairIsColdStart": true,
+      "throughputGainPercent": 3.028942542416324,
+      "wallTimeReductionPercent": 2.939894817584232,
+      "projectedFullRangeSeconds": {
+        "baseline": 456.87884867200046,
+        "candidate": 397.6852128640003
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "taproot-round2": {
+      "seconds": {
+        "baseline": [
+          7.150585059000036,
+          7.135984977000021,
+          7.134817287000033,
+          7.153932998000016
+        ],
+        "candidate": [
+          7.106287518999977,
+          7.099211860000025,
+          7.1371583060000034,
+          7.106323955999983
+        ]
+      },
+      "firstPairIsColdStart": true,
+      "throughputGainPercent": 0.5203727768833488,
+      "wallTimeReductionPercent": 0.5176789167290141,
+      "projectedFullRangeSeconds": {
+        "baseline": 228.92585593600052,
+        "candidate": 228.3890657920001
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "wpkh-round1": {
+      "seconds": {
+        "baseline": [
+          12.477467633000003,
+          12.47325761899998,
+          12.440697416999967,
+          12.484116667999956
+        ],
+        "candidate": [
+          12.123001889000022,
+          12.084965007999983,
+          12.088050984999995,
+          12.105916809000007
+        ]
+      },
+      "firstPairIsColdStart": true,
+      "throughputGainPercent": 3.1278766031409555,
+      "wallTimeReductionPercent": 3.0330078599191124,
+      "projectedFullRangeSeconds": {
+        "baseline": 399.4917333759986,
+        "candidate": 387.9360604480007
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    },
+    "wpkh-round2": {
+      "seconds": {
+        "baseline": [
+          7.095200810999984,
+          7.0769604530000265,
+          7.072524057999999,
+          7.06089968099991
+        ],
+        "candidate": [
+          7.0184425369999985,
+          7.027201493999996,
+          7.030042762999983,
+          7.031633042000067
+        ]
+      },
+      "firstPairIsColdStart": true,
+      "throughputGainPercent": 0.6561759354370977,
+      "wallTimeReductionPercent": 0.6518983354364405,
+      "projectedFullRangeSeconds": {
+        "baseline": 227.04642595199948,
+        "candidate": 225.01225734400214
+      },
+      "projectionMethod": "maximum startup-inclusive sample scaled linearly",
+      "candidateWithin840SecondWorkerLimit": true
+    }
+  },
+  "decision": {
+    "rule": "round1 median gain >= 2.0% for both layouts and round2 not more than 0.5% slower",
+    "minimumRound1GainPercent": 3.028942542416324,
+    "minimumRound2GainPercent": 0.5203727768833488,
+    "outcome": "worth-release-candidate-review"
+  }
+}

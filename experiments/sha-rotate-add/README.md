@@ -1,7 +1,8 @@
 # Isolated SHA-256 rotate-add rounds (audit row 8)
 
-Status: **HOLD, unexecuted**. The variants compiled for sm_86 in CI on 9 November
-2026 (result below); no binary has been run on a GPU. Production sources, `worker/optimized/source-lock.json`, binaries, images and
+Status: **HOLD**. The candidate compiled for sm_86 on 9 November 2026 and passed
+native correctness checks on an A10G on 10 November, with a 3% round 1 gain (results
+below). It is not in any image and nothing is released. Production sources, `worker/optimized/source-lock.json`, binaries, images and
 descriptors are unchanged. There is no correctness or performance claim.
 
 ## What it is
@@ -118,11 +119,62 @@ candidate binary has not run, so nothing here shows it is correct or faster on a
 A10G. The earlier SHA experiment changed seven instructions and showed no benefit;
 this one changes about 6% of the kernel, which is the reason to measure it.
 
+## Native result, 10 November 2026
+
+Three one-shot `g5.xlarge` sessions in Ireland (NVIDIA A10G, driver 595.91.07), run
+under the plan in [A10G-PLAN.md](A10G-PLAN.md) with the owner's authorization. Public
+synthetic inputs only. Receipts are in [evidence/](evidence/): `native-ranges.json`,
+`native-trace-cpu.json`, `native-timing.json` and `native-sessions.json`.
+
+**Correctness: passed.**
+
+- Ranges: 32 of 32 samples complete. Baseline and candidate reported the same
+  exhausted counts and no hits on four ranges in each of the four contexts.
+- CPU differential: the candidate's recovered-key hashes matched qsb-app's CPU
+  reference for all 3,116 candidates (6,232 hashes) across the 20 trace fixtures. The
+  trace came from the diagnostic build; the unmodified candidate ran the same ranges.
+
+**Timing: a small gain that meets the rule fixed in advance.** Startup-inclusive wall
+seconds for 2^29 ranks, four interleaved pairs per context, one GPU:
+
+| Context | Baseline samples | Candidate samples | Baseline median | Candidate median | Throughput gain |
+| --- | --- | --- | --- | --- | --- |
+| taproot-round1 | 14.28, 12.60, 12.56, 12.52 | 12.43, 12.19, 12.22, 12.20 | 12.580 | 12.210 | +3.03% |
+| taproot-round2 | 7.15, 7.14, 7.13, 7.15 | 7.11, 7.10, 7.14, 7.11 | 7.143 | 7.106 | +0.52% |
+| wpkh-round1 | 12.48, 12.47, 12.44, 12.48 | 12.12, 12.08, 12.09, 12.11 | 12.475 | 12.097 | +3.13% |
+| wpkh-round2 | 7.10, 7.08, 7.07, 7.06 | 7.02, 7.03, 7.03, 7.03 | 7.075 | 7.029 | +0.66% |
+
+- Round 1 gains 3.0% and 3.1%; round 2 gains 0.5% and 0.7%. The rule was at least 2%
+  in round 1 for both layouts and round 2 no more than 0.5% slower, so the outcome is
+  **worth a release-candidate review**.
+- The round 2 gains are about the size of the sample spread (0.1% to 0.6%), so treat
+  round 2 as unchanged rather than improved.
+- The first baseline sample of the first context was a cold start (14.28 s against
+  about 12.5 s). Medians are not affected, and the gain is the same with first
+  samples dropped.
+- Scaled linearly to full ranges, the medians save about 13 s of roughly 631 s of
+  subset GPU time for one layout and 14 s of 626 s for the other, close to 2%.
+  That is a projection from bounded samples, not a measured full range.
+
+Limits: one GPU, one session, four pairs. This is component timing for the subset
+stage. It is not whole-withdrawal time or cost, not complete-range coverage, and not
+an on-chain fee. Pinning is untouched. The candidate is not in any image.
+
+Cost and cleanup: USD 15 was reserved against the authorized cap; about USD 0.40 of
+compute was used (21.4 instance-minutes at USD 1.123 per hour, excluding storage and
+address charges). Provider billing has not been read. All three instances and their
+volumes are gone, and a final check of both regions found no temporary resource left.
+One extra scope failed at arming before any launch and created no instance.
+
 ## Next steps
 
-The native run is planned, not authorized, in [A10G-PLAN.md](A10G-PLAN.md).
+The authorized run is complete and its budget is used; any further paid run needs a
+new authorization. If the owner wants the gain:
 
-1. Review the artifact and record the hashes here.
-2. Run the existing native component checks on the candidate binary.
-3. One matched A10G run against the published image, with interleaved samples. That
-   needs a complete test and collection plan and explicit authorization first.
+1. Decide whether about 2% of projected subset GPU time justifies a new release
+   identity and its evidence.
+2. If yes, apply the patch to `research/optimized-subset`, regenerate the source lock,
+   add the provenance to `LICENSES.md` (needs legal review before reliance), and build
+   a `candidate-sm86-*` image.
+3. That image is a new binary: it needs its own native component checks and a matched
+   run before any descriptor. This experiment's receipts do not transfer to it.

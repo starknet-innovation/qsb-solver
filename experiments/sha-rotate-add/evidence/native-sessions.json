@@ -1,11 +1,26 @@
 {
-  "controllerCommit": "6fa7e8b17786920c66fc352d5e20cef8db88fa3c",
+  "estimateBasis": "21.4 instance-minutes from launch to termination request at USD 1.123 per hour; excludes EBS, IPv4 and control-plane charges",
+  "estimatedComputeUsd": 0.4,
+  "finalReconciliation": {
+    "at": "2026-11-10T07:08:20Z",
+    "functions": 0,
+    "instanceProfiles": 0,
+    "instancesNotTerminated": 0,
+    "regionsChecked": [
+      "eu-west-1",
+      "eu-west-2"
+    ],
+    "roles": 0,
+    "schedules": 0,
+    "securityGroups": 0,
+    "volumes": 0
+  },
   "gpu": "NVIDIA A10G, driver 595.91.07",
   "instanceType": "g5.xlarge",
   "providerBillingKnown": false,
   "region": "eu-west-1",
-  "reservedUsd": 10,
-  "scope": "Public synthetic inputs. Sampled ranges and a 3,116-candidate CPU differential; not whole-domain proof, no range credit, no fresh withdrawal.",
+  "reservedUsd": 15,
+  "scope": "Public synthetic inputs. Sampled ranges, a 3,116-candidate CPU differential and bounded startup-inclusive timing on one A10G; not whole-domain proof, no range credit, no fresh withdrawal, not whole-pipeline cost.",
   "sessionA": {
     "cleanupVerified": true,
     "launched": "2026-11-10T06:12:54Z",
@@ -15,6 +30,7 @@
     "status": "completed",
     "terminationRequested": "2026-11-10T06:18:10Z"
   },
+  "sessionAandBControllerCommit": "6fa7e8b17786920c66fc352d5e20cef8db88fa3c",
   "sessionB": {
     "candidates": 3116,
     "cleanupVerified": true,
@@ -26,5 +42,21 @@
     "status": "passed",
     "terminationRequested": "2026-11-10T06:33:03Z",
     "unlaunchedAttempt": "A first scope failed at arm before launch (new IAM role not yet assumable); zero instances were created; it was cleaned up and verified."
+  },
+  "sessionC": {
+    "cleanupVerified": true,
+    "controllerCommit": "3b1880a",
+    "decision": {
+      "minimumRound1GainPercent": 3.028942542416324,
+      "minimumRound2GainPercent": 0.5203727768833488,
+      "outcome": "worth-release-candidate-review",
+      "rule": "round1 median gain >= 2.0% for both layouts and round2 not more than 0.5% slower"
+    },
+    "launched": "2026-11-10T06:51:56Z",
+    "resultSha256": "8d7a9b74946bad9c3067741a3017b3756c47537ccf117dde066a3ef5f8d72d9a",
+    "samples": 32,
+    "stage": "timing",
+    "status": "completed",
+    "terminationRequested": "2026-11-10T07:01:46Z"
   }
 }

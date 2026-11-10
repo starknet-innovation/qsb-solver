@@ -1,10 +1,10 @@
 # A10G native plan for the SHA rotate-add candidate
 
-Status: **authorized on 9 November 2026, not yet launched**. The owner authorized
-exactly this plan: at most three one-shot sessions, a USD 15 reservation cap, a
-60-minute lifetime per session, in Ireland or London. Nothing has been launched or
-reserved. The authorization covers this plan only; it does not extend to reruns,
-other candidates, a larger budget or any release step. Earlier campaign budgets,
+Status: **executed on 10 November 2026; authorization used up**. The owner authorized
+exactly this plan on 9 November: at most three one-shot sessions, a USD 15 reservation
+cap, a 60-minute lifetime per session, in Ireland or London. All three sessions ran
+and were cleaned up; results are in the [README](README.md). Nothing further is
+authorized: no rerun, other candidate, larger budget or release step. Earlier campaign budgets,
 schedules and approvals do not carry over to it. Operator configuration, account
 details and private receipts stay outside Git, as for every earlier run.
 
