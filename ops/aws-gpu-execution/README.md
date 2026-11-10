@@ -1,12 +1,14 @@
 # One-shot optimized A10G gate
 
-On this research branch the controller is the research one, ported from
+This is the research controller, ported from
 `b96752330d6d376a5bb0ba97cb6b2abe37d4e9eb`: Ireland or London, a 60-minute absolute
-deadline, and the `operate.py` adapter. `main` still ships the original Ireland-only,
-25-minute controller. Review hardenings were added on top of that commit.
+deadline, and the `operate.py` adapter. It replaces the original Ireland-only,
+25-minute controller, whose recorded gates keep their original deadlines. Review
+hardenings were added on top of that commit.
 `operate.py` rejects unknown modes before any call, syncs the state directory
 after writing each receipt and replaces `execution.json` atomically. `send` refuses a host template that does not match the
-digest its staging step recorded (`host-template.sh.sha256`), requires 2,160 s before
+digest its staging step recorded (`host-template.sh.sha256`, one hex SHA-256 line written
+when the template is rendered; a staging step that does not write it cannot be sent), requires 2,160 s before
 the deadline so staging cannot eat into the 1,500 s the host gate needs, and lets the
 SSM command run for up to 30 minutes, bounded by the instance deadline. `poll` can be
 rerun after an interruption: it reuses a stored terminal receipt, skips a result

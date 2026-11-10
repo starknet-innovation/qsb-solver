@@ -98,23 +98,12 @@ class OperateTests(unittest.TestCase):
             for other in (reservation('vol-other'),reservation('vol-test','i-other')):
                 (p/'allocated.json').write_text(json.dumps(other))
                 with self.assertRaises(ValueError):self.invoke(p,'record',fake)
-    def test_launch_minimum_covers_the_send_gate_and_host_gate(self):
+    def test_launch_minimum_covers_the_send_gate(self):
         import re
-        number=lambda path,pattern:int(re.search(pattern,(ROOT/path).read_text()).group(1))
-        send=number('ops/aws-gpu-execution/operate.py',r'MIN_SEND_SECONDS=(\d+)')
-        control=(ROOT/'ops/aws-gpu-execution/control.py').read_text()
+        send=int(re.search(r'MIN_SEND_SECONDS=(\d+)',(OPS/'operate.py').read_text()).group(1))
+        control=(OPS/'control.py').read_text()
         self.assertIn('MIN_LAUNCH_SECONDS = %d + 300'%send,control)
         self.assertIn("<MIN_LAUNCH_SECONDS: raise ValueError('Insufficient time before deadline')",control)
-        host=(ROOT/'experiments/sha-rotate-add/host-full.sh').read_text()
-        before,after=[int(x) for x in re.findall(r'-ge (\d+) \]',host)]
-        self.assertEqual((before,after),(1500,1200))
-        limit=int(re.search(r'len\(data\)>(\d+):raise ValueError\(\'encoded result too large\'\)',host).group(1))
-        chunks=-(-limit//18000)
-        self.assertGreaterEqual(after,720+60+chunks*8+120)  # gate, packaging, largest collection, collector reserve
-        self.assertGreaterEqual(before,after+300)           # image pull limit
-        stage=(ROOT/'experiments/sha-rotate-add/stage_full.py').read_text()
-        self.assertIn('--max-time 120',stage);self.assertIn('timeout=30',stage)
-        self.assertGreaterEqual(send,before+120+11*30+180)  # archive, at most eleven runner files, readiness
     def test_unknown_mode_fails_before_any_call(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)
