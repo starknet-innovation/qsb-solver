@@ -18,6 +18,7 @@ from launch import boot_script
 sys.path.append(str(Path(__file__).resolve().parent))
 from operator_config import load_config, expected_account
 _ACTIVE_CONFIG = None
+MIN_LAUNCH_SECONDS = 1620 + 300  # operate.py MIN_SEND_SECONDS plus boot allowance
 
 
 def aws(service, operation, **request):
@@ -118,7 +119,9 @@ def main():
             s.update(phase='armed',schedule=expected);save(path,s)
         elif args.mode=='launch':
             if s['phase']!='armed': raise ValueError('Launch intent exists or cleanup unarmed')
-            if s['deadline']-time.time()<20*60: raise ValueError('Insufficient time before deadline')
+            # Never allocate an instance that could not reach the send gate: operate.py send needs 1,620 s,
+            # plus an allowance for boot and SSM registration.
+            if s['deadline']-time.time()<MIN_LAUNCH_SECONDS: raise ValueError('Insufficient time before deadline')
             quota=aws('service-quotas','get-service-quota',ServiceCode='ec2',QuotaCode='L-DB2E81BA')['Quota']['Value']
             if quota<4: raise ValueError('Quota not effective')
             if aws('ec2','describe-instances',Filters=[{'Name':'tag:QsbBenchmarkToken','Values':[s['token']]}])['Reservations']: raise ValueError('Existing launch')

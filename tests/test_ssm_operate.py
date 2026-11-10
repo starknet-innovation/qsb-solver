@@ -66,7 +66,7 @@ class OperateTests(unittest.TestCase):
             p=Path(d);self.setup_state(p)
             state=json.loads((p/'execution.json').read_text());state.update(token='tok',name='qsb-bench-test',securityGroup='sg-test')
             (p/'execution.json').write_text(json.dumps(state))
-            instance=dict(ClientToken='tok',InstanceType='g5.xlarge',State={'Name':'running'},BlockDeviceMappings=[{'Ebs':{'VolumeId':'vol-test'}}])
+            instance=dict(InstanceId='i-test',ClientToken='tok',InstanceType='g5.xlarge',State={'Name':'running'},BlockDeviceMappings=[{'Ebs':{'VolumeId':'vol-test'}}])
             def fake(args,**kwargs):
                 if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
                 if 'describe-instances' in args:return json.dumps({'Reservations':[{'Instances':[instance]}]})
@@ -81,6 +81,36 @@ class OperateTests(unittest.TestCase):
             before=(p/'execution.json').read_text()
             with patch('os.replace',side_effect=OSError('interrupted')),self.assertRaises(OSError):self.invoke(p,'record',fake)
             self.assertEqual((p/'execution.json').read_text(),before)
+    def test_record_resumes_only_for_the_same_allocation(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);self.setup_state(p)
+            state=json.loads((p/'execution.json').read_text());state.update(token='tok');(p/'execution.json').write_text(json.dumps(state))
+            def reservation(volume,instance='i-test'):
+                return {'Reservations':[{'Instances':[dict(InstanceId=instance,ClientToken='tok',InstanceType='g5.xlarge',State={'Name':'running'},BlockDeviceMappings=[{'Ebs':{'VolumeId':volume}}])]}]}
+            def fake(args,**kwargs):
+                if 'get-caller-identity' in args:return json.dumps({'Account':'123'})
+                if 'describe-instances' in args:return json.dumps(reservation('vol-test'))
+                self.fail(str(args))
+            # The earlier run stored the receipt, then stopped before updating the state.
+            (p/'allocated.json').write_text(json.dumps(reservation('vol-test')))
+            self.invoke(p,'record',fake)
+            self.assertEqual(json.loads((p/'execution.json').read_text())['volumeIds'],['vol-test'])
+            for other in (reservation('vol-other'),reservation('vol-test','i-other')):
+                (p/'allocated.json').write_text(json.dumps(other))
+                with self.assertRaises(ValueError):self.invoke(p,'record',fake)
+    def test_launch_minimum_covers_the_send_gate_and_host_gate(self):
+        import re
+        number=lambda path,pattern:int(re.search(pattern,(ROOT/path).read_text()).group(1))
+        send=number('ops/aws-gpu-execution/operate.py',r'MIN_SEND_SECONDS=(\d+)')
+        control=(ROOT/'ops/aws-gpu-execution/control.py').read_text()
+        self.assertIn('MIN_LAUNCH_SECONDS = %d + 300'%send,control)
+        self.assertIn("<MIN_LAUNCH_SECONDS: raise ValueError('Insufficient time before deadline')",control)
+        host=(ROOT/'experiments/sha-rotate-add/host-full.sh').read_text()
+        before,after=[int(x) for x in re.findall(r'-ge (\d+) \]',host)]
+        self.assertEqual((before,after),(1200,900))
+        self.assertGreaterEqual(after,720+120+60)      # gate timeout, collector reserve, packaging
+        self.assertGreaterEqual(before,after+300)      # image pull limit
+        self.assertGreaterEqual(send,before+420)       # staging reserve
     def test_unknown_mode_fails_before_any_call(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);self.setup_state(p)

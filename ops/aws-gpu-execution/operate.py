@@ -7,6 +7,7 @@ if not __debug__: raise RuntimeError("Run this operator without Python optimizat
 from ssm_command import bash_command, decode_result
 from chunk_results import collect
 MODES=('record','ready','send','poll','terminate')
+MIN_SEND_SECONDS=1620  # host gate minimum (1,200 s) plus a 420 s staging reserve; control.py launch allows for this
 # A mistyped mode must fail loudly before any call: a silent no-op could leave a paid instance running.
 if len(sys.argv)!=3 or sys.argv[2] not in MODES:raise SystemExit('usage: operate.py STATE_DIRECTORY {'+'|'.join(MODES)+'}')
 p=pathlib.Path(sys.argv[1]).resolve()
@@ -38,14 +39,18 @@ assert aws('sts','get-caller-identity')['Account']==config['account']
 mode=sys.argv[2]
 if mode=='record':
  r=aws('ec2','describe-instances','--instance-ids',s['instanceId']);i=r['Reservations'][0]['Instances'][0];assert i['ClientToken']==s['token'];assert i['InstanceType']=='g5.xlarge'
- s['volumeIds']=[x['Ebs']['VolumeId'] for x in i['BlockDeviceMappings']];assert s['volumeIds'];save('allocated.json',r)
- replace_state(s);print(i['State']['Name'])
+ volumes=[x['Ebs']['VolumeId'] for x in i['BlockDeviceMappings']];assert volumes
+ # Resume after an interruption between the receipt and the state update, but only for the same allocation.
+ kept=save_once('allocated.json',r)['Reservations'][0]['Instances'][0]
+ if kept['InstanceId']!=s['instanceId'] or kept['ClientToken']!=s['token'] or [x['Ebs']['VolumeId'] for x in kept['BlockDeviceMappings']]!=volumes:
+  raise ValueError('existing allocation receipt is for a different allocation')
+ s['volumeIds']=volumes;replace_state(s);print(i['State']['Name'])
 elif mode=='ready':
  r=aws('ssm','describe-instance-information','--filters',json.dumps([{'Key':'InstanceIds','Values':[s['instanceId']]}]));print(json.dumps(r))
 elif mode=='send':
- # The host gate needs 1,080 s when it starts, after staging (archive download, runner files, readiness).
+ # The host gate needs 1,200 s when it starts, after staging (archive download, runner files, readiness).
  # Reserve 420 s for that staging so an accepted one-shot command is not rejected on the host.
- assert time.time()+1500<s['deadline'];assert not (p/'send-intent.json').exists()
+ assert time.time()+MIN_SEND_SECONDS<s['deadline'];assert not (p/'send-intent.json').exists()
  # The staging step records the digest of the template it rendered. Refuse a template that is missing
  # that record or no longer matches it, so an edited or replaced file is never executed remotely.
  template=(p/'host-template.sh').read_bytes();expected=(p/'host-template.sh.sha256').read_text().split()

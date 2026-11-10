@@ -21,9 +21,11 @@ mkdir /var/tmp/qsb-a10g-results
 results=/var/tmp/qsb-a10g-results
 printf '%s\n' "$deadline" > "$results/deadline.txt"
 # No compute can begin before the pinned image is present and time is rechecked.
-[ "$((deadline-$(date -u +%s)))" -ge 1080 ]
+# After the pull: the 720 s gate plus 180 s to package and collect the result (the collector
+# refuses to start a chunk with 120 s or less remaining). Before it: that plus the 300 s pull.
+[ "$((deadline-$(date -u +%s)))" -ge 1200 ]
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image" > "$results/pull.log" 2>&1
-[ "$((deadline-$(date -u +%s)))" -ge 780 ]
+[ "$((deadline-$(date -u +%s)))" -ge 900 ]
 nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader > "$results/gpu.txt"
 trap 'docker rm -f qsb-full-gate >/dev/null 2>&1 || true' EXIT
 args=(/gate/bundle /results/result.json)
