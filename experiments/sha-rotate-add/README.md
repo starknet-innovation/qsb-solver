@@ -7,6 +7,11 @@ descriptors are unchanged. There is no correctness or performance claim.
 
 ## What it is
 
+On the `candidate/sha-rotate-add` branch the patch is applied to the committed subset
+source; see [the candidate record](../../docs/promotion/2026-11-10-rotate-add-candidate.md).
+There the build below reverses the patch to rebuild the baseline. The description
+that follows is how the experiment ran.
+
 `sha-rotate-add.patch` is upstream's change to `candidates/subset/GPUHash.h` between
 `1650caf53a32b0ea16aae9e490ebbf5a8686d632` and
 `582a99408761f904f7f92a5d64d9ca0dcc76924a` of

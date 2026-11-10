@@ -2,6 +2,7 @@
   "baselineGpuHashSha256": "c8415e1ddc839e078421a1ee347a9db5036f84714b03edb700aa2e635e05fedd",
   "patchSha256": "7cdc50b6ded50ba415e7c0f47753872c712a9c9756dfeaed3c5b2ba80968a7a1",
   "patchedGpuHashSha256": "ac7c11110b5ccf205eb2ee007e0163439540e58dba80d21904f86ec29ec1c807",
+  "appliedToCommittedSource": true,
   "status": "HOLD",
   "upstreamBase": "1650caf53a32b0ea16aae9e490ebbf5a8686d632",
   "upstreamFile": "candidates/subset/GPUHash.h",

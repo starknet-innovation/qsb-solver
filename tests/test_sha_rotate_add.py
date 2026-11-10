@@ -26,13 +26,17 @@ def reference_round(a, b, c, d, e, f, g, h, kw):
 
 
 def patched_source():
+    """The committed subset source now carries the patch."""
     lock = json.loads((EXP / 'experiment-lock.json').read_text())
+    return lock, (ROOT / 'research/optimized-subset/subset/GPUHash.h').read_bytes()
+
+
+def reversed_source():
     with tempfile.TemporaryDirectory() as tmp:
         work = pathlib.Path(tmp); (work / 'subset').mkdir()
         shutil.copyfile(ROOT / 'research/optimized-subset/subset/GPUHash.h', work / 'subset/GPUHash.h')
-        subprocess.run(['patch', '--batch', '-p1', '-i', str(EXP / 'sha-rotate-add.patch')], cwd=work, check=True, capture_output=True)
-        data = (work / 'subset/GPUHash.h').read_bytes()
-    return lock, data
+        subprocess.run(['patch', '--batch', '-R', '-p1', '-i', str(EXP / 'sha-rotate-add.patch')], cwd=work, check=True, capture_output=True)
+        return (work / 'subset/GPUHash.h').read_bytes()
 
 
 def asm_blocks(text, macro):
@@ -73,9 +77,10 @@ class Identity(unittest.TestCase):
         lock, patched = patched_source()
         production = json.loads((ROOT / 'worker/optimized/source-lock.json').read_text())
         self.assertEqual(hashlib.sha256((EXP / 'sha-rotate-add.patch').read_bytes()).hexdigest(), lock['patchSha256'])
-        self.assertEqual(production['files']['subset/GPUHash.h'], lock['baselineGpuHashSha256'])
-        self.assertEqual(hashlib.sha256((ROOT / 'research/optimized-subset/subset/GPUHash.h').read_bytes()).hexdigest(), lock['baselineGpuHashSha256'])
+        self.assertEqual(production['files']['subset/GPUHash.h'], lock['patchedGpuHashSha256'])
         self.assertEqual(hashlib.sha256(patched).hexdigest(), lock['patchedGpuHashSha256'])
+        self.assertEqual(hashlib.sha256(reversed_source()).hexdigest(), lock['baselineGpuHashSha256'])
+        self.assertTrue(lock['appliedToCommittedSource'])
         self.assertEqual(lock['status'], 'HOLD')
 
     def test_patch_touches_only_gpuhash(self):

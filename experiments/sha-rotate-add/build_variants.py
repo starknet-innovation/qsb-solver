@@ -9,7 +9,8 @@ from trace_source import instrument
 ROOT = pathlib.Path('/src'); SRC = ROOT / 'research/optimized-subset'
 HERE = ROOT / 'experiments/sha-rotate-add'; OUT = pathlib.Path('/results')
 EXPERIMENT = json.loads((HERE / 'experiment-lock.json').read_text())
-# name -> (apply patch, extra compiler flags)
+# The committed subset source now carries the patch. name -> (candidate source, extra compiler flags).
+# The baseline is rebuilt by reversing the patch, so it stays the source the native run compared against.
 VARIANTS = {
     'baseline': (False, []),
     'control': (True, ['-DQSB_SHA_LEA=0']),
@@ -30,7 +31,7 @@ def verified_flags():
         if path.is_symlink() or sha(path) != want: raise ValueError('Source mismatch: ' + name)
     if lock['flags'].count('-arch=sm_89') != 1: raise ValueError('Unexpected locked architecture flags')
     if sha(HERE / 'sha-rotate-add.patch') != EXPERIMENT['patchSha256']: raise ValueError('Patch changed')
-    if lock['files']['subset/GPUHash.h'] != EXPERIMENT['baselineGpuHashSha256']: raise ValueError('Baseline changed')
+    if lock['files']['subset/GPUHash.h'] != EXPERIMENT['patchedGpuHashSha256']: raise ValueError('Committed source is not the candidate')
     return [f.replace('-arch=sm_89', '-arch=sm_86') for f in lock['flags']]
 
 
@@ -67,9 +68,10 @@ def main():
     flags = verified_flags(); OUT.mkdir(exist_ok=False); records = {}
     for name, (patched, extra) in VARIANTS.items():
         work = pathlib.Path('/tmp') / name; shutil.copytree(SRC, work)
-        if patched:
-            subprocess.run(['patch', '--batch', '-p1', '-i', str(HERE / 'sha-rotate-add.patch')], cwd=work, check=True)
-            if sha(work / 'subset/GPUHash.h') != EXPERIMENT['patchedGpuHashSha256']: raise ValueError('Patched source mismatch')
+        if not patched:
+            subprocess.run(['patch', '--batch', '-R', '-p1', '-i', str(HERE / 'sha-rotate-add.patch')], cwd=work, check=True)
+        expected = EXPERIMENT['patchedGpuHashSha256' if patched else 'baselineGpuHashSha256']
+        if sha(work / 'subset/GPUHash.h') != expected: raise ValueError('Variant source mismatch: ' + name)
         binary = compile_solver(name, work, [*flags, *extra])
         with (OUT / (name + '.sass')).open('w') as sass:
             subprocess.run(['cuobjdump', '-sass', str(binary)], stdout=sass, check=True, timeout=300)
