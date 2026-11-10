@@ -135,7 +135,9 @@ this one changes about 6% of the kernel, which is the reason to measure it.
 Three one-shot `g5.xlarge` sessions in Ireland (NVIDIA A10G, driver 595.91.07), run
 under the plan in [A10G-PLAN.md](A10G-PLAN.md) with the owner's authorization. Public
 synthetic inputs only. Receipts are in [evidence/](evidence/): `native-ranges.json`,
-`native-trace-cpu.json`, `native-timing.json` and `native-sessions.json`.
+`native-trace.json` (the full session B result with every GPU trace record, so
+`verify_trace.py` can be rerun against it), `native-trace-cpu.json`,
+`native-timing.json` and `native-sessions.json`.
 
 **Correctness: passed.**
 

@@ -38,6 +38,16 @@ class PackagingTests(unittest.TestCase):
                 self.assertIsNone(packed)
                 self.assertNotIn('must not leave the host', done.stdout + done.stderr)
 
+    def test_aggregate_size_and_entry_count_are_enforced_while_reading(self):
+        def many_large(root, outside):
+            for i in range(4): (root / f'big{i}.log').write_bytes(b'a' * 3000000)
+        def many_small(root, outside):
+            for i in range(40): (root / f'small{i}.log').write_text('x')
+        for prepare, message in ((many_large, 'result too large'), (many_small, 'too many result entries')):
+            with self.subTest(prepare=prepare.__name__):
+                done, packed = self.package(prepare)
+                self.assertNotEqual(done.returncode, 0); self.assertIn(message, done.stderr); self.assertIsNone(packed)
+
     def test_oversized_result_is_refused(self):
         def big(root, outside): (root / 'gate.log').write_bytes(os.urandom(500000).hex().encode())
         done, packed = self.package(big)

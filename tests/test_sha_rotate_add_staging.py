@@ -51,6 +51,24 @@ class StagingTests(unittest.TestCase):
             self.assertEqual((root/'host-template.sh.sha256').read_text().strip(),hashlib.sha256(out.read_bytes()).hexdigest())
             with patch('sys.argv',argv),patch('subprocess.check_output',return_value=b'public bytes'),self.assertRaises(FileExistsError):
                 runpy.run_path(str(PATH),run_name='__main__')
+    def fetch_function(self):
+        with patch.object(stage,'payload',return_value={}),patch.object(stage,'BINARIES',{'baseline':'0'*64}),patch.object(stage,'ZIP_SHA','0'*64):
+            script=stage.render('a'*40,'https://example.invalid/archive','ghcr.io/starknet-innovation/qsb-solver@sha256:'+'b'*64,'trace','b'*64)
+        code=script.split("python3 - <<'QSB_STAGE'\n",1)[1]
+        code=code[code.index('def fetch(url):'):code.index('for name,item in files.items():')]
+        import time,urllib.request
+        scope={'time':time,'urllib':__import__('urllib')};exec(compile(code,'generated-fetch','exec'),scope);return scope['fetch']
+    def test_staged_fetch_is_bounded_by_wall_clock_and_size(self):
+        fetch=self.fetch_function();clock=[0.0]
+        class Slow:
+            def read(self,count):clock[0]+=9;return b'x'      # always making progress, never finishing
+        class Huge:
+            def read(self,count):return b'x'*count
+        with patch('time.monotonic',side_effect=lambda:clock[0]),patch('urllib.request.urlopen',return_value=Slow()):
+            with self.assertRaises(TimeoutError):fetch('https://example.invalid/slow')
+        self.assertLessEqual(clock[0],30)
+        with patch('urllib.request.urlopen',return_value=Huge()),self.assertRaises(ValueError):fetch('https://example.invalid/huge')
+        with patch('urllib.request.urlopen',return_value=io.BytesIO(b'public bytes')):self.assertEqual(fetch('https://example.invalid/ok'),b'public bytes')
     def test_moving_runtime_rejected(self):
         with self.assertRaises(ValueError):stage.render('a'*40,'https://example.invalid/x','image:latest','trace','b'*64)
 

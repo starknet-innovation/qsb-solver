@@ -23,3 +23,12 @@ class TraceTests(unittest.TestCase):
         experiment=json.loads((ROOT/'experiments/sha-rotate-add/experiment-lock.json').read_text())
         self.assertEqual(production['files']['subset/tests/gpu_epochs/tree.cu'],CANDIDATE_TREE)
         self.assertEqual(experiment['patchedGpuHashSha256'],CANDIDATE_GPUHASH)
+
+    def test_published_native_trace_is_the_one_the_cpu_summary_verified(self):
+        import hashlib
+        evidence=ROOT/'experiments/sha-rotate-add/evidence'
+        raw=(evidence/'native-trace.json').read_bytes();summary=json.loads((evidence/'native-trace-cpu.json').read_text())
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),summary['nativeResultSha256'])
+        native=json.loads(raw)
+        self.assertEqual((native['status'],len(native['ranges']),native['candidateSha256']),('native-completed-awaiting-cpu-verification',20,summary['candidateSha256']))
+        self.assertNotIn('uuid',raw.decode().lower())

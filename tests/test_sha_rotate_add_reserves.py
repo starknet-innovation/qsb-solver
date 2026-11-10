@@ -16,7 +16,8 @@ class ReserveTests(unittest.TestCase):
         self.assertGreaterEqual(after, 720 + 60 + chunks * 8 + 120)  # gate, packaging, largest collection, collector reserve
         self.assertGreaterEqual(before, after + 300)                 # image pull limit
         stage = (EXP / 'stage_full.py').read_text()
-        self.assertIn('--max-time 120', stage); self.assertIn('timeout=30', stage)
+        self.assertIn('--max-time 120', stage)
+        self.assertIn('end=time.monotonic()+20;stream=urllib.request.urlopen(url,timeout=10)', stage)  # at most 30 s per file
         self.assertGreaterEqual(send, before + 120 + 11 * 30 + 180)  # archive, at most eleven runner files, readiness
 
 

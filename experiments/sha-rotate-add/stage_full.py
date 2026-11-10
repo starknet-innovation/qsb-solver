@@ -50,11 +50,14 @@ def render(commit,url,image,stage,receipt_sha):
     # Download immediately: the GitHub artifact URL is short-lived and scoped to public bytes.
     script+='curl --fail --location --max-time 120 --max-filesize 10000000 '+shlex.quote(url)+' -o /var/tmp/qsb-frozen-pair.zip\n'
     script+="python3 - <<'QSB_STAGE'\n"
-    script+='import pathlib,hashlib,json,base64,zlib,zipfile,urllib.request\n'
+    script+='import pathlib,hashlib,json,base64,zlib,zipfile,time,urllib.request\n'
     script+=f"archive=pathlib.Path('/var/tmp/qsb-frozen-pair.zip');assert hashlib.sha256(archive.read_bytes()).hexdigest()=={ZIP_SHA!r}\n"
     script+="root=pathlib.Path('/opt/qsb-a10g-gate');root.mkdir()\n"
     script+=f"files=json.loads(zlib.decompress(base64.b64decode({packed!r})))\n"
-    script+="for name,item in files.items():\n raw=urllib.request.urlopen(item['url'],timeout=30).read(2000001);assert len(raw)<=2000000;assert hashlib.sha256(raw).hexdigest()==item['sha256'];p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)\n"
+    # A socket timeout bounds one blocking read, not a whole download. Bound each file by wall clock:
+    # 20 s of progress plus at most one 10 s blocking read, so no fetch exceeds 30 s.
+    script+="def fetch(url):\n end=time.monotonic()+20;stream=urllib.request.urlopen(url,timeout=10);raw=b''\n while True:\n  if time.monotonic()>end:raise TimeoutError('staged fetch exceeded its time limit')\n  part=stream.read(65536)\n  if not part:return raw\n  raw+=part\n  if len(raw)>2000000:raise ValueError('staged file too large')\n"
+    script+="for name,item in files.items():\n raw=fetch(item['url']);assert hashlib.sha256(raw).hexdigest()==item['sha256'];p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)\n"
     script+=f"expected={BINARIES!r}\n"
     script+="with zipfile.ZipFile(archive) as z:\n assert len(z.namelist())==len(set(z.namelist()))\n for name in [*expected,'candidate-trace.diff','trace-receipt.json']:\n  info=z.getinfo(name);assert info.file_size<10000000;raw=z.read(name)\n  if name in expected:assert hashlib.sha256(raw).hexdigest()==expected[name]\n  p=root/'bundle'/name;p.write_bytes(raw)\n  if name in expected:p.chmod(0o755)\n"
     script+=f"assert hashlib.sha256((root/'bundle/trace-receipt.json').read_bytes()).hexdigest()=={receipt_sha!r}\n"

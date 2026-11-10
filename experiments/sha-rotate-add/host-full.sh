@@ -22,7 +22,8 @@ results=/var/tmp/qsb-a10g-results
 printf '%s\n' "$deadline" > "$results/deadline.txt"
 # No compute can begin before the pinned image is present and time is rechecked.
 # After the pull: the 720 s gate, 60 s to package, collection of the largest permitted result
-# (600,000 encoded bytes is 34 chunks, budgeted at 8 s each) and the collector's 120 s reserve.
+# (600,000 encoded bytes is 34 chunks at 8 s each; the collector gives every chunk an even
+# share of the time left, so a slow chunk cannot take more) and the collector's 120 s reserve.
 # Before it: that plus the 300 s pull.
 [ "$((deadline-$(date -u +%s)))" -ge 1500 ]
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image" > "$results/pull.log" 2>&1
@@ -45,15 +46,19 @@ docker rm -f qsb-full-gate >/dev/null 2>&1 || true
 printf '%s\n' "$status" > "$results/exit-code.txt"
 python3 - "$results" <<'PY'
 import base64,gzip,hashlib,json,os,pathlib,stat,sys
-root=pathlib.Path(sys.argv[1]);files={}
+root=pathlib.Path(sys.argv[1]);files={};total=0
 # The container could write here. Never follow a link out of the results directory: accept
-# regular files only, and open them without following symlinks.
+# regular files only, and open them without following symlinks. Stop as soon as the entry
+# count or the cumulative size passes its limit, before more is read into memory.
 for p in sorted(root.iterdir()):
+    if len(files)>=32:raise ValueError('too many result entries')
     if not stat.S_ISREG(os.lstat(p).st_mode):raise ValueError('non-regular result entry: '+p.name)
     fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW)
     with os.fdopen(fd,'rb') as f:
         if not stat.S_ISREG(os.fstat(f.fileno()).st_mode):raise ValueError('non-regular result entry: '+p.name)
-        files[p.name]=f.read(8000001).decode()
+        data=f.read(8000001-total);total+=len(data)
+        if total>8000000:raise ValueError('result too large')
+        files[p.name]=data.decode()
 raw=json.dumps(files).encode()
 if len(raw)>8000000:raise ValueError('result too large')
 data=base64.b64encode(gzip.compress(raw))
