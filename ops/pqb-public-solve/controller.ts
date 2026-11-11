@@ -51,23 +51,32 @@ export async function solve(config: any, publicInput: any, directory: string, in
       'Actual consumer AwsBatch, input/output checks, stage transitions and CPU reference; development orchestration',
       'No Step Functions, wallet, signing, consensus execution, funded outputs or broadcast in this assessment']};
   if(preflight){
-    const slot=preflight.slots?.[0];
+    const count=preflight.job?.gpuSubmissions;
+    const prior=[...(preflight.slots??[]),...(preflight.completedSlots??[])];
+    const ids=prior.map((s:any)=>s.id),attempts=prior.map((s:any)=>s.attempt).sort((a:number,b:number)=>a-b);
     if(preflight.format!=='qsb-pqb-public-solve-state-v1'||preflight.status!=='running'
       ||preflight.configSha256!==state.configSha256||preflight.publicInputSha256!==state.publicInputSha256
-      ||preflight.epoch!==0||preflight.nextAttempt!==1||preflight.slots.length!==1
-      ||preflight.solutions.length!==0||preflight.observations.length!==0
-      ||preflight.job.gpuSubmissions!==1||preflight.job.gpuBudgetReservedSeconds!==900
-      ||preflight.job.stage!=='pinning'||slot.stage!=='pinning'||slot.attempt!==0||slot.epoch!==0
-      ||!/^[a-f0-9-]{36}$/.test(slot.id??'')||slot.identity.queue!==config.queue||slot.identity.definition!==config.definition
-      ||slot.context.manifestHash!==job.manifestHash||JSON.stringify(slot.context.solver.descriptor)!==JSON.stringify(selected))
-      throw Error('Only one known, uncredited preflight can be handed over; no unknown submissions');
+      ||preflight.epoch!==0||!Number.isInteger(count)||count<1||count>config.maxUnits
+      ||preflight.nextAttempt!==count||prior.length!==count||new Set(ids).size!==count
+      ||preflight.slots.length>config.workers||preflight.solutions.length!==0
+      ||(preflight.completedSlots??[]).length!==preflight.observations.length
+      ||preflight.observations.some((x:any)=>x.status!=='COMPLETED'||x.stage!=='pinning')
+      ||preflight.job.gpuBudgetReservedSeconds!==900*count||preflight.job.stage!=='pinning'
+      ||attempts.some((x:number,i:number)=>x!==i))
+      throw Error('Known initial pinning phase required; no unknown submissions or changed limits');
     const exported=pqbReference({action:'export',publicStateJson:publicInput.publicStateJson,manifest,stage:'pinning'});
-    if(slot.identity.inputSha256!==sha(JSON.stringify({input:workerInput(selected,job,0,exported)})))
-      throw Error('Preflight public input identity differs');
-    job.gpuSubmissions=1;job.gpuBudgetReservedSeconds=900;state.nextAttempt=1;
-    state.slots=structuredClone(preflight.slots);state.startedAt=preflight.startedAt;
-    state.controllerStartedAt=new Date().toISOString();state.handover={stateSha256:sha(JSON.stringify(preflight)),id:slot.id,
-      reason:'Stronger consumer CPU policy; existing paid preflight retained without replay or deadline change'};
+    for(const slot of prior){
+      if(slot.stage!=='pinning'||slot.epoch!==0||slot.cancellation||!/^[a-f0-9-]{36}$/.test(slot.id??'')
+        ||slot.identity.queue!==config.queue||slot.identity.definition!==config.definition
+        ||slot.context.manifestHash!==job.manifestHash||JSON.stringify(slot.context.solver.descriptor)!==JSON.stringify(selected)
+        ||slot.identity.inputSha256!==sha(JSON.stringify({input:workerInput(selected,job,slot.attempt,exported)})))
+        throw Error('Known pinning request/input identity differs');
+    }
+    job.gpuSubmissions=count;job.gpuBudgetReservedSeconds=900*count;state.nextAttempt=count;
+    state.slots=structuredClone(prior);state.startedAt=preflight.startedAt;
+    state.controllerStartedAt=new Date().toISOString();state.handover={stateSha256:sha(JSON.stringify(preflight)),
+      checkpointFileSha256:preflight.checkpointFileSha256,ids,
+      reason:'Known requests retained without replay, refund or deadline change; all completed outputs rechecked'};
   }
   mkdirSync(dir,{recursive:false}); mkdirSync(dir+'/jobs'); save(dir+'/input.json',publicInput);
   const persist=()=>save(dir+'/state.json',state); persist();

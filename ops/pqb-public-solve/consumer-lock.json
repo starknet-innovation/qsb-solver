@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/starknet-innovation/qsb-app",
-  "commit": "2eb45044d00e7def59158af0a58bb40d6bc141da",
+  "commit": "276f2ae09d50ca44d46b035e45b6d0365802edcf",
   "batchCommand": [
     "/usr/bin/setpriv",
     "--no-new-privs",
@@ -21,8 +21,8 @@
     "server/gpu-spend.json": "71f457740abc7a8699671faf5f1a9209506e5d11ea3efa89320580edcd3b13f6",
     "contracts/pqb-ranked-v2.json": "eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1",
     "package-lock.json": "60c2eedb5c7cd3dcac3fe07ad7d9dcbfe3fe5facad78c37ffd13e0283c01b7fa",
-    "src/lib/pqb.ts": "a6cfd26eaf2ff88575bab634f70e8f99539d26ea774da6dbb831b29539b1dbc6",
-    "src/pqb-core/grind.ts": "1063741ba652334a4ed53db98aab8384e384bcf2845b3a0add5f0756956f202d",
-    "src/pqb-core/provenance.json": "65a2f566c7306de8c43ddc073832cc6df2cce83658f9a1a0f14eb67a301b9ded"
+    "src/lib/pqb.ts": "3a1d0c8d357b2eaa77378dc682c7faf850089d2eed7703ab40e74502a215b8ff",
+    "src/pqb-core/grind.ts": "445343ec3aa447267fdb2ab3de0911c48852b7550524d2bb8bead20a434ed6a9",
+    "src/pqb-core/provenance.json": "589f5f9f866c821a54b7160464d33e3fc5d54e733bd3a30dede7da7794b68dbe"
   }
 }
