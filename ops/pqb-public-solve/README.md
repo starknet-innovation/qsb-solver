@@ -13,12 +13,16 @@ manifest, not recovery state or a seed. Derive the public fixture locally from t
 committed public synthetic reference; keep the seed out of cloud payloads and controller input.
 
 Before hardware, complete local tests, clean/push both the controller and image source, obtain
-the exact successful push CI image artifact, verify its ZIP and every contained checksum,
+the exact successful push CI image artifact when available, verify its ZIP and every contained checksum,
 prepare all collection paths, read previous cleanup and record fresh request/budget identities.
 The ordinary release workflows do not publish this image. The `codex/pqb-batch-*` CI push path
 exports a hash-bound image archive without publishing. `publish_private.py` checks its actual
 Docker image/binding, then imports it into one temporary immutable private ECR repository.
 Runtime ECR credentials stay inside the isolated publisher process and are never logged.
+If the artifact service is unavailable, a clean committed/pushed source may instead be built
+on a bounded native Linux publisher. Repeat the actual image checks and vulnerability policy,
+retain the raw image archive and byte hashes, and identify this origin as a separate native
+build. Completed CI steps do not make a stalled or failed workflow a successful run.
 
 The first complete unit is a real transport preflight. After its checked success the controller
 fills up to 16 ordinary A10G workers, using production 24-bit predicates, the same partition and
@@ -41,6 +45,11 @@ a round re-pins at the next pinning unit, retaining prior attempts and costs. Al
 hits are checked again against the original public intent. Success means a public three-stage
 solution, not a signed spend. Original S3 envelopes, native CloudWatch logs, job details,
 CPU decisions, cancellation outcomes, identities and controller checkpoints must be collected.
+The bundled `export-reference.cjs` exports accepted public packets and candidates from a
+checkpoint. Run `crosscheck.py` with the clean pinned upstream checkout to compare complete
+problem bytes and check each hit through upstream `HitChecker` and canonical `grind.evaluate`.
+Its only packet adaptations convert public decimal scalar strings to integers and add the
+nonce-space size. Keep the upstream acceptance policy unchanged; this is not miner acceptance.
 
 The fresh campaign has one fixed six-hour deadline, a 600-unit / 540,000 GPU-second reservation
 ceiling and at most 16 g5.xlarge instances. Record a $200 operational reservation before paid
