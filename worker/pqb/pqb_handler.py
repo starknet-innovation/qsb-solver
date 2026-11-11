@@ -227,10 +227,14 @@ def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS, *, evidence_directory=Non
         report = None
         candidates = []
         if status == 'completed':
-            # Only the last megabyte of the log can hold the completion line.
+            # Every completion line in the whole log, however long it is: a second one anywhere must
+            # not be hidden by reading only the tail.
+            completions = []
             with open(work / 'compute.log', 'rb') as f:
-                f.seek(max(0, (work / 'compute.log').stat().st_size - (1 << 20)))
-                report = range_report(f.read().decode('ascii', 'replace'), stage, unit)
+                for raw_line in f:
+                    if raw_line.startswith(b'@range ') and len(completions) < 3:
+                        completions.append(raw_line[:4096].decode('ascii', 'replace'))
+            report = range_report(''.join(completions), stage, unit)
             hits = work / 'hits.txt'
             if report is None or not hits.is_file() or hits.stat().st_size > 64 * MAX_CANDIDATES:
                 status = 'failed'           # never credit a range that did not account for itself

@@ -112,6 +112,22 @@ class PublisherFailureTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'already exists'):          # still one-shot
             self.publisher.publish(self.artifact, self.repository, 'eu-west-1', output)
 
+    def test_the_success_receipt_replaces_the_marker_atomically(self):
+        text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()
+        write = text.index("final_receipt = output.with_suffix('.published.tmp')")
+        self.assertLess(write, text.index('os.fsync(stream.fileno())', write))
+        self.assertLess(text.index('os.fsync(stream.fileno())', write), text.index('final_receipt.replace(output)'))
+        # nothing writes the success receipt over the marker in place
+        self.assertEqual(text.count('output.write_text('), 1)                  # only the started marker
+
+    def test_full_unit_host_script_arms_its_trap_with_the_marker(self):
+        text = (ROOT / 'ops/aws-gpu-execution/host-pqb-full-unit.sh').read_text()
+        lines = text.splitlines()
+        marker = next(i for i, ln in enumerate(lines) if ln.startswith('mkdir "$results"'))
+        self.assertTrue(lines[marker + 1].startswith('trap collect EXIT'))
+        self.assertLess(text.index('collect() {'), text.index('mkdir "$results"'))
+        self.assertLess(text.index('status=1'), text.index('mkdir "$results"'))
+
     def test_a_failure_after_the_push_started_is_marked_uncertain(self):
         self.sums()
         (self.artifact / 'image.json').write_text(json.dumps([{'Id': 'sha256:abc'}]))

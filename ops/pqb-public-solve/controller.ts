@@ -21,7 +21,7 @@ export function save(path: string, value: unknown) {
   const fd=openSync(temp,'r'); fsyncSync(fd); closeSync(fd); renameSync(temp,path);
   const parent=openSync(dirname(path),'r');fsyncSync(parent);closeSync(parent);
 }
-type Slot = {stage:string; epoch:number; attempt:number; identity:any; id?:string; context:any; cancellation?:string};
+type Slot = {stage:string; epoch:number; attempt:number; identity:any; id?:string; context:any; cancellation?:string; cancellationConfirmed?:string};
 export async function solve(config: any, publicInput: any, directory: string, injectedProvider?: any, pollMs=10000, preflight?: any) {
   const dir=resolve(directory);
   if(existsSync(dir)) throw Error('One-shot result directory already exists');
@@ -85,7 +85,12 @@ export async function solve(config: any, publicInput: any, directory: string, in
     action,publicStateJson:publicInput.publicStateJson,manifest,stage:context.stage,
     ...(context.solution?{solution:context.solution}:{}),...(candidates?{candidates}:{})});
   const cancel=async(slot:Slot)=>{
-    if(slot.id&&!slot.cancellation){slot.cancellation=new Date().toISOString();persist();await provider.cancel(slot.id);}
+    // `cancellation` records the intent, before the call; `cancellationConfirmed` that the provider accepted it.
+    // A rejected or lost cancel leaves it unconfirmed, so the next pass and the failure path retry it (it is idempotent).
+    if(slot.id&&!slot.cancellationConfirmed){
+      if(!slot.cancellation){slot.cancellation=new Date().toISOString();persist();}
+      await provider.cancel(slot.id);slot.cancellationConfirmed=new Date().toISOString();persist();
+    }
   };
   try {
     while(true){

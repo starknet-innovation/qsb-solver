@@ -215,6 +215,31 @@ class MeasureDryRunTest(unittest.TestCase):
         info = json.loads((measure.FAILURE_DIR / '00' / 'invocation.json').read_text())
         self.assertEqual(info['reason'], 'duplicate @range line')
 
+    def fake_case(self, report):
+        """Run one correctness case against a script that writes the right hit but this report."""
+        spec = importlib.util.spec_from_file_location('run_measure_report', MEASURE / 'run_measure.py')
+        measure = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(measure)
+        bundle = Path(self.tmp.name) / 'fake-bundle'
+        (bundle / 'fixtures').mkdir(parents=True, exist_ok=True)
+        (bundle / 'fixtures' / 'pin.txt').write_bytes(emu.problem('pin'))
+        hit = '2147483648 500000003 1 0 0 1'
+        (bundle / 'grind-ranked').write_text("#!/bin/sh\necho '%s' > hits.txt\necho '@range %s'\n" % (hit, json.dumps(report)))
+        (bundle / 'grind-ranked').chmod(0o755)
+        case = {'label': 'fake', 'problem': 'pin.txt', 'gateBits': 12, 'env': {}, 'zblocks': 8, 'gateHits': 1,
+                'exactZblocks': 0, 'hits': [hit],
+                'args': ['--pin-seq', 0x80000000, '--pin-lt-start', 500000000, '--pin-lt-count', 8]}
+        return measure.correctness(bundle, {'cases': [case]})[0]['pass']
+
+    def test_a_completion_report_the_worker_would_reject_fails_the_case(self):
+        good = {'kind': 'pin', 'seq': 0x80000000, 'seq_count': 1, 'lt_start': 500000000, 'lt_count': 8, 'zblocks': 8,
+                'expected': 8, 'hits': 1, 'der_filter': 0, 'gate_hits': 1, 'exact_zblocks': 0, 'complete': True}
+        self.assertTrue(self.fake_case(good))                                  # control
+        for change in ({'hits': 2}, {'der_filter': 1}, {'seq': 0x80000001}, {'lt_count': 9}, {'kind': 'round'},
+                       {'lt_start': 500000001}, {'seq_count': 2}):
+            with self.subTest(change=change):
+                self.assertFalse(self.fake_case(dict(good, **change)))
+
     def test_bundle_refuses_mismatched_inputs(self):
         prepare = bundle_module().prepare
         with self.assertRaises(SystemExit):

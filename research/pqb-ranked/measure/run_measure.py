@@ -148,6 +148,18 @@ def with_gate(raw, bits):
     return raw.replace(b'gate_bits 12\n', b'gate_bits %d\n' % bits)
 
 
+def report_identity(args):
+    """What a completion report must say about the range and filter these arguments ask for."""
+    given = {str(args[i]): int(args[i + 1]) for i in range(0, len(args), 2)}
+    want = {'der_filter': given.get('--der-filter', 0)}
+    if '--pin-seq' in given:
+        want.update(kind='pin', seq=given['--pin-seq'], seq_count=given.get('--pin-seq-count', 1),
+                    lt_start=given.get('--pin-lt-start', 500000000), lt_count=given.get('--pin-lt-count', LT_SPAN))
+    else:
+        want.update(kind='round', prefix_start=given['--prefix-start'], prefix_count=given['--prefix-count'])
+    return want
+
+
 def correctness(bundle, expected):
     out = []
     for case in expected['cases']:
@@ -162,7 +174,11 @@ def correctness(bundle, expected):
             row['pass'] = (hits == case['hits'] and rep.get('complete') is True
                            and rep.get('zblocks') == case['zblocks'] == rep.get('expected')
                            and rep.get('gate_hits') == case['gateHits']
-                           and rep.get('exact_zblocks') == case['exactZblocks'])
+                           and rep.get('exact_zblocks') == case['exactZblocks']
+                           # the completion report must also be one the worker would accept: it
+                           # counts the hits it wrote and names the range and filter it was given
+                           and rep.get('hits') == len(hits)
+                           and all(rep.get(k) == v for k, v in report_identity(case['args']).items()))
             if not row['pass']:
                 keep_last('wrong result for ' + case['label'])   # exit 0, but not the expected answer
         except (Failed, subprocess.TimeoutExpired, ValueError) as e:

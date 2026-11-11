@@ -66,7 +66,19 @@ def publish(artifact, repository, region, output):
             raise ValueError('Registry manifest digest mismatch')
         receipt={'status':'private-validation-only','sourceCommit':commit,'image':repository+'@'+digest,
                  'imageId':actual,'binding':binding,'manifest':manifest}
-        output.write_text(json.dumps(receipt,indent=2)+'\n')
+        # The image is published: its digest and manifest must replace the marker whole, or not at all.
+        stage[0] = 'writing the receipt'
+        final_receipt = output.with_suffix('.published.tmp')
+        with open(final_receipt, 'w') as stream:
+            stream.write(json.dumps(receipt,indent=2)+'\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        final_receipt.replace(output)
+        directory_fd = os.open(output.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
         stage[0] = 'published'
         print(json.dumps({'image':receipt['image'],'sourceCommit':commit}),flush=True)
 
@@ -76,7 +88,7 @@ def publish(artifact, repository, region, output):
         # One-shot: the next invocation refuses this output, so the failure and how far it got must
         # be in it. After the push started, the registry state is uncertain and needs reconciling.
         failed = {'status': 'failed', 'stage': stage[0], 'error': '%s: %s' % (type(error).__name__, str(error)[:800]),
-                  'registryStateUncertain': stage[0] in ('pushing', 'reading the registry back')}
+                  'registryStateUncertain': stage[0] in ('pushing', 'reading the registry back', 'writing the receipt')}
         temporary_receipt = output.with_suffix('.failed.tmp')
         temporary_receipt.write_text(json.dumps(failed, indent=2) + '\n')
         temporary_receipt.replace(output)

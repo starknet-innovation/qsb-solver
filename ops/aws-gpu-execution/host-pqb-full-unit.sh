@@ -16,11 +16,6 @@ cd "$bundle"
 [ "$(sha256sum SHA256SUMS | cut -d' ' -f1)" = "$bundle_sha" ]
 sha256sum -c SHA256SUMS
 [ -x "$bundle/worker/grind" ]
-mkdir "$results"                            # persist before image setup; never repeat after uncertainty
-printf '%s\n' "$deadline" > "$results/deadline.txt"
-printf '%s\n' "$bundle_sha" > "$results/bundle-sha256.txt"
-printf '%s\n' "$stage" > "$results/stage.txt"
-image=ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48
 status=1
 collect() {
   # Killing a Docker client does not reliably stop its container.
@@ -35,7 +30,12 @@ encoded=base64.b64encode(gzip.compress(json.dumps(files).encode()))
 print('QSB_PUBLIC_RESULT_META='+json.dumps(dict(bytes=len(encoded),sha256=hashlib.sha256(encoded).hexdigest())))
 PY
 }
-trap collect EXIT
+mkdir "$results"                            # persist before image setup; never repeat after uncertainty
+trap collect EXIT                           # armed with the marker: even a failed metadata write is collected
+printf '%s\n' "$deadline" > "$results/deadline.txt"
+printf '%s\n' "$bundle_sha" > "$results/bundle-sha256.txt"
+printf '%s\n' "$stage" > "$results/stage.txt"
+image=ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48
 timeout --signal=TERM --kill-after=10s 300 docker pull "$image" > "$results/image-pull.log" 2>&1
 # 1,000 s container bound plus collection/termination margin. Refuse, never extend, a short session.
 [ "$((deadline-$(date -u +%s)))" -ge 1100 ]

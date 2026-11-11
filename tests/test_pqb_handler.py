@@ -178,6 +178,30 @@ class HandlerOnEmulationTest(unittest.TestCase):
                          ('failed', [], 'requires-verification-or-resume'))
         self.assertNotIn('gateHits', out)
 
+    def test_a_second_completion_line_far_back_in_the_log_is_seen(self):
+        # two megabytes of batch lines between two completion lines: the first must still count
+        unit = {'version': 'pqb-ranked-v2', 'start': '0', 'count': 400, 'sequence': 0x80000000,
+                'sequenceCount': 2, 'locktime': 500000000, 'locktimeCount': 200}
+        self.small_unit(unit)
+        line = json.dumps({'kind': 'pin', 'seq': 0x80000000, 'seq_count': 2, 'lt_start': 500000000, 'lt_count': 200,
+                           'zblocks': 400, 'expected': 400, 'hits': 0, 'der_filter': 1, 'gate_hits': 3,
+                           'exact_zblocks': 0, 'complete': True})
+        script = ("#!/bin/sh\n: > hits.txt\necho '@range %s'\n"
+                  "i=0; while [ $i -lt %d ]; do echo '@batch {\"z\": 2097152, \"gpu_ms\": 100.000, \"wall_ms\": 100.000, \"hits\": 0}'; i=$((i+1)); done\n"
+                  "echo '@range %s'\n")
+        for filler, want in ((30000, 'failed'), (0, 'failed')):
+            (self.root / 'grind').write_text(script % (line, filler, line))
+            (self.root / 'grind').chmod(0o755)
+            self.bind()
+            out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
+            self.assertEqual((out['status'], out['checkpoint']), (want, 'requires-verification-or-resume'), filler)
+        # control: the same log with one completion line completes
+        (self.root / 'grind').write_text(script.rsplit("echo '@range", 1)[0] % (line, 30000))
+        (self.root / 'grind').chmod(0o755)
+        self.bind()
+        out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
+        self.assertEqual(out['status'], 'completed')
+
     def test_an_interrupted_unit_is_not_credited(self):
         self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 14 * 1200000000,
                          'sequence': 0x80000000, 'sequenceCount': 14, 'locktime': 500000000,
