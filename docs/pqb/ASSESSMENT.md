@@ -1,7 +1,8 @@
 # PQB candidate assessment
 
 Assessed 11 November 2026. Disposition: **retain for review, HOLD**. Nothing here is published,
-enrolled or deployed, and no cloud resource was used.
+enrolled or deployed. One paid GPU session ran, for a component measurement (see Cost and
+cleanup).
 
 ## What this is
 
@@ -179,7 +180,21 @@ tested on its side. This worker keeps no verifier, wallet or key material.
 
 ## Cost and cleanup
 
-No paid hardware, no provider submissions, nothing to clean up. No budget was reserved.
+One paid session, on 11 November 2026 ([record](2026-11-11-a10g-measurement.md)):
+
+- **Provider submissions:** eight `g5.xlarge` launch requests, one per session. EC2 refused seven
+  for capacity, so they allocated nothing. The eighth, in eu-west-1b, ran for about 6.7 minutes.
+- **Cost:** about **$0.13** estimated (6.7 minutes at $1.123/h, plus negligible storage, S3 and
+  API calls). This is an estimate from the list price and the instance's launch and termination
+  times. It is not provider billing, which was not read. The user's cap was $5.
+- **Cleanup:** verified for every session by an independent check: no instance, volume, security
+  group, schedule, function, role, instance profile or staging bucket remains, and nothing is
+  running in eu-west-1 or eu-west-2. It was irregular for the session that launched: the
+  orchestrating job was stopped after the instance had terminated and before the controller's
+  cleanup; the committed controller then removed part of the temporary resources and failed on a
+  network timeout, and the remaining three roles and security group were deleted by name.
+
+Nothing else was allocated. No budget remains reserved.
 
 ## Next evidence gaps, in order
 

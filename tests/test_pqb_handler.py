@@ -155,6 +155,26 @@ class HandlerOnEmulationTest(unittest.TestCase):
                               root=self.root, timeout=1)
         self.assertEqual((out['status'], out['candidates']), ('interrupted', []))
 
+    def test_a_grinder_that_exits_as_the_timeout_fires_is_still_interrupted(self):
+        # the process group is already gone when the handler signals it
+        import os
+        from unittest import mock
+        self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 14 * 1200000000,
+                         'sequence': 0x80000000, 'sequenceCount': 14, 'locktime': 500000000,
+                         'locktimeCount': 1200000000})
+        real = os.killpg
+
+        def gone(pid, sig):
+            real(pid, 9)                                 # it dies...
+            os.waitpid(pid, 0)                           # ...and is reaped before the signal lands
+            raise ProcessLookupError()
+
+        with mock.patch.object(handler.os, 'killpg', side_effect=gone):
+            out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))},
+                                  root=self.root, timeout=1)
+        self.assertEqual((out['status'], out['candidates'], out['checkpoint']),
+                         ('interrupted', [], 'requires-verification-or-resume'))
+
     def test_installed_files_must_match_the_binding(self):
         event = {'input': request('pinning', emu.problem('pin', gate_bits=24))}
         with open(self.root / 'grind', 'ab') as f:

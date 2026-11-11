@@ -174,6 +174,13 @@ def range_report(log, stage, unit):
     return report
 
 
+def _signal_group(pid, sig):
+    try:
+        os.killpg(pid, sig)
+    except ProcessLookupError:
+        pass                                # already exited
+
+
 def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS):
     binding = release_binding(root)
     data = event['input']
@@ -193,11 +200,13 @@ def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS):
                 process.wait(timeout=timeout)
                 status = 'completed' if process.returncode == 0 else 'failed'
             except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGTERM)
+                # The grinder may exit between the timeout and a signal; its group is then gone.
+                # Past the deadline the unit is interrupted either way, never credited.
+                _signal_group(process.pid, signal.SIGTERM)
                 try:
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:
-                    os.killpg(process.pid, signal.SIGKILL)
+                    _signal_group(process.pid, signal.SIGKILL)
                     process.wait()
                 status = 'interrupted'
         elapsed = time.monotonic() - start

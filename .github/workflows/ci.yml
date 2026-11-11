@@ -68,8 +68,11 @@ jobs:
           (cd pqb-measure-binaries && sha256sum -c SHA256SUMS)
           # the ranked binary measured is the one the worker image holds
           test "$(docker run --rm --network none --entrypoint sha256sum qsb-pqb:ci /opt/qsb-pqb/grind | cut -d' ' -f1)" = "$(sha256sum pqb-measure-binaries/grind-ranked | cut -d' ' -f1)"
-          # the branch head, not the synthetic merge commit a pull_request run checks out as GITHUB_SHA
-          printf '%s\n' "${{ github.event.pull_request.head.sha || github.sha }}" > pqb-measure-binaries/source-commit
+          # The commit that was actually checked out and built. On a pull_request run that is the
+          # synthetic merge commit, so only a push run's artifact matches a branch checkout; the
+          # bundle script then refuses a pull_request artifact, which is the intended binding.
+          printf '%s\n' "$GITHUB_SHA" > pqb-measure-binaries/source-commit
+          printf '%s\n' "$GITHUB_EVENT_NAME" > pqb-measure-binaries/source-event
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: pqb-measure-binaries-sm86

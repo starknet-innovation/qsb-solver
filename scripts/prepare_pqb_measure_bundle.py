@@ -3,7 +3,9 @@
     python3 scripts/prepare_pqb_measure_bundle.py BINARIES_DIR OUT_DIR
 
 BINARIES_DIR is the `pqb-measure-binaries-sm86` CI artifact of the commit being measured:
-grind-ranked, grind-upstream, build-receipt.json, SHA256SUMS, source-commit. The checkout must be
+grind-ranked, grind-upstream, build-receipt.json, SHA256SUMS, source-commit. Use the artifact of
+the push run: source-commit is the commit CI checked out and built, which on a pull_request run
+is the merge commit and never equals a branch checkout. The checkout must be
 clean and at that commit, so the fixtures, expected hit sets and runner are the committed ones.
 """
 import hashlib
@@ -42,7 +44,8 @@ def prepare(binaries, out, commit=None):
             raise SystemExit('checkout is not clean')
         commit = git('rev-parse', 'HEAD')
     if built != commit:
-        raise SystemExit('binaries were built from %s, the checkout is at %s' % (built, commit))
+        raise SystemExit('binaries were built from %s, the checkout is at %s (a pull_request run builds the '
+                         'merge commit: use the push run\'s artifact)' % (built, commit))
     lock = json.loads((ROOT / 'research/pqb-ranked/source-lock.json').read_text())
     if receipt['sourceLock'] != lock:
         raise SystemExit('binaries were built from a different source lock')
