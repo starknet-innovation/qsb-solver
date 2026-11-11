@@ -1,4 +1,4 @@
-"""pqb-ranked-v1 range vectors and the partition they describe. No CUDA or credentials."""
+"""pqb-ranked-v2 range vectors and the partition they describe. No CUDA or credentials."""
 import json
 import sys
 import unittest
@@ -12,7 +12,7 @@ import pqb_ranges as ranges  # noqa: E402
 
 class PqbRangeContractTest(unittest.TestCase):
     def test_published_contract(self):
-        vectors = json.loads((ROOT / 'contracts/pqb-ranked-v1.json').read_text())
+        vectors = json.loads((ROOT / 'contracts/pqb-ranked-v2.json').read_text())
         self.assertEqual(vectors['searchVersion'], ranges.VERSION)
         self.assertNotEqual(ranges.VERSION, 'ranked-v2')
         for case in vectors['cases']:

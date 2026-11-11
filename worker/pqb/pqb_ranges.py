@@ -1,4 +1,4 @@
-"""pqb-ranked-v1: deterministic, disjoint work units for the three PQB stages.
+"""pqb-ranked-v2: deterministic, disjoint work units for the three PQB stages.
 
 Every unit is a contiguous range of pqb's own nonces (`start`, `count`), so a result can be
 checked with pqb's definitions. Interrupted units are replayed in full.
@@ -6,20 +6,26 @@ checked with pqb's definitions. Interrupted units are replayed in full.
   pinning   nonce = (nSequence - 0x80000000) * 1,200,000,000 + (nLockTime - 500,000,000).
             A unit is SEQUENCES consecutive nSequence values, each with every usable nLockTime.
   round0/1  nonce = lexicographic rank of a t-subset of the live table slots. A unit is
-            PREFIX_CHUNK consecutive (t-1)-prefixes, each with all its completions; subsets
+            PREFIX_CHUNK[stage] consecutive (t-1)-prefixes, each with all its completions; subsets
             that share a prefix are contiguous in lexicographic order.
 
-The shapes are the ones of pqb's `PQB` configuration. A different table size or pick count is a
-different search and needs a new searchVersion.
+The shapes are the ones of pqb's `PQB` configuration. A different table size, pick count or unit
+size is a different partition and needs a new searchVersion.
+
+Unit sizes are set so the largest unit of each stage takes about eight minutes at the rates
+measured on one A10G on 2026-11-11 (docs/pqb/2026-11-11-a10g-measurement.md): 486 s, 502 s and
+486 s. That leaves room under a 900-second job limit for start-up and a slower host; it is a
+sizing choice from one host's rates, not a guarantee. pqb-ranked-v1 (16 sequences, 2^30
+prefixes for both rounds) was provisional and never published or enrolled.
 """
 from math import comb
 
-VERSION = 'pqb-ranked-v1'
+VERSION = 'pqb-ranked-v2'
 LT_MIN, LT_END = 500000000, 1700000000
 LT_SPAN = LT_END - LT_MIN
 SEQ_MIN, SEQ_COUNT = 0x80000000, 0x7FFFFFFE          # 0x80000000 .. 0xFFFFFFFD
-SEQUENCES = 16
-PREFIX_CHUNK = 1 << 30
+SEQUENCES = 14                                       # divides the 2^31 - 2 usable values exactly
+PREFIX_CHUNK = {'round0': 3 << 27, 'round1': 1 << 30}
 ROUNDS = {'round0': (109, 8), 'round1': (101, 9)}    # live table slots, picks
 
 
@@ -72,10 +78,11 @@ def work_range(stage, attempt):
     if stage not in ROUNDS:
         raise ValueError('Invalid stage')
     total = prefix_total(stage)
-    first = attempt * PREFIX_CHUNK
+    chunk = PREFIX_CHUNK[stage]
+    first = attempt * chunk
     if first >= total:
         raise ValueError('Search range exhausted')
-    count = min(PREFIX_CHUNK, total - first)
+    count = min(chunk, total - first)
     start = subset_rank_of_prefix(stage, first)
     return {'version': VERSION, 'start': str(start),
             'count': subset_rank_of_prefix(stage, first + count) - start,
@@ -85,4 +92,4 @@ def work_range(stage, attempt):
 def unit_count(stage):
     if stage == 'pinning':
         return -(-SEQ_COUNT // SEQUENCES)
-    return -(-prefix_total(stage) // PREFIX_CHUNK)
+    return -(-prefix_total(stage) // PREFIX_CHUNK[stage])

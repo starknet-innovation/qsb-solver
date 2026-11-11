@@ -67,10 +67,11 @@ and 28.8 with random draws and upstream's cut-offs. At the on-demand prices read
 that is about $22 in eu-west-1 ($1.123/h) or $25 in eu-west-2 ($1.277/h), against about $32 and
 $37 for random draws. The expected hours are still a model; only the rates are measured.
 
-Unit durations at these rates: a pinning unit about 9.3 minutes, a round-0 unit 17 minutes on
-average and up to 21, a round-1 unit up to 8. Round-0 units are too long for qsb-app's current
-900-second Batch timeout, so the provisional round-0 unit size has to shrink before a contract
-freeze.
+Unit durations at these rates, for the `pqb-ranked-v1` sizes in force during the run: a pinning
+unit about 9.3 minutes, a round-0 unit 17 minutes on average and up to 21, a round-1 unit up to
+8. Round-0 units were too long for qsb-app's 900-second Batch timeout. The units were resized
+afterwards (`pqb-ranked-v2`: largest unit about 8.4 minutes at these rates); see the assessment.
+The measurement itself used small ranges and does not depend on the unit sizes.
 
 ## Limits
 

@@ -20,7 +20,7 @@ names a range and the worker either covers all of it or fails.
 | Imported | `grinder/{grind.cu,common.cuh,ptx_field.cuh,README.md}`, `LICENSE`, `THIRD_PARTY_NOTICES.md`, byte for byte, in [vendor/pqb](../../vendor/pqb) with `provenance.json` |
 | Not imported | the Python CLI, the TypeScript library, the explorer, the whitepaper |
 | Adapted | [research/pqb-ranked/grind.cu](../../research/pqb-ranked/grind.cu), bound by `source-lock.json` |
-| Contract | [`pqb-ranked-v1`](../../contracts/pqb-ranked-v1.json), `worker/pqb/pqb_ranges.py` |
+| Contract | [`pqb-ranked-v2`](../../contracts/pqb-ranked-v2.json), `worker/pqb/pqb_ranges.py` |
 | Worker | [worker/pqb](../../worker/pqb/README.md): handler, binding, Dockerfile (`aws` target, sm_86 default) |
 
 This is not Yukon benchmark research. The process in `AGENTS.md` was applied to it by analogy.
@@ -81,7 +81,7 @@ arithmetic in `ptx_field.cuh`, which the emulation build does not use.
   range's size, is a non-zero exit instead of a warning.
 - **`--der-filter 1`**: gate hits are counted; only those with the DER shape are reported: a
   few instructions that run after a digest passes the gate.
-  Upstream reports every 24-bit gate hit (about 80,000 per pinning unit), which the consumer
+  Upstream reports every 24-bit gate hit (about 70,000 per pinning unit), which the consumer
   would have to store and re-derive.
 - **Exceptional-case detection** in `ec_comb` (two zero tests per thread, a marker `ec_menu`
   skips) and an exact host path, `exact_block`. The second change inside a kernel; it adds
@@ -112,12 +112,15 @@ Without a ranked flag the search path is upstream's.
   101-slot/9-pick round 1. Rounds with an extra fixed deletion (`deletions_before`) are
   unsupported upstream and here.
 - **Capacity.** 2²⁰ hits per batch and 32 candidates per unit, both fail-closed.
-- **Unit sizes and the 3,300 s timeout are provisional.** A pinning unit is 16 `nSequence`
-  values (about 1.4 × 10¹² trials); a round unit is 2³⁰ prefixes (about 3 × 10¹² trials for round
-  0, 7 × 10¹¹ for round 1, uneven across the space). At the measured A10G rates a pinning unit
-  takes about 9 minutes, a round-0 unit 17 on average and up to 21, a round-1 unit up to 8.
-  Round-0 units exceed qsb-app's 900-second Batch timeout and must shrink. Changing a unit size
-  is a new `searchVersion`.
+- **Unit sizes are fitted to one host's rates.** `pqb-ranked-v2` has pinning units of 14
+  `nSequence` values, round-0 units of 3 × 2²⁷ prefixes and round-1 units of 2³⁰ prefixes. At the
+  measured A10G rates the largest unit of each stage takes 486 s, 502 s and 486 s (round units
+  average about 380 s and are uneven across the space). That is sized for a 900-second job limit
+  with room for start-up and a slower host; pqb saw hosts of one model differ by up to 30 %,
+  which would bring the largest unit to about 650 s. It is not a guarantee, and no full unit has
+  been run. `pqb-ranked-v1` (16 values, 2³⁰ prefixes for both rounds) was provisional, never
+  published or enrolled, and had round-0 units of up to 21 minutes. The worker's own 3,300 s
+  timeout is still provisional. Changing a unit size is a new `searchVersion`.
 - **Hardware.** Upstream reports the workload is bound by 32-bit integer throughput and that
   consumer cards beat datacenter cards per dollar (their H100 runs pinning at 0.56× their 4090).
   The A10G ran at 0.42 of pqb's 4090 rates; see the AWS cost section.
@@ -165,6 +168,7 @@ No paid hardware, no provider submissions, nothing to clean up. No budget was re
 
 ## Next evidence gaps, in order
 
-1. Unit sizes that fit the application's job timeout on an A10G, then a contract freeze.
+1. One full unit of each stage on an A10G, to confirm the unit durations the sizes were chosen
+   for, then a contract freeze.
 2. The qsb-app side above, then one complete public-data pipeline run, including a full solve.
 3. A second host or another card if the rates are to be relied on for pricing.

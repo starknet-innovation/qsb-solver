@@ -6,7 +6,7 @@ worker and shares no binary with it. Status, evidence and limits:
 [docs/pqb/ASSESSMENT.md](../../docs/pqb/ASSESSMENT.md).
 
 It solves one unit of one stage per request (`pinning`, `round0`, `round1`) under the
-[`pqb-ranked-v1`](../../contracts/pqb-ranked-v1.json) range contract, on a compiled copy of
+[`pqb-ranked-v2`](../../contracts/pqb-ranked-v2.json) range contract, on a compiled copy of
 [research/pqb-ranked/grind.cu](../../research/pqb-ranked/grind.cu): PQB's CUDA grinder at
 `eccdd09`, adapted to walk a stated range exhaustively instead of drawing at random.
 
@@ -23,7 +23,7 @@ The image build needs a native x86_64 Linux host (see `worker/optimized/README.m
 ## Request and result
 
 ```json
-{"input": {"protocol": "pqb-v1", "searchVersion": "pqb-ranked-v1", "stage": "round0", "attempt": 3,
+{"input": {"protocol": "pqb-v1", "searchVersion": "pqb-ranked-v2", "stage": "round0", "attempt": 3,
            "problemBase64": "...", "problemSha256": "...", "manifestHash": "...", "kernelCommit": "..."}}
 ```
 

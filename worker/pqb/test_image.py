@@ -21,7 +21,7 @@ for name in ('licenses/pqb-LICENSE', 'licenses/pqb-THIRD_PARTY_NOTICES.md', 'lic
     assert pathlib.Path(name).is_file(), name
 assert not pathlib.Path('/opt/qsb/cpu').exists()
 raw = pathlib.Path('/fixture/pin.txt').read_bytes().replace(b'gate_bits 12\n', b'gate_bits 24\n')
-req = {'protocol': 'pqb-v1', 'stage': 'pinning', 'attempt': 0, 'searchVersion': 'pqb-ranked-v1',
+req = {'protocol': 'pqb-v1', 'stage': 'pinning', 'attempt': 0, 'searchVersion': 'pqb-ranked-v2',
        'problemBase64': base64.b64encode(raw).decode(), 'problemSha256': hashlib.sha256(raw).hexdigest(),
        'manifestHash': 'cd' * 32, 'kernelCommit': b['solverCommit']}
 for bad in (dict(req, kernelCommit='0' * 40), dict(req, seed='00'), dict(req, searchVersion='ranked-v2')):

@@ -23,7 +23,7 @@ STAGES = {'pinning': 'pin', 'round0': 'round0', 'round1': 'round1'}
 
 
 def request(stage, raw, attempt=0, **changes):
-    data = {'protocol': 'pqb-v1', 'stage': stage, 'attempt': attempt, 'searchVersion': 'pqb-ranked-v1',
+    data = {'protocol': 'pqb-v1', 'stage': stage, 'attempt': attempt, 'searchVersion': 'pqb-ranked-v2',
             'problemBase64': base64.b64encode(raw).decode(), 'problemSha256': hashlib.sha256(raw).hexdigest(),
             'manifestHash': 'cd' * 32, 'kernelCommit': COMMIT}
     data.update(changes)
@@ -119,7 +119,7 @@ class HandlerOnEmulationTest(unittest.TestCase):
         handler.work_range = lambda stage, attempt: (self.saved(stage, attempt), unit)[1]
 
     def test_units_complete(self):
-        self.small_unit({'version': 'pqb-ranked-v1', 'start': '0', 'count': 400, 'sequence': 0x80000000,
+        self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 400, 'sequence': 0x80000000,
                          'sequenceCount': 2, 'locktime': 500000000, 'locktimeCount': 200})
         out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
         self.assertEqual((out['status'], out['checkpoint'], out['verified']), ('completed', 'range-complete', False))
@@ -128,7 +128,7 @@ class HandlerOnEmulationTest(unittest.TestCase):
         for stage, picks in (('round0', 192), ('round1', 64)):
             first = ranges.subset_rank_of_prefix(stage, 5)
             count = ranges.subset_rank_of_prefix(stage, 8) - first
-            self.small_unit({'version': 'pqb-ranked-v1', 'start': str(first), 'count': count,
+            self.small_unit({'version': 'pqb-ranked-v2', 'start': str(first), 'count': count,
                              'prefixStart': '5', 'prefixCount': 3})
             out = handler.handler({'input': request(stage, emu.problem(stage, gate_bits=24))}, root=self.root)
             self.assertEqual(out['status'], 'completed', out)
@@ -136,20 +136,20 @@ class HandlerOnEmulationTest(unittest.TestCase):
 
     def test_a_unit_the_grinder_does_not_account_for_is_not_credited(self):
         # the unit claims more z-blocks than its range holds: the completion line cannot match
-        self.small_unit({'version': 'pqb-ranked-v1', 'start': '0', 'count': 401, 'sequence': 0x80000000,
+        self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 401, 'sequence': 0x80000000,
                          'sequenceCount': 2, 'locktime': 500000000, 'locktimeCount': 200})
         out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
         self.assertEqual((out['status'], out['checkpoint']), ('failed', 'requires-verification-or-resume'))
         self.assertNotIn('gateHits', out)
         # a range the grinder refuses
-        self.small_unit({'version': 'pqb-ranked-v1', 'start': '0', 'count': 2, 'sequence': 0xFFFFFFFD,
+        self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 2, 'sequence': 0xFFFFFFFD,
                          'sequenceCount': 2, 'locktime': 500000000, 'locktimeCount': 1})
         out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
         self.assertEqual(out['status'], 'failed')
 
     def test_an_interrupted_unit_is_not_credited(self):
-        self.small_unit({'version': 'pqb-ranked-v1', 'start': '0', 'count': 16 * 1200000000,
-                         'sequence': 0x80000000, 'sequenceCount': 16, 'locktime': 500000000,
+        self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 14 * 1200000000,
+                         'sequence': 0x80000000, 'sequenceCount': 14, 'locktime': 500000000,
                          'locktimeCount': 1200000000})
         out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))},
                               root=self.root, timeout=1)
