@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/starknet-innovation/qsb-app",
+  "commit": "81c060dfbeddc64f1a16ef50a6195d68831e61b1",
+  "batchCommand": [
+    "/usr/bin/setpriv",
+    "--no-new-privs",
+    "--bounding-set=-all",
+    "--inh-caps=-all",
+    "--ambient-caps=-all",
+    "/bin/sh",
+    "-c",
+    "set -eu; grep -E '^Cap|^NoNewPrivs' /proc/self/status; nvidia-smi --query-gpu=name,uuid,driver_version --format=csv,noheader; exec python3 /opt/qsb/aws_entrypoint.py"
+  ],
+  "files": {
+    "server/aws-batch.ts": "91574b2163529316d1ecd674b0368ff12a043695559e6c7a9763b6cbdf6eda6c",
+    "server/aws-batch-command.json": "5a4544d33c5744dbc438c0d515a84e3bb2c8e80d8662020c4a7c765ed5267881",
+    "server/pqb-reference.ts": "493b433fa06bb7607416a9abd4d38526d4a8c889e52d93adf6ecabed1c6c7daa",
+    "server/search-protocol.ts": "01baee2f615f85d835f947340883d827c692f6a7782878d728835d95fcfaf8e2",
+    "server/candidate-output.ts": "71d42465173e3a8d6e575a1d5895be0fd4df53d92d95ee9a9c14f12a28dfb815",
+    "server/gpu-spend.ts": "34d431a9c0a04ddf807a6a13e65ac1bc9fa13aeb3cd860351e380f982f72c033",
+    "server/gpu-spend.json": "71f457740abc7a8699671faf5f1a9209506e5d11ea3efa89320580edcd3b13f6",
+    "contracts/pqb-ranked-v2.json": "eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1",
+    "package-lock.json": "60c2eedb5c7cd3dcac3fe07ad7d9dcbfe3fe5facad78c37ffd13e0283c01b7fa"
+  }
+}

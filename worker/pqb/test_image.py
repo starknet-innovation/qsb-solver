@@ -10,8 +10,16 @@ import subprocess
 import sys
 
 CHECK = r'''
-import base64, hashlib, json, pathlib
+import base64, hashlib, json, pathlib, shutil, subprocess, os
 import pqb_handler as h
+assert pathlib.Path('/opt/qsb').resolve() == pathlib.Path('/opt/qsb-pqb')
+assert pathlib.Path('/opt/qsb/aws_entrypoint.py').is_file()
+assert shutil.which('setpriv') == '/usr/bin/setpriv'
+probe = subprocess.run(['/usr/bin/setpriv', '--no-new-privs', '--bounding-set=-all',
+    '--inh-caps=-all', '--ambient-caps=-all', 'python3', '/opt/qsb/aws_entrypoint.py'],
+    capture_output=True, text=True, env={**os.environ, 'AWS_EC2_METADATA_DISABLED':'true',
+        'AWS_DEFAULT_REGION':'eu-west-1', 'AWS_BATCH_JOB_ID':'invalid'})
+assert probe.returncode != 0 and 'Invalid Batch job id' in probe.stderr, probe.stderr
 b = h.release_binding()
 assert b['status'] == 'HOLD' and len(b['solverCommit']) == 40
 receipt = json.loads(pathlib.Path('build-receipt.json').read_text())

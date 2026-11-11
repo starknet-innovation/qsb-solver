@@ -32,6 +32,11 @@ actual PQB CI image. The repeatable CPU compatibility command is
 `python3 scripts/check_pqb_consumer.py APP_CHECKOUT APP_COMMIT NEW_EXTERNAL_OUTPUT_DIR`;
 install the consumer's locked dependencies first and keep both checkouts clean.
 
+The image also exposes `/opt/qsb` as an alias of `/opt/qsb-pqb`, matching the consumer's
+shared hardened Batch command. Offline CI executes that path under `setpriv`; the
+[public solve assessment](../../ops/pqb-public-solve/README.md) exercises real private Batch
+transport without enrolling or serving a PQB release.
+
 ## Request and result
 
 ```json

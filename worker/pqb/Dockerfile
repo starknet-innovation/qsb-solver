@@ -50,5 +50,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 FROM runtime AS aws
 RUN python3 -m pip install --no-cache-dir boto3==1.42.0
 COPY worker/aws/entrypoint.py /opt/qsb-pqb/aws_entrypoint.py
+# The consumer's hardened Batch command is shared by both protocols.
+RUN ln -s /opt/qsb-pqb /opt/qsb
 CMD ["python3", "aws_entrypoint.py"]
 
