@@ -215,6 +215,29 @@ class MeasureDryRunTest(unittest.TestCase):
         info = json.loads((measure.FAILURE_DIR / '00' / 'invocation.json').read_text())
         self.assertEqual(info['reason'], 'duplicate @range line')
 
+    def test_expected_work_counts_are_computed_independently(self):
+        spec = importlib.util.spec_from_file_location('run_measure_counts', MEASURE / 'run_measure.py')
+        measure = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(measure)
+        expected = json.loads((MEASURE / 'expected.json').read_text())
+        for case in expected['cases']:                       # the reference's own counts, for every case
+            stage = 'pin' if '--pin-seq' in case['args'] else case['problem'].split('.')[0]
+            self.assertEqual(measure.expected_zblocks(stage, case['args']), case['zblocks'], case['label'])
+        self.assertEqual(measure.report_identity(['--prefix-start', 5, '--prefix-count', 9, '--der-filter', 1]),
+                         {'der_filter': 1, 'kind': 'round', 'prefix_start': 5, 'prefix_count': 9})
+
+    def test_the_result_is_replaced_whole(self):
+        spec = importlib.util.spec_from_file_location('run_measure_atomic', MEASURE / 'run_measure.py')
+        measure = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(measure)
+        path = Path(self.tmp.name) / 'result.json'
+        path.write_text('{"status": "started"}\n')
+        measure.write_atomic(path, '{"status": "passed"}\n')
+        self.assertEqual(json.loads(path.read_text()), {'status': 'passed'})
+        self.assertEqual([p.name for p in path.parent.glob('result.json*')], ['result.json'])
+        text = (MEASURE / 'run_measure.py').read_text()
+        self.assertEqual(text.count('result.write_text('), 1)                  # only the started marker
+
     def fake_case(self, report):
         """Run one correctness case against a script that writes the right hit but this report."""
         spec = importlib.util.spec_from_file_location('run_measure_report', MEASURE / 'run_measure.py')
@@ -252,7 +275,13 @@ class MeasureDryRunTest(unittest.TestCase):
         (self.artifact / 'source-event').write_text('pull_request\n')
         with self.assertRaises(SystemExit):
             prepare(self.artifact, self.bundle, commit=COMMIT)
+        # a pull_request artifact is refused even when its checksums are consistent and its commit
+        # is the one checked out (an operator on the synthetic merge commit)
+        self.sums()
+        with self.assertRaisesRegex(SystemExit, 'push workflow artifact'):
+            prepare(self.artifact, self.bundle, commit=COMMIT)
         (self.artifact / 'source-event').write_text('push\n')
+        self.sums()
         # ...and so is a checksum list that leaves them out
         full = (self.artifact / 'SHA256SUMS').read_text()
         (self.artifact / 'SHA256SUMS').write_text(''.join(ln + '\n' for ln in full.splitlines() if 'source-' not in ln))

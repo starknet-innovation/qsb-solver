@@ -49,6 +49,39 @@ class LambdaListingTest(unittest.TestCase):
         self.assertEqual(len(calls), 3)
 
 
+class LaunchTemplateLookupTest(unittest.TestCase):
+    """Removal after an arm that failed before recording the launch template id."""
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / 'ops/pqb-public-solve'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'ops/pqb-public-solve'))
+        self.control = load('pqb_public_solve_control_lt', 'ops/pqb-public-solve/control.py')
+
+    def call(self, by_name, by_id=()):
+        def call(service, operation, **params):
+            self.assertEqual((service, operation), ('ec2', 'describe-launch-templates'))
+            f = params['Filters'][0]
+            ids = by_name if f['Name'] == 'launch-template-name' else [i for i in by_id if i in f['Values']]
+            return {'LaunchTemplates': [{'LaunchTemplateId': i} for i in ids]}
+        return call
+
+    def test_created_but_never_recorded(self):
+        self.assertEqual(self.control.launch_template_ids(self.call(['lt-1']), 'qsb-pqb-solve-0123abcd'), ['lt-1'])
+
+    def test_never_created(self):
+        self.assertEqual(self.control.launch_template_ids(self.call([]), 'qsb-pqb-solve-0123abcd'), [])
+
+    def test_recorded_and_present_once(self):
+        self.assertEqual(self.control.launch_template_ids(self.call(['lt-1'], ['lt-1']), 'n', 'lt-1'), ['lt-1'])
+
+    def test_recorded_but_already_deleted(self):
+        self.assertEqual(self.control.launch_template_ids(self.call([], []), 'n', 'lt-1'), [])
+
+    def test_remove_no_longer_reads_the_id_from_state_unconditionally(self):
+        text = (ROOT / 'ops/pqb-public-solve/control.py').read_text()
+        self.assertNotIn("LaunchTemplateId=s['launchTemplateId'])", text)
+
+
 class DurableRequestTest(unittest.TestCase):
     def test_request_is_flushed_before_it_is_published(self):
         rpc = load('qsb_mcp_rpc_durable', 'ops/aws-gpu-execution/mcp_rpc.py')

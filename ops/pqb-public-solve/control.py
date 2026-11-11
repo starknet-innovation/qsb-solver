@@ -35,6 +35,14 @@ def function_exists(call,name):
         if not marker:return False
 
 
+def launch_template_ids(call,name,recorded=None):
+    """The campaign's launch template as EC2 reports it by name, plus a recorded id it still knows."""
+    found=[t['LaunchTemplateId'] for t in call('ec2','describe-launch-templates',Filters=[{'Name':'launch-template-name','Values':[name]}]).get('LaunchTemplates',[])]
+    if recorded and recorded not in found and call('ec2','describe-launch-templates',Filters=[{'Name':'launch-template-id','Values':[recorded]}]).get('LaunchTemplates'):
+        found.append(recorded)
+    return found
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('mode',choices=['prepare','publisher-access','arm','batch','stop','remove'])
@@ -178,7 +186,9 @@ def main():
             if s.get('definition'):call('batch','deregister-job-definition',jobDefinition=s['definition'])
             if call('scheduler','list-schedules',NamePrefix=name)['Schedules']:call('scheduler','delete-schedule',Name=name,GroupName='default')
             if function_exists(call,name):call('lambda','delete-function',FunctionName=name)
-            call('ec2','delete-launch-template',LaunchTemplateId=s['launchTemplateId'])
+            # A failed arm may have created the template without recording its id, or not created it:
+            # look it up by its campaign name instead of trusting the state.
+            for template in launch_template_ids(call,name,s.get('launchTemplateId')):call('ec2','delete-launch-template',LaunchTemplateId=template)
             call('iam','remove-role-from-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
             call('iam','delete-instance-profile',InstanceProfileName=name)
             call('iam','detach-role-policy',RoleName=name+'-host',PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role')

@@ -160,6 +160,51 @@ def report_identity(args):
     return want
 
 
+def _subset_rank_of_prefix(n, t, prefix_rank):
+    """The first t-subset rank of range(n) whose (t-1)-prefix has this lexicographic rank."""
+    if prefix_rank == math.comb(n - 1, t - 1):
+        return math.comb(n, t)
+    prefix, x, rank = [], 0, prefix_rank
+    while len(prefix) < t - 1:
+        c = math.comb(n - 1 - x - 1, t - 1 - len(prefix) - 1)
+        if rank < c:
+            prefix.append(x)
+        else:
+            rank -= c
+        x += 1
+    subset, total, prev = prefix + [prefix[-1] + 1], 0, -1
+    for k, value in enumerate(subset):
+        for y in range(prev + 1, value):
+            total += math.comb(n - y - 1, t - k - 1)
+        prev = value
+    return total
+
+
+def expected_zblocks(stage, args):
+    """How many z-blocks a ranked range holds, computed here and not taken from the grinder."""
+    given = {str(args[i]): int(args[i + 1]) for i in range(0, len(args), 2)}
+    if stage == 'pin':
+        return given.get('--pin-seq-count', 1) * given.get('--pin-lt-count', LT_SPAN)
+    n, t = ROUNDS[stage]
+    start, count = given['--prefix-start'], given['--prefix-count']
+    return _subset_rank_of_prefix(n, t, start + count) - _subset_rank_of_prefix(n, t, start)
+
+
+def write_atomic(path, text):
+    """Replace a receipt whole: a crash must leave the old one or the new one, never a fragment."""
+    temporary = Path(str(path) + '.tmp')
+    with open(temporary, 'w') as stream:
+        stream.write(text)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    directory = os.open(Path(path).parent, os.O_RDONLY)
+    try:
+        os.fsync(directory)
+    finally:
+        os.close(directory)
+
+
 def correctness(bundle, expected):
     out = []
     for case in expected['cases']:
@@ -217,7 +262,14 @@ def ranked_sample(bundle, stage, raw, z_rate, index):
     for args in ranges:
         events, hits, w = run(bundle / 'grind-ranked', raw, args + ['--der-filter', 1], timeout=SECONDS * 6 + 60)
         rep = events.get('range') or {}
-        ok = ok and rep.get('complete') is True and rep.get('zblocks') == rep.get('expected')
+        # The sample must be the range that was asked for: the right identity and filter, the work
+        # count this script computes for that range, and a hit count matching the lines written.
+        this_ok = (rep.get('complete') is True and rep.get('zblocks') == rep.get('expected') == expected_zblocks(stage, args)
+                   and rep.get('hits') == len(hits)
+                   and all(rep.get(k) == v for k, v in report_identity(args + ['--der-filter', 1]).items()))
+        if not this_ok:
+            keep_last('timing sample does not describe the requested range')
+        ok = ok and this_ok
         st = steady(events)
         if st is None:
             st_z = None
@@ -310,7 +362,7 @@ def main():
         out.setdefault('correctnessPassed', False)
         out.update(status='failed', error='%s: %s' % (type(e).__name__, str(e)[:400]))
     out['elapsedSeconds'] = time.monotonic() - START
-    result.write_text(json.dumps(out, indent=1) + '\n')
+    write_atomic(result, json.dumps(out, indent=1) + '\n')
     print(json.dumps({'status': out['status'], 'correctnessPassed': out['correctnessPassed']}))
     sys.exit(0 if out['status'] == 'passed' else 1)
 

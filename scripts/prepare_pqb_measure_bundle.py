@@ -44,6 +44,10 @@ def prepare(binaries, out, commit=None):
     receipt = json.loads((binaries / 'build-receipt.json').read_text())
     if receipt.get('binarySha256') != sums['grind-ranked'] or receipt.get('status') != 'HOLD':
         raise SystemExit('build receipt does not describe grind-ranked')
+    # A pull_request run builds a synthetic merge commit that was never pushed as a branch tip. Even
+    # with that commit checked out, native work must come from a push run of a pushed commit.
+    if (binaries / 'source-event').read_text().strip() != 'push':
+        raise SystemExit('native measurement requires the push workflow artifact, not a pull_request one')
     built = (binaries / 'source-commit').read_text().strip()
     if commit is None:
         if git('status', '--porcelain'):
