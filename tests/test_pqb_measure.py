@@ -45,6 +45,10 @@ class ExpectedTest(unittest.TestCase):
         labels = [c['label'] for c in expected['cases']]
         self.assertEqual(len(labels), len(set(labels)))
         self.assertIn('pin-planted-exceptional', labels)
+        # the shape filter must be seen emitting candidates, not only counting gate hits
+        filtered = [c for c in expected['cases'] if '--der-filter' in c['args'] and c['hits']]
+        self.assertGreaterEqual(len(filtered), 2)
+        self.assertTrue(all(c['gateHits'] > len(c['hits']) for c in filtered))
         self.assertGreater(sum(len(c['hits']) for c in expected['cases']), 200)
 
     def test_host_script_uses_the_published_runtime_and_isolates_the_run(self):
@@ -95,7 +99,8 @@ class MeasureDryRunTest(unittest.TestCase):
         out = json.loads(result.read_text())
         self.assertEqual((out['status'], out['correctnessPassed']), ('passed', True))
         self.assertEqual(out['binaries']['grind-ranked'], sha256(self.artifact / 'grind-ranked'))
-        self.assertEqual(len(out['correctness']), 11)
+        self.assertEqual(len(out['correctness']), 13)
+        self.assertFalse((result.parent / 'failed-invocations').exists())   # nothing failed, nothing kept
         for stage in ('pin', 'round0', 'round1'):
             summary = out['timing'][stage]['summary']
             # Steady-state rates need several batches per process, which a slow emulation host
@@ -122,6 +127,24 @@ class MeasureDryRunTest(unittest.TestCase):
         out = json.loads(result.read_text())
         self.assertEqual((out['status'], out['timing']), ('failed', None))
         self.assertEqual([c['pass'] for c in out['correctness']], [True, False])
+
+    def test_a_failed_invocation_keeps_its_inputs_and_whole_output(self):
+        spec = importlib.util.spec_from_file_location('run_measure_under_test', MEASURE / 'run_measure.py')
+        measure = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(measure)
+        keep = Path(self.tmp.name) / 'kept'
+        measure.FAILURE_DIR = keep
+        raw = emu.problem('pin')
+        with self.assertRaises(measure.Failed):
+            measure.run(RANKED, raw, ['--pin-seq', 1])                       # outside the usable values: exit 2
+        kept = keep / '00'
+        self.assertEqual((kept / 'P.txt').read_bytes(), raw)
+        info = json.loads((kept / 'invocation.json').read_text())
+        self.assertEqual((info['reason'], info['args'], info['problemSha256']),
+                         ('exit 2', ['--pin-seq', '1'], hashlib.sha256(raw).hexdigest()))
+        self.assertIn('pin range outside', (kept / 'stderr.txt').read_text())
+        measure.run(RANKED, raw, ['--pin-seq', 0x80000000, '--pin-lt-count', 8])   # a success keeps nothing
+        self.assertEqual([p.name for p in keep.iterdir()], ['00'])
 
     def test_bundle_refuses_mismatched_inputs(self):
         prepare = bundle_module().prepare

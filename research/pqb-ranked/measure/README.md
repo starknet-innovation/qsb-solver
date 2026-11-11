@@ -24,8 +24,8 @@ account, region, instance type and a budget cap, under `ops/aws-gpu-execution`.
 
 | File | Role |
 |---|---|
-| `make_expected.py`, `expected.json` | 11 small ranked ranges and their complete hit sets, computed by the independent reference. Includes multi-batch ranges, the DER-shape filter, and a planted exceptional point (`fixtures/pin-planted.txt`). |
-| `run_measure.py` | The one-shot runner: correctness first, then interleaved upstream/ranked timing per stage. Timing is skipped if any correctness case fails. |
+| `make_expected.py`, `expected.json` | 13 small ranked ranges and their complete hit sets, computed by the independent reference. Includes multi-batch ranges, the DER-shape filter both counting and emitting candidates, and a planted exceptional point (`fixtures/pin-planted.txt`). The 11 November run had the first 11; the two filtered cases that must emit a candidate were added afterwards and have not run on a GPU. |
+| `run_measure.py` | The one-shot runner: correctness first, then interleaved upstream/ranked timing per stage. Timing is skipped if any correctness case fails. A failed grinder invocation's problem, arguments and whole output are kept under `failed-invocations/` beside the result and collected with it. |
 | `worker/pqb/Dockerfile`, target `measure` | Compiles upstream's unmodified grinder with the ranked grinder's compiler and flags. CI uploads both as `pqb-measure-binaries-sm86` and checks the ranked one is the worker image's binary. |
 | `scripts/prepare_pqb_measure_bundle.py` | Builds the hash-verified bundle from that artifact and a clean checkout at the same commit. |
 | `ops/aws-gpu-execution/host-pqb-measure.sh` | Runs the bundle on an already-authorized host: no network, read-only root, dropped capabilities. The published combined image is used only as a CUDA runtime. |

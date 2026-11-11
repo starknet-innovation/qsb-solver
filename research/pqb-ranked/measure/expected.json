@@ -218,6 +218,54 @@
    "hits": []
   },
   {
+   "label": "pin-der-filter-emits",
+   "problem": "pin.txt",
+   "gateBits": 1,
+   "env": {},
+   "args": [
+    "--pin-seq",
+    2147483654,
+    "--pin-seq-count",
+    1,
+    "--pin-lt-start",
+    700019040,
+    "--pin-lt-count",
+    16,
+    "--der-filter",
+    1
+   ],
+   "zblocks": 16,
+   "gateHits": 586,
+   "exactZblocks": 0,
+   "hits": [
+    "2147483654 700019048 3 0 0 1"
+   ]
+  },
+  {
+   "label": "pin-der-filter-emits-uncompressed",
+   "problem": "pin.txt",
+   "gateBits": 1,
+   "env": {},
+   "args": [
+    "--pin-seq",
+    2147483654,
+    "--pin-seq-count",
+    1,
+    "--pin-lt-start",
+    700040024,
+    "--pin-lt-count",
+    16,
+    "--der-filter",
+    1
+   ],
+   "zblocks": 16,
+   "gateHits": 555,
+   "exactZblocks": 0,
+   "hits": [
+    "2147483654 700040032 6 1 1 1"
+   ]
+  },
+  {
    "label": "pin-planted-exceptional",
    "problem": "pin-planted.txt",
    "gateBits": 3,

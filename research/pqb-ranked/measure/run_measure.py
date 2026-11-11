@@ -37,6 +37,9 @@ STRATA = int(os.environ.get('QSB_MEASURE_STRATA', '6'))
 DEADLINE = float(os.environ.get('QSB_MEASURE_DEADLINE', '600'))
 SKIP_BATCHES = 3
 START = time.monotonic()
+FAILURE_DIR = None          # set by the caller: inputs and full output of failed invocations go here
+MAX_KEPT_FAILURES = 20
+KEEP_BYTES = 400000
 
 
 class Failed(Exception):
@@ -47,6 +50,33 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def _text(value):
+    if value is None:
+        return ''
+    return value if isinstance(value, str) else value.decode('ascii', 'replace')
+
+
+def keep_failure(reason, binary, problem, args, env, stdout, stderr, hits):
+    """A failed invocation's exact inputs and whole output, kept for the run's durable receipts."""
+    if FAILURE_DIR is None:
+        return
+    root = Path(FAILURE_DIR)
+    root.mkdir(parents=True, exist_ok=True)
+    index = len(list(root.iterdir()))
+    if index >= MAX_KEPT_FAILURES:
+        return
+    d = root / ('%02d' % index)
+    d.mkdir()
+    (d / 'P.txt').write_bytes(problem)
+    (d / 'stdout.txt').write_text(_text(stdout)[-KEEP_BYTES:])
+    (d / 'stderr.txt').write_text(_text(stderr)[-KEEP_BYTES:])
+    (d / 'hits.txt').write_text(_text(hits)[-KEEP_BYTES:])
+    (d / 'invocation.json').write_text(json.dumps({
+        'reason': reason, 'binary': Path(binary).name, 'binarySha256': sha256(binary),
+        'problemSha256': hashlib.sha256(problem).hexdigest(), 'args': [str(a) for a in args], 'env': env or {}},
+        indent=1) + '\n')
+
+
 def run(binary, problem, args, env=None, timeout=120):
     """One grinder process. Returns its events, hit lines and wall time."""
     left = DEADLINE - (time.monotonic() - START)
@@ -54,12 +84,20 @@ def run(binary, problem, args, env=None, timeout=120):
         raise Failed('out of time')
     with tempfile.TemporaryDirectory(prefix='pqb-measure-') as d:
         (Path(d) / 'P.txt').write_bytes(problem)
-        t0 = time.monotonic()
-        done = subprocess.run([str(binary), '--problem', 'P.json', '--hits', 'hits.txt'] + [str(a) for a in args],
-                              cwd=d, capture_output=True, text=True, timeout=min(timeout, left),
-                              env=dict(os.environ, **(env or {})))
-        wall = time.monotonic() - t0
         hits = Path(d) / 'hits.txt'
+        t0 = time.monotonic()
+        try:
+            done = subprocess.run([str(binary), '--problem', 'P.json', '--hits', 'hits.txt'] + [str(a) for a in args],
+                                  cwd=d, capture_output=True, text=True, timeout=min(timeout, left),
+                                  env=dict(os.environ, **(env or {})))
+        except subprocess.TimeoutExpired as e:
+            keep_failure('timeout', binary, problem, args, env, e.stdout, e.stderr,
+                         hits.read_text() if hits.is_file() else '')
+            raise
+        wall = time.monotonic() - t0
+        if done.returncode:
+            keep_failure('exit %d' % done.returncode, binary, problem, args, env, done.stdout, done.stderr,
+                         hits.read_text() if hits.is_file() else '')
         lines = sorted(ln for ln in hits.read_text().split('\n') if ln) if hits.is_file() else []
     events = {'batch': []}
     for ln in done.stdout.splitlines():
@@ -188,6 +226,8 @@ def main():
     if result.exists():
         sys.exit('result exists: this run is one-shot')
     result.write_text(json.dumps({'status': 'started'}) + '\n')          # the one-shot marker
+    global FAILURE_DIR
+    FAILURE_DIR = result.parent / 'failed-invocations'
     expected = json.loads((bundle / 'expected.json').read_text())
     out = {'format': 'qsb-pqb-measure-result-v1', 'status': 'incomplete',
            'binaries': {n: sha256(bundle / n) for n in ('grind-ranked', 'grind-upstream')},

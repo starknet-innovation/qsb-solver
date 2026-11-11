@@ -32,8 +32,9 @@ the exact gate-hit count and `complete`.
 | round0-first, -last, -interior-batches | 975 / 431 / 313 | 43 / 18 / 10 | |
 | round1-first, -last, -interior-batches | 885 / 402 / 1,387 | 16 / 5 / 16 | |
 
-This is the first native evidence for the ranked walk, the DER-shape filter and the
-exceptional-case path. It covers these ranges on this GPU and compiler. It does not cover every
+This is the first native evidence for the ranked walk, the exceptional-case path and the
+DER-shape filter's gate counting. The one filtered case expected no candidate, so the run did
+not show the filter emitting one on a GPU; cases that do were added afterwards. It covers these ranges on this GPU and compiler. It does not cover every
 range, and the branch where the sighash point itself is infinity still has no test of its own.
 
 ## Timing: ranked walk against upstream's random search

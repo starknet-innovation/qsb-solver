@@ -64,6 +64,11 @@ Two separate effects; whole-spend savings remain modelled, while component rates
 | [Native A10G run, 11 November](2026-11-11-a10g-measurement.md) | native GPU execution and matched timing | On one `g5.xlarge`: all 11 correctness cases returned exactly the reference's hit sets, including multi-batch ranges, the DER-shape filter and a planted exceptional point. Ranked steady rate 1.004 to 1.014 times upstream's random search, three alternating samples per stage. A10G rates 2.49 / 2.73 / 2.01 G trials/s. |
 | nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
+**What the native run did not exercise.** Its one filtered case expected no candidate, so it
+showed the DER-shape filter counting gate hits on a GPU, not emitting one. Two filtered cases that
+each expect a candidate were added afterwards; they pass under emulation and have not run
+natively.
+
 **Which binary the native run covers.** It ran the ranked binary `3f816a00…` built from
 `266f4a0`. `grind.cu` changed afterwards (review fixes): overflow-safe range bounds, strict
 numeric options, range options refused without their start option, a stricter slot-spacing

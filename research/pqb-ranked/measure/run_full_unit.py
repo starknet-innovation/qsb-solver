@@ -187,6 +187,7 @@ def run(bundle, results, stage):
                    workerTimeoutSeconds=worker.TIMEOUT_SECONDS)
         expected = json.loads((bundle / 'expected.json').read_text())
         measure.START, measure.DEADLINE = time.monotonic(), 60
+        measure.FAILURE_DIR = results / 'preflight-failures'    # inputs and whole output of a failed case
         out['correctness'] = measure.correctness(bundle, expected)
         write_json(results / 'result.json', out)
         if not out['correctness'] or not all(c['pass'] for c in out['correctness']):

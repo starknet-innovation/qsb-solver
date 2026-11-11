@@ -70,6 +70,12 @@ def main():
     pin('pin-last', p, 'pin.txt', 12, 0xFFFFFFFD, 1, 1699998500, 1500)
     pin('pin-batches', p, 'pin.txt', 12, 0x80000003, 3, 1234567890, 900, SMALL)
     pin('pin-der-filter', p, 'pin.txt', 1, 0x80000005, 1, 600000000, 64, der=True)
+    # A filtered case that must EMIT candidates. Shaped hits are about 2^-20 per trial, so the two
+    # windows were located beforehand with the emulated grinder; the expected sets below are still
+    # computed here by the reference alone, and must each hold a shaped hit.
+    pin('pin-der-filter-emits', p, 'pin.txt', 1, 0x80000006, 1, 700019040, 16, der=True)
+    pin('pin-der-filter-emits-uncompressed', p, 'pin.txt', 1, 0x80000006, 1, 700040024, 16, der=True)
+    assert all(c['hits'] for c in cases[-2:]), 'a filtered case expects no candidate'
     pin('pin-planted-exceptional', planted(), 'pin-planted.txt', 3, PLANT[0], 1, 900000000, 48, exact=4)
     for name, n, t in (('round0', 109, 8), ('round1', 101, 9)):
         total = comb(n - 1, t - 1)

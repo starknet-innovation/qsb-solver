@@ -41,7 +41,7 @@ printf '%s\n' "$status" > "$results/exit-code.txt"
 python3 - "$results" <<'PY'
 import base64,gzip,hashlib,json,pathlib,sys
 root=pathlib.Path(sys.argv[1])
-files={p.name:p.read_text() for p in root.iterdir() if p.is_file()}
+files={str(p.relative_to(root)):p.read_text() for p in root.rglob('*') if p.is_file()}
 encoded=base64.b64encode(gzip.compress(json.dumps(files).encode()))
 (root/'public-result.b64').write_bytes(encoded)
 print('QSB_PUBLIC_RESULT_META='+json.dumps(dict(bytes=len(encoded),sha256=hashlib.sha256(encoded).hexdigest())))
