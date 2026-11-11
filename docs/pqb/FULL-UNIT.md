@@ -22,8 +22,9 @@ These are estimates. Each request uses `pqb-ranked-v2`, the production 24-bit ga
 filter. There is no CLI option to shrink a unit or raise the 840-second worker timeout. Before
 the full unit, every committed small independent-reference case must pass on this binary within
 a 60-second preflight allowance, including boundary, multi-batch and exceptional-point cases.
-The completed campaign ran 11 cases per session. Later review expanded the suite to 13; its two
-additional pinning filter-positive cases are CPU-tested and have not run natively.
+The completed campaign ran 11 cases per session. Later review expanded the suite to 13; all 13,
+including both additional pinning filter-positive cases, subsequently passed in a separate
+[native correctness-only session](2026-11-11-correctness-consumer-validation.md).
 The short matched-throughput comparison is not repeated.
 
 A stage passes only if the bound worker returns `completed` / `range-complete`, its retained

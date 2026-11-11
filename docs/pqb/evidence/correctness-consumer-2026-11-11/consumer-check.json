@@ -1,0 +1,69 @@
+{
+  "format": "qsb-pqb-consumer-check-v1",
+  "status": "passed",
+  "workerCommit": "0d3a19ce30609c7de4165c9de46448475e5b3b1c",
+  "consumerCommit": "81c060dfbeddc64f1a16ef50a6195d68831e61b1",
+  "contractFileSha256": "eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1",
+  "consumerLockSha256": "60c2eedb5c7cd3dcac3fe07ad7d9dcbfe3fe5facad78c37ffd13e0283c01b7fa",
+  "limits": [
+    "CPU fixture/range checks only; reduced gate for filter fixtures",
+    "Consumer tests mock providers and positive coordinator verdicts",
+    "No native full solve, Batch transport, consensus/spend or enrollment"
+  ],
+  "rangeComparisons": 350,
+  "publicProblems": [
+    {
+      "stage": "pinning",
+      "sha256": "2a504ce0e1aac7af84cf568c84185e8ff81e2dd74e942e0b338f29a7ec4d4931"
+    },
+    {
+      "stage": "round0",
+      "sha256": "5ce1ea655223418f394d18ddb11229701ff48cfa99bb63cc5ecb6921a3e04ab3"
+    },
+    {
+      "stage": "round1",
+      "sha256": "c66cb858919f4635a194cb628bfa40ae886c3979da0f0c7085edb359e0637bc1"
+    }
+  ],
+  "filterCandidates": [
+    {
+      "label": "pin-der-filter-emits",
+      "gateBits": 1,
+      "hits": [
+        {
+          "line": "2147483654 700019048 3 0 0 1",
+          "digest": "49adb202c08f0217038415771ff06c8f3b5622d79d8be9b362c7b6b11a93c021",
+          "strictDer": false
+        }
+      ],
+      "canonical": 1,
+      "fullSolutions": 0
+    },
+    {
+      "label": "pin-der-filter-emits-uncompressed",
+      "gateBits": 1,
+      "hits": [
+        {
+          "line": "2147483654 700040032 6 1 1 1",
+          "digest": "419a050945601824440fe3550202100dce5fd4041eef55f01cdabcd8b0dc8fcf",
+          "strictDer": false
+        }
+      ],
+      "canonical": 1,
+      "fullSolutions": 0
+    }
+  ],
+  "consumerTests": [
+    "tests/pqb.test.ts",
+    "tests/pqb-protocol.test.ts",
+    "tests/pqb-sdk.test.ts"
+  ],
+  "numberParsing": "Consumer documents JSON 1.0 normalizing to wire integer 1; raw Python float token remains invalid",
+  "files": {
+    "consumer-check.mts": "3ca76074924694f6926e29f220697a058886b2a210aae6cf4471341456912810",
+    "implementation.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "implementation.stdout": "bcadb22ebdf8d83f4fdd254187944acaf05ca1c6a413500e3749da6d70ac7513",
+    "tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests.stdout": "1d1f6a6f1d92c50054a373adb4d9904d10ca776a41177084c56045d9f2610845"
+  }
+}

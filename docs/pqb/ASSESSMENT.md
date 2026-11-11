@@ -75,15 +75,22 @@ component run's empty filtered case; it is not a full solve.
 
 Later review at `ca9ca95` added duplicate-output/event rejection, failure-artifact retention and
 two positive pinning filter cases. Its CI binary is byte-identical (`0e811c59…`), with unchanged
-CUDA source and flags. The new cases pass under CPU emulation but have not run natively;
-the full-unit receipts retain their actual `0a25ec4` handler/harness identity. See the report's
-applicability review rather than treating old receipts as a new binding attestation.
+CUDA source and flags. A separate [correctness-only native session](2026-11-11-correctness-consumer-validation.md)
+at `a24c0dd` subsequently passed all 13 cases, including both positive pinning cases with their
+recorded one-bit test gate. The full-unit receipts retain their actual `0a25ec4` handler/harness
+identity. See the applicability review rather than treating old receipts as a new binding attestation.
 
 The full-unit harness's optional local evidence directory retains problem, native log and
 hits without changing the request schema or the default temporary-directory path. See the
 [plan](FULL-UNIT.md) and [retained results](2026-11-11-full-unit-validation.md).
 
-Not done: a PQB image vulnerability scan, a full solve/spend, application/Batch integration,
+The actual PQB CI image now has a retained Grype scan: zero fixable critical matches and
+20 unfixed critical package matches. Its policy passed; this is not a vulnerability-free image.
+The pinned qsb-app PR #150 consumer passed 15 focused CPU tests, 350 cross-repository range
+comparisons, strict worker parsing of its three problem fixtures, and independent re-derivation
+of the retained native round1 candidate. See the [supplemental report](2026-11-11-correctness-consumer-validation.md).
+
+Not done: a full solve/spend, real application/Batch transport integration,
 or another GPU model. Builds and offline image checks passed CI; the native units used CI
 binaries in a separately pinned CUDA runtime, not a published PQB image.
 
@@ -191,8 +198,9 @@ about seven times pqb's vast.ai figure. An L40S would be somewhat cheaper if it 
 Consumer adoption requires PQB vault/problem construction, an independent CPU verifier for
 candidates and transaction meaning, a coordinator that pins, runs round0 then round1 and
 re-pins when a whole round is empty, plus matching contract vectors tested in both repositories.
-This campaign did not certify that consumer integration. The worker keeps no verifier, wallet
-or key material.
+These are proposed in [qsb-app PR #150](https://github.com/starknet-innovation/qsb-app/pull/150).
+The supplemental CPU assessment pins its tested commit and matching vectors; it does not
+certify real transport or a positive complete solve. The worker keeps no verifier, wallet or key material.
 
 ## Cost and cleanup
 
@@ -218,11 +226,17 @@ One setup failed before any GPU submission. All instances, recorded volumes and 
 resources were independently verified removed. No reservation or submission remains open.
 The old $5 cap did not authorize this campaign or any future run.
 
+The later correctness-only campaign used one further fresh instance under the current chat's
+hardware authorization. Estimated compute was **$0.0649** (208 seconds at $1.123/h), excluding
+storage/IPv4/other charges and distinct from billing. The native archive was collected and
+hash-verified; instance, recorded volume and all temporary resources were independently verified
+removed. Its $2 reservation was released. See the supplemental report and receipts.
+
 ## Next evidence gaps, in order
 
-1. Review the completed full-unit receipts and agree the provisional contract with the consumer's
-   independently tested vectors. Execute the two newer pinning filter-positive cases natively
-   when validating the next artifact; do not relabel the historical 11-case receipts as 13 cases.
+1. Review the completed full-unit and supplemental receipts and agree the provisional contract
+   with the pinned, independently tested consumer. The newer pinning cases now passed natively;
+   the historical 11-case receipts retain their original identities.
 2. Validate the complete public-data application pipeline, including a full solve and real
    transport/output verification. These unit measurements do not establish whole-spend cost.
 3. Broader hardware/host sampling if rates are to be relied on for pricing; the fresh EC2

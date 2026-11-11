@@ -1,0 +1,9 @@
+{
+ "binaries": {
+  "grind-ranked": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "grind-upstream": "0a5de7e0faca7dfdf27b788bc6a4c33f42c77d0015a6c8edd69fb3fdffb0da74"
+ },
+ "format": "qsb-pqb-measure-bundle-v1",
+ "note": "CI build artifacts, not attested release binaries. Public synthetic inputs only.",
+ "sourceCommit": "a24c0ddb84a129db556069a3964e8d8d3ce55201"
+}

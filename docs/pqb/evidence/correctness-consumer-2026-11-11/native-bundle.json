@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "a24c0ddb84a129db556069a3964e8d8d3ce55201",
+  "ciRun": 43088388333,
+  "artifactId": 13886724270,
+  "artifactZipSha256": "e4dbdbc750d108aa2e46a32675a8c14f922d3d2a435b998ac685cd86c24ad1ce",
+  "bundleTarSha256": "005bc3c7e8135b745116fa79dda965ec9ddf5a27e216738d65e22f74caec6ed1",
+  "checksumListSha256": "7fada45e174216d0123e2b604049fce320b0351ce542a65e7efaf9bb60346aec",
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "profile": "correctness",
+  "cases": 13
+}

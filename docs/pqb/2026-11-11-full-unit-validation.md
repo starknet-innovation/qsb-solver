@@ -73,13 +73,18 @@ An offline replay through the current problem/range parser accepted every retain
 and independently re-derived the production candidate again; its separate receipt is retained.
 
 The full units and their 11-case preflights were executed at `0a25ec4`, not with the later
-handler binding or expanded 13-case harness. The two new pinning filter-positive cases passed
-under CPU emulation/CI and remain **unexecuted natively**. A supplemental bundle was prepared,
+handler binding or expanded 13-case harness. At the close of this campaign, the two new pinning
+filter-positive cases had passed under CPU emulation/CI but were unexecuted natively. A supplemental bundle was prepared,
 but its full measurement profile's 780-second remaining-time requirement could not be assured
 after the last unit's collection. No supplemental compute command was sent, no deadline was
 extended and no new hardware was allocated for it. Round1 does provide native production-gate
 filter-emission evidence; it does not replace those specific pinning cases. The latest local
-suite completed 150 tests: 149 passed and one existing test was skipped.
+suite then completed 150 tests: 149 passed and one existing test was skipped.
+
+A later [correctness-only campaign](2026-11-11-correctness-consumer-validation.md) at `a24c0dd`
+ran all 13 cases natively and closed that specific gap without repeating full units or timing.
+It also added separate consumer compatibility and PQB image-scan evidence. Those later
+receipts do not change the source/handler identity of this full-unit campaign.
 
 ## Cost and cleanup
 

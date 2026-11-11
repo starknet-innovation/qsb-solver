@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "note": "Native harness returned the exact expected hit sets; these expected hit lines independently re-derived with the consumer checker at the recorded reduced test gate",
+  "cases": [
+    {
+      "label": "pin-der-filter-emits",
+      "gateBits": 1,
+      "hits": [
+        {
+          "line": "2147483654 700019048 3 0 0 1",
+          "digest": "49adb202c08f0217038415771ff06c8f3b5622d79d8be9b362c7b6b11a93c021",
+          "strictDer": false
+        }
+      ],
+      "canonical": 1,
+      "fullSolutions": 0
+    },
+    {
+      "label": "pin-der-filter-emits-uncompressed",
+      "gateBits": 1,
+      "hits": [
+        {
+          "line": "2147483654 700040032 6 1 1 1",
+          "digest": "419a050945601824440fe3550202100dce5fd4041eef55f01cdabcd8b0dc8fcf",
+          "strictDer": false
+        }
+      ],
+      "canonical": 1,
+      "fullSolutions": 0
+    }
+  ]
+}

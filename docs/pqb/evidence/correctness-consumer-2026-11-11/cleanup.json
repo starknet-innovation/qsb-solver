@@ -1,0 +1,24 @@
+{
+  "status": "independently verified; no resources or reservations remain",
+  "counts": {
+    "instanceStates": [
+      "terminated"
+    ],
+    "volumes": 0,
+    "groups": 0,
+    "roles": [],
+    "profiles": [],
+    "schedules": 0,
+    "functions": [],
+    "buckets": []
+  },
+  "activeIreland": 0,
+  "activeLondon": 0,
+  "privateOriginalReceiptsSha256": {
+    "native/reconciliation-final.json": "667128685cf5b9f36251398dd5d8c9abea364bf8a84dc4c88868d849ea7aac8a",
+    "final-provider-reconciliation.json": "da72a5c3a4692094e18f9a80070301fd4a985be3414badfd08b93b7361c22b6a",
+    "native/staging-cleanup.json": "bae8c90531ee540d0b3ba04c306b9d8ba27eb88179d4e69cd4934d50e1c2f15e",
+    "native/termination.json": "0f5fe97ea1f8aec77b269e27077c36b87acfe5a6dab069893ab16bd11de804ec",
+    "native/state.json": "8d9bf579df9ec865b175515e4e1fc513cf2cb06cf4dba2c5d22dd585b0aeb85b"
+  }
+}

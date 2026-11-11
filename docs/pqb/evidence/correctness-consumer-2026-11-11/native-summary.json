@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "cases": 13,
+  "positiveCases": [
+    {
+      "label": "pin-der-filter-emits",
+      "zblocks": 16,
+      "expectedHits": 1,
+      "hits": 1,
+      "report": {
+        "kind": "pin",
+        "seq": 2147483654,
+        "seq_count": 1,
+        "lt_start": 700019040,
+        "lt_count": 16,
+        "zblocks": 16,
+        "expected": 16,
+        "hits": 1,
+        "der_filter": 1,
+        "gate_hits": 586,
+        "exact_zblocks": 0,
+        "complete": true
+      },
+      "pass": true
+    },
+    {
+      "label": "pin-der-filter-emits-uncompressed",
+      "zblocks": 16,
+      "expectedHits": 1,
+      "hits": 1,
+      "report": {
+        "kind": "pin",
+        "seq": 2147483654,
+        "seq_count": 1,
+        "lt_start": 700040024,
+        "lt_count": 16,
+        "zblocks": 16,
+        "expected": 16,
+        "hits": 1,
+        "der_filter": 1,
+        "gate_hits": 555,
+        "exact_zblocks": 0,
+        "complete": true
+      },
+      "pass": true
+    }
+  ],
+  "device": "NVIDIA A10G, 580.126.09, 23028 MiB",
+  "timing": null,
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "sourceCommit": "a24c0ddb84a129db556069a3964e8d8d3ce55201"
+}

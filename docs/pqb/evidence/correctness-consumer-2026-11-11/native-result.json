@@ -1,0 +1,299 @@
+{
+ "format": "qsb-pqb-correctness-result-v1",
+ "mode": "correctness-only",
+ "status": "passed",
+ "binaries": {
+  "grind-ranked": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "grind-upstream": "0a5de7e0faca7dfdf27b788bc6a4c33f42c77d0015a6c8edd69fb3fdffb0da74"
+ },
+ "expectedSha256": "44f9421616e1181bd777a3ac6883d5d05434d4014ab74fd9c3de1af7b329b0c0",
+ "settings": {
+  "samples": 3,
+  "seconds": 10.0,
+  "strata": 6,
+  "skipBatches": 3,
+  "requireSteady": true
+ },
+ "device": {
+  "t_s": 0.687,
+  "kernel": "ec_menu",
+  "device": "NVIDIA A10G",
+  "max_threads_per_tg": 384,
+  "regs": 158,
+  "local_bytes": 0,
+  "simd_width": 32,
+  "tg_used": 128
+ },
+ "correctness": [
+  {
+   "label": "pin-first",
+   "zblocks": 3000,
+   "expectedHits": 48,
+   "hits": 48,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483648,
+    "seq_count": 2,
+    "lt_start": 500000000,
+    "lt_count": 1500,
+    "zblocks": 3000,
+    "expected": 3000,
+    "hits": 48,
+    "der_filter": 0,
+    "gate_hits": 48,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-last",
+   "zblocks": 1500,
+   "expectedHits": 31,
+   "hits": 31,
+   "report": {
+    "kind": "pin",
+    "seq": 4294967293,
+    "seq_count": 1,
+    "lt_start": 1699998500,
+    "lt_count": 1500,
+    "zblocks": 1500,
+    "expected": 1500,
+    "hits": 31,
+    "der_filter": 0,
+    "gate_hits": 31,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-batches",
+   "zblocks": 2700,
+   "expectedHits": 44,
+   "hits": 44,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483651,
+    "seq_count": 3,
+    "lt_start": 1234567890,
+    "lt_count": 900,
+    "zblocks": 2700,
+    "expected": 2700,
+    "hits": 44,
+    "der_filter": 0,
+    "gate_hits": 44,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-der-filter",
+   "zblocks": 64,
+   "expectedHits": 0,
+   "hits": 0,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483653,
+    "seq_count": 1,
+    "lt_start": 600000000,
+    "lt_count": 64,
+    "zblocks": 64,
+    "expected": 64,
+    "hits": 0,
+    "der_filter": 1,
+    "gate_hits": 2368,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-der-filter-emits",
+   "zblocks": 16,
+   "expectedHits": 1,
+   "hits": 1,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483654,
+    "seq_count": 1,
+    "lt_start": 700019040,
+    "lt_count": 16,
+    "zblocks": 16,
+    "expected": 16,
+    "hits": 1,
+    "der_filter": 1,
+    "gate_hits": 586,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-der-filter-emits-uncompressed",
+   "zblocks": 16,
+   "expectedHits": 1,
+   "hits": 1,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483654,
+    "seq_count": 1,
+    "lt_start": 700040024,
+    "lt_count": 16,
+    "zblocks": 16,
+    "expected": 16,
+    "hits": 1,
+    "der_filter": 1,
+    "gate_hits": 555,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-planted-exceptional",
+   "zblocks": 48,
+   "expectedHits": 415,
+   "hits": 415,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483658,
+    "seq_count": 1,
+    "lt_start": 900000000,
+    "lt_count": 48,
+    "zblocks": 48,
+    "expected": 48,
+    "hits": 415,
+    "der_filter": 0,
+    "gate_hits": 415,
+    "exact_zblocks": 4,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-first",
+   "zblocks": 975,
+   "expectedHits": 43,
+   "hits": 43,
+   "report": {
+    "kind": "round",
+    "prefix_start": 0,
+    "prefix_count": 10,
+    "subset_start": 0,
+    "zblocks": 975,
+    "expected": 975,
+    "hits": 43,
+    "der_filter": 0,
+    "gate_hits": 43,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-last",
+   "zblocks": 431,
+   "expectedHits": 18,
+   "hits": 18,
+   "report": {
+    "kind": "round",
+    "prefix_start": 27883217868,
+    "prefix_count": 300,
+    "subset_start": 379908847108,
+    "zblocks": 431,
+    "expected": 431,
+    "hits": 18,
+    "der_filter": 0,
+    "gate_hits": 18,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-interior-batches",
+   "zblocks": 313,
+   "expectedHits": 10,
+   "hits": 10,
+   "report": {
+    "kind": "round",
+    "prefix_start": 9294406056,
+    "prefix_count": 40,
+    "subset_start": 140931581059,
+    "zblocks": 313,
+    "expected": 313,
+    "hits": 10,
+    "der_filter": 0,
+    "gate_hits": 10,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-first",
+   "zblocks": 885,
+   "expectedHits": 16,
+   "hits": 16,
+   "report": {
+    "kind": "round",
+    "prefix_start": 0,
+    "prefix_count": 10,
+    "subset_start": 0,
+    "zblocks": 885,
+    "expected": 885,
+    "hits": 16,
+    "der_filter": 0,
+    "gate_hits": 16,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-last",
+   "zblocks": 402,
+   "expectedHits": 5,
+   "hits": 5,
+   "report": {
+    "kind": "round",
+    "prefix_start": 186087894000,
+    "prefix_count": 300,
+    "subset_start": 2088319702298,
+    "zblocks": 402,
+    "expected": 402,
+    "hits": 5,
+    "der_filter": 0,
+    "gate_hits": 5,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-interior-batches",
+   "zblocks": 1387,
+   "expectedHits": 16,
+   "hits": 16,
+   "report": {
+    "kind": "round",
+    "prefix_start": 62029298100,
+    "prefix_count": 150,
+    "subset_start": 767332430665,
+    "zblocks": 1387,
+    "expected": 1387,
+    "hits": 16,
+    "der_filter": 0,
+    "gate_hits": 16,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  }
+ ],
+ "correctnessPassed": true,
+ "timing": null,
+ "elapsedSeconds": 3.8987729279999996
+}

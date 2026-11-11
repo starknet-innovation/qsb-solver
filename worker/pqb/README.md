@@ -26,6 +26,12 @@ argument retains native logs/hits, including failed work, and cannot be enabled 
 The [three largest units passed natively](../../docs/pqb/2026-11-11-full-unit-validation.md).
 The harness is outside the image; this grants no release or deployment status.
 
+A separate [supplemental assessment](../../docs/pqb/2026-11-11-correctness-consumer-validation.md)
+passed all 13 native correctness cases, checked the pinned qsb-app consumer and scanned the
+actual PQB CI image. The repeatable CPU compatibility command is
+`python3 scripts/check_pqb_consumer.py APP_CHECKOUT APP_COMMIT NEW_EXTERNAL_OUTPUT_DIR`;
+install the consumer's locked dependencies first and keep both checkouts clean.
+
 ## Request and result
 
 ```json

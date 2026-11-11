@@ -69,9 +69,11 @@ seven launches with `InsufficientInstanceCapacity` (eu-west-1c, 1a, 1b, eu-west-
 eu-west-1c and 1a again); none allocated an instance. The eighth, eu-west-1b at 13:26 UTC,
 launched and the run completed. Details, cost and cleanup are in the record.
 
-## Not prepared
+## Remaining hardware scope
 
 - The controller launches one `g5.xlarge`, in Ireland or London. Measuring an L40S
   (`g6e.xlarge`) needs a further controller change; eu-west-1 does not offer `g6` or `g6e`.
-- Staging the bundle and collecting `public-result.b64` follow the September procedure; no new
-  operator tooling was written.
+- Staging and collection use the committed controller's external AWS MCP handoff. The later
+  [13-case correctness-only campaign](../../../docs/pqb/2026-11-11-correctness-consumer-validation.md)
+  retained and hash-verified its archive, then independently verified complete cleanup. It
+  collected no timing samples and does not replace the original matched measurement.

@@ -29,7 +29,7 @@ Source/unit/build checks do not establish native correctness or end-to-end execu
 
 ## PQB candidate worker
 
-[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v2` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence, a native A10G component comparison, and [three largest full units completed natively](docs/pqb/2026-11-11-full-unit-validation.md) in 490.9 / 504.7 / 487.3 seconds. No PQB image is published, and a complete solve/application pipeline remains unvalidated. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
+[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v2` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence, a native A10G component comparison, and [three largest full units completed natively](docs/pqb/2026-11-11-full-unit-validation.md) in 490.9 / 504.7 / 487.3 seconds. A separate [13-case native correctness run, consumer compatibility check and PQB image scan](docs/pqb/2026-11-11-correctness-consumer-validation.md) also passed their stated criteria. No PQB image is published, and a complete solve/application pipeline remains unvalidated. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
 
 ## Release
 

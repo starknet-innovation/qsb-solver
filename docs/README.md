@@ -70,6 +70,8 @@ artifact-specific applicability assessment.
 - [AWS controller on main](../ops/aws-gpu-execution/README.md): historical scoped controller, not a standing launch authorization.
 - [PQB candidate assessment](pqb/ASSESSMENT.md): a separate HOLD worker for PQB vaults; not part of any published image.
 - [PQB A10G measurement, 11 November](pqb/2026-11-11-a10g-measurement.md): native correctness cases and matched timing of that candidate.
+- [PQB full-unit validation](pqb/2026-11-11-full-unit-validation.md): all three largest native units, with exact source identities and retained receipts.
+- [PQB supplemental validation](pqb/2026-11-11-correctness-consumer-validation.md): 13 native correctness cases, pinned consumer CPU compatibility, PQB image scan and verified cleanup.
 - [Licensing](../LICENSES.md): upstream notices and redistribution scope.
 
 ## Historical records
