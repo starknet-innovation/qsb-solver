@@ -1,0 +1,102 @@
+[
+    {
+        "Id": "sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+        "RepoTags": [
+            "qsb-pqb:ci"
+        ],
+        "RepoDigests": [
+            "qsb-pqb@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-11-11T20:33:04.62253249Z",
+        "Config": {
+            "Env": [
+                "PATH=/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NVARCH=x86_64",
+                "NVIDIA_REQUIRE_CUDA=cuda>=12.8 brand=unknown,driver>=470,driver<471 brand=grid,driver>=470,driver<471 brand=tesla,driver>=470,driver<471 brand=nvidia,driver>=470,driver<471 brand=quadro,driver>=470,driver<471 brand=quadrortx,driver>=470,driver<471 brand=nvidiartx,driver>=470,driver<471 brand=vapps,driver>=470,driver<471 brand=vpc,driver>=470,driver<471 brand=vcs,driver>=470,driver<471 brand=vws,driver>=470,driver<471 brand=cloudgaming,driver>=470,driver<471 brand=unknown,driver>=535,driver<536 brand=grid,driver>=535,driver<536 brand=tesla,driver>=535,driver<536 brand=nvidia,driver>=535,driver<536 brand=quadro,driver>=535,driver<536 brand=quadrortx,driver>=535,driver<536 brand=nvidiartx,driver>=535,driver<536 brand=vapps,driver>=535,driver<536 brand=vpc,driver>=535,driver<536 brand=vcs,driver>=535,driver<536 brand=vws,driver>=535,driver<536 brand=cloudgaming,driver>=535,driver<536 brand=unknown,driver>=550,driver<551 brand=grid,driver>=550,driver<551 brand=tesla,driver>=550,driver<551 brand=nvidia,driver>=550,driver<551 brand=quadro,driver>=550,driver<551 brand=quadrortx,driver>=550,driver<551 brand=nvidiartx,driver>=550,driver<551 brand=vapps,driver>=550,driver<551 brand=vpc,driver>=550,driver<551 brand=vcs,driver>=550,driver<551 brand=vws,driver>=550,driver<551 brand=cloudgaming,driver>=550,driver<551 brand=unknown,driver>=560,driver<561 brand=grid,driver>=560,driver<561 brand=tesla,driver>=560,driver<561 brand=nvidia,driver>=560,driver<561 brand=quadro,driver>=560,driver<561 brand=quadrortx,driver>=560,driver<561 brand=nvidiartx,driver>=560,driver<561 brand=vapps,driver>=560,driver<561 brand=vpc,driver>=560,driver<561 brand=vcs,driver>=560,driver<561 brand=vws,driver>=560,driver<561 brand=cloudgaming,driver>=560,driver<561 brand=unknown,driver>=565,driver<566 brand=grid,driver>=565,driver<566 brand=tesla,driver>=565,driver<566 brand=nvidia,driver>=565,driver<566 brand=quadro,driver>=565,driver<566 brand=quadrortx,driver>=565,driver<566 brand=nvidiartx,driver>=565,driver<566 brand=vapps,driver>=565,driver<566 brand=vpc,driver>=565,driver<566 brand=vcs,driver>=565,driver<566 brand=vws,driver>=565,driver<566 brand=cloudgaming,driver>=565,driver<566",
+                "NV_CUDA_CUDART_VERSION=12.8.90-1",
+                "CUDA_VERSION=12.8.1",
+                "LD_LIBRARY_PATH=/usr/local/cuda/lib64",
+                "NVIDIA_VISIBLE_DEVICES=all",
+                "NVIDIA_DRIVER_CAPABILITIES=compute,utility",
+                "NV_CUDA_LIB_VERSION=12.8.1-1",
+                "NV_NVTX_VERSION=12.8.90-1",
+                "NV_LIBNPP_VERSION=12.3.3.100-1",
+                "NV_LIBNPP_PACKAGE=libnpp-12-8=12.3.3.100-1",
+                "NV_LIBCUSPARSE_VERSION=12.5.8.93-1",
+                "NV_LIBCUBLAS_PACKAGE_NAME=libcublas-12-8",
+                "NV_LIBCUBLAS_VERSION=12.8.4.1-1",
+                "NV_LIBCUBLAS_PACKAGE=libcublas-12-8=12.8.4.1-1",
+                "NV_LIBNCCL_PACKAGE_NAME=libnccl2",
+                "NV_LIBNCCL_PACKAGE_VERSION=2.25.1-1",
+                "NCCL_VERSION=2.25.1-1",
+                "NV_LIBNCCL_PACKAGE=libnccl2=2.25.1-1+cuda12.8",
+                "NVIDIA_PRODUCT_NAME=CUDA",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1"
+            ],
+            "Entrypoint": [
+                "/opt/nvidia/nvidia_entrypoint.sh"
+            ],
+            "Cmd": [
+                "python3",
+                "aws_entrypoint.py"
+            ],
+            "WorkingDir": "/opt/qsb-pqb",
+            "Labels": {
+                "maintainer": "NVIDIA CORPORATION <cudatools@nvidia.com>",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "22.04"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 2215804257,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:270a1170e7e398434ff1b31e17e233f7d7b71aa99a40473615860068e86720af",
+                "sha256:fb456a9e7760e7e4481d3d9eddee3ef62358753326d669c3efe6b0cc254ab9c3",
+                "sha256:981a144d9fa2efffdbdfbdcfd3881dccb4fbf07867d4fa326a386126ca11b50f",
+                "sha256:583f1d6040fc90a1380cb4d11d46b78bbbd4ad7d6274b9656ab9832ef7ba6342",
+                "sha256:6020d84069cf575521faca653d2817e2195b8233b8c4e2d7bc65f3296296c2bb",
+                "sha256:eb0143fcce68bd06a29bf314125d30f2a1f44d606fc419e7a54ab602bc26b2d0",
+                "sha256:cb395f276e984728ca05fdee4e1dc203e1310a9e943a2d16d7aa87e5b2cf754b",
+                "sha256:70a158f70e3777a129c15ffe51399bb6c226218c08ff6819948b9b1f26a46277",
+                "sha256:9bb0510c7b4b74b056648f24e0a55c26f7521a1a1b766250a0776e14ce9d93f6",
+                "sha256:928538b8389500975d6bf7720a6e3f462f4f0b335930413bfb0b496b1eab46ef",
+                "sha256:da058922710becbac68d693d8a7df1adf646c485e715921eaed84f0961f1ec18",
+                "sha256:732617dfd942476fe798fb257035e41bc24bb9ffc315eabf8dd6724b58da5946",
+                "sha256:37c4a5723db2106464ca49e76709b433ff69327f5c01373af1f41a89b36ef0ea",
+                "sha256:e439c0ec89fef7750337b614707b2b6d35a9cb9fef4b23050e343bcb1e78b6b7",
+                "sha256:3a897b4303e9a522138f10311c2469ff2d7f81e4cbedfaad54f6eff9fd16656b",
+                "sha256:2842b5d4bdd08df9f02da0a00a0311ce8e6a903dc0002c05421116acee2a8768",
+                "sha256:34d603f0851c0d6e27ca68677322350d43dc3d409606dc49f83b5734023d90fd",
+                "sha256:ae9bae3138b6cb7b8ba3c037766a9a21e6b7f44ab962be4f647fe2e993cd9a14",
+                "sha256:56a2610634d6924badfbafcc9407ade5073a223dd0a0b3a445ac4ebce19f559b",
+                "sha256:6d0ac4beb62841b6a324bf94e5a09a976c901d07db8bda48eb39a5c5a3454663",
+                "sha256:122701ab7f2ec9fe19cbc97b1bc027c9d54810d1c9cdda8a59cbcd94d2ede36a",
+                "sha256:421b91e9e658e278ef84a32b30b6e3509a09b1006bcc8c0c429963130e35f64e",
+                "sha256:855aa4b749594b501e6da9a77d3b24629330046fa72f5319d9470dbe337a27fc",
+                "sha256:f923198238013140ed2563b6135e3603eef930f393f6a0d860737a6261cfc20b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-11-11T20:33:26.6689308Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "z3dmm17d7aw06j97f3lv639qi",
+                    "CreatedAt": "2026-11-11T20:33:28.699509603Z"
+                }
+            ]
+        }
+    }
+]

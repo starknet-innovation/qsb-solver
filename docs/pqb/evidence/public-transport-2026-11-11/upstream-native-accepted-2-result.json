@@ -1,0 +1,66 @@
+{
+  "format": "qsb-public-upstream-crosscheck-result-v1",
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "exportSha256": "8130e2d3156d43f2dd9d6208ac6adc97457fd168ff7b69afe9bec263c02ee519",
+  "gateBits": 24,
+  "curveBackend": {
+    "implementation": "native-coincurve",
+    "version": "21.0.0",
+    "python": "3.13.4 (v3.13.4:8a526ec7cbe, Jun  3 2025, 21:14:54) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "machine": "arm64",
+    "sharedObjectSha256": "772f622a55d225abee60644f9a9d26811cb32f207bf835de82233f6155b8e917"
+  },
+  "validatorSha256": "ea3b57fdf7882b8a2036f24627a41d56d386b424a02e7cc1c4629d92fe5c4582",
+  "hybridKeysMineable": true,
+  "records": [
+    {
+      "stage": "pinning",
+      "jobId": "1d4ed081-d557-4f01-9bd9-e67d39997c71",
+      "candidate": "2147483965 1546952476 9 0 0 1",
+      "problemSha256": "2a504ce0e1aac7af84cf568c84185e8ff81e2dd74e942e0b338f29a7ec4d4931",
+      "candidateDetails": {
+        "nonce": 381446952476,
+        "variant": 0,
+        "menu_index": 9,
+        "encoding": 0,
+        "ladder": 0,
+        "digest": "301d02176ac9bde47791d3af655297d0a19e2696d9502b69fd7d5602020844e4",
+        "der_prefix_bytes": 5
+      },
+      "checks": {
+        "checked": 1,
+        "full_solutions": 1,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": true,
+        "best_der_bytes": 5
+      },
+      "sighashSamples": 8
+    },
+    {
+      "stage": "round1",
+      "jobId": "7b54db3a-55ba-4dc6-a81c-00b202400a21",
+      "candidate": "13,20,25,48,52,71,83,88 4 1 2 1",
+      "problemSha256": "9e0e51b70825d84c463e00e1b5de44ef48e1dd835c628dd1a761571517a2ddc3",
+      "candidateDetails": {
+        "nonce": 251626294517,
+        "variant": 1,
+        "menu_index": 4,
+        "encoding": 2,
+        "ladder": 0,
+        "digest": "301d020e3787d7970b64a83539f2cbdccc98020b64062335f3c653b222db6e86",
+        "der_prefix_bytes": 5
+      },
+      "checks": {
+        "checked": 1,
+        "full_solutions": 1,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": true,
+        "best_der_bytes": 5
+      },
+      "sighashSamples": 8
+    }
+  ],
+  "scope": "Public problem, canonical transaction digest and full predicate; no witness, consensus or miner execution"
+}

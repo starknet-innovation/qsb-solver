@@ -1,0 +1,74 @@
+{
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "problemSha256": "9e0e51b70825d84c463e00e1b5de44ef48e1dd835c628dd1a761571517a2ddc3",
+  "gateBits": 24,
+  "completedRound1Units": 16,
+  "records": [
+    {
+      "jobId": "2cacf025-5b14-46dd-abea-ee05f859cf8a",
+      "attempt": 11,
+      "candidate": "2,23,30,36,38,60,78,79 4 3 1 1",
+      "details": {
+        "nonce": 73121633399,
+        "variant": 3,
+        "menu_index": 4,
+        "encoding": 1,
+        "ladder": 0,
+        "digest": "301d020e7b84b27d351e60e6c3c1299c7a50020bde2a0d4dfbab8656c1dbf384",
+        "der_prefix_bytes": 5
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 5
+      }
+    },
+    {
+      "jobId": "7d193c58-b482-4550-b4a5-a4bc373d3124",
+      "attempt": 6,
+      "candidate": "1,12,24,74,80,88,89,97 12 3 1 1",
+      "details": {
+        "nonce": 41633216636,
+        "variant": 3,
+        "menu_index": 12,
+        "encoding": 1,
+        "ladder": 0,
+        "digest": "301d0216cdad29b666f257087175e9934d9b960cd2e93e60598e0203adcf7ccc",
+        "der_prefix_bytes": 3
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      }
+    },
+    {
+      "jobId": "bd237f70-fcff-4d73-8227-937b53936654",
+      "attempt": 9,
+      "candidate": "2,6,22,35,59,89,91,104 10 0 1 1",
+      "details": {
+        "nonce": 59376916997,
+        "variant": 0,
+        "menu_index": 10,
+        "encoding": 1,
+        "ladder": 0,
+        "digest": "301d020ae79289ccf7b6bddf9fec020ff8be8a02c88736d74e086be9be16e5cb",
+        "der_prefix_bytes": 3
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      }
+    }
+  ]
+}

@@ -108,3 +108,7 @@ durable output and independent verification. The largest-unit receipts, reduced-
 tests, CPU consumer checks and local image scan do not establish that end-to-end result,
 whole-spend latency/cost, consensus execution or another GPU model. Publication, immutable
 release descriptor enrollment and deployment remain separate actions. The candidate stays HOLD.
+
+Later on 11 November, the [complete public transport campaign](2026-11-11-public-transport-solve.md)
+closed the full-solve/Batch-S3 gap for one synthetic intent, with separate image and controller
+identities. This supplemental report remains the record of its earlier, narrower checks.

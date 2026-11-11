@@ -128,3 +128,8 @@ executed. The zero-sighash exceptional branch still lacks its own planted test, 
 models remain unmeasured here. Review these receipts and consumer compatibility before a
 contract freeze; then validate the complete public-data pipeline. Publication, descriptor
 enrollment and deployment remain separate actions. The candidate stays HOLD.
+
+Later assessments added the [consumer vectors and 13-case native checks](2026-11-11-correctness-consumer-validation.md),
+then a [complete public solve through real consumer Batch/S3 transport](2026-11-11-public-transport-solve.md).
+They have separate artifact identities and limits; these original unit-duration receipts are
+unchanged and do not become a new image attestation.

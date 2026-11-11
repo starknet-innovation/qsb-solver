@@ -1,0 +1,10 @@
+{
+  "problemSha256": "9e0e51b70825d84c463e00e1b5de44ef48e1dd835c628dd1a761571517a2ddc3",
+  "consumerStage": "round1",
+  "workerStage": "round0",
+  "productionGateBits": 24,
+  "matchedConsumerAndOriginalS3Bytes": true,
+  "upstreamCanonicalSighashSamples": 8,
+  "fullSolutionsChecked": 0,
+  "scope": "Problem compatibility only; no full solution claimed"
+}

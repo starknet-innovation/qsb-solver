@@ -1,0 +1,14 @@
+[
+  {
+    "jobId": "1d4ed081-d557-4f01-9bd9-e67d39997c71",
+    "rawS3InputSha256": "6e74b30f1ef3692c64bc33b721eb384b5491611168b4ff04ce5008c53264ff48",
+    "problemSha256": "2a504ce0e1aac7af84cf568c84185e8ff81e2dd74e942e0b338f29a7ec4d4931",
+    "exactProblemAndEmittedCandidateMatch": true
+  },
+  {
+    "jobId": "7b54db3a-55ba-4dc6-a81c-00b202400a21",
+    "rawS3InputSha256": "d249d81b0b9bf37862ccf0a514740cdb6190dd4f2c4e46cb397b68c1d2d75c8b",
+    "problemSha256": "9e0e51b70825d84c463e00e1b5de44ef48e1dd835c628dd1a761571517a2ddc3",
+    "exactProblemAndEmittedCandidateMatch": true
+  }
+]

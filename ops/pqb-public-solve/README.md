@@ -1,5 +1,9 @@
 # Public synthetic PQB solve through the consumer transport
 
+The [11 November campaign completed all three stages](../../docs/pqb/2026-11-11-public-transport-solve.md)
+and independently verified cleanup. Its original receipts are retained. These preparation
+instructions are not a request to restart that completed campaign or reuse its closed budget.
+
 This development assessment uses the actual qsb-app `AwsBatch` SDK transport, public problem
 export, request/result checks, range definitions, reservation arithmetic, stage application and
 independent CPU verifier. It targets a temporary private image and isolated Batch environment.

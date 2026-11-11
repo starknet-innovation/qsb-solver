@@ -1,0 +1,160 @@
+{
+  "format": "qsb-pqb-batch-infrastructure-v1",
+  "sourceCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+  "config": {
+    "account": "905846953990",
+    "region": "eu-west-1",
+    "name": "qsb-pqb-solve-726c33ad",
+    "token": "726c33ad-b836-478c-ac87-978987ab988e",
+    "vpc": "vpc-0255d113ce6e93f90",
+    "subnets": [
+      "subnet-0610508a7e3d5eb90",
+      "subnet-012eb7e783b453008",
+      "subnet-031df8f2f14d67553"
+    ],
+    "gpuAmi": "ami-034c2d44a0a1d5e82",
+    "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82"
+  },
+  "phase": "removed",
+  "securityGroup": "sg-0473c9b22088d9419",
+  "queue": "arn:aws:batch:eu-west-1:905846953990:job-queue/qsb-pqb-solve-726c33ad",
+  "computeEnvironment": "arn:aws:batch:eu-west-1:905846953990:compute-environment/qsb-pqb-solve-726c33ad",
+  "publisherAccess": {
+    "role": "qsb-bench-e165766f-host",
+    "repository": "arn:aws:ecr:eu-west-1:905846953990:repository/qsb-pqb-solve-726c33ad"
+  },
+  "deadline": 1794451892,
+  "launchTemplateId": "lt-00e28591fead73d63",
+  "schedule": {
+    "Name": "qsb-pqb-solve-726c33ad",
+    "GroupName": "default",
+    "ScheduleExpression": "at(2026-11-12T02:52:00)",
+    "ScheduleExpressionTimezone": "UTC",
+    "FlexibleTimeWindow": {
+      "Mode": "OFF"
+    },
+    "State": "ENABLED",
+    "ActionAfterCompletion": "DELETE",
+    "Target": {
+      "Arn": "arn:aws:lambda:eu-west-1:905846953990:function:qsb-pqb-solve-726c33ad",
+      "RoleArn": "arn:aws:iam::905846953990:role/qsb-pqb-solve-726c33ad-schedule",
+      "Input": "{}",
+      "RetryPolicy": {
+        "MaximumEventAgeInSeconds": 3600,
+        "MaximumRetryAttempts": 3
+      }
+    }
+  },
+  "batchCreateReceipt": {
+    "computeEnvironmentName": "qsb-pqb-solve-726c33ad",
+    "computeEnvironmentArn": "arn:aws:batch:eu-west-1:905846953990:compute-environment/qsb-pqb-solve-726c33ad"
+  },
+  "definition": "arn:aws:batch:eu-west-1:905846953990:job-definition/qsb-pqb-solve-726c33ad:1",
+  "image": "905846953990.dkr.ecr.eu-west-1.amazonaws.com/qsb-pqb-solve-726c33ad@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+  "volumeIds": [
+    "vol-0001d55091bf2d36e",
+    "vol-00253d4537b5be2ce",
+    "vol-005e3638de70b6596",
+    "vol-00b0f8db275370a14",
+    "vol-011ab072d620c9f38",
+    "vol-01310210dccb7e2b5",
+    "vol-01320ccad1ecb60f3",
+    "vol-01605d84ae59a3432",
+    "vol-01d9d77238d1dead9",
+    "vol-01e4db0d2a124ac5a",
+    "vol-025f24461a0e2a949",
+    "vol-04edad49f7d62f515",
+    "vol-056012035638461ac",
+    "vol-058e4cee5d9220f59",
+    "vol-05bc5b976ce8947a0",
+    "vol-062971d044d0a3cb7",
+    "vol-06a022502149ed9f1",
+    "vol-06e2c25b8115835ab",
+    "vol-06f4a2679b67639ea",
+    "vol-079bc4a637c56ce3b",
+    "vol-084f2fc421cb488e7",
+    "vol-085bb5356a260d220",
+    "vol-085c8a0acc95d78ca",
+    "vol-08a39fd9d1944895a",
+    "vol-08a48f05523e85ff8",
+    "vol-08cee0a6134966c13",
+    "vol-0919bcdc5012d9c23",
+    "vol-091acfa31c6d49651",
+    "vol-094c9110d0f501882",
+    "vol-096d8bb788ba1d418",
+    "vol-0a7465c9de93e888a",
+    "vol-0ada5b4d9d4a51df6",
+    "vol-0b13eac00c6d18669",
+    "vol-0b33f08c259a84a44",
+    "vol-0b3789c3e2b7cc138",
+    "vol-0b4d8c49b853faf5f",
+    "vol-0b8999382def1941d",
+    "vol-0c16f4688daf90cbd",
+    "vol-0c6812aa5c301f6f5",
+    "vol-0d14d54105d1463b4",
+    "vol-0d22eb5b94c33b0b8",
+    "vol-0d634af52e35737d9",
+    "vol-0da4cb26a123f9e53",
+    "vol-0e429f80a05d12f89",
+    "vol-0eaafb3dcf322fb45",
+    "vol-0f0cef449c92a73de",
+    "vol-0f410a1c942bafef3",
+    "vol-0f98af7f8d1a6a9ff",
+    "vol-0fe2f89888ca08cd1",
+    "vol-0fe49591ed520f9a4",
+    "vol-0fec2fae7c6aac210"
+  ],
+  "managedResources": {
+    "autoScalingGroups": [
+      "AWSBatch-qsb-pqb-solve-726c33ad-asg-feaaf111-e147-3f12-b12a-ce12482cdde2"
+    ],
+    "launchTemplates": [
+      "lt-067178e9d2eaaa8e4"
+    ],
+    "ecsClusters": [
+      "AWSBatch-qsb-pqb-solve-726c33ad-129ea043-1212-3ef5-ae2a-a4b88a707c98"
+    ]
+  },
+  "shutdownReadback": {
+    "done": true,
+    "instanceStates": [
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated",
+      "terminated"
+    ],
+    "volumeIds": []
+  },
+  "removedAt": "2026-11-11T22:43:42.187069+00:00"
+}

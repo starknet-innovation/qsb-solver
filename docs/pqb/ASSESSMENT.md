@@ -1,9 +1,11 @@
 # PQB candidate assessment
 
-Assessed 11 November 2026. Disposition: **retain for review, HOLD**. Nothing here is published,
-enrolled or deployed. The component measurement and all three largest native full units passed.
-Exact artifact identities, limits, estimated cost and verified cleanup are recorded below and in
-[the full-unit report](2026-11-11-full-unit-validation.md).
+Assessed 11 November 2026. Disposition: **retain for review, HOLD**. No PQB release is published,
+enrolled or deployed. The component measurement, largest native units and 13 correctness cases
+passed their stated criteria. A [complete public synthetic transport solve](2026-11-11-public-transport-solve.md)
+then verified all three stages in 91 minutes 40 seconds at $20.73 estimated compute, including
+its builder. Exact artifact identities, limits and independently verified cleanup are retained
+in that report; the earlier receipts keep their original identities.
 
 ## What this is
 
@@ -29,14 +31,16 @@ This is not Yukon benchmark research. The process in `AGENTS.md` was applied to 
 
 ## Why it could lower cost
 
-Two separate effects; whole-spend savings remain modelled, while component rates were measured.
+Two separate effects; comparative whole-spend savings remain modelled. Component rates and
+one public three-stage solve have separate measured evidence.
 
 1. **The scheme.** PQB's reported grind is far smaller than QSB's. That is a property of the
    lock, it needs PQB vaults in qsb-app, and it is the authors' figure.
 2. **Exhaustive round sweeps.** Upstream draws round subsets at random, so a round with no
    solution never announces itself and is abandoned at a cut-off. Upstream's own docs say an
    exhaustive sweep would remove that overhead and that their kernel cannot do it. This
-   adaptation does: a fixed-order pass proves an empty round after exactly one pass.
+   adaptation instead provides a bounded fixed-order pass and an explicit completion report.
+   Native accounting and checking emitted hits still do not prove complete coverage.
 
    `research/pqb-ranked/tools/cost_model.py` puts pqb's own model and published 4090 rates
    through both policies:
@@ -90,9 +94,13 @@ The pinned qsb-app PR #150 consumer passed 15 focused CPU tests, 350 cross-repos
 comparisons, strict worker parsing of its three problem fixtures, and independent re-derivation
 of the retained native round1 candidate. See the [supplemental report](2026-11-11-correctness-consumer-validation.md).
 
-Not done: a full solve/spend, real application/Batch transport integration,
-or another GPU model. Builds and offline image checks passed CI; the native units used CI
-binaries in a separately pinned CUDA runtime, not a published PQB image.
+The [public transport campaign](2026-11-11-public-transport-solve.md) subsequently completed
+one three-stage solve through the consumer's actual Batch/S3 and CPU modules. All 118 completed
+units and 16 emitted hits also passed the pinned upstream checker with native libsecp256k1;
+three hits solve the full predicates. Its temporary private image, source and runtime have
+their own receipts. Served Step Functions orchestration, wallet/consensus/miner execution,
+another GPU model and broad completeness certification remain open. No native re-pinning was
+needed in this case. No public PQB release was enrolled.
 
 The emulation build runs the same source on a CPU. It is evidence about the algorithm as
 written. It is not evidence about nvcc's code generation, device execution or the PTX field
@@ -172,7 +180,7 @@ of this is a bill.
 
 | Instance (GPU) | Speed vs RTX 4090 | Price used | Per spend, exhaustive sweep | Per spend, random draws |
 |---|---|---|---|---|
-| g5.xlarge (A10G), the current fleet | 0.42, **measured here** on one host | $1.123/h on-demand, eu-west-1 | about $22 | about $32 |
+| g5.xlarge (A10G), component-measured configuration | 0.42, **measured here** on one host | $1.123/h on-demand, eu-west-1 | about $22 | about $32 |
 | g5.xlarge (A10G) | same | $1.277/h on-demand, eu-west-2 | about $25 | about $37 |
 | g5.xlarge (A10G) | same | $0.454/h spot snapshot, eu-west-2 | about $9 | about $13 |
 | g6e.xlarge (L40S) | 0.85, measured by pqb on one vast.ai host | $1.861/h on-demand, us-east-1 | about $18 | about $26 |
@@ -189,9 +197,11 @@ of this is a bill.
 - Not included: per-job start-up, units replayed after an interruption, units still running when
   another finds the solution, storage and data transfer.
 
-Reading: on the current A10G fleet a PQB spend is about $22 of on-demand GPU time with this
-worker, roughly a third less than upstream's random search would cost on the same card and
-about seven times pqb's vast.ai figure. An L40S would be somewhat cheaper if it can be had.
+These are historical projections from the component rates and upstream's cost model, including
+its estimated benefit from exhaustive sweeps. They are not measured comparative whole-spend
+costs. The later public transport solve cost $20.43 estimated Batch compute plus $0.29 for its
+builder, including allocated startup/cancellation/collection time. One synthetic result does
+not establish a production cost distribution or another GPU's cost.
 
 ## What qsb-app would need
 
@@ -199,8 +209,10 @@ Consumer adoption requires PQB vault/problem construction, an independent CPU ve
 candidates and transaction meaning, a coordinator that pins, runs round0 then round1 and
 re-pins when a whole round is empty, plus matching contract vectors tested in both repositories.
 These are proposed in [qsb-app PR #150](https://github.com/starknet-innovation/qsb-app/pull/150).
-The supplemental CPU assessment pins its tested commit and matching vectors; it does not
-certify real transport or a positive complete solve. The worker keeps no verifier, wallet or key material.
+The supplemental CPU assessment pins its tested commit and matching vectors. The later public
+solve used consumer `276f2ae`, whose tree equals that original `81c060d` tree, and exercised
+actual Batch/S3/CPU modules with development orchestration. Its report records the remaining
+served-application and release gaps. The worker keeps no verifier, wallet or key material.
 
 ## Cost and cleanup
 
@@ -232,12 +244,22 @@ storage/IPv4/other charges and distinct from billing. The native archive was col
 hash-verified; instance, recorded volume and all temporary resources were independently verified
 removed. Its $2 reservation was released. See the supplemental report and receipts.
 
+The complete public transport campaign used 51 Batch instance lifetimes, at most 16 workers
+concurrently, plus one separate bounded builder. Estimated compute was $20.73 including all
+allocated startup, cancelled and collection time; provider billing was not read and other
+service charges are excluded. All 52 recorded volumes were independently verified gone,
+instances terminated/absent and temporary resources removed. The $200 solve and $2 builder
+reservations are released. Its original controller reservations remain 128,700 GPU-seconds;
+cancelled jobs were never refunded inside the solve. See the full report and evidence package.
+
 ## Next evidence gaps, in order
 
-1. Review the completed full-unit and supplemental receipts and agree the provisional contract
-   with the pinned, independently tested consumer. The newer pinning cases now passed natively;
-   the historical 11-case receipts retain their original identities.
-2. Validate the complete public-data application pipeline, including a full solve and real
-   transport/output verification. These unit measurements do not establish whole-spend cost.
-3. Broader hardware/host sampling if rates are to be relied on for pricing; the fresh EC2
-   instances do not prove distinct physical cards or certify another GPU model.
+1. Review the full-unit, supplemental and completed public transport receipts, including their
+   source/runtime applicability and the provisional consumer contract. The full public solve is
+   complete; its candidate remains HOLD for review.
+2. Prepare an explicitly authorized PQB release/descriptor handoff. Served coordinator,
+   wallet/consensus/miner validation and release enrollment remain separate from this public
+   transport assessment. The actual zero-sighash branch still lacks its own planted test.
+3. Broader hardware/host and workload sampling before relying on a latency/cost distribution.
+   One solve and fresh EC2 instance IDs do not certify another GPU model or establish a matched
+   whole-pipeline speedup. Preserve completed campaigns rather than restarting them.

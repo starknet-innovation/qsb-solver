@@ -1,0 +1,18 @@
+{
+  "status": "private-validation-only",
+  "sourceCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+  "image": "905846953990.dkr.ecr.eu-west-1.amazonaws.com/qsb-pqb-solve-726c33ad@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+  "imageId": "sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+  "binding": {
+    "cudaArchitecture": "86",
+    "files": {
+      "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+      "pqb_handler.py": "ea5a9275485099d8edf86fbd67fd8d4bf7bed931e51caf78715bd25927ecb1a9",
+      "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+    },
+    "format": "qsb-pqb-candidate-v1",
+    "solverCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+    "status": "HOLD"
+  },
+  "manifest": "{\n  \"schemaVersion\": 2,\n  \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n  \"manifests\": [\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:8f942ed252394c25bad8f378ac547b90e2773e73fe1fd44a36eb6af8387a9de0\",\n      \"size\": 4852,\n      \"platform\": {\n        \"architecture\": \"amd64\",\n        \"os\": \"linux\"\n      }\n    },\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:01dccf99243a8b9a194cbf99483817b2a527f6366c1497a6a4b3c261108f686b\",\n      \"size\": 564,\n      \"annotations\": {\n        \"vnd.docker.reference.digest\": \"sha256:8f942ed252394c25bad8f378ac547b90e2773e73fe1fd44a36eb6af8387a9de0\",\n        \"vnd.docker.reference.type\": \"attestation-manifest\"\n      },\n      \"platform\": {\n        \"architecture\": \"unknown\",\n        \"os\": \"unknown\"\n      }\n    }\n  ]\n}"
+}

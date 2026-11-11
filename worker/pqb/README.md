@@ -34,8 +34,10 @@ install the consumer's locked dependencies first and keep both checkouts clean.
 
 The image also exposes `/opt/qsb` as an alias of `/opt/qsb-pqb`, matching the consumer's
 shared hardened Batch command. Offline CI executes that path under `setpriv`; the
-[public solve assessment](../../ops/pqb-public-solve/README.md) exercises real private Batch
-transport without enrolling or serving a PQB release.
+[completed public solve](../../docs/pqb/2026-11-11-public-transport-solve.md) verified all three
+stages through real private Batch/S3 transport with the pinned consumer and upstream native
+libsecp256k1 checker. Its [development harness](../../ops/pqb-public-solve/README.md) remains
+separate from an enrolled release or the served application coordinator.
 
 ## Request and result
 

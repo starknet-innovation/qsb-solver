@@ -1,0 +1,9 @@
+{
+  "format": "qsb-public-solve-completion-v1",
+  "completedAt": "2026-11-11T22:45:49.135340+00:00",
+  "assessmentSha256": "8f21187e01806cc4b417da2f22c685bcd0f0707a09a315bcb9077951ced7e535",
+  "cleanupSha256": "4d92f1c5d72cf59dfdf678b58afdf42c1f4a4f960e704f038e7496e4a8462ab7",
+  "publisherCleanupSha256": "8ca83f6f29d4ae189b6a5ba5c2b02d1d69e442ce24d0199c142019663df78092",
+  "status": "completed public solve; independent cleanup verified; reservations released",
+  "adoptionDecision": "HOLD pending evidence and contract/release review; no enrollment or deployment"
+}

@@ -29,7 +29,9 @@ Source/unit/build checks do not establish native correctness or end-to-end execu
 
 ## PQB candidate worker
 
-[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v2` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence, a native A10G component comparison, and [three largest full units completed natively](docs/pqb/2026-11-11-full-unit-validation.md) in 490.9 / 504.7 / 487.3 seconds. A separate [13-case native correctness run, consumer compatibility check and PQB image scan](docs/pqb/2026-11-11-correctness-consumer-validation.md) also passed their stated criteria. No PQB image is published, and a complete solve/application pipeline remains unvalidated. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
+[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v2` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. Its [three largest native units](docs/pqb/2026-11-11-full-unit-validation.md) and [13 native correctness cases, consumer checks and image scan](docs/pqb/2026-11-11-correctness-consumer-validation.md) passed their stated criteria.
+
+A [complete public synthetic solve through the real consumer Batch/S3 transport](docs/pqb/2026-11-11-public-transport-solve.md) then verified all three stages in 91 minutes 40 seconds, at $20.73 estimated compute including its builder. This is one development-orchestrated public solve; the served coordinator, wallet and consensus/miner paths remain untested. Cleanup is independently verified. No PQB release is published or enrolled. See the [assessment](docs/pqb/ASSESSMENT.md). Historical and combined QSB releases remain unchanged.
 
 ## Release
 
