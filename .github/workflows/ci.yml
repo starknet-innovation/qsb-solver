@@ -68,7 +68,8 @@ jobs:
           (cd pqb-measure-binaries && sha256sum -c SHA256SUMS)
           # the ranked binary measured is the one the worker image holds
           test "$(docker run --rm --network none --entrypoint sha256sum qsb-pqb:ci /opt/qsb-pqb/grind | cut -d' ' -f1)" = "$(sha256sum pqb-measure-binaries/grind-ranked | cut -d' ' -f1)"
-          printf '%s\n' "$GITHUB_SHA" > pqb-measure-binaries/source-commit
+          # the branch head, not the synthetic merge commit a pull_request run checks out as GITHUB_SHA
+          printf '%s\n' "${{ github.event.pull_request.head.sha || github.sha }}" > pqb-measure-binaries/source-commit
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: pqb-measure-binaries-sm86

@@ -28,7 +28,7 @@ SHAPES = {'pinning': {'kind': 'pin', 'K': 12, 'npts': 2, 'nenc': 3, 'H': 1},
 REQUIRED = {'grind', 'pqb_handler.py', 'pqb_ranges.py'}
 MAX_PROBLEM = 100000
 MAX_CANDIDATES = 32
-TIMEOUT_SECONDS = 3300
+TIMEOUT_SECONDS = 840                          # under a 900-second job limit, so a slow unit ends as 'interrupted'
 _INT_KEYS = {'gate_bits', 'gate_tag', 'K', 'npts', 'nenc', 'H', 'preimage_len', 'seq_off',
              'lt_off', 't', 'n_slots', 'slot_len'}
 _HEX64 = re.compile('[0-9a-f]{64}')

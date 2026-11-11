@@ -132,7 +132,7 @@ def ranked_sample(bundle, stage, raw, z_rate, index):
         n, t = ROUNDS[stage]
         total = math.comb(n - 1, t - 1)
         per = int(max(64, z_rate * SECONDS / STRATA / (n / t)))     # n / t completions per prefix on average
-        per = min(per, total // (STRATA * (SAMPLES + 1)))
+        per = min(per, total // (2 * STRATA * SAMPLES))            # SAMPLES slices fit in each stratum's half-width
         # strata evenly spaced over the prefix space; each sample takes a fresh slice of each
         ranges = [['--prefix-start', (2 * k + 1) * total // (2 * STRATA) + index * per, '--prefix-count', per]
                   for k in range(STRATA)]
@@ -165,8 +165,8 @@ def timing(bundle):
                 rate = up['steady'][0] / up['steady'][1] if up['steady'] else up['zblocks'] / up['processSeconds']
                 samples.append(ranked_sample(bundle, stage, raw, rate, i))
             out[stage] = {'samples': samples, 'summary': summarise(samples, stage)}
-        except (Failed, subprocess.TimeoutExpired, KeyError, ValueError) as e:
-            out[stage] = {'samples': samples, 'error': str(e)[:400]}
+        except Exception as e:                           # noqa: BLE001  keep what was measured, whatever broke
+            out[stage] = {'samples': samples, 'error': '%s: %s' % (type(e).__name__, str(e)[:400])}
     return out
 
 
@@ -202,13 +202,17 @@ def main():
         out['device'] = events.get('setup')
     except (Failed, subprocess.TimeoutExpired) as e:
         out['device'] = {'error': str(e)[:400]}
-    out['correctness'] = correctness(bundle, expected)
-    out['correctnessPassed'] = all(c['pass'] for c in out['correctness'])
-    # Timing a binary that computes wrong answers would measure nothing useful.
-    out['timing'] = timing(bundle) if out['correctnessPassed'] else None
-    timed = out['timing'] and all('summary' in v and all(s.get('gateConsistent') and s.get('complete', True)
-                                                        for s in v['samples']) for v in out['timing'].values())
-    out['status'] = 'passed' if out['correctnessPassed'] and timed else 'failed'
+    try:
+        out['correctness'] = correctness(bundle, expected)
+        out['correctnessPassed'] = all(c['pass'] for c in out['correctness'])
+        # Timing a binary that computes wrong answers would measure nothing useful.
+        out['timing'] = timing(bundle) if out['correctnessPassed'] else None
+        timed = out['timing'] and all('summary' in v and all(s.get('gateConsistent') and s.get('complete', True)
+                                                            for s in v['samples']) for v in out['timing'].values())
+        out['status'] = 'passed' if out['correctnessPassed'] and timed else 'failed'
+    except Exception as e:                               # noqa: BLE001  a one-shot run must still report
+        out.setdefault('correctnessPassed', False)
+        out.update(status='failed', error='%s: %s' % (type(e).__name__, str(e)[:400]))
     out['elapsedSeconds'] = time.monotonic() - START
     result.write_text(json.dumps(out, indent=1) + '\n')
     print(json.dumps({'status': out['status'], 'correctnessPassed': out['correctnessPassed']}))

@@ -158,12 +158,28 @@ class RankedEmulationTest(unittest.TestCase):
                (r0, ['--prefix-start', comb(108, 7) - 1, '--prefix-count', 2]),
                (r0, ['--prefix-start', 0, '--prefix-count', 0]),
                (r0, ['--prefix-start', 0, '--prefix-count', 1, '--unknown', 1]),
-               (r0, ['--der-filter', 1])]
+               (r0, ['--der-filter', 1]),
+               # counts that would wrap a 64-bit sum past the bounds check
+               (pin, ['--pin-seq', 0x80000000, '--pin-seq-count', 18446744073709551615]),
+               (pin, ['--pin-seq', 0x80000000, '--pin-lt-count', 18446744073709551615]),
+               (pin, ['--pin-seq', 0x80000000, '--pin-seq-count', 0x7FFFFFFF]),
+               # malformed numbers, and range options without the option that turns ranked mode on
+               (pin, ['--pin-seq', 'abc']), (pin, ['--pin-seq', '-1']), (pin, ['--pin-seq', '']),
+               (r0, ['--prefix-start', '0x10', '--prefix-count', 1]),
+               (pin, ['--pin-seq-count', 4]), (pin, ['--pin-lt-start', 600000000]),
+               (r0, ['--prefix-count', 5])]
         for raw, args in bad:
             with self.subTest(args=args):
                 code, log, _hits = emu.run(BINARY, raw, args)
                 self.assertNotEqual(code, 0, log)
                 self.assertIsNone(report(log))
+
+    def test_the_whole_last_sequence_value_is_accepted(self):
+        # the largest valid start with the largest count that fits: bounds are inclusive where they should be
+        code, log, _ = emu.run(BINARY, emu.problem('pin'), ['--pin-seq', 0xFFFFFFFD, '--pin-seq-count', 1,
+                                                          '--pin-lt-start', 1699999999, '--pin-lt-count', 1])
+        self.assertEqual(code, 0, log)
+        self.assertEqual(report(log)['zblocks'], 1)
 
     def test_der_shape_predicate(self):
         rng = random.Random(20261111)

@@ -63,6 +63,14 @@ Two separate effects, neither measured here.
 | [Native A10G run, 11 November](2026-11-11-a10g-measurement.md) | native GPU execution and matched timing | On one `g5.xlarge`: all 11 correctness cases returned exactly the reference's hit sets, including multi-batch ranges, the DER-shape filter and a planted exceptional point. Ranked steady rate 1.004 to 1.014 times upstream's random search, three alternating samples per stage. A10G rates 2.49 / 2.73 / 2.01 G trials/s. |
 | nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
+**Which binary the native run covers.** It ran the ranked binary `3f816a00…` built from
+`266f4a0`. `grind.cu` changed afterwards (review fixes): overflow-safe range bounds, strict
+numeric options, range options refused without their start option, and a compile-time refusal of
+`QG_FUSE=0`. All of it is host-side argument handling or a preprocessor guard; no kernel and no
+range-walk code changed. The emulation tests were rerun on the new source. The new binary has a
+new hash and has not itself run on a GPU: the native result applies to it by that judgement, not
+by measurement.
+
 Not done: a vulnerability scan, a full solve of any stage, any end-to-end spend, a second host
 or another card. The amd64 image build and its offline checks ran in CI for pull request 18;
 that is a build and packaging check, not execution of the grinder.
@@ -90,7 +98,13 @@ arithmetic in `ptx_field.cuh`, which the emulation build does not use.
 - Compiled with the repository's pinned CUDA 12.8.1 image and a fixed `-arch=sm_86`, not
   upstream's 12.6.3 and `-arch=native`.
 
-Without a ranked flag the search path is upstream's.
+- `QG_FUSE=0` is refused at compile time: the unfused hashing kernel would hash the stale point
+  slots of a thread the exceptional path skipped.
+- Range options must be unsigned decimals, and need the option that turns ranked mode on.
+
+Without a ranked flag the search is still upstream's random draws, but the binary is not
+upstream's: exceptional threads are detected and recomputed there too, and unknown or malformed
+options are refused.
 
 ## Correctness and coverage limits
 
@@ -119,8 +133,9 @@ Without a ranked flag the search path is upstream's.
   with room for start-up and a slower host; pqb saw hosts of one model differ by up to 30 %,
   which would bring the largest unit to about 650 s. It is not a guarantee, and no full unit has
   been run. `pqb-ranked-v1` (16 values, 2³⁰ prefixes for both rounds) was provisional, never
-  published or enrolled, and had round-0 units of up to 21 minutes. The worker's own 3,300 s
-  timeout is still provisional. Changing a unit size is a new `searchVersion`.
+  published or enrolled, and had round-0 units of up to 21 minutes. The worker stops a unit at
+  840 s and reports it `interrupted`, so a slow unit ends with a result instead of being killed
+  by a 900-second job limit. Changing a unit size is a new `searchVersion`.
 - **Hardware.** Upstream reports the workload is bound by 32-bit integer throughput and that
   consumer cards beat datacenter cards per dollar (their H100 runs pinning at 0.56× their 4090).
   The A10G ran at 0.42 of pqb's 4090 rates; see the AWS cost section.

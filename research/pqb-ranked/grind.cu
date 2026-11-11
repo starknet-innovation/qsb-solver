@@ -13,8 +13,10 @@
 //     every point of such a thread;
 //   * ranked mode fails closed (non-zero exit) on a hit-buffer overflow or a z-block count that
 //     differs from the range's size, instead of warning and going on.
-// Without a ranked flag the search is upstream's (random draws, --seconds); unknown options are
-// now refused rather than ignored.
+//   * QG_FUSE=0 is refused at compile time (see the #error below).
+// Without a ranked flag the search is still upstream's random draws under --seconds, but it is not
+// the upstream binary: exceptional threads are detected and recomputed there too, and unknown or
+// malformed options are refused rather than ignored.
 // CUDA grinder (see README.md). Per batch, on one of two non-blocking CUDA streams (two batches in flight):
 //   zgen_pin : (pin) one thread per z-block over a precomputed midstate
 //   zpre     : (round) persistent lanes: a uniform (t-1)-prefix per item, a full sweep of its
@@ -67,6 +69,11 @@
 #endif
 #ifndef QG_FUSE                                    // 1: ec_menu hashes its points (no pts buffer, no hash_pts)
 #define QG_FUSE 1
+#endif
+#if !QG_FUSE
+// qsb-solver: an exceptional thread is skipped in ec_menu and recomputed on the host. The unfused
+// hash_pts kernel would still hash that thread's stale point slots.
+#error "the qsb-solver adaptation supports QG_FUSE=1 only"
 #endif
 #ifndef QG_LB_COMB                                  // __launch_bounds__ min blocks per SM (0: none)
 #define QG_LB_COMB 0
@@ -1067,8 +1074,12 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     if (R.on) {
         if constexpr (!ROUND) {
             if (!R.has_seq || R.has_prefix) { fprintf(stderr, "a pin problem takes --pin-seq\n"); return 2; }
-            if (R.seq < PIN_SEQ_LO || R.seq_count < 1 || R.seq + R.seq_count > (uint64_t)PIN_SEQ_LO + PIN_SEQ_N ||
-                R.lt_start < PIN_LT_LO || R.lt_count < 1 || R.lt_start + R.lt_count > PIN_LT_HI) {
+            // each bound is checked before any sum, so a huge count cannot wrap past the check
+            const uint64_t lt_n = PIN_LT_HI - PIN_LT_LO;
+            if (R.seq < PIN_SEQ_LO || R.seq - PIN_SEQ_LO >= PIN_SEQ_N || R.seq_count < 1 ||
+                R.seq_count > PIN_SEQ_N - (R.seq - PIN_SEQ_LO) ||
+                R.lt_start < PIN_LT_LO || R.lt_start - PIN_LT_LO >= lt_n || R.lt_count < 1 ||
+                R.lt_count > lt_n - (R.lt_start - PIN_LT_LO)) {
                 fprintf(stderr, "pin range outside the usable nSequence / nLockTime values\n"); return 2;
             }
             r_expect = R.seq_count * R.lt_count;
@@ -1352,29 +1363,41 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     _exit(0);                                      // skip freeing GBs of device buffers
 }
 
+// qsb-solver: an unsigned decimal, nothing else (strtoull would read "abc" as 0 and "-1" as 2^64 - 1)
+static bool parse_u64(const char *s, uint64_t *out) {
+    if (!*s || strlen(s) > 19) return false;
+    uint64_t v = 0;
+    for (const char *c = s; *c; c++) { if (*c < '0' || *c > '9') return false; v = v * 10 + (uint64_t)(*c - '0'); }
+    *out = v;
+    return true;
+}
+
 int main(int argc, const char **argv) {
     auto t0 = std::chrono::steady_clock::now();
     std::string probPath, hitsPath;
     double seconds = 10;
     Ranked R;
     std::string shapePath;
+    bool num_ok = true, range_opt = false;
     for (int i = 1; i + 1 < argc; i += 2) {
         std::string k = argv[i];
         if (k == "--problem") probPath = argv[i + 1];
         else if (k == "--hits") hitsPath = argv[i + 1];
         else if (k == "--seconds") seconds = atof(argv[i + 1]);
-        else if (k == "--pin-seq") { R.on = R.has_seq = true; R.seq = strtoull(argv[i + 1], nullptr, 10); }
-        else if (k == "--pin-seq-count") R.seq_count = strtoull(argv[i + 1], nullptr, 10);
-        else if (k == "--pin-lt-start") R.lt_start = strtoull(argv[i + 1], nullptr, 10);
-        else if (k == "--pin-lt-count") R.lt_count = strtoull(argv[i + 1], nullptr, 10);
-        else if (k == "--prefix-start") { R.on = R.has_prefix = true; R.prefix_start = strtoull(argv[i + 1], nullptr, 10); }
-        else if (k == "--prefix-count") R.prefix_count = strtoull(argv[i + 1], nullptr, 10);
+        else if (k == "--pin-seq") { R.on = R.has_seq = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.seq); }
+        else if (k == "--pin-seq-count") { range_opt = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.seq_count); }
+        else if (k == "--pin-lt-start") { range_opt = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.lt_start); }
+        else if (k == "--pin-lt-count") { range_opt = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.lt_count); }
+        else if (k == "--prefix-start") { R.on = R.has_prefix = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.prefix_start); }
+        else if (k == "--prefix-count") { range_opt = true; num_ok = num_ok && parse_u64(argv[i + 1], &R.prefix_count); }
         else if (k == "--der-filter") R.der_filter = atoi(argv[i + 1]) != 0;
         else if (k == "--der-shape-file") shapePath = argv[i + 1];
         else if (k == "--candidate-dir") {}
         else { fprintf(stderr, "unknown option %s\n", k.c_str()); return 2; }
     }
     if (argc % 2 == 0) { fprintf(stderr, "options take one value each\n"); return 2; }
+    if (!num_ok) { fprintf(stderr, "range options take unsigned decimal values\n"); return 2; }
+    if (range_opt && !R.on) { fprintf(stderr, "a range option needs --pin-seq or --prefix-start\n"); return 2; }
     if (R.der_filter && !R.on) { fprintf(stderr, "--der-filter needs a ranked range\n"); return 2; }
 #if defined(QG_EMU)
     if (!shapePath.empty()) {                      // test hook: der_shape of each 64-hex-digit line

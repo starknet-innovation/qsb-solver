@@ -7,6 +7,7 @@ device execution or speed.
 import hashlib
 import os
 import shutil
+import stat
 import subprocess
 import tempfile
 from pathlib import Path
@@ -31,9 +32,13 @@ def build(source=SOURCE):
     for file in (source, INCLUDE / 'common.cuh', INCLUDE / 'ptx_field.cuh'):
         digest.update(file.read_bytes())
     out = Path(tempfile.gettempdir()) / ('qsb-pqb-emu-%s-%d' % (digest.hexdigest()[:16], os.getuid()))
+    out.mkdir(mode=0o700, exist_ok=True)
+    info = out.lstat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o022:
+        # the shared temp directory is predictable: never run a binary from a directory that is not ours
+        out = Path(tempfile.mkdtemp(prefix='qsb-pqb-emu-'))
     binary = out / 'grind'
     if not binary.is_file():
-        out.mkdir(mode=0o700, exist_ok=True)
         partial = out / ('grind.%d' % os.getpid())
         subprocess.run([cxx, '-O2', '-std=c++17', '-DQG_EMU', '-x', 'c++', '-I', str(INCLUDE),
                         str(source), '-o', str(partial), '-lpthread'], check=True)

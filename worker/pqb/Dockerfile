@@ -9,6 +9,16 @@ COPY worker/pqb/build.py /src/worker/pqb/build.py
 ENV PYTHONDONTWRITEBYTECODE=1
 ARG CUDA_ARCH=86
 RUN CUDA_ARCH=${CUDA_ARCH} python3 /src/worker/pqb/build.py
+# Not a runtime target, and deliberately not the last stage: a build without --target gives the
+# worker (aws). Binaries for a native measurement: the ranked grinder exactly as the
+# worker gets it, and upstream's unmodified grinder with the same compiler and flags.
+FROM build AS measure
+ARG CUDA_ARCH=86
+RUN mkdir /measure \
+ && cp /opt/qsb-pqb/grind /measure/grind-ranked \
+ && cp /opt/qsb-pqb/build-receipt.json /measure/build-receipt.json \
+ && nvcc -O3 -std=c++17 -arch=sm_${CUDA_ARCH} -I /src/vendor/pqb/grinder -o /measure/grind-upstream /src/vendor/pqb/grinder/grind.cu \
+ && cd /measure && sha256sum grind-ranked grind-upstream build-receipt.json > SHA256SUMS
 FROM nvidia/cuda:12.8.1-runtime-ubuntu22.04@sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd AS runtime
 # Same Ubuntu-only update as worker/Dockerfile: the pinned CUDA user-space packages stay unchanged.
 # Ubuntu's mirrors are briefly inconsistent after a package is superseded (index lists a file
@@ -42,12 +52,3 @@ RUN python3 -m pip install --no-cache-dir boto3==1.42.0
 COPY worker/aws/entrypoint.py /opt/qsb-pqb/aws_entrypoint.py
 CMD ["python3", "aws_entrypoint.py"]
 
-# Not a runtime target. Binaries for a native measurement: the ranked grinder exactly as the
-# worker gets it, and upstream's unmodified grinder with the same compiler and flags.
-FROM build AS measure
-ARG CUDA_ARCH=86
-RUN mkdir /measure \
- && cp /opt/qsb-pqb/grind /measure/grind-ranked \
- && cp /opt/qsb-pqb/build-receipt.json /measure/build-receipt.json \
- && nvcc -O3 -std=c++17 -arch=sm_${CUDA_ARCH} -I /src/vendor/pqb/grinder -o /measure/grind-upstream /src/vendor/pqb/grinder/grind.cu \
- && cd /measure && sha256sum grind-ranked grind-upstream build-receipt.json > SHA256SUMS
