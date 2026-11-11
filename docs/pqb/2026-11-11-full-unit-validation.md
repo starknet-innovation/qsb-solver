@@ -79,7 +79,7 @@ but its full measurement profile's 780-second remaining-time requirement could n
 after the last unit's collection. No supplemental compute command was sent, no deadline was
 extended and no new hardware was allocated for it. Round1 does provide native production-gate
 filter-emission evidence; it does not replace those specific pinning cases. The latest local
-suite passed 150 tests with one existing skip.
+suite completed 150 tests: 149 passed and one existing test was skipped.
 
 ## Cost and cleanup
 
