@@ -41,3 +41,13 @@ FROM runtime AS aws
 RUN python3 -m pip install --no-cache-dir boto3==1.42.0
 COPY worker/aws/entrypoint.py /opt/qsb-pqb/aws_entrypoint.py
 CMD ["python3", "aws_entrypoint.py"]
+
+# Not a runtime target. Binaries for a native measurement: the ranked grinder exactly as the
+# worker gets it, and upstream's unmodified grinder with the same compiler and flags.
+FROM build AS measure
+ARG CUDA_ARCH=86
+RUN mkdir /measure \
+ && cp /opt/qsb-pqb/grind /measure/grind-ranked \
+ && cp /opt/qsb-pqb/build-receipt.json /measure/build-receipt.json \
+ && nvcc -O3 -std=c++17 -arch=sm_${CUDA_ARCH} -I /src/vendor/pqb/grinder -o /measure/grind-upstream /src/vendor/pqb/grinder/grind.cu \
+ && cd /measure && sha256sum grind-ranked grind-upstream build-receipt.json > SHA256SUMS

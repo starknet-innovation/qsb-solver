@@ -15,19 +15,20 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'research/pqb-ranked/grind.cu'
 INCLUDE = ROOT / 'vendor/pqb/grinder'
 FIXTURES = ROOT / 'research/pqb-ranked/tests/fixtures'
+UPSTREAM = INCLUDE / 'grind.cu'
 
 
 def compiler():
     return shutil.which('c++') or shutil.which('g++') or shutil.which('clang++')
 
 
-def build():
+def build(source=SOURCE):
     """Path of the emulation binary, compiled once per source identity; None without a compiler."""
     cxx = compiler()
     if not cxx:
         return None
     digest = hashlib.sha256()
-    for file in (SOURCE, INCLUDE / 'common.cuh', INCLUDE / 'ptx_field.cuh'):
+    for file in (source, INCLUDE / 'common.cuh', INCLUDE / 'ptx_field.cuh'):
         digest.update(file.read_bytes())
     out = Path(tempfile.gettempdir()) / ('qsb-pqb-emu-%s-%d' % (digest.hexdigest()[:16], os.getuid()))
     binary = out / 'grind'
@@ -35,7 +36,7 @@ def build():
         out.mkdir(mode=0o700, exist_ok=True)
         partial = out / ('grind.%d' % os.getpid())
         subprocess.run([cxx, '-O2', '-std=c++17', '-DQG_EMU', '-x', 'c++', '-I', str(INCLUDE),
-                        str(SOURCE), '-o', str(partial), '-lpthread'], check=True)
+                        str(source), '-o', str(partial), '-lpthread'], check=True)
         os.replace(partial, binary)
     return binary
 

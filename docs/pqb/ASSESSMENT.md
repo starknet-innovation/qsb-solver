@@ -62,8 +62,9 @@ Two separate effects, neither measured here.
 | `tests/test_pqb_contract.py` | arithmetic | Units tile each round's subsets exactly once and the pinning units cover the usable nonces. |
 | nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
-Not done: any native GPU execution, any timing, an amd64 image build, the image's offline checks,
-a vulnerability scan, a full solve of any stage, any end-to-end spend.
+Not done: any native GPU execution, any timing, a vulnerability scan, a full solve of any stage,
+any end-to-end spend. The amd64 image build and its offline checks ran in CI for pull request 18;
+that is a build and packaging check, not execution of the grinder.
 
 The emulation build runs the same source on a CPU. It is evidence about the algorithm as
 written. It is not evidence about nvcc's code generation, device execution or the PTX field
@@ -167,11 +168,10 @@ No paid hardware, no provider submissions, nothing to clean up. No budget was re
 
 ## Next evidence gaps, in order
 
-1. amd64 CI build of `worker/pqb/Dockerfile` and its offline image checks.
-2. Native GPU correctness on the public fixtures: the same differential comparisons as the
-   emulation tests, on the compiled binary, including a batch-boundary case.
-3. Matched timing on one GPU, interleaved: upstream random mode against ranked mode for each
-   stage, so the model's equal-rate assumption is replaced by a measurement. On an A10G and, if
-   consumer cards are an option, on one of those.
-4. A decision on hardware and unit sizes from (3), then a contract freeze.
-5. The qsb-app side above, then one complete public-data pipeline run.
+1. The native measurement run prepared in
+   [research/pqb-ranked/measure](../../research/pqb-ranked/measure/README.md): correctness of the
+   compiled binary on the public fixtures, then upstream random mode against ranked mode,
+   interleaved on one GPU. Prepared and dry-run on emulation; not executed, and it needs explicit
+   authorization. On an A10G and, if other cards are an option, on one of those.
+2. A decision on hardware and unit sizes from (1), then a contract freeze.
+3. The qsb-app side above, then one complete public-data pipeline run.
