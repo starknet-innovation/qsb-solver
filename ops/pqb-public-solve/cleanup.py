@@ -41,10 +41,10 @@ def stop(call, queue, environment, token):
         queue_state = queues[0]
         if queue_state['status'] != 'VALID':
             return receipt({'done': False, 'queueStatus': queue_state['status']})
-        if queue_state.get('computeEnvironmentOrder'):
-            call('batch', 'update-job-queue', jobQueue=queue, computeEnvironmentOrder=[])
-        else:
-            call('batch', 'delete-job-queue', jobQueue=queue)
+        # AWS ignores an empty association update. DeleteJobQueue explicitly permits
+        # associated environments after submissions are disabled; delete the CE later.
+        # https://docs.aws.amazon.com/batch/latest/APIReference/API_DeleteJobQueue.html
+        call('batch', 'delete-job-queue', jobQueue=queue)
         return receipt({'done': False, 'queueDeletionPending': True})
     if environments:
         if environments[0]['status'] not in ('DELETING', 'UPDATING', 'CREATING'):
