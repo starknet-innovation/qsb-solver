@@ -50,6 +50,11 @@ checkpoint. Run `crosscheck.py` with the clean pinned upstream checkout to compa
 problem bytes and check each hit through upstream `HitChecker` and canonical `grind.evaluate`.
 Its only packet adaptations convert public decimal scalar strings to integers and add the
 nonce-space size. Keep the upstream acceptance policy unchanged; this is not miner acceptance.
+`crosscheck-emitted.py UPSTREAM CAMPAIGN STATE_DIRECTORY STAGE PACKET_EXPORT NEW_OUTPUT`
+also checks every completed unit's emitted hits against upstream and the saved consumer verdict,
+including negative hits. It binds the original S3 input bytes. `PACKET_EXPORT` may be the
+accepted reference export or a public `{packet, problem}` object. Each receipt covers one exact
+problem; other problems after re-pinning are listed as unexamined and need their own exports.
 
 The fresh campaign has one fixed six-hour deadline, a 600-unit / 540,000 GPU-second reservation
 ceiling and at most 16 g5.xlarge instances. Record a $200 operational reservation before paid
