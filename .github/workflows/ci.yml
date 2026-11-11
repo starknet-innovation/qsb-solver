@@ -58,6 +58,13 @@ jobs:
         run: python3 worker/pqb/test_image.py qsb-pqb:ci
       - name: Offline AWS transport imports
         run: docker run --rm --network none --read-only --entrypoint python3 qsb-pqb:ci -c 'import aws_entrypoint, boto3, handler'
+      - name: Scan PQB candidate image (fails on critical findings with a fix)
+        run: python3 scripts/image_scan.py docker:qsb-pqb:ci pqb-image-scan
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() && !cancelled() }}
+        with:
+          name: pqb-image-scan-sm86
+          path: pqb-image-scan/
       - name: Compile upstream's grinder with the same flags, for matched measurement
         run: |
           docker build --platform linux/amd64 -f worker/pqb/Dockerfile --target measure \

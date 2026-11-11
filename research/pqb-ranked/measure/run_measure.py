@@ -1,6 +1,6 @@
 """Native correctness and matched timing of the ranked PQB grinder, in one bounded run.
 
-    python3 run_measure.py BUNDLE RESULT.json
+    python3 run_measure.py BUNDLE RESULT.json [--correctness-only]
 
 BUNDLE holds grind-ranked and grind-upstream (same compiler and flags), fixtures/, expected.json.
 Public synthetic inputs only. One process on one GPU, nothing else running.
@@ -19,6 +19,7 @@ draw; it is not one.
 The result records every sample. It grants no range credit and is not a full solve.
 """
 import hashlib
+import argparse
 import json
 import math
 import os
@@ -245,14 +246,22 @@ def summarise(samples, stage):
 
 
 def main():
-    bundle, result = Path(sys.argv[1]), Path(sys.argv[2])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('bundle', type=Path)
+    parser.add_argument('result', type=Path)
+    parser.add_argument('--correctness-only', action='store_true',
+                        help='Run the committed correctness cases; collect no performance samples')
+    args = parser.parse_args()
+    bundle, result = args.bundle, args.result
     if result.exists():
         sys.exit('result exists: this run is one-shot')
     result.write_text(json.dumps({'status': 'started'}) + '\n')          # the one-shot marker
     global FAILURE_DIR
     FAILURE_DIR = result.parent / 'failed-invocations'
     expected = json.loads((bundle / 'expected.json').read_text())
-    out = {'format': 'qsb-pqb-measure-result-v1', 'status': 'incomplete',
+    out = {'format': 'qsb-pqb-correctness-result-v1' if args.correctness_only else 'qsb-pqb-measure-result-v1',
+           'mode': 'correctness-only' if args.correctness_only else 'correctness-and-timing',
+           'status': 'incomplete',
            'binaries': {n: sha256(bundle / n) for n in ('grind-ranked', 'grind-upstream')},
            'expectedSha256': sha256(bundle / 'expected.json'),
            'settings': {'samples': SAMPLES, 'seconds': SECONDS, 'strata': STRATA, 'skipBatches': SKIP_BATCHES,
@@ -268,9 +277,9 @@ def main():
         out['device'] = {'error': str(e)[:400]}
     try:
         out['correctness'] = correctness(bundle, expected)
-        out['correctnessPassed'] = all(c['pass'] for c in out['correctness'])
+        out['correctnessPassed'] = bool(out['correctness']) and all(c['pass'] for c in out['correctness'])
         # Timing a binary that computes wrong answers would measure nothing useful.
-        out['timing'] = timing(bundle) if out['correctnessPassed'] else None
+        out['timing'] = timing(bundle) if out['correctnessPassed'] and not args.correctness_only else None
         timed = out['timing'] and all('summary' in v and all(s.get('gateConsistent') and s.get('complete', True)
                                                             for s in v['samples']) for v in out['timing'].values())
         # every upstream and ranked sample must have reached steady state, or there is no comparison
@@ -278,7 +287,9 @@ def main():
                           if len(v['samples']) != 2 * SAMPLES or any(not s.get('steady') for s in v['samples']))
         if out['timing'] is not None:
             out['stagesWithoutSteadyState'] = unsteady
-        out['status'] = 'passed' if out['correctnessPassed'] and timed and not (REQUIRE_STEADY and unsteady) else 'failed'
+        accepted = out['correctnessPassed'] if args.correctness_only else (
+            out['correctnessPassed'] and timed and not (REQUIRE_STEADY and unsteady))
+        out['status'] = 'passed' if accepted else 'failed'
     except Exception as e:                               # noqa: BLE001  a one-shot run must still report
         out.setdefault('correctnessPassed', False)
         out.update(status='failed', error='%s: %s' % (type(e).__name__, str(e)[:400]))

@@ -11,6 +11,21 @@ candidates independently. It does not repeat this short matched-throughput exper
 Nothing in this directory authorizes a launch: each one needs the user's explicit go-ahead on
 account, region, instance type and a budget cap, under `ops/aws-gpu-execution`.
 
+## Correctness-only profile
+
+Use `run_measure.py BUNDLE RESULT.json --correctness-only` to execute the complete committed
+correctness suite without repeating timing. The result uses `qsb-pqb-correctness-result-v1`,
+records `mode: correctness-only` and `timing: null`, and cannot be used as performance evidence.
+Empty suites, incorrect hits/reports and failed invocations fail this profile as well.
+
+The host wrapper accepts an explicit fifth argument `correctness`. It retains the fixed host
+deadline but uses a 120-second runner budget, 180-second outer container bound and 240-second
+minimum remaining time after image setup. Omitting it retains the original full measurement
+profile and its 780-second remaining-time guard. Neither profile extends an active deadline.
+All exits after the one-shot marker, including image-pull/time/device-query setup failures,
+write `exit-code.txt` and the hash-described `public-result.b64`. Setup diagnostics and attempted
+container cleanup are retained. Simulated host tests cover these failure paths without AWS.
+
 ## Questions
 
 1. Does the compiled ranked grinder produce exactly the expected hits on a real GPU? Until now

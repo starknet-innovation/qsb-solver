@@ -87,9 +87,40 @@ class MeasureDryRunTest(unittest.TestCase):
         (self.artifact / 'SHA256SUMS').write_text(''.join(
             '%s  %s\n' % (sha256(self.artifact / n), n) for n in ('grind-ranked', 'grind-upstream', 'build-receipt.json')))
 
-    def runner(self, result, **env):
-        return subprocess.run([sys.executable, str(self.bundle / 'run_measure.py'), str(self.bundle), str(result)],
+    def runner(self, result, *, correctness_only=False, **env):
+        command = [sys.executable, str(self.bundle / 'run_measure.py'), str(self.bundle), str(result)]
+        if correctness_only:
+            command.append('--correctness-only')
+        return subprocess.run(command,
                               capture_output=True, text=True, env=dict(os.environ, **dict(FAST, **env)), timeout=600)
+
+    def test_correctness_only_does_not_run_timing_or_require_steady_samples(self):
+        bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
+        upstream = self.bundle / 'grind-upstream'
+        upstream.chmod(0o755)
+        upstream.write_text('#!/bin/sh\necho upstream-must-not-run >&2\nexit 77\n')
+        result = Path(self.tmp.name) / 'result.json'
+        done = self.runner(result, correctness_only=True, QSB_MEASURE_REQUIRE_STEADY='1')
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        out = json.loads(result.read_text())
+        self.assertEqual(out['format'], 'qsb-pqb-correctness-result-v1')
+        self.assertEqual((out['mode'], out['status'], out['correctnessPassed']), ('correctness-only', 'passed', True))
+        self.assertIsNone(out['timing'])
+        self.assertNotIn('stagesWithoutSteadyState', out)
+        self.assertEqual(len(out['correctness']), 13)
+        self.assertEqual(sum(c['hits'] for c in out['correctness'] if 'filter-emits' in c['label']), 2)
+        self.assertNotEqual(self.runner(result, correctness_only=True).returncode, 0)
+
+    def test_correctness_only_does_not_accept_an_empty_or_wrong_suite(self):
+        bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
+        expected = json.loads((self.bundle / 'expected.json').read_text())
+        for label, cases in [('empty', []), ('wrong', [dict(expected['cases'][0], hits=[])])]:
+            (self.bundle / 'expected.json').write_text(json.dumps(dict(expected, cases=cases)))
+            result = Path(self.tmp.name) / (label + '.json')
+            done = self.runner(result, correctness_only=True)
+            self.assertEqual(done.returncode, 1, done.stdout + done.stderr)
+            out = json.loads(result.read_text())
+            self.assertEqual((out['status'], out['correctnessPassed'], out['timing']), ('failed', False, None))
 
     def test_bundle_and_one_shot_run(self):
         digest = bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
