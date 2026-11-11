@@ -1,8 +1,8 @@
 # PQB candidate assessment
 
 Assessed 11 November 2026. Disposition: **retain for review, HOLD**. Nothing here is published,
-enrolled or deployed. One paid GPU session ran, for a component measurement (see Cost and
-cleanup).
+enrolled or deployed. One native A10G component session ran; its estimated cost and verified
+cleanup are recorded below. The full-unit harness is prepared but has not run natively.
 
 ## What this is
 
@@ -28,7 +28,7 @@ This is not Yukon benchmark research. The process in `AGENTS.md` was applied to 
 
 ## Why it could lower cost
 
-Two separate effects, neither measured here.
+Two separate effects; whole-spend savings remain modelled, while component rates were measured.
 
 1. **The scheme.** PQB's reported grind is far smaller than QSB's. That is a property of the
    lock, it needs PQB vaults in qsb-app, and it is the authors' figure.
@@ -71,6 +71,11 @@ numeric options, range options refused without their start option, and a compile
 range-walk code changed. The emulation tests were rerun on the new source. The new binary has a
 new hash and has not itself run on a GPU: the native result applies to it by that judgement, not
 by measurement.
+
+The full-unit harness adds an optional local evidence directory to the handler (not to the
+request schema), retaining its problem, native log and hits. The default temporary-directory
+path is unchanged. This changes the handler binding and needs a fresh CI artifact; the old
+receipt does not attest to this worker. See [the validation plan](FULL-UNIT.md).
 
 Not done: a vulnerability scan, a full solve of any stage, any end-to-end spend, a second host
 or another card. The amd64 image build and its offline checks ran in CI for pull request 18;
@@ -196,9 +201,14 @@ One paid session, on 11 November 2026 ([record](2026-11-11-a10g-measurement.md))
 
 Nothing else was allocated. No budget remains reserved.
 
+Preparing the full-unit harness uses no paid hardware. New native execution, budget reservations,
+provider submissions and cleanup receipts must be recorded separately; the old cap does not
+authorize a new run.
+
 ## Next evidence gaps, in order
 
-1. One full unit of each stage on an A10G, to confirm the unit durations the sizes were chosen
-   for, then a contract freeze.
+1. Execute the [prepared full-unit harness](FULL-UNIT.md) on an A10G with fresh authorization:
+   one largest unit per stage, separately bounded sessions, using the current CI binary.
+   Confirm durations and failure/output accounting before a contract freeze.
 2. The qsb-app side above, then one complete public-data pipeline run, including a full solve.
 3. A second host or another card if the rates are to be relied on for pricing.

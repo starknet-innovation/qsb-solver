@@ -61,3 +61,19 @@ No prior experiment is authorized to relaunch by this configuration change.
 Keep original private operational receipts outside Git; public evidence uses
 hashes and cleanup counts. Earlier branch history remains unchanged and must be
 considered separately before any requested history rewrite.
+
+## Connected AWS MCP transport
+
+When using the connected AWS MCP tool instead of the local CLI, set `QSB_AWS_MCP_RPC_DIR` to a
+fresh external receipt directory. The committed controller persists each API intent through
+`mcp_rpc.py` and waits for its response. The operator must atomically create `<id>.dispatched`
+before calling that request exactly once with the AWS MCP `run_script` / `call_boto3` tool,
+then atomically write `<id>.response.json` as `{"result": RESPONSE}` or `{"error": MESSAGE}`.
+For `CreateFunction`, decode the request's base64 `Code.ZipFile` to bytes for the SDK. Verify
+the tool's API-call receipt rather than trusting only returned text. Never dispatch an ID that
+already has a dispatch marker; a missing response is uncertain and requires reconciliation.
+
+This handoff changes the transport only: operator account binding, clean/pushed source,
+one-shot launch token, fixed deadline, independent cleanup and external state still apply.
+There is no permission or budget implied by configuring it. Do not put credentials or private
+workload inputs in the handoff directory.

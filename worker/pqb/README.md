@@ -20,6 +20,11 @@ python3 worker/pqb/test_image.py qsb-pqb:local
 The unit tests need a C++ compiler, not a GPU: they build the grinder as plain C++ (`-DQG_EMU`).
 The image build needs a native x86_64 Linux host (see `worker/optimized/README.md`).
 
+The [prepared full-unit validation harness](../../docs/pqb/FULL-UNIT.md) uses the bound handler
+and current CI binary on public synthetic problems. Its optional local evidence-directory
+argument retains native logs/hits, including failed work, and cannot be enabled by a request.
+The harness is outside the image; it grants no release or deployment status.
+
 ## Request and result
 
 ```json

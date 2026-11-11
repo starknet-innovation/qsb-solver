@@ -4,13 +4,17 @@
 [the record](../../../docs/pqb/2026-11-11-a10g-measurement.md). The rest of this page describes
 how the run is built and what it can show.
 
+For the next gate see [the full-unit plan](../../../docs/pqb/FULL-UNIT.md). `run_full_unit.py`
+executes one production unit through the bound worker, retains native logs and checks emitted
+candidates independently. It does not repeat this short matched-throughput experiment.
+
 Nothing in this directory authorizes a launch: each one needs the user's explicit go-ahead on
 account, region, instance type and a budget cap, under `ops/aws-gpu-execution`.
 
 ## Questions
 
 1. Does the compiled ranked grinder produce exactly the expected hits on a real GPU? Until now
-   that is shown only under CPU emulation.
+   that was shown only under CPU emulation before the recorded native run.
 2. Is the ranked walk as fast per trial as upstream's random search? The modelled saving
    (12.1 → 8.3 RTX 4090-hours per spend) assumes it is.
 3. What is the absolute rate on the card? This replaces the assumed A10G speed in the

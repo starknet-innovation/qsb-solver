@@ -24,6 +24,9 @@ def aws(service, operation, **request):
     config=load_config()
     if _ACTIVE_CONFIG is not None and config != _ACTIVE_CONFIG:
         raise ValueError('Operator configuration changed during execution')
+    if os.environ.get('QSB_AWS_MCP_RPC_DIR'):
+        from mcp_rpc import exchange
+        return exchange(os.environ['QSB_AWS_MCP_RPC_DIR'], config['region'], service, operation, request)
     result=subprocess.run(['aws','--profile',config['profile'],'--region',config['region'],'--output','json',
         '--no-cli-pager',service,operation,'--cli-input-json',json.dumps(request)],
         capture_output=True,text=True,env={**os.environ,'AWS_MAX_ATTEMPTS':'1'},timeout=90)
@@ -98,15 +101,18 @@ def main():
             s.update(deadline=int(deadline.timestamp()),phase='arming');save(path,s)
             archive=path.parent/'cleanup.zip'
             with zipfile.ZipFile(archive,'w') as z: z.write(Path(__file__).with_name('cleanup.py'),'cleanup.py')
-            result=subprocess.run(['aws','--profile',config['profile'],'--region',config['region'],'lambda','create-function',
-                '--function-name',name,'--runtime','python3.12','--role',f'arn:aws:iam::{ACCOUNT}:role/{name}-cleanup',
-                '--handler','cleanup.handler','--timeout','60','--zip-file','fileb://'+str(archive),
-                '--environment',json.dumps({'Variables':{'RUN_TOKEN':s['token'],'DEADLINE':str(s['deadline'])}}),
-                '--output','json'],capture_output=True,text=True)
-            if result.returncode: raise RuntimeError(result.stderr)
-            actual=json.loads(result.stdout)
+            actual=aws('lambda','create-function',FunctionName=name,Runtime='python3.12',
+                Role=f'arn:aws:iam::{ACCOUNT}:role/{name}-cleanup',Handler='cleanup.handler',Timeout=60,
+                Code={'ZipFile':base64.b64encode(archive.read_bytes()).decode()},
+                Environment={'Variables':{'RUN_TOKEN':s['token'],'DEADLINE':str(s['deadline'])}})
             if actual['CodeSha256']!=base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode(): raise ValueError('Lambda source mismatch')
-            subprocess.run(['aws','--profile',config['profile'],'--region',REGION,'lambda','wait','function-active-v2','--function-name',name],check=True,timeout=120)
+            active_deadline=time.monotonic()+120
+            while True:
+                function=aws('lambda','get-function-configuration',FunctionName=name)
+                if function.get('State')=='Active': break
+                if function.get('State')=='Failed' or time.monotonic()>=active_deadline:
+                    raise ValueError('Cleanup function did not become active')
+                time.sleep(2)
             expected={'Name':name,'GroupName':'default','ScheduleExpression':f'at({(deadline+timedelta(minutes=1)).replace(second=0,microsecond=0):%Y-%m-%dT%H:%M:%S})',
                 'ScheduleExpressionTimezone':'UTC','FlexibleTimeWindow':{'Mode':'OFF'},'State':'ENABLED','ActionAfterCompletion':'DELETE',
                 'Target':{'Arn':s['functionArn'],'RoleArn':f'arn:aws:iam::{ACCOUNT}:role/{name}-schedule','Input':'{}',

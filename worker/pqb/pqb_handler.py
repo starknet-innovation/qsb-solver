@@ -7,6 +7,7 @@ each one and runs the full solve check itself. `range-complete` is this worker's
 its own run, not proof that nothing was missed.
 """
 import base64
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -181,14 +182,25 @@ def _signal_group(pid, sig):
         pass                                # already exited
 
 
-def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS):
+@contextmanager
+def work_directory(evidence_directory=None):
+    """Optional local validation receipt; never selected by an input request."""
+    if evidence_directory is None:
+        with tempfile.TemporaryDirectory(prefix='qsb-pqb-') as directory:
+            yield pathlib.Path(directory)
+    else:
+        work = pathlib.Path(evidence_directory)
+        work.mkdir()                         # never overwrite/retry an uncertain unit
+        yield work                           # retain problem, log and hits even on failure
+
+
+def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS, *, evidence_directory=None):
     binding = release_binding(root)
     data = event['input']
     raw, unit = validate_request(data, binding['solverCommit'])
     stage = data['stage']
     shape = SHAPES[stage]
-    with tempfile.TemporaryDirectory(prefix='qsb-pqb-') as directory:
-        work = pathlib.Path(directory)
+    with work_directory(evidence_directory) as work:
         (work / 'P.txt').write_bytes(raw)
         command = [str(root / 'grind'), '--problem', 'P.json', '--hits', 'hits.txt',
                    '--der-filter', '1'] + range_arguments(stage, unit)
