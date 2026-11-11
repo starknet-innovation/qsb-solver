@@ -238,7 +238,10 @@ def handler(event, root=ROOT, timeout=TIMEOUT_SECONDS, *, evidence_directory=Non
                 candidates = sorted(ln for ln in hits.read_text().split('\n') if ln)
                 pattern = '[0-9]{1,10} [0-9]{1,10}( [0-9]{1,3}){4}' if stage == 'pinning' \
                     else '[0-9]{1,3}(,[0-9]{1,3})*( [0-9]{1,3}){4}'
+                # A trial is one (nonce, menu entry, recovery point, encoding, level): the grinder
+                # visits each once, so a repeated line means its output cannot be trusted.
                 if (len(candidates) != report['hits'] or len(candidates) > MAX_CANDIDATES
+                        or len(set(candidates)) != len(candidates)
                         or not all(re.fullmatch(pattern, c) for c in candidates)):
                     status, candidates = 'failed', []
     result = {'status': status, 'stage': stage, 'manifestHash': data['manifestHash'],

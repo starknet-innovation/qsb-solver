@@ -48,7 +48,7 @@ verify-form stage, and its policy on hybrid-encoded keys. `gateHits` should be n
 `trials / 2^24`; a worker that silently skipped trials would report too few.
 
 A unit is credited (`range-complete`) only when the grinder exits 0 and its own completion line
-names exactly that unit with the z-block count the contract gives it. A hit-buffer overflow, more
+names exactly that unit with the z-block count the contract gives it. A repeated candidate line, a hit-buffer overflow, more
 than 32 candidates, a timeout (840 s) or any other exit is `failed` or `interrupted`, never a
 partial credit. Deterministic failures must not be blindly retried.
 

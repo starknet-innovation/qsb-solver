@@ -155,6 +155,29 @@ class HandlerOnEmulationTest(unittest.TestCase):
         out = handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
         self.assertEqual(out['status'], 'failed')
 
+    def fake_grinder(self, hits, reported):
+        """Replace the bound grinder with a script that writes these hit lines and a matching report."""
+        unit = {'version': 'pqb-ranked-v2', 'start': '0', 'count': 400, 'sequence': 0x80000000,
+                'sequenceCount': 2, 'locktime': 500000000, 'locktimeCount': 200}
+        self.small_unit(unit)
+        line = json.dumps({'kind': 'pin', 'seq': 0x80000000, 'seq_count': 2, 'lt_start': 500000000, 'lt_count': 200,
+                           'zblocks': 400, 'expected': 400, 'hits': reported, 'der_filter': 1, 'gate_hits': 3,
+                           'exact_zblocks': 0, 'complete': True})
+        (self.root / 'grind').write_text("#!/bin/sh\nprintf '%s' > hits.txt\necho '@range %s'\n"
+                                         % (''.join(h + '\\n' for h in hits), line))
+        (self.root / 'grind').chmod(0o755)
+        self.bind()
+        return handler.handler({'input': request('pinning', emu.problem('pin', gate_bits=24))}, root=self.root)
+
+    def test_duplicate_candidates_are_not_credited(self):
+        hit, other = '2147483648 500000007 3 0 1 1', '2147483648 500000009 5 1 0 1'
+        out = self.fake_grinder([hit, other], 2)                     # control: two distinct hits complete
+        self.assertEqual((out['status'], out['candidates']), ('completed', [hit, other]))
+        out = self.fake_grinder([hit, hit], 2)                       # the same hit twice, count matching
+        self.assertEqual((out['status'], out['candidates'], out['checkpoint']),
+                         ('failed', [], 'requires-verification-or-resume'))
+        self.assertNotIn('gateHits', out)
+
     def test_an_interrupted_unit_is_not_credited(self):
         self.small_unit({'version': 'pqb-ranked-v2', 'start': '0', 'count': 14 * 1200000000,
                          'sequence': 0x80000000, 'sequenceCount': 14, 'locktime': 500000000,
