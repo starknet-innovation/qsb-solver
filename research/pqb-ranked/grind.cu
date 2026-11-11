@@ -1,12 +1,16 @@
 // FOR SECURITY RESEARCH ONLY — NOT FOR PRODUCTION USE
 // qsb-solver adaptation of fireblocks-labs/pqb grinder/grind.cu (MIT, Copyright (c) 2026 Fireblocks
-// Ltd.; see vendor/pqb). This is NOT the unchanged upstream file. The SHA-256 and curve arithmetic
-// are untouched. Changes:
+// Ltd.; see vendor/pqb). This is NOT the unchanged upstream file. The SHA-256 and field arithmetic
+// and the group formulas are untouched. Changes:
 //   * ranked mode (--pin-seq / --prefix-start ...): a deterministic, exhaustive walk of a stated
 //     range instead of random draws, ending in an @range completion line;
 //   * --der-filter 1 (ranked mode only): gate hits are counted, and only those that also have the
 //     shape of a 32-byte StrictDER signature (der_shape, a necessary condition) are reported.
 //     This is the one change inside a kernel: the few instructions after a digest passes the gate;
+//   * exceptional curve cases: ec_comb detects a zero factor in either batched inversion (a point
+//     at infinity, or an addition of equal or opposite points), reports the thread, and the host
+//     recomputes its z-blocks with complete formulas (exact_block). Upstream would silently spoil
+//     every point of such a thread;
 //   * ranked mode fails closed (non-zero exit) on a hit-buffer overflow or a z-block count that
 //     differs from the range's size, instead of warning and going on.
 // Without a ranked flag the search is upstream's (random draws, --seconds); unknown options are
@@ -77,6 +81,7 @@ static const uint ZB = QG_ZB;                      // z-blocks per ec thread (on
 static const uint LANES = QG_LANES;                // round: persistent zpre / ztail lanes
 static const uint ZSLACK = 128;                    // round: a batch may overrun its budget by < c_max
 static const uint HIT_CAP = 1u << 20;
+static const uint EXC_CAP = 1024;                  // qsb-solver: exceptional ec threads per batch
 
 // ------------------------------------------------------------------------------ backend shim
 #if defined(__CUDACC__) && !defined(QG_EMU)
@@ -103,7 +108,13 @@ QG_FI uint qg_rotl(uint x, uint n) { return (x << n) | (x >> (32 - n)); }
 
 struct Hit { uint a, b, c, d; };                   // c = j | recid<<8 | enc<<16 | lvl<<24
 QG_CMEM ge c_cpts[64];                             // C[j][recid] at j * npts + recid
-QG_CMEM uint c_gate[3];                            // gate_bits, tag, shape filter on (qsb-solver)
+QG_CMEM uint c_gate[4];                            // gate_bits, tag; qsb-solver: shape filter on, test hook
+
+// qsb-solver: is a field element zero? (fe_norm gives the canonical value < p)
+QG_FI bool fe_is0(fe a) {
+    a = fe_norm(a);
+    return (a.v0 | a.v1 | a.v2 | a.v3 | a.v4 | a.v5 | a.v6 | a.v7) == 0u;
+}
 
 // ------------------------------------------------------------------------------ group law
 QG_FI gej gej_add_ge(gej p, ge q) {                // p (Jacobian, not infinity) + q (affine), p != +-q
@@ -450,7 +461,7 @@ KERNEL ztail(RoundGeo g, uint *zbuf, const uint4 *zinfo, uint *ctr, const uint *
 // count[0] hits, ctr[0..3] (see zpre); pin: ctr[2] = nz of the batch
 KERNEL set_ctr(uint *count, uint *ctr, uint nz) {
     if (GID) return;
-    count[0] = 0; count[1] = 0; ctr[0] = 0; ctr[1] = 0; ctr[2] = nz; ctr[3] = 0;
+    count[0] = 0; count[1] = 0; count[2] = 0; ctr[0] = 0; ctr[1] = 0; ctr[2] = nz; ctr[3] = 0;
 }
 
 // ------------------------------------------------------------------------------ EC
@@ -496,7 +507,13 @@ template <int K, int NP>
 #if QG_LB_COMB && defined(__CUDACC__) && !defined(QG_EMU)
 __launch_bounds__(QG_TPB, QG_LB_COMB)
 #endif
-KERNEL ec_comb(const uint *zbuf, const ge *table, fe *scratch, const uint *nzp, uint cap) {
+// qsb-solver: the incomplete formulas above have exactly two kinds of exception, and each shows as
+// a zero factor in one of the two batched inversions: a Jacobian Z of 0 (W = z*B is the point at
+// infinity, or an addition inside the comb met equal or opposite points; Z stays 0 from there on),
+// or a menu denominator x_C - x_W of 0 (W = +-C). A zero factor would spoil every point of the
+// thread. Such a thread is reported in exc (count[2] of them), produces no hit here, and the host
+// recomputes its z-blocks with complete formulas.
+KERNEL ec_comb(const uint *zbuf, const ge *table, fe *scratch, const uint *nzp, uint cap, uint *count, uint *exc) {
     typedef EL<K, NP> L;
     const uint NPAIR = L::NPAIR;
     uint nz = nzp[0], gid = GID, nth = (cap + ZB - 1) / ZB;     // scratch is strided by the launch size
@@ -510,6 +527,7 @@ KERNEL ec_comb(const uint *zbuf, const ge *table, fe *scratch, const uint *nzp, 
         sj[(4 * b) * nth + gid] = W.x; sj[(4 * b + 1) * nth + gid] = W.y;
         sj[(4 * b + 2) * nth + gid] = W.z; sj[(4 * b + 3) * nth + gid] = q;
     }
+    bool bad = fe_is0(q);                            // qsb-solver: some Z is 0
     fe inv = fe_inv_sg(q);                           // 1 / prod Z
     fe q2 = fe_one();
     uint s = 0;
@@ -530,6 +548,16 @@ KERNEL ec_comb(const uint *zbuf, const ge *table, fe *scratch, const uint *nzp, 
     if (q2.v0 == 0x9E3779B9u) sw[0] = q2;           // keep the work alive
     return;
 #endif
+    bad = bad || fe_is0(q2);                         // qsb-solver: some menu denominator is 0
+#if defined(QG_EMU)
+    bad = bad || c_gate[3] != 0u;                    // test hook: send every thread to the host
+#endif
+    if (bad) {
+        uint i = atom_add(&count[2], 1u);
+        if (i < EXC_CAP) exc[i] = gid;
+        sw[(2 * ZB) * nth + gid] = fe_zero();        // never an inverse: ec_menu skips the thread
+        return;
+    }
     sw[(2 * ZB) * nth + gid] = fe_inv_sg(q2);
 }
 
@@ -544,6 +572,7 @@ KERNEL ec_menu(fe *scratch, uint4 *pts, const uint *nzp, uint cap, const uint4 *
     if (gid >= (nz + ZB - 1) / ZB) return;
     fe *sq = scratch, *sw = scratch + (size_t)L::SW * nth;
     fe inv = sw[(2 * ZB) * nth + gid];
+    if (fe_is0(inv)) return;                         // qsb-solver: exceptional thread, left to the host
 #if QG_STAGE == 3
     if (inv.v0 == 0x9E3779B9u) sw[1] = inv;
     return;
@@ -747,6 +776,85 @@ static void window_bases(const uint32_t *B32, uint32_t *out) {   // 16 x (x, y),
     }
 }
 
+// ------------------------------------------------------------------------------ exact host path
+// qsb-solver: one z-block computed with complete affine formulas, for the threads the device
+// reports as exceptional. Slow (a modular inversion per addition) and expected never to run on
+// hash-derived inputs; it exists so a ranked range is complete without an assumption.
+struct HPt { U256 x, y; bool inf; };
+static bool u_is0(const U256 &a) { return !(a.w[0] | a.w[1] | a.w[2] | a.w[3]); }
+static bool u_eq(const U256 &a, const U256 &b) { return a.w[0] == b.w[0] && a.w[1] == b.w[1] && a.w[2] == b.w[2] && a.w[3] == b.w[3]; }
+static U256 u_from32(const uint32_t *le) {          // 8 LE 32-bit limbs, reduced mod p
+    U256 r;
+    for (int i = 0; i < 4; i++) r.w[i] = (uint64_t)le[2 * i] | (uint64_t)le[2 * i + 1] << 32;
+    while (geq(r, PP)) r = subm(r, PP);
+    return r;
+}
+static HPt h_add(const HPt &a, const HPt &b) {      // complete: infinity, doubling, opposite points
+    if (a.inf) return b;
+    if (b.inf) return a;
+    U256 l;
+    if (u_eq(a.x, b.x)) {
+        if (!u_eq(a.y, b.y) || u_is0(a.y)) { HPt o = {{{0, 0, 0, 0}}, {{0, 0, 0, 0}}, true}; return o; }
+        U256 x2 = mulm(a.x, a.x);
+        l = mulm(addm(addm(x2, x2), x2), invm(addm(a.y, a.y)));
+    } else l = mulm(subm(b.y, a.y), invm(subm(b.x, a.x)));
+    HPt r; r.inf = false;
+    r.x = subm(subm(mulm(l, l), a.x), b.x);
+    r.y = subm(mulm(l, subm(a.x, r.x)), a.y);
+    return r;
+}
+static void sha256_bytes(const uint8_t *msg, size_t n, uint8_t *out) {   // n <= 119
+    uint8_t buf[128] = {0};
+    memcpy(buf, msg, n);
+    buf[n] = 0x80;
+    size_t blocks = n + 9 > 64 ? 2 : 1;
+    uint64_t bits = (uint64_t)n * 8;
+    for (int i = 0; i < 8; i++) buf[blocks * 64 - 1 - i] = (uint8_t)(bits >> (8 * i));
+    uint32_t st[8]; memcpy(st, IV, 32);
+    for (size_t b = 0; b < blocks; b++) compress(st, buf + 64 * b);
+    for (int i = 0; i < 8; i++) { out[4 * i] = (uint8_t)(st[i] >> 24); out[4 * i + 1] = (uint8_t)(st[i] >> 16); out[4 * i + 2] = (uint8_t)(st[i] >> 8); out[4 * i + 3] = (uint8_t)st[i]; }
+}
+static bool der_shape_bytes(const uint8_t *d) {     // the device's der_shape, on bytes
+    uint lr = d[3];
+    return lr >= 1 && lr <= 24 && d[4 + lr] == 2 && d[5 + lr] == 25 - lr;
+}
+// Every hit of one z-block. zw: the sighash as 8 big-endian words, most significant first (zbuf).
+// B, C: the problem's points as LE 32-bit limbs. Appends to hits; returns the gate-hit count.
+static uint exact_block(const uint32_t *zw, const uint32_t *B, const uint32_t *C, int K, int NP, int NE, int H,
+                        uint gate_bits, uint32_t tag, bool der_filter, uint ida, uint idb, uint idd, std::vector<Hit> &hits) {
+    HPt base = {u_from32(B), u_from32(B + 8), false}, W = {{{0, 0, 0, 0}}, {{0, 0, 0, 0}}, true};
+    for (int bit = 255; bit >= 0; bit--) {          // W = z * B, most significant bit first
+        W = h_add(W, W);
+        if ((zw[7 - bit / 32] >> (bit % 32)) & 1u) W = h_add(W, base);
+    }
+    uint gate = 0, sh = 32 - gate_bits;
+    for (int j = 0; j < K; j++) for (int rid = 0; rid < NP; rid++) {
+        const uint32_t *c = C + (size_t)(j * NP + rid) * 16;
+        HPt cp = {u_from32(c), u_from32(c + 8), false};
+        HPt q = h_add(W, cp);
+        if (q.inf) continue;                         // no key to hash
+        uint8_t xy[64];
+        for (int i = 0; i < 32; i++) { xy[i] = (uint8_t)(q.x.w[3 - i / 8] >> (56 - 8 * (i % 8))); xy[32 + i] = (uint8_t)(q.y.w[3 - i / 8] >> (56 - 8 * (i % 8))); }
+        for (int e = 0; e < NE; e++) {
+            uint8_t msg[65], d[32];
+            size_t n = e == 0 ? 33 : 65;
+            msg[0] = e == 0 ? (uint8_t)(2 + (xy[63] & 1)) : e == 1 ? 4 : (uint8_t)(6 + (xy[63] & 1));
+            memcpy(msg + 1, xy, n - 1);
+            sha256_bytes(msg, n, d);
+            for (int lvl = 1; lvl <= H; lvl++) {
+                if (lvl > 1) { uint8_t t[32]; memcpy(t, d, 32); sha256_bytes(t, 32, d); }
+                uint32_t w0 = (uint32_t)d[0] << 24 | (uint32_t)d[1] << 16 | (uint32_t)d[2] << 8 | d[3];
+                if ((w0 >> sh) != (tag >> sh)) continue;
+                gate++;
+                if (der_filter && !der_shape_bytes(d)) continue;
+                Hit h; h.a = ida; h.b = idb; h.c = (uint)j | (uint)rid << 8 | (uint)e << 16 | (uint)lvl << 24; h.d = idd;
+                hits.push_back(h);
+            }
+        }
+    }
+    return gate;
+}
+
 // ------------------------------------------------------------------------------ problem (P.txt)
 struct Problem {
     std::string track, kind;
@@ -870,6 +978,7 @@ static uint64_t subset_rank_of_prefix(uint64_t prefix_rank, uint n, uint t) {
 struct Slot {
     uint *zbuf, *count, *ctr;
     uint4 *items, *hitems;                          // ranked rounds: this batch's prefixes
+    uint *exc;                                      // exceptional ec threads of this batch
     uint4 *zinfo, *pts;
     fe *scratch;
     Hit *hits, *hhits;
@@ -893,7 +1002,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     const bool timing = getenv("QG_TIMING") != nullptr;   // setup phase times (diagnostic only)
     auto mark = [&](const char *what) { if (timing) printf("@timing %s %.3f\n", what, elapsed()); };
     mark("start");
-    uint32_t gatev[3] = {(uint32_t)P.gate_bits, P.tag, R.der_filter ? 1u : 0u};
+    uint32_t gatev[4] = {(uint32_t)P.gate_bits, P.tag, R.der_filter ? 1u : 0u, getenv("QG_TEST_ALL_EXCEPTIONAL") ? 1u : 0u};
     TO_SYMBOL(c_gate, gatev, sizeof gatev);
     TO_SYMBOL(c_cpts, P.C.data(), P.C.size() * 4);
     const std::vector<uint8_t> &pre = P.pre;
@@ -953,7 +1062,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     }
 
     // ---- ranked range: validate it against this problem before any device work
-    uint64_t r_expect = 0, r_first = 0, r_done_seq = 0, r_done_lt = 0, r_left = 0, r_hits = 0, r_gate = 0;
+    uint64_t r_expect = 0, r_first = 0, r_done_seq = 0, r_done_lt = 0, r_left = 0, r_hits = 0, r_gate = 0, r_exc = 0;
     uint r_pfx[16] = {0};
     if (R.on) {
         if constexpr (!ROUND) {
@@ -996,6 +1105,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         s.pts = (uint4 *)dalloc(QG_FUSE ? 64 : (size_t)NZ_CAP * PPZ * 64);   // fused: no point buffer
         s.count = (uint *)dalloc(32);
         s.ctr = s.count + 4;
+        s.exc = (uint *)dalloc((size_t)EXC_CAP * 4);
         s.items = nullptr; s.hitems = nullptr;
         if (ROUND && R.on) {
             s.items = (uint4 *)dalloc((size_t)NZ_CAP * sizeof(uint4));
@@ -1115,7 +1225,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         }
         uint nth = (cap + ZB - 1) / ZB;
         const uint *nzp = s.ctr + 2;
-        if (QG_STAGE >= 2) LAUNCH((ec_comb<K, NP>), nth, TPB, s.st, s.zbuf, table, s.scratch, nzp, cap);
+        if (QG_STAGE >= 2) LAUNCH((ec_comb<K, NP>), nth, TPB, s.st, s.zbuf, table, s.scratch, nzp, cap, s.count, s.exc);
         if (QG_STAGE >= 3) LAUNCH((ec_menu<K, NP, NE, H>), nth, TPB, s.st, s.scratch, s.pts, nzp, cap, s.zinfo, s.count, s.hits);
         if (QG_STAGE >= 6 && !QG_FUSE)
             LAUNCH((hash_pts<K, NP, NE, H>), (size_t)cap * PPZ * NE, TPB, s.st, s.pts, s.zinfo, s.count, s.hits, nzp);
@@ -1147,13 +1257,34 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         if (n > HIT_CAP) { fprintf(stderr, "warning: hit buffer overflow, %u lost\n", n - HIT_CAP); n = HIT_CAP; }
         r_hits += n;
         r_gate += s.hcount[1];
-        if (QG_STAGE >= 99 && n) {
-            d2h_async(s.hhits, s.hits, (size_t)n * sizeof(Hit), s.st);
+        // qsb-solver: z-blocks of exceptional threads, recomputed exactly on the host
+        std::vector<Hit> extra;
+        uint nexc = s.hcount[2];
+        if (QG_STAGE >= 99 && nexc) {
+            if (nexc > EXC_CAP && R.on) { fprintf(stderr, "%u exceptional threads, more than the host handles: the range is not complete\n", nexc); return 6; }
+            if (nexc > EXC_CAP) { fprintf(stderr, "warning: %u exceptional threads, %u skipped\n", nexc, nexc - EXC_CAP); nexc = EXC_CAP; }
+            std::vector<uint> gids(nexc);
+            d2h(gids.data(), s.exc, (size_t)nexc * 4);
+            for (uint g : gids) for (uint b = 0; b < ZB; b++) {
+                uint zi = g * ZB + b;
+                if (zi >= s.nz) continue;
+                uint32_t zw[8]; uint4 id;
+                d2h(zw, s.zbuf + (size_t)zi * 8, 32);
+                d2h(&id, s.zinfo + zi, sizeof id);
+                uint gh = exact_block(zw, P.B.data(), P.C.data(), K, NP, NE, H, (uint)P.gate_bits, P.tag, R.der_filter,
+                                      id.x, id.y, id.z, extra);
+                r_gate += gh;
+                r_exc++;
+            }
+            r_hits += extra.size();
+        }
+        if (QG_STAGE >= 99 && (n || !extra.empty())) {
+            if (n) d2h_async(s.hhits, s.hits, (size_t)n * sizeof(Hit), s.st);
 #if defined(__CUDACC__) && !defined(QG_EMU)
             CK(cudaStreamSynchronize(s.st));
 #endif
-            for (uint i = 0; i < n; i++) {
-                const Hit &h = s.hhits[i];
+            for (uint i = 0; i < n + (uint)extra.size(); i++) {
+                const Hit &h = i < n ? s.hhits[i] : extra[i - n];
                 uint j = h.c & 0xFF, rid = (h.c >> 8) & 0xFF, enc = (h.c >> 16) & 0xFF, lvl = h.c >> 24;
                 if (!ROUND) fprintf(out, "%u %u %u %u %u %u\n", h.a, h.b, j, rid, enc, lvl);
                 else {
@@ -1202,17 +1333,17 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         bool ok = zblocks == r_expect && !more();
         if constexpr (!ROUND)
             printf("@range {\"kind\": \"pin\", \"seq\": %llu, \"seq_count\": %llu, \"lt_start\": %llu, \"lt_count\": %llu, "
-                   "\"zblocks\": %llu, \"expected\": %llu, \"hits\": %llu, \"der_filter\": %d, \"gate_hits\": %llu, \"complete\": %s}\n",
+                   "\"zblocks\": %llu, \"expected\": %llu, \"hits\": %llu, \"der_filter\": %d, \"gate_hits\": %llu, \"exact_zblocks\": %llu, \"complete\": %s}\n",
                    (unsigned long long)R.seq, (unsigned long long)R.seq_count, (unsigned long long)R.lt_start,
                    (unsigned long long)R.lt_count, (unsigned long long)zblocks, (unsigned long long)r_expect,
                    (unsigned long long)r_hits, R.der_filter ? 1 : 0,
-                   (unsigned long long)(R.der_filter ? r_gate : r_hits), ok ? "true" : "false");
+                   (unsigned long long)(R.der_filter ? r_gate : r_hits), (unsigned long long)r_exc, ok ? "true" : "false");
         else
             printf("@range {\"kind\": \"round\", \"prefix_start\": %llu, \"prefix_count\": %llu, \"subset_start\": %llu, "
-                   "\"zblocks\": %llu, \"expected\": %llu, \"hits\": %llu, \"der_filter\": %d, \"gate_hits\": %llu, \"complete\": %s}\n",
+                   "\"zblocks\": %llu, \"expected\": %llu, \"hits\": %llu, \"der_filter\": %d, \"gate_hits\": %llu, \"exact_zblocks\": %llu, \"complete\": %s}\n",
                    (unsigned long long)R.prefix_start, (unsigned long long)R.prefix_count, (unsigned long long)r_first,
                    (unsigned long long)zblocks, (unsigned long long)r_expect, (unsigned long long)r_hits, R.der_filter ? 1 : 0,
-                   (unsigned long long)(R.der_filter ? r_gate : r_hits), ok ? "true" : "false");
+                   (unsigned long long)(R.der_filter ? r_gate : r_hits), (unsigned long long)r_exc, ok ? "true" : "false");
         fflush(stdout);
         if (!ok) { fprintf(stderr, "range incomplete: %llu z-blocks, %llu expected\n", (unsigned long long)zblocks, (unsigned long long)r_expect); _exit(7); }
     }

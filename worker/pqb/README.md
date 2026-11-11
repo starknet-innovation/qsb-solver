@@ -51,5 +51,6 @@ credit. Deterministic failures must not be blindly retried.
 
 Listed at the top of `grind.cu` and in `research/pqb-ranked/source-lock.json`. In short: ranked
 flags, host-listed round prefixes, fail-closed completion accounting, the DER-shape filter with a
-gate-hit counter, strict option parsing. The SHA-256 and secp256k1 arithmetic (`common.cuh`,
-`ptx_field.cuh`, and the kernels' maths in `grind.cu`) are upstream's.
+gate-hit counter, detection of exceptional curve cases with an exact host recomputation, strict
+option parsing. The SHA-256 and secp256k1 arithmetic (`common.cuh`,
+`ptx_field.cuh`, and the group formulas in `grind.cu`) are upstream's.

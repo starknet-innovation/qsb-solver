@@ -203,3 +203,11 @@ def pin_digest(prob, line):
     for _ in range(lvl):
         d = hashlib.sha256(d).digest()
     return d
+
+
+def pin_point(prob, seq, lt):
+    """W = z * B for one pinning nonce."""
+    pre = bytearray(prob['preimage'])
+    pre[prob['seq_off']:prob['seq_off'] + 4] = seq.to_bytes(4, 'little')
+    pre[prob['lt_off']:prob['lt_off'] + 4] = lt.to_bytes(4, 'little')
+    return _mul(int.from_bytes(_sha256d(bytes(pre)), 'big') % N, prob['B'])

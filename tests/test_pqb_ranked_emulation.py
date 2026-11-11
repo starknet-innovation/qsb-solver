@@ -87,6 +87,65 @@ class RankedEmulationTest(unittest.TestCase):
         found += self.rounds('round1', 98765432101, 12, SMALL_BATCHES)
         self.assertGreater(len(found), 10)
 
+    def test_exact_host_path_equals_the_reference(self):
+        # test hook: every thread is treated as exceptional, so the host computes every z-block
+        force = {'QG_TEST_ALL_EXCEPTIONAL': '1'}
+        cases = [('pin', ['--pin-seq', 0x80000009, '--pin-lt-start', 800000000, '--pin-lt-count', 130]),
+                 ('round0', ['--prefix-start', 1, '--prefix-count', 2]),
+                 ('round1', ['--prefix-start', 2, '--prefix-count', 5])]
+        for name, args in cases:
+            with self.subTest(stage=name):
+                prob = reference.load(emu.FIXTURES / (name + '.txt'))
+                if name == 'pin':
+                    want = reference.pin_hits(prob, args[1], 1, args[3], args[5])
+                else:
+                    want = reference.round_hits(prob, reference.round_subsets_at(prob, args[1], args[3]))
+                code, log, hits = emu.run(BINARY, emu.problem(name), args, force)
+                self.assertEqual(code, 0, log)
+                rep = report(log)
+                self.assertEqual(rep['exact_zblocks'], rep['zblocks'])
+                self.assertEqual(hits, want)
+                self.assertGreater(len(want), 0)
+                code, log, normal = emu.run(BINARY, emu.problem(name), args)
+                self.assertEqual((report(log)['exact_zblocks'], normal), (0, want))
+        # and with the shape filter: the host counts gate hits the way the device does
+        prob = reference.load(emu.FIXTURES / 'pin.txt')
+        prob['gate_bits'] = 1
+        args = ['--pin-seq', 0x80000005, '--pin-lt-start', 600000000, '--pin-lt-count', 40, '--der-filter', 1]
+        code, log, hits = emu.run(BINARY, emu.problem('pin', gate_bits=1), args, force)
+        self.assertEqual(code, 0, log)
+        gate = reference.pin_hits(prob, 0x80000005, 1, 600000000, 40)
+        self.assertEqual(report(log)['gate_hits'], len(gate))
+        self.assertEqual(hits, [ln for ln in gate if der_shape(reference.pin_digest(prob, ln))])
+
+    def test_a_menu_point_equal_to_the_sighash_point_is_handled_exactly(self):
+        # Plant the exceptional case: menu point C[0][0] = W and C[0][1] = -W for one z-block of
+        # the range, so W + C[0][0] is a doubling and W + C[0][1] is the point at infinity. The
+        # incomplete device formulas cannot compute that thread; the result must still be exact.
+        seq, lt0, count, target = 0x8000000A, 900000000, 48, 900000021
+        prob = reference.load(emu.FIXTURES / 'pin.txt')
+        w = reference.pin_point(prob, seq, target)
+        raw = emu.problem('pin', gate_bits=3)
+        lines = raw.decode().split('\n')
+        for i, ln in enumerate(lines):
+            if ln.startswith('C 0 0 '):
+                lines[i] = 'C 0 0 %064x %064x' % w
+            elif ln.startswith('C 0 1 '):
+                lines[i] = 'C 0 1 %064x %064x' % (w[0], reference.P - w[1])
+        raw = '\n'.join(lines).encode()
+        prob['C'][0, 0], prob['C'][0, 1], prob['gate_bits'] = w, (w[0], reference.P - w[1]), 3
+        want = reference.pin_hits(prob, seq, 1, lt0, count)
+        code, log, hits = emu.run(BINARY, raw, ['--pin-seq', seq, '--pin-lt-start', lt0, '--pin-lt-count', count])
+        self.assertEqual(code, 0, log)
+        rep = report(log)
+        self.assertTrue(rep['complete'])
+        self.assertEqual(rep['exact_zblocks'], 4)                    # the one thread that holds it
+        self.assertEqual(hits, want)
+        # the doubled point really is among the trials compared, and infinity yields no key
+        doubled = [ln for ln in reference.pin_hits(dict(prob, gate_bits=0), seq, 1, target, 1)]
+        self.assertEqual(sum(ln.split()[2:4] == ['0', '0'] for ln in doubled), 3)
+        self.assertEqual(sum(ln.split()[2:4] == ['0', '1'] for ln in doubled), 0)
+
     def test_ranges_outside_the_space_are_refused(self):
         pin, r0 = emu.problem('pin'), emu.problem('round0')
         bad = [(pin, ['--pin-seq', 0x7FFFFFFF]),

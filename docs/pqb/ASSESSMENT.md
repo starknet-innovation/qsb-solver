@@ -56,10 +56,11 @@ Two separate effects, neither measured here.
 | Upstream trial rates, the 12.1 h figure, a mainnet spend in block 972,743 | author report | Not reproduced or verified here. Rates are for RTX 4090/5090/H100 on vast.ai with CUDA 12.6.3 and `-arch=native`. |
 | `tests/test_pqb_ranked_emulation.py` | CPU emulation of the kernel source (`-DQG_EMU`) | For 3 pinning, 3 round-0 and 3 round-1 ranges (first, last and interior of each space, including multi-batch runs with two batches in flight), the complete hit set equals an independent pure-Python enumeration at a 12-bit gate; round ranges are the contiguous pqb subset ranks the grinder reports; out-of-space ranges are refused. |
 | same file, DER-shape tests | CPU emulation | `der_shape` agrees with its definition on 2,000 random and 648 constructed digests; with the filter on, the gate-hit count is exact on a small range and every reported hit re-derives with the shape. |
+| same file, exceptional-case tests | CPU emulation | With every thread forced through the exact host path, hit sets equal the reference on all three stages and gate counts match. With a menu point planted equal to one z-block's sighash point (a doubling, and its negative giving infinity), the grinder reports exactly that thread as exceptional and the hit set still equals the reference. |
 | `research/pqb-ranked/tools/pqb_crosscheck.py`, run locally on 2026-11-11 | CPU emulation against pqb itself | All 302 hits from 8 ranked ranges reproduced by pqb's `gpu.HitChecker` (125 also through `grind.evaluate`), each nonce inside the range `pqb_ranges` states. The committed problems are exactly what pqb derives from the committed packets. Not run by CI. |
 | `tests/test_pqb_handler.py` | CPU emulation | Request and problem validation; a small unit completes on each stage; a unit the grinder does not account for, a refused range, a timeout and a binding mismatch are not credited. |
 | `tests/test_pqb_contract.py` | arithmetic | Units tile each round's subsets exactly once and the pinning units cover the usable nonces. |
-| nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are three unused-symbol warnings that upstream's file also has. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
+| nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
 Not done: any native GPU execution, any timing, an amd64 image build, the image's offline checks,
 a vulnerability scan, a full solve of any stage, any end-to-end spend.
@@ -76,10 +77,13 @@ arithmetic in `ptx_field.cuh`, which the emulation build does not use.
   drawn on the device.
 - **Fail closed** in ranked mode: a hit-buffer overflow, or a z-block count different from the
   range's size, is a non-zero exit instead of a warning.
-- **`--der-filter 1`**: gate hits are counted; only those with the DER shape are reported. This
-  is the one change inside a kernel, a few instructions that run after a digest passes the gate.
+- **`--der-filter 1`**: gate hits are counted; only those with the DER shape are reported: a
+  few instructions that run after a digest passes the gate.
   Upstream reports every 24-bit gate hit (about 80,000 per pinning unit), which the consumer
   would have to store and re-derive.
+- **Exceptional-case detection** in `ec_comb` (two zero tests per thread, a marker `ec_menu`
+  skips) and an exact host path, `exact_block`. The second change inside a kernel; it adds
+  checks and does not alter the arithmetic. Its effect on speed is unmeasured.
 - Unknown options are refused. Under emulation `QG_NZ_MAX` is honoured, for tests.
 - Compiled with the repository's pinned CUDA 12.8.1 image and a fixed `-arch=sm_86`, not
   upstream's 12.6.3 and `-arch=native`.
@@ -88,12 +92,15 @@ Without a ranked flag the search path is upstream's.
 
 ## Correctness and coverage limits
 
-- **Exceptional curve cases are not detected.** The kernels assume no point addition meets equal
-  or opposite points. A menu denominator of zero would spoil the shared inversion for its whole
-  thread (4 z-blocks and all their menu points) with no error, and a sighash ≡ 0 mod n is not
-  handled. For hash-derived inputs these are negligible in probability, but `range-complete`
-  does not rule them out. The QSB subset worker handles its exceptional cases exactly; this one
-  does not.
+- **Exceptional curve cases are detected and recomputed, not assumed away.** The device
+  formulas are incomplete: they cannot add equal or opposite points or represent infinity.
+  Every such case puts a zero factor into one of the thread's two batched inversions, so the
+  kernel tests both products, reports a thread that has one, emits nothing for it, and the host
+  recomputes its z-blocks with complete affine formulas. Upstream would silently spoil every
+  point of that thread. What remains unproven: the path is exercised only under emulation, and
+  one branch (a sighash ≡ 0 mod n, where the sighash point itself is infinity) cannot be planted
+  through a hash, so it is covered by the complete addition it shares with the tested branches,
+  not by its own test. More than 1,024 exceptional threads in a batch fails the range.
 - **Candidates are necessary-condition hits.** Strict DER, the `SIGHASH_SINGLE` filter, key
   recovery for a verify-form stage, and the policy on hybrid-encoded keys (consensus-valid,
   refused where STRICTENC is enforced) all belong to the consumer.
@@ -109,8 +116,43 @@ Without a ranked flag the search path is upstream's.
   on an A10G nobody has measured them. Changing either is a new `searchVersion`.
 - **Hardware.** Upstream reports the workload is bound by 32-bit integer throughput and that
   consumer cards beat datacenter cards per dollar (their H100 runs pinning at 0.56× their 4090).
-  The A10G rate is unknown, so the per-spend cost on the current AWS Batch fleet is unknown and
-  may be well above upstream's vast.ai figure.
+  The A10G rate is unknown; see the AWS estimate below.
+
+## AWS cost per spend (desk estimate)
+
+No AWS run was made. This multiplies three things of very different quality: expected RTX
+4090-hours per spend (pqb's model: 12.11 with random draws, 8.31 with exhaustive sweeps, the
+latter assuming equal trial rate), each card's speed relative to a 4090, and an hourly price.
+Prices are third-party aggregator snapshots read on 2026-11-11, not AWS's price list or a bill;
+spot prices move and spot capacity is not guaranteed.
+
+| Instance (GPU) | Speed vs RTX 4090 | Price used | Per spend, exhaustive sweep | Per spend, random draws |
+|---|---|---|---|---|
+| g6e.xlarge (L40S) | 0.85, **measured by pqb** on one vast.ai host | $1.861/h on-demand, us-east-1 | about $18 | about $26 |
+| g6e.xlarge (L40S) | same | $0.87–1.36/h spot, us-east-1 | $8–13 | $12–19 |
+| g5.xlarge (A10G), the current fleet | **unmeasured**; assumed 0.20–0.33 | $1.277/h on-demand, eu-west-2 | $32–53 | $47–77 |
+| g5.xlarge (A10G) | same | $0.454/h spot, eu-west-2 | $11–19 | $17–27 |
+| g6.xlarge (L4) | **unmeasured**; assumed 0.15–0.26 | $1.022/h on-demand, eu-west-2 | $33–57 | $48–82 |
+| g6.xlarge (L4) | same | $0.32/h spot, eu-west-2 | $10–18 | $15–26 |
+| vast.ai RTX 4090, pqb's reference | 1 | $0.37 per 4090-hour (pqb) | about $3 | about $4.5 |
+
+- The L40S speed weights pqb's three stage rates by the exhaustive model's time per stage.
+- The A10G and L4 ranges are assumptions, not data. Their upper ends are pqb's measured RTX 3090
+  (0.33) and RTX 4060 Ti (0.26): the A10G is the same generation as the 3090 with fewer cores
+  and under half the power budget, the L4 the same generation as the 4060 Ti at about half its
+  power. The lower ends are guesses. A measurement can land outside either range.
+- No eu-west-2 price or availability for g6e was found; EU regions that list it are a few
+  percent above us-east-1.
+- Not included: per-job start-up (container start, device setup, the comb table), units replayed
+  after an interruption, units still running when another finds the solution, storage and data
+  transfer. With units of minutes these should be small next to the ranges above, but none is
+  measured.
+
+Reading: on AWS the L40S instance is the only option with a measured rate and is the cheapest
+on-demand, roughly 4 to 6 times pqb's vast.ai figure. The current A10G fleet on-demand is
+probably the most expensive way to run this. Whether spot A10G or L4 undercuts L40S depends
+entirely on the two unmeasured speeds. One short interleaved run per instance type would
+replace the assumptions; it needs explicit authorization under `ops/aws-gpu-execution`.
 
 ## What qsb-app would need
 
