@@ -33,6 +33,11 @@ account, region, instance type and a budget cap, under `ops/aws-gpu-execution`.
 
 ## What a result will and will not show
 
+- A run passes only if every correctness case matches and every timing sample reached steady
+  state; a stage without one is listed in `stagesWithoutSteadyState` and fails the run. The
+  emulated dry run turns that requirement off explicitly, and the result records the setting.
+- A grinder process must print one `@range` and one `@done` line; a duplicate fails it.
+
 - Rates are z-blocks per second in steady state and, separately, per whole process with
   start-up. Three samples per mode per stage, alternating, about ten seconds each.
 - A ranked round sample is six equal prefix ranges spread evenly over the prefix space, since

@@ -22,7 +22,10 @@ MEASURE = ROOT / 'research/pqb-ranked/measure'
 RANKED = emu.build()
 UPSTREAM = emu.build(emu.UPSTREAM)
 COMMIT = 'ef' * 20
-FAST = {'QSB_MEASURE_SAMPLES': '1', 'QSB_MEASURE_SECONDS': '2', 'QSB_MEASURE_STRATA': '2'}
+# Emulation cannot reach steady state in a two-second sample, so the dry run turns that requirement
+# off explicitly; test_a_run_without_steady_state_does_not_pass covers the default.
+FAST = {'QSB_MEASURE_SAMPLES': '1', 'QSB_MEASURE_SECONDS': '2', 'QSB_MEASURE_STRATA': '2',
+        'QSB_MEASURE_REQUIRE_STEADY': '0'}
 
 
 def bundle_module():
@@ -84,9 +87,9 @@ class MeasureDryRunTest(unittest.TestCase):
         (self.artifact / 'SHA256SUMS').write_text(''.join(
             '%s  %s\n' % (sha256(self.artifact / n), n) for n in ('grind-ranked', 'grind-upstream', 'build-receipt.json')))
 
-    def runner(self, result):
+    def runner(self, result, **env):
         return subprocess.run([sys.executable, str(self.bundle / 'run_measure.py'), str(self.bundle), str(result)],
-                              capture_output=True, text=True, env=dict(os.environ, **FAST), timeout=600)
+                              capture_output=True, text=True, env=dict(os.environ, **dict(FAST, **env)), timeout=600)
 
     def test_bundle_and_one_shot_run(self):
         digest = bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
@@ -98,6 +101,7 @@ class MeasureDryRunTest(unittest.TestCase):
         self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
         out = json.loads(result.read_text())
         self.assertEqual((out['status'], out['correctnessPassed']), ('passed', True))
+        self.assertIs(out['settings']['requireSteady'], False)
         self.assertEqual(out['binaries']['grind-ranked'], sha256(self.artifact / 'grind-ranked'))
         self.assertEqual(len(out['correctness']), 13)
         self.assertFalse((result.parent / 'failed-invocations').exists())   # nothing failed, nothing kept
@@ -127,6 +131,23 @@ class MeasureDryRunTest(unittest.TestCase):
         out = json.loads(result.read_text())
         self.assertEqual((out['status'], out['timing']), ('failed', None))
         self.assertEqual([c['pass'] for c in out['correctness']], [True, False])
+        # the grinder exited 0 with an answer that is not the expected one: its artifacts are kept
+        kept = result.parent / 'failed-invocations' / '00'
+        info = json.loads((kept / 'invocation.json').read_text())
+        self.assertEqual(info['reason'], 'wrong result for ' + expected['cases'][1]['label'])
+        self.assertEqual(len((kept / 'hits.txt').read_text().split()) // 6, len(expected['cases'][1]['hits']) + 1)
+        self.assertIn('@range', (kept / 'stdout.txt').read_text())
+
+    def test_a_run_without_steady_state_does_not_pass(self):
+        # upstream's search with a sub-second budget runs only its first batches: no steady state
+        bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
+        result = Path(self.tmp.name) / 'result.json'
+        done = self.runner(result, QSB_MEASURE_REQUIRE_STEADY='1', QSB_MEASURE_SECONDS='0.6')
+        self.assertEqual(done.returncode, 1, done.stdout + done.stderr)
+        out = json.loads(result.read_text())
+        self.assertEqual((out['status'], out['correctnessPassed']), ('failed', True))
+        self.assertEqual(out['stagesWithoutSteadyState'], ['pin', 'round0', 'round1'])
+        self.assertIs(out['settings']['requireSteady'], True)
 
     def test_a_failed_invocation_keeps_its_inputs_and_whole_output(self):
         spec = importlib.util.spec_from_file_location('run_measure_under_test', MEASURE / 'run_measure.py')
@@ -145,6 +166,21 @@ class MeasureDryRunTest(unittest.TestCase):
         self.assertIn('pin range outside', (kept / 'stderr.txt').read_text())
         measure.run(RANKED, raw, ['--pin-seq', 0x80000000, '--pin-lt-count', 8])   # a success keeps nothing
         self.assertEqual([p.name for p in keep.iterdir()], ['00'])
+
+    def test_a_second_completion_line_fails_the_invocation(self):
+        spec = importlib.util.spec_from_file_location('run_measure_dup', MEASURE / 'run_measure.py')
+        measure = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(measure)
+        measure.FAILURE_DIR = Path(self.tmp.name) / 'kept'
+        fake = Path(self.tmp.name) / 'fake-grind'
+        fake.write_text('#!/bin/sh\n: > hits.txt\n'
+                        'echo \'@range {"complete": false, "zblocks": 1}\'\n'
+                        'echo \'@range {"complete": true, "zblocks": 8}\'\necho \'@done {"zblocks": 8}\'\n')
+        fake.chmod(0o755)
+        with self.assertRaisesRegex(measure.Failed, 'duplicate @range'):
+            measure.run(fake, emu.problem('pin'), [])
+        info = json.loads((measure.FAILURE_DIR / '00' / 'invocation.json').read_text())
+        self.assertEqual(info['reason'], 'duplicate @range line')
 
     def test_bundle_refuses_mismatched_inputs(self):
         prepare = bundle_module().prepare

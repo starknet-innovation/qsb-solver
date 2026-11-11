@@ -38,6 +38,10 @@ DEADLINE = float(os.environ.get('QSB_MEASURE_DEADLINE', '600'))
 SKIP_BATCHES = 3
 START = time.monotonic()
 FAILURE_DIR = None          # set by the caller: inputs and full output of failed invocations go here
+LAST = None                 # the most recent invocation: (binary, problem, args, env, stdout, stderr, hits)
+# A measurement needs a steady-state rate from every sample. Only the emulated dry run, which cannot
+# reach steady state in a short sample, turns this off; the result records the setting.
+REQUIRE_STEADY = os.environ.get('QSB_MEASURE_REQUIRE_STEADY', '1') != '0'
 MAX_KEPT_FAILURES = 20
 KEEP_BYTES = 400000
 
@@ -95,22 +99,39 @@ def run(binary, problem, args, env=None, timeout=120):
                          hits.read_text() if hits.is_file() else '')
             raise
         wall = time.monotonic() - t0
-        if done.returncode:
-            keep_failure('exit %d' % done.returncode, binary, problem, args, env, done.stdout, done.stderr,
-                         hits.read_text() if hits.is_file() else '')
-        lines = sorted(ln for ln in hits.read_text().split('\n') if ln) if hits.is_file() else []
-    events = {'batch': []}
+        hits_text = hits.read_text() if hits.is_file() else ''
+    global LAST
+    LAST = (binary, problem, args, env, done.stdout, done.stderr, hits_text)
+    lines = sorted(ln for ln in hits_text.split('\n') if ln)
+    events, problem_with_output = {'batch': []}, None
     for ln in done.stdout.splitlines():
         for tag in ('setup', 'batch', 'range', 'done'):
             if ln.startswith('@%s ' % tag):
-                value = json.loads(ln[len(tag) + 2:])
+                try:
+                    value = json.loads(ln[len(tag) + 2:])
+                except ValueError:
+                    problem_with_output = 'malformed @%s line' % tag
+                    continue
                 if tag == 'batch':
                     events['batch'].append(value)
+                elif tag in events:
+                    # one of each per process: a second completion line must not replace the first
+                    problem_with_output = 'duplicate @%s line' % tag
                 else:
                     events[tag] = value
     if done.returncode:
+        keep_last('exit %d' % done.returncode)
         raise Failed('exit %d: %s' % (done.returncode, (done.stderr or done.stdout)[-400:]))
+    if problem_with_output:
+        keep_last(problem_with_output)
+        raise Failed(problem_with_output)
     return events, lines, wall
+
+
+def keep_last(reason):
+    """Keep the most recent invocation's artifacts: used when its output is judged wrong afterwards."""
+    if LAST is not None:
+        keep_failure(reason, *LAST)
 
 
 def steady(events):
@@ -141,6 +162,8 @@ def correctness(bundle, expected):
                            and rep.get('zblocks') == case['zblocks'] == rep.get('expected')
                            and rep.get('gate_hits') == case['gateHits']
                            and rep.get('exact_zblocks') == case['exactZblocks'])
+            if not row['pass']:
+                keep_last('wrong result for ' + case['label'])   # exit 0, but not the expected answer
         except (Failed, subprocess.TimeoutExpired, ValueError) as e:
             row.update({'pass': False, 'error': str(e)[:400]})
         out.append(row)
@@ -232,7 +255,8 @@ def main():
     out = {'format': 'qsb-pqb-measure-result-v1', 'status': 'incomplete',
            'binaries': {n: sha256(bundle / n) for n in ('grind-ranked', 'grind-upstream')},
            'expectedSha256': sha256(bundle / 'expected.json'),
-           'settings': {'samples': SAMPLES, 'seconds': SECONDS, 'strata': STRATA, 'skipBatches': SKIP_BATCHES}}
+           'settings': {'samples': SAMPLES, 'seconds': SECONDS, 'strata': STRATA, 'skipBatches': SKIP_BATCHES,
+                        'requireSteady': REQUIRE_STEADY}}
     for name, digest in expected['fixtures'].items():
         if sha256(bundle / 'fixtures' / name) != digest:
             sys.exit('fixture differs from expected.json: ' + name)
@@ -249,7 +273,12 @@ def main():
         out['timing'] = timing(bundle) if out['correctnessPassed'] else None
         timed = out['timing'] and all('summary' in v and all(s.get('gateConsistent') and s.get('complete', True)
                                                             for s in v['samples']) for v in out['timing'].values())
-        out['status'] = 'passed' if out['correctnessPassed'] and timed else 'failed'
+        # every upstream and ranked sample must have reached steady state, or there is no comparison
+        unsteady = sorted(stage for stage, v in (out['timing'] or {}).items()
+                          if len(v['samples']) != 2 * SAMPLES or any(not s.get('steady') for s in v['samples']))
+        if out['timing'] is not None:
+            out['stagesWithoutSteadyState'] = unsteady
+        out['status'] = 'passed' if out['correctnessPassed'] and timed and not (REQUIRE_STEADY and unsteady) else 'failed'
     except Exception as e:                               # noqa: BLE001  a one-shot run must still report
         out.setdefault('correctnessPassed', False)
         out.update(status='failed', error='%s: %s' % (type(e).__name__, str(e)[:400]))
