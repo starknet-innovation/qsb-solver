@@ -39,6 +39,7 @@ class FullUnitTest(unittest.TestCase):
             {'format': 'qsb-pqb-build-receipt-v1', 'cudaArchitecture': '86', 'status': 'HOLD',
              'binarySha256': runner.sha256(BINARY), 'sourceLock': lock}))
         (artifact / 'source-commit').write_text(COMMIT + '\n')
+        (artifact / 'source-event').write_text('push\n')
         (artifact / 'SHA256SUMS').write_text(''.join('%s  %s\n' % (runner.sha256(artifact / name), name)
             for name in ('grind-ranked', 'grind-upstream', 'build-receipt.json')))
         self.artifact = artifact
@@ -123,6 +124,7 @@ class FullUnitTest(unittest.TestCase):
         with patch.object(run_measure, 'correctness', return_value=[{'pass': False}]), patch.object(worker, 'handler') as launch:
             result = runner.run(self.bundle, self.results, 'round0')
         self.assertEqual(result['status'], 'failed')
+        self.assertIn('small-range correctness preflight failed', result['error'])
         launch.assert_not_called()
         original = (self.results / 'result.json').read_bytes()
         with self.assertRaises(FileExistsError):

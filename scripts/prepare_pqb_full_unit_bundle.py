@@ -40,6 +40,8 @@ def prepare(binaries, out):
         if measurement.sha256(ROOT / name) != digest:
             raise SystemExit('source differs from lock: ' + name)
     receipt = json.loads((Path(binaries) / 'build-receipt.json').read_text())
+    if (Path(binaries) / 'source-event').read_text().strip() != 'push':
+        raise SystemExit('full-unit validation requires the push workflow artifact')
     if receipt.get('format') != 'qsb-pqb-build-receipt-v1' or receipt.get('cudaArchitecture') != '86':
         raise SystemExit('full-unit validation requires the native sm86 CI receipt')
     measurement.prepare(binaries, out)           # clean source identity, artifact hashes, lock, fixtures
