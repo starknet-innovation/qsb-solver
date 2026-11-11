@@ -21,6 +21,13 @@ class OperatorConfigTests(unittest.TestCase):
     def test_missing_configuration_rejected(self):
         with patch.dict(os.environ,{},clear=True):
             with self.assertRaises(ValueError):m.load_config()
+    def test_london_is_accepted(self):
+        value=dict(self.value,region='eu-west-2')
+        self.path.write_text(json.dumps(value))
+        self.assertEqual(m.load_config(),value)
+        for region in ('eu-west-3','eu-west-12','xeu-west-1'):
+            self.path.write_text(json.dumps(dict(self.value,region=region)))
+            with self.assertRaises(ValueError):m.load_config()
     def test_other_region_unknown_field_and_bad_id_rejected(self):
         for value in (dict(self.value,region='us-east-1'),dict(self.value,token='no'),dict(self.value,account='wrong')):
             self.path.write_text(json.dumps(value))

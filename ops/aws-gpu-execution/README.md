@@ -50,7 +50,10 @@ The file contains exactly `account`, `profile`, `region`, `ami`, `subnet`, and
 ```
 
 These are placeholders, not launch configuration. The controller verifies STS
-against the configured account and restricts the region to Ireland. New external
+against the configured account and restricts the region to Ireland or London
+(`eu-west-1`, `eu-west-2`; London was added on 11 November 2026 after every Ireland
+zone refused a `g5.xlarge` for capacity). The image, subnet and VPC must be the
+chosen region's own. New external
 execution receipts freeze the configuration; resume rejects changes or legacy
 state without that binding. Never mutate an old receipt to bypass that check:
 reconcile prior resources using their original committed controller and scope.

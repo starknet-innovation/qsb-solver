@@ -35,9 +35,17 @@ instance type and a budget cap, under `ops/aws-gpu-execution`.
 - It is a component measurement on public synthetic fixtures. It grants no range credit and is
   not a full solve, a whole-spend time, or a bill.
 
+## Attempts so far
+
+11 November 2026, authorized by the user, one `g5.xlarge` each, eu-west-1, $5 cap in total.
+All three were refused by EC2 with `InsufficientInstanceCapacity` at launch, in eu-west-1c
+(12:03 UTC), 1a (12:05) and 1b (12:07). No instance was allocated, no measurement ran and no GPU
+time was billed. Each session's temporary resources and staging bucket were removed and
+independently verified. Nothing was retried within a session. Receipts are kept outside Git.
+
 ## Not prepared
 
-- The controller on `main` launches one `g5.xlarge` in eu-west-1 only. Measuring an L40S
-  (`g6e.xlarge`) needs a controller change and a check that the type is offered in the region.
+- The controller launches one `g5.xlarge`, in Ireland or London. Measuring an L40S
+  (`g6e.xlarge`) needs a further controller change; eu-west-1 does not offer `g6` or `g6e`.
 - Staging the bundle and collecting `public-result.b64` follow the September procedure; no new
   operator tooling was written.
