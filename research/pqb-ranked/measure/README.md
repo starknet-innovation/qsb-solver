@@ -37,11 +37,20 @@ instance type and a budget cap, under `ops/aws-gpu-execution`.
 
 ## Attempts so far
 
-11 November 2026, authorized by the user, one `g5.xlarge` each, eu-west-1, $5 cap in total.
-All three were refused by EC2 with `InsufficientInstanceCapacity` at launch, in eu-west-1c
-(12:03 UTC), 1a (12:05) and 1b (12:07). No instance was allocated, no measurement ran and no GPU
-time was billed. Each session's temporary resources and staging bucket were removed and
-independently verified. Nothing was retried within a session. Receipts are kept outside Git.
+11 November 2026, authorized by the user, one `g5.xlarge` each, $5 cap in total. EC2 refused all
+five launches with `InsufficientInstanceCapacity`:
+
+| Zone | Launch (UTC) |
+|---|---|
+| eu-west-1c | 12:03 |
+| eu-west-1a | 12:05 |
+| eu-west-1b | 12:07 |
+| eu-west-2a | 12:17 |
+| eu-west-2b | 12:18 |
+
+No instance was allocated, no measurement ran and no GPU time was billed. Each session's
+temporary resources and staging bucket were removed and independently verified. Nothing was
+retried within a session. Receipts are kept outside Git. The user asked for a later retry.
 
 ## Not prepared
 
