@@ -1,8 +1,11 @@
-# Native measurement run (prepared, not executed)
+# Native measurement run
 
-Everything here is preparation. No instance has been launched for it, and nothing in this
-directory authorizes one: a launch needs the user's explicit go-ahead on account, region,
-instance type and a budget cap, under `ops/aws-gpu-execution`.
+**Executed on 11 November 2026 on one A10G and passed:** see
+[the record](../../../docs/pqb/2026-11-11-a10g-measurement.md). The rest of this page describes
+how the run is built and what it can show.
+
+Nothing in this directory authorizes a launch: each one needs the user's explicit go-ahead on
+account, region, instance type and a budget cap, under `ops/aws-gpu-execution`.
 
 ## Questions
 
@@ -35,22 +38,12 @@ instance type and a budget cap, under `ops/aws-gpu-execution`.
 - It is a component measurement on public synthetic fixtures. It grants no range credit and is
   not a full solve, a whole-spend time, or a bill.
 
-## Attempts so far
+## Attempts
 
-11 November 2026, authorized by the user, one `g5.xlarge` each, $5 cap in total. EC2 refused all
-five launches with `InsufficientInstanceCapacity`:
-
-| Zone | Launch (UTC) |
-|---|---|
-| eu-west-1c | 12:03 |
-| eu-west-1a | 12:05 |
-| eu-west-1b | 12:07 |
-| eu-west-2a | 12:17 |
-| eu-west-2b | 12:18 |
-
-No instance was allocated, no measurement ran and no GPU time was billed. Each session's
-temporary resources and staging bucket were removed and independently verified. Nothing was
-retried within a session. Receipts are kept outside Git. The user asked for a later retry.
+11 November 2026, authorized by the user, one `g5.xlarge` each, $5 cap in total. EC2 refused
+seven launches with `InsufficientInstanceCapacity` (eu-west-1c, 1a, 1b, eu-west-2a, 2b, then
+eu-west-1c and 1a again); none allocated an instance. The eighth, eu-west-1b at 13:26 UTC,
+launched and the run completed. Details, cost and cleanup are in the record.
 
 ## Not prepared
 

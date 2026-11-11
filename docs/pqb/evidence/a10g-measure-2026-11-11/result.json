@@ -1,0 +1,1210 @@
+{
+ "format": "qsb-pqb-measure-result-v1",
+ "status": "passed",
+ "binaries": {
+  "grind-ranked": "3f816a00d5e314315aca33e4f2ec2647462bd6243e09ff257ec7b20c445a7594",
+  "grind-upstream": "0a5de7e0faca7dfdf27b788bc6a4c33f42c77d0015a6c8edd69fb3fdffb0da74"
+ },
+ "expectedSha256": "480e327a39cce7b4a502fe099f0c9ab7b395448a5a3f439043199d2e8ab538d3",
+ "settings": {
+  "samples": 3,
+  "seconds": 10.0,
+  "strata": 6,
+  "skipBatches": 3
+ },
+ "device": {
+  "t_s": 1.028,
+  "kernel": "ec_menu",
+  "device": "NVIDIA A10G",
+  "max_threads_per_tg": 384,
+  "regs": 158,
+  "local_bytes": 0,
+  "simd_width": 32,
+  "tg_used": 128
+ },
+ "correctness": [
+  {
+   "label": "pin-first",
+   "zblocks": 3000,
+   "expectedHits": 48,
+   "hits": 48,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483648,
+    "seq_count": 2,
+    "lt_start": 500000000,
+    "lt_count": 1500,
+    "zblocks": 3000,
+    "expected": 3000,
+    "hits": 48,
+    "der_filter": 0,
+    "gate_hits": 48,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-last",
+   "zblocks": 1500,
+   "expectedHits": 31,
+   "hits": 31,
+   "report": {
+    "kind": "pin",
+    "seq": 4294967293,
+    "seq_count": 1,
+    "lt_start": 1699998500,
+    "lt_count": 1500,
+    "zblocks": 1500,
+    "expected": 1500,
+    "hits": 31,
+    "der_filter": 0,
+    "gate_hits": 31,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-batches",
+   "zblocks": 2700,
+   "expectedHits": 44,
+   "hits": 44,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483651,
+    "seq_count": 3,
+    "lt_start": 1234567890,
+    "lt_count": 900,
+    "zblocks": 2700,
+    "expected": 2700,
+    "hits": 44,
+    "der_filter": 0,
+    "gate_hits": 44,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-der-filter",
+   "zblocks": 64,
+   "expectedHits": 0,
+   "hits": 0,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483653,
+    "seq_count": 1,
+    "lt_start": 600000000,
+    "lt_count": 64,
+    "zblocks": 64,
+    "expected": 64,
+    "hits": 0,
+    "der_filter": 1,
+    "gate_hits": 2368,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "pin-planted-exceptional",
+   "zblocks": 48,
+   "expectedHits": 415,
+   "hits": 415,
+   "report": {
+    "kind": "pin",
+    "seq": 2147483658,
+    "seq_count": 1,
+    "lt_start": 900000000,
+    "lt_count": 48,
+    "zblocks": 48,
+    "expected": 48,
+    "hits": 415,
+    "der_filter": 0,
+    "gate_hits": 415,
+    "exact_zblocks": 4,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-first",
+   "zblocks": 975,
+   "expectedHits": 43,
+   "hits": 43,
+   "report": {
+    "kind": "round",
+    "prefix_start": 0,
+    "prefix_count": 10,
+    "subset_start": 0,
+    "zblocks": 975,
+    "expected": 975,
+    "hits": 43,
+    "der_filter": 0,
+    "gate_hits": 43,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-last",
+   "zblocks": 431,
+   "expectedHits": 18,
+   "hits": 18,
+   "report": {
+    "kind": "round",
+    "prefix_start": 27883217868,
+    "prefix_count": 300,
+    "subset_start": 379908847108,
+    "zblocks": 431,
+    "expected": 431,
+    "hits": 18,
+    "der_filter": 0,
+    "gate_hits": 18,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round0-interior-batches",
+   "zblocks": 313,
+   "expectedHits": 10,
+   "hits": 10,
+   "report": {
+    "kind": "round",
+    "prefix_start": 9294406056,
+    "prefix_count": 40,
+    "subset_start": 140931581059,
+    "zblocks": 313,
+    "expected": 313,
+    "hits": 10,
+    "der_filter": 0,
+    "gate_hits": 10,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-first",
+   "zblocks": 885,
+   "expectedHits": 16,
+   "hits": 16,
+   "report": {
+    "kind": "round",
+    "prefix_start": 0,
+    "prefix_count": 10,
+    "subset_start": 0,
+    "zblocks": 885,
+    "expected": 885,
+    "hits": 16,
+    "der_filter": 0,
+    "gate_hits": 16,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-last",
+   "zblocks": 402,
+   "expectedHits": 5,
+   "hits": 5,
+   "report": {
+    "kind": "round",
+    "prefix_start": 186087894000,
+    "prefix_count": 300,
+    "subset_start": 2088319702298,
+    "zblocks": 402,
+    "expected": 402,
+    "hits": 5,
+    "der_filter": 0,
+    "gate_hits": 5,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  },
+  {
+   "label": "round1-interior-batches",
+   "zblocks": 1387,
+   "expectedHits": 16,
+   "hits": 16,
+   "report": {
+    "kind": "round",
+    "prefix_start": 62029298100,
+    "prefix_count": 150,
+    "subset_start": 767332430665,
+    "zblocks": 1387,
+    "expected": 1387,
+    "hits": 16,
+    "der_filter": 0,
+    "gate_hits": 16,
+    "exact_zblocks": 0,
+    "complete": true
+   },
+   "pass": true
+  }
+ ],
+ "correctnessPassed": true,
+ "timing": {
+  "pin": {
+   "samples": [
+    {
+     "mode": "upstream-random",
+     "zblocks": 336240640,
+     "processSeconds": 10.051328571999989,
+     "gateHits": 1462,
+     "steady": [
+      336044032,
+      9.845001999999996
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 341334650,
+     "processSeconds": 10.085494329,
+     "gateHits": 1482,
+     "steady": [
+      341138042,
+      9.875319999999997
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--pin-seq",
+        2147484648,
+        "--pin-lt-start",
+        500000000,
+        "--pin-lt-count",
+        341334650
+       ],
+       "zblocks": 341334650,
+       "processSeconds": 10.085494329,
+       "steady": [
+        341138042,
+        9.875319999999997
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 335298816,
+     "processSeconds": 10.051395235000001,
+     "gateHits": 1416,
+     "steady": [
+      335102208,
+      9.837267000000002
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 340645636,
+     "processSeconds": 10.068916239000004,
+     "gateHits": 1394,
+     "steady": [
+      340449028,
+      9.852431999999991
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--pin-seq",
+        2147484649,
+        "--pin-lt-start",
+        500000000,
+        "--pin-lt-count",
+        340645636
+       ],
+       "zblocks": 340645636,
+       "processSeconds": 10.068916239000004,
+       "steady": [
+        340449028,
+        9.852431999999991
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 332994560,
+     "processSeconds": 10.050349023000024,
+     "gateHits": 1376,
+     "steady": [
+      332797952,
+      9.823860000000009
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 338764957,
+     "processSeconds": 10.040807618000002,
+     "gateHits": 1429,
+     "steady": [
+      338568349,
+      9.829387
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--pin-seq",
+        2147484650,
+        "--pin-lt-start",
+        500000000,
+        "--pin-lt-count",
+        338764957
+       ],
+       "zblocks": 338764957,
+       "processSeconds": 10.040807618000002,
+       "steady": [
+        338568349,
+        9.829387
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    }
+   ],
+   "summary": {
+    "upstream-random": {
+     "steadyZPerSecond": [
+      33876495.79696776,
+      34064563.663871266,
+      34133465.082079224
+     ],
+     "processZPerSecond": [
+      33132636.41272045,
+      33358435.138681516,
+      33452357.824284684
+     ],
+     "medianSteadyTrialsPerSecond": 2452648583.7987313
+    },
+    "ranked": {
+     "steadyZPerSecond": [
+      34444502.897281386,
+      34544505.089455344,
+      34554821.38826234
+     ],
+     "processZPerSecond": [
+      33738815.629999846,
+      33831410.24458768,
+      33844116.99271107
+     ],
+     "medianSteadyTrialsPerSecond": 2487204366.440785
+    },
+    "rankedOverUpstreamSteady": 1.0140891699162757
+   }
+  },
+  "round0": {
+   "samples": [
+    {
+     "mode": "upstream-random",
+     "zblocks": 138180899,
+     "processSeconds": 10.049767739000004,
+     "gateHits": 1601,
+     "steady": [
+      137984240,
+      9.823262000000001
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 153759583,
+     "processSeconds": 12.602958903000058,
+     "gateHits": 1747,
+     "steady": [
+      152580157,
+      10.734446
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        2323601514,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 31190154,
+       "processSeconds": 2.494001867999998,
+       "steady": [
+        30993595,
+        2.188941
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        6970804542,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 33578075,
+       "processSeconds": 2.665802348999989,
+       "steady": [
+        33381494,
+        2.357695
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        11618007570,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 21237032,
+       "processSeconds": 1.785004038000011,
+       "steady": [
+        21040442,
+        1.4785350000000002
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        16265210598,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 27456765,
+       "processSeconds": 2.225729290000004,
+       "steady": [
+        27260212,
+        1.9149259999999997
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        20912413626,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 19930810,
+       "processSeconds": 1.6934271420000186,
+       "steady": [
+        19734223,
+        1.3848050000000003
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        25559616654,
+        "--prefix-count",
+        1718248
+       ],
+       "zblocks": 20366747,
+       "processSeconds": 1.7389942160000373,
+       "steady": [
+        20170191,
+        1.409544
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 137669442,
+     "processSeconds": 10.05157387700001,
+     "gateHits": 1559,
+     "steady": [
+      137472824,
+      9.796429999999999
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 156243140,
+     "processSeconds": 12.760620888999995,
+     "gateHits": 1784,
+     "steady": [
+      155063666,
+      10.907889
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        2325318082,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 36117027,
+       "processSeconds": 2.8397806340000216,
+       "steady": [
+        35920477,
+        2.534489
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        6972521110,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 30957222,
+       "processSeconds": 2.4800819559999923,
+       "steady": [
+        30760629,
+        2.1716430000000004
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        11619724138,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 25190998,
+       "processSeconds": 2.0699340940000184,
+       "steady": [
+        24994398,
+        1.7589890000000004
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        16266927166,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 26306287,
+       "processSeconds": 2.1453420670000014,
+       "steady": [
+        26109707,
+        1.833922
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        20914130194,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 18382938,
+       "processSeconds": 1.5807482539999569,
+       "steady": [
+        18186347,
+        1.274087
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        25561333222,
+        "--prefix-count",
+        1716568
+       ],
+       "zblocks": 19288668,
+       "processSeconds": 1.6447338840000043,
+       "steady": [
+        19092108,
+        1.334759
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 137576767,
+     "processSeconds": 10.050177896999969,
+     "gateHits": 1548,
+     "steady": [
+      137380087,
+      9.789558999999999
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 146822743,
+     "processSeconds": 12.119309927999893,
+     "gateHits": 1693,
+     "steady": [
+      145643289,
+      10.255552999999999
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        2327034742,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 30857585,
+       "processSeconds": 2.465908944999967,
+       "steady": [
+        30660985,
+        2.1602390000000002
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        6974237770,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 29190941,
+       "processSeconds": 2.3536792529999957,
+       "steady": [
+        28994395,
+        2.0468650000000004
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        11621440798,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 26368665,
+       "processSeconds": 2.155775233999975,
+       "steady": [
+        26172098,
+        1.848094
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        16268643826,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 27772331,
+       "processSeconds": 2.2675092989999825,
+       "steady": [
+        27575777,
+        1.9407499999999998
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        20915846854,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 15505401,
+       "processSeconds": 1.3823221249999733,
+       "steady": [
+        15308801,
+        1.0764979999999997
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        25563049882,
+        "--prefix-count",
+        1716614
+       ],
+       "zblocks": 17127820,
+       "processSeconds": 1.4941150719999996,
+       "steady": [
+        16931233,
+        1.183107
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    }
+   ],
+   "summary": {
+    "upstream-random": {
+     "steadyZPerSecond": [
+      14032951.18732028,
+      14033327.446108656,
+      14046682.252799526
+     ],
+     "processZPerSecond": [
+      13688988.235826889,
+      13696307.0345645,
+      13749660.946268756
+     ],
+     "medianSteadyTrialsPerSecond": 2694398869.652862
+    },
+    "ranked": {
+     "steadyZPerSecond": [
+      14201407.6666563,
+      14214069.081906974,
+      14215735.602003284
+     ],
+     "processZPerSecond": [
+      12114777.480918078,
+      12200276.473439777,
+      12244164.39913875
+     ],
+     "medianSteadyTrialsPerSecond": 2729101263.726139
+    },
+    "rankedOverUpstreamSteady": 1.012879456885219
+   }
+  },
+  "round1": {
+   "samples": [
+    {
+     "mode": "upstream-random",
+     "zblocks": 307843020,
+     "processSeconds": 10.052708343000006,
+     "gateHits": 1173,
+     "steady": [
+      307646392,
+      9.806767000000002
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 297785081,
+     "processSeconds": 11.20585841999997,
+     "gateHits": 1107,
+     "steady": [
+      296605576,
+      9.419861000000001
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        15507324525,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 67607604,
+       "processSeconds": 2.4435818800000106,
+       "steady": [
+        67411009,
+        2.148394
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        46521973575,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 53151090,
+       "processSeconds": 1.9800623969999833,
+       "steady": [
+        52954495,
+        1.6818590000000004
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        77536622625,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 61960983,
+       "processSeconds": 2.2604135980000137,
+       "steady": [
+        61764407,
+        1.9624520000000003
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        108551271675,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 26858487,
+       "processSeconds": 1.1547700190000114,
+       "steady": [
+        26661891,
+        0.8548000000000001
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        139565920725,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 42076152,
+       "processSeconds": 1.6238864079999757,
+       "steady": [
+        41879566,
+        1.3265120000000001
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        170580569775,
+        "--prefix-count",
+        4659033
+       ],
+       "zblocks": 46130765,
+       "processSeconds": 1.7431441179999752,
+       "steady": [
+        45934208,
+        1.4458440000000001
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 307289260,
+     "processSeconds": 10.049822725000013,
+     "gateHits": 1204,
+     "steady": [
+      307092636,
+      9.800105999999996
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 278367193,
+     "processSeconds": 10.643125023999914,
+     "gateHits": 1029,
+     "steady": [
+      277187658,
+      8.808898
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        15511978333,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 64302735,
+       "processSeconds": 2.3334696599999916,
+       "steady": [
+        64106134,
+        2.0389700000000004
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        46526627383,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 48471001,
+       "processSeconds": 1.8510088079999605,
+       "steady": [
+        48274410,
+        1.53716
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        77541276433,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 53087297,
+       "processSeconds": 1.9797827890000121,
+       "steady": [
+        52890735,
+        1.6803189999999997
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        108555925483,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 25594314,
+       "processSeconds": 1.1189838610000038,
+       "steady": [
+        25397718,
+        0.8194590000000002
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        139570574533,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 40961836,
+       "processSeconds": 1.607046605999983,
+       "steady": [
+        40765235,
+        1.292883
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        170585223583,
+        "--prefix-count",
+        4653808
+       ],
+       "zblocks": 45950010,
+       "processSeconds": 1.7528332999999634,
+       "steady": [
+        45753426,
+        1.4401069999999998
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    },
+    {
+     "mode": "upstream-random",
+     "zblocks": 306676775,
+     "processSeconds": 10.05203732199999,
+     "gateHits": 1165,
+     "steady": [
+      306480146,
+      9.787030999999995
+     ],
+     "gateConsistent": true
+    },
+    {
+     "mode": "ranked",
+     "zblocks": 272908534,
+     "processSeconds": 10.482293135000077,
+     "gateHits": 1096,
+     "steady": [
+      271729025,
+      8.643345
+     ],
+     "complete": true,
+     "gateConsistent": true,
+     "parts": [
+      {
+       "args": [
+        "--prefix-start",
+        15516625987,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 56770293,
+       "processSeconds": 2.0945639799999753,
+       "steady": [
+        56573706,
+        1.7966380000000002
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        46531275037,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 46577173,
+       "processSeconds": 1.7749529730000404,
+       "steady": [
+        46380584,
+        1.4774909999999999
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        77545924087,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 61092393,
+       "processSeconds": 2.2605434820000028,
+       "steady": [
+        60895803,
+        1.940194
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        108560573137,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 24436348,
+       "processSeconds": 1.0980521739999745,
+       "steady": [
+        24239746,
+        0.7848120000000001
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        139575222187,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 38514810,
+       "processSeconds": 1.530324217000043,
+       "steady": [
+        38318217,
+        1.2183130000000002
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      },
+      {
+       "args": [
+        "--prefix-start",
+        170589871237,
+        "--prefix-count",
+        4650731
+       ],
+       "zblocks": 45517517,
+       "processSeconds": 1.7238563090000412,
+       "steady": [
+        45320969,
+        1.425897
+       ],
+       "exactZblocks": 0,
+       "shapedHits": 0
+      }
+     ]
+    }
+   ],
+   "summary": {
+    "upstream-random": {
+     "steadyZPerSecond": [
+      31314925.435507473,
+      31335644.32874503,
+      31370827.10336647
+     ],
+     "processZPerSecond": [
+      30508917.26484184,
+      30576585.120808646,
+      30622893.800988473
+     ],
+     "medianSteadyTrialsPerSecond": 2005481237.039682
+    },
+    "ranked": {
+     "steadyZPerSecond": [
+      31437947.345616773,
+      31466780.294197984,
+      31487256.128301676
+     ],
+     "processZPerSecond": [
+      26035193.87268099,
+      26154648.411278706,
+      26574053.485141285
+     ],
+     "medianSteadyTrialsPerSecond": 2013873938.828671
+    },
+    "rankedOverUpstreamSteady": 1.0041848817301215
+   }
+  }
+ },
+ "elapsedSeconds": 194.264501164
+}

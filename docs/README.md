@@ -69,6 +69,7 @@ artifact-specific applicability assessment.
 - [A10G method record](promotion/A10G-PERFORMANCE.md): retained preparation methodology for the completed September gate.
 - [AWS controller on main](../ops/aws-gpu-execution/README.md): historical scoped controller, not a standing launch authorization.
 - [PQB candidate assessment](pqb/ASSESSMENT.md): a separate HOLD worker for PQB vaults; not part of any published image.
+- [PQB A10G measurement, 11 November](pqb/2026-11-11-a10g-measurement.md): native correctness cases and matched timing of that candidate.
 - [Licensing](../LICENSES.md): upstream notices and redistribution scope.
 
 ## Historical records

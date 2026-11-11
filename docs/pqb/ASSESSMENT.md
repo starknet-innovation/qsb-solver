@@ -44,10 +44,10 @@ Two separate effects, neither measured here.
    | pqb card sweep, one RTX 4090 | 12.11 h | 8.31 h | ×0.686 |
    | pqb 16-card fleet mean | 12.88 h | 8.84 h | ×0.686 |
 
-   The first column reproduces upstream's 12.1. **This is a model.** It assumes the ranked walk
-   runs at the same trials per second as upstream's random draws. The ranked walk adds a host
-   step (listing prefixes and uploading them each batch) and visits prefixes in a different
-   order; its rate is unmeasured.
+   The first column reproduces upstream's 12.1. **This is a model** of expected hours. Its one
+   assumption about this code, that the ranked walk runs at upstream's trials per second, was
+   measured on an A10G on 11 November: ranked ran at 1.00 to 1.01 times upstream's steady rate
+   on all three stages ([record](2026-11-11-a10g-measurement.md)).
 
 ## Evidence
 
@@ -60,10 +60,11 @@ Two separate effects, neither measured here.
 | `research/pqb-ranked/tools/pqb_crosscheck.py`, run locally on 2026-11-11 | CPU emulation against pqb itself | All 302 hits from 8 ranked ranges reproduced by pqb's `gpu.HitChecker` (125 also through `grind.evaluate`), each nonce inside the range `pqb_ranges` states. The committed problems are exactly what pqb derives from the committed packets. Not run by CI. |
 | `tests/test_pqb_handler.py` | CPU emulation | Request and problem validation; a small unit completes on each stage; a unit the grinder does not account for, a refused range, a timeout and a binding mismatch are not credited. |
 | `tests/test_pqb_contract.py` | arithmetic | Units tile each round's subsets exactly once and the pinning units cover the usable nonces. |
+| [Native A10G run, 11 November](2026-11-11-a10g-measurement.md) | native GPU execution and matched timing | On one `g5.xlarge`: all 11 correctness cases returned exactly the reference's hit sets, including multi-batch ranges, the DER-shape filter and a planted exceptional point. Ranked steady rate 1.004 to 1.014 times upstream's random search, three alternating samples per stage. A10G rates 2.49 / 2.73 / 2.01 G trials/s. |
 | nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
-Not done: any native GPU execution, any timing, a vulnerability scan, a full solve of any stage,
-any end-to-end spend. The amd64 image build and its offline checks ran in CI for pull request 18;
+Not done: a vulnerability scan, a full solve of any stage, any end-to-end spend, a second host
+or another card. The amd64 image build and its offline checks ran in CI for pull request 18;
 that is a build and packaging check, not execution of the grinder.
 
 The emulation build runs the same source on a CPU. It is evidence about the algorithm as
@@ -84,7 +85,7 @@ arithmetic in `ptx_field.cuh`, which the emulation build does not use.
   would have to store and re-derive.
 - **Exceptional-case detection** in `ec_comb` (two zero tests per thread, a marker `ec_menu`
   skips) and an exact host path, `exact_block`. The second change inside a kernel; it adds
-  checks and does not alter the arithmetic. Its effect on speed is unmeasured.
+  checks and does not alter the arithmetic. No cost was measurable on an A10G.
 - Unknown options are refused. Under emulation `QG_NZ_MAX` is honoured, for tests.
 - Compiled with the repository's pinned CUDA 12.8.1 image and a fixed `-arch=sm_86`, not
   upstream's 12.6.3 and `-arch=native`.
@@ -98,7 +99,7 @@ Without a ranked flag the search path is upstream's.
   Every such case puts a zero factor into one of the thread's two batched inversions, so the
   kernel tests both products, reports a thread that has one, emits nothing for it, and the host
   recomputes its z-blocks with complete affine formulas. Upstream would silently spoil every
-  point of that thread. What remains unproven: the path is exercised only under emulation, and
+  point of that thread. It ran natively on an A10G for a planted case. What remains unproven:
   one branch (a sighash ≡ 0 mod n, where the sighash point itself is infinity) cannot be planted
   through a hash, so it is covered by the complete addition it shares with the tested branches,
   not by its own test. More than 1,024 exceptional threads in a batch fails the range.
@@ -113,47 +114,43 @@ Without a ranked flag the search path is upstream's.
 - **Capacity.** 2²⁰ hits per batch and 32 candidates per unit, both fail-closed.
 - **Unit sizes and the 3,300 s timeout are provisional.** A pinning unit is 16 `nSequence`
   values (about 1.4 × 10¹² trials); a round unit is 2³⁰ prefixes (about 3 × 10¹² trials for round
-  0, 7 × 10¹¹ for round 1, uneven across the space). On upstream's 4090 rates those are minutes;
-  on an A10G nobody has measured them. Changing either is a new `searchVersion`.
+  0, 7 × 10¹¹ for round 1, uneven across the space). At the measured A10G rates a pinning unit
+  takes about 9 minutes, a round-0 unit 17 on average and up to 21, a round-1 unit up to 8.
+  Round-0 units exceed qsb-app's 900-second Batch timeout and must shrink. Changing a unit size
+  is a new `searchVersion`.
 - **Hardware.** Upstream reports the workload is bound by 32-bit integer throughput and that
   consumer cards beat datacenter cards per dollar (their H100 runs pinning at 0.56× their 4090).
-  The A10G rate is unknown; see the AWS estimate below.
+  The A10G ran at 0.42 of pqb's 4090 rates; see the AWS cost section.
 
-## AWS cost per spend (desk estimate)
+## AWS cost per spend
 
-No AWS run was made. This multiplies three things of very different quality: expected RTX
-4090-hours per spend (pqb's model: 12.11 with random draws, 8.31 with exhaustive sweeps, the
-latter assuming equal trial rate), each card's speed relative to a 4090, and an hourly price.
-Prices are third-party aggregator snapshots read on 2026-11-11, not AWS's price list or a bill;
-spot prices move and spot capacity is not guaranteed.
+Expected hours come from pqb's model with exhaustive sweeps (a model, not a measurement). Speeds
+are measured where the table says so. Prices are on-demand from the AWS Pricing API or
+third-party snapshots read on 2026-11-11; spot prices move and capacity is not guaranteed. None
+of this is a bill.
 
 | Instance (GPU) | Speed vs RTX 4090 | Price used | Per spend, exhaustive sweep | Per spend, random draws |
 |---|---|---|---|---|
-| g6e.xlarge (L40S) | 0.85, **measured by pqb** on one vast.ai host | $1.861/h on-demand, us-east-1 | about $18 | about $26 |
-| g6e.xlarge (L40S) | same | $0.87–1.36/h spot, us-east-1 | $8–13 | $12–19 |
-| g5.xlarge (A10G), the current fleet | **unmeasured**; assumed 0.20–0.33 | $1.277/h on-demand, eu-west-2 | $32–53 | $47–77 |
-| g5.xlarge (A10G) | same | $0.454/h spot, eu-west-2 | $11–19 | $17–27 |
+| g5.xlarge (A10G), the current fleet | 0.42, **measured here** on one host | $1.123/h on-demand, eu-west-1 | about $22 | about $32 |
+| g5.xlarge (A10G) | same | $1.277/h on-demand, eu-west-2 | about $25 | about $37 |
+| g5.xlarge (A10G) | same | $0.454/h spot snapshot, eu-west-2 | about $9 | about $13 |
+| g6e.xlarge (L40S) | 0.85, measured by pqb on one vast.ai host | $1.861/h on-demand, us-east-1 | about $18 | about $26 |
+| g6e.xlarge (L40S) | same | $0.87–1.36/h spot snapshot, us-east-1 | $8–13 | $12–19 |
 | g6.xlarge (L4) | **unmeasured**; assumed 0.15–0.26 | $1.022/h on-demand, eu-west-2 | $33–57 | $48–82 |
-| g6.xlarge (L4) | same | $0.32/h spot, eu-west-2 | $10–18 | $15–26 |
 | vast.ai RTX 4090, pqb's reference | 1 | $0.37 per 4090-hour (pqb) | about $3 | about $4.5 |
 
-- The L40S speed weights pqb's three stage rates by the exhaustive model's time per stage.
-- The A10G and L4 ranges are assumptions, not data. Their upper ends are pqb's measured RTX 3090
-  (0.33) and RTX 4060 Ti (0.26): the A10G is the same generation as the 3090 with fewer cores
-  and under half the power budget, the L4 the same generation as the 4060 Ti at about half its
-  power. The lower ends are guesses. A measurement can land outside either range.
-- No eu-west-2 price or availability for g6e was found; EU regions that list it are a few
-  percent above us-east-1.
-- Not included: per-job start-up (container start, device setup, the comb table), units replayed
-  after an interruption, units still running when another finds the solution, storage and data
-  transfer. With units of minutes these should be small next to the ranges above, but none is
-  measured.
+- The A10G figure is 19.6 A10G-hours per spend with the measured ranked rates, 28.8 with
+  upstream's random draws. Before the measurement this row assumed 0.20–0.33 of a 4090 and
+  $32–53; the card is faster than assumed.
+- `g6e` is not offered in eu-west-1 or eu-west-2 in this account; `g6` is offered in eu-west-2.
+- On the day, EC2 refused seven `g5.xlarge` launches across five zones for capacity before one
+  succeeded. On-demand A10G availability is a practical constraint, not just a price.
+- Not included: per-job start-up, units replayed after an interruption, units still running when
+  another finds the solution, storage and data transfer.
 
-Reading: on AWS the L40S instance is the only option with a measured rate and is the cheapest
-on-demand, roughly 4 to 6 times pqb's vast.ai figure. The current A10G fleet on-demand is
-probably the most expensive way to run this. Whether spot A10G or L4 undercuts L40S depends
-entirely on the two unmeasured speeds. One short interleaved run per instance type would
-replace the assumptions; it needs explicit authorization under `ops/aws-gpu-execution`.
+Reading: on the current A10G fleet a PQB spend is about $22 of on-demand GPU time with this
+worker, roughly a third less than upstream's random search would cost on the same card and
+about seven times pqb's vast.ai figure. An L40S would be somewhat cheaper if it can be had.
 
 ## What qsb-app would need
 
@@ -168,10 +165,6 @@ No paid hardware, no provider submissions, nothing to clean up. No budget was re
 
 ## Next evidence gaps, in order
 
-1. The native measurement run prepared in
-   [research/pqb-ranked/measure](../../research/pqb-ranked/measure/README.md): correctness of the
-   compiled binary on the public fixtures, then upstream random mode against ranked mode,
-   interleaved on one GPU. Prepared and dry-run on emulation; not executed, and it needs explicit
-   authorization. On an A10G and, if other cards are an option, on one of those.
-2. A decision on hardware and unit sizes from (1), then a contract freeze.
-3. The qsb-app side above, then one complete public-data pipeline run.
+1. Unit sizes that fit the application's job timeout on an A10G, then a contract freeze.
+2. The qsb-app side above, then one complete public-data pipeline run, including a full solve.
+3. A second host or another card if the rates are to be relied on for pricing.

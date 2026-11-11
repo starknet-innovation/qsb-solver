@@ -29,7 +29,7 @@ Source/unit/build checks do not establish native correctness or end-to-end execu
 
 ## PQB candidate worker
 
-[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v1` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence only: no native GPU run, no timing, no published image, and no qsb-app support. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
+[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v1` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence and one native A10G component run (correctness cases and matched timing, 11 November 2026). There is no published image, no full solve and no qsb-app support. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
 
 ## Release
 
