@@ -4,6 +4,7 @@ import base64
 import hashlib
 import json
 import math
+import platform
 from pathlib import Path
 import re
 import subprocess
@@ -18,14 +19,25 @@ def main():
     parser.add_argument('stage', choices=('pinning', 'round1', 'round2'))
     parser.add_argument('packet_export', type=Path)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--wasm-shim', action='store_true', help='Explicit supplemental pure-Python curve backend')
     args = parser.parse_args()
     upstream = args.upstream.resolve()
     commit = subprocess.check_output(['git', '-C', str(upstream), 'rev-parse', 'HEAD'], text=True).strip()
     if commit != 'eccdd09772edf14ab37fc63992b0626ad7ff2221' or subprocess.check_output(
         ['git', '-C', str(upstream), 'status', '--porcelain'], text=True).strip():
         raise ValueError('Clean pinned upstream required')
-    sys.path[:0] = [str(upstream / 'pqb/src/pqb/wasm/shim'), str(upstream / 'pqb/src')]
+    sys.path.insert(0, str(upstream / 'pqb/src'))
+    if args.wasm_shim:
+        sys.path.insert(0, str(upstream / 'pqb/src/pqb/wasm/shim'))
     from pqb import gpu, grind
+    import coincurve
+    backend = {'implementation': 'upstream-wasm-shim' if args.wasm_shim else 'native-coincurve',
+        'version': coincurve.__version__, 'python': sys.version, 'machine': platform.machine()}
+    if not args.wasm_shim:
+        import coincurve._libsecp256k1 as native
+        if coincurve.__version__ != '21.0.0':
+            raise ValueError('Install upstream pinned coincurve==21.0.0')
+        backend['sharedObjectSha256'] = hashlib.sha256(Path(native.__file__).read_bytes()).hexdigest()
     exported = json.loads(args.packet_export.read_bytes())
     if 'records' in exported:
         exported = next(record for record in exported['records'] if record['stage'] == args.stage)
@@ -75,7 +87,7 @@ def main():
     result = {'format': 'qsb-upstream-emitted-check-v1', 'upstreamCommit': commit, 'stage': args.stage,
         'validatorSha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'packetExportSha256': hashlib.sha256(args.packet_export.read_bytes()).hexdigest(),
-        'problemSha256': hashlib.sha256(problem_bytes).hexdigest(), 'gateBits': 24,
+        'problemSha256': hashlib.sha256(problem_bytes).hexdigest(), 'gateBits': 24, 'curveBackend': backend,
         'sighashSamples': 8, 'completedUnits': len(records), 'otherProblemJobsNotChecked': other_problems,
         'records': records}
     with args.output.open('x') as stream:

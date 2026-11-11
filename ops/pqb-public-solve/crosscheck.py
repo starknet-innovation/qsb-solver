@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import math
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -18,14 +19,25 @@ def main():
     parser.add_argument('upstream', type=Path)
     parser.add_argument('export', type=Path)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--wasm-shim', action='store_true', help='Explicit supplemental pure-Python curve backend')
     args = parser.parse_args()
     upstream = args.upstream.resolve()
     commit = subprocess.check_output(['git', '-C', str(upstream), 'rev-parse', 'HEAD'], text=True).strip()
     if commit != 'eccdd09772edf14ab37fc63992b0626ad7ff2221' or subprocess.check_output(
         ['git', '-C', str(upstream), 'status', '--porcelain'], text=True).strip():
         raise ValueError('Clean pinned upstream checkout required')
-    sys.path[:0] = [str(upstream / 'pqb/src/pqb/wasm/shim'), str(upstream / 'pqb/src')]
+    sys.path.insert(0, str(upstream / 'pqb/src'))
+    if args.wasm_shim:
+        sys.path.insert(0, str(upstream / 'pqb/src/pqb/wasm/shim'))
     from pqb import gpu, grind
+    import coincurve
+    backend = {'implementation': 'upstream-wasm-shim' if args.wasm_shim else 'native-coincurve',
+        'version': coincurve.__version__, 'python': sys.version, 'machine': platform.machine()}
+    if not args.wasm_shim:
+        import coincurve._libsecp256k1 as native
+        if coincurve.__version__ != '21.0.0':
+            raise ValueError('Install upstream pinned coincurve==21.0.0')
+        backend['sharedObjectSha256'] = hashlib.sha256(Path(native.__file__).read_bytes()).hexdigest()
     payload = args.export.read_bytes()
     exported = json.loads(payload)
     if exported['format'] != 'qsb-public-upstream-crosscheck-v1':
@@ -55,7 +67,8 @@ def main():
             'problemSha256': hashlib.sha256(record['problem'].encode()).hexdigest(),
             'candidateDetails': candidate.as_dict(), 'checks': stats, 'sighashSamples': 8})
     result = {'format': 'qsb-public-upstream-crosscheck-result-v1', 'upstreamCommit': commit,
-        'exportSha256': hashlib.sha256(payload).hexdigest(), 'gateBits': 24,
+        'exportSha256': hashlib.sha256(payload).hexdigest(), 'gateBits': 24, 'curveBackend': backend,
+        'validatorSha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'hybridKeysMineable': grind.HYBRID_KEYS_MINEABLE, 'records': records,
         'scope': 'Public problem, canonical transaction digest and full predicate; no witness, consensus or miner execution'}
     with args.output.open('x') as stream:

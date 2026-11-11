@@ -48,6 +48,10 @@ CPU decisions, cancellation outcomes, identities and controller checkpoints must
 The bundled `export-reference.cjs` exports accepted public packets and candidates from a
 checkpoint. Run `crosscheck.py` with the clean pinned upstream checkout to compare complete
 problem bytes and check each hit through upstream `HitChecker` and canonical `grind.evaluate`.
+Use a local environment with upstream's pinned `coincurve==21.0.0`; the default requires its
+native libsecp256k1 binding and records its shared-object hash and Python runtime. The explicit
+`--wasm-shim` option gives separate supplemental evidence using upstream's pure-Python curve
+shim and vendored Bitcoin test-framework arithmetic. Neither executes Bitcoin Core consensus.
 Its only packet adaptations convert public decimal scalar strings to integers and add the
 nonce-space size. Keep the upstream acceptance policy unchanged; this is not miner acceptance.
 `crosscheck-emitted.py UPSTREAM CAMPAIGN STATE_DIRECTORY STAGE PACKET_EXPORT NEW_OUTPUT`
