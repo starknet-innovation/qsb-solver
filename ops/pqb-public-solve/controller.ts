@@ -22,7 +22,7 @@ export function save(path: string, value: unknown) {
   const parent=openSync(dirname(path),'r');fsyncSync(parent);closeSync(parent);
 }
 type Slot = {stage:string; epoch:number; attempt:number; identity:any; id?:string; context:any; cancellation?:string};
-export async function solve(config: any, publicInput: any, directory: string, injectedProvider?: any, pollMs=10000) {
+export async function solve(config: any, publicInput: any, directory: string, injectedProvider?: any, pollMs=10000, preflight?: any) {
   const dir=resolve(directory);
   if(existsSync(dir)) throw Error('One-shot result directory already exists');
   if(config.format!=='qsb-pqb-public-solve-v1' || !Number.isSafeInteger(config.deadline)
@@ -50,6 +50,25 @@ export async function solve(config: any, publicInput: any, directory: string, in
       'Private validation image; not an enrolled or served release',
       'Actual consumer AwsBatch, input/output checks, stage transitions and CPU reference; development orchestration',
       'No Step Functions, wallet, signing, consensus execution, funded outputs or broadcast in this assessment']};
+  if(preflight){
+    const slot=preflight.slots?.[0];
+    if(preflight.format!=='qsb-pqb-public-solve-state-v1'||preflight.status!=='running'
+      ||preflight.configSha256!==state.configSha256||preflight.publicInputSha256!==state.publicInputSha256
+      ||preflight.epoch!==0||preflight.nextAttempt!==1||preflight.slots.length!==1
+      ||preflight.solutions.length!==0||preflight.observations.length!==0
+      ||preflight.job.gpuSubmissions!==1||preflight.job.gpuBudgetReservedSeconds!==900
+      ||preflight.job.stage!=='pinning'||slot.stage!=='pinning'||slot.attempt!==0||slot.epoch!==0
+      ||!/^[a-f0-9-]{36}$/.test(slot.id??'')||slot.identity.queue!==config.queue||slot.identity.definition!==config.definition
+      ||slot.context.manifestHash!==job.manifestHash||JSON.stringify(slot.context.solver.descriptor)!==JSON.stringify(selected))
+      throw Error('Only one known, uncredited preflight can be handed over; no unknown submissions');
+    const exported=pqbReference({action:'export',publicStateJson:publicInput.publicStateJson,manifest,stage:'pinning'});
+    if(slot.identity.inputSha256!==sha(JSON.stringify({input:workerInput(selected,job,0,exported)})))
+      throw Error('Preflight public input identity differs');
+    job.gpuSubmissions=1;job.gpuBudgetReservedSeconds=900;state.nextAttempt=1;
+    state.slots=structuredClone(preflight.slots);state.startedAt=preflight.startedAt;
+    state.controllerStartedAt=new Date().toISOString();state.handover={stateSha256:sha(JSON.stringify(preflight)),id:slot.id,
+      reason:'Stronger consumer CPU policy; existing paid preflight retained without replay or deadline change'};
+  }
   mkdirSync(dir,{recursive:false}); mkdirSync(dir+'/jobs'); save(dir+'/input.json',publicInput);
   const persist=()=>save(dir+'/state.json',state); persist();
   const provider=injectedProvider??new AwsBatch(config.queue,config.definition,config.bucket);

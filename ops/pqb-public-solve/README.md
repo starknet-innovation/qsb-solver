@@ -29,6 +29,11 @@ The controller durably saves its identity and nonrefundable 900-second reservati
 single paid POST. Unknown outcomes stop submissions; no process resumes an existing output
 directory. Failed/incomplete units stop the assessment without range credit.
 
+An explicit fourth CLI argument may hand over only the one known, uncredited preflight job
+to a stronger CPU verifier. It verifies the unchanged configuration/deadline, public input,
+request digest, known provider ID and original 900-second reservation before polling that
+same job. No paid request is replayed and no general checkpoint resume is supported.
+
 Each stage's hit is independently checked before advancement. Outdated jobs are cancelled and
 drained; any completed output is still checked against its original problem/context. Exhausting
 a round re-pins at the next pinning unit, retaining prior attempts and costs. All three final
