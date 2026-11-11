@@ -4,7 +4,7 @@
 [the record](../../../docs/pqb/2026-11-11-a10g-measurement.md). The rest of this page describes
 how the run is built and what it can show.
 
-For the next gate see [the full-unit plan](../../../docs/pqb/FULL-UNIT.md). `run_full_unit.py`
+For the completed full-unit gate see [the plan and results](../../../docs/pqb/FULL-UNIT.md). `run_full_unit.py`
 executes one production unit through the bound worker, retains native logs and checks emitted
 candidates independently. It does not repeat this short matched-throughput experiment.
 

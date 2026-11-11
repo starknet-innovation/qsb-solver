@@ -1,0 +1,39 @@
+{
+  "format": "qsb-pqb-offline-native-output-replay-v1",
+  "parserSourceCommit": "ca9ca959613bee7f094b73c44d858b387b031694",
+  "note": "Offline acceptance of retained public data, not new native execution or a new handler binding attestation. Request kernelCommit identities remain those actually executed.",
+  "entries": [
+    {
+      "receipt": "pinning-a7d36af",
+      "rangeReportAccepted": true,
+      "problemAccepted": true,
+      "uniqueCandidates": true,
+      "independentCandidateDigestsMatch": true,
+      "candidates": 0
+    },
+    {
+      "receipt": "pinning-0a25ec4",
+      "rangeReportAccepted": true,
+      "problemAccepted": true,
+      "uniqueCandidates": true,
+      "independentCandidateDigestsMatch": true,
+      "candidates": 0
+    },
+    {
+      "receipt": "round0-0a25ec4",
+      "rangeReportAccepted": true,
+      "problemAccepted": true,
+      "uniqueCandidates": true,
+      "independentCandidateDigestsMatch": true,
+      "candidates": 0
+    },
+    {
+      "receipt": "round1-0a25ec4",
+      "rangeReportAccepted": true,
+      "problemAccepted": true,
+      "uniqueCandidates": true,
+      "independentCandidateDigestsMatch": true,
+      "candidates": 1
+    }
+  ]
+}

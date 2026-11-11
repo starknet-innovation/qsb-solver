@@ -69,8 +69,12 @@ fresh external receipt directory. The committed controller persists each API int
 `mcp_rpc.py` and waits for its response. The operator must atomically create `<id>.dispatched`
 before calling that request exactly once with the AWS MCP `run_script` / `call_boto3` tool,
 then atomically write `<id>.response.json` as `{"result": RESPONSE}` or `{"error": MESSAGE}`.
-For `CreateFunction`, decode the request's base64 `Code.ZipFile` to bytes for the SDK. Verify
-the tool's API-call receipt rather than trusting only returned text. Never dispatch an ID that
+For `CreateFunction`, upload the exact local `cleanup.zip` through the S3 presigned-URL tool
+and use `Code: {"S3Bucket": BUCKET, "S3Key": KEY}` in the actual API call. Preserve the original
+intent and the S3 transport reference; the controller checks returned `CodeSha256` against the
+local ZIP. Passing inline ZIP bytes through this MCP transport was observed to corrupt them
+into text and was rejected by AWS. Delete the staging object/bucket during verified cleanup.
+Verify the tool's API-call receipt rather than trusting only returned text. Never dispatch an ID that
 already has a dispatch marker; a missing response is uncertain and requires reconciliation.
 
 This handoff changes the transport only: operator account binding, clean/pushed source,

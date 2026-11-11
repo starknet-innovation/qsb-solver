@@ -1,8 +1,9 @@
 # PQB candidate assessment
 
 Assessed 11 November 2026. Disposition: **retain for review, HOLD**. Nothing here is published,
-enrolled or deployed. One native A10G component session ran; its estimated cost and verified
-cleanup are recorded below. The full-unit harness is prepared but has not run natively.
+enrolled or deployed. The component measurement and all three largest native full units passed.
+Exact artifact identities, limits, estimated cost and verified cleanup are recorded below and in
+[the full-unit report](2026-11-11-full-unit-validation.md).
 
 ## What this is
 
@@ -64,28 +65,27 @@ Two separate effects; whole-spend savings remain modelled, while component rates
 | [Native A10G run, 11 November](2026-11-11-a10g-measurement.md) | native GPU execution and matched timing | On one `g5.xlarge`: all 11 correctness cases returned exactly the reference's hit sets, including multi-batch ranges, the DER-shape filter and a planted exceptional point. Ranked steady rate 1.004 to 1.014 times upstream's random search, three alternating samples per stage. A10G rates 2.49 / 2.73 / 2.01 G trials/s. |
 | nvcc 12.8.93 in `nvidia/cuda:12.8.1-devel-ubuntu22.04` for linux/arm64, run locally on 2026-11-11 | compiler observation | The adapted `grind.cu` compiles for `sm_86` and `sm_89` with the lock's flags; its only warnings are two unused-symbol warnings. The host code is arm64 and the image was pulled by tag, so these are not the release binaries and their hashes are not recorded. |
 
-**What the native run did not exercise.** Its one filtered case expected no candidate, so it
-showed the DER-shape filter counting gate hits on a GPU, not emitting one. Two filtered cases that
-each expect a candidate were added afterwards; they pass under emulation and have not run
-natively.
+**Which artifact each receipt covers.** The original matched component run used binary
+`3f816a00…` from `266f4a0`. Later host-side bounds, option/slot validation and compile-guard fixes
+produced a different binary. The [full-unit campaign](2026-11-11-full-unit-validation.md) ran
+binary `0e811c59…` from `0a25ec4`: all three largest units passed, each after 11 native
+independent-reference cases. Round1 emitted one production-gate/DER-shaped candidate that
+re-derived correctly on CPU. This supplies filter-emission evidence beyond the original
+component run's empty filtered case; it is not a full solve.
 
-**Which binary the native run covers.** It ran the ranked binary `3f816a00…` built from
-`266f4a0`. `grind.cu` changed afterwards (review fixes): overflow-safe range bounds, strict
-numeric options, range options refused without their start option, a stricter slot-spacing
-check, and a compile-time refusal of `QG_FUSE=0`. All of it is host-side validation or a
-preprocessor guard; no kernel and no
-range-walk code changed. The emulation tests were rerun on the new source. The new binary has a
-new hash and has not itself run on a GPU: the native result applies to it by that judgement, not
-by measurement.
+Later review at `ca9ca95` added duplicate-output/event rejection, failure-artifact retention and
+two positive pinning filter cases. Its CI binary is byte-identical (`0e811c59…`), with unchanged
+CUDA source and flags. The new cases pass under CPU emulation but have not run natively;
+the full-unit receipts retain their actual `0a25ec4` handler/harness identity. See the report's
+applicability review rather than treating old receipts as a new binding attestation.
 
-The full-unit harness adds an optional local evidence directory to the handler (not to the
-request schema), retaining its problem, native log and hits. The default temporary-directory
-path is unchanged. This changes the handler binding and needs a fresh CI artifact; the old
-receipt does not attest to this worker. See [the validation plan](FULL-UNIT.md).
+The full-unit harness's optional local evidence directory retains problem, native log and
+hits without changing the request schema or the default temporary-directory path. See the
+[plan](FULL-UNIT.md) and [retained results](2026-11-11-full-unit-validation.md).
 
-Not done: a vulnerability scan, a full solve of any stage, any end-to-end spend, a second host
-or another card. The amd64 image build and its offline checks ran in CI for pull request 18;
-that is a build and packaging check, not execution of the grinder.
+Not done: a PQB image vulnerability scan, a full solve/spend, application/Batch integration,
+or another GPU model. Builds and offline image checks passed CI; the native units used CI
+binaries in a separately pinned CUDA runtime, not a published PQB image.
 
 The emulation build runs the same source on a CPU. It is evidence about the algorithm as
 written. It is not evidence about nvcc's code generation, device execution or the PTX field
@@ -146,8 +146,9 @@ options are refused.
   measured A10G rates the largest unit of each stage takes 486 s, 502 s and 486 s (round units
   average about 380 s and are uneven across the space). That is sized for a 900-second job limit
   with room for start-up and a slower host; pqb saw hosts of one model differ by up to 30 %,
-  which would bring the largest unit to about 650 s. It is not a guarantee, and no full unit has
-  been run. `pqb-ranked-v1` (16 values, 2³⁰ prefixes for both rounds) was provisional, never
+  which would bring the largest unit to about 650 s. The native largest units subsequently
+  completed in **490.9 / 504.7 / 487.3 s** through the bound handler. This is not a host-wide
+  guarantee or an application job certification. `pqb-ranked-v1` (16 values, 2³⁰ prefixes for both rounds) was provisional, never
   published or enrolled, and had round-0 units of up to 21 minutes. The worker stops a unit at
   840 s and reports it `interrupted`, so a slow unit ends with a result instead of being killed
   by a 900-second job limit. Changing a unit size is a new `searchVersion`.
@@ -187,14 +188,15 @@ about seven times pqb's vast.ai figure. An L40S would be somewhat cheaper if it 
 
 ## What qsb-app would need
 
-None of this exists yet: PQB vault construction and funding, an independent CPU verifier for
-PQB candidates, problem construction and its sighash check, a coordinator that pins, runs round
-0 then round 1, and re-pins when a round's whole space is empty, and the same contract vectors
-tested on its side. This worker keeps no verifier, wallet or key material.
+Consumer adoption requires PQB vault/problem construction, an independent CPU verifier for
+candidates and transaction meaning, a coordinator that pins, runs round0 then round1 and
+re-pins when a whole round is empty, plus matching contract vectors tested in both repositories.
+This campaign did not certify that consumer integration. The worker keeps no verifier, wallet
+or key material.
 
 ## Cost and cleanup
 
-One paid session, on 11 November 2026 ([record](2026-11-11-a10g-measurement.md)):
+Historical component session, on 11 November 2026 ([record](2026-11-11-a10g-measurement.md)):
 
 - **Provider submissions:** eight `g5.xlarge` launch requests, one per session. EC2 refused seven
   for capacity, so they allocated nothing. The eighth, in eu-west-1b, ran for about 6.7 minutes.
@@ -208,16 +210,20 @@ One paid session, on 11 November 2026 ([record](2026-11-11-a10g-measurement.md))
   cleanup; the committed controller then removed part of the temporary resources and failed on a
   network timeout, and the remaining three roles and security group were deleted by name.
 
-Nothing else was allocated. No budget remains reserved.
-
-Preparing the full-unit harness uses no paid hardware. New native execution, budget reservations,
-provider submissions and cleanup receipts must be recorded separately; the old cap does not
-authorize a new run.
+The separately authorized [full-unit campaign](2026-11-11-full-unit-validation.md) then launched
+four instances sequentially: an earlier pinning build and the three units of the pinned final
+binary. Estimated compute was **$0.90**, including that earlier run and startup/collection,
+not provider billing; storage, IPv4 and other charges are outside that compute estimate.
+One setup failed before any GPU submission. All instances, recorded volumes and temporary
+resources were independently verified removed. No reservation or submission remains open.
+The old $5 cap did not authorize this campaign or any future run.
 
 ## Next evidence gaps, in order
 
-1. Execute the [prepared full-unit harness](FULL-UNIT.md) on an A10G with fresh authorization:
-   one largest unit per stage, separately bounded sessions, using the current CI binary.
-   Confirm durations and failure/output accounting before a contract freeze.
-2. The qsb-app side above, then one complete public-data pipeline run, including a full solve.
-3. A second host or another card if the rates are to be relied on for pricing.
+1. Review the completed full-unit receipts and agree the provisional contract with the consumer's
+   independently tested vectors. Execute the two newer pinning filter-positive cases natively
+   when validating the next artifact; do not relabel the historical 11-case receipts as 13 cases.
+2. Validate the complete public-data application pipeline, including a full solve and real
+   transport/output verification. These unit measurements do not establish whole-spend cost.
+3. Broader hardware/host sampling if rates are to be relied on for pricing; the fresh EC2
+   instances do not prove distinct physical cards or certify another GPU model.

@@ -1,0 +1,321 @@
+{
+ "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+ "bundleSha256": "1785418d7edaec65e9cfe4e08a5fea126c953179601007dd47d9c224209ea162",
+ "contractSha256": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+ "correctness": [
+  {
+   "expectedHits": 48,
+   "hits": 48,
+   "label": "pin-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 3000,
+    "gate_hits": 48,
+    "hits": 48,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 500000000,
+    "seq": 2147483648,
+    "seq_count": 2,
+    "zblocks": 3000
+   },
+   "zblocks": 3000
+  },
+  {
+   "expectedHits": 31,
+   "hits": 31,
+   "label": "pin-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1500,
+    "gate_hits": 31,
+    "hits": 31,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 1699998500,
+    "seq": 4294967293,
+    "seq_count": 1,
+    "zblocks": 1500
+   },
+   "zblocks": 1500
+  },
+  {
+   "expectedHits": 44,
+   "hits": 44,
+   "label": "pin-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 2700,
+    "gate_hits": 44,
+    "hits": 44,
+    "kind": "pin",
+    "lt_count": 900,
+    "lt_start": 1234567890,
+    "seq": 2147483651,
+    "seq_count": 3,
+    "zblocks": 2700
+   },
+   "zblocks": 2700
+  },
+  {
+   "expectedHits": 0,
+   "hits": 0,
+   "label": "pin-der-filter",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 1,
+    "exact_zblocks": 0,
+    "expected": 64,
+    "gate_hits": 2368,
+    "hits": 0,
+    "kind": "pin",
+    "lt_count": 64,
+    "lt_start": 600000000,
+    "seq": 2147483653,
+    "seq_count": 1,
+    "zblocks": 64
+   },
+   "zblocks": 64
+  },
+  {
+   "expectedHits": 415,
+   "hits": 415,
+   "label": "pin-planted-exceptional",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 4,
+    "expected": 48,
+    "gate_hits": 415,
+    "hits": 415,
+    "kind": "pin",
+    "lt_count": 48,
+    "lt_start": 900000000,
+    "seq": 2147483658,
+    "seq_count": 1,
+    "zblocks": 48
+   },
+   "zblocks": 48
+  },
+  {
+   "expectedHits": 43,
+   "hits": 43,
+   "label": "round0-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 975,
+    "gate_hits": 43,
+    "hits": 43,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 975
+   },
+   "zblocks": 975
+  },
+  {
+   "expectedHits": 18,
+   "hits": 18,
+   "label": "round0-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 431,
+    "gate_hits": 18,
+    "hits": 18,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 27883217868,
+    "subset_start": 379908847108,
+    "zblocks": 431
+   },
+   "zblocks": 431
+  },
+  {
+   "expectedHits": 10,
+   "hits": 10,
+   "label": "round0-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 313,
+    "gate_hits": 10,
+    "hits": 10,
+    "kind": "round",
+    "prefix_count": 40,
+    "prefix_start": 9294406056,
+    "subset_start": 140931581059,
+    "zblocks": 313
+   },
+   "zblocks": 313
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 885,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 885
+   },
+   "zblocks": 885
+  },
+  {
+   "expectedHits": 5,
+   "hits": 5,
+   "label": "round1-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 402,
+    "gate_hits": 5,
+    "hits": 5,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 186087894000,
+    "subset_start": 2088319702298,
+    "zblocks": 402
+   },
+   "zblocks": 402
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1387,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 150,
+    "prefix_start": 62029298100,
+    "subset_start": 767332430665,
+    "zblocks": 1387
+   },
+   "zblocks": 1387
+  }
+ ],
+ "elapsedSeconds": 490.723596241,
+ "evidenceKind": "native A10G unit validation; not a full solve or completeness proof",
+ "files": {
+  "request.json": "653c1c60ed90565e78edd13a89a278fbcdb6d8dbae113003f45e75e2ac2a4f70",
+  "unit.json": "db171bd1200ef22dc1f8f85ba228911b0955f42ec9dd318230a4f83741f95f02",
+  "work/P.txt": "1968e14bd5f41bf6ce2c81e4f2ff322bfd40ee751d7683d541fa54e303196fde",
+  "work/compute.log": "475b3b623ad90ddbc26efcc2a45d427eda72c35a4edc3bdc97e0c56c0a6cd882",
+  "work/hits.txt": "b5284825b70b6f6adacc88cbca920de03e169a92e8c3130d9895a6e5caa1339b",
+  "worker-result.json": "a09f4a02194f6f20f31d931f4beae2b3f45ddc6044a5b424953857e8d07599b7"
+ },
+ "format": "qsb-pqb-full-unit-result-v1",
+ "runtimeImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48",
+ "sourceCommit": "0a25ec4a31eeabd0d9e98ee929415baea1b7c75d",
+ "stage": "round1",
+ "status": "passed",
+ "unit": {
+  "attempt": 0,
+  "batchZblocks": 15282749791,
+  "candidateChecks": [
+   {
+    "candidate": "0,1,21,39,50,66,67,76,82 10 2 0 1",
+    "digest": "301d0209b7af06781a7c3dcf9c021062b524c54376fec54fe824dd37b6b027c1",
+    "nonce": "11930581570"
+   }
+  ],
+  "device": [
+   {
+    "device": "NVIDIA A10G",
+    "kernel": "ec_menu",
+    "local_bytes": 0,
+    "max_threads_per_tg": 768,
+    "regs": 80,
+    "simd_width": 32,
+    "t_s": 0.175,
+    "tg_used": 128
+   }
+  ],
+  "gateCountSanity": true,
+  "jobSeconds": 487.31787743200005,
+  "nativeDevice": true,
+  "pass": true,
+  "rangeReport": {
+   "complete": true,
+   "der_filter": 1,
+   "exact_zblocks": 0,
+   "expected": 15282749791,
+   "gate_hits": 58504,
+   "hits": 1,
+   "kind": "round",
+   "prefix_count": 1073741824,
+   "prefix_start": 0,
+   "subset_start": 0,
+   "zblocks": 15282749791
+  },
+  "stage": "round1",
+  "verificationSeconds": 0.0087997150000092,
+  "workRange": {
+   "count": 15282749791,
+   "prefixCount": 1073741824,
+   "prefixStart": "0",
+   "start": "0",
+   "version": "pqb-ranked-v2"
+  },
+  "workerResult": {
+   "attempt": 0,
+   "candidates": [
+    "0,1,21,39,50,66,67,76,82 10 2 0 1"
+   ],
+   "checkpoint": "range-complete",
+   "elapsedSeconds": 487.27933978899995,
+   "gateHits": 58504,
+   "kernelCommit": "0a25ec4a31eeabd0d9e98ee929415baea1b7c75d",
+   "manifestHash": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+   "searchVersion": "pqb-ranked-v2",
+   "stage": "round1",
+   "status": "completed",
+   "trials": 978095986624,
+   "verified": false,
+   "workRange": {
+    "count": 15282749791,
+    "prefixCount": 1073741824,
+    "prefixStart": "0",
+    "start": "0",
+    "version": "pqb-ranked-v2"
+   }
+  },
+  "workerSeconds": 487.285740195
+ },
+ "workerTimeoutSeconds": 840
+}

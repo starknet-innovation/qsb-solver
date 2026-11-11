@@ -1,0 +1,13 @@
+{
+  "sourceCommit": "a7d36af7d754d5cb06d3cf3f4583fac48d49ad1a",
+  "ciRun": 43071849324,
+  "artifactId": 13877338686,
+  "artifactZipSha256": "a007f3bf6c09484e526127aef71ae748607b29179629154643dd7f7253a7f5e5",
+  "bundleTarSha256": "fa5a2cb16ea9f6eec22dbcaae623a45ea6b41cafd3f6ed4193e5cfdb61d51ad0",
+  "checksumListSha256": "0d2ec3776978bc87a17e3bf3f546aac451874b2e19786141cc85a96901d0c411",
+  "binarySha256": "f884bebdcbd177a41b554a798adb4756f5778151a112a9525f398086ef500b19",
+  "scripts": {
+    "ready.sh": "2ce62e742662aa93c59b4476c6315f587d84fa92daf084a6192c75f526c7b216",
+    "host-pqb-full-unit.sh": "64dada9e53b720c33c0fd3d92c5aafacc9929e3906d5c0dcf907aa2ea6c23baa"
+  }
+}

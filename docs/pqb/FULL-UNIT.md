@@ -1,7 +1,9 @@
 # Full-unit PQB validation plan
 
-Status: **prepared, not natively executed; candidate remains HOLD**. This checks public synthetic
-unit durations and accounting. No partition, search version or CUDA flags change.
+Status: **executed and passed for all three largest units; candidate remains HOLD**. See
+[the exact-source native results and limits](2026-11-11-full-unit-validation.md). The following
+procedure applies to a newly authorized candidate; it is not a request to repeat completed runs.
+No partition, search version or CUDA flags change in this harness.
 
 ## Work and acceptance
 
@@ -18,8 +20,10 @@ or replay an uncertain command. The bundle finds the largest unit in each commit
 
 These are estimates. Each request uses `pqb-ranked-v2`, the production 24-bit gate and DER-shape
 filter. There is no CLI option to shrink a unit or raise the 840-second worker timeout. Before
-the full unit, all 11 existing small independent-reference cases must pass on this binary within
+the full unit, every committed small independent-reference case must pass on this binary within
 a 60-second preflight allowance, including boundary, multi-batch and exceptional-point cases.
+The completed campaign ran 11 cases per session. Later review expanded the suite to 13; its two
+additional pinning filter-positive cases are CPU-tested and have not run natively.
 The short matched-throughput comparison is not repeated.
 
 A stage passes only if the bound worker returns `completed` / `range-complete`, its retained
