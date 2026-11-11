@@ -77,6 +77,7 @@ class MeasureDryRunTest(unittest.TestCase):
         (self.artifact / 'build-receipt.json').write_text(json.dumps(
             {'status': 'HOLD', 'binarySha256': sha256(self.artifact / 'grind-ranked'), 'sourceLock': lock}))
         (self.artifact / 'source-commit').write_text(COMMIT + '\n')
+        (self.artifact / 'source-event').write_text('push\n')
         self.sums()
         self.bundle = root / 'bundle'
 
@@ -85,7 +86,8 @@ class MeasureDryRunTest(unittest.TestCase):
 
     def sums(self):
         (self.artifact / 'SHA256SUMS').write_text(''.join(
-            '%s  %s\n' % (sha256(self.artifact / n), n) for n in ('grind-ranked', 'grind-upstream', 'build-receipt.json')))
+            '%s  %s\n' % (sha256(self.artifact / n), n)
+            for n in ('grind-ranked', 'grind-upstream', 'build-receipt.json', 'source-commit', 'source-event')))
 
     def runner(self, result, *, correctness_only=False, **env):
         command = [sys.executable, str(self.bundle / 'run_measure.py'), str(self.bundle), str(result)]
@@ -217,6 +219,21 @@ class MeasureDryRunTest(unittest.TestCase):
         prepare = bundle_module().prepare
         with self.assertRaises(SystemExit):
             prepare(self.artifact, self.bundle, commit='00' * 20)             # built from another commit
+        # the identity files are inside the checksum boundary: swapping one is caught...
+        (self.artifact / 'source-commit').write_text('00' * 20 + '\n')
+        with self.assertRaises(SystemExit):
+            prepare(self.artifact, self.bundle, commit='00' * 20)
+        (self.artifact / 'source-commit').write_text(COMMIT + '\n')
+        (self.artifact / 'source-event').write_text('pull_request\n')
+        with self.assertRaises(SystemExit):
+            prepare(self.artifact, self.bundle, commit=COMMIT)
+        (self.artifact / 'source-event').write_text('push\n')
+        # ...and so is a checksum list that leaves them out
+        full = (self.artifact / 'SHA256SUMS').read_text()
+        (self.artifact / 'SHA256SUMS').write_text(''.join(ln + '\n' for ln in full.splitlines() if 'source-' not in ln))
+        with self.assertRaises(SystemExit):
+            prepare(self.artifact, self.bundle, commit=COMMIT)
+        (self.artifact / 'SHA256SUMS').write_text(full)
         with open(self.artifact / 'grind-upstream', 'ab') as f:
             f.write(b'\0')
         with self.assertRaises(SystemExit):

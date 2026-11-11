@@ -80,6 +80,8 @@ jobs:
           # bundle script then refuses a pull_request artifact, which is the intended binding.
           printf '%s\n' "$GITHUB_SHA" > pqb-measure-binaries/source-commit
           printf '%s\n' "$GITHUB_EVENT_NAME" > pqb-measure-binaries/source-event
+          # the identity files are part of the artifact's checksum list, like the binaries
+          (cd pqb-measure-binaries && sha256sum source-commit source-event >> SHA256SUMS && sha256sum -c SHA256SUMS)
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: pqb-measure-binaries-sm86

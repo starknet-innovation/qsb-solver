@@ -5,6 +5,7 @@ the call and *.response.json afterwards. A lost response is uncertain: reconcile
 All files stay outside Git. This transport never calls AWS or reads credentials itself.
 """
 import json
+import os
 from pathlib import Path
 import time
 import uuid
@@ -18,9 +19,19 @@ def exchange(directory, region, service, operation, params, timeout=180):
     identity = '%020d-%s' % (time.time_ns(), uuid.uuid4().hex)
     request = {'id': identity, 'region': region, 'service': service,
                'operation': ''.join(part.title() for part in operation.split('-')), 'params': params}
+    # The request must survive a crash before it can be seen and dispatched: flush the file, publish
+    # it under its final name, then flush the directory entry.
     pending = root / (identity + '.partial')
-    pending.write_text(json.dumps(request, indent=1) + '\n')
+    with open(pending, 'x') as stream:
+        stream.write(json.dumps(request, indent=1) + '\n')
+        stream.flush()
+        os.fsync(stream.fileno())
     pending.rename(root / (identity + '.request.json'))
+    directory_fd = os.open(root, os.O_RDONLY)
+    try:
+        os.fsync(directory_fd)
+    finally:
+        os.close(directory_fd)
     response = root / (identity + '.response.json')
     deadline = time.monotonic() + timeout
     while not response.exists():

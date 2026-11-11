@@ -41,7 +41,7 @@ class FullUnitTest(unittest.TestCase):
         (artifact / 'source-commit').write_text(COMMIT + '\n')
         (artifact / 'source-event').write_text('push\n')
         (artifact / 'SHA256SUMS').write_text(''.join('%s  %s\n' % (runner.sha256(artifact / name), name)
-            for name in ('grind-ranked', 'grind-upstream', 'build-receipt.json')))
+            for name in ('grind-ranked', 'grind-upstream', 'build-receipt.json', 'source-commit', 'source-event')))
         self.artifact = artifact
         self.bundle = self.root / 'bundle'
         self.git = {('rev-parse', 'HEAD'): COMMIT, ('status', '--porcelain'): '',

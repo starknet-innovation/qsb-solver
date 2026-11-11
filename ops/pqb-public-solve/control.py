@@ -25,6 +25,16 @@ def save(path,value):
     temp=path.with_suffix('.tmp');temp.write_text(json.dumps(value,indent=2)+'\n');temp.replace(path)
 
 
+def function_exists(call,name):
+    """ListFunctions returns at most 50 per call: follow NextMarker before deciding the function is gone."""
+    marker=None
+    while True:
+        page=call('lambda','list-functions',**({'Marker':marker} if marker else {}))
+        if any(f['FunctionName']==name for f in page.get('Functions',[])):return True
+        marker=page.get('NextMarker')
+        if not marker:return False
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('mode',choices=['prepare','publisher-access','arm','batch','stop','remove'])
@@ -167,7 +177,7 @@ def main():
                 if call('ec2','describe-volumes',Filters=[{'Name':'volume-id','Values':[volume]}])['Volumes']:raise ValueError('Recorded volume remains')
             if s.get('definition'):call('batch','deregister-job-definition',jobDefinition=s['definition'])
             if call('scheduler','list-schedules',NamePrefix=name)['Schedules']:call('scheduler','delete-schedule',Name=name,GroupName='default')
-            if any(f['FunctionName']==name for f in call('lambda','list-functions')['Functions']):call('lambda','delete-function',FunctionName=name)
+            if function_exists(call,name):call('lambda','delete-function',FunctionName=name)
             call('ec2','delete-launch-template',LaunchTemplateId=s['launchTemplateId'])
             call('iam','remove-role-from-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
             call('iam','delete-instance-profile',InstanceProfileName=name)

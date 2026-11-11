@@ -3,7 +3,8 @@
     python3 scripts/prepare_pqb_measure_bundle.py BINARIES_DIR OUT_DIR
 
 BINARIES_DIR is the `pqb-measure-binaries-sm86` CI artifact of the commit being measured:
-grind-ranked, grind-upstream, build-receipt.json, SHA256SUMS, source-commit. Use the artifact of
+grind-ranked, grind-upstream, build-receipt.json, source-commit, source-event, and a SHA256SUMS
+that lists all five. Use the artifact of
 the push run: source-commit is the commit CI checked out and built, which on a pull_request run
 is the merge commit and never equals a branch checkout. The checkout must be
 clean and at that commit, so the fixtures, expected hit sets and runner are the committed ones.
@@ -32,8 +33,13 @@ def git(*args):
 def prepare(binaries, out, commit=None):
     binaries, out = pathlib.Path(binaries), pathlib.Path(out)
     sums = dict(reversed(line.split()) for line in (binaries / 'SHA256SUMS').read_text().splitlines())
-    for name in BINARIES + ('build-receipt.json',):
-        if sha256(binaries / name) != sums.get(name):
+    # The source identity files are checked like the binaries: an artifact whose commit or event
+    # file was swapped, or mixed in from another download, must not pass.
+    listed = BINARIES + ('build-receipt.json', 'source-commit', 'source-event')
+    if sorted(sums) != sorted(listed):
+        raise SystemExit('artifact SHA256SUMS must list exactly: ' + ', '.join(sorted(listed)))
+    for name in listed:
+        if sha256(binaries / name) != sums[name]:
             raise SystemExit('artifact file differs from its SHA256SUMS: ' + name)
     receipt = json.loads((binaries / 'build-receipt.json').read_text())
     if receipt.get('binarySha256') != sums['grind-ranked'] or receipt.get('status') != 'HOLD':
@@ -63,6 +69,7 @@ def prepare(binaries, out, commit=None):
     shutil.copy(MEASURE / 'expected.json', out / 'expected.json')
     shutil.copy(MEASURE / 'run_measure.py', out / 'run_measure.py')
     manifest = {'format': 'qsb-pqb-measure-bundle-v1', 'sourceCommit': commit,
+                'sourceEvent': (binaries / 'source-event').read_text().strip(),
                 'binaries': {name: sums[name] for name in BINARIES},
                 'note': 'CI build artifacts, not attested release binaries. Public synthetic inputs only.'}
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=1, sort_keys=True) + '\n')
