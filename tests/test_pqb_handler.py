@@ -57,13 +57,21 @@ class ProblemValidationTest(unittest.TestCase):
                b'\n'.join(ln for ln in raw.split(b'\n') if not ln.startswith(b'C 3 1 ')),
                b'\n'.join(ln for ln in raw.split(b'\n') if not ln.startswith(b'B ')),
                raw.replace(b'\nB ', b'\nB  '), raw.replace(b'kind round', b'kind round\r'),
-               raw.replace(b'slot 1 406', b'slot 1 380')]
+               raw.replace(b'slot 1 406', b'slot 1 380'),
+               raw.replace(b'slot 1 406', b'slot 1 405'),              # 21 bytes between boundaries: one too few
+               raw.replace(b'slot 2 438', b'slot 2 437')]
         for i, case in enumerate(bad):
             with self.subTest(case=i), self.assertRaises(ValueError):
                 handler.parse_problem(case, 'round0')
         for case in (pin.replace(b'seq_off', b'lt_off'), pin + b'slot 0 10\n', pin + b't 8\n'):
             with self.assertRaises(ValueError):
                 handler.parse_problem(case, 'pinning')
+
+    def test_slots_at_exactly_the_kernel_limit_are_accepted(self):
+        # PQB's own table: 32 bytes between slot starts, 22 between boundaries after a 10-byte deletion
+        raw = emu.problem('round0', gate_bits=24)
+        self.assertIn(b'slot 0 374\nslot 1 406\n', raw)
+        handler.parse_problem(raw, 'round0')
 
     def test_requests_are_strict(self):
         raw = emu.problem('pin', gate_bits=24)

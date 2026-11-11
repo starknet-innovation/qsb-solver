@@ -59,6 +59,11 @@ def main():
                 cand = checker.check(line)          # raises if pqb does not reproduce the hit
                 if not lo <= cand.nonce < hi:
                     sys.exit('%s: hit nonce %d outside [%d, %d)' % (name, cand.nonce, lo, hi))
+                if name == 'pin':
+                    # lo..hi spans whole sequence values; a pinning case also bounds nLockTime
+                    hit_lt, hit_seq = grind.pin_fields(cand.nonce)
+                    if not (seq <= hit_seq < seq + seq_count and lt <= hit_lt < lt + lt_count):
+                        sys.exit('pin: hit (nSequence %d, nLockTime %d) outside the requested range' % (hit_seq, hit_lt))
             total += len(hits)
             print(name, case[1:], '%d hits reproduced by pqb' % len(hits))
         print(name, checker.stats())

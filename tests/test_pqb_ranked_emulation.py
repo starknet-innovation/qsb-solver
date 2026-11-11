@@ -174,6 +174,13 @@ class RankedEmulationTest(unittest.TestCase):
                 self.assertNotEqual(code, 0, log)
                 self.assertIsNone(report(log))
 
+    def test_slots_closer_than_the_kernel_supports_are_refused(self):
+        raw = emu.problem('round0')
+        self.assertEqual(raw.count(b'slot 1 406\n'), 1)
+        code, log, _ = emu.run(BINARY, raw.replace(b'slot 1 406\n', b'slot 1 405\n'), ['--prefix-start', 0, '--prefix-count', 1])
+        self.assertNotEqual(code, 0, log)
+        self.assertIsNone(report(log))
+
     def test_the_whole_last_sequence_value_is_accepted(self):
         # the largest valid start with the largest count that fits: bounds are inclusive where they should be
         code, log, _ = emu.run(BINARY, emu.problem('pin'), ['--pin-seq', 0xFFFFFFFD, '--pin-seq-count', 1,

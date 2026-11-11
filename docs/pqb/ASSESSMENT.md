@@ -66,8 +66,9 @@ Two separate effects; whole-spend savings remain modelled, while component rates
 
 **Which binary the native run covers.** It ran the ranked binary `3f816a00…` built from
 `266f4a0`. `grind.cu` changed afterwards (review fixes): overflow-safe range bounds, strict
-numeric options, range options refused without their start option, and a compile-time refusal of
-`QG_FUSE=0`. All of it is host-side argument handling or a preprocessor guard; no kernel and no
+numeric options, range options refused without their start option, a stricter slot-spacing
+check, and a compile-time refusal of `QG_FUSE=0`. All of it is host-side validation or a
+preprocessor guard; no kernel and no
 range-walk code changed. The emulation tests were rerun on the new source. The new binary has a
 new hash and has not itself run on a GPU: the native result applies to it by that judgement, not
 by measurement.
@@ -107,6 +108,9 @@ arithmetic in `ptx_field.cuh`, which the emulation build does not use.
 - `QG_FUSE=0` is refused at compile time: the unfused hashing kernel would hash the stale point
   slots of a thread the exceptional path skipped.
 - Range options must be unsigned decimals, and need the option that turns ranked mode on.
+- Round problems whose table slots are closer than the kernel supports are refused. The kernel
+  handles three deletion boundaries per 64-byte block, which needs 22 bytes between boundaries;
+  upstream's host check allows 12. PQB's own table has exactly 22.
 
 Without a ranked flag the search is still upstream's random draws, but the binary is not
 upstream's: exceptional threads are detected and recomputed there too, and unknown or malformed

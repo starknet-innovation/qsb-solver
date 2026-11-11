@@ -14,6 +14,8 @@
 //   * ranked mode fails closed (non-zero exit) on a hit-buffer overflow or a z-block count that
 //     differs from the range's size, instead of warning and going on.
 //   * QG_FUSE=0 is refused at compile time (see the #error below).
+//   * round problems whose table slots are closer than the kernel's three-boundaries-per-block
+//     limit allows are refused (upstream's host check is weaker than its kernel).
 // Without a ranked flag the search is still upstream's random draws under --seconds, but it is not
 // the upstream binary: exceptional threads are detected and recomputed there too, and unknown or
 // malformed options are refused rather than ignored.
@@ -1039,7 +1041,11 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     } else {
         int slen = P.slot_len;
         for (size_t i = 1; i < P.slot_offs.size(); i++)
-            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 12) { fprintf(stderr, "slots too close\n"); return 4; }
+            // qsb-solver: stream_block handles at most three deletion boundaries per 64-byte block, so
+            // boundaries (slot starts less the deleted bytes before them) must be at least 22 bytes
+            // apart: four of them 21 apart would fit in one block. Upstream checks 12 here, which is
+            // weaker than its kernel supports; PQB's own table has 22.
+            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 22) { fprintf(stderr, "slots too close\n"); return 4; }
         size_t L = pre.size(), Lm = L - (size_t)T * slen;
         nblk = (uint)((Lm + 9 + 63) / 64);
         std::vector<uint8_t> E(pre);
