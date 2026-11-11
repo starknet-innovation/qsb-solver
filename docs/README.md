@@ -68,6 +68,7 @@ artifact-specific applicability assessment.
 - [Standalone optimized subset](../worker/optimized/README.md): a separate build target, not the complete published image.
 - [A10G method record](promotion/A10G-PERFORMANCE.md): retained preparation methodology for the completed September gate.
 - [AWS controller on main](../ops/aws-gpu-execution/README.md): historical scoped controller, not a standing launch authorization.
+- [PQB candidate assessment](pqb/ASSESSMENT.md): a separate HOLD worker for PQB vaults; not part of any published image.
 - [Licensing](../LICENSES.md): upstream notices and redistribution scope.
 
 ## Historical records

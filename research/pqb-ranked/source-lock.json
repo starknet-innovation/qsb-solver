@@ -1,0 +1,31 @@
+{
+ "format": "qsb-pqb-ranked-source-lock-v1",
+ "status": "HOLD",
+ "upstream": {
+  "repository": "https://github.com/fireblocks-labs/pqb",
+  "commit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "adaptedFrom": "grinder/grind.cu",
+  "adaptedFromSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5"
+ },
+ "sources": {
+  "research/pqb-ranked/grind.cu": "99c96235344c894c987a7a17926b9b0883a7d46e763fae63b7dd91ca5ee59dd3",
+  "vendor/pqb/grinder/common.cuh": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+  "vendor/pqb/grinder/ptx_field.cuh": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff"
+ },
+ "compile": {
+  "compiler": "nvcc (CUDA 12.8.1 devel image, pinned by digest in worker/pqb/Dockerfile)",
+  "flags": [
+   "-O3",
+   "-std=c++17",
+   "-arch=sm_${CUDA_ARCH}",
+   "-I",
+   "vendor/pqb/grinder"
+  ],
+  "upstreamFlags": [
+   "-O3",
+   "-std=c++17",
+   "-arch=native"
+  ],
+  "note": "Upstream compiles on the rented box with -arch=native and CUDA 12.6.3; this recipe fixes the architecture and uses the repository's pinned 12.8.1 toolchain. Upstream rate measurements do not describe this build."
+ }
+}

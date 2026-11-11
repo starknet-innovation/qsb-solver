@@ -27,6 +27,10 @@ python3 worker/optimized/test_image.py qsb-optimized:local
 
 Source/unit/build checks do not establish native correctness or end-to-end execution. The exact combined release has separate native evidence; new builds need their own assessment. No mainnet enablement or provider allocation is performed by this repository's CI.
 
+## PQB candidate worker
+
+[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v1` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. It has CPU-emulation evidence only: no native GPU run, no timing, no published image, and no qsb-app support. See the [assessment](docs/pqb/ASSESSMENT.md). It does not change the historical or combined QSB images.
+
 ## Release
 
 An `aws-v*` Git tag builds the historical worker for Linux amd64/sm_86 (AWS A10G), pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes a schema-v3 descriptor and exact range vectors. `searchContract` is the SHA-256 of UTF-8 canonical JSON (recursive sorted keys, compact separators, array order preserved) for `contracts/ranked-v2.json`. The descriptor generator checks every valid and invalid vector against the worker before hashing. Consumers must require the same hash as their independently tested contract. Earlier schema-v2 releases remain immutable; they do not gain this binding retroactively, and a new tagged release plus explicit consumer enrollment is required. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
