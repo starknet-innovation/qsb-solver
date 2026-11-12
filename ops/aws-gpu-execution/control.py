@@ -34,6 +34,21 @@ def qualified_shape(call, instance_type, quota):
     return shape
 
 
+def placement_options(call, config, automatic):
+    if not automatic:
+        return {'SubnetId':config['subnet']}
+    vpcs=call('ec2','describe-vpcs',VpcIds=[config['vpc']])['Vpcs']
+    subnets=call('ec2','describe-subnets',Filters=[{'Name':'vpc-id','Values':[config['vpc']]},
+                 {'Name':'default-for-az','Values':['true']}])['Subnets']
+    if (len(vpcs)!=1 or vpcs[0]['VpcId']!=config['vpc'] or not vpcs[0].get('IsDefault')
+            or not subnets or any(s['VpcId']!=config['vpc'] or not s.get('DefaultForAz')
+                                    or not s.get('MapPublicIpOnLaunch') for s in subnets)):
+        raise ValueError('Automatic placement requires the verified default VPC and public default subnets')
+    # RunInstances chooses a default subnet when none is supplied. The explicit no-ingress
+    # security-group ID still pins the verified VPC. Record actual subnet/AZ after launch.
+    return {}
+
+
 def aws(service, operation, **request):
     config=load_config()
     if _ACTIVE_CONFIG is not None and config != _ACTIVE_CONFIG:
@@ -95,8 +110,9 @@ def main():
     parser.add_argument('--state',type=Path,required=True)
     parser.add_argument('--instance-type',choices=SINGLE_A10G)
     parser.add_argument('--session-minutes',type=int,choices=(25,60))
+    parser.add_argument('--auto-default-subnet',action='store_true')
     args=parser.parse_args();path=args.state
-    if (args.instance_type is not None or args.session_minutes is not None) and args.mode != 'prepare':
+    if (args.instance_type is not None or args.session_minutes is not None or args.auto_default_subnet) and args.mode != 'prepare':
         parser.error('Session size and duration are recorded at prepare only')
     config=load_config()
     _ACTIVE_CONFIG=dict(config)
@@ -110,7 +126,8 @@ def main():
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
         token=str(uuid.uuid4());name='qsb-bench-'+token[:8]
         s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config,
-           'instanceType':args.instance_type or 'g5.xlarge','sessionMinutes':args.session_minutes or 25}
+           'instanceType':args.instance_type or 'g5.xlarge','sessionMinutes':args.session_minutes or 25,
+           'autoDefaultSubnet':args.auto_default_subnet}
         path.parent.mkdir(parents=True,exist_ok=True);save(path,s)
         role(name+'-host','ec2.amazonaws.com',(ROOT/'ops/aws-gpu-benchmark/instance-policy.json').read_text())
         aws('iam','create-instance-profile',InstanceProfileName=name)
@@ -181,20 +198,23 @@ def main():
             if image['Architecture']!='x86_64' or image['OwnerId']!='898082745236': raise ValueError('Unexpected AMI')
             groups=aws('ec2','describe-security-groups',GroupIds=[s['securityGroup']])['SecurityGroups']
             if groups[0]['IpPermissions']: raise ValueError('Ingress forbidden')
+            if groups[0]['VpcId']!=VPC: raise ValueError('Security group VPC differs')
+            placement=placement_options(aws,config,s.get('autoDefaultSubnet',False))
             # Guest timer shares the prearmed deadline, even if boot is delayed.
             start=datetime.fromtimestamp(s['deadline'],timezone.utc)-timedelta(minutes=55)
             user_data=boot_script(start)
             if s.get('sessionMinutes',25)==60:
                 user_data=user_data.replace('/sbin/shutdown -h +55','/sbin/shutdown -h +60')
             request={'ImageId':AMI,'InstanceType':instance_type,'MinCount':1,'MaxCount':1,'ClientToken':s['token'],
-                'SubnetId':SUBNET,'SecurityGroupIds':[s['securityGroup']], 'IamInstanceProfile':{'Name':name},
+                **placement,'SecurityGroupIds':[s['securityGroup']], 'IamInstanceProfile':{'Name':name},
                 'InstanceInitiatedShutdownBehavior':'terminate','DisableApiTermination':False,
                 'MetadataOptions':{'HttpTokens':'required','HttpPutResponseHopLimit':1},'UserData':user_data,
                 'BlockDeviceMappings':[{'DeviceName':image['RootDeviceName'],'Ebs':{'VolumeSize':80,'VolumeType':'gp3','Encrypted':True,'DeleteOnTermination':True}}],
                 'TagSpecifications':[{'ResourceType':'instance','Tags':[{'Key':'Name','Value':name},{'Key':'QsbBenchmarkToken','Value':s['token']},{'Key':'SourceCommit','Value':commit}]}]}
             s.update(phase='launch-intent',request=request);save(path,s)
             instance=aws('ec2','run-instances',**request)['Instances'][0]
-            s.update(phase='launched',instanceId=instance['InstanceId'],launchTime=instance['LaunchTime']);save(path,s)
+            s.update(phase='launched',instanceId=instance['InstanceId'],launchTime=instance['LaunchTime'],
+                     actualSubnet=instance.get('SubnetId'),actualPlacement=instance.get('Placement'));save(path,s)
         elif args.mode=='cleanup':
             instances=[i for r in aws('ec2','describe-instances',Filters=[{'Name':'tag:QsbBenchmarkToken','Values':[s['token']]}])['Reservations'] for i in r['Instances']]
             for i in instances:

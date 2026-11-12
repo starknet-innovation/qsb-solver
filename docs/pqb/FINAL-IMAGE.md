@@ -45,6 +45,12 @@ the provider's actual GPU/CPU description and effective quota before submission.
 pricing against the recorded session reservation first. Preserve and clean up failed sessions before
 choosing a new size; no armed deadline or request is edited or retried. The image/partition
 remain the same; different CPU resources are recorded and are not a matched performance claim.
+Fresh sessions may explicitly select `--auto-default-subnet` at prepare to let EC2 choose
+the Availability Zone within the verified default VPC. Before launch, the controller verifies
+that VPC and its public default subnets, and retains the dedicated no-ingress security group.
+It records the actual selected subnet/AZ. This makes one regional launch request, not a loop
+of uncertain launches. Explicit subnet placement remains the default. See the
+[RunInstances subnet semantics](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RunInstances.html).
 Each session imports the same verified OCI archive; the actual rootfs diff IDs and every
 runtime config field must equal the attested image's configuration before compute. Docker's
 containerd store can report an index/manifest in `.Id`, so that field is retained separately

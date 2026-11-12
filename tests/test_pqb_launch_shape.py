@@ -9,6 +9,17 @@ control=importlib.util.module_from_spec(spec);spec.loader.exec_module(control)
 
 
 class LaunchShapeTests(unittest.TestCase):
+    def test_auto_placement_requires_default_vpc_and_safe_default_subnets(self):
+        config=dict(vpc='vpc-test',subnet='subnet-test')
+        call=Mock(side_effect=[dict(Vpcs=[dict(VpcId='vpc-test',IsDefault=True)]),
+                              dict(Subnets=[dict(VpcId='vpc-test',DefaultForAz=True,MapPublicIpOnLaunch=True)])])
+        self.assertEqual(control.placement_options(call,config,True),{})
+        self.assertEqual(control.placement_options(Mock(),config,False),dict(SubnetId='subnet-test'))
+        for defaults in [[],[dict(VpcId='wrong',DefaultForAz=True,MapPublicIpOnLaunch=True)],
+                         [dict(VpcId='vpc-test',DefaultForAz=True,MapPublicIpOnLaunch=False)]]:
+            call=Mock(side_effect=[dict(Vpcs=[dict(VpcId='vpc-test',IsDefault=True)]),dict(Subnets=defaults)])
+            with self.assertRaises(ValueError):control.placement_options(call,config,True)
+
     def shape(self,**changes):
         return dict(InstanceType='g5.4xlarge',GpuInfo=dict(Gpus=[dict(Name='A10G',Count=1)]),
                     ProcessorInfo=dict(SupportedArchitectures=['x86_64']),VCpuInfo=dict(DefaultVCpus=16),**changes)
