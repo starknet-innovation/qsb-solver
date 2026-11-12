@@ -1,0 +1,438 @@
+{
+  "format": "qsb-upstream-emitted-check-v1",
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "stage": "round2",
+  "validatorSha256": "332821bdd8b543910f67f78061ca5bb87a3943ea37e68d860c0b670e47e1c7f3",
+  "packetExportSha256": "0f96ad218f9c387e8b7d71a4720def809b6d886158b25b88cf0b2b8ee176458b",
+  "problemSha256": "7a41a4caefb7d871d391a9de8111fcb6cf6cc355b7900a500c02fd36b489e38e",
+  "gateBits": 24,
+  "curveBackend": {
+    "implementation": "native-coincurve",
+    "version": "21.0.0",
+    "python": "3.13.4 (v3.13.4:8a526ec7cbe, Jun  3 2025, 21:14:54) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "machine": "arm64",
+    "sharedObjectSha256": "772f622a55d225abee60644f9a9d26811cb32f207bf835de82233f6155b8e917"
+  },
+  "sighashSamples": 8,
+  "completedUnits": 27,
+  "otherProblemJobsNotChecked": [],
+  "records": [
+    {
+      "jobId": "0136b1c7-8299-46b0-b3ac-2fb41e691cd5",
+      "attempt": 21,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "02856694-1e01-4cf3-852c-fe3616b0d7df",
+      "attempt": 7,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "065935d9-1c94-4b4f-ac40-3cfd41899651",
+      "attempt": 14,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "50b1925b-362e-46d9-8284-ef1670d21932",
+      "attempt": 0,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "5b2622eb-e29d-4bd2-be19-fccbd3c4d9c5",
+      "attempt": 18,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "617ef0ae-fdf2-4d7e-a9d7-e845c86e9905",
+      "attempt": 20,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "656ad7ab-bd58-437f-8282-eb2992237e0a",
+      "attempt": 13,
+      "candidates": [
+        {
+          "line": "1,2,3,13,14,16,33,43,53 6 0 0 1",
+          "details": {
+            "nonce": 186534279937,
+            "variant": 0,
+            "menu_index": 6,
+            "encoding": 0,
+            "ladder": 0,
+            "digest": "301d0204fa79146902157772f4cfa3397d232c7750d7afa91cc4fef4463edf43",
+            "der_prefix_bytes": 3
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "756120ae-8ced-41c0-b573-a1e69023ce81",
+      "attempt": 26,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "75ab7b8e-bcfe-42af-9dcf-8afcbb7478a3",
+      "attempt": 3,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "7b70c617-44ed-45a9-9ee0-a50393304829",
+      "attempt": 25,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "7ff8b065-7924-4cb9-99ba-4c0482788643",
+      "attempt": 6,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "8234acd8-b67b-4e83-8a4a-694db939e6c5",
+      "attempt": 15,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "824fcd48-7894-4ccd-ab86-153187a56e26",
+      "attempt": 22,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "8734f6b6-c1f7-4220-b3f1-545e89c163da",
+      "attempt": 5,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "8aac7227-52ae-4949-a883-805aa5c9a112",
+      "attempt": 24,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "8d6fcc92-0023-41ab-849c-6b382248987b",
+      "attempt": 12,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "905b3d90-2dc2-4ac3-9272-2b6277804cd6",
+      "attempt": 4,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "a02b6e10-c6e0-4e12-b3fe-af5a1da0f006",
+      "attempt": 11,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "bba83b2d-ea19-41fc-96cf-8d4a6488e113",
+      "attempt": 1,
+      "candidates": [
+        {
+          "line": "0,2,25,43,55,62,71,76,82 14 3 0 1",
+          "details": {
+            "nonce": 26699027071,
+            "variant": 3,
+            "menu_index": 14,
+            "encoding": 0,
+            "ladder": 0,
+            "digest": "301d02042d42a70102159e17479d62560c94e9e265340937cd836b10b001fcb4",
+            "der_prefix_bytes": 5
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 5
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "c2b69712-10f4-47df-a0e3-d80903ecea44",
+      "attempt": 2,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "c953770e-ea8c-4eec-ae10-3ecfaa069397",
+      "attempt": 17,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "cd57b8f2-d97a-4ea3-b64f-026fb460a4da",
+      "attempt": 19,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "d93e664f-324d-4124-bd02-8fb04dc5119e",
+      "attempt": 9,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "d9dfffa1-f4fb-4fc5-960b-ac2cf166caae",
+      "attempt": 16,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "dfaac880-d935-45ce-a432-524408a72022",
+      "attempt": 10,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "f6346f2f-b02d-4e49-baab-a99057164e19",
+      "attempt": 23,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "fcf9fb96-b09f-4bd0-9bff-19de875ac159",
+      "attempt": 8,
+      "candidates": [
+        {
+          "line": "0,14,17,53,68,77,82,93,98 12 0 0 1",
+          "details": {
+            "nonce": 128864668338,
+            "variant": 0,
+            "menu_index": 12,
+            "encoding": 0,
+            "ladder": 0,
+            "digest": "301d0218e5e83131fec5102931cc917dc8687514a4cee05cd373da60020100d2",
+            "der_prefix_bytes": 3
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      },
+      "consumerDecisionMatched": true
+    }
+  ]
+}

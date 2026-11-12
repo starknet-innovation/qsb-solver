@@ -1,0 +1,45 @@
+{
+  "format": "qsb-pqb-merge-readiness-v1",
+  "checkedHead": "e41580065d68579d7b7f0be0d2991942a5ea93db",
+  "status": "not-ready",
+  "unresolvedThreads": [
+    {
+      "id": "PRRT_kwDOUq1e7s62hpKk",
+      "path": "ops/pqb-public-solve/control.py",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4547900482"
+    },
+    {
+      "id": "PRRT_kwDOUq1e7s62hpKn",
+      "path": "ops/aws-gpu-execution/control.py",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4547900490"
+    },
+    {
+      "id": "PRRT_kwDOUq1e7s62hpKr",
+      "path": "ops/pqb-public-solve/control.py",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4547900498"
+    },
+    {
+      "id": "PRRT_kwDOUq1e7s62kTLu",
+      "path": "scripts/check_pqb_final.py",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4549047594"
+    },
+    {
+      "id": "PRRT_kwDOUq1e7s62kTL1",
+      "path": "scripts/pqb_import.py",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4549047609"
+    },
+    {
+      "id": "PRRT_kwDOUq1e7s62kTL_",
+      "path": "ops/aws-gpu-execution/host-pqb-final-image.sh",
+      "outdated": false,
+      "url": "https://github.com/starknet-innovation/qsb-solver/pull/18#discussion_r4549047621"
+    }
+  ],
+  "publicationBlocked": true,
+  "scope": "Live review snapshot before the TLS source-fix commit. These six findings are distinct from the Critical CVE review; they were not resolved by the TLS patch."
+}

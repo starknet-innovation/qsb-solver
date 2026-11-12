@@ -1,0 +1,37 @@
+{
+  "format": "qsb-pqb-final-cost-accounting-v1",
+  "status": "estimated-not-provider-billing",
+  "reservationUsd": 10,
+  "reservationReleased": true,
+  "allocatedInstances": [
+    {
+      "session": "pinning-uk",
+      "priceUsdPerHour": 2.06148,
+      "launchTime": "2026-11-12T08:30:58+00:00",
+      "firstTerminationAt": "2026-11-12T08:36:45+00:00",
+      "terminatedReadbackCollectedAt": "2026-11-12T08:43:02.001826+00:00",
+      "computeEstimateThroughFirstTerminationUsd": 0.19870376666666667,
+      "conservativeComputeEstimateThroughTerminatedReadbackUsd": 0.41458757896180004
+    },
+    {
+      "session": "all-ie2auto",
+      "priceUsdPerHour": 1.35296,
+      "launchTime": "2026-11-12T09:24:20+00:00",
+      "firstTerminationAt": "2026-11-12T09:53:32+00:00",
+      "terminatedReadbackCollectedAt": "2026-11-12T09:59:22.965372+00:00",
+      "computeEstimateThroughFirstTerminationUsd": 0.6584405333333333,
+      "conservativeComputeEstimateThroughTerminatedReadbackUsd": 0.7903411193614222
+    }
+  ],
+  "totalThroughFirstTerminationUsd": 0.8571443,
+  "conservativeTotalThroughTerminatedReadbacksUsd": 1.2049286983232221,
+  "excluded": [
+    "Storage",
+    "IPv4",
+    "Network",
+    "S3",
+    "Lambda/Scheduler/SSM and other service charges",
+    "GitHub usage"
+  ],
+  "limits": "Includes the failed setup host and all allocated lifetimes through stated cutoffs. Terminated-readback timestamps are local collection times bounding the provider termination, not exact billed lifetimes. Provider billing was not queried."
+}

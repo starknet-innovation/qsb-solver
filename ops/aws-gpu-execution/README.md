@@ -1,5 +1,10 @@
 # One-shot optimized A10G gate
 
+The separately authorized [final PQB image assessment](../../docs/pqb/FINAL-IMAGE.md) adds
+explicit prepare-time single-A10G sizes and a 60-minute consolidated qualification session.
+Default duration remains 25 minutes; neither option resumes an old campaign or extends an
+armed deadline. Its exact image/harness/controller identities and cleanup are separate.
+
 This documents the controller shipped on `main`, with its original Ireland scope
 and 25-minute deadline. Later research-branch controllers and campaign permissions
 do not change this implementation. The recorded gate is historical; do not restart
@@ -16,6 +21,11 @@ Control-plane latency is not a guaranteed billing ceiling. Terminate immediately
 on success/failure and verify instance, volume and temporary-resource removal.
 
 Never reuse a state file or retry an uncertain launch; reconcile its token.
+Checkpoint writes flush and fsync the temporary file, atomically rename it and fsync
+the parent directory before dependent API mutations. Preparation verifies HEAD against
+the configured remote branch's live tip with `git ls-remote`; a local tracking ref is
+insufficient. Cleanup follows Lambda `NextMarker` pages and fails without marking the
+campaign cleaned if the listing cannot be completed.
 Record the returned root volume before setup. A fresh `run_a10g.py` output file is
 a one-shot execution marker. Bind-mount the committed public validation directory
 read-only into the attested candidate container, run with network none, GPU access,
@@ -50,7 +60,10 @@ The file contains exactly `account`, `profile`, `region`, `ami`, `subnet`, and
 ```
 
 These are placeholders, not launch configuration. The controller verifies STS
-against the configured account and restricts the region to Ireland. New external
+against the configured account and restricts the region to Ireland or London
+(`eu-west-1`, `eu-west-2`; London was added on 11 November 2026 after every Ireland
+zone refused a `g5.xlarge` for capacity). The image, subnet and VPC must be the
+chosen region's own. New external
 execution receipts freeze the configuration; resume rejects changes or legacy
 state without that binding. Never mutate an old receipt to bypass that check:
 reconcile prior resources using their original committed controller and scope.
@@ -58,3 +71,26 @@ No prior experiment is authorized to relaunch by this configuration change.
 Keep original private operational receipts outside Git; public evidence uses
 hashes and cleanup counts. Earlier branch history remains unchanged and must be
 considered separately before any requested history rewrite.
+
+## Connected AWS MCP transport
+
+When using the connected AWS MCP tool instead of the local CLI, set `QSB_AWS_MCP_RPC_DIR` to a
+fresh external receipt directory. The committed controller persists each API intent through
+`mcp_rpc.py` and waits for its response. The operator must atomically create `<id>.dispatched`
+before calling that request exactly once with the AWS MCP `run_script` / `call_boto3` tool,
+then atomically write `<id>.response.json` as `{"result": RESPONSE}` or `{"error": MESSAGE}`.
+For `CreateFunction`, the persisted request is the request to make, unchanged: `prepare` writes
+`cleanup.zip` beside the state (the same bytes on every call) and records its `cleanupCodeSha256`.
+Upload that exact file through the S3 presigned-URL tool, then run `arm` with
+`QSB_CLEANUP_CODE_S3_BUCKET` and `QSB_CLEANUP_CODE_S3_KEY` set; the controller then persists
+`Code: {"S3Bucket": BUCKET, "S3Key": KEY}` and refuses to start the deadline without them. It
+checks the returned `CodeSha256` against the local ZIP. Passing inline ZIP bytes through this MCP
+transport was observed to corrupt them into text and was rejected by AWS, so MCP mode never sends
+them. Delete the staging object/bucket during verified cleanup.
+Verify the tool's API-call receipt rather than trusting only returned text. Never dispatch an ID that
+already has a dispatch marker; a missing response is uncertain and requires reconciliation.
+
+This handoff changes the transport only: operator account binding, clean/pushed source,
+one-shot launch token, fixed deadline, independent cleanup and external state still apply.
+There is no permission or budget implied by configuring it. Do not put credentials or private
+workload inputs in the handoff directory.

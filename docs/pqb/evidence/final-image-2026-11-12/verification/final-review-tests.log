@@ -1,0 +1,14 @@
+test_archive_requires_original_hash_and_unambiguous_safe_inventory (tests.test_pqb_final_review.FinalReviewTests.test_archive_requires_original_hash_and_unambiguous_safe_inventory) ... ok
+test_failed_or_partial_host_receipt_cannot_be_credited (tests.test_pqb_final_review.FinalReviewTests.test_failed_or_partial_host_receipt_cannot_be_credited) ... ok
+test_verified_policy_binds_source_workflow_runner_and_run (tests.test_pqb_final_review.FinalReviewTests.test_verified_policy_binds_source_workflow_runner_and_run) ... ok
+test_corrupt_or_linked_public_gate_is_refused_before_worker_import (tests.test_pqb_oci.FinalImageGateTests.test_corrupt_or_linked_public_gate_is_refused_before_worker_import) ... ok
+test_imported_runtime_uses_rootfs_and_config_not_docker_store_id (tests.test_pqb_oci.FinalImageGateTests.test_imported_runtime_uses_rootfs_and_config_not_docker_store_id) ... ok
+test_corrupt_blob_is_rejected (tests.test_pqb_oci.OciIdentityTests.test_corrupt_blob_is_rejected) ... ok
+test_link_or_traversal_archive_member_is_rejected (tests.test_pqb_oci.OciIdentityTests.test_link_or_traversal_archive_member_is_rejected) ... ok
+test_registry_subject_is_exact_manifest_digest_not_config (tests.test_pqb_oci.OciIdentityTests.test_registry_subject_is_exact_manifest_digest_not_config) ... ok
+test_wrong_or_duplicate_platform_is_rejected (tests.test_pqb_oci.OciIdentityTests.test_wrong_or_duplicate_platform_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.008s
+
+OK

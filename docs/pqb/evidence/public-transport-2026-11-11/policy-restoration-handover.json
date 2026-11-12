@@ -1,0 +1,10 @@
+{
+  "pid": 89370,
+  "at": "2026-11-11T21:06:33.148582+00:00",
+  "reason": "Upstream HYBRID_KEYS_MINEABLE is True; restore original policy; all known jobs retained",
+  "submissions": 17,
+  "completed": 1,
+  "solutions": [],
+  "oldControllerStoppedAt": "2026-11-11T21:08:34.435040+00:00",
+  "newConsumerCommit": "276f2ae09d50ca44d46b035e45b6d0365802edcf"
+}

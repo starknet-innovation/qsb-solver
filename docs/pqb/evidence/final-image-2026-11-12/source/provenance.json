@@ -1,0 +1,16 @@
+{
+ "repository": "https://github.com/fireblocks-labs/pqb",
+ "commit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+ "commitDate": "2026-11-10T21:21:39+02:00",
+ "auditDate": "2026-11-11",
+ "license": "MIT (LICENSE); see THIRD_PARTY_NOTICES.md",
+ "note": "Byte-for-byte copies of the listed upstream paths. The upstream repository holds one commit; only the CUDA grinder and its notices are imported. Nothing here is built into the historical or combined QSB images.",
+ "files": {
+  "LICENSE": "d13e6ac8092492ce31a7a79fb9e461ab1fd1ce667405c4c94a7d12f2d7bc9ecc",
+  "THIRD_PARTY_NOTICES.md": "738dbf61c6ab0bed5b225deab43dd7421d53f6c7637ceb62c8f356dea57783fd",
+  "grinder/README.md": "0865e526d2dcd1860b06aeee0f16f7062e56b2d7f9545a6bd3a44aaef9e50a29",
+  "grinder/common.cuh": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+  "grinder/grind.cu": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5",
+  "grinder/ptx_field.cuh": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff"
+ }
+}

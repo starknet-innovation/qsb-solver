@@ -1,0 +1,14 @@
+test_bound_input_and_immutable_output (tests.test_aws.AwsTransportTest.test_bound_input_and_immutable_output) ... {"jobId": "12345678-1234-1234-1234-123456789abc", "status": "completed", "outputBytes": 179}
+ok
+test_client_uses_updated_system_roots_and_preserves_single_attempt (tests.test_aws.AwsTransportTest.test_client_uses_updated_system_roots_and_preserves_single_attempt) ... ok
+test_tampered_input_never_computes (tests.test_aws.AwsTransportTest.test_tampered_input_never_computes) ... ok
+test_unknown_fields_never_compute (tests.test_aws.AwsTransportTest.test_unknown_fields_never_compute) ... ok
+test_all_original_critical_matches_have_a_bound_decision (tests.test_pqb_critical_review.CriticalReviewTests.test_all_original_critical_matches_have_a_bound_decision) ... ok
+test_original_and_proposed_trust_results_are_not_conflated (tests.test_pqb_critical_review.CriticalReviewTests.test_original_and_proposed_trust_results_are_not_conflated) ... ok
+test_final_artifact_and_original_native_receipts_are_bound (tests.test_pqb_final_evidence.FinalEvidenceTests.test_final_artifact_and_original_native_receipts_are_bound) ... ok
+test_independent_cleanup_is_complete_and_reservations_released (tests.test_pqb_final_evidence.FinalEvidenceTests.test_independent_cleanup_is_complete_and_reservations_released) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.224s
+
+OK

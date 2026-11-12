@@ -1,0 +1,26 @@
+{
+  "format": "qsb-pqb-final-local-checks-v1",
+  "buildProvenanceReproduction": "passed",
+  "finalDescriptorAndFixtures": "passed",
+  "historicalHardenedConsumerReplay": "passed",
+  "nativeQualification": "passed",
+  "scope": "CPU/offline checks; native results are separate",
+  "unitTests": {
+    "total": 224,
+    "passed": 223,
+    "skipped": 1
+  },
+  "finalConsumer": "passed",
+  "consumerHarnessCorrection": "First local negative test altered an unused protocol response extension; corrected to the actual required searchVersion discriminator. Original failed CPU receipt retained. No consumer code change or GPU replay.",
+  "sourceBaseCommit": "f46209374c48d581549ffeacb6dff498f0902a79",
+  "finalPackageTests": {
+    "total": 11,
+    "passed": 11
+  },
+  "workingTreeNote": "Final evidence/docs/test additions were pending the review commit for these local CPU checks. No uncommitted source was remotely executed.",
+  "harnessSources": {
+    "scripts/check_pqb_final.py": "f17c35f991f762a1ef836a162cada89025efa9dc281e2d7c58dba5f70d678106",
+    "scripts/verify_pqb_build.py": "21c5a3c86e41e65466e0cb4db3f9d214b2de9c679a4a68df5253d7d664f250f7",
+    "tests/test_pqb_final_evidence.py": "f6ed58f68c0b004523a229547d2a9880f66b5744dc44bc98394b35b5aab23014"
+  }
+}

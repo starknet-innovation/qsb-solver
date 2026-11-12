@@ -1,0 +1,74 @@
+{
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "problemSha256": "2a504ce0e1aac7af84cf568c84185e8ff81e2dd74e942e0b338f29a7ec4d4931",
+  "gateBits": 24,
+  "completedPinningUnits": 33,
+  "records": [
+    {
+      "jobId": "1d4ed081-d557-4f01-9bd9-e67d39997c71",
+      "attempt": 22,
+      "candidate": "2147483965 1546952476 9 0 0 1",
+      "details": {
+        "nonce": 381446952476,
+        "variant": 0,
+        "menu_index": 9,
+        "encoding": 0,
+        "ladder": 0,
+        "digest": "301d02176ac9bde47791d3af655297d0a19e2696d9502b69fd7d5602020844e4",
+        "der_prefix_bytes": 5
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 1,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": true,
+        "best_der_bytes": 5
+      }
+    },
+    {
+      "jobId": "4304797b-e900-46e6-9b64-89075d3a83bb",
+      "attempt": 9,
+      "candidate": "2147483782 701017131 8 0 0 1",
+      "details": {
+        "nonce": 161001017131,
+        "variant": 0,
+        "menu_index": 8,
+        "encoding": 0,
+        "ladder": 0,
+        "digest": "301d0202859a02177967eb95154a309cb382bd306ab78dfd2d45e47ef4d18f28",
+        "der_prefix_bytes": 3
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      }
+    },
+    {
+      "jobId": "b31f0fe6-8029-4fa0-a04b-9a7df5321540",
+      "attempt": 23,
+      "candidate": "2147483975 1434214573 4 1 2 1",
+      "details": {
+        "nonce": 393334214573,
+        "variant": 1,
+        "menu_index": 4,
+        "encoding": 2,
+        "ladder": 0,
+        "digest": "301d02014002180ca9f5c4bb4ef434a1682efa9a068402513802cce562152aa3",
+        "der_prefix_bytes": 5
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 5
+      }
+    }
+  ]
+}

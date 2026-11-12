@@ -1,0 +1,19 @@
+{
+  "format": "qsb-pqb-final-consumer-v1",
+  "status": "failed",
+  "consumerCommit": "276f2ae09d50ca44d46b035e45b6d0365802edcf",
+  "consumerTree": "37e3b41d7142001d2cdf676f1101489e9d6e50f4",
+  "archiveSha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce",
+  "proposalSha256": "9865dbd2f829f8cf26be551abd02b76695de0d8059b0ee0d4e1201acbb4a62bc",
+  "harnessSha256": "dead51de2586c41ce635ff1d9d60da5e016b0cce62e931cba48dcff4a34d6a81",
+  "typescriptSha256": "58e01fe09d2fd2ad58769fb4ccde5cfbee18e3d712d23db762cc8024d05d5678",
+  "buildMetadataSha256": {
+    "SHA256SUMS": "1c0cce60f78f467c5ce9137baeadc48c3d781aecf496920ccfd3073c8d5aca88",
+    "oci-identity.json": "d7e7a9fce0327ac4f95b5f33641c540a37ac312e191beaff4ae0be81b530cde6",
+    "image-config.json": "ab005b0d7a042bac05002ef6532a1f3886dca3f5bf23c57e514e61c92ec473b3",
+    "binding.json": "42e4900be570dfbb7d120737edab1adb57aefab8e38bcd600cf25a6caeba4c7f",
+    "build-receipt.json": "5d1e163f5a7af046a9642f6618fdd04ea47f9ba37f8748ac9dff5722ecb7c59f"
+  },
+  "consumerLockSha256": "60c2eedb5c7cd3dcac3fe07ad7d9dcbfe3fe5facad78c37ffd13e0283c01b7fa",
+  "error": "node:internal/modules/run_main:123\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Missing expected exception.\n    at <anonymous> (/Users/adrienlacombe/.codex/experiments/pqb-final-image-20261112/final-consumer/check.mts:25:9) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: undefined,\n  expected: undefined,\n  operator: 'throws',\n  diff: 'simple'\n}\n\nNode.js v22.19.0\n"
+}

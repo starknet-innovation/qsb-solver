@@ -1,0 +1,346 @@
+{
+  "format": "qsb-pqb-critical-review-v1",
+  "date": "2026-11-12",
+  "image": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+    "platformDigest": "sha256:77b8c2db4ffb55923001b37c96599e0a3ae9a687ce06d5f386a9379b565550fe",
+    "configDigest": "sha256:ab005b0d7a042bac05002ef6532a1f3886dca3f5bf23c57e514e61c92ec473b3"
+  },
+  "sourceCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+  "scanSummarySha256": "4d4371da62c17e8e1eab2dfb9ab5697d05ec377cae081e7c140e7ab6de276385",
+  "rawScanSha256": "564ceeab48a17f007d20bd5a9ee1fcc14247a3fb9008b21ce8d91ee5f4d0889d",
+  "criticalPackageMatches": 20,
+  "distinctCves": 3,
+  "decision": "BLOCK-PUBLICATION",
+  "publicationVerified": false,
+  "enrolled": false,
+  "findings": [
+    {
+      "id": "CVE-2026-115557",
+      "package": "libpython3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      },
+      "disposition": "release-blocker",
+      "assessment": "CVE-2026-115557"
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "libpython3.10-stdlib",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      },
+      "disposition": "release-blocker",
+      "assessment": "CVE-2026-115557"
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "python3.10",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      },
+      "disposition": "release-blocker",
+      "assessment": "CVE-2026-115557"
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "python3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      },
+      "disposition": "release-blocker",
+      "assessment": "CVE-2026-115557"
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "libpython3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      },
+      "disposition": "not-reachable-in-supported-worker",
+      "assessment": "CVE-2026-19445"
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "libpython3.10-stdlib",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      },
+      "disposition": "not-reachable-in-supported-worker",
+      "assessment": "CVE-2026-19445"
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "python3.10",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      },
+      "disposition": "not-reachable-in-supported-worker",
+      "assessment": "CVE-2026-19445"
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "python3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      },
+      "disposition": "not-reachable-in-supported-worker",
+      "assessment": "CVE-2026-19445"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "dirmngr",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gnupg",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gnupg-l10n",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gnupg-utils",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gnupg2",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpg",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpg-agent",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpg-wks-client",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpg-wks-server",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpgconf",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpgsm",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    },
+    {
+      "id": "CVE-2026-118131",
+      "package": "gpgv",
+      "version": "2.2.27-3ubuntu2.5",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-118131@nvd:cpe": "Critical"
+      },
+      "disposition": "platform-not-applicable",
+      "assessment": "CVE-2026-118131"
+    }
+  ],
+  "groupCounts": {
+    "CVE-2026-115557": 4,
+    "CVE-2026-19445": 4,
+    "CVE-2026-118131": 12
+  },
+  "remediation": {
+    "status": "source-patch-and-local-overlay-tested; no replacement qualified image",
+    "entrypointSha256": "05407fe9a6c20bfd7aa31c590cf61e40f0ea63cbbf78aa9e1f6ff738f5552f29",
+    "change": "Pass verify=/etc/ssl/certs/ca-certificates.crt explicitly to the S3 client. Preserve certificate/hostname verification, timeouts, one-attempt transport and independent CPU checks.",
+    "evidence": "System bundle rejects all 16 offline bad chains and all 14 live test hosts; valid TLS control succeeds. Read-only entrypoint overlay passes real installed SDK selection, all 16 chains, Amazon root positive control, no-GPU and parser regressions.",
+    "limits": "This mitigates the worker transport through the tested system trust store. It does not patch CPython globally or modify the original image. A fresh committed build and artifact qualification are required before publication."
+  },
+  "scopeLimits": [
+    "Review covers the 20 Critical package matches, not all High/Medium findings or a full security audit",
+    "No evidence of an actual attack on prior work; tests used public disclosure endpoints without credentials or HTTP/AWS API calls",
+    "No registry push, release creation, enrollment, deployment, mainnet switch or paid hardware in this follow-up"
+  ],
+  "cveAssessments": {
+    "CVE-2026-115557": {
+      "disposition": "release-blocker",
+      "reason": "Outbound S3 TLS uses botocore bundled roots. Exact-image credential-free TLS probe accepted seven published compromised-key chains, including the no-CT AAA path. Root-store updates in Ubuntu are bypassed by this default.",
+      "primarySources": [
+        "https://mail.python.org/archives/list/security-announce@python.org/thread/FNAJMZV6XQYLVPABNINDMF3VF66AYLW4/",
+        "https://github.com/python/cpython/issues/160040",
+        "https://github.com/python/cpython/commit/7dd8b4736a1419750b94a388e6d158be15836fe6",
+        "https://emudhra.we-have-a-problem.com/"
+      ]
+    },
+    "CVE-2026-19445": {
+      "disposition": "not-reachable-in-supported-worker",
+      "reason": "The issue requires a TLS server with an SNI callback switching SSLContext lifetimes. This image runs a one-shot outbound S3 client and CUDA subprocess, with no Python TLS listener/SNI callback. The upstream advisory excludes TLS clients. Package remains installed and Ubuntu still lists Needs evaluation.",
+      "primarySources": [
+        "https://mail.python.org/archives/list/security-announce@python.org/thread/QMQIUQB6WGGC3MI7I3WKQXOYOBDSPPS3/",
+        "https://ubuntu.com/security/CVE-2026-19445"
+      ]
+    },
+    "CVE-2026-118131": {
+      "disposition": "platform-not-applicable",
+      "reason": "The reported exploit requires Windows ProgramData DACL inheritance and GnuPG 2.5.21 for Windows. This artifact is Linux/amd64 Ubuntu 22.04, with GnuPG 2.2.27 packages, and the worker does not invoke GnuPG. This is workload/platform triage, not a claim Ubuntu has fixed the CVE.",
+      "primarySources": [
+        "https://ubuntu.com/security/CVE-2026-118131",
+        "https://atos.net/en/lp/cybershield/a-tale-of-several-hijacks-and-what-it-taught-me-about-runtime-driven-testing"
+      ]
+    }
+  }
+}

@@ -1,0 +1,433 @@
+{
+  "caCount": 130,
+  "sectigoRoots": [
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Comodo CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "AAA Certificate Services"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Comodo CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "AAA Certificate Services"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "01",
+      "notBefore": "Jan  1 00:00:00 2004 GMT",
+      "notAfter": "Dec 31 23:59:59 2028 GMT",
+      "crlDistributionPoints": [
+        "http://crl.comodoca.com/AAACertificateServices.crl",
+        "http://crl.comodo.net/AAACertificateServices.crl"
+      ]
+    },
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO Certification Authority"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO Certification Authority"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "4E812D8A8265E00B02EE3E350246E53D",
+      "notBefore": "Dec  1 00:00:00 2006 GMT",
+      "notAfter": "Dec 31 23:59:59 2029 GMT",
+      "crlDistributionPoints": [
+        "http://crl.comodoca.com/COMODOCertificationAuthority.crl"
+      ]
+    },
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO ECC Certification Authority"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO ECC Certification Authority"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "1F47AFAA62007050544C019E9B63992A",
+      "notBefore": "Mar  6 00:00:00 2008 GMT",
+      "notAfter": "Jan 18 23:59:59 2038 GMT"
+    },
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO RSA Certification Authority"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "GB"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "Greater Manchester"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Salford"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "COMODO CA Limited"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "COMODO RSA Certification Authority"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "4CAAF9CADB636FE01FF74ED85B03869D",
+      "notBefore": "Jan 19 00:00:00 2010 GMT",
+      "notAfter": "Jan 18 23:59:59 2038 GMT"
+    },
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "New Jersey"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Jersey City"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "The USERTRUST Network"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "USERTrust ECC Certification Authority"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "New Jersey"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Jersey City"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "The USERTRUST Network"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "USERTrust ECC Certification Authority"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "5C8B99C55A94C5D27156DECD8980CC26",
+      "notBefore": "Feb  1 00:00:00 2010 GMT",
+      "notAfter": "Jan 18 23:59:59 2038 GMT"
+    },
+    {
+      "subject": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "New Jersey"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Jersey City"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "The USERTRUST Network"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "USERTrust RSA Certification Authority"
+          ]
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "stateOrProvinceName",
+            "New Jersey"
+          ]
+        ],
+        [
+          [
+            "localityName",
+            "Jersey City"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "The USERTRUST Network"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "USERTrust RSA Certification Authority"
+          ]
+        ]
+      ],
+      "version": 3,
+      "serialNumber": "01FD6D30FCA3CA51A81BBC640E35032D",
+      "notBefore": "Feb  1 00:00:00 2010 GMT",
+      "notAfter": "Jan 18 23:59:59 2038 GMT"
+    }
+  ],
+  "sslBinary": "/usr/lib/python3.10/lib-dynload/_ssl.cpython-310-x86_64-linux-gnu.so"
+}

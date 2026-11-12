@@ -1,0 +1,522 @@
+{
+  "format": "qsb-upstream-emitted-check-v1",
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "stage": "pinning",
+  "validatorSha256": "332821bdd8b543910f67f78061ca5bb87a3943ea37e68d860c0b670e47e1c7f3",
+  "packetExportSha256": "8130e2d3156d43f2dd9d6208ac6adc97457fd168ff7b69afe9bec263c02ee519",
+  "problemSha256": "2a504ce0e1aac7af84cf568c84185e8ff81e2dd74e942e0b338f29a7ec4d4931",
+  "gateBits": 24,
+  "curveBackend": {
+    "implementation": "native-coincurve",
+    "version": "21.0.0",
+    "python": "3.13.4 (v3.13.4:8a526ec7cbe, Jun  3 2025, 21:14:54) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "machine": "arm64",
+    "sharedObjectSha256": "772f622a55d225abee60644f9a9d26811cb32f207bf835de82233f6155b8e917"
+  },
+  "sighashSamples": 8,
+  "completedUnits": 33,
+  "otherProblemJobsNotChecked": [],
+  "records": [
+    {
+      "jobId": "01961da3-4baf-4426-b14c-36736f72c5aa",
+      "attempt": 18,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "042b9805-0f47-4a45-958a-073f88299b59",
+      "attempt": 31,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "046bbb23-93e8-4d30-9d3e-d8a67ae4c366",
+      "attempt": 10,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "113ba85e-65b7-4b39-84f8-e09189e45704",
+      "attempt": 7,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "1d4ed081-d557-4f01-9bd9-e67d39997c71",
+      "attempt": 22,
+      "candidates": [
+        {
+          "line": "2147483965 1546952476 9 0 0 1",
+          "details": {
+            "nonce": 381446952476,
+            "variant": 0,
+            "menu_index": 9,
+            "encoding": 0,
+            "ladder": 0,
+            "digest": "301d02176ac9bde47791d3af655297d0a19e2696d9502b69fd7d5602020844e4",
+            "der_prefix_bytes": 5
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 1,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": true,
+        "best_der_bytes": 5
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "22f21dcb-dbd0-4398-9e32-7fe3e54e3229",
+      "attempt": 13,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "2d5bdd37-4ef7-4a21-af21-c1c88d0e8900",
+      "attempt": 5,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "329230b6-1f85-4289-89e4-d18b2e6eecba",
+      "attempt": 27,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "3a73c675-b6bc-4b90-93dd-9f45194a601c",
+      "attempt": 16,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "4304797b-e900-46e6-9b64-89075d3a83bb",
+      "attempt": 9,
+      "candidates": [
+        {
+          "line": "2147483782 701017131 8 0 0 1",
+          "details": {
+            "nonce": 161001017131,
+            "variant": 0,
+            "menu_index": 8,
+            "encoding": 0,
+            "ladder": 0,
+            "digest": "301d0202859a02177967eb95154a309cb382bd306ab78dfd2d45e47ef4d18f28",
+            "der_prefix_bytes": 3
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "52a71e4f-4174-4108-aab2-0c179066c772",
+      "attempt": 2,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "5405650b-b0a5-4dfb-ada1-50fa133e5481",
+      "attempt": 6,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "59147659-fbea-448f-91ad-559f40ca6939",
+      "attempt": 12,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "6778cd7d-cb7d-4f8c-92c4-270b9ea293a5",
+      "attempt": 25,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "990c2802-fc7c-4d37-92a3-f4ddcc856002",
+      "attempt": 32,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "9f3ad4da-23ac-412d-93a5-5da998e7fc4e",
+      "attempt": 29,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "a3ef7ae5-66a4-475a-b710-ea577a8f0f35",
+      "attempt": 26,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "ac011d4e-2a2a-4d93-800f-fe112ecf4656",
+      "attempt": 4,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "af1d01e6-c58d-4fb9-af1f-57bd0f97ada7",
+      "attempt": 1,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "b31f0fe6-8029-4fa0-a04b-9a7df5321540",
+      "attempt": 23,
+      "candidates": [
+        {
+          "line": "2147483975 1434214573 4 1 2 1",
+          "details": {
+            "nonce": 393334214573,
+            "variant": 1,
+            "menu_index": 4,
+            "encoding": 2,
+            "ladder": 0,
+            "digest": "301d02014002180ca9f5c4bb4ef434a1682efa9a068402513802cce562152aa3",
+            "der_prefix_bytes": 5
+          }
+        }
+      ],
+      "checks": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 5
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "b8fb3c25-f91c-4476-a2ea-4d328a64b418",
+      "attempt": 0,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "b93f9122-c084-479c-9276-c4a54dd19b71",
+      "attempt": 17,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "bd81e5e7-ad46-4f61-b9a3-b768fd49e1f5",
+      "attempt": 11,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "be5b0619-156a-4bf5-ad2d-a0eb913193ce",
+      "attempt": 21,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "c73db975-e7a1-4759-8848-fed1b273663e",
+      "attempt": 28,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "c79f3bb6-4544-4327-99b2-d97a96eb9337",
+      "attempt": 30,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "d6ba8423-02bb-4f82-8be0-ec73c28d5293",
+      "attempt": 24,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "dd846865-9a10-4c6f-b645-29bdcbf5cdd5",
+      "attempt": 19,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "e589597c-cc71-4e0f-a90a-d078f33d11f8",
+      "attempt": 14,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "ebc8f83c-5493-480d-804a-28f9186dd4df",
+      "attempt": 3,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "f53f38bc-ef7e-4720-86bd-0bf1d1bdd061",
+      "attempt": 15,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "f66565c4-2a4a-4ddb-a777-3085d56934d4",
+      "attempt": 8,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    },
+    {
+      "jobId": "fc94198f-d4c5-4c57-a517-21f9266e91df",
+      "attempt": 20,
+      "candidates": [],
+      "checks": {
+        "checked": 0,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 0,
+        "best_is_full": false,
+        "best_der_bytes": 0
+      },
+      "consumerDecisionMatched": true
+    }
+  ]
+}

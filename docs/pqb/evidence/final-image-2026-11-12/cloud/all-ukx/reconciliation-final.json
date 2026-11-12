@@ -1,0 +1,76 @@
+{
+  "format": "qsb-scoped-cleanup-projection-v1",
+  "originalReceiptSha256": "3fbd02b7e896ddc3bd183ce64e63692f87e0a57751bcb4a5253dfd0a48b401e7",
+  "scope": "qsb-bench-e5be10d6",
+  "projection": "Unrelated account resources omitted; full original receipt retained in external campaign",
+  "return_value": {
+    "instances": {
+      "Reservations": []
+    },
+    "sg": {
+      "SecurityGroups": []
+    },
+    "roles": {
+      "Roles": []
+    },
+    "profiles": {
+      "InstanceProfiles": []
+    },
+    "functions": {
+      "Functions": []
+    },
+    "schedules": {
+      "Schedules": []
+    }
+  },
+  "api_calls": [
+    {
+      "service": "ec2",
+      "operation": "DescribeInstances",
+      "status": "success",
+      "n_items": {
+        "Reservations": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeSecurityGroups",
+      "status": "success",
+      "n_items": {
+        "SecurityGroups": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListRoles",
+      "status": "success",
+      "n_items": {
+        "Roles": 68
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListInstanceProfiles",
+      "status": "success",
+      "n_items": {
+        "InstanceProfiles": 6
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "scheduler",
+      "operation": "ListSchedules",
+      "status": "success",
+      "n_items": {
+        "Schedules": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+test_contract_vectors_and_float_token_are_checked (tests.test_pqb_descriptor.PqbDescriptorTests.test_contract_vectors_and_float_token_are_checked) ... ok
+test_corrupt_evidence_is_rejected (tests.test_pqb_descriptor.PqbDescriptorTests.test_corrupt_evidence_is_rejected) ... ok
+test_cross_bound_image_and_receipt_mismatches_are_rejected (tests.test_pqb_descriptor.PqbDescriptorTests.test_cross_bound_image_and_receipt_mismatches_are_rejected) ... ok
+test_real_receipts_remain_hold_and_source_bound (tests.test_pqb_descriptor.PqbDescriptorTests.test_real_receipts_remain_hold_and_source_bound) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.839s
+
+OK

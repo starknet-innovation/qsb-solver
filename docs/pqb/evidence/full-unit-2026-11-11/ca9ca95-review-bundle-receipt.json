@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "ca9ca959613bee7f094b73c44d858b387b031694",
+  "ciRun": 43081715151,
+  "artifactId": 13885625408,
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "bundleTarSha256": "246df26dee38e28033360c15f4746534aacb145bf67b648e14fea5f4f44b2d10",
+  "checksumListSha256": "ad99fe6e6fa31c24ecfbe872df149a1049ad35e8fe1e718d4b2a8e98fe83ece8",
+  "cases": 13,
+  "filteredCases": [
+    [
+      "pin-der-filter",
+      0
+    ],
+    [
+      "pin-der-filter-emits",
+      1
+    ],
+    [
+      "pin-der-filter-emits-uncompressed",
+      1
+    ]
+  ]
+}

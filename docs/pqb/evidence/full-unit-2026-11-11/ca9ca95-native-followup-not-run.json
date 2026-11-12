@@ -1,0 +1,9 @@
+{
+  "status": "not-run",
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "reason": "The full measurement profile requires 780 seconds remaining after image setup. That margin could not be assured after the full-unit completion/collection; no supplemental compute command was sent and no deadline was extended.",
+  "sourceCommit": "ca9ca959613bee7f094b73c44d858b387b031694",
+  "cases": 13,
+  "additionalFilteredEmitCases": 2,
+  "nativeEvidence": "The full-unit campaign executed the 11-case suite at 0a25ec4; current binary is byte-identical; one production round1 candidate was independently re-derived."
+}

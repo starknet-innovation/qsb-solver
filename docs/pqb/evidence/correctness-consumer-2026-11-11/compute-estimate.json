@@ -1,0 +1,13 @@
+{
+  "format": "qsb-pqb-compute-estimate-v1",
+  "priceUsdPerHour": 1.123,
+  "priceBasis": "AWS Pricing GetProducts VUKEDVMSXUGE3HZN read this session; eu-west-1 Linux on-demand g5.xlarge",
+  "launchTime": "2026-11-11T19:39:59+00:00",
+  "providerShutdownTime": "2026-11-11T19:43:27+00:00",
+  "seconds": 208.0,
+  "estimatedComputeUsd": 0.06488444444444444,
+  "providerBilling": "not read",
+  "excluded": "storage, IPv4, S3, API and other charges",
+  "reservedUsd": 2,
+  "remainingReservationsUsd": 0
+}

@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "candidates": [
+    {
+      "line": "0,1,21,39,50,66,67,76,82 10 2 0 1",
+      "digest": "301d0209b7af06781a7c3dcf9c021062b524c54376fec54fe824dd37b6b027c1",
+      "nonce": "11930581570",
+      "strictDer": false
+    }
+  ],
+  "canonical": 1,
+  "fullSolutions": 0,
+  "limitation": "Necessary-condition native hit, not a full solution or consensus/spend test"
+}

@@ -1,0 +1,82 @@
+{
+ "format": "qsb-pqb-measure-evidence-v1",
+ "sourceCommit": "266f4a03599566a7eded3eb36aedff52c65f0551",
+ "ciRun": "43019767928 (push event)",
+ "binaries": {
+  "grind-ranked": "3f816a00d5e314315aca33e4f2ec2647462bd6243e09ff257ec7b20c445a7594",
+  "grind-upstream": "0a5de7e0faca7dfdf27b788bc6a4c33f42c77d0015a6c8edd69fb3fdffb0da74"
+ },
+ "bundle": {
+  "tarballSha256": "c1f73288a3fb65e51980e8f1ab0f1d388e0c9278a8a485810f40c7c9c326cd14",
+  "sha256sumsSha256": "22eee2835fbaaff732ac58a39ffa25f3028a1e8970b34022d91ee3099f20bdd4",
+  "staging": "temporary private S3 bucket with a presigned link, deleted after the session"
+ },
+ "runtimeImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48 (CUDA runtime only)",
+ "host": {
+  "instanceType": "g5.xlarge",
+  "availabilityZone": "eu-west-1b",
+  "launchTime": "2026-11-11T13:26:31+00:00",
+  "terminationRequested": "2026-11-11T13:33:15Z",
+  "deadline": 1794405079
+ },
+ "publicResultArchiveSha256": "ddcd0b6dc5b64d432fcd01239804564f90f52c4d270cbda544bfda1fe4702a7a",
+ "files": {
+  "deadline.txt": "2fbda52efc7b0ed90b93d55298fbdc18f18c150009cf6e7771730e231a8e046b",
+  "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+  "gate.log": "9bbcac3264beaf8a948a06d579b13d9ceb3ffdafcf5888e19f6748f17c035582",
+  "gpu.txt": "b5379c1cf432a9f49eed74dc12be69f1ad89888d97eeb7df409b64db6e5e6a77",
+  "result.json": "8be12e6ed8fc648cc5bd19fc2447673c940bcff3f6f6d09ba7f821a78c837965"
+ },
+ "attempts": [
+  {
+   "zone": "eu-west-1c",
+   "launchUtc": "12:03",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-1a",
+   "launchUtc": "12:05",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-1b",
+   "launchUtc": "12:07",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-2a",
+   "launchUtc": "12:17",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-2b",
+   "launchUtc": "12:18",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-1c",
+   "launchUtc": "13:23",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-1a",
+   "launchUtc": "13:25",
+   "outcome": "refused: InsufficientInstanceCapacity"
+  },
+  {
+   "zone": "eu-west-1b",
+   "launchUtc": "13:26",
+   "outcome": "launched; measurement completed"
+  }
+ ],
+ "cost": {
+  "estimatedUsd": 0.13,
+  "basis": "6.7 minutes of one g5.xlarge at $1.123/h (AWS Pricing API) plus negligible storage and S3; an estimate, not provider billing"
+ },
+ "cleanup": {
+  "instance": "terminated 13:33:15 UTC by the session driver",
+  "verifiedAt": "2026-11-11T13:40:51.664683+00:00",
+  "remaining": "0 instances, volumes, security groups, schedules, functions, roles, instance profiles, buckets",
+  "note": "The orchestrating job was stopped by the operator session after termination and before controller cleanup. The committed controller then removed the schedule, function and instance profile and failed on a network timeout; the three roles and the security group were deleted by name. Private receipts are outside Git."
+ }
+}

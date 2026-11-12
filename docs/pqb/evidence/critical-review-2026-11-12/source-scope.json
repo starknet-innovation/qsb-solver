@@ -1,0 +1,15 @@
+{
+  "originalEntrypointCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+  "originalEntrypointSha256": "79efe70b3eec6848bac521d49b7d6548c2a7dfea7205897a179a499a9d8b8e9e",
+  "proposedEntrypointSha256": "05407fe9a6c20bfd7aa31c590cf61e40f0ea63cbbf78aa9e1f6ff738f5552f29",
+  "proposedImageCheckSha256": "0f6f486f5bd875acbd2fb8fff3c600e62be6791c79b9d48c9dfdb8f380f49d6b",
+  "fixtureManifestSha256": "5fbde1de68bba916d8c11cf05735c1e9cc4a1b6ed3177ea44af51ca18049b9a4",
+  "unitTests": {
+    "total": 225,
+    "passed": 224,
+    "skipped": 1
+  },
+  "newBuildQualified": false,
+  "registryPublished": false,
+  "scope": "Local source/overlay tests. No new image digest is asserted and old native receipts retain their identity."
+}

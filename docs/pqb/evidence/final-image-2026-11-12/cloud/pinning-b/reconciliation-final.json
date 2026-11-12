@@ -1,0 +1,374 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\": \"success\", \"stdout\": \"\", \"stderr\": null, \"return_value\": {\"instances\": {\"Reservations\": []}, \"groups\": {\"SecurityGroups\": []}, \"roles\": {\"Roles\": []}, \"profiles\": {\"InstanceProfiles\": []}, \"functions\": {\"Functions\": []}, \"schedules\": {\"Schedules\": []}, \"shape\": {\"InstanceTypes\": [{\"InstanceType\": \"g5.16xlarge\", \"CurrentGeneration\": false, \"FreeTierEligible\": false, \"SupportedUsageClasses\": [\"on-demand\", \"spot\"], \"SupportedRootDeviceTypes\": [\"ebs\"], \"SupportedVirtualizationTypes\": [\"hvm\"], \"BareMetal\": false, \"Hypervisor\": \"nitro\", \"ProcessorInfo\": {\"SupportedArchitectures\": [\"x86_64\"], \"SustainedClockSpeedInGhz\": 3.3, \"Manufacturer\": \"AMD\"}, \"VCpuInfo\": {\"DefaultVCpus\": 64, \"DefaultCores\": 32, \"DefaultThreadsPerCore\": 2}, \"MemoryInfo\": {\"SizeInMiB\": 262144}, \"InstanceStorageSupported\": true, \"InstanceStorageInfo\": {\"TotalSizeInGB\": 1900, \"Disks\": [{\"SizeInGB\": 1900, \"Count\": 1, \"Type\": \"ssd\"}], \"NvmeSupport\": \"required\", \"EncryptionSupport\": \"required\"}, \"EbsInfo\": {\"EbsOptimizedSupport\": \"default\", \"EncryptionSupport\": \"supported\", \"EbsOptimizedInfo\": {\"BaselineBandwidthInMbps\": 16000, \"BaselineThroughputInMBps\": 2000.0, \"BaselineIops\": 65000, \"MaximumBandwidthInMbps\": 16000, \"MaximumThroughputInMBps\": 2000.0, \"MaximumIops\": 65000}, \"NvmeSupport\": \"required\", \"MaximumEbsAttachments\": 25, \"AttachmentLimitType\": \"shared\"}, \"NetworkInfo\": {\"NetworkPerformance\": \"25 Gigabit\", \"MaximumNetworkInterfaces\": 8, \"MaximumNetworkCards\": 1, \"DefaultNetworkCardIndex\": 0, \"NetworkCards\": [{\"NetworkCardIndex\": 0, \"NetworkPerformance\": \"25 Gigabit\", \"MaximumNetworkInterfaces\": 8, \"BaselineBandwidthInGbps\": 25.0, \"PeakBandwidthInGbps\": 25.0, \"DefaultEnaQueueCountPerInterface\": 32, \"InterfaceTypes\": [\"interface\", \"efa\", \"efa-only\"]}], \"Ipv4AddressesPerInterface\": 30, \"Ipv6AddressesPerInterface\": 30, \"Ipv6Supported\": true, \"EnaSupport\": \"required\", \"EfaSupported\": true, \"EfaInfo\": {\"MaximumEfaInterfaces\": 1}, \"EncryptionInTransitSupported\": true, \"EnaSrdSupported\": false, \"FlexibleEnaQueuesSupport\": \"unsupported\", \"ConnectionTrackingConfiguration\": {\"DefaultTcpEstablishedTimeout\": 432000, \"DefaultUdpTimeout\": 30, \"DefaultUdpStreamTimeout\": 180}, \"SecondaryNetworkSupported\": false}, \"GpuInfo\": {\"Gpus\": [{\"Name\": \"A10G\", \"Manufacturer\": \"NVIDIA\", \"Count\": 1, \"LogicalGpuCount\": 1, \"GpuPartitionSize\": 1.0, \"Workloads\": [\"ml-ai\", \"graphics\"], \"MemoryInfo\": {\"SizeInMiB\": 22888}}], \"TotalGpuMemoryInMiB\": 22888}, \"PlacementGroupInfo\": {\"SupportedStrategies\": [\"cluster\", \"partition\", \"spread\"]}, \"HibernationSupported\": false, \"BurstablePerformanceSupported\": false, \"DedicatedHostsSupported\": false, \"AutoRecoverySupported\": false, \"SupportedBootModes\": [\"legacy-bios\", \"uefi\"], \"NitroEnclavesSupport\": \"supported\", \"NitroTpmSupport\": \"supported\", \"NitroTpmInfo\": {\"SupportedVersions\": [\"2.0\"]}, \"PhcSupport\": \"unsupported\", \"RebootMigrationSupport\": \"unsupported\", \"SupportedInRegion\": true}, {\"InstanceType\": \"g5.4xlarge\", \"CurrentGeneration\": false, \"FreeTierEligible\": false, \"SupportedUsageClasses\": [\"on-demand\", \"spot\"], \"SupportedRootDeviceTypes\": [\"ebs\"], \"SupportedVirtualizationTypes\": [\"hvm\"], \"BareMetal\": false, \"Hypervisor\": \"nitro\", \"ProcessorInfo\": {\"SupportedArchitectures\": [\"x86_64\"], \"SustainedClockSpeedInGhz\": 3.3, \"Manufacturer\": \"AMD\"}, \"VCpuInfo\": {\"DefaultVCpus\": 16, \"DefaultCores\": 8, \"DefaultThreadsPerCore\": 2}, \"MemoryInfo\": {\"SizeInMiB\": 65536}, \"InstanceStorageSupported\": true, \"InstanceStorageInfo\": {\"TotalSizeInGB\": 600, \"Disks\": [{\"SizeInGB\": 600, \"Count\": 1, \"Type\": \"ssd\"}], \"NvmeSupport\": \"required\", \"EncryptionSupport\": \"required\"}, \"EbsInfo\": {\"EbsOptimizedSupport\": \"default\", \"EncryptionSupport\": \"supported\", \"EbsOptimizedInfo\": {\"BaselineBandwidthInMbps\": 4750, \"BaselineThroughputInMBps\": 593.75, \"BaselineIops\": 20000, \"MaximumBandwidthInMbps\": 4750, \"MaximumThroughputInMBps\": 593.75, \"MaximumIops\": 20000}, \"NvmeSupport\": \"required\", \"MaximumEbsAttachments\": 25, \"AttachmentLimitType\": \"shared\"}, \"NetworkInfo\": {\"NetworkPerformance\": \"Up to 25 Gigabit\", \"MaximumNetworkInterfaces\": 8, \"MaximumNetworkCards\": 1, \"DefaultNetworkCardIndex\": 0, \"NetworkCards\": [{\"NetworkCardIndex\": 0, \"NetworkPerformance\": \"Up to 25 Gigabit\", \"MaximumNetworkInterfaces\": 8, \"BaselineBandwidthInGbps\": 10.0, \"PeakBandwidthInGbps\": 25.0, \"DefaultEnaQueueCountPerInterface\": 32, \"InterfaceTypes\": [\"interface\"]}], \"Ipv4AddressesPerInterface\": 30, \"Ipv6AddressesPerInterface\": 30, \"Ipv6Supported\": true, \"EnaSupport\": \"required\", \"EfaSupported\": false, \"EncryptionInTransitSupported\": true, \"EnaSrdSupported\": false, \"FlexibleEnaQueuesSupport\": \"unsupported\", \"ConnectionTrackingConfiguration\": {\"DefaultTcpEstablishedTimeout\": 432000, \"DefaultUdpTimeout\": 30, \"DefaultUdpStreamTimeout\": 180}, \"SecondaryNetworkSupported\": false}, \"GpuInfo\": {\"Gpus\": [{\"Name\": \"A10G\", \"Manufacturer\": \"NVIDIA\", \"Count\": 1, \"LogicalGpuCount\": 1, \"GpuPartitionSize\": 1.0, \"Workloads\": [\"ml-ai\", \"graphics\"], \"MemoryInfo\": {\"SizeInMiB\": 22888}}], \"TotalGpuMemoryInMiB\": 22888}, \"PlacementGroupInfo\": {\"SupportedStrategies\": [\"cluster\", \"partition\", \"spread\"]}, \"HibernationSupported\": false, \"BurstablePerformanceSupported\": false, \"DedicatedHostsSupported\": false, \"AutoRecoverySupported\": false, \"SupportedBootModes\": [\"legacy-bios\", \"uefi\"], \"NitroEnclavesSupport\": \"supported\", \"NitroTpmSupport\": \"supported\", \"NitroTpmInfo\": {\"SupportedVersions\": [\"2.0\"]}, \"PhcSupport\": \"unsupported\", \"RebootMigrationSupport\": \"unsupported\", \"SupportedInRegion\": true}]}}, \"warning\": null, \"api_calls\": [{\"service\": \"ec2\", \"operation\": \"DescribeInstances\", \"status\": \"success\", \"n_items\": {\"Reservations\": 0}}, {\"service\": \"ec2\", \"operation\": \"DescribeSecurityGroups\", \"status\": \"success\", \"n_items\": {\"SecurityGroups\": 0}}, {\"service\": \"iam\", \"operation\": \"ListRoles\", \"status\": \"success\", \"n_items\": {\"Roles\": 68}}, {\"service\": \"iam\", \"operation\": \"ListInstanceProfiles\", \"status\": \"success\", \"n_items\": {\"InstanceProfiles\": 6}}, {\"service\": \"lambda\", \"operation\": \"ListFunctions\", \"status\": \"success\", \"n_items\": {\"Functions\": 9}}, {\"service\": \"scheduler\", \"operation\": \"ListSchedules\", \"status\": \"success\", \"n_items\": {\"Schedules\": 0}}, {\"service\": \"ec2\", \"operation\": \"DescribeInstanceTypes\", \"status\": \"success\", \"n_items\": {\"InstanceTypes\": 2}}]}"
+    }
+  ],
+  "structuredContent": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "instances": {
+        "Reservations": []
+      },
+      "groups": {
+        "SecurityGroups": []
+      },
+      "roles": {
+        "Roles": []
+      },
+      "profiles": {
+        "InstanceProfiles": []
+      },
+      "functions": {
+        "Functions": []
+      },
+      "schedules": {
+        "Schedules": []
+      },
+      "shape": {
+        "InstanceTypes": [
+          {
+            "InstanceType": "g5.16xlarge",
+            "CurrentGeneration": false,
+            "FreeTierEligible": false,
+            "SupportedUsageClasses": [
+              "on-demand",
+              "spot"
+            ],
+            "SupportedRootDeviceTypes": [
+              "ebs"
+            ],
+            "SupportedVirtualizationTypes": [
+              "hvm"
+            ],
+            "BareMetal": false,
+            "Hypervisor": "nitro",
+            "ProcessorInfo": {
+              "SupportedArchitectures": [
+                "x86_64"
+              ],
+              "SustainedClockSpeedInGhz": 3.3,
+              "Manufacturer": "AMD"
+            },
+            "VCpuInfo": {
+              "DefaultVCpus": 64,
+              "DefaultCores": 32,
+              "DefaultThreadsPerCore": 2
+            },
+            "MemoryInfo": {
+              "SizeInMiB": 262144
+            },
+            "InstanceStorageSupported": true,
+            "InstanceStorageInfo": {
+              "TotalSizeInGB": 1900,
+              "Disks": [
+                {
+                  "SizeInGB": 1900,
+                  "Count": 1,
+                  "Type": "ssd"
+                }
+              ],
+              "NvmeSupport": "required",
+              "EncryptionSupport": "required"
+            },
+            "EbsInfo": {
+              "EbsOptimizedSupport": "default",
+              "EncryptionSupport": "supported",
+              "EbsOptimizedInfo": {
+                "BaselineBandwidthInMbps": 16000,
+                "BaselineThroughputInMBps": 2000,
+                "BaselineIops": 65000,
+                "MaximumBandwidthInMbps": 16000,
+                "MaximumThroughputInMBps": 2000,
+                "MaximumIops": 65000
+              },
+              "NvmeSupport": "required",
+              "MaximumEbsAttachments": 25,
+              "AttachmentLimitType": "shared"
+            },
+            "NetworkInfo": {
+              "NetworkPerformance": "25 Gigabit",
+              "MaximumNetworkInterfaces": 8,
+              "MaximumNetworkCards": 1,
+              "DefaultNetworkCardIndex": 0,
+              "NetworkCards": [
+                {
+                  "NetworkCardIndex": 0,
+                  "NetworkPerformance": "25 Gigabit",
+                  "MaximumNetworkInterfaces": 8,
+                  "BaselineBandwidthInGbps": 25,
+                  "PeakBandwidthInGbps": 25,
+                  "DefaultEnaQueueCountPerInterface": 32,
+                  "InterfaceTypes": [
+                    "interface",
+                    "efa",
+                    "efa-only"
+                  ]
+                }
+              ],
+              "Ipv4AddressesPerInterface": 30,
+              "Ipv6AddressesPerInterface": 30,
+              "Ipv6Supported": true,
+              "EnaSupport": "required",
+              "EfaSupported": true,
+              "EfaInfo": {
+                "MaximumEfaInterfaces": 1
+              },
+              "EncryptionInTransitSupported": true,
+              "EnaSrdSupported": false,
+              "FlexibleEnaQueuesSupport": "unsupported",
+              "ConnectionTrackingConfiguration": {
+                "DefaultTcpEstablishedTimeout": 432000,
+                "DefaultUdpTimeout": 30,
+                "DefaultUdpStreamTimeout": 180
+              },
+              "SecondaryNetworkSupported": false
+            },
+            "GpuInfo": {
+              "Gpus": [
+                {
+                  "Name": "A10G",
+                  "Manufacturer": "NVIDIA",
+                  "Count": 1,
+                  "LogicalGpuCount": 1,
+                  "GpuPartitionSize": 1,
+                  "Workloads": [
+                    "ml-ai",
+                    "graphics"
+                  ],
+                  "MemoryInfo": {
+                    "SizeInMiB": 22888
+                  }
+                }
+              ],
+              "TotalGpuMemoryInMiB": 22888
+            },
+            "PlacementGroupInfo": {
+              "SupportedStrategies": [
+                "cluster",
+                "partition",
+                "spread"
+              ]
+            },
+            "HibernationSupported": false,
+            "BurstablePerformanceSupported": false,
+            "DedicatedHostsSupported": false,
+            "AutoRecoverySupported": false,
+            "SupportedBootModes": [
+              "legacy-bios",
+              "uefi"
+            ],
+            "NitroEnclavesSupport": "supported",
+            "NitroTpmSupport": "supported",
+            "NitroTpmInfo": {
+              "SupportedVersions": [
+                "2.0"
+              ]
+            },
+            "PhcSupport": "unsupported",
+            "RebootMigrationSupport": "unsupported",
+            "SupportedInRegion": true
+          },
+          {
+            "InstanceType": "g5.4xlarge",
+            "CurrentGeneration": false,
+            "FreeTierEligible": false,
+            "SupportedUsageClasses": [
+              "on-demand",
+              "spot"
+            ],
+            "SupportedRootDeviceTypes": [
+              "ebs"
+            ],
+            "SupportedVirtualizationTypes": [
+              "hvm"
+            ],
+            "BareMetal": false,
+            "Hypervisor": "nitro",
+            "ProcessorInfo": {
+              "SupportedArchitectures": [
+                "x86_64"
+              ],
+              "SustainedClockSpeedInGhz": 3.3,
+              "Manufacturer": "AMD"
+            },
+            "VCpuInfo": {
+              "DefaultVCpus": 16,
+              "DefaultCores": 8,
+              "DefaultThreadsPerCore": 2
+            },
+            "MemoryInfo": {
+              "SizeInMiB": 65536
+            },
+            "InstanceStorageSupported": true,
+            "InstanceStorageInfo": {
+              "TotalSizeInGB": 600,
+              "Disks": [
+                {
+                  "SizeInGB": 600,
+                  "Count": 1,
+                  "Type": "ssd"
+                }
+              ],
+              "NvmeSupport": "required",
+              "EncryptionSupport": "required"
+            },
+            "EbsInfo": {
+              "EbsOptimizedSupport": "default",
+              "EncryptionSupport": "supported",
+              "EbsOptimizedInfo": {
+                "BaselineBandwidthInMbps": 4750,
+                "BaselineThroughputInMBps": 593.75,
+                "BaselineIops": 20000,
+                "MaximumBandwidthInMbps": 4750,
+                "MaximumThroughputInMBps": 593.75,
+                "MaximumIops": 20000
+              },
+              "NvmeSupport": "required",
+              "MaximumEbsAttachments": 25,
+              "AttachmentLimitType": "shared"
+            },
+            "NetworkInfo": {
+              "NetworkPerformance": "Up to 25 Gigabit",
+              "MaximumNetworkInterfaces": 8,
+              "MaximumNetworkCards": 1,
+              "DefaultNetworkCardIndex": 0,
+              "NetworkCards": [
+                {
+                  "NetworkCardIndex": 0,
+                  "NetworkPerformance": "Up to 25 Gigabit",
+                  "MaximumNetworkInterfaces": 8,
+                  "BaselineBandwidthInGbps": 10,
+                  "PeakBandwidthInGbps": 25,
+                  "DefaultEnaQueueCountPerInterface": 32,
+                  "InterfaceTypes": [
+                    "interface"
+                  ]
+                }
+              ],
+              "Ipv4AddressesPerInterface": 30,
+              "Ipv6AddressesPerInterface": 30,
+              "Ipv6Supported": true,
+              "EnaSupport": "required",
+              "EfaSupported": false,
+              "EncryptionInTransitSupported": true,
+              "EnaSrdSupported": false,
+              "FlexibleEnaQueuesSupport": "unsupported",
+              "ConnectionTrackingConfiguration": {
+                "DefaultTcpEstablishedTimeout": 432000,
+                "DefaultUdpTimeout": 30,
+                "DefaultUdpStreamTimeout": 180
+              },
+              "SecondaryNetworkSupported": false
+            },
+            "GpuInfo": {
+              "Gpus": [
+                {
+                  "Name": "A10G",
+                  "Manufacturer": "NVIDIA",
+                  "Count": 1,
+                  "LogicalGpuCount": 1,
+                  "GpuPartitionSize": 1,
+                  "Workloads": [
+                    "ml-ai",
+                    "graphics"
+                  ],
+                  "MemoryInfo": {
+                    "SizeInMiB": 22888
+                  }
+                }
+              ],
+              "TotalGpuMemoryInMiB": 22888
+            },
+            "PlacementGroupInfo": {
+              "SupportedStrategies": [
+                "cluster",
+                "partition",
+                "spread"
+              ]
+            },
+            "HibernationSupported": false,
+            "BurstablePerformanceSupported": false,
+            "DedicatedHostsSupported": false,
+            "AutoRecoverySupported": false,
+            "SupportedBootModes": [
+              "legacy-bios",
+              "uefi"
+            ],
+            "NitroEnclavesSupport": "supported",
+            "NitroTpmSupport": "supported",
+            "NitroTpmInfo": {
+              "SupportedVersions": [
+                "2.0"
+              ]
+            },
+            "PhcSupport": "unsupported",
+            "RebootMigrationSupport": "unsupported",
+            "SupportedInRegion": true
+          }
+        ]
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ec2",
+        "operation": "DescribeInstances",
+        "status": "success",
+        "n_items": {
+          "Reservations": 0
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "DescribeSecurityGroups",
+        "status": "success",
+        "n_items": {
+          "SecurityGroups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListRoles",
+        "status": "success",
+        "n_items": {
+          "Roles": 68
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListInstanceProfiles",
+        "status": "success",
+        "n_items": {
+          "InstanceProfiles": 6
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "ListFunctions",
+        "status": "success",
+        "n_items": {
+          "Functions": 9
+        }
+      },
+      {
+        "service": "scheduler",
+        "operation": "ListSchedules",
+        "status": "success",
+        "n_items": {
+          "Schedules": 0
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "DescribeInstanceTypes",
+        "status": "success",
+        "n_items": {
+          "InstanceTypes": 2
+        }
+      }
+    ]
+  },
+  "isError": false
+}

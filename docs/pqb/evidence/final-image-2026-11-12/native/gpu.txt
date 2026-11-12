@@ -1,0 +1,1 @@
+NVIDIA A10G, GPU-e6b2aa61-ad47-dd07-0393-feafa9cd41fe, 580.126.09, 23028 MiB

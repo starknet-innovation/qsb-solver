@@ -1,0 +1,4 @@
+{
+  "reason": "First collection failed at shell option before any upload; explicit bash for this read-only result collection. No GPU or compute resubmission.",
+  "previousCommandId": "0c56b016-0a66-46b1-b9be-be220b2bd594"
+}

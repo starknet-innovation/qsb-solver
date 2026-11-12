@@ -1,0 +1,102 @@
+{
+  "caPath": "/etc/ssl/certs/ca-certificates.crt",
+  "caSha256": "e05a523d99de77c6b1f2c7b7c3af502c8378f29e6e8484358ec55f96b0972ad6",
+  "cases": [
+    {
+      "path": "chains/chains/regular/dv-g3b-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = NL, O = eMudhra BV, CN = EM DV TLS CA - G3B\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3b-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/dv-g3b-aaa-noct-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = NL, O = eMudhra BV, CN = EM DV TLS CA - G3B\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3b-aaa-noct-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/dv-g3b-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3b-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/dv-g3b-noct-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3b-noct-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/dv-g3c-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = US, O = eMudhra Inc, CN = EM DV TLS CA - G3C\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3c-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/dv-g3c-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/dv-g3c-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ev-g3b-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = NL, O = eMudhra BV, CN = EM EV TLS CA - G3B\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ev-g3b-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ev-g3b-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ev-g3b-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ev-g3c-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = US, O = eMudhra Inc, CN = EM EV TLS CA - G3C\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ev-g3c-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ev-g3c-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ev-g3c-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ov-g3b-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = NL, O = eMudhra BV, CN = EM OV TLS CA - G3B\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ov-g3b-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ov-g3b-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ov-g3b-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ov-g3c-aaa-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = US, O = eMudhra Inc, CN = EM OV TLS CA - G3C\nerror 20 at 1 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ov-g3c-aaa-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/regular/ov-g3c-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/regular/ov-g3c-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/rollover/dv-g3b-aaa-noct-rollover-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = NL, O = eMudhra BV, CN = EM DV TLS CA - G3B\nerror 20 at 2 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/rollover/dv-g3b-aaa-noct-rollover-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    },
+    {
+      "path": "chains/chains/rollover/dv-g3b-noct-rollover-emudhra.we-have-a-problem.com.pem",
+      "returnCode": 2,
+      "stdout": "",
+      "stderr": "C = IN, O = eMudhra Technologies Limited, CN = emSign Root TLS CA - G3\nerror 20 at 3 depth lookup: unable to get local issuer certificate\nerror /probe/chains/chains/rollover/dv-g3b-noct-rollover-emudhra.we-have-a-problem.com.pem: verification failed\n"
+    }
+  ]
+}

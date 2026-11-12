@@ -27,7 +27,17 @@ python3 worker/optimized/test_image.py qsb-optimized:local
 
 Source/unit/build checks do not establish native correctness or end-to-end execution. The exact combined release has separate native evidence; new builds need their own assessment. No mainnet enablement or provider allocation is performed by this repository's CI.
 
+## PQB candidate worker
+
+[worker/pqb](worker/pqb/README.md) is a separate **HOLD** worker for PQB vaults (fireblocks-labs/pqb), with its own `pqb-ranked-v2` contract and an adapted copy of PQB's grinder that sweeps stated ranges exhaustively. Its [three largest native units](docs/pqb/2026-11-11-full-unit-validation.md) and [13 native correctness cases, consumer checks and image scan](docs/pqb/2026-11-11-correctness-consumer-validation.md) passed their stated criteria.
+
+A [complete public synthetic solve through the real consumer Batch/S3 transport](docs/pqb/2026-11-11-public-transport-solve.md) then verified all three stages in 91 minutes 40 seconds, at $20.73 estimated compute including its builder. This is one development-orchestrated public solve; the served coordinator, wallet and consensus/miner paths remain untested. Cleanup is independently verified. No PQB release is published or enrolled. The [final image assessment](docs/pqb/2026-11-12-final-image-qualification.md) qualifies the parser-fixed image with signed build provenance, three fresh largest native units, 13 correctness cases before each unit and an independent qsb-app replay. The [Critical findings review](docs/pqb/2026-11-12-critical-review.md) found a reachable TLS trust-store blocker. The source fix is locally tested; a new artifact must be qualified before publication or enrollment. See the [assessment](docs/pqb/ASSESSMENT.md). Historical and combined QSB releases remain unchanged.
+
 ## Release
+
+PQB has a separate [final-image qualification plan](docs/pqb/FINAL-IMAGE.md). Its explicit
+`codex/pqb-qualify-*` push workflow exports and signs an exact OCI artifact for native
+qualification; it does not push a registry image, publish a release or enroll a descriptor.
 
 An `aws-v*` Git tag builds the historical worker for Linux amd64/sm_86 (AWS A10G), pushes `ghcr.io/starknet-innovation/qsb-solver` and attests its immutable digest. The release includes a schema-v3 descriptor and exact range vectors. `searchContract` is the SHA-256 of UTF-8 canonical JSON (recursive sorted keys, compact separators, array order preserved) for `contracts/ranked-v2.json`. The descriptor generator checks every valid and invalid vector against the worker before hashing. Consumers must require the same hash as their independently tested contract. Earlier schema-v2 releases remain immutable; they do not gain this binding retroactively, and a new tagged release plus explicit consumer enrollment is required. Consumers must select the digest, verify the GitHub provenance with `gh attestation verify oci://IMAGE@sha256:DIGEST --repo starknet-innovation/qsb-solver`, and enroll a new descriptor in qsb-app; existing archived descriptors remain unchanged. Tags label releases; they are not image identities.
 

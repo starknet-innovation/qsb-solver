@@ -1,0 +1,9 @@
+
+ RUN  v4.1.12 <pinned-consumer-checkout>
+
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  20:49:39
+   Duration  3.06s (transform 433ms, setup 50ms, import 891ms, tests 3.72s, environment 0ms)
+

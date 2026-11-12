@@ -1,0 +1,28 @@
+{
+  "upstreamCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "gateBits": 24,
+  "records": [
+    {
+      "jobId": "4304797b-e900-46e6-9b64-89075d3a83bb",
+      "attempt": 9,
+      "candidate": "2147483782 701017131 8 0 0 1",
+      "details": {
+        "nonce": 161001017131,
+        "variant": 0,
+        "menu_index": 8,
+        "encoding": 0,
+        "ladder": 0,
+        "digest": "301d0202859a02177967eb95154a309cb382bd306ab78dfd2d45e47ef4d18f28",
+        "der_prefix_bytes": 3
+      },
+      "stats": {
+        "checked": 1,
+        "full_solutions": 0,
+        "hybrid_solutions_refused": 0,
+        "canonical_rechecks": 1,
+        "best_is_full": false,
+        "best_der_bytes": 3
+      }
+    }
+  ]
+}

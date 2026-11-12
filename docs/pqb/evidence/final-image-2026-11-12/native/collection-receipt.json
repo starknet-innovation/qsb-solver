@@ -1,0 +1,8 @@
+{
+  "format": "qsb-verified-original-result-download-v1",
+  "status": "passed",
+  "bytes": 355949,
+  "sha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce",
+  "collectedAt": "2026-11-12T09:53:15.742972+00:00",
+  "originalComputeCommandId": "ac4ada3f-780d-4230-9208-5dae4fd8e156"
+}

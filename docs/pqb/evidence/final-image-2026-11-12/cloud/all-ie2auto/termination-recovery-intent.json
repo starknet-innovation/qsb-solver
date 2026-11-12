@@ -1,0 +1,1 @@
+{"reason":"Original termination is confirmed, but provider still reports shutting-down after multiple readbacks. All native results are safely collected and verified. Request force/skip-OS termination of this known instance as cleanup recovery; no launch or compute retry.","instanceId":"i-0de52998d387b0a2c","originalStateTransitionAt":"2026-11-12T09:53:32Z"}

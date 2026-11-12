@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://emudhra.we-have-a-problem.com/chains.zip",
+    "path": "chains.zip",
+    "bytes": 34665,
+    "sha256": "afb9d69e8e5fc9eb0c08d5fe4baafc67edbcced2d63af2f9deb62edb6431d4a9"
+  },
+  {
+    "url": "https://emudhra.we-have-a-problem.com/roots.json",
+    "path": "roots.json",
+    "bytes": 7903,
+    "sha256": "119f32cd81a6b5a4e3c4c2df5fe07daa90dc43cafa123a62f0394f1895d92380"
+  },
+  {
+    "url": "https://emudhra.we-have-a-problem.com/impacted-intermediates.json",
+    "path": "impacted-intermediates.json",
+    "bytes": 40132,
+    "sha256": "f67b3abe9b4879f4e91874ed041beccd71257f1db41c588c724ccf12aa90c59e"
+  }
+]

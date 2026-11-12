@@ -1,0 +1,7 @@
+{
+  "format": "qsb-pqb-oci-identity-v1",
+  "status": "HOLD",
+  "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+  "platformDigest": "sha256:77b8c2db4ffb55923001b37c96599e0a3ae9a687ce06d5f386a9379b565550fe",
+  "configDigest": "sha256:ab005b0d7a042bac05002ef6532a1f3886dca3f5bf23c57e514e61c92ec473b3"
+}

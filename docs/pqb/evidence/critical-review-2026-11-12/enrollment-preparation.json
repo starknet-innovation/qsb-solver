@@ -1,0 +1,19 @@
+{
+  "format": "qsb-pqb-enrollment-preparation-v1",
+  "repository": "starknet-innovation/qsb-app",
+  "pullRequest": 150,
+  "consumerDocsCommit": "f547769f051fc994d934a70a7a009e3b704411e1",
+  "status": "blocked-on-replacement-qualified-image-and-verified-publication",
+  "originalCandidateDescriptorSha256": "9865dbd2f829f8cf26be551abd02b76695de0d8059b0ee0d4e1201acbb4a62bc",
+  "originalCandidateDescriptorId": "pqb-ranked-v2-ecb31d384fbd-0fd3775769c9",
+  "registryPublicationVerified": false,
+  "releaseAssetCreated": false,
+  "registryChanged": false,
+  "requiredActions": [
+    "Build/sign and qualify a new exact image containing the TLS fix",
+    "Review its scan and actual runtime trust-store regressions",
+    "Publish only that qualified artifact and verify the registry index/platform/provenance",
+    "Copy published solver.json verbatim into existing PR #150; regenerate registry and run app checks",
+    "Keep serving selection, ECR mirror/deployment and mainnet switches separate"
+  ]
+}

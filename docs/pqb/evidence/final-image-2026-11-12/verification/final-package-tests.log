@@ -1,0 +1,16 @@
+test_archive_requires_original_hash_and_unambiguous_safe_inventory (tests.test_pqb_final_review.FinalReviewTests.test_archive_requires_original_hash_and_unambiguous_safe_inventory) ... ok
+test_failed_or_partial_host_receipt_cannot_be_credited (tests.test_pqb_final_review.FinalReviewTests.test_failed_or_partial_host_receipt_cannot_be_credited) ... ok
+test_verified_policy_binds_source_workflow_runner_and_run (tests.test_pqb_final_review.FinalReviewTests.test_verified_policy_binds_source_workflow_runner_and_run) ... ok
+test_final_artifact_and_original_native_receipts_are_bound (tests.test_pqb_final_evidence.FinalEvidenceTests.test_final_artifact_and_original_native_receipts_are_bound) ... ok
+test_independent_cleanup_is_complete_and_reservations_released (tests.test_pqb_final_evidence.FinalEvidenceTests.test_independent_cleanup_is_complete_and_reservations_released) ... ok
+test_a_linked_manifest_entry_is_rejected_even_inside_the_package (tests.test_pqb_descriptor.PqbDescriptorTests.test_a_linked_manifest_entry_is_rejected_even_inside_the_package) ... ok
+test_contract_vectors_and_float_token_are_checked (tests.test_pqb_descriptor.PqbDescriptorTests.test_contract_vectors_and_float_token_are_checked) ... ok
+test_corrupt_evidence_is_rejected (tests.test_pqb_descriptor.PqbDescriptorTests.test_corrupt_evidence_is_rejected) ... ok
+test_cross_bound_image_and_receipt_mismatches_are_rejected (tests.test_pqb_descriptor.PqbDescriptorTests.test_cross_bound_image_and_receipt_mismatches_are_rejected) ... ok
+test_real_receipts_remain_hold_and_source_bound (tests.test_pqb_descriptor.PqbDescriptorTests.test_real_receipts_remain_hold_and_source_bound) ... ok
+test_replay_archive_is_bound_to_manifest_and_inventory (tests.test_pqb_descriptor.PqbDescriptorTests.test_replay_archive_is_bound_to_manifest_and_inventory) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.378s
+
+OK

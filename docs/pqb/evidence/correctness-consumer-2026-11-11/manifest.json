@@ -1,0 +1,41 @@
+{
+  "format": "qsb-pqb-correctness-consumer-evidence-v1",
+  "nativeSourceCommit": "a24c0ddb84a129db556069a3964e8d8d3ce55201",
+  "consumerCheckWorkerCommit": "0d3a19ce30609c7de4165c9de46448475e5b3b1c",
+  "consumerCommit": "81c060dfbeddc64f1a16ef50a6195d68831e61b1",
+  "ciRun": 43088388333,
+  "binaryArtifact": 13886724270,
+  "binaryArtifactZipSha256": "e4dbdbc750d108aa2e46a32675a8c14f922d3d2a435b998ac685cd86c24ad1ce",
+  "scanArtifact": 13887417244,
+  "scanArtifactZipSha256": "2e424fd60345b30ff06b7557bf90b69af1a34fe5e2b1e88775f53b0528df5eee",
+  "originalPublicResultBase64": {
+    "bytes": 2924,
+    "sha256": "a339d42324dfd66e61609e95877a6305d6d13e69f15d848b9bfaa2c69dcaa12e"
+  },
+  "originalGrypeJsonSha256": "42ca70a79e22b63c63168bff93bc07b0e482f6575a224fd621b805ac29ae167c",
+  "derivations": {
+    "native-public-result.json.gz": "Exact base64-decoded original archive; no content changes",
+    "grype.json.gz": "Lossless gzip of full CI scanner JSON",
+    "consumer-tests.stdout.redacted": "Original path replaced with <pinned-consumer-checkout>; original hash in consumer-check.json",
+    "cleanup.json": "Public counts and original private operational receipt hashes"
+  },
+  "files": {
+    "build-receipt.json": "5d1e163f5a7af046a9642f6618fdd04ea47f9ba37f8748ac9dff5722ecb7c59f",
+    "bundle-SHA256SUMS": "7fada45e174216d0123e2b604049fce320b0351ce542a65e7efaf9bb60346aec",
+    "bundle-manifest.json": "6acabeb266105e82790680cd3222d6c335e0a8d80b7b3704ed0104705d3dee3f",
+    "cleanup.json": "405219eef8fbd2ae902d7b69ed96adc3a9df4b06acc57bb443851bddcd4c4412",
+    "compute-estimate.json": "f1bc5feb83ce4fd65298e65da2ba9e24e4044d506c47aedff97bc3a34b3ce52d",
+    "consumer-check.json": "76ad0d439e9af17189980d7987930732ded355eb8a9aadccad04c7600a193238",
+    "consumer-check.mts": "3ca76074924694f6926e29f220697a058886b2a210aae6cf4471341456912810",
+    "consumer-filter-candidates.json": "61e64da992529c8adb8b1cd3bbd7b21e9b48af225f43648bd9a4223e4907173a",
+    "consumer-implementation.json": "bcadb22ebdf8d83f4fdd254187944acaf05ca1c6a413500e3749da6d70ac7513",
+    "consumer-native-candidate.json": "b46c3969379b97d1c4b374d417d1d5d9501c7f6d95c972a0ffaf2fd19674e985",
+    "consumer-tests.stdout.redacted": "93c5153df19b6bad8a4cb2c74a6db17c24ca8c156408da94deb3ec835d389226",
+    "grype.json.gz": "169dbec4d7281b7544c069a1c1c4f3774263c1170985093782406642f36ad695",
+    "image-scan.json": "d64e5549eb0e4ae2c3f58b9bca0f6af99cf6fe9736fbdaa677dc5cf4261437fb",
+    "native-bundle.json": "87b1129e69f85723db52c5600703c0d76a8b1d8c602dc981fa68f4a866fbb460",
+    "native-public-result.json.gz": "ae80510be766dc274b447639e0da98ff21d5abf0969afdc33ae1f920ef33702a",
+    "native-result.json": "3a7c53ce5b5ada362d105534fbeb8421ae51c490a968f424edab6137745ef3d6",
+    "native-summary.json": "3ec99bb0f0a3f189b4a59cff51f003388e97b066f090154af9317f6f17831415"
+  }
+}

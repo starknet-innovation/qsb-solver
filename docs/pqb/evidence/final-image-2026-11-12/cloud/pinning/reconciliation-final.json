@@ -1,0 +1,83 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\": \"success\", \"stdout\": \"\", \"stderr\": null, \"return_value\": {\"instances\": {\"Reservations\": []}, \"groups\": {\"SecurityGroups\": []}, \"roles\": {\"Roles\": []}, \"profiles\": {\"InstanceProfiles\": []}, \"functions\": {\"Functions\": []}, \"schedules\": {\"Schedules\": []}}, \"warning\": null, \"api_calls\": [{\"service\": \"ec2\", \"operation\": \"DescribeInstances\", \"status\": \"success\", \"n_items\": {\"Reservations\": 0}}, {\"service\": \"ec2\", \"operation\": \"DescribeSecurityGroups\", \"status\": \"success\", \"n_items\": {\"SecurityGroups\": 0}}, {\"service\": \"iam\", \"operation\": \"ListRoles\", \"status\": \"success\", \"n_items\": {\"Roles\": 68}}, {\"service\": \"iam\", \"operation\": \"ListInstanceProfiles\", \"status\": \"success\", \"n_items\": {\"InstanceProfiles\": 6}}, {\"service\": \"lambda\", \"operation\": \"ListFunctions\", \"status\": \"success\", \"n_items\": {\"Functions\": 9}}, {\"service\": \"scheduler\", \"operation\": \"ListSchedules\", \"status\": \"success\", \"n_items\": {\"Schedules\": 0}}]}"
+    }
+  ],
+  "structuredContent": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "instances": {
+        "Reservations": []
+      },
+      "groups": {
+        "SecurityGroups": []
+      },
+      "roles": {
+        "Roles": []
+      },
+      "profiles": {
+        "InstanceProfiles": []
+      },
+      "functions": {
+        "Functions": []
+      },
+      "schedules": {
+        "Schedules": []
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ec2",
+        "operation": "DescribeInstances",
+        "status": "success",
+        "n_items": {
+          "Reservations": 0
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "DescribeSecurityGroups",
+        "status": "success",
+        "n_items": {
+          "SecurityGroups": 0
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListRoles",
+        "status": "success",
+        "n_items": {
+          "Roles": 68
+        }
+      },
+      {
+        "service": "iam",
+        "operation": "ListInstanceProfiles",
+        "status": "success",
+        "n_items": {
+          "InstanceProfiles": 6
+        }
+      },
+      {
+        "service": "lambda",
+        "operation": "ListFunctions",
+        "status": "success",
+        "n_items": {
+          "Functions": 9
+        }
+      },
+      {
+        "service": "scheduler",
+        "operation": "ListSchedules",
+        "status": "success",
+        "n_items": {
+          "Schedules": 0
+        }
+      }
+    ]
+  },
+  "isError": false
+}

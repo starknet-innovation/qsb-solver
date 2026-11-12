@@ -1,0 +1,313 @@
+{
+ "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+ "bundleSha256": "1785418d7edaec65e9cfe4e08a5fea126c953179601007dd47d9c224209ea162",
+ "contractSha256": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+ "correctness": [
+  {
+   "expectedHits": 48,
+   "hits": 48,
+   "label": "pin-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 3000,
+    "gate_hits": 48,
+    "hits": 48,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 500000000,
+    "seq": 2147483648,
+    "seq_count": 2,
+    "zblocks": 3000
+   },
+   "zblocks": 3000
+  },
+  {
+   "expectedHits": 31,
+   "hits": 31,
+   "label": "pin-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1500,
+    "gate_hits": 31,
+    "hits": 31,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 1699998500,
+    "seq": 4294967293,
+    "seq_count": 1,
+    "zblocks": 1500
+   },
+   "zblocks": 1500
+  },
+  {
+   "expectedHits": 44,
+   "hits": 44,
+   "label": "pin-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 2700,
+    "gate_hits": 44,
+    "hits": 44,
+    "kind": "pin",
+    "lt_count": 900,
+    "lt_start": 1234567890,
+    "seq": 2147483651,
+    "seq_count": 3,
+    "zblocks": 2700
+   },
+   "zblocks": 2700
+  },
+  {
+   "expectedHits": 0,
+   "hits": 0,
+   "label": "pin-der-filter",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 1,
+    "exact_zblocks": 0,
+    "expected": 64,
+    "gate_hits": 2368,
+    "hits": 0,
+    "kind": "pin",
+    "lt_count": 64,
+    "lt_start": 600000000,
+    "seq": 2147483653,
+    "seq_count": 1,
+    "zblocks": 64
+   },
+   "zblocks": 64
+  },
+  {
+   "expectedHits": 415,
+   "hits": 415,
+   "label": "pin-planted-exceptional",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 4,
+    "expected": 48,
+    "gate_hits": 415,
+    "hits": 415,
+    "kind": "pin",
+    "lt_count": 48,
+    "lt_start": 900000000,
+    "seq": 2147483658,
+    "seq_count": 1,
+    "zblocks": 48
+   },
+   "zblocks": 48
+  },
+  {
+   "expectedHits": 43,
+   "hits": 43,
+   "label": "round0-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 975,
+    "gate_hits": 43,
+    "hits": 43,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 975
+   },
+   "zblocks": 975
+  },
+  {
+   "expectedHits": 18,
+   "hits": 18,
+   "label": "round0-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 431,
+    "gate_hits": 18,
+    "hits": 18,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 27883217868,
+    "subset_start": 379908847108,
+    "zblocks": 431
+   },
+   "zblocks": 431
+  },
+  {
+   "expectedHits": 10,
+   "hits": 10,
+   "label": "round0-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 313,
+    "gate_hits": 10,
+    "hits": 10,
+    "kind": "round",
+    "prefix_count": 40,
+    "prefix_start": 9294406056,
+    "subset_start": 140931581059,
+    "zblocks": 313
+   },
+   "zblocks": 313
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 885,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 885
+   },
+   "zblocks": 885
+  },
+  {
+   "expectedHits": 5,
+   "hits": 5,
+   "label": "round1-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 402,
+    "gate_hits": 5,
+    "hits": 5,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 186087894000,
+    "subset_start": 2088319702298,
+    "zblocks": 402
+   },
+   "zblocks": 402
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1387,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 150,
+    "prefix_start": 62029298100,
+    "subset_start": 767332430665,
+    "zblocks": 1387
+   },
+   "zblocks": 1387
+  }
+ ],
+ "elapsedSeconds": 508.086907398,
+ "evidenceKind": "native A10G unit validation; not a full solve or completeness proof",
+ "files": {
+  "request.json": "af6b94022649b4905bebacb07a50f8ebad1d74bbabd43839c63615b3d3c8ff41",
+  "unit.json": "50fb562ebe66205c013ca42c9ad01f9ad8e4e0da79979da4b8e4e3d5b9e36fe3",
+  "work/P.txt": "17dedaac3c7dfb25b1e609eca174f044ca45ebd421ff87cf75f2832f7628ba88",
+  "work/compute.log": "c9895ca73cc2bfcd21b0b408b51b17b06a150be4893c98cf92e1aaf1d6ed57e3",
+  "work/hits.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "worker-result.json": "971466408d51ccb6d1eb4628f47a5806e5da07b14d907381c634ea823138d790"
+ },
+ "format": "qsb-pqb-full-unit-result-v1",
+ "runtimeImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:6b4ac63b897cd5a78223d7e14dc333b002dc50a1db75a5615b0734d2be6fbf48",
+ "sourceCommit": "0a25ec4a31eeabd0d9e98ee929415baea1b7c75d",
+ "stage": "round0",
+ "status": "passed",
+ "unit": {
+  "attempt": 0,
+  "batchZblocks": 7141805239,
+  "candidateChecks": [],
+  "device": [
+   {
+    "device": "NVIDIA A10G",
+    "kernel": "ec_menu",
+    "local_bytes": 0,
+    "max_threads_per_tg": 384,
+    "regs": 166,
+    "simd_width": 32,
+    "t_s": 0.172,
+    "tg_used": 128
+   }
+  ],
+  "gateCountSanity": true,
+  "jobSeconds": 504.69890068,
+  "nativeDevice": true,
+  "pass": true,
+  "rangeReport": {
+   "complete": true,
+   "der_filter": 1,
+   "exact_zblocks": 0,
+   "expected": 7141805239,
+   "gate_hits": 81897,
+   "hits": 0,
+   "kind": "round",
+   "prefix_count": 402653184,
+   "prefix_start": 0,
+   "subset_start": 0,
+   "zblocks": 7141805239
+  },
+  "stage": "round0",
+  "verificationSeconds": 4.099999841855606e-07,
+  "workRange": {
+   "count": 7141805239,
+   "prefixCount": 402653184,
+   "prefixStart": "0",
+   "start": "0",
+   "version": "pqb-ranked-v2"
+  },
+  "workerResult": {
+   "attempt": 0,
+   "candidates": [],
+   "checkpoint": "range-complete",
+   "elapsedSeconds": 504.677041704,
+   "gateHits": 81897,
+   "kernelCommit": "0a25ec4a31eeabd0d9e98ee929415baea1b7c75d",
+   "manifestHash": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+   "searchVersion": "pqb-ranked-v2",
+   "stage": "round0",
+   "status": "completed",
+   "trials": 1371226605888,
+   "verified": false,
+   "workRange": {
+    "count": 7141805239,
+    "prefixCount": 402653184,
+    "prefixStart": "0",
+    "start": "0",
+    "version": "pqb-ranked-v2"
+   }
+  },
+  "workerSeconds": 504.68258100099996
+ },
+ "workerTimeoutSeconds": 840
+}

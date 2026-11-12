@@ -1,0 +1,30 @@
+{
+  "format": "qsb-pqb-release-compatibility-v1",
+  "status": "passed",
+  "consumerCommit": "276f2ae09d50ca44d46b035e45b6d0365802edcf",
+  "consumerTree": "37e3b41d7142001d2cdf676f1101489e9d6e50f4",
+  "node": "v22.19.0",
+  "proposalSha256": "09671ff7eee903f9cc032bbed2e7595450fa3e6387a2e58c8fbbfb2ce6e20c8e",
+  "harnessSha256": "4bffafbf0ddfde84ff3c4e6154c1b59563b1d24f04cbbf54ce293fcbd5130426",
+  "typescriptSha256": "2739839f1eaefbbf32b786ef386623bdbc25ab38889c17c12fc1e300fbf92935",
+  "evidenceManifestSha256": "8676ef35189fb5a49f8de8ae6762e91575f16441201a30435bcb65225a512d18",
+  "consumerLockSha256": "60c2eedb5c7cd3dcac3fe07ad7d9dcbfe3fe5facad78c37ffd13e0283c01b7fa",
+  "nativeEnvelopes": 118,
+  "stages": {
+    "pinning": 33,
+    "round1": 46,
+    "round2": 39
+  },
+  "candidates": 16,
+  "gateCountZScore": {
+    "min": -3.3138602614292454,
+    "max": 1.8011012358814444
+  },
+  "schema": 3,
+  "registeredInMemoryOnly": true,
+  "enrolled": false,
+  "limits": [
+    "No new GPU execution, CPU cryptographic verification, registry publication or deployment",
+    "Pinned served consumer checks gate accounting bounds; six-sigma sanity was checked here separately"
+  ]
+}

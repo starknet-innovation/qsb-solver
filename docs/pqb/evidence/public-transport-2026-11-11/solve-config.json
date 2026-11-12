@@ -1,0 +1,13 @@
+{
+  "format": "qsb-pqb-public-solve-v1",
+  "deadline": 1794451892,
+  "workers": 16,
+  "maxUnits": 600,
+  "maxReservedGpuSeconds": 540000,
+  "solverCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "image": "905846953990.dkr.ecr.eu-west-1.amazonaws.com/qsb-pqb-solve-726c33ad@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+  "queue": "arn:aws:batch:eu-west-1:905846953990:job-queue/qsb-pqb-solve-726c33ad",
+  "definition": "arn:aws:batch:eu-west-1:905846953990:job-definition/qsb-pqb-solve-726c33ad:1",
+  "bucket": "qsb-pqb-solve-726c33ad"
+}

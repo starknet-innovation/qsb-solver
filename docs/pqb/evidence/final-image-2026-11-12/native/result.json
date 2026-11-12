@@ -1,0 +1,25 @@
+{
+ "deadline": 1794479003,
+ "format": "qsb-pqb-final-image-all-v1",
+ "stages": [
+  {
+   "resultPath": "pinning/result.json",
+   "resultSha256": "460fb9fbbfb36734abd83a0fc2ab21479daa0283659fa9208f92786e5a45205f",
+   "stage": "pinning",
+   "status": "passed"
+  },
+  {
+   "resultPath": "round0/result.json",
+   "resultSha256": "d635a3c5fc5f169dffc47ba64c161bb2b4067512d6e4cd38bb68cb8b8636efe1",
+   "stage": "round0",
+   "status": "passed"
+  },
+  {
+   "resultPath": "round1/result.json",
+   "resultSha256": "e9dd1294830c6dbdcb9daa2e21d63d282d2c362e1464e99e8d67bc287babd055",
+   "stage": "round1",
+   "status": "passed"
+  }
+ ],
+ "status": "passed"
+}

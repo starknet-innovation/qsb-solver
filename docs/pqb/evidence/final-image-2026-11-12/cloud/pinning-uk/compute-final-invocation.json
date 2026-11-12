@@ -1,0 +1,44 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\": \"success\", \"stdout\": \"\", \"stderr\": null, \"return_value\": {\"command\": {\"CommandId\": \"8fd5b533-7ac7-45da-b7b0-c4142368b1af\", \"InstanceId\": \"i-0fd1a7ff8ded257a6\", \"Comment\": \"pqb-final-compute-7c1bbb7b\", \"DocumentName\": \"AWS-RunShellScript\", \"DocumentVersion\": \"1\", \"PluginName\": \"aws:runShellScript\", \"ResponseCode\": 1, \"ExecutionStartDateTime\": \"2026-11-12T08:33:06.273Z\", \"ExecutionElapsedTime\": \"PT1M40.307S\", \"ExecutionEndDateTime\": \"2026-11-12T08:34:46.273Z\", \"Status\": \"Failed\", \"StatusDetails\": \"Failed\", \"StandardOutputContent\": \"/opt/qsb-pqb-final.bundle.tar: OK\\n/opt/qsb-pqb-final/host-pqb-final-image.sh: OK\\ngate/SHA256SUMS: OK\\ngate/binding.json: OK\\ngate/contract.json: OK\\ngate/expected.json: OK\\ngate/fixtures/pin-planted.txt: OK\\ngate/fixtures/pin.txt: OK\\ngate/fixtures/round0.txt: OK\\ngate/fixtures/round1.txt: OK\\ngate/oci-identity.json: OK\\ngate/qualify_image.py: OK\\ngate/reference.py: OK\\ngate/run_full_unit.py: OK\\ngate/run_measure.py: OK\\nhost-pqb-final-image.sh: OK\\nimage-config.json: OK\\nimage.oci.tar: OK\\nmanifest.json: OK\\nQSB_PUBLIC_RESULT_META={\\\"bytes\\\": 3245, \\\"sha256\\\": \\\"b8b62c162890d58fbfc8511d153c39228dfed25fec3a1e11939bc829dc354d39\\\"}\\n\", \"StandardOutputUrl\": \"\", \"StandardErrorContent\": \"failed to run commands: exit status 1\", \"StandardErrorUrl\": \"\", \"CloudWatchOutputConfig\": {\"CloudWatchLogGroupName\": \"\", \"CloudWatchOutputEnabled\": false}}}, \"warning\": null, \"api_calls\": [{\"service\": \"ssm\", \"operation\": \"GetCommandInvocation\", \"status\": \"success\"}]}"
+    }
+  ],
+  "structuredContent": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "command": {
+        "CommandId": "8fd5b533-7ac7-45da-b7b0-c4142368b1af",
+        "InstanceId": "i-0fd1a7ff8ded257a6",
+        "Comment": "pqb-final-compute-7c1bbb7b",
+        "DocumentName": "AWS-RunShellScript",
+        "DocumentVersion": "1",
+        "PluginName": "aws:runShellScript",
+        "ResponseCode": 1,
+        "ExecutionStartDateTime": "2026-11-12T08:33:06.273Z",
+        "ExecutionElapsedTime": "PT1M40.307S",
+        "ExecutionEndDateTime": "2026-11-12T08:34:46.273Z",
+        "Status": "Failed",
+        "StatusDetails": "Failed",
+        "StandardOutputContent": "/opt/qsb-pqb-final.bundle.tar: OK\n/opt/qsb-pqb-final/host-pqb-final-image.sh: OK\ngate/SHA256SUMS: OK\ngate/binding.json: OK\ngate/contract.json: OK\ngate/expected.json: OK\ngate/fixtures/pin-planted.txt: OK\ngate/fixtures/pin.txt: OK\ngate/fixtures/round0.txt: OK\ngate/fixtures/round1.txt: OK\ngate/oci-identity.json: OK\ngate/qualify_image.py: OK\ngate/reference.py: OK\ngate/run_full_unit.py: OK\ngate/run_measure.py: OK\nhost-pqb-final-image.sh: OK\nimage-config.json: OK\nimage.oci.tar: OK\nmanifest.json: OK\nQSB_PUBLIC_RESULT_META={\"bytes\": 3245, \"sha256\": \"b8b62c162890d58fbfc8511d153c39228dfed25fec3a1e11939bc829dc354d39\"}\n",
+        "StandardOutputUrl": "",
+        "StandardErrorContent": "failed to run commands: exit status 1",
+        "StandardErrorUrl": "",
+        "CloudWatchOutputConfig": {
+          "CloudWatchLogGroupName": "",
+          "CloudWatchOutputEnabled": false
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ssm",
+        "operation": "GetCommandInvocation",
+        "status": "success"
+      }
+    ]
+  },
+  "isError": false
+}

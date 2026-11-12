@@ -1,0 +1,8 @@
+{
+  "pid": 88141,
+  "stateSha256": "737d6a924d75ed49058a5fb21816bac4bc2040fca8f5987207a34a0726400e1b",
+  "reason": "Consumer hybrid-key policy differs from upstream; retain known running preflight for stronger CPU check",
+  "at": "2026-11-11T20:59:43.507071+00:00",
+  "paidSubmissions": 1,
+  "newSubmissions": "stopped before preflight completed; all requests have known IDs"
+}
