@@ -108,7 +108,13 @@ def verify_candidate(reference, prob, stage, unit, line):
     return {'candidate': line, 'nonce': str(nonce), 'digest': digest.hex()}
 
 
-def run_case(bundle, results, stage, attempt, worker, reference):
+def native_device_matches(setups, expected):
+    if expected not in ('A10G','L4'):
+        raise ValueError('Unreviewed native GPU identity')
+    return len(setups)==1 and setups[0].get('device') in (expected,'NVIDIA '+expected)
+
+
+def run_case(bundle, results, stage, attempt, worker, reference, *, native_device='A10G'):
     raw = (bundle / 'fixtures' / ('pin.txt' if stage == 'pinning' else stage + '.txt')).read_bytes()
     if raw.count(b'gate_bits 12\n') != 1:
         raise ValueError('unexpected fixture gate')
@@ -154,7 +160,8 @@ def run_case(bundle, results, stage, attempt, worker, reference):
     row['gateCountSanity'] = abs(response['gateHits'] - mean) <= 6 * math.sqrt(mean) + 6
     row['jobSeconds'] = time.monotonic() - begin
     row['pass'] = row['gateCountSanity'] and row['jobSeconds'] < worker.TIMEOUT_SECONDS
-    row['nativeDevice'] = len(setups) == 1 and 'A10G' in setups[0].get('device', '')
+    row['expectedNativeDevice'] = native_device
+    row['nativeDevice'] = native_device_matches(setups,native_device)
     write_json(results / 'unit.json', row)
     return row
 

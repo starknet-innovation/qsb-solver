@@ -17,6 +17,12 @@ from pqb_import import verify_runtime
 STAGES = ('pinning', 'round0', 'round1')
 
 
+def native_device_matches(setups, expected):
+    if expected not in ('A10G','L4'):
+        raise ValueError('Unreviewed native GPU identity')
+    return len(setups)==1 and setups[0].get('device') in (expected,'NVIDIA '+expected)
+
+
 def reviewed_gate(checksums, commit, solver, build):
     """Bind the mounted native gate to reviewed Git source and signed build assets."""
     entries={}
@@ -31,6 +37,8 @@ def reviewed_gate(checksums, commit, solver, build):
                   'contract.json':'contracts/pqb-ranked-v2.json'})
     expected_raw=source(commit,paths['expected.json'])
     expected=json.loads(expected_raw,object_pairs_hook=unique)
+    native_device=expected.get('nativeDeviceName','A10G')
+    native_device_matches([],native_device)
     if expected.get('format')!='qsb-pqb-measure-expected-v1' or len(expected['cases'])!=13 \
             or len({c['label'] for c in expected['cases']})!=13:
         raise ValueError('Reviewed correctness case inventory differs')
@@ -54,7 +62,7 @@ def reviewed_gate(checksums, commit, solver, build):
     for name in ('binding.json','oci-identity.json'):
         if entries[name]!=build['assetHashes'][name]:
             raise ValueError('Reviewed native gate differs from signed build: '+name)
-    return dict(sha256=sha(checksums),commit=commit,expected=expected,fixtures=fixtures)
+    return dict(sha256=sha(checksums),commit=commit,expected=expected,fixtures=fixtures,nativeDeviceName=native_device)
 
 
 def verify_small_cases(files, prefix, row, gate, binary_sha):
@@ -84,7 +92,7 @@ def verify_small_cases(files, prefix, row, gate, binary_sha):
         stdout=files[base+'stdout.txt'].splitlines()
         reports=[json.loads(line[7:],object_pairs_hook=unique) for line in stdout if line.startswith('@range ')]
         setups=[json.loads(line[7:],object_pairs_hook=unique) for line in stdout if line.startswith('@setup ')]
-        if len(reports)!=1 or len(setups)!=1 or 'A10G' not in setups[0].get('device',''):
+        if len(reports)!=1 or not native_device_matches(setups,gate['nativeDeviceName']):
             raise ValueError('Native small-case completion/device differs: '+case['label'])
         report=reports[0]
         args={str(case['args'][i]):int(case['args'][i+1]) for i in range(0,len(case['args']),2)}
@@ -168,6 +176,12 @@ def native_rows(raw, digest, solver, build, gate=None):
             raise ValueError('Native binary binding differs')
         verify_small_cases(files,prefix,row,gate,build['binding']['files']['grind'])
         unit = row['unit']
+        setups=[json.loads(line[7:],object_pairs_hook=unique) for line in
+                files[prefix+'work/compute.log'].splitlines() if line.startswith('@setup ')]
+        if (not native_device_matches(setups,gate['nativeDeviceName'])
+                or json.dumps(setups,sort_keys=True)!=json.dumps(unit['device'],sort_keys=True)
+                or unit.get('expectedNativeDevice','A10G')!=gate['nativeDeviceName']):
+            raise ValueError('Native full-unit device differs from reviewed plan')
         attempt = max(range(1 if stage == 'pinning' else ranges['unit_count'](stage)),
                       key=lambda a:ranges['work_range'](stage, a)['count'])
         if not unit['pass'] or not unit['nativeDevice'] or not unit['gateCountSanity'] \
@@ -265,6 +279,7 @@ def check(app, commit, archive, digest, proposal_path, out, artifacts, gate_chec
         consumerTree=git('rev-parse','HEAD^{tree}'),archiveSha256=digest,proposalSha256=sha(proposal_path.read_bytes()),
         harnessSha256=sha(Path(__file__).read_bytes()),typescriptSha256=sha(TS.encode()),
         nativeGateSha256=gate['sha256'],nativeGateCommit=gate['commit'],
+        nativeGateDeviceName=gate['nativeDeviceName'],
         buildMetadataSha256={name:sha((artifacts/name).read_bytes()) for name in
             ('SHA256SUMS','oci-identity.json','image-config.json','binding.json','build-receipt.json')},
         consumerLockSha256=sha((app/'package-lock.json').read_bytes()))

@@ -1,5 +1,6 @@
 {
  "format": "qsb-pqb-measure-expected-v1",
+ "nativeDeviceName": "L4",
  "fixtures": {
   "pin-planted.txt": "7bc1b25ba9487bb19948e591d2c2a89e79d9a2a43ee21fa2fda067185a1a3e55",
   "pin.txt": "62bf3055289f66dd4cbc3aa570860ef4ea617705e115c71e5f538a96a270060f",

@@ -56,3 +56,15 @@ class LaunchShapeTests(unittest.TestCase):
         self.assertNotIn('--gpus all',host)
         self.assertIn('gpu-inventory.txt',host)
         self.assertIn('nvidia-smi --id=0',host)
+
+    def test_l4_scope_requires_one_full_device_and_its_quota(self):
+        shape=self.shape();shape.update(InstanceType='g6.2xlarge',
+            GpuInfo=dict(Gpus=[dict(Name='L4',Count=1,GpuPartitionSize=1)]),VCpuInfo=dict(DefaultVCpus=8))
+        self.assertEqual(control.qualified_shape(Mock(return_value=dict(InstanceTypes=[shape])),'g6.2xlarge',8),shape)
+        with self.assertRaisesRegex(ValueError,'Quota'):
+            control.qualified_shape(Mock(return_value=dict(InstanceTypes=[shape])),'g6.2xlarge',7)
+        for gpu in (dict(Name='A10G',Count=1),dict(Name='L4',Count=0,GpuPartitionSize=.25),
+                    dict(Name='L4',Count=1,GpuPartitionSize=.5)):
+            wrong={**shape,'GpuInfo':dict(Gpus=[gpu])}
+            with self.subTest(gpu=gpu),self.assertRaises(ValueError):
+                control.qualified_shape(Mock(return_value=dict(InstanceTypes=[wrong])),'g6.2xlarge',8)

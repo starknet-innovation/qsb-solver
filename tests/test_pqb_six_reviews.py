@@ -210,6 +210,17 @@ class NativeGateTests(unittest.TestCase):
             else:files[prefix+'small-cases/00/hits.txt']='forged candidate\n'
             with self.subTest(kind=kind):self.reject_rehashed(files,solver,build,gate,'Native (correctness row|small-case)')
 
+    def test_historical_a10g_cases_cannot_be_relabelled_as_l4(self):
+        solver,build,gate,files,*_=self.inputs()
+        gate=copy.deepcopy(gate);gate['nativeDeviceName']='L4'
+        self.reject_rehashed(files,solver,build,gate,'completion/device differs')
+
+    def test_full_unit_device_cannot_override_its_retained_native_log(self):
+        solver,build,gate,files,*_=self.inputs()
+        path='unit/pinning/result.json';row=json.loads(files[path])
+        row['unit']['device'][0]['device']='NVIDIA L4';files[path]=json.dumps(row)
+        self.reject_rehashed(files,solver,build,gate,'full-unit device differs')
+
 
 class ArchiveDurabilityTests(unittest.TestCase):
     def script(self):

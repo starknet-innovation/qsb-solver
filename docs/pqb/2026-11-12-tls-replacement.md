@@ -56,3 +56,17 @@ retained in the inventory. The freshly verified Ireland rate is $6.33167/hour. T
 session reserves $8 within the campaign's $10 reservation; all earlier zero-instance
 reservations are released. The fixed 60-minute deadline and 840-second unit bounds
 remain unchanged. Costs include the complete host; no matched hardware speedup is claimed.
+
+The larger A10G request was also rejected with no instance. London exposes a full L4
+in `g6.2xlarge` (eight vCPUs, $1.24095/hour). The selected new gate names L4 explicitly
+in its committed expected-case inventory and checks that identity in every small case
+and full-unit log. The 13 hit sets, ranges, production gate and 840-second worker bound
+are unchanged. Historical A10G archives remain bound to their original gate and device;
+they cannot be relabeled as fresh L4 qualification.
+
+[NVIDIA's Ada compatibility guide](https://docs.nvidia.com/cuda/ada-compatibility-guide/index.html)
+states that compute-capability 8.6 cubins run on 8.9 devices; the existing sm86 binary
+therefore needs no rebuild for L4. This establishes applicability, not measured
+correctness or timing: all native checks still must pass on the actual L4. No JIT,
+kernel, timeout or experimental flag override is enabled. L4 serving would require
+its own explicit Batch/deployment configuration; enrollment alone does not select it.

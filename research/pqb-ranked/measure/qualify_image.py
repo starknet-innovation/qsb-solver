@@ -91,6 +91,9 @@ def run(gate, result, stage):
                                  ('fixtures',gate/'fixtures'),('contract.json',gate/'contract.json')]:
                 (bundle/name).symlink_to(target)
             expected = json.loads((gate/'expected.json').read_text())
+            native_device = expected.get('nativeDeviceName','A10G')
+            full.native_device_matches([],native_device)  # validate the committed plan before native work
+            out['expectedNativeDevice'] = native_device
             for name, digest in expected['fixtures'].items():
                 if sha(gate/'fixtures'/name) != digest:
                     raise ValueError('Independent fixture differs from its expected hit-set identity')
@@ -119,7 +122,8 @@ def run(gate, result, stage):
                 raise ValueError('Native correctness failed; full unit not started')
             if time.monotonic()-started > 75:
                 raise ValueError('Preflight exceeded its allowance; full unit not started')
-            out['unit'] = full.run_case(bundle,result,stage,full.largest_units(ranges)[stage],worker,reference)
+            out['unit'] = full.run_case(bundle,result,stage,full.largest_units(ranges)[stage],worker,reference,
+                                       native_device=native_device)
             out['status'] = 'passed' if out['unit']['pass'] and out['unit']['nativeDevice'] else 'failed'
     except Exception as error:
         out.update(status='failed',error=type(error).__name__+': '+str(error)[:500])

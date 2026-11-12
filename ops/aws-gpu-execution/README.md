@@ -8,6 +8,9 @@ An explicit `g5.12xlarge` capacity fallback allocates four A10Gs and requires al
 vCPUs of quota. Final-image qualification exposes only physical GPU 0 to the container
 and retains both the complete host GPU inventory and the selected GPU identity. Reserve
 and account for the entire host, including the three unexercised GPUs.
+The explicit `g6.2xlarge` option requires one full L4 and eight vCPUs; fractional
+GPU sizes are refused. Its public qualification gate must independently select and
+verify L4 in the committed expected-case plan, and every unit keeps its original bound.
 
 This documents the controller shipped on `main`, with its original Ireland scope
 and 25-minute deadline. Later research-branch controllers and campaign permissions
