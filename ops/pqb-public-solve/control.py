@@ -54,6 +54,20 @@ def job_definitions(call,name):
         if not token:return found
 
 
+def security_group_ids(call,name,vpc,recorded=None):
+    """The campaign's security group as EC2 reports it by name in its VPC, plus a recorded id."""
+    found=[g['GroupId'] for g in call('ec2','describe-security-groups',Filters=[{'Name':'group-name','Values':[name]},{'Name':'vpc-id','Values':[vpc]}]).get('SecurityGroups',[])]
+    return sorted(set(found+([recorded] if recorded else [])))
+
+
+def cleanup_archive(directory):
+    """The cleanup function's ZIP, the same bytes on every call, so the exact file can be staged before arm."""
+    archive=Path(directory)/'cleanup.zip'
+    info=zipfile.ZipInfo('cleanup.py',date_time=(1980,1,1,0,0,0));info.external_attr=0o644<<16
+    with zipfile.ZipFile(archive,'w') as z:z.writestr(info,Path(__file__).with_name('cleanup.py').read_bytes())
+    return archive
+
+
 def launch_template_ids(call,name,recorded=None):
     """The campaign's launch template as EC2 reports it by name, plus a recorded id it still knows."""
     found=[t['LaunchTemplateId'] for t in call('ec2','describe-launch-templates',Filters=[{'Name':'launch-template-name','Values':[name]}]).get('LaunchTemplates',[])]
@@ -114,7 +128,9 @@ def main():
         for group in ['/qsb-public-solve/'+name,'/aws/lambda/'+name]:
             call('logs','create-log-group',logGroupName=group)
             call('logs','put-retention-policy',logGroupName=group,retentionInDays=7)
-        s.update(phase='prepared',queue=queue,computeEnvironment=ce);save(path,s)
+        # Written here with its hash, so the operator stages these exact bytes as control/cleanup.zip before arm.
+        archive=cleanup_archive(path.parent)
+        s.update(phase='prepared',queue=queue,computeEnvironment=ce,cleanupCodeSha256=base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode());save(path,s)
     else:
         s=json.loads(path.read_text())
         if s['config']!=config:raise ValueError('Frozen configuration changed')
@@ -133,10 +149,13 @@ def main():
             s['publisherAccess']={'role':publisher['name']+'-host','repository':repo};save(path,s)
         elif a.mode=='arm':
             if s['phase']!='prepared':raise ValueError('Already armed; never extend a deadline')
+            # The archive is rebuilt (same bytes as at prepare) and checked before the one arm is consumed:
+            # a changed cleanup source must stop here, not after the deadline has started.
+            archive=cleanup_archive(path.parent)
+            if s.get('cleanupCodeSha256') not in (None,base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode()):
+                raise ValueError('Cleanup archive differs from the one recorded at prepare; restage it')
             deadline=datetime.now(timezone.utc)+timedelta(hours=6)
             s.update(phase='arming',deadline=int(deadline.timestamp()));save(path,s)
-            archive=path.parent/'cleanup.zip'
-            with zipfile.ZipFile(archive,'w') as z:z.write(Path(__file__).with_name('cleanup.py'),'cleanup.py')
             actual=call('lambda','create-function',FunctionName=name,Runtime='python3.12',Role=rolearn('cleanup'),
                 Handler='cleanup.handler',Timeout=900,Code={'S3Bucket':name,'S3Key':'control/cleanup.zip'},
                 Environment={'Variables':{'QUEUE':queue,'COMPUTE_ENVIRONMENT':ce,'TOKEN':token,'DEADLINE':str(s['deadline'])}})
@@ -218,7 +237,8 @@ def main():
             delete(call,'iam','delete-role',RoleName=name+'-host')
             for suffix in ['task','execute','cleanup','schedule']:
                 delete(call,'iam','delete-role-policy',RoleName=name+'-'+suffix,PolicyName='validation-only');delete(call,'iam','delete-role',RoleName=name+'-'+suffix)
-            if s.get('securityGroup'):delete(call,'ec2','delete-security-group',GroupId=s['securityGroup'])
+            # A security group whose creation response was lost is not in the state: find it by campaign name and VPC.
+            for group in security_group_ids(call,name,config['vpc'],s.get('securityGroup')):delete(call,'ec2','delete-security-group',GroupId=group)
             delete(call,'ecr','delete-repository',repositoryName=name,force=True)
             # Evidence objects and logs must already have been collected separately.
             try:remaining=call('s3','list-objects-v2',Bucket=name).get('Contents')

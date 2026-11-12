@@ -33,7 +33,16 @@ def publish(artifact, repository, region, output):
         raise ValueError('One-shot publisher receipt already exists')
     if not re.fullmatch(r'\d{12}\.dkr\.ecr\.eu-west-1\.amazonaws.com/qsb-pqb-solve-[a-z0-9-]+', repository):
         raise ValueError('Temporary private repository required')
-    output.write_text('{"status":"started"}\n')
+    # Exclusive and durable before anything else: a marker lost in a crash would allow a replay.
+    with open(output, 'x') as marker:
+        marker.write('{"status":"started"}\n')
+        marker.flush()
+        os.fsync(marker.fileno())
+    marker_directory = os.open(output.parent, os.O_RDONLY)
+    try:
+        os.fsync(marker_directory)
+    finally:
+        os.close(marker_directory)
     stage = ['verifying the artifact']
     try:
         checked = []

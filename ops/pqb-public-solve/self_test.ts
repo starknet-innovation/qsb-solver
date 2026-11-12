@@ -30,7 +30,7 @@ for(const mode of ['empty','unknown','wrong-context']){
   },status:async()=>({status:'COMPLETED',executionTime:1000,output:{status:'completed',stage:'pinning',
     manifestHash:mode==='wrong-context'?'0'.repeat(64):payload.manifestHash,attempt:0,kernelCommit:config.solverCommit,
     checkpoint:'range-complete',searchVersion:'pqb-ranked-v2',verified:false,workRange:pqbWorkRange('pinning',0),
-    trials:pqbWorkRange('pinning',0).count*72,gateHits:0,candidates:[]}}),cancel:async()=>{}};
+    trials:pqbWorkRange('pinning',0).count*72,gateHits:Math.round(pqbWorkRange('pinning',0).count*72/2**24),candidates:[]}}),cancel:async()=>{}};
   await assert.rejects(()=>solve(config,input,out,provider,0));
   if(mode==='empty')knownProvider=provider;
   const state=JSON.parse(readFileSync(out+'/state.json','utf8'));
@@ -57,7 +57,7 @@ const recheck={prepareRun:async()=>{extraPosts++;throw Error('Unexpected paid re
  const attempt=id===first.id?0:1,range=pqbWorkRange('pinning',attempt);
  return {status:'COMPLETED',executionTime:1000,output:{status:'completed',stage:'pinning',attempt,
   manifestHash:first.context.manifestHash,kernelCommit:config.solverCommit,checkpoint:'range-complete',
-  searchVersion:'pqb-ranked-v2',verified:false,workRange:range,trials:range.count*72,gateHits:0,candidates:[]}};
+  searchVersion:'pqb-ranked-v2',verified:false,workRange:range,trials:range.count*72,gateHits:Math.round(range.count*72/2**24),candidates:[]}};
 }};
 await assert.rejects(()=>solve(twoConfig,input,base+'/two-handover',recheck,0,two),/reservation exhausted/);
 const checked=JSON.parse(readFileSync(base+'/two-handover/state.json','utf8'));

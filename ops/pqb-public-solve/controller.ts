@@ -106,6 +106,15 @@ export async function solve(config: any, publicInput: any, directory: string, in
           save(dir+'/jobs/'+slot.id+'-cpu.json',{checked:cpu,range});
           job.computeSeconds+=(result.executionTime??0)/1000;
           if(output.status!=='completed'||output.checkpoint!=='range-complete')throw Error('Incomplete worker result');
+          // A worker that skipped trials but reported the contractual z-block count would still show too few
+          // 24-bit gate hits. Trials are computed here from the checked range, not taken from the worker;
+          // the bound is the full-unit harness's (6 sigma + 6).
+          const tries=({pinning:72,round1:192,round2:64} as Record<string,number>)[slot.stage];
+          const gateMean=Number(range.count)*tries/2**24;
+          // read from the raw worker result: the consumer's parsed output keeps only its own schema's fields
+          const gateHits=(result.output as any)?.gateHits;
+          if(!Number.isSafeInteger(gateHits)||!(Math.abs(gateHits-gateMean)<=6*Math.sqrt(gateMean)+6))
+            throw Error('Gate-hit count inconsistent with the unit size; range not credited');
           if(slot.epoch===state.epoch){
             if(cpu.valid===true){
               const before=structuredClone(job);applyVerifiedHit(job,cpu,range,slot.attempt);

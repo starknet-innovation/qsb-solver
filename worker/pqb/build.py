@@ -24,6 +24,10 @@ def main():
     for name, expected in lock['sources'].items():
         if sha256(ROOT / name) != expected:
             sys.exit('source differs from the lock: ' + name)
+    # The unmodified upstream grinder is compiled as the timing baseline (the measure stage): it
+    # must be the file the adaptation was made from.
+    if sha256(ROOT / 'vendor/pqb/grinder/grind.cu') != lock['upstream']['adaptedFromSha256']:
+        sys.exit('upstream baseline grind.cu differs from the lock')
     present = {p.name for p in (ROOT / 'vendor/pqb/grinder').iterdir()} | {'grind.cu'}
     if present != {'grind.cu', 'common.cuh', 'ptx_field.cuh', 'README.md'}:
         sys.exit('unexpected grinder files')

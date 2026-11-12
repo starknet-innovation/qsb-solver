@@ -165,6 +165,68 @@ class ResumableRemovalTest(unittest.TestCase):
         self.assertEqual(unguarded, [])
 
 
+class LaterReviewFixesTest(unittest.TestCase):
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / 'ops/pqb-public-solve'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'ops/pqb-public-solve'))
+        self.control = load('pqb_public_solve_control_later', 'ops/pqb-public-solve/control.py')
+
+    def test_an_unrecorded_security_group_is_found_by_name_and_vpc(self):
+        def call(service, operation, **params):
+            self.assertEqual((service, operation), ('ec2', 'describe-security-groups'))
+            self.assertEqual(params['Filters'], [{'Name': 'group-name', 'Values': ['qsb-pqb-solve-0123abcd']},
+                                                 {'Name': 'vpc-id', 'Values': ['vpc-1']}])
+            return {'SecurityGroups': [{'GroupId': 'sg-9'}]}
+        self.assertEqual(self.control.security_group_ids(call, 'qsb-pqb-solve-0123abcd', 'vpc-1'), ['sg-9'])
+        self.assertEqual(self.control.security_group_ids(call, 'qsb-pqb-solve-0123abcd', 'vpc-1', 'sg-9'), ['sg-9'])
+        self.assertEqual(self.control.security_group_ids(lambda *a, **k: {'SecurityGroups': []}, 'n', 'vpc-1', 'sg-2'), ['sg-2'])
+
+    def test_public_solve_archive_is_stable_and_built_before_the_arm_is_consumed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            first = self.control.cleanup_archive(tmp).read_bytes()
+            os.utime(ROOT / 'ops/pqb-public-solve/cleanup.py')
+            self.assertEqual(self.control.cleanup_archive(tmp).read_bytes(), first)
+        text = (ROOT / 'ops/pqb-public-solve/control.py').read_text()
+        arm = text.index("elif a.mode=='arm':")
+        self.assertLess(text.index('archive=cleanup_archive(path.parent)', arm), text.index("phase='arming'", arm))
+        prepare = text[:arm]
+        self.assertIn('cleanupCodeSha256=', prepare)
+
+    def test_full_unit_receipts_are_flushed(self):
+        runner = load('pqb_run_full_unit_flush', 'research/pqb-ranked/measure/run_full_unit.py')
+        events = []
+        real = os.fsync
+
+        def fsync(fd):
+            import stat
+            events.append('dir' if stat.S_ISDIR(os.fstat(fd).st_mode) else 'file')
+            return real(fd)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(runner.os, 'fsync', fsync):
+            path = Path(tmp) / 'result.json'
+            runner.write_json(path, {'status': 'passed'})
+            self.assertEqual(json.loads(path.read_text()), {'status': 'passed'})
+            self.assertEqual(events, ['file', 'dir'])
+            self.assertEqual([p.name for p in Path(tmp).iterdir()], ['result.json'])
+
+    def test_the_upstream_baseline_is_bound_before_it_is_compiled(self):
+        text = (ROOT / 'worker/pqb/build.py').read_text()
+        check = text.index("lock['upstream']['adaptedFromSha256']")
+        self.assertLess(check, text.index("subprocess.run(['nvcc']"))
+        lock = json.loads((ROOT / 'research/pqb-ranked/source-lock.json').read_text())
+        self.assertEqual(hashlib.sha256((ROOT / 'vendor/pqb/grinder/grind.cu').read_bytes()).hexdigest(),
+                         lock['upstream']['adaptedFromSha256'])
+        # the measure stage compiles that file from the build stage, after build.py has run
+        docker = (ROOT / 'worker/pqb/Dockerfile').read_text()
+        self.assertLess(docker.index('python3 /src/worker/pqb/build.py'), docker.index('grind-upstream'))
+
+    def test_the_controller_checks_gate_hits_against_the_unit_size(self):
+        text = (ROOT / 'ops/pqb-public-solve/controller.ts').read_text()
+        self.assertIn('(result.output as any)?.gateHits', text)
+        self.assertIn('6*Math.sqrt(gateMean)+6', text)
+        self.assertIn('{pinning:72,round1:192,round2:64}', text)
+        self.assertNotIn('gateHits:0', (ROOT / 'ops/pqb-public-solve/self_test.ts').read_text())
+
+
 class DurableRequestTest(unittest.TestCase):
     def test_request_is_flushed_before_it_is_published(self):
         rpc = load('qsb_mcp_rpc_durable', 'ops/aws-gpu-execution/mcp_rpc.py')
@@ -216,6 +278,16 @@ class PublisherFailureTest(unittest.TestCase):
             '%s  %s\n' % (wrong.get(n, hashlib.sha256((self.artifact / n).read_bytes()).hexdigest()), n)
             for n in ('image.tar.gz', 'image.json', 'binding.json', 'source-commit')))
 
+    def test_the_marker_is_exclusive_and_flushed_before_anything_else(self):
+        text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()
+        body = text[text.index('def publish'):]
+        marker = body.index("with open(output, 'x') as marker:")
+        self.assertLess(marker, body.index('os.fsync(marker.fileno())'))
+        self.assertLess(body.index('os.fsync(marker.fileno())'), body.index('os.fsync(marker_directory)'))
+        for later in ("(artifact/'SHA256SUMS')", "'docker','load'", "'docker','push'"):
+            self.assertLess(body.index('os.fsync(marker_directory)'), body.index(later), later)
+        self.assertNotIn('output.write_text(', text)
+
     def test_a_failure_after_the_marker_leaves_a_terminal_receipt(self):
         self.sums(**{'image.json': '0' * 64})
         output = Path(self.tmp.name) / 'receipt.json'
@@ -232,7 +304,7 @@ class PublisherFailureTest(unittest.TestCase):
         text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()
         self.assertIn("replace_durably(output, receipt, '.published.tmp')", text)
         # nothing writes the success receipt over the marker in place
-        self.assertEqual(text.count('output.write_text('), 1)                  # only the started marker
+        self.assertNotIn('output.write_text(', text)                           # nothing is written in place
 
     def test_full_unit_host_script_arms_its_trap_with_the_marker(self):
         text = (ROOT / 'ops/aws-gpu-execution/host-pqb-full-unit.sh').read_text()

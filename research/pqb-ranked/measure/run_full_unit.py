@@ -27,9 +27,18 @@ def canonical_hash(value):
 
 
 def write_json(path, value):
+    """Replace a receipt whole and durably: file flushed, renamed, directory flushed."""
     temporary = path.with_suffix('.partial')
-    temporary.write_text(json.dumps(value, indent=1, sort_keys=True) + '\n')
+    with open(temporary, 'w') as stream:
+        stream.write(json.dumps(value, indent=1, sort_keys=True) + '\n')
+        stream.flush()
+        os.fsync(stream.fileno())
     os.replace(temporary, path)
+    directory = os.open(path.parent, os.O_RDONLY)
+    try:
+        os.fsync(directory)
+    finally:
+        os.close(directory)
 
 
 def verify_bundle(bundle):
