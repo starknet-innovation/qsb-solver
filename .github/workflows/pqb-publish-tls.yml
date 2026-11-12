@@ -2,9 +2,16 @@ name: Publish reviewed TLS-fixed PQB archive
 on:
   push:
     branches: ['codex/pqb-publish-equivalence-20261112']
-    paths:
-      - '.github/workflows/pqb-publish-tls.yml'
-      - 'scripts/publish_pqb_tls.py'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Verify the existing release or publish only if it does not exist
+        type: choice
+        options: [verify, publish]
+        default: verify
+concurrency:
+  group: pqb-tls-publication-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -17,6 +24,7 @@ jobs:
       actions: read
       attestations: read
     env:
+      PUBLICATION_ACTION: ${{ github.event_name == 'workflow_dispatch' && inputs.action || 'verify' }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -33,18 +41,26 @@ jobs:
           go install oras.land/oras/cmd/oras@v1.3.0
           echo "$HOME/go/bin" >> "$GITHUB_PATH"
       - name: Authenticate publication transport
+        if: env.PUBLICATION_ACTION == 'publish'
         env:
           REGISTRY_TOKEN: ${{ github.token }}
         run: |
           printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
           printf '%s' "$REGISTRY_TOKEN" | skopeo login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
       - name: Recheck exact artifacts, qualify by applicability, publish and verify original provenance
-        run: python3 scripts/publish_pqb_tls.py "$RUNNER_TEMP/pqb-publish"
+        run: |
+          if [ "$PUBLICATION_ACTION" = publish ]; then
+            python3 scripts/publish_pqb_tls.py --publish "$RUNNER_TEMP/pqb-publish"
+          else
+            python3 scripts/publish_pqb_tls.py --verify-published "$RUNNER_TEMP/pqb-publish"
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: ${{ always() && !cancelled() }}
         with:
           name: pqb-tls-publication-receipt
           path: |
+            ${{ runner.temp }}/pqb-publish/verification.json
+            ${{ runner.temp }}/pqb-publish/oci-*-verification.json
             ${{ runner.temp }}/pqb-publish/release/publication.json
             ${{ runner.temp }}/pqb-publish/release/oci-*-verification.json
             ${{ runner.temp }}/pqb-publish/fresh-scan/image-scan.json

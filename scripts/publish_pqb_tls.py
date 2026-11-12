@@ -19,8 +19,42 @@ def save(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
 def capture(p,*args):
  r=run(*args,capture_output=True);p.write_bytes(r.stdout);return r.stdout
 
+def verify_published(work):
+    work=work.resolve();work.mkdir(exist_ok=False)
+    run('gh','release','download',TAG,'--repo',REPO,'--pattern','solver.json','--pattern','publication.json','--pattern','pqb-ranked-v2.json','--dir',work)
+    expected=json.loads((EVIDENCE/'verified-build/descriptor-proposal.json').read_bytes())['solver']
+    if json.loads((work/'solver.json').read_bytes())!=expected:raise ValueError('Published descriptor differs')
+    if (work/'pqb-ranked-v2.json').read_bytes()!=(EVIDENCE/'verified-build/contract.json').read_bytes():raise ValueError('Published contract differs')
+    policy=['--repo',REPO,'--signer-workflow',WORKFLOW,'--source-ref',REF,'--source-digest',NEW,'--deny-self-hosted-runners','--format','json']
+    # Verify the retained source manifest itself, as well as the registry subject.
+    verified=capture(work/'source-manifest-verification.json','gh','attestation','verify',EVIDENCE/'build/image-manifest.json',*policy)
+    verify_policy(json.loads(verified),NEW,REF,RUN)
+    identity=json.loads((EVIDENCE/'build/oci-identity.json').read_bytes())
+    fetched={}
+    for name,digest,flags in [('index',DIGEST,['--raw']),('platform',identity['platformDigest'],['--raw']),('config',identity['platformDigest'],['--config','--raw'])]:
+        raw=capture(work/(name+'.json'),'skopeo','inspect',*flags,'docker://'+IMAGE+'@'+digest)
+        fetched[name]=raw
+        want=identity['configDigest'] if name=='config' else digest
+        if 'sha256:'+hashlib.sha256(raw).hexdigest()!=want:raise ValueError('Registry '+name+' differs')
+    if fetched['index']!=(EVIDENCE/'build/image-manifest.json').read_bytes():raise ValueError('Registry index differs from signed source')
+    members=json.loads(fetched['index'])['manifests']
+    if not any(m['digest']==identity['platformDigest'] and m.get('platform')=={'architecture':'amd64','os':'linux'} for m in members):raise ValueError('Platform is not in signed index')
+    if json.loads(fetched['platform'])['config']['digest']!=identity['configDigest']:raise ValueError('Config is not in platform manifest')
+    for label,extra in [('registry',['--bundle-from-oci']),('github-api',[])]:
+        raw=capture(work/('oci-'+label+'-verification.json'),'gh','attestation','verify','oci://'+IMAGE+'@'+DIGEST,*extra,*policy)
+        verify_policy(json.loads(raw),NEW,REF,RUN)
+    publication=json.loads((work/'publication.json').read_bytes())
+    if publication['sourceCommit']!=NEW or publication['image']!=IMAGE+'@'+DIGEST or publication['originalBuildRun']!=RUN:
+        raise ValueError('Publication metadata differs')
+    save(work/'verification.json',dict(status='passed',image=IMAGE+'@'+DIGEST,mode='read-only-existing-publication',freshNativeExecution=False))
+    print(json.dumps(dict(status='verified-existing-publication',image=IMAGE+'@'+DIGEST)))
+
+
 def main(work):
  work=work.resolve();work.mkdir(exist_ok=False);os.chdir(ROOT)
+ existing=subprocess.run(['gh','release','view',TAG,'--repo',REPO],capture_output=True)
+ if existing.returncode==0:raise ValueError('Immutable release already exists; use read-only verification')
+ if b'release not found' not in existing.stderr.lower():raise ValueError('Cannot establish release absence')
  decision=json.loads((EVIDENCE/'decision.json').read_bytes())
  if decision['releaseBlockers'] or decision['freshNativeExecution'] or decision['image']['imageDigest']!=DIGEST:raise ValueError('Unreviewed publication')
  manifest=json.loads((EVIDENCE/'manifest.json').read_bytes())
@@ -64,7 +98,11 @@ def main(work):
  shutil.copytree(EVIDENCE,release/'reviewed-evidence')
  for name in ['offline-check.json','installed-wrapper-replay.json']:shutil.copyfile(work/name,release/name)
  # Publication is conditional on all preceding independent checks; no old image is pushed.
- run('skopeo','copy','--all','--preserve-digests','oci-archive:'+str(work/'candidate/image.oci.tar'),'docker://'+IMAGE+':'+TAG)
+ branch=os.environ['GITHUB_REF'].removeprefix('refs/heads/')
+ latest=json.loads(capture(work/'controller-head.json','gh','api','repos/'+REPO+'/git/ref/heads/'+branch))
+ if latest['object']['sha']!=os.environ['GITHUB_SHA']:raise ValueError('Controller branch advanced; refuse stale publication')
+ staging='pqb-staging-'+os.environ['GITHUB_RUN_ID']
+ run('skopeo','copy','--all','--preserve-digests','oci-archive:'+str(work/'candidate/image.oci.tar'),'docker://'+IMAGE+':'+staging)
  actual=capture(release/'registry-index.json','skopeo','inspect','--raw','docker://'+IMAGE+'@'+DIGEST)
  if actual!=(work/'candidate/image-manifest.json').read_bytes():raise ValueError('Registry index differs')
  identity=json.loads((work/'candidate/oci-identity.json').read_bytes())
@@ -93,7 +131,13 @@ def main(work):
  assets=[release/x for x in ['solver.json','pqb-ranked-v2.json','publication.json','archive-parts.json']]
  assets += sorted(release.glob('image.oci.tar.part-*'))+[work/'qualification-evidence.tar.gz']
  run('gh','release','create',TAG,'--repo',REPO,'--target',NEW,'--prerelease','--title','PQB sm86 TLS-fixed worker v0.1.0','--notes-file',notes,*assets)
+ # The final convenience tag appears only after byte/provenance checks and release creation.
+ run('skopeo','copy','--all','--preserve-digests','docker://'+IMAGE+'@'+DIGEST,'docker://'+IMAGE+':'+TAG)
+ if capture(work/'final-tag.json','skopeo','inspect','--raw','docker://'+IMAGE+':'+TAG)!=(work/'candidate/image-manifest.json').read_bytes():
+  raise ValueError('Final convenience tag differs')
  print(json.dumps(dict(status='published-and-provenance-verified',image=IMAGE+'@'+DIGEST,tag=TAG,freshNativeExecution=False)))
 
 if __name__=='__main__':
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('work',type=pathlib.Path);main(p.parse_args().work)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('work',type=pathlib.Path)
+ action=p.add_mutually_exclusive_group(required=True);action.add_argument('--publish',action='store_true');action.add_argument('--verify-published',action='store_true')
+ a=p.parse_args();(main if a.publish else verify_published)(a.work)

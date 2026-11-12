@@ -8,7 +8,6 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from compare_pqb_runtime import compare_tables,ca_only_delta
-from pqb_descriptor import source
 
 
 class RuntimeEquivalenceTests(unittest.TestCase):
@@ -41,8 +40,8 @@ class RuntimeEquivalenceTests(unittest.TestCase):
             with self.subTest(field=field),self.assertRaises(ValueError):compare_tables(old,changed)
 
     def test_only_reviewed_ca_keyword_can_change_transport_semantics(self):
-        old=source('ecb31d384fbdec9c67cd802548460b774a722baf','worker/aws/entrypoint.py')
-        new=source('cfd99e3844698f59679e4c15cf567db2976b9ffc','worker/aws/entrypoint.py')
+        old=b"client = boto3.client('s3', config=Config(connect_timeout=5, read_timeout=15))"
+        new=old.replace(b"config=",b"verify='/etc/ssl/certs/ca-certificates.crt', config=")
         ca_only_delta(old,new)
         for changed in (new.replace(b'read_timeout=15',b'read_timeout=99'),
                         new.replace(b"verify='/etc/ssl/certs/ca-certificates.crt'",b'verify=False'),old):
