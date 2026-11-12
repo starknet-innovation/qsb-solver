@@ -63,6 +63,7 @@ jobs:
           path: |
             ${{ runner.temp }}/pqb-publish/verification.json
             ${{ runner.temp }}/pqb-publish/source-*-verification.json
+            ${{ runner.temp }}/pqb-publish/git-release-tag-*.json
             ${{ runner.temp }}/pqb-publish/archive-parts.json
             ${{ runner.temp }}/pqb-publish/oci-*-verification.json
             ${{ runner.temp }}/pqb-publish/release/publication.json

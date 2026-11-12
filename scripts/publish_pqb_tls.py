@@ -14,10 +14,49 @@ APP='2bea83316fb66fb0fab0c30e7ae8206086059ffb'
 EVIDENCE=ROOT/'docs/pqb/evidence/tls-replacement-2026-11-12'
 
 def run(*args,**kw):return subprocess.run([str(x) for x in args],check=True,**kw)
-def sha(p):return hashlib.file_digest(p.open('rb'),'sha256').hexdigest()
+def sha(p):
+    with p.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
 def save(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
 def capture(p,*args):
  r=run(*args,capture_output=True);p.write_bytes(r.stdout);return r.stdout
+
+def reviewed_inventory(root):
+    if root.is_symlink() or (root/'manifest.json').is_symlink():raise ValueError('Evidence symlink')
+    manifest=json.loads((root/'manifest.json').read_bytes());paths=[]
+    for row in manifest['files']:
+        name=row['path'];pure=pathlib.PurePosixPath(name)
+        if pure.is_absolute() or '..' in pure.parts or str(pure)!=name or name=='manifest.json':
+            raise ValueError('Unsafe evidence path')
+        paths.append(name)
+    if len(paths)!=len(set(paths)):raise ValueError('Duplicate evidence path')
+    files=set()
+    for p in root.rglob('*'):
+        if p.is_symlink():raise ValueError('Evidence symlink')
+        if p.is_file():files.add(str(p.relative_to(root)))
+    if files!=set(paths)|{'manifest.json'}:raise ValueError('Evidence inventory differs')
+    for row in manifest['files']:
+        p=root/row['path']
+        if p.stat().st_size!=row['bytes'] or sha(p)!=row['sha256']:raise ValueError('Evidence bytes differ')
+
+
+def release_git_tag(work,allow_absent=False,label='verification'):
+    found=subprocess.run(['gh','api','repos/'+REPO+'/git/ref/tags/'+TAG],capture_output=True)
+    if found.returncode:
+        if allow_absent and b'HTTP 404' in found.stderr:return None
+        found.check_returncode()
+    value=json.loads(found.stdout);save(work/('git-release-tag-'+label+'.json'),value)
+    obj=value['object']
+    for depth in range(8):
+        if not re.fullmatch('[a-f0-9]{40}',obj['sha']):raise ValueError('Invalid release Git object')
+        if obj['type']=='commit':
+            if obj['sha']!=NEW:raise ValueError('Release Git tag differs from qualified source')
+            return obj['sha']
+        if obj['type']!='tag':raise ValueError('Release tag does not resolve to a commit')
+        raw=capture(work/('git-release-tag-'+label+'-nested-'+str(depth)+'.json'),
+            'gh','api','repos/'+REPO+'/git/tags/'+obj['sha'])
+        obj=json.loads(raw)['object']
+    raise ValueError('Release tag nesting exceeds supported depth')
+
 
 def verify_archive_parts(work,parts,expected):
     if parts['archiveSha256']!=expected or not parts['parts']:raise ValueError('Archive differs from signed build')
@@ -53,6 +92,8 @@ def final_tag(work,repair=False):
 
 def verify_published(work,repair=False):
     work=work.resolve();work.mkdir(exist_ok=False)
+    reviewed_inventory(EVIDENCE)
+    git_source=release_git_tag(work)
     run('gh','release','download',TAG,'--repo',REPO,'--pattern','solver.json','--pattern','publication.json','--pattern','pqb-ranked-v2.json','--pattern','archive-parts.json','--pattern','qualification-evidence.tar.gz','--pattern','image.oci.tar.part-*','--dir',work)
     expected=json.loads((EVIDENCE/'verified-build/descriptor-proposal.json').read_bytes())['solver']
     if json.loads((work/'solver.json').read_bytes())!=expected:raise ValueError('Published descriptor differs')
@@ -66,7 +107,7 @@ def verify_published(work,repair=False):
     sums=dict((name,digest) for digest,name in (line.split('  ',1) for line in (EVIDENCE/'build/SHA256SUMS').read_text().splitlines()))
     baseline=json.loads((EVIDENCE.parent/'tls-publication-2026-11-12/release-metadata.json').read_bytes())
     assets={asset['name']:asset for asset in baseline['assets']}
-    for name in ['archive-parts.json','qualification-evidence.tar.gz']:
+    for name in ['archive-parts.json','qualification-evidence.tar.gz','publication.json','solver.json','pqb-ranked-v2.json']:
         path=work/name
         if path.stat().st_size!=assets[name]['size'] or 'sha256:'+sha(path)!=assets[name]['digest']:
             raise ValueError('Retained release asset differs: '+name)
@@ -93,7 +134,7 @@ def verify_published(work,repair=False):
     if publication['sourceCommit']!=NEW or publication['image']!=IMAGE+'@'+DIGEST or publication['originalBuildRun']!=RUN:
         raise ValueError('Publication metadata differs')
     final_tag(work,repair=repair)
-    save(work/'verification.json',dict(status='passed',image=IMAGE+'@'+DIGEST,mode='explicit-finalization' if repair else 'read-only-existing-publication',retainedArchivePartsVerified=True,archiveSha256=sums['image.oci.tar'],archivePartCount=len(parts['parts']),retainedQualificationAssetVerified=True,qualificationEvidenceSha256=sha(work/'qualification-evidence.tar.gz'),finalTagVerified=True,originalBuildRun=RUN,sourceCommit=NEW,freshNativeExecution=False))
+    save(work/'verification.json',dict(status='passed',image=IMAGE+'@'+DIGEST,mode='explicit-finalization' if repair else 'read-only-existing-publication',retainedArchivePartsVerified=True,archiveSha256=sums['image.oci.tar'],archivePartCount=len(parts['parts']),retainedQualificationAssetVerified=True,qualificationEvidenceSha256=sha(work/'qualification-evidence.tar.gz'),finalTagVerified=True,releaseGitTagCommit=git_source,publicationReceiptHashVerified=True,originalBuildRun=RUN,sourceCommit=NEW,freshNativeExecution=False))
     print(json.dumps(dict(status='verified-existing-publication',image=IMAGE+'@'+DIGEST)))
 
 
@@ -104,10 +145,8 @@ def main(work):
  if b'release not found' not in existing.stderr.lower():raise ValueError('Cannot establish release absence')
  decision=json.loads((EVIDENCE/'decision.json').read_bytes())
  if decision['releaseBlockers'] or decision['freshNativeExecution'] or decision['image']['imageDigest']!=DIGEST:raise ValueError('Unreviewed publication')
- manifest=json.loads((EVIDENCE/'manifest.json').read_bytes())
- for row in manifest['files']:
-  p=EVIDENCE/row['path']
-  if p.is_symlink() or p.stat().st_size!=row['bytes'] or sha(p)!=row['sha256']:raise ValueError('Evidence inventory differs')
+ reviewed_inventory(EVIDENCE)
+ release_git_tag(work,allow_absent=True,label='preflight')
  current=json.loads(capture(work/'main-before.json','gh','api','repos/'+REPO+'/commits/main'))
  if current['sha']!=NEW:raise ValueError('Main changed; review applicability before publication')
  for label,commit,ref,runid in [('reference',OLD,OLDREF,OLDRUN),('candidate',NEW,REF,RUN)]:
@@ -142,6 +181,7 @@ def main(work):
  shutil.copyfile(work/'candidate-verified/contract.json',release/'pqb-ranked-v2.json')
  for folder in ['candidate-verified','reference-verified','equivalence','original-native-consumer','wrapper-consumer','fresh-scan']:
   shutil.copytree(work/folder,release/folder)
+ reviewed_inventory(EVIDENCE)
  shutil.copytree(EVIDENCE,release/'reviewed-evidence')
  for name in ['offline-check.json','installed-wrapper-replay.json']:shutil.copyfile(work/name,release/name)
  # Publication is conditional on all preceding independent checks; no old image is pushed.
@@ -179,7 +219,9 @@ def main(work):
  assets += sorted(release.glob('image.oci.tar.part-*'))+[work/'qualification-evidence.tar.gz']
  latest=json.loads(capture(work/'controller-final-head.json','gh','api','repos/'+REPO+'/git/ref/heads/'+branch))
  if latest['object']['sha']!=os.environ['GITHUB_SHA']:raise ValueError('Controller branch advanced before release creation')
+ release_git_tag(work,allow_absent=True,label='before-create')
  run('gh','release','create',TAG,'--repo',REPO,'--target',NEW,'--prerelease','--title','PQB sm86 TLS-fixed worker v0.1.0','--notes-file',notes,*assets)
+ release_git_tag(work,label='after-create')
  # The final convenience tag appears only after byte/provenance checks and release creation.
  final_tag(work,repair=True)
  print(json.dumps(dict(status='published-and-provenance-verified',image=IMAGE+'@'+DIGEST,tag=TAG,freshNativeExecution=False)))

@@ -85,3 +85,38 @@ class TransportEvidenceTests(unittest.TestCase):
             with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],1,b'',b'connection failed')):
                 with self.assertRaises(subprocess.CalledProcessError):publish_pqb_tls.final_tag(Path(tmp),repair=True)
             mutate.assert_not_called()
+
+    def test_reviewed_inventory_rejects_omissions_duplicates_traversal_and_symlinks(self):
+        import hashlib,json
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);payload=b'public evidence';(root/'receipt').write_bytes(payload)
+            row=dict(path='receipt',bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest())
+            def manifest(rows): (root/'manifest.json').write_text(json.dumps(dict(files=rows)))
+            manifest([row]);publish_pqb_tls.reviewed_inventory(root)
+            (root/'unlisted-operator-file').write_bytes(b'public synthetic placeholder')
+            with self.assertRaisesRegex(ValueError,'inventory'):publish_pqb_tls.reviewed_inventory(root)
+            (root/'unlisted-operator-file').unlink()
+            manifest([row,row])
+            with self.assertRaisesRegex(ValueError,'Duplicate'):publish_pqb_tls.reviewed_inventory(root)
+            manifest([{**row,'path':'../receipt'}])
+            with self.assertRaisesRegex(ValueError,'Unsafe'):publish_pqb_tls.reviewed_inventory(root)
+            manifest([row]);(root/'link').symlink_to(root/'receipt')
+            with self.assertRaisesRegex(ValueError,'symlink'):publish_pqb_tls.reviewed_inventory(root)
+
+    def test_release_git_tag_must_resolve_to_the_qualified_commit(self):
+        import json
+        commit=dict(object=dict(type='commit',sha=publish_pqb_tls.NEW))
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],0,json.dumps(commit).encode(),b'')):
+                self.assertEqual(publish_pqb_tls.release_git_tag(root),publish_pqb_tls.NEW)
+            wrong=dict(object=dict(type='commit',sha='a'*40))
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],0,json.dumps(wrong).encode(),b'')):
+                with self.assertRaisesRegex(ValueError,'differs'):publish_pqb_tls.release_git_tag(root)
+            annotated=dict(object=dict(type='tag',sha='b'*40))
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],0,json.dumps(annotated).encode(),b'')), \
+                 patch.object(publish_pqb_tls,'capture',return_value=json.dumps(commit).encode()):
+                self.assertEqual(publish_pqb_tls.release_git_tag(root),publish_pqb_tls.NEW)
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],1,b'',b'HTTP 404')):
+                self.assertIsNone(publish_pqb_tls.release_git_tag(root,allow_absent=True))
+                with self.assertRaises(subprocess.CalledProcessError):publish_pqb_tls.release_git_tag(root)
