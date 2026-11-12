@@ -35,6 +35,12 @@ image.
 ## Native public plan and collection
 
 Use three sequential fresh 25-minute A10G sessions, one for each largest `pqb-ranked-v2` unit.
+If xlarge capacity is unavailable, a fresh session may use the controller's explicit
+`--instance-type` at prepare: single-A10G G5 sizes through `g5.16xlarge`. The controller checks
+the provider's actual GPU/CPU description and effective quota before submission. Verify fresh
+pricing against the $3 session reservation first. Preserve and clean up failed sessions before
+choosing a new size; no armed deadline or request is edited or retried. The image/partition
+remain the same; different CPU resources are recorded and are not a matched performance claim.
 Each session imports the same verified OCI archive; the actual rootfs diff IDs and every
 runtime config field must equal the attested image's configuration before compute. Docker's
 containerd store can report an index/manifest in `.Id`, so that field is retained separately

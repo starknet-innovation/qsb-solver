@@ -18,6 +18,20 @@ from launch import boot_script
 sys.path.append(str(Path(__file__).resolve().parent))
 from operator_config import load_config, expected_account
 _ACTIVE_CONFIG = None
+SINGLE_A10G = ('g5.xlarge', 'g5.2xlarge', 'g5.4xlarge', 'g5.8xlarge', 'g5.16xlarge')
+
+
+def qualified_shape(call, instance_type, quota):
+    if instance_type not in SINGLE_A10G:
+        raise ValueError('Only reviewed single-A10G sizes are supported')
+    shape = call('ec2', 'describe-instance-types', InstanceTypes=[instance_type])['InstanceTypes'][0]
+    gpus = shape.get('GpuInfo', {}).get('Gpus', [])
+    if (shape['InstanceType'] != instance_type or len(gpus) != 1 or gpus[0].get('Name') != 'A10G'
+            or gpus[0].get('Count') != 1 or 'x86_64' not in shape['ProcessorInfo']['SupportedArchitectures']):
+        raise ValueError('Unexpected native GPU/architecture')
+    if quota < shape['VCpuInfo']['DefaultVCpus']:
+        raise ValueError('Quota not effective for selected size')
+    return shape
 
 
 def aws(service, operation, **request):
@@ -79,7 +93,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['prepare','arm','launch','cleanup'])
     parser.add_argument('--state',type=Path,required=True)
+    parser.add_argument('--instance-type',choices=SINGLE_A10G)
     args=parser.parse_args();path=args.state
+    if args.instance_type is not None and args.mode != 'prepare':
+        parser.error('--instance-type is recorded at prepare only')
     config=load_config()
     _ACTIVE_CONFIG=dict(config)
     ACCOUNT,REGION,AMI,SUBNET,VPC=(config[k] for k in ('account','region','ami','subnet','vpc'))
@@ -91,7 +108,8 @@ def main():
     if args.mode=='prepare':
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
         token=str(uuid.uuid4());name='qsb-bench-'+token[:8]
-        s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config}
+        s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config,
+           'instanceType':args.instance_type or 'g5.xlarge'}
         path.parent.mkdir(parents=True,exist_ok=True);save(path,s)
         role(name+'-host','ec2.amazonaws.com',(ROOT/'ops/aws-gpu-benchmark/instance-policy.json').read_text())
         aws('iam','create-instance-profile',InstanceProfileName=name)
@@ -152,7 +170,8 @@ def main():
             if s['phase']!='armed': raise ValueError('Launch intent exists or cleanup unarmed')
             if s['deadline']-time.time()<20*60: raise ValueError('Insufficient time before deadline')
             quota=aws('service-quotas','get-service-quota',ServiceCode='ec2',QuotaCode='L-DB2E81BA')['Quota']['Value']
-            if quota<4: raise ValueError('Quota not effective')
+            instance_type=s.get('instanceType','g5.xlarge')
+            s['hardware']=qualified_shape(aws,instance_type,quota);save(path,s)
             if aws('ec2','describe-instances',Filters=[{'Name':'tag:QsbBenchmarkToken','Values':[s['token']]}])['Reservations']: raise ValueError('Existing launch')
             actual=aws('scheduler','get-schedule',Name=name,GroupName='default')
             for k,v in s['schedule'].items():
@@ -163,7 +182,7 @@ def main():
             if groups[0]['IpPermissions']: raise ValueError('Ingress forbidden')
             # Guest timer shares the prearmed deadline, even if boot is delayed.
             start=datetime.fromtimestamp(s['deadline'],timezone.utc)-timedelta(minutes=55)
-            request={'ImageId':AMI,'InstanceType':'g5.xlarge','MinCount':1,'MaxCount':1,'ClientToken':s['token'],
+            request={'ImageId':AMI,'InstanceType':instance_type,'MinCount':1,'MaxCount':1,'ClientToken':s['token'],
                 'SubnetId':SUBNET,'SecurityGroupIds':[s['securityGroup']], 'IamInstanceProfile':{'Name':name},
                 'InstanceInitiatedShutdownBehavior':'terminate','DisableApiTermination':False,
                 'MetadataOptions':{'HttpTokens':'required','HttpPutResponseHopLimit':1},'UserData':boot_script(start),
