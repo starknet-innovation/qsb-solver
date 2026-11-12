@@ -45,7 +45,10 @@ Each session imports the same verified OCI archive; the actual rootfs diff IDs a
 runtime config field must equal the attested image's configuration before compute. Docker's
 containerd store can report an index/manifest in `.Id`, so that field is retained separately
 and never mislabeled as a config digest. The mounted public gate contains no worker
-copy. `qualify_image.py` imports and validates the installed image's actual bound handler,
+copy. Native import uses the host Docker client directly: Ubuntu 22.04's Skopeo 1.4 daemon
+transport uses an API version rejected by the pinned host's Docker 29. That setup failure
+is retained separately and is not a GPU result. The signed image itself is unchanged.
+`qualify_image.py` imports and validates the installed image's actual bound handler,
 partition and binary, and checks the committed contract vectors.
 
 Each stage first runs all 13 existing independent small hit-set cases, including boundary,

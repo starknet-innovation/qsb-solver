@@ -34,30 +34,8 @@ trap collect EXIT
 printf '%s\n' "$deadline" > "$results/deadline.txt"
 printf '%s\n' "$bundle_sha" > "$results/bundle-sha256.txt"
 printf '%s\n' "$stage" > "$results/stage.txt"
-timeout 120 apt-get update > "$results/apt-update.log" 2>&1
-timeout 120 apt-get install -y skopeo > "$results/apt-install.log" 2>&1
-skopeo --version > "$results/skopeo-version.txt"
-timeout 180 skopeo copy "oci-archive:$bundle/image.oci.tar" docker-daemon:qsb-pqb:final > "$results/image-import.log" 2>&1
-docker inspect qsb-pqb:final > "$results/image.json"
-python3 - "$bundle" "$results" <<'PY'
-import json,pathlib,sys
-bundle,results=map(pathlib.Path,sys.argv[1:])
-identity=json.loads((bundle/'gate/oci-identity.json').read_text())
-config=json.loads((bundle/'image-config.json').read_text())
-image=json.loads((results/'image.json').read_text())[0]
-# Docker's containerd store can label .Id with an index/manifest digest. Compare the
-# actual rootfs diff IDs and every recorded runtime config field instead of guessing
-# that .Id must name the config blob. Import may transcode manifest media types.
-assert image['Architecture']==config['architecture'] and image['Os']==config['os']
-assert image['RootFS']['Layers']==config['rootfs']['diff_ids'], 'Imported rootfs differs'
-for key,value in config['config'].items():
-    assert image['Config'].get(key)==value, 'Imported runtime config differs: '+key
-assert image['Config']['WorkingDir']=='/opt/qsb-pqb'
-assert image['Config']['Cmd']==['python3','aws_entrypoint.py']
-(results/'runtime-identity-check.json').write_text(json.dumps(dict(status='passed',
-    imageDigest=identity['imageDigest'],configDigest=identity['configDigest'],
-    dockerInspectId=image['Id'],rootfsDiffIdsMatched=True,runtimeConfigMatched=True),indent=2)+'\n')
-PY
+docker version > "$results/docker-version.txt"
+python3 "$bundle/pqb_import.py" "$bundle" "$results"
 [ "$((deadline-$(date -u +%s)))" -ge 1100 ]
 nvidia-smi --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader > "$results/gpu.txt"
 timeout --signal=TERM --kill-after=10s 1000 docker run --name qsb-pqb-final --rm --gpus all \

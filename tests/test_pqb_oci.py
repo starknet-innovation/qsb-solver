@@ -75,27 +75,30 @@ class OciIdentityTests(unittest.TestCase):
 
 class FinalImageGateTests(unittest.TestCase):
     def test_imported_runtime_uses_rootfs_and_config_not_docker_store_id(self):
-        script=(ROOT/'ops/aws-gpu-execution/host-pqb-final-image.sh').read_text()
-        block=script.split('python3 - "$bundle" "$results" <<\'PY\'\n',1)[1].split('\nPY',1)[0]
+        from pqb_import import import_image
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);(root/'gate').mkdir();results=root/'results';results.mkdir()
-            identity=dict(imageDigest='sha256:'+'a'*64,configDigest='sha256:'+'b'*64)
+            identity=dict(imageDigest='sha256:'+'a'*64,platformDigest='sha256:'+'d'*64,configDigest='sha256:'+'b'*64)
             config=dict(architecture='amd64',os='linux',rootfs=dict(diff_ids=['sha256:'+'c'*64]),
                         config=dict(WorkingDir='/opt/qsb-pqb',Cmd=['python3','aws_entrypoint.py'],Env=['PATH=/usr/bin']))
             image=dict(Id=identity['imageDigest'],Architecture='amd64',Os='linux',
                        RootFS=dict(Layers=config['rootfs']['diff_ids']),Config=config['config'])
             (root/'gate/oci-identity.json').write_text(json.dumps(identity))
             (root/'image-config.json').write_text(json.dumps(config))
-            def run():
-                (results/'image.json').write_text(json.dumps([image]))
-                return subprocess.run([sys.executable,'-',str(root),str(results)],input=block,text=True,capture_output=True)
-            self.assertEqual(run().returncode,0)
+            calls=[]
+            def call(args,**kwargs):
+                calls.append(args)
+                output='Loaded image ID: '+identity['imageDigest']+'\n' if args[1]=='load' else json.dumps([image])
+                return subprocess.CompletedProcess(args,0,output,'')
+            import_image(root,results,call)
             self.assertTrue(json.loads((results/'runtime-identity-check.json').read_text())['rootfsDiffIdsMatched'])
+            self.assertEqual(sum(c[1]=='load' for c in calls),1)
+            self.assertIn(['docker','tag',identity['imageDigest'],'qsb-pqb:final'],calls)
             image['RootFS']['Layers']=['sha256:'+'d'*64]
-            self.assertNotEqual(run().returncode,0)
+            with self.assertRaisesRegex(ValueError,'rootfs'):import_image(root,results,call)
             image['RootFS']['Layers']=config['rootfs']['diff_ids']
             image['Config']={**config['config'],'Env':['PATH=/unexpected']}
-            self.assertNotEqual(run().returncode,0)
+            with self.assertRaisesRegex(ValueError,'Env'):import_image(root,results,call)
 
     def test_corrupt_or_linked_public_gate_is_refused_before_worker_import(self):
         spec=importlib.util.spec_from_file_location('qualify',ROOT/'research/pqb-ranked/measure/qualify_image.py')
