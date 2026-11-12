@@ -118,6 +118,9 @@ def inventory(label,image,artifact,out):
 
 
 def assess(old_artifact,new_artifact,old_image,new_image,out):
+    if any(out.resolve().is_relative_to(p.resolve()) for p in
+           (Path(__file__).resolve().parents[1],old_artifact,new_artifact)):
+        raise ValueError('Keep working inventories outside source and artifact directories')
     out.mkdir(exist_ok=False)
     old_inspect,old=inventory('old',old_image,old_artifact,out)
     new_inspect,new=inventory('new',new_image,new_artifact,out)

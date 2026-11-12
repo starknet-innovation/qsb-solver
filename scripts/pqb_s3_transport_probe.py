@@ -35,7 +35,7 @@ def main():
         entrypointSha256=hashlib.sha256(Path(aws_entrypoint.__file__).read_bytes()).hexdigest(),
         config=dict(connectTimeout=client.meta.config.connect_timeout,readTimeout=client.meta.config.read_timeout,
                     retries=client.meta.config.retries),bodySha256=spec['bodySha256'],bodyBytes=len(body),
-        key=spec['key'],requests=[],providerSubmitted=False,freshNativeExecution=False)
+        key=spec['key'],requests=[],computeSubmitted=False,freshNativeExecution=False)
     try:
         for name,method,url,data,headers,want in (
             ('initial immutable PUT','PUT',spec['putUrl'],body,
