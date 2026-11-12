@@ -4,6 +4,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from pqb_oci import inspect
 from pqb_descriptor import source,contract_hash,sha
+from pqb_import import verify_runtime
 WORKFLOW='starknet-innovation/qsb-solver/.github/workflows/pqb-qualify.yml'
 
 def file_sha(path):
@@ -59,11 +60,20 @@ def verify(artifact,out,commit,ref,run_id):
         raise ValueError('OCI metadata differs from the signed archive')
     if json.loads((artifact/'oci-identity.json').read_bytes())!=identity:
         raise ValueError('OCI identity mismatch')
+    images=json.loads((artifact/'image.json').read_bytes())
+    if len(images)!=1:
+        raise ValueError('Expected one offline imported image')
+    verify_runtime(images[0],json.loads(config))
     statements=[entry['verificationResult']['statement'] for entry in verifications['image-manifest.json']]
     if not any(s['name']=='ghcr.io/starknet-innovation/qsb-solver' and s['digest']=={'sha256':identity['imageDigest'][7:]}
                for statement in statements for s in statement['subject']):
         raise ValueError('OCI attestation has an unexpected subject')
     if (artifact/'source-commit').read_text().strip()!=COMMIT:raise ValueError('Build source differs')
+    for name,path in [('pqb-LICENSE','vendor/pqb/LICENSE'),
+                      ('pqb-THIRD_PARTY_NOTICES.md','vendor/pqb/THIRD_PARTY_NOTICES.md'),
+                      ('LICENSES.md','LICENSES.md')]:
+        if (artifact/'licenses'/name).read_bytes()!=source(COMMIT,path):
+            raise ValueError('Retained source notice differs: '+name)
     binding=json.loads((artifact/'binding.json').read_bytes())
     receipt=json.loads((artifact/'build-receipt.json').read_bytes())
     lock_raw=source(COMMIT,'research/pqb-ranked/source-lock.json');lock=json.loads(lock_raw)
@@ -91,6 +101,7 @@ def verify(artifact,out,commit,ref,run_id):
         signerWorkflow=WORKFLOW,githubRunId=run_id,identity=identity,binding=binding,
         archiveSha256=rows['image.oci.tar'],buildAssetsSha256=file_sha(artifact/'SHA256SUMS'),
         verifiedSubjects=['signed archive','signed asset checksums','signed prospective OCI subject'],
+        retainedNoticesMatchSource=True,offlineImportedRuntimeMatchesArchive=True,
         registryPublicationVerified=False,nativeQualification='pending',scanSummary=scan,
         limits=['Build provenance identifies source/artifact; it does not establish correctness or registry availability'])
     (out/'verified-build.json').write_text(json.dumps(report,indent=2)+'\n')
