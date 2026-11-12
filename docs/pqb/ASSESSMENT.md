@@ -1,6 +1,8 @@
 # PQB candidate assessment
 
-Reviewed 12 November 2026. Disposition: **retain for review, HOLD**. No PQB release is published,
+Reviewed 12 November 2026. **Publication blocked:** the [Critical findings review](2026-11-12-critical-review.md) reproduced compromised-certificate acceptance in the qualified image's outbound S3 TLS client. A locally tested source fix needs a new qualified artifact.
+
+ Disposition: **retain for review, HOLD**. No PQB release is published,
 enrolled or deployed. The component measurement, largest native units and 13 correctness cases
 passed their stated criteria. A [complete public synthetic transport solve](2026-11-11-public-transport-solve.md)
 then verified all three stages in 91 minutes 40 seconds at $20.73 estimated compute, including

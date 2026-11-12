@@ -1,0 +1,117 @@
+{
+  "format": "qsb-pqb-critical-review-package-v1",
+  "decision": "BLOCK-PUBLICATION",
+  "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+  "files": [
+    {
+      "path": "ca-roots-inspection.json",
+      "bytes": 8086,
+      "sha256": "db362471cccd23cb48fb7f3355d284072dd63525824d9dc8e378f4e83cad6fb8"
+    },
+    {
+      "path": "certificate-downloads.json",
+      "bytes": 633,
+      "sha256": "f92cff7e9fc31263644e812f7a8ea16a58931287595d3d544af1f80e8c556ca5"
+    },
+    {
+      "path": "enrollment-preparation.json",
+      "bytes": 999,
+      "sha256": "470af32faf981e2fbee55b2a334a583cc422f890d03d3fa8896e3468df113a53"
+    },
+    {
+      "path": "image-identity-check.json",
+      "bytes": 611,
+      "sha256": "6bd7d8de8392571398ff9e3e09fa69866157f9662558ab6f2f85013506f4447a"
+    },
+    {
+      "path": "image-inspection.json",
+      "bytes": 7156,
+      "sha256": "b36b0b2edde28b97e61197cb95f800ae5e6f95af6a6865a9b1afdd164d03600c"
+    },
+    {
+      "path": "live-system-tls-check.json",
+      "bytes": 5261,
+      "sha256": "9f35fa5bdb75bfdaee5004794962e4ed10d98f86bb3f0d1edc05def512743a96"
+    },
+    {
+      "path": "live-tls-check.json",
+      "bytes": 5686,
+      "sha256": "58e00e043d2275f39881d6ceab0336527bcbafcf308fe074f7c97b52991f1781"
+    },
+    {
+      "path": "local-tests.log",
+      "bytes": 431,
+      "sha256": "42b082af95c8bf6e81fe316f8bc5ae55a1756f0be55f828e53dc7ca809cd4ec5"
+    },
+    {
+      "path": "merge-readiness.json",
+      "bytes": 1682,
+      "sha256": "88a2b5883443b57c9630c2a022f7e6b235ca8018d5bb9c8b803a2e72afa945ff"
+    },
+    {
+      "path": "offline-chain-check.json",
+      "bytes": 8798,
+      "sha256": "2e02dd09c1150544130f0daff82505f704a5d79bdd9ac7ca709a6919929e46af"
+    },
+    {
+      "path": "original-image-negative.stderr",
+      "bytes": 121,
+      "sha256": "6ea42ed58ce5c19d1479735798a561456ef11bb62e12f942d1e962e6c8e34be1"
+    },
+    {
+      "path": "original-image-negative.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "overlay-regression.json",
+      "bytes": 803,
+      "sha256": "520b49e2c6e17d595f03be4a83e1afd05725a4cb2e85f5d541216dd847e4ceb0"
+    },
+    {
+      "path": "patched-overlay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "patched-overlay.stdout",
+      "bytes": 223,
+      "sha256": "fafc5eafec4a71692c23fe913a6b05306ae8ed1042698923107bed77b5aaf77d"
+    },
+    {
+      "path": "review-tests.log",
+      "bytes": 1415,
+      "sha256": "5312aad22760c6da43d5011880a68338f80a313c44d689ef3f36a4bf2e7c40bb"
+    },
+    {
+      "path": "review.json",
+      "bytes": 12021,
+      "sha256": "809b88b445cd0b940a2d07cd0cb4774c0c45e4f31252e9d20672bceac1649b32"
+    },
+    {
+      "path": "runtime-trust.json",
+      "bytes": 366,
+      "sha256": "e2081e02c19a6744fa4659d74f197d8cfef47fd665742e40d9d1968cd60c8ece"
+    },
+    {
+      "path": "source-scope.json",
+      "bytes": 723,
+      "sha256": "a49dd158fc2eaa081ed25177d7689951746716ddfac65cac80d7d27904ae40d7"
+    },
+    {
+      "path": "system-ca-chain-check.json",
+      "bytes": 6403,
+      "sha256": "66a79cb8358e2a05493e4b22ea48b889d8a0619468c982bbdd02e085172f6d76"
+    },
+    {
+      "path": "tls_probe.py",
+      "bytes": 1666,
+      "sha256": "4e47e4d2773d8a81aaa89ebb249fedcea4df8e55b1f4f539657f5b288e1046c8"
+    },
+    {
+      "path": "tls_probe_system.py",
+      "bytes": 1683,
+      "sha256": "a6ee55de311717d0f62696afd48a4b2e189cf22bf10f0ac3af28d632e4826f49"
+    }
+  ]
+}

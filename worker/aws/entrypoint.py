@@ -34,7 +34,10 @@ def main():
     import boto3
     from botocore.config import Config
     from handler import handler
-    s3=boto3.client('s3',config=Config(connect_timeout=5,read_timeout=15,retries={'mode':'standard','total_max_attempts':1}))
+    # Ubuntu updates maintain this store. Botocore's bundled roots can retain
+    # compromised intermediate paths even after the system store distrusts them.
+    s3=boto3.client('s3',verify='/etc/ssl/certs/ca-certificates.crt',
+                    config=Config(connect_timeout=5,read_timeout=15,retries={'mode':'standard','total_max_attempts':1}))
     run(s3,handler,os.environ)
 
 if __name__=='__main__':main()

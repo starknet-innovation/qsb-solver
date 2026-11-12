@@ -41,7 +41,10 @@ separate from an enrolled release or the served application coordinator.
 The [final image assessment](../../docs/pqb/2026-11-12-final-image-qualification.md) binds the
 parser-fixed artifact to verified signed build provenance, three fresh largest native units,
 13 correctness cases before each unit and the pinned consumer replay. Its HOLD descriptor and
-publication/adoption handoff are ready for review. The image remains unpublished and unenrolled.
+publication/adoption handoff retain those exact identities. The [Critical findings review](../../docs/pqb/2026-11-12-critical-review.md)
+blocks publication of that image on outbound TLS trust. The source now explicitly selects the
+updated system CA bundle, and offline image checks reject the compromised chains. This fix
+needs a new built/qualified artifact; no descriptor is enrolled.
 
 ## Request and result
 

@@ -14,6 +14,35 @@ import base64, hashlib, json, pathlib, shutil, subprocess, os
 import pqb_handler as h
 assert pathlib.Path('/opt/qsb').resolve() == pathlib.Path('/opt/qsb-pqb')
 assert pathlib.Path('/opt/qsb/aws_entrypoint.py').is_file()
+# Inspect the real installed SDK client without sending an AWS request. The
+# CA selection must override both bundled roots and an ambient stale bundle.
+import aws_entrypoint, ssl
+from unittest.mock import patch
+clients=[]
+with patch.object(aws_entrypoint,'run',lambda client,*args:clients.append(client)), \
+     patch.dict(os.environ,{'AWS_EC2_METADATA_DISABLED':'true','AWS_DEFAULT_REGION':'eu-west-1',
+                           'AWS_CA_BUNDLE':'/nonexistent/stale-bundle.pem'}):
+    aws_entrypoint.main()
+assert len(clients)==1
+ca=clients[0]._endpoint.http_session._verify
+assert ca=='/etc/ssl/certs/ca-certificates.crt',ca
+assert ssl.create_default_context(cafile=ca).get_ca_certs()
+# Public compromised chains, including the AAA cross-sign and key rollover:
+# every one must fail trust verification against the actual selected store.
+tls=pathlib.Path('/tls-probe')
+inventory=json.loads((tls/'provenance.json').read_text())
+assert len(inventory['chains'])==16
+for row in inventory['chains']:
+    pem=tls/row['path']
+    assert hashlib.sha256(pem.read_bytes()).hexdigest()==row['sha256']
+    checked=subprocess.run(['openssl','verify','-attime',str(inventory['verificationTime']),
+        '-purpose','sslserver','-CAfile',ca,
+        '-untrusted',str(pem),str(pem)],capture_output=True,text=True)
+    assert checked.returncode!=0 and 'unable to get local issuer certificate' in checked.stderr,checked.stdout+checked.stderr
+root=tls/'amazon-root-ca-1.pem'
+assert hashlib.sha256(root.read_bytes()).hexdigest()==inventory['positiveControl']['sha256']
+subprocess.run(['openssl','verify','-attime',str(inventory['verificationTime']),
+    '-CAfile',ca,str(root)],check=True,capture_output=True,text=True)
 assert shutil.which('setpriv') == '/usr/bin/setpriv'
 probe = subprocess.run(['/usr/bin/setpriv', '--no-new-privs', '--bounding-set=-all',
     '--inh-caps=-all', '--ambient-caps=-all', 'python3', '/opt/qsb/aws_entrypoint.py'],
@@ -64,8 +93,10 @@ print(json.dumps({'solverCommit': b['solverCommit'], 'binarySha256': receipt['bi
 def main():
     image = sys.argv[1]
     fixtures = __file__.rsplit('/worker/pqb/', 1)[0] + '/research/pqb-ranked/tests/fixtures'
+    tls = __file__.rsplit('/worker/pqb/', 1)[0] + '/tests/fixtures/aws-tls'
     done = subprocess.run(['docker', 'run', '--rm', '--network', 'none', '--read-only', '--tmpfs', '/tmp',
-                           '-v', fixtures + ':/fixture:ro', '--entrypoint', 'python3', image, '-c', CHECK],
+                           '-v', fixtures + ':/fixture:ro', '-v',tls+':/tls-probe:ro',
+                           '--entrypoint', 'python3', image, '-c', CHECK],
                           capture_output=True, text=True)
     sys.stdout.write(done.stdout)
     sys.stderr.write(done.stderr)

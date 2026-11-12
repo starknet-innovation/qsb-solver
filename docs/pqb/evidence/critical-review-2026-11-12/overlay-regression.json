@@ -1,0 +1,18 @@
+[
+  {
+    "case": "original-image-negative",
+    "returnCode": 1,
+    "scope": "Original exact qualified image, expected to fail the new TLS regression",
+    "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+    "entrypointSha256": null,
+    "checkSha256": "3a317f2d6c7bcc830bbe1f4c0e29f20c808207c76dae761cf76d42a41b5a426f"
+  },
+  {
+    "case": "patched-overlay",
+    "returnCode": 0,
+    "scope": "Local read-only overlay of proposed entrypoint, not a rebuilt or qualified artifact",
+    "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+    "entrypointSha256": "05407fe9a6c20bfd7aa31c590cf61e40f0ea63cbbf78aa9e1f6ff738f5552f29",
+    "checkSha256": "3a317f2d6c7bcc830bbe1f4c0e29f20c808207c76dae761cf76d42a41b5a426f"
+  }
+]

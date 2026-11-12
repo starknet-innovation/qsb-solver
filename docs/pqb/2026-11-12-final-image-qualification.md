@@ -1,5 +1,10 @@
 # Final PQB image and publication review — HOLD
 
+**Current release decision: blocked.** The [Critical findings review](2026-11-12-critical-review.md)
+reproduced compromised-certificate acceptance in this exact image's S3 TLS client. The source
+fix is locally tested, but a replacement image needs qualification. The native/build evidence
+below remains valid for its original scope; it does not waive the transport blocker.
+
 The final image includes the reviewed whole-log completion-parser fix. Build provenance,
 installed parser regression, exact runtime identity and retained source notices are verified.
 All three exact-image largest units and the independent consumer replay passed. Cleanup

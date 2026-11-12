@@ -1,7 +1,9 @@
 # Final PQB image qualification and provenance
 
 Completed: [exact artifact, native results, signed provenance, cost/cleanup and handoff](2026-11-12-final-image-qualification.md).
-The qualified image remains HOLD, unpublished and unenrolled. The process below is the retained
+The native-qualified image remains HOLD, unpublished and unenrolled. A subsequent
+[Critical findings review](2026-11-12-critical-review.md) blocks publication on its reachable
+TLS trust-store issue; the prepared fix needs a new artifact and qualification. The process below is the retained
 plan; it does not authorize another cloud session.
 
 This is a new assessment authorized on 12 November 2026, separate from the completed public
