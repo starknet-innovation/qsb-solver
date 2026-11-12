@@ -4,12 +4,13 @@ Replays retained native result envelopes through the actual consumer schemas/ran
 This is compatibility evidence, not a new GPU or independent cryptographic attestation.
 """
 import argparse
+import io
 import json
 import os
 from pathlib import Path
 import subprocess
 import tarfile
-from pqb_descriptor import ROOT, prepare, sha
+from pqb_descriptor import ROOT, evidence_bytes, prepare, sha
 
 TS = r'''
 import assert from 'node:assert/strict';
@@ -51,6 +52,35 @@ console.log(JSON.stringify({status:'passed',nativeEnvelopes:rows.length,stages,c
 '''
 
 
+ARCHIVE = 's3-objects.tar.gz'
+
+
+def replay_rows(evidence, manifest):
+    """Native result envelopes from the archive the manifest binds, member for member."""
+    listed = [row for row in manifest['files'] if row['path'] == ARCHIVE]
+    if len(listed) != 1:
+        raise ValueError('Replay archive is not a manifest entry')
+    raw = evidence_bytes(evidence, ARCHIVE, listed[0])
+    inventory = {row['path']: row for row in manifest['archiveMembers'][ARCHIVE]}
+    if len(inventory) != len(manifest['archiveMembers'][ARCHIVE]):
+        raise ValueError('Duplicate archive inventory path')
+    rows, seen = [], set()
+    with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+        for member in archive:
+            if not member.isfile() or member.name in seen or member.name not in inventory:
+                raise ValueError('Archive member outside the inventory: ' + member.name)
+            seen.add(member.name)
+            data = archive.extractfile(member).read()
+            row = inventory[member.name]
+            if len(data) != row['bytes'] or sha(data) != row['sha256']:
+                raise ValueError('Archive member differs from the inventory: ' + member.name)
+            if member.name.startswith('s3/outputs/') and member.name.endswith('.json') and not member.name.endswith('.collection.json'):
+                rows.append(dict(name=member.name, envelope=json.loads(data)))
+    if seen != set(inventory):
+        raise ValueError('Archive omits inventory members')
+    return rows
+
+
 def check(app, commit, evidence, proposal_path, out):
     app, evidence, proposal_path, out = (p.resolve() for p in (app, evidence, proposal_path, out))
     if out.is_relative_to(ROOT) or out.is_relative_to(app):
@@ -65,11 +95,10 @@ def check(app, commit, evidence, proposal_path, out):
     if (app / 'contracts/pqb-ranked-v2.json').read_bytes() != subprocess.check_output([
             'git', '-C', str(ROOT), 'show', proposal['solver']['solverCommit'] + ':contracts/pqb-ranked-v2.json']):
         raise ValueError('Consumer contract differs')
-    rows = []
-    with tarfile.open(evidence / 's3-objects.tar.gz') as archive:
-        for member in archive:
-            if member.isfile() and member.name.startswith('s3/outputs/') and member.name.endswith('.json') and not member.name.endswith('.collection.json'):
-                rows.append(dict(name=member.name, envelope=json.load(archive.extractfile(member))))
+    manifest_raw = (evidence / 'manifest.json').read_bytes()
+    if sha(manifest_raw) != proposal['binding']['evidenceManifestSha256']:
+        raise ValueError('Evidence manifest changed after the proposal check')
+    rows = replay_rows(evidence, json.loads(manifest_raw))
     out.mkdir(parents=True, exist_ok=False)
     (out / 'check.mts').write_text(TS)
     (out / 'input.json').write_text(json.dumps(dict(proposal=proposal, rows=rows)))
@@ -80,7 +109,7 @@ def check(app, commit, evidence, proposal_path, out):
     receipt = dict(format='qsb-pqb-release-compatibility-v1', status='failed', consumerCommit=commit,
                    consumerTree=git('rev-parse', 'HEAD^{tree}'), node=subprocess.check_output(['node', '--version'], text=True).strip(),
                    proposalSha256=sha(proposal_path.read_bytes()), harnessSha256=sha(Path(__file__).read_bytes()),
-                   typescriptSha256=sha(TS.encode()), evidenceManifestSha256=sha((evidence / 'manifest.json').read_bytes()),
+                   typescriptSha256=sha(TS.encode()), evidenceManifestSha256=sha(manifest_raw),
                    consumerLockSha256=sha((app / 'package-lock.json').read_bytes()))
     if result.returncode == 0:
         receipt.update(json.loads(result.stdout))

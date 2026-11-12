@@ -55,6 +55,26 @@ def contract_hash(raw, ranges):
     return sha(json.dumps(contract, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode())
 
 
+def evidence_bytes(evidence, name, row):
+    """The bytes of one manifest entry, checked against its row. No link is followed on the way."""
+    parts = Path(name).parts
+    if not parts or Path(name).is_absolute() or any(part in ('', '.', '..') for part in parts):
+        raise ValueError('Unsafe evidence path')
+    path = Path(evidence)
+    if path.is_symlink():
+        raise ValueError('Unsafe evidence path')
+    for part in parts:                      # the unresolved path: resolve() would hide a link
+        path = path / part
+        if path.is_symlink():
+            raise ValueError('Unsafe evidence path')
+    if not path.is_file():
+        raise ValueError('Unsafe evidence path')
+    raw = path.read_bytes()
+    if len(raw) != row['bytes'] or sha(raw) != row['sha256']:
+        raise ValueError('Evidence hash mismatch: ' + name)
+    return raw
+
+
 def prepare(evidence, review_commit):
     evidence = Path(evidence)
     manifest_raw = (evidence / 'manifest.json').read_bytes()
@@ -65,17 +85,13 @@ def prepare(evidence, review_commit):
     if len(files) != len(manifest['files']):
         raise ValueError('Duplicate evidence path')
     for name, row in files.items():
-        path = (evidence / name).resolve()
-        if not path.is_relative_to(evidence.resolve()) or path.is_symlink():
-            raise ValueError('Unsafe evidence path')
-        raw = path.read_bytes()
-        if len(raw) != row['bytes'] or sha(raw) != row['sha256']:
-            raise ValueError('Evidence hash mismatch: ' + name)
+        evidence_bytes(evidence, name, row)
 
     def read(name):
         if name not in files:
             raise ValueError('Unbound evidence: ' + name)
-        return json.loads((evidence / name).read_bytes())
+        # hashed again on the bytes actually parsed, not on an earlier read of the same path
+        return json.loads(evidence_bytes(evidence, name, files[name]))
 
     image = read('private-image.json')
     binding = read('publisher/public/binding.json')

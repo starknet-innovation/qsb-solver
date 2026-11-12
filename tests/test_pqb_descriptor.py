@@ -78,6 +78,69 @@ class PqbDescriptorTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 self.altered(name, change)
 
+    def copy(self, temp):
+        evidence = Path(temp) / 'evidence'
+        shutil.copytree(EVIDENCE, evidence)
+        return evidence
+
+    def test_a_linked_manifest_entry_is_rejected_even_inside_the_package(self):
+        with tempfile.TemporaryDirectory() as temp:
+            evidence = self.copy(temp)
+            target = evidence / 'private-image.json'
+            target.rename(evidence / 'moved.json')
+            target.symlink_to('moved.json')                    # same bytes, inside the directory
+            with self.assertRaisesRegex(ValueError, 'Unsafe evidence path'):
+                prepare(evidence, REVIEW)
+        with tempfile.TemporaryDirectory() as temp:
+            evidence = self.copy(temp)
+            (evidence / 'publisher').rename(evidence / 'moved')
+            (evidence / 'publisher').symlink_to('moved')       # a linked ancestor
+            with self.assertRaisesRegex(ValueError, 'Unsafe evidence path'):
+                prepare(evidence, REVIEW)
+
+    def test_replay_archive_is_bound_to_manifest_and_inventory(self):
+        import io, tarfile
+        import check_pqb_release as release
+        manifest = json.loads((EVIDENCE / 'manifest.json').read_bytes())
+        rows = release.replay_rows(EVIDENCE, manifest)
+        self.assertEqual(len(rows), 118)
+        unlisted = copy.deepcopy(manifest)
+        unlisted['files'] = [r for r in unlisted['files'] if r['path'] != release.ARCHIVE]
+        with self.assertRaisesRegex(ValueError, 'not a manifest entry'):
+            release.replay_rows(EVIDENCE, unlisted)
+
+        def rebuilt(change):
+            with tempfile.TemporaryDirectory() as temp:
+                evidence = Path(temp)
+                members = []
+                with tarfile.open(EVIDENCE / release.ARCHIVE) as archive:
+                    for m in archive:
+                        members.append((m.name, archive.extractfile(m).read()))
+                buffer = io.BytesIO()
+                with tarfile.open(fileobj=buffer, mode='w:gz') as archive:
+                    for name, data in change(members):
+                        info = tarfile.TarInfo(name); info.size = len(data)
+                        archive.addfile(info, io.BytesIO(data))
+                (evidence / release.ARCHIVE).write_bytes(buffer.getvalue())
+                altered = copy.deepcopy(manifest)                 # the archive itself is re-listed, so only
+                row = next(r for r in altered['files'] if r['path'] == release.ARCHIVE)   # the inventory can object
+                row.update(bytes=len(buffer.getvalue()), sha256=sha(buffer.getvalue()))
+                return release.replay_rows(evidence, altered)
+
+        outputs = [n for n, _ in ((r['name'], 0) for r in rows)]
+        def duplicate(members):
+            data = dict(members)
+            return [(n, data[outputs[0]] if n == outputs[1] else d) for n, d in members]
+        with self.assertRaisesRegex(ValueError, 'differs from the inventory'):
+            rebuilt(duplicate)
+        with self.assertRaisesRegex(ValueError, 'omits inventory members'):
+            rebuilt(lambda members: members[:-1])
+        with self.assertRaisesRegex(ValueError, 'outside the inventory'):
+            rebuilt(lambda members: members + [('s3/outputs/extra.json', b'{}')])
+        with self.assertRaisesRegex(ValueError, 'outside the inventory'):
+            rebuilt(lambda members: members + [members[0]])
+        self.assertEqual(len(rebuilt(lambda members: members)), 118)
+
 
 if __name__ == '__main__':
     unittest.main()

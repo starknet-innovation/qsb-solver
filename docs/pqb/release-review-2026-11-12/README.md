@@ -66,6 +66,13 @@ rejects wrong protocol/generator/contract, private-image references, duplicate I
 outer HOLD envelope, and confirms this release ID is **not enrolled**. These are fresh CPU
 compatibility checks, not new native execution or new cryptographic verification of the hits.
 
+That receipt and `local-checks.json` record harness `4bffafbf…`. After review the harness was
+tightened: the replay archive must be a hashed manifest entry, every archive member must match
+`archiveMembers` by path, size and SHA-256 with none missing, extra or repeated, and evidence
+entries reached through a symbolic link are refused. The retained receipt has **not** been
+regenerated with the tightened harness; the new checks were run only by the unit tests against
+this package (118 envelopes, inventory matched). Regenerate it before relying on it for adoption.
+
 The worker counts gate hits as a sanity check on performed work. All 118 saved results pass
 the development controller's `6 * sqrt(trials / 2^24) + 6` bound. The pinned **served** consumer
 checks trial totals and gate-count accounting bounds, but does not apply that statistical
