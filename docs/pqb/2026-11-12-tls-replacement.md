@@ -3,7 +3,9 @@
 The assessed image was built from merged `main` commit
 `cfd99e3844698f59679e4c15cf567db2976b9ffc` by signed qualification run `43205074943`.
 Its OCI index is `sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e`.
-Publication remains pending completion and review of this assessment. No image is
+The [review package](evidence/tls-replacement-2026-11-12/decision.json) clears the
+supported-workload release blockers subject to the dedicated hosted publication checks.
+Publication remains pending verification of the resulting registry state. No image is
 called published until its actual registry digest and original build provenance verify.
 
 Nine fresh hardware requests were rejected before allocation: eight capacity
@@ -45,8 +47,9 @@ experimental branches and are not adopted by this release.
 The replacement's actual installed client selects the updated system store despite an
 ambient stale `AWS_CA_BUNDLE`. It passes all 16 offline bad-chain regressions, rejects
 14 live compromised-key hosts and accepts Python.org and regional S3 controls. A fresh
-public S3 transport round trip and consumer/installed-wrapper compatibility review are
-required before a publication decision. The original 20 Critical matches remain in
+public S3 transport round trip (PUT/GET/immutable duplicate rejection) and the actual
+installed wrapper replay through the independent consumer passed. The replay mocks
+the grinder with retained native transcripts and claims no new native work. The original 20 Critical matches remain in
 the scan: mitigation applies to the supported S3 path, not a global Python backport.
 
 Publication must copy all manifests of the qualified archive without rebuilding,
@@ -54,3 +57,10 @@ verify the registry index/platform/config and original signed OCI bundle, and re
 the descriptor, contract, notices, scan and evidence. Only then may the published
 descriptor be enrolled verbatim in existing qsb-app PR #150. Deployment, ECR serving
 configuration, default selection, mainnet switches and transactions are separate.
+
+The 242 source tests passed (one expected skip). Nine failed hardware requests
+allocated no instances; estimated EC2 compute is $0. Provider billing and S3/GitHub
+charges were not queried. All launch roles, profiles, security groups, functions,
+schedules and three staging buckets were independently reconciled absent; all
+reservations are released. Original timeout and failure receipts remain retained
+outside the public package, which excludes operator configuration and signed URLs.

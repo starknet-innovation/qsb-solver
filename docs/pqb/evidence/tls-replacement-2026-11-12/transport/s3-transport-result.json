@@ -1,0 +1,40 @@
+{
+  "format": "qsb-installed-s3-transport-v1",
+  "status": "passed",
+  "sourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "scope": "Public synthetic S3 round trip using the installed client's real HTTPS session.\n\nPresigned URLs are mounted locally, never printed or retained in the public receipt.\nThis checks the changed TLS transport, not Batch dispatch or a native GPU invocation.\n",
+  "caPath": "/etc/ssl/certs/ca-certificates.crt",
+  "caSha256": "e05a523d99de77c6b1f2c7b7c3af502c8378f29e6e8484358ec55f96b0972ad6",
+  "entrypointSha256": "05407fe9a6c20bfd7aa31c590cf61e40f0ea63cbbf78aa9e1f6ff738f5552f29",
+  "config": {
+    "connectTimeout": 5,
+    "readTimeout": 15,
+    "retries": {
+      "mode": "standard",
+      "total_max_attempts": 1
+    }
+  },
+  "bodySha256": "5f4abfbb8bbafb6c1accfa62da83f28b4119b454054af115a93140b47d0fb83e",
+  "bodyBytes": 177,
+  "key": "tls-transport-proof/401e3a8622b745efa5056e6f2cbe2962.json",
+  "requests": [
+    {
+      "name": "initial immutable PUT",
+      "status": 200,
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET round trip",
+      "status": 200,
+      "expectedStatus": 200,
+      "receivedSha256": "5f4abfbb8bbafb6c1accfa62da83f28b4119b454054af115a93140b47d0fb83e"
+    },
+    {
+      "name": "duplicate immutable PUT",
+      "status": 412,
+      "expectedStatus": 412
+    }
+  ],
+  "computeSubmitted": false,
+  "freshNativeExecution": false
+}

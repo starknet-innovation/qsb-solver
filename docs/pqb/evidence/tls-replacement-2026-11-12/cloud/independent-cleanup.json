@@ -1,0 +1,199 @@
+{
+  "status": "success",
+  "stdout": "",
+  "return_value": {
+    "regions": [
+      {
+        "region": "eu-west-1",
+        "instances": {
+          "Reservations": []
+        },
+        "volumes": {
+          "Volumes": []
+        },
+        "groups": {
+          "SecurityGroups": []
+        },
+        "functions": [],
+        "schedules": []
+      },
+      {
+        "region": "us-east-1",
+        "instances": {
+          "Reservations": []
+        },
+        "volumes": {
+          "Volumes": []
+        },
+        "groups": {
+          "SecurityGroups": []
+        },
+        "functions": [],
+        "schedules": []
+      },
+      {
+        "region": "eu-west-2",
+        "instances": {
+          "Reservations": []
+        },
+        "volumes": {
+          "Volumes": []
+        },
+        "groups": {
+          "SecurityGroups": []
+        },
+        "functions": [],
+        "schedules": []
+      }
+    ],
+    "roles": [],
+    "profiles": [],
+    "buckets": []
+  },
+  "api_calls": [
+    {
+      "service": "ec2",
+      "operation": "DescribeInstances",
+      "status": "success",
+      "n_items": {
+        "Reservations": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeVolumes",
+      "status": "success",
+      "n_items": {
+        "Volumes": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeSecurityGroups",
+      "status": "success",
+      "n_items": {
+        "SecurityGroups": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 9
+      }
+    },
+    {
+      "service": "scheduler",
+      "operation": "ListSchedules",
+      "status": "success",
+      "n_items": {
+        "Schedules": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeInstances",
+      "status": "success",
+      "n_items": {
+        "Reservations": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeVolumes",
+      "status": "success",
+      "n_items": {
+        "Volumes": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeSecurityGroups",
+      "status": "success",
+      "n_items": {
+        "SecurityGroups": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "scheduler",
+      "operation": "ListSchedules",
+      "status": "success",
+      "n_items": {
+        "Schedules": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeInstances",
+      "status": "success",
+      "n_items": {
+        "Reservations": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeVolumes",
+      "status": "success",
+      "n_items": {
+        "Volumes": 0
+      }
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeSecurityGroups",
+      "status": "success",
+      "n_items": {
+        "SecurityGroups": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "scheduler",
+      "operation": "ListSchedules",
+      "status": "success",
+      "n_items": {
+        "Schedules": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListRoles",
+      "status": "success",
+      "n_items": {
+        "Roles": 69
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListInstanceProfiles",
+      "status": "success",
+      "n_items": {
+        "InstanceProfiles": 6
+      }
+    },
+    {
+      "service": "s3",
+      "operation": "ListBuckets",
+      "status": "success",
+      "n_items": {
+        "Buckets": 19
+      }
+    }
+  ]
+}

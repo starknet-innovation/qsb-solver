@@ -1,0 +1,324 @@
+{
+  "format": "qsb-pqb-verified-build-v1",
+  "status": "passed",
+  "sourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "sourceRef": "refs/heads/codex/pqb-qualify-tls-20261112",
+  "signerWorkflow": "starknet-innovation/qsb-solver/.github/workflows/pqb-qualify.yml",
+  "githubRunId": 43205074943,
+  "identity": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+    "platformDigest": "sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68",
+    "configDigest": "sha256:63282eedd68f71d991a51281f8ff0e448c0778957991ca524a54f5f035de2afa"
+  },
+  "binding": {
+    "cudaArchitecture": "86",
+    "files": {
+      "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+      "pqb_handler.py": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f",
+      "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+    },
+    "format": "qsb-pqb-candidate-v1",
+    "solverCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+    "status": "HOLD"
+  },
+  "archiveSha256": "45758461af5beb61dfd94145cf7f1083e09c444c1748ee576196cf78f6dcdd21",
+  "buildAssetsSha256": "7486b0e8097d44ee79569c53ac3e415b4c473ee8f9653215f427b98ba563fd0a",
+  "verifiedSubjects": [
+    "signed archive",
+    "signed asset checksums",
+    "signed prospective OCI subject"
+  ],
+  "retainedNoticesMatchSource": true,
+  "offlineImportedRuntimeMatchesArchive": true,
+  "registryPublicationVerified": false,
+  "nativeQualification": "pending",
+  "scanSummary": {
+    "source": {
+      "userInput": "pqb-qualified/image.oci.tar",
+      "imageID": "sha256:63282eedd68f71d991a51281f8ff0e448c0778957991ca524a54f5f035de2afa",
+      "manifestDigest": "sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68",
+      "repoDigests": []
+    },
+    "scanner": {
+      "name": "grype",
+      "version": "0.119.0",
+      "dbBuilt": "2026-11-12T06:20:58Z"
+    },
+    "policy": "fail on Critical with a fix available; severity is the worst of the matched and related records",
+    "counts": {
+      "Negligible": {
+        "total": 0,
+        "fixable": 0
+      },
+      "Low": {
+        "total": 31,
+        "fixable": 0
+      },
+      "Medium": {
+        "total": 159,
+        "fixable": 0
+      },
+      "High": {
+        "total": 89,
+        "fixable": 0
+      },
+      "Critical": {
+        "total": 20,
+        "fixable": 0
+      },
+      "Unknown": {
+        "total": 0,
+        "fixable": 0
+      }
+    },
+    "blocking": [],
+    "unfixedCritical": [
+      {
+        "id": "CVE-2026-115557",
+        "package": "libpython3.10-minimal",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-115557@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-115557",
+        "package": "libpython3.10-stdlib",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-115557@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-115557",
+        "package": "python3.10",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-115557@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-115557",
+        "package": "python3.10-minimal",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-115557@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-19445",
+        "package": "libpython3.10-minimal",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-19445@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-19445",
+        "package": "libpython3.10-stdlib",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-19445@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-19445",
+        "package": "python3.10",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-19445@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-19445",
+        "package": "python3.10-minimal",
+        "version": "3.10.12-1~22.04.18",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-19445@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "dirmngr",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gnupg",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gnupg-l10n",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gnupg-utils",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gnupg2",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpg",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpg-agent",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpg-wks-client",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpg-wks-server",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpgconf",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpgsm",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      },
+      {
+        "id": "CVE-2026-118131",
+        "package": "gpgv",
+        "version": "2.2.27-3ubuntu2.5",
+        "type": "deb",
+        "fixState": "not-fixed",
+        "fixVersions": [],
+        "matchedSeverity": "Medium",
+        "relatedSeverity": {
+          "CVE-2026-118131@nvd:cpe": "Critical"
+        }
+      }
+    ],
+    "passed": true
+  },
+  "limits": [
+    "Build provenance identifies source/artifact; it does not establish correctness or registry availability"
+  ]
+}

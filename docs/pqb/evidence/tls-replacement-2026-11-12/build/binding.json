@@ -1,0 +1,11 @@
+{
+ "cudaArchitecture": "86",
+ "files": {
+  "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "pqb_handler.py": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f",
+  "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+ },
+ "format": "qsb-pqb-candidate-v1",
+ "solverCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+ "status": "HOLD"
+}

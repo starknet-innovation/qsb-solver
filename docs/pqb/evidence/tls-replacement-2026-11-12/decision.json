@@ -1,0 +1,34 @@
+{
+  "format": "qsb-pqb-tls-publication-decision-v1",
+  "status": "qualified-for-conditional-publication",
+  "releaseBlockers": [],
+  "sourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "image": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+    "platformDigest": "sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68",
+    "configDigest": "sha256:63282eedd68f71d991a51281f8ff0e448c0778957991ca524a54f5f035de2afa"
+  },
+  "qualification": "Retained native component evidence with complete byte/semantic applicability proof and fresh installed TLS/S3 transport tests",
+  "freshNativeExecution": false,
+  "newPerformanceClaim": false,
+  "originalNativeArchiveSha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce",
+  "originalNativeSourceCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+  "nativeGateCommit": "4dff68d2eeeeaed7b437eb598f668d33a7f47205",
+  "consumerCommit": "2bea83316fb66fb0fab0c30e7ae8206086059ffb",
+  "registryPublicationVerified": false,
+  "conditions": [
+    "Hosted rerun of both signed build checks, complete runtime comparison, offline installed tests and independent CPU consumer checks",
+    "Fresh scan matches reviewed Critical inventory, with no fixable Critical findings",
+    "Copy exact qualified OCI archive preserving every manifest digest, without rebuilding",
+    "Verify resulting registry index/platform/config and original hosted build provenance before handoff"
+  ],
+  "limits": [
+    "No new GPU execution, complete solve, served coordinator, wallet, consensus, miner or broadcast",
+    "Native applicability is scoped to original supported A10G environment",
+    "First PQB release: no previously qualified PQB rollback; stop/drain PQB work before removing descriptor; existing QSB image cannot resume PQB",
+    "Enrollment does not select defaults or deploy serving infrastructure",
+    "Consumer statistical gate-sanity policy requires separate review before serving"
+  ]
+}

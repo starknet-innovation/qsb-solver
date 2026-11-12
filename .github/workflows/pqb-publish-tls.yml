@@ -1,0 +1,53 @@
+name: Publish reviewed TLS-fixed PQB archive
+on:
+  push:
+    branches: ['codex/pqb-publish-equivalence-20261112']
+    paths:
+      - '.github/workflows/pqb-publish-tls.yml'
+      - 'scripts/publish_pqb_tls.py'
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      packages: write
+      actions: read
+      attestations: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Source checks
+        run: python3 -m unittest discover -s tests -v
+      - name: Prepare archive transport and signed-bundle attachment tools
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          sudo apt-get update
+          sudo apt-get install -y skopeo
+          go install oras.land/oras/cmd/oras@v1.3.0
+          echo "$HOME/go/bin" >> "$GITHUB_PATH"
+      - name: Authenticate publication transport
+        env:
+          REGISTRY_TOKEN: ${{ github.token }}
+        run: |
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          printf '%s' "$REGISTRY_TOKEN" | skopeo login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Recheck exact artifacts, qualify by applicability, publish and verify original provenance
+        run: python3 scripts/publish_pqb_tls.py "$RUNNER_TEMP/pqb-publish"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() && !cancelled() }}
+        with:
+          name: pqb-tls-publication-receipt
+          path: |
+            ${{ runner.temp }}/pqb-publish/release/publication.json
+            ${{ runner.temp }}/pqb-publish/release/oci-*-verification.json
+            ${{ runner.temp }}/pqb-publish/fresh-scan/image-scan.json
+            ${{ runner.temp }}/pqb-publish/equivalence/applicability.json
+            ${{ runner.temp }}/pqb-publish/qualification-evidence.tar.gz
+          retention-days: 30

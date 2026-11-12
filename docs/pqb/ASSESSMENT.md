@@ -1,3 +1,11 @@
+# Current TLS replacement review
+
+See the [TLS replacement assessment](2026-11-12-tls-replacement.md) and its checksummed
+[decision package](evidence/tls-replacement-2026-11-12/decision.json). The candidate
+from merged main retains native evidence only for the byte-identical compute stack;
+fresh TLS and S3 transport checks passed. No new GPU timing is claimed. Publication
+and registry verification are pending the dedicated hosted checks.
+
 # PQB candidate assessment
 
 Reviewed 12 November 2026. **Publication blocked:** the [Critical findings review](2026-11-12-critical-review.md) reproduced compromised-certificate acceptance in the qualified image's outbound S3 TLS client. A locally tested source fix needs a new qualified artifact.
