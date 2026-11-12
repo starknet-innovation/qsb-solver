@@ -1,0 +1,80 @@
+{
+  "format": "qsb-pqb-final-native-summary-v1",
+  "status": "passed",
+  "archiveSha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce",
+  "hardware": "AWS g5.2xlarge, one A10G, eu-west-1b, driver 580.126.09",
+  "stages": [
+    {
+      "stage": "pinning",
+      "status": "passed",
+      "attempt": 0,
+      "smallCorrectnessCases": 13,
+      "workerSeconds": 492.83134750199997,
+      "jobSeconds": 492.86712037999996,
+      "verificationSeconds": 4.099999841855606e-07,
+      "trials": 1209600000000,
+      "gateHits": 71956,
+      "candidates": 0,
+      "range": {
+        "count": 16800000000,
+        "locktime": 500000000,
+        "locktimeCount": 1200000000,
+        "sequence": 2147483648,
+        "sequenceCount": 14,
+        "start": "0",
+        "version": "pqb-ranked-v2"
+      },
+      "independentCandidateChecks": [],
+      "elapsedSeconds": 496.77982230400005
+    },
+    {
+      "stage": "round0",
+      "status": "passed",
+      "attempt": 0,
+      "smallCorrectnessCases": 13,
+      "workerSeconds": 506.2038183420001,
+      "jobSeconds": 506.2290056800001,
+      "verificationSeconds": 3.4000004234258085e-07,
+      "trials": 1371226605888,
+      "gateHits": 81897,
+      "candidates": 0,
+      "range": {
+        "count": 7141805239,
+        "prefixCount": 402653184,
+        "prefixStart": "0",
+        "start": "0",
+        "version": "pqb-ranked-v2"
+      },
+      "independentCandidateChecks": [],
+      "elapsedSeconds": 509.54322680999996
+    },
+    {
+      "stage": "round1",
+      "status": "passed",
+      "attempt": 0,
+      "smallCorrectnessCases": 13,
+      "workerSeconds": 490.84805379,
+      "jobSeconds": 490.88915909,
+      "verificationSeconds": 0.008747879000111425,
+      "trials": 978095986624,
+      "gateHits": 58504,
+      "candidates": 1,
+      "range": {
+        "count": 15282749791,
+        "prefixCount": 1073741824,
+        "prefixStart": "0",
+        "start": "0",
+        "version": "pqb-ranked-v2"
+      },
+      "independentCandidateChecks": [
+        {
+          "candidate": "0,1,21,39,50,66,67,76,82 10 2 0 1",
+          "digest": "301d0209b7af06781a7c3dcf9c021062b524c54376fec54fe824dd37b6b027c1",
+          "nonce": "11930581570"
+        }
+      ],
+      "elapsedSeconds": 494.20184176
+    }
+  ],
+  "scope": "Three largest units, with 13 small cases before each; not another full solve or matched speedup"
+}

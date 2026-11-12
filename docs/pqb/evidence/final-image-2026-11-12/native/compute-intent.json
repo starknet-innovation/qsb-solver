@@ -1,0 +1,27 @@
+{
+  "instanceId": "i-0de52998d387b0a2c",
+  "deadline": 1794479003,
+  "controllerCommit": "eb7c7614178afcbd5c1a8cd24956cd3f808690c9",
+  "bundle": {
+    "format": "qsb-pqb-final-image-native-bundle-v1",
+    "imageSourceCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+    "controllerCommit": "4dff68d2eeeeaed7b437eb598f668d33a7f47205",
+    "image": {
+      "format": "qsb-pqb-oci-identity-v1",
+      "status": "HOLD",
+      "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+      "platformDigest": "sha256:77b8c2db4ffb55923001b37c96599e0a3ae9a687ce06d5f386a9379b565550fe",
+      "configDigest": "sha256:ab005b0d7a042bac05002ef6532a1f3886dca3f5bf23c57e514e61c92ec473b3"
+    },
+    "gateSha256": "04268c6b193c425ff9691e8ff90525192c1ef396c9514959f6719aba38036651",
+    "qualificationHarnessSourceCommit": "4dff68d2eeeeaed7b437eb598f668d33a7f47205",
+    "plan": "all three units in a fresh fixed 60-minute session",
+    "bundleSha256": "27c031e975150e3a296d671cba3ffa7c1f55d281b5fe184b419213f4554bf34e",
+    "tarSha256": "39cdc69d2e959c2a8799575075a06eb5bf980aded7c4fa36ed59cf103e88ac93",
+    "tarBytes": 2216151040
+  },
+  "hostScriptSha256": "50501a334a618738b43440b354165700d8f6ee33882ff233aee9710c6d81cda5",
+  "commandSha256": "326bf572fc9dfeee2fa83d4ae1a7483081dc1f3568ac53ce566841e39bc676b8",
+  "publicDataOnly": true,
+  "maximumSubmissions": 1
+}

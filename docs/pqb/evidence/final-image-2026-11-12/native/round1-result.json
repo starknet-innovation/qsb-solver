@@ -1,0 +1,496 @@
+{
+ "binding": {
+  "cudaArchitecture": "86",
+  "files": {
+   "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+   "pqb_handler.py": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f",
+   "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+  },
+  "format": "qsb-pqb-candidate-v1",
+  "solverCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+  "status": "HOLD"
+ },
+ "buildReceipt": {
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "compiler": [
+   "nvcc: NVIDIA (R) Cuda compiler driver",
+   "Copyright (c) 2005-2025 NVIDIA Corporation",
+   "Built on Fri_Feb_21_20:23:50_PST_2025",
+   "Cuda compilation tools, release 12.8, V12.8.93",
+   "Build cuda_12.8.r12.8/compiler.35583870_0"
+  ],
+  "cudaArchitecture": "86",
+  "flags": [
+   "-O3",
+   "-std=c++17",
+   "-arch=sm_86",
+   "-I",
+   "/src/vendor/pqb/grinder"
+  ],
+  "format": "qsb-pqb-build-receipt-v1",
+  "note": "Compiled, not executed. No native correctness or performance evidence is implied.",
+  "sourceLock": {
+   "compile": {
+    "compiler": "nvcc (CUDA 12.8.1 devel image, pinned by digest in worker/pqb/Dockerfile)",
+    "flags": [
+     "-O3",
+     "-std=c++17",
+     "-arch=sm_${CUDA_ARCH}",
+     "-I",
+     "vendor/pqb/grinder"
+    ],
+    "note": "Upstream compiles on the rented box with -arch=native and CUDA 12.6.3; this recipe fixes the architecture and uses the repository's pinned 12.8.1 toolchain. Upstream rate measurements do not describe this build.",
+    "upstreamFlags": [
+     "-O3",
+     "-std=c++17",
+     "-arch=native"
+    ]
+   },
+   "format": "qsb-pqb-ranked-source-lock-v1",
+   "sources": {
+    "research/pqb-ranked/grind.cu": "217d9fe86d49ada9d8abb9ee88010f6fcf9762897a26494c3d1ad37223327622",
+    "vendor/pqb/grinder/common.cuh": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+    "vendor/pqb/grinder/ptx_field.cuh": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff"
+   },
+   "status": "HOLD",
+   "upstream": {
+    "adaptedFrom": "grinder/grind.cu",
+    "adaptedFromSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5",
+    "commit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+    "repository": "https://github.com/fireblocks-labs/pqb"
+   }
+  },
+  "sourceLockSha256": "ac4ddc059a7fa8409dd9fa9a15ea754527bf61ce243f03cea311d99d20be5e2f",
+  "status": "HOLD"
+ },
+ "contractSha256": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+ "correctness": [
+  {
+   "expectedHits": 48,
+   "hits": 48,
+   "label": "pin-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 3000,
+    "gate_hits": 48,
+    "hits": 48,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 500000000,
+    "seq": 2147483648,
+    "seq_count": 2,
+    "zblocks": 3000
+   },
+   "zblocks": 3000
+  },
+  {
+   "expectedHits": 31,
+   "hits": 31,
+   "label": "pin-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1500,
+    "gate_hits": 31,
+    "hits": 31,
+    "kind": "pin",
+    "lt_count": 1500,
+    "lt_start": 1699998500,
+    "seq": 4294967293,
+    "seq_count": 1,
+    "zblocks": 1500
+   },
+   "zblocks": 1500
+  },
+  {
+   "expectedHits": 44,
+   "hits": 44,
+   "label": "pin-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 2700,
+    "gate_hits": 44,
+    "hits": 44,
+    "kind": "pin",
+    "lt_count": 900,
+    "lt_start": 1234567890,
+    "seq": 2147483651,
+    "seq_count": 3,
+    "zblocks": 2700
+   },
+   "zblocks": 2700
+  },
+  {
+   "expectedHits": 0,
+   "hits": 0,
+   "label": "pin-der-filter",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 1,
+    "exact_zblocks": 0,
+    "expected": 64,
+    "gate_hits": 2368,
+    "hits": 0,
+    "kind": "pin",
+    "lt_count": 64,
+    "lt_start": 600000000,
+    "seq": 2147483653,
+    "seq_count": 1,
+    "zblocks": 64
+   },
+   "zblocks": 64
+  },
+  {
+   "expectedHits": 1,
+   "hits": 1,
+   "label": "pin-der-filter-emits",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 1,
+    "exact_zblocks": 0,
+    "expected": 16,
+    "gate_hits": 586,
+    "hits": 1,
+    "kind": "pin",
+    "lt_count": 16,
+    "lt_start": 700019040,
+    "seq": 2147483654,
+    "seq_count": 1,
+    "zblocks": 16
+   },
+   "zblocks": 16
+  },
+  {
+   "expectedHits": 1,
+   "hits": 1,
+   "label": "pin-der-filter-emits-uncompressed",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 1,
+    "exact_zblocks": 0,
+    "expected": 16,
+    "gate_hits": 555,
+    "hits": 1,
+    "kind": "pin",
+    "lt_count": 16,
+    "lt_start": 700040024,
+    "seq": 2147483654,
+    "seq_count": 1,
+    "zblocks": 16
+   },
+   "zblocks": 16
+  },
+  {
+   "expectedHits": 415,
+   "hits": 415,
+   "label": "pin-planted-exceptional",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 4,
+    "expected": 48,
+    "gate_hits": 415,
+    "hits": 415,
+    "kind": "pin",
+    "lt_count": 48,
+    "lt_start": 900000000,
+    "seq": 2147483658,
+    "seq_count": 1,
+    "zblocks": 48
+   },
+   "zblocks": 48
+  },
+  {
+   "expectedHits": 43,
+   "hits": 43,
+   "label": "round0-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 975,
+    "gate_hits": 43,
+    "hits": 43,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 975
+   },
+   "zblocks": 975
+  },
+  {
+   "expectedHits": 18,
+   "hits": 18,
+   "label": "round0-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 431,
+    "gate_hits": 18,
+    "hits": 18,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 27883217868,
+    "subset_start": 379908847108,
+    "zblocks": 431
+   },
+   "zblocks": 431
+  },
+  {
+   "expectedHits": 10,
+   "hits": 10,
+   "label": "round0-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 313,
+    "gate_hits": 10,
+    "hits": 10,
+    "kind": "round",
+    "prefix_count": 40,
+    "prefix_start": 9294406056,
+    "subset_start": 140931581059,
+    "zblocks": 313
+   },
+   "zblocks": 313
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-first",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 885,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 10,
+    "prefix_start": 0,
+    "subset_start": 0,
+    "zblocks": 885
+   },
+   "zblocks": 885
+  },
+  {
+   "expectedHits": 5,
+   "hits": 5,
+   "label": "round1-last",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 402,
+    "gate_hits": 5,
+    "hits": 5,
+    "kind": "round",
+    "prefix_count": 300,
+    "prefix_start": 186087894000,
+    "subset_start": 2088319702298,
+    "zblocks": 402
+   },
+   "zblocks": 402
+  },
+  {
+   "expectedHits": 16,
+   "hits": 16,
+   "label": "round1-interior-batches",
+   "pass": true,
+   "report": {
+    "complete": true,
+    "der_filter": 0,
+    "exact_zblocks": 0,
+    "expected": 1387,
+    "gate_hits": 16,
+    "hits": 16,
+    "kind": "round",
+    "prefix_count": 150,
+    "prefix_start": 62029298100,
+    "subset_start": 767332430665,
+    "zblocks": 1387
+   },
+   "zblocks": 1387
+  }
+ ],
+ "elapsedSeconds": 494.20184176,
+ "files": {
+  "request.json": "b4cfe1eaddcf0a370c0f6b22e8c62ddaa765bbb1514fbff9d39e41a9110370eb",
+  "small-cases/00/P.txt": "62bf3055289f66dd4cbc3aa570860ef4ea617705e115c71e5f538a96a270060f",
+  "small-cases/00/hits.txt": "781e5fec5a57e84e11dbdbe76c80daf2d6e87102687d3938361f80ac8568057a",
+  "small-cases/00/invocation.json": "4b810d6dabbf3d9c3efc321b2ec328679bf378061c0013c7c519854cfc377904",
+  "small-cases/00/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/00/stdout.txt": "5de7294b18518755748c2f592e1ed4fc09b43dfef3d083953ab763004cbbc30e",
+  "small-cases/01/P.txt": "62bf3055289f66dd4cbc3aa570860ef4ea617705e115c71e5f538a96a270060f",
+  "small-cases/01/hits.txt": "5daf6ff25610cbe40bd109d837d3ea894e976755ea7f27b03b1aa72f7b1678a2",
+  "small-cases/01/invocation.json": "0ef41e107aeebfa1bf7d1dd3e508b1efbda2bd03f7fa7536b88f2e709c0611af",
+  "small-cases/01/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/01/stdout.txt": "f9d7666594e98ff0b103b03ef364bab7b37b83b89a78eb4fb1be75bbe0a7e4b3",
+  "small-cases/02/P.txt": "62bf3055289f66dd4cbc3aa570860ef4ea617705e115c71e5f538a96a270060f",
+  "small-cases/02/hits.txt": "89c6f32cb3fca1920fad3eb7585aaee3e41ec91f665d19c2e9647e21c0552cad",
+  "small-cases/02/invocation.json": "e9cd7636571e58b5009ed2deae37927bac6db23c457c87dd92a648fe76602639",
+  "small-cases/02/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/02/stdout.txt": "7a273c2a1a4f90da087219bdb66af2b0e63f9f4c4eb545fef50fbac9270a7048",
+  "small-cases/03/P.txt": "69c5bb7d3c66eacabbb48d537c1b2f8e804424d7e9126e02f62e86531ada8a87",
+  "small-cases/03/hits.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/03/invocation.json": "342b133d6cc84af8d00f1711387022d2ed22792fa6e8e10bab474119081b67c0",
+  "small-cases/03/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/03/stdout.txt": "2ce773ff37a6ccc6e761305d283d3b9d519b06a7dfec7e76de345f4feed8af79",
+  "small-cases/04/P.txt": "69c5bb7d3c66eacabbb48d537c1b2f8e804424d7e9126e02f62e86531ada8a87",
+  "small-cases/04/hits.txt": "22c1992e35ea8c8c221a3b3212466a58c4df3cdd56e3ad0fc7800761a403391c",
+  "small-cases/04/invocation.json": "391c30b9fd0b3dcec9dac160ff0b1931dd597541d8e1ad831792c0fa2c51f8c6",
+  "small-cases/04/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/04/stdout.txt": "505264b8b985b97edbac32ff4779826e9d010ffcacd3ca219a990aceb8dbccc7",
+  "small-cases/05/P.txt": "69c5bb7d3c66eacabbb48d537c1b2f8e804424d7e9126e02f62e86531ada8a87",
+  "small-cases/05/hits.txt": "9da7402edee18c32d9b5dc75c7fa4988a05fec7ce70b2ca9955fd1eb2e4bcca7",
+  "small-cases/05/invocation.json": "661a4e2853ad2e050c72b2064822fe96437f3c74cc827204bcca4f4c7c76a397",
+  "small-cases/05/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/05/stdout.txt": "9f44316727c9f2f90581dd0c8db6e9391c5ce6ce0e0d40e3e30783e961ea1b52",
+  "small-cases/06/P.txt": "7bc1b25ba9487bb19948e591d2c2a89e79d9a2a43ee21fa2fda067185a1a3e55",
+  "small-cases/06/hits.txt": "be66907ec79e7e93743c1210bd0aba2d392e8fd861f563fb6b1b38c48de731c5",
+  "small-cases/06/invocation.json": "80d8794e1c10dfa2f982d78c40d2ba09b4bbc36d941a9b21fbb9b4ec5fd24680",
+  "small-cases/06/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/06/stdout.txt": "4b11abf44fc50a3c6b694a3ed24dcd5570fd49ce74e77e3c5dd2e23f5879988f",
+  "small-cases/07/P.txt": "ab5083b9261a0f86b7720f35684b1dfd037d2c73e4ead6e400a3355091a21546",
+  "small-cases/07/hits.txt": "50acc4b9147712a02fc8253e3f117452f67d4eff2c4c50a2411e15db594f3119",
+  "small-cases/07/invocation.json": "29563557c4d6c1d9fd9ed6c7d466af0280e212236de4474c09c54dce2a4e3b1b",
+  "small-cases/07/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/07/stdout.txt": "e0bd0acacafc0b02f20138540e4cd4259babc0d133056c9b48b04c48f2fc977d",
+  "small-cases/08/P.txt": "ab5083b9261a0f86b7720f35684b1dfd037d2c73e4ead6e400a3355091a21546",
+  "small-cases/08/hits.txt": "d359c4ffb78e8155e2cc097f64fc8bf9584a984d8ad63144f7199c6705b86736",
+  "small-cases/08/invocation.json": "d820edc0c790a21e8cebe93c33c09f6fcda4e1953e297adb7d6afa649b790717",
+  "small-cases/08/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/08/stdout.txt": "e27632d3202b28547bb2c87bc84be30262ee321b3da75e31e1a183cb7924cd80",
+  "small-cases/09/P.txt": "ab5083b9261a0f86b7720f35684b1dfd037d2c73e4ead6e400a3355091a21546",
+  "small-cases/09/hits.txt": "037bfe0d14323867f0ad232de24188589b6ea2b5a1ca4c94f1723c1e5a9d7e44",
+  "small-cases/09/invocation.json": "31a41f2c7e99d09dea9b26ab842521f53b8e985602100a1c0f30e4b90809bc57",
+  "small-cases/09/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/09/stdout.txt": "e1b5282946fa25f9d7c47fc9109f8c603b2abf93eb982b27191c09f7461a6ce0",
+  "small-cases/10/P.txt": "b7534374a89b1ac2933149cf1dea157155d2cea27e2d6d86923af75ecc1de34c",
+  "small-cases/10/hits.txt": "0d0a2f841fec14e7682c4899f23e6154269504d5fe58f487e2b98f1ed1f057ad",
+  "small-cases/10/invocation.json": "29563557c4d6c1d9fd9ed6c7d466af0280e212236de4474c09c54dce2a4e3b1b",
+  "small-cases/10/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/10/stdout.txt": "30ba78d517c329c307b1fb891874f61d54c4d4233056073682bb53eb139916fd",
+  "small-cases/11/P.txt": "b7534374a89b1ac2933149cf1dea157155d2cea27e2d6d86923af75ecc1de34c",
+  "small-cases/11/hits.txt": "f00282db6cd3cf1d9741f0cab96b6e6f6f1a1a23d977d39ffa17d398d27e81b6",
+  "small-cases/11/invocation.json": "4a7da23b9cc3b2770519143a27952c7883f9f7fa9ff8761a5c6660fde98b6c9b",
+  "small-cases/11/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/11/stdout.txt": "89553222f707e3925e5feae8a89b9fdd3b4e72ac2935264f6b78444bc9d5c8d5",
+  "small-cases/12/P.txt": "b7534374a89b1ac2933149cf1dea157155d2cea27e2d6d86923af75ecc1de34c",
+  "small-cases/12/hits.txt": "c3f87d12a0d3a01c95e5f8f9ebaded6ca3b894c70152f6245ef69d671fb8d053",
+  "small-cases/12/invocation.json": "d82d3e222cdd5da988ce492f5ea6d9bbb5bd57e828f7fc9519f81f5f07fdbdc5",
+  "small-cases/12/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "small-cases/12/stdout.txt": "c96e86ef5ea931c8952c56e2942a7dc29ad2971179968e6a9f7d82d046f9cb14",
+  "unit.json": "35f096ae4ba37d8c1872e7e9e4df12f6007eedcdb8a3b21440454cf9a1a19c19",
+  "work/P.txt": "1968e14bd5f41bf6ce2c81e4f2ff322bfd40ee751d7683d541fa54e303196fde",
+  "work/compute.log": "2dcdf47a0f201d5ae340cebc18052374764490d91d92978d86231110fe18487d",
+  "work/hits.txt": "b5284825b70b6f6adacc88cbca920de03e169a92e8c3130d9895a6e5caa1339b",
+  "worker-result.json": "ca280fc23b2c121c275182575ed45e15bbe6f1b48bf4388d7fe3d21f0e8d9dd3"
+ },
+ "format": "qsb-pqb-final-image-qualification-v1",
+ "gateSha256": "04268c6b193c425ff9691e8ff90525192c1ef396c9514959f6719aba38036651",
+ "image": {
+  "configDigest": "sha256:ab005b0d7a042bac05002ef6532a1f3886dca3f5bf23c57e514e61c92ec473b3",
+  "format": "qsb-pqb-oci-identity-v1",
+  "imageDigest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+  "platformDigest": "sha256:77b8c2db4ffb55923001b37c96599e0a3ae9a687ce06d5f386a9379b565550fe",
+  "status": "HOLD"
+ },
+ "scope": "Installed final image; synthetic native cases and one largest unit",
+ "stage": "round1",
+ "status": "passed",
+ "unit": {
+  "attempt": 0,
+  "batchZblocks": 15282749791,
+  "candidateChecks": [
+   {
+    "candidate": "0,1,21,39,50,66,67,76,82 10 2 0 1",
+    "digest": "301d0209b7af06781a7c3dcf9c021062b524c54376fec54fe824dd37b6b027c1",
+    "nonce": "11930581570"
+   }
+  ],
+  "device": [
+   {
+    "device": "NVIDIA A10G",
+    "kernel": "ec_menu",
+    "local_bytes": 0,
+    "max_threads_per_tg": 768,
+    "regs": 80,
+    "simd_width": 32,
+    "t_s": 0.173,
+    "tg_used": 128
+   }
+  ],
+  "gateCountSanity": true,
+  "jobSeconds": 490.88915909,
+  "nativeDevice": true,
+  "pass": true,
+  "rangeReport": {
+   "complete": true,
+   "der_filter": 1,
+   "exact_zblocks": 0,
+   "expected": 15282749791,
+   "gate_hits": 58504,
+   "hits": 1,
+   "kind": "round",
+   "prefix_count": 1073741824,
+   "prefix_start": 0,
+   "subset_start": 0,
+   "zblocks": 15282749791
+  },
+  "stage": "round1",
+  "verificationSeconds": 0.008747879000111425,
+  "workRange": {
+   "count": 15282749791,
+   "prefixCount": 1073741824,
+   "prefixStart": "0",
+   "start": "0",
+   "version": "pqb-ranked-v2"
+  },
+  "workerResult": {
+   "attempt": 0,
+   "candidates": [
+    "0,1,21,39,50,66,67,76,82 10 2 0 1"
+   ],
+   "checkpoint": "range-complete",
+   "elapsedSeconds": 490.842008698,
+   "gateHits": 58504,
+   "kernelCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+   "manifestHash": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+   "searchVersion": "pqb-ranked-v2",
+   "stage": "round1",
+   "status": "completed",
+   "trials": 978095986624,
+   "verified": false,
+   "workRange": {
+    "count": 15282749791,
+    "prefixCount": 1073741824,
+    "prefixStart": "0",
+    "start": "0",
+    "version": "pqb-ranked-v2"
+   }
+  },
+  "workerSeconds": 490.84805379
+ },
+ "workerTimeoutSeconds": 840
+}

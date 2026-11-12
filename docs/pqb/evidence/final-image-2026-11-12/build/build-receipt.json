@@ -1,0 +1,53 @@
+{
+ "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+ "compiler": [
+  "nvcc: NVIDIA (R) Cuda compiler driver",
+  "Copyright (c) 2005-2025 NVIDIA Corporation",
+  "Built on Fri_Feb_21_20:23:50_PST_2025",
+  "Cuda compilation tools, release 12.8, V12.8.93",
+  "Build cuda_12.8.r12.8/compiler.35583870_0"
+ ],
+ "cudaArchitecture": "86",
+ "flags": [
+  "-O3",
+  "-std=c++17",
+  "-arch=sm_86",
+  "-I",
+  "/src/vendor/pqb/grinder"
+ ],
+ "format": "qsb-pqb-build-receipt-v1",
+ "note": "Compiled, not executed. No native correctness or performance evidence is implied.",
+ "sourceLock": {
+  "compile": {
+   "compiler": "nvcc (CUDA 12.8.1 devel image, pinned by digest in worker/pqb/Dockerfile)",
+   "flags": [
+    "-O3",
+    "-std=c++17",
+    "-arch=sm_${CUDA_ARCH}",
+    "-I",
+    "vendor/pqb/grinder"
+   ],
+   "note": "Upstream compiles on the rented box with -arch=native and CUDA 12.6.3; this recipe fixes the architecture and uses the repository's pinned 12.8.1 toolchain. Upstream rate measurements do not describe this build.",
+   "upstreamFlags": [
+    "-O3",
+    "-std=c++17",
+    "-arch=native"
+   ]
+  },
+  "format": "qsb-pqb-ranked-source-lock-v1",
+  "sources": {
+   "research/pqb-ranked/grind.cu": "217d9fe86d49ada9d8abb9ee88010f6fcf9762897a26494c3d1ad37223327622",
+   "vendor/pqb/grinder/common.cuh": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+   "vendor/pqb/grinder/ptx_field.cuh": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff"
+  },
+  "status": "HOLD",
+  "upstream": {
+   "adaptedFrom": "grinder/grind.cu",
+   "adaptedFromSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5",
+   "commit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+   "repository": "https://github.com/fireblocks-labs/pqb"
+  }
+ },
+ "sourceLockSha256": "ac4ddc059a7fa8409dd9fa9a15ea754527bf61ce243f03cea311d99d20be5e2f",
+ "status": "HOLD"
+}

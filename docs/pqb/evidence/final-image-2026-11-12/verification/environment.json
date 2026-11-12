@@ -1,0 +1,12 @@
+{
+  "format": "qsb-pqb-verification-environment-v1",
+  "python": "3.15.1 (main, Oct 21 2026, 05:55:12) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "node": "v22.19.0",
+  "githubCli": "gh version 2.103.3 (2026-10-26)\nhttps://github.com/cli/cli/releases/tag/v2.103.3",
+  "sourceCommit": "f46209374c48d581549ffeacb6dff498f0902a79",
+  "harnessSha256": {
+    "scripts/verify_pqb_build.py": "21c5a3c86e41e65466e0cb4db3f9d214b2de9c679a4a68df5253d7d664f250f7",
+    "scripts/check_pqb_final.py": "f17c35f991f762a1ef836a162cada89025efa9dc281e2d7c58dba5f70d678106"
+  }
+}

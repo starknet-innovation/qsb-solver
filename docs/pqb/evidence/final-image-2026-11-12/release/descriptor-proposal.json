@@ -1,0 +1,22 @@
+{
+  "format": "qsb-pqb-final-descriptor-proposal-v1",
+  "status": "HOLD",
+  "solver": {
+    "schemaVersion": 3,
+    "id": "pqb-ranked-v2-ecb31d384fbd-0fd3775769c9",
+    "protocol": "pqb-v1",
+    "generatorCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+    "searchVersion": "pqb-ranked-v2",
+    "searchContract": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+    "solverRepository": "https://github.com/starknet-innovation/qsb-solver",
+    "solverCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+    "kernelCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+    "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c"
+  },
+  "buildProvenanceVerified": true,
+  "imageReferenceStatus": "prospective-unpublished",
+  "publicationVerified": false,
+  "enrollmentApproved": false,
+  "qualification": "passed-native-units",
+  "nativeArchiveSha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce"
+}

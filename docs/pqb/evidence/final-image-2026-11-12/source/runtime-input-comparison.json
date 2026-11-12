@@ -1,0 +1,117 @@
+{
+  "format": "qsb-pqb-runtime-input-comparison-v1",
+  "previousSourceCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+  "finalSourceCommit": "ecb31d384fbdec9c67cd802548460b774a722baf",
+  "scope": "Complete Dockerfile COPY/build inputs and attribution; actual mutable packages recorded separately",
+  "inputs": [
+    {
+      "path": "worker/pqb/Dockerfile",
+      "previousSha256": "391c3651b0b7c3c36481a0475b7f7d1d594a77e6ac28e9bd96cd8a5bb2c6dbc1",
+      "finalSha256": "391c3651b0b7c3c36481a0475b7f7d1d594a77e6ac28e9bd96cd8a5bb2c6dbc1",
+      "changed": false
+    },
+    {
+      "path": "worker/pqb/build.py",
+      "previousSha256": "5723b79213f38f0962e74c8cea3da45b19434e348391e2efea60804e46492f97",
+      "finalSha256": "f4a486c7831a560a4bcaf05c9c0e5bc67aa69ef34478c754a0150dc0be0839de",
+      "changed": true
+    },
+    {
+      "path": "worker/pqb/bind.py",
+      "previousSha256": "39edcf3244f569a1b76b548951a63687453c5d2d70163397221855701dfbb3ed",
+      "finalSha256": "39edcf3244f569a1b76b548951a63687453c5d2d70163397221855701dfbb3ed",
+      "changed": false
+    },
+    {
+      "path": "worker/pqb/pqb_handler.py",
+      "previousSha256": "ea5a9275485099d8edf86fbd67fd8d4bf7bed931e51caf78715bd25927ecb1a9",
+      "finalSha256": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f",
+      "changed": true
+    },
+    {
+      "path": "worker/pqb/pqb_ranges.py",
+      "previousSha256": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a",
+      "finalSha256": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a",
+      "changed": false
+    },
+    {
+      "path": "worker/pqb/aws_handler.py",
+      "previousSha256": "98291d5e561f2e7b21c3b1390070b2ad8d2a64998c9a6c27ace967d592ba0f7c",
+      "finalSha256": "98291d5e561f2e7b21c3b1390070b2ad8d2a64998c9a6c27ace967d592ba0f7c",
+      "changed": false
+    },
+    {
+      "path": "worker/aws/entrypoint.py",
+      "previousSha256": "79efe70b3eec6848bac521d49b7d6548c2a7dfea7205897a179a499a9d8b8e9e",
+      "finalSha256": "79efe70b3eec6848bac521d49b7d6548c2a7dfea7205897a179a499a9d8b8e9e",
+      "changed": false
+    },
+    {
+      "path": "research/pqb-ranked/grind.cu",
+      "previousSha256": "217d9fe86d49ada9d8abb9ee88010f6fcf9762897a26494c3d1ad37223327622",
+      "finalSha256": "217d9fe86d49ada9d8abb9ee88010f6fcf9762897a26494c3d1ad37223327622",
+      "changed": false
+    },
+    {
+      "path": "research/pqb-ranked/source-lock.json",
+      "previousSha256": "ac4ddc059a7fa8409dd9fa9a15ea754527bf61ce243f03cea311d99d20be5e2f",
+      "finalSha256": "ac4ddc059a7fa8409dd9fa9a15ea754527bf61ce243f03cea311d99d20be5e2f",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/grinder/grind.cu",
+      "previousSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5",
+      "finalSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/grinder/common.cuh",
+      "previousSha256": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+      "finalSha256": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/grinder/ptx_field.cuh",
+      "previousSha256": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff",
+      "finalSha256": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/LICENSE",
+      "previousSha256": "d13e6ac8092492ce31a7a79fb9e461ab1fd1ce667405c4c94a7d12f2d7bc9ecc",
+      "finalSha256": "d13e6ac8092492ce31a7a79fb9e461ab1fd1ce667405c4c94a7d12f2d7bc9ecc",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/grinder/README.md",
+      "previousSha256": "0865e526d2dcd1860b06aeee0f16f7062e56b2d7f9545a6bd3a44aaef9e50a29",
+      "finalSha256": "0865e526d2dcd1860b06aeee0f16f7062e56b2d7f9545a6bd3a44aaef9e50a29",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/provenance.json",
+      "previousSha256": "98e8ef2dd16db9c89abafdff9ec201be6ee7ca7a47d36554220ece63743e37ef",
+      "finalSha256": "98e8ef2dd16db9c89abafdff9ec201be6ee7ca7a47d36554220ece63743e37ef",
+      "changed": false
+    },
+    {
+      "path": "vendor/pqb/THIRD_PARTY_NOTICES.md",
+      "previousSha256": "738dbf61c6ab0bed5b225deab43dd7421d53f6c7637ceb62c8f356dea57783fd",
+      "finalSha256": "738dbf61c6ab0bed5b225deab43dd7421d53f6c7637ceb62c8f356dea57783fd",
+      "changed": false
+    },
+    {
+      "path": "LICENSES.md",
+      "previousSha256": "ce3d652c4bbe8e2ee7283462b7f6df3ff8622adbca2b8c674e79dc817ac7d326",
+      "finalSha256": "ce3d652c4bbe8e2ee7283462b7f6df3ff8622adbca2b8c674e79dc817ac7d326",
+      "changed": false
+    }
+  ],
+  "changed": [
+    "worker/pqb/build.py",
+    "worker/pqb/pqb_handler.py"
+  ],
+  "actualCompiledBinaryIdentical": true,
+  "binarySha256": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+  "applicability": "Unchanged arithmetic/partition bytes support prior native evidence. New handler/runtime needs its own native qualification. This is not a fresh complete solve or matched performance result."
+}

@@ -1,0 +1,5 @@
+{
+  "scope": "Local Docker Desktop ARM host, importing linux/amd64 image only; no GPU execution",
+  "tag": "qsb-pqb:final-import-0fd37757",
+  "status": "passed"
+}

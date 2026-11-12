@@ -1,5 +1,9 @@
 # Final PQB image qualification and provenance
 
+Completed: [exact artifact, native results, signed provenance, cost/cleanup and handoff](2026-11-12-final-image-qualification.md).
+The qualified image remains HOLD, unpublished and unenrolled. The process below is the retained
+plan; it does not authorize another cloud session.
+
 This is a new assessment authorized on 12 November 2026, separate from the completed public
 solve. No prior campaign, deadline, reservation or automation is resumed. Publication of an
 app release, enrollment, deployment and transactions remain separate actions.

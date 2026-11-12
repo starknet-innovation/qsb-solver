@@ -1,0 +1,290 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/nvidia/cuda@12.8.1-devel-ubuntu22.04?digest=sha256:6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7"
+        }
+      },
+      {
+        "uri": "pkg:docker/nvidia/cuda@12.8.1-runtime-ubuntu22.04?digest=sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "build-arg:CUDA_ARCH": "86",
+          "build-arg:SOLVER_COMMIT": "ecb31d384fbdec9c67cd802548460b774a722baf",
+          "target": "aws"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ],
+        "root": {
+          "configSource": {
+            "path": "Dockerfile"
+          },
+          "request": {
+            "args": {
+              "build-arg:CUDA_ARCH": "86",
+              "build-arg:SOLVER_COMMIT": "ecb31d384fbdec9c67cd802548460b774a722baf",
+              "target": "aws",
+              "vcs:localdir:context": ".",
+              "vcs:localdir:dockerfile": "worker/pqb",
+              "vcs:revision": "ecb31d384fbdec9c67cd802548460b774a722baf",
+              "vcs:source": "https://github.com/starknet-innovation/qsb-solver"
+            }
+          }
+        },
+        "compatibilityVersion": 30
+      },
+      "environment": {
+        "dockerfileVersion": "1.28.0",
+        "github_actor": "adrienlacombe",
+        "github_actor_id": "6303520",
+        "github_event_name": "push",
+        "github_event_payload": {
+          "after": "ecb31d384fbdec9c67cd802548460b774a722baf",
+          "base_ref": "refs/heads/claude/solver-pqb-adaptation-c0ba3f",
+          "before": "0000000000000000000000000000000000000000",
+          "commits": [],
+          "compare": "https://github.com/starknet-innovation/qsb-solver/compare/codex/pqb-qualify-20261112",
+          "created": true,
+          "deleted": false,
+          "enterprise": {
+            "avatar_url": "https://avatars.githubusercontent.com/b/698039?v=4",
+            "created_at": "2026-07-27T06:51:34Z",
+            "description": "Starknet Foundation, supporting the growth, research, development, and decentralized governance of the Starknet ecosystem.",
+            "html_url": "https://github.com/enterprises/starknet-foundation",
+            "id": 698039,
+            "name": "Starknet Fdn Enterprise",
+            "node_id": "E_kgDOAAqmtw",
+            "slug": "starknet-foundation",
+            "updated_at": "2026-10-26T16:34:09Z",
+            "website_url": "starknet.org"
+          },
+          "forced": false,
+          "head_commit": {
+            "author": {
+              "email": "6303520+adrienlacombe@users.noreply.github.com",
+              "name": "adrienlacombe",
+              "username": "adrienlacombe"
+            },
+            "committer": {
+              "email": "6303520+adrienlacombe@users.noreply.github.com",
+              "name": "adrienlacombe",
+              "username": "adrienlacombe"
+            },
+            "distinct": true,
+            "id": "ecb31d384fbdec9c67cd802548460b774a722baf",
+            "message": "Build attested PQB OCI artifact and qualify installed final image",
+            "timestamp": "2026-11-12T09:03:52+01:00",
+            "tree_id": "c56cf80e7173d30967e5d4443c1c2a911a4bf401",
+            "url": "https://github.com/starknet-innovation/qsb-solver/commit/ecb31d384fbdec9c67cd802548460b774a722baf"
+          },
+          "organization": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/258895906?v=4",
+            "description": "Innovation Arm of SNF",
+            "events_url": "https://api.github.com/orgs/starknet-innovation/events",
+            "hooks_url": "https://api.github.com/orgs/starknet-innovation/hooks",
+            "id": 258895906,
+            "issues_url": "https://api.github.com/orgs/starknet-innovation/issues",
+            "login": "starknet-innovation",
+            "members_url": "https://api.github.com/orgs/starknet-innovation/members{/member}",
+            "node_id": "O_kgDOD25wIg",
+            "public_members_url": "https://api.github.com/orgs/starknet-innovation/public_members{/member}",
+            "repos_url": "https://api.github.com/orgs/starknet-innovation/repos",
+            "url": "https://api.github.com/orgs/starknet-innovation"
+          },
+          "pusher": {
+            "email": "6303520+adrienlacombe@users.noreply.github.com",
+            "name": "adrienlacombe"
+          },
+          "ref": "refs/heads/codex/pqb-qualify-20261112",
+          "repository": {
+            "allow_forking": true,
+            "archive_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/{archive_format}{/ref}",
+            "archived": false,
+            "assignees_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/assignees{/user}",
+            "blobs_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/blobs{/sha}",
+            "branches_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/branches{/branch}",
+            "clone_url": "https://github.com/starknet-innovation/qsb-solver.git",
+            "collaborators_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/collaborators{/collaborator}",
+            "comments_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/comments{/number}",
+            "commits_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/commits{/sha}",
+            "compare_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/compare/{base}...{head}",
+            "contents_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/contents/{+path}",
+            "contributors_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/contributors",
+            "created_at": 1790324509,
+            "custom_properties": {},
+            "default_branch": "main",
+            "deployments_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/deployments",
+            "description": null,
+            "disabled": false,
+            "downloads_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/downloads",
+            "events_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/events",
+            "fork": false,
+            "forks": 0,
+            "forks_count": 0,
+            "forks_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/forks",
+            "full_name": "starknet-innovation/qsb-solver",
+            "git_commits_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/commits{/sha}",
+            "git_refs_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/refs{/sha}",
+            "git_tags_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/tags{/sha}",
+            "git_url": "git://github.com/starknet-innovation/qsb-solver.git",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_pull_requests": true,
+            "has_wiki": true,
+            "homepage": null,
+            "hooks_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/hooks",
+            "html_url": "https://github.com/starknet-innovation/qsb-solver",
+            "id": 1387093742,
+            "is_template": false,
+            "issue_comment_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues/comments{/number}",
+            "issue_events_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues/events{/number}",
+            "issues_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues{/number}",
+            "keys_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/keys{/key_id}",
+            "labels_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/labels{/name}",
+            "language": "Cuda",
+            "languages_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/languages",
+            "license": null,
+            "master_branch": "main",
+            "merges_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/merges",
+            "milestones_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/milestones{/number}",
+            "mirror_url": null,
+            "name": "qsb-solver",
+            "node_id": "R_kgDOUq1e7g",
+            "notifications_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/notifications{?since,all,participating}",
+            "open_issues": 1,
+            "open_issues_count": 1,
+            "organization": "starknet-innovation",
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/258895906?v=4",
+              "email": null,
+              "events_url": "https://api.github.com/users/starknet-innovation/events{/privacy}",
+              "followers_url": "https://api.github.com/users/starknet-innovation/followers",
+              "following_url": "https://api.github.com/users/starknet-innovation/following{/other_user}",
+              "gists_url": "https://api.github.com/users/starknet-innovation/gists{/gist_id}",
+              "gravatar_id": "",
+              "html_url": "https://github.com/starknet-innovation",
+              "id": 258895906,
+              "login": "starknet-innovation",
+              "name": "starknet-innovation",
+              "node_id": "O_kgDOD25wIg",
+              "organizations_url": "https://api.github.com/users/starknet-innovation/orgs",
+              "received_events_url": "https://api.github.com/users/starknet-innovation/received_events",
+              "repos_url": "https://api.github.com/users/starknet-innovation/repos",
+              "site_admin": false,
+              "starred_url": "https://api.github.com/users/starknet-innovation/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/starknet-innovation/subscriptions",
+              "type": "Organization",
+              "url": "https://api.github.com/users/starknet-innovation",
+              "user_view_type": "public"
+            },
+            "private": false,
+            "pull_request_creation_policy": "all",
+            "pulls_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/pulls{/number}",
+            "pushed_at": 1794470636,
+            "releases_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/releases{/id}",
+            "size": 9386,
+            "ssh_url": "git@github.com:starknet-innovation/qsb-solver.git",
+            "stargazers": 0,
+            "stargazers_count": 0,
+            "stargazers_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/stargazers",
+            "statuses_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/statuses/{sha}",
+            "subscribers_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/subscribers",
+            "subscription_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/subscription",
+            "svn_url": "https://github.com/starknet-innovation/qsb-solver",
+            "tags_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/tags",
+            "teams_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/teams",
+            "topics": [],
+            "trees_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/trees{/sha}",
+            "updated_at": "2026-11-10T08:55:59Z",
+            "url": "https://api.github.com/repos/starknet-innovation/qsb-solver",
+            "visibility": "public",
+            "watchers": 0,
+            "watchers_count": 0,
+            "web_commit_signoff_required": false
+          },
+          "sender": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/6303520?v=4",
+            "events_url": "https://api.github.com/users/adrienlacombe/events{/privacy}",
+            "followers_url": "https://api.github.com/users/adrienlacombe/followers",
+            "following_url": "https://api.github.com/users/adrienlacombe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/adrienlacombe/gists{/gist_id}",
+            "gravatar_id": "",
+            "html_url": "https://github.com/adrienlacombe",
+            "id": 6303520,
+            "login": "adrienlacombe",
+            "node_id": "MDQ6VXNlcjYzMDM1MjA=",
+            "organizations_url": "https://api.github.com/users/adrienlacombe/orgs",
+            "received_events_url": "https://api.github.com/users/adrienlacombe/received_events",
+            "repos_url": "https://api.github.com/users/adrienlacombe/repos",
+            "site_admin": false,
+            "starred_url": "https://api.github.com/users/adrienlacombe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/adrienlacombe/subscriptions",
+            "type": "User",
+            "url": "https://api.github.com/users/adrienlacombe",
+            "user_view_type": "public"
+          }
+        },
+        "github_job": "image",
+        "github_ref": "refs/heads/codex/pqb-qualify-20261112",
+        "github_ref_name": "codex/pqb-qualify-20261112",
+        "github_ref_protected": "false",
+        "github_ref_type": "branch",
+        "github_repository": "starknet-innovation/qsb-solver",
+        "github_repository_id": "1387093742",
+        "github_repository_owner": "starknet-innovation",
+        "github_repository_owner_id": "258895906",
+        "github_run_attempt": "1",
+        "github_run_id": "43179921372",
+        "github_run_number": "1",
+        "github_runner_arch": "X64",
+        "github_runner_environment": "github-hosted",
+        "github_runner_image_os": "ubuntu24",
+        "github_runner_image_version": "20261101.360.1",
+        "github_runner_name": "GitHub Actions 1000159744",
+        "github_runner_os": "Linux",
+        "github_runner_tracking_id": "github_35084316-d8df-4149-855c-42b87fe4053a",
+        "github_server_url": "https://github.com",
+        "github_triggering_actor": "adrienlacombe",
+        "github_workflow": "Build attested PQB qualification artifact",
+        "github_workflow_ref": "starknet-innovation/qsb-solver/.github/workflows/pqb-qualify.yml@refs/heads/codex/pqb-qualify-20261112",
+        "github_workflow_sha": "ecb31d384fbdec9c67cd802548460b774a722baf",
+        "platform": "linux/amd64"
+      }
+    }
+  },
+  "buildx.build.ref": "builder-1c7f9a1e-cd21-48d7-96ff-dc1521f21cc2/builder-1c7f9a1e-cd21-48d7-96ff-dc1521f21cc20/49fiwdvtui5f33fg6l9w587iy",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c",
+    "size": 856,
+    "annotations": {
+      "org.opencontainers.image.created": "2026-11-12T08:10:09Z"
+    }
+  },
+  "containerimage.digest": "sha256:0fd3775769c9fb6d6611c5f30be4d901ae65fc0694ceb27853b826d4f3bb060c"
+}

@@ -6,8 +6,11 @@ passed their stated criteria. A [complete public synthetic transport solve](2026
 then verified all three stages in 91 minutes 40 seconds at $20.73 estimated compute, including
 its builder. Exact artifact identities, limits and independently verified cleanup are retained
 in that report; the earlier receipts keep their original identities.
-The [release/adoption review and qsb-app handoff](release-review-2026-11-12/README.md)
-provide a source-bound descriptor proposal and the remaining artifact/publication gates.
+The [final image assessment and qsb-app handoff](2026-11-12-final-image-qualification.md)
+qualify the parser-fixed image under its actual signed source/digest: all three largest native
+units, 13 small cases before each unit and the independent consumer replay passed. The
+checksummed HOLD descriptor and publication provenance are prepared; registry publication,
+enrollment and deployment remain separate. Earlier receipts retain their original identities.
 
 ## What this is
 
