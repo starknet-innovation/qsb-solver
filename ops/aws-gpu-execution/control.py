@@ -17,6 +17,8 @@ sys.path.insert(0, str(ROOT/'ops/aws-gpu-benchmark'))
 from launch import boot_script
 sys.path.append(str(Path(__file__).resolve().parent))
 from operator_config import load_config, expected_account
+from source_identity import pushed_commit
+from cleanup_lookup import function_exists
 _ACTIVE_CONFIG = None
 SINGLE_A10G = ('g5.xlarge', 'g5.2xlarge', 'g5.4xlarge', 'g5.8xlarge', 'g5.16xlarge')
 
@@ -65,7 +67,15 @@ def aws(service, operation, **request):
 
 
 def save(path,state):
-    tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(state,indent=2)+'\n');tmp.replace(path)
+    tmp=path.with_suffix('.tmp')
+    with tmp.open('w') as stream:
+        stream.write(json.dumps(state,indent=2)+'\n')
+        stream.flush()
+        os.fsync(stream.fileno())
+    tmp.replace(path)
+    directory=os.open(path.parent,os.O_RDONLY)
+    try:os.fsync(directory)
+    finally:os.close(directory)
 
 
 def cleanup_archive(directory):
@@ -118,10 +128,7 @@ def main():
     _ACTIVE_CONFIG=dict(config)
     ACCOUNT,REGION,AMI,SUBNET,VPC=(config[k] for k in ('account','region','ami','subnet','vpc'))
     if aws('sts','get-caller-identity')['Account']!=ACCOUNT: raise ValueError('Wrong account')
-    if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT): raise ValueError('Dirty checkout')
-    commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    remote=subprocess.check_output(['git','rev-parse','@{upstream}'],cwd=ROOT,text=True).strip()
-    if commit!=remote: raise ValueError('Source not pushed')
+    commit=pushed_commit(ROOT)
     if args.mode=='prepare':
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
         token=str(uuid.uuid4());name='qsb-bench-'+token[:8]
@@ -230,8 +237,7 @@ def main():
             schedules=aws('scheduler','list-schedules',NamePrefix=name)['Schedules']
             for schedule in schedules:
                 if schedule['Name']==name: aws('scheduler','delete-schedule',Name=name,GroupName='default')
-            functions=aws('lambda','list-functions')['Functions']
-            if any(f['FunctionName']==name for f in functions): aws('lambda','delete-function',FunctionName=name)
+            if function_exists(aws,name): aws('lambda','delete-function',FunctionName=name)
             aws('iam','remove-role-from-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
             aws('iam','delete-instance-profile',InstanceProfileName=name)
             for suffix in ['-host','-cleanup','-schedule']:

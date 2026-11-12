@@ -4,14 +4,32 @@ from pathlib import Path
 import subprocess
 import sys
 
+# OCI omissions and Docker's materialized defaults must have the same meaning.
+# Unknown inspect-only fields fail closed rather than silently affecting runtime.
+CONFIG_DEFAULTS = {
+    'User':'', 'ExposedPorts':{}, 'Env':[], 'Entrypoint':[], 'Cmd':[],
+    'Volumes':{}, 'WorkingDir':'', 'Labels':{}, 'StopSignal':'', 'ArgsEscaped':False,
+    'Healthcheck':None, 'Shell':[], 'OnBuild':[], 'StopTimeout':None,
+    'Hostname':'', 'Domainname':'', 'Image':'', 'NetworkDisabled':False,
+    'AttachStdin':False, 'AttachStdout':False, 'AttachStderr':False,
+    'Tty':False, 'OpenStdin':False, 'StdinOnce':False,
+}
+
 
 def verify_runtime(image, config):
     if image['Architecture'] != config['architecture'] or image['Os'] != config['os']:
         raise ValueError('Imported architecture differs')
     if image['RootFS']['Layers'] != config['rootfs']['diff_ids']:
         raise ValueError('Imported rootfs differs')
-    for key, value in config['config'].items():
-        if image['Config'].get(key) != value:
+    expected,actual=config['config'],image['Config']
+    for key in set(expected) | set(actual) | set(CONFIG_DEFAULTS):
+        if key not in CONFIG_DEFAULTS and (key not in expected or key not in actual):
+            raise ValueError('Unreviewed imported runtime config field: '+key)
+        default=CONFIG_DEFAULTS.get(key)
+        left=expected.get(key,default);right=actual.get(key,default)
+        left=default if left is None else left
+        right=default if right is None else right
+        if json.dumps(left,sort_keys=True)!=json.dumps(right,sort_keys=True):
             raise ValueError('Imported runtime config differs: '+key)
     if image['Config'].get('WorkingDir') != '/opt/qsb-pqb' or image['Config'].get('Cmd') != ['python3','aws_entrypoint.py']:
         raise ValueError('Unexpected PQB runtime command')
@@ -39,7 +57,8 @@ def import_image(bundle, results, call=subprocess.run):
             raise ValueError('Expected one imported image')
         (results/'image.json').write_text(inspected.stdout)
         verify_runtime(images[0],config)
-        call(['docker','tag',ref,'qsb-pqb:final'],capture_output=True,text=True,timeout=30).check_returncode()
+        # A loaded tag can move after inspect. Tag the inspected immutable ID.
+        call(['docker','tag',images[0]['Id'],'qsb-pqb:final'],capture_output=True,text=True,timeout=30).check_returncode()
         (results/'runtime-identity-check.json').write_text(json.dumps(dict(status='passed',
             imageDigest=identity['imageDigest'],configDigest=identity['configDigest'],
             dockerInspectId=images[0]['Id'],rootfsDiffIdsMatched=True,runtimeConfigMatched=True),indent=2)+'\n')

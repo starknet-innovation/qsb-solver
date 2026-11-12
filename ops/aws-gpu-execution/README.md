@@ -21,6 +21,11 @@ Control-plane latency is not a guaranteed billing ceiling. Terminate immediately
 on success/failure and verify instance, volume and temporary-resource removal.
 
 Never reuse a state file or retry an uncertain launch; reconcile its token.
+Checkpoint writes flush and fsync the temporary file, atomically rename it and fsync
+the parent directory before dependent API mutations. Preparation verifies HEAD against
+the configured remote branch's live tip with `git ls-remote`; a local tracking ref is
+insufficient. Cleanup follows Lambda `NextMarker` pages and fails without marking the
+campaign cleaned if the listing cannot be completed.
 Record the returned root volume before setup. A fresh `run_a10g.py` output file is
 a one-shot execution marker. Bind-mount the committed public validation directory
 read-only into the attested candidate container, run with network none, GPU access,

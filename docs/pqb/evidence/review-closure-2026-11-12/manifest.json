@@ -1,0 +1,18 @@
+{
+  "format": "qsb-pqb-source-review-closure-v1",
+  "files": {
+    "consumer-replay.json": {
+      "bytes": 2644,
+      "sha256": "e27a350316ba5198fd29029ce900ee1c006b37dff85596422699588a1f5fefd6"
+    },
+    "focused-tests.txt": {
+      "bytes": 2009,
+      "sha256": "4458d38c960c493331d6d2a78a78c8c4986908a556a2563411a20015fc40fd68"
+    },
+    "full-tests.txt": {
+      "bytes": 32507,
+      "sha256": "bb0b8dd2bd2aec72644cce0e57791c956ad22d1fa28d09b81d38bbb6776ecb97"
+    }
+  },
+  "scope": "Local regression tests and CPU replay of original native evidence; no new GPU execution"
+}

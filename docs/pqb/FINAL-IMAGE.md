@@ -84,6 +84,12 @@ full-unit request/result/problem/native log/hits; exact installed binding/build 
 GPU/driver, imported config, host setup/import logs, exit status, deadline, source, image and
 gate hashes. Results are durable before verification and packed even on host setup failure.
 Collect the original gzip JSON archive, verify its byte count/hash, then decode separately.
+The collector writes an exclusive partial file, flushes and fsyncs it, atomically renames
+it and fsyncs its parent directory before emitting collection metadata. Existing archives
+or partials require reconciliation. Runtime verification compares both configurations,
+normalizing omitted Docker defaults and rejecting unexpected nondefault or unknown fields.
+The consumer replay requires the independently retained gate checksum inventory and its
+reviewed Git commit; every original small-case invocation and expected hit set is checked.
 All SSM requests, provider responses, instance/volume IDs and collection identities remain
 in the external campaign ledger. Do not replay a compute command or uncertain submission.
 
@@ -100,6 +106,11 @@ Terminate promptly after success/failure and verify each recorded root volume is
 the next session. Independently reconcile temporary IAM, SG, function, schedule and staging
 objects/bucket. Preserve all original receipts and fresh reconciliation separately. Cleanup
 uncertainty takes priority over new work.
+
+Both controllers fsync campaign checkpoints and their parent directory before dependent
+mutations. Preparation checks HEAD against the configured remote branch with `git ls-remote`,
+and cleanup follows every Lambda listing page before concluding a function is absent.
+These safeguards do not authorize another campaign.
 
 ## Acceptance and applicability
 

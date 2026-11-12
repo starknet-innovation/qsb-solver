@@ -16,23 +16,23 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT/'ops/aws-gpu-execution'))
 from mcp_rpc import exchange
 from cleanup import stop
+from source_identity import pushed_commit
+from cleanup_lookup import function_exists
 
 
 def document(statements):return json.dumps({'Version':'2012-10-17','Statement':statements})
 def allow(actions,resources):return {'Effect':'Allow','Action':actions,'Resource':resources}
 def trust(service):return document([{'Effect':'Allow','Principal':{'Service':service},'Action':'sts:AssumeRole'}])
 def save(path,value):
-    temp=path.with_suffix('.tmp');temp.write_text(json.dumps(value,indent=2)+'\n');temp.replace(path)
-
-
-def function_exists(call,name):
-    """ListFunctions returns at most 50 per call: follow NextMarker before deciding the function is gone."""
-    marker=None
-    while True:
-        page=call('lambda','list-functions',**({'Marker':marker} if marker else {}))
-        if any(f['FunctionName']==name for f in page.get('Functions',[])):return True
-        marker=page.get('NextMarker')
-        if not marker:return False
+    temp=path.with_suffix('.tmp')
+    with temp.open('w') as stream:
+        stream.write(json.dumps(value,indent=2)+'\n')
+        stream.flush()
+        os.fsync(stream.fileno())
+    temp.replace(path)
+    directory=os.open(path.parent,os.O_RDONLY)
+    try:os.fsync(directory)
+    finally:os.close(directory)
 
 
 NOT_FOUND=('NoSuchEntity','ResourceNotFoundException','RepositoryNotFoundException','NoSuchBucket','NotFound',
@@ -82,9 +82,7 @@ def main():
     p.add_argument('--config',type=Path,required=True);p.add_argument('--state',type=Path,required=True)
     a=p.parse_args();config=json.loads(a.config.read_text());path=a.state
     if ROOT in path.resolve().parents or ROOT in a.config.resolve().parents:raise ValueError('External state required')
-    if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('Dirty source')
-    commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    if commit!=subprocess.check_output(['git','rev-parse','@{upstream}'],cwd=ROOT,text=True).strip():raise ValueError('Source not pushed')
+    commit=pushed_commit(ROOT)
     account,region,name,token=(config[k] for k in ('account','region','name','token'))
     if region!='eu-west-1' or not re.fullmatch(r'qsb-pqb-solve-[a-f0-9]{8}',name) or not re.fullmatch(r'[a-f0-9-]{36}',token):raise ValueError('Invalid campaign scope')
     def call(service,operation,**params):return exchange(os.environ['QSB_AWS_MCP_RPC_DIR'],region,service,operation,params)

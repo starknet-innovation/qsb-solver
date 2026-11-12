@@ -86,10 +86,11 @@ completed native campaign and its cleanup/deadline/reservation were not resumed.
 
 ## Source merge readiness
 
-PR #18 also has six unresolved review findings, separate from the TLS blocker: campaign
+The original PR #18 review snapshot recorded six findings, separate from the TLS blocker: campaign
 state durability, cleanup pagination, live remote commit verification, native gate/case
 binding, omitted runtime configuration fields and final-archive durability. The
 [review snapshot](evidence/critical-review-2026-11-12/merge-readiness.json) links each thread.
-This TLS patch does not resolve those findings. Do not merge the current PR on the strength
-of the native results or the scan policy alone; the source reviews and current CI still
-need to be cleared. Source merge, image publication and app enrollment are separate gates.
+The subsequent [source review closure](2026-11-12-review-readiness.md) documents their
+fixes and regression checks. The linked snapshot remains the original historical receipt.
+Current GitHub checks and review state determine source merge readiness. Source merge,
+image publication and app enrollment are separate gates; the old image remains blocked.

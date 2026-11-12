@@ -36,6 +36,10 @@ The consumer checks the exact Batch definition/compute limits before preparing a
 The controller durably saves its identity and nonrefundable 900-second reservation before its
 single paid POST. Unknown outcomes stop submissions; no process resumes an existing output
 directory. Failed/incomplete units stop the assessment without range credit.
+Checkpoint persistence includes file fsync, atomic rename and parent-directory fsync
+before dependent API mutations. Preparation checks the configured remote branch's live
+tip with `git ls-remote`, rather than trusting a local tracking ref. Cleanup follows every
+Lambda listing page and leaves cleanup unverified on listing failure.
 
 An explicit fourth CLI argument may hand over the known initial pinning phase before any
 solution has been accepted. It verifies the unchanged configuration/deadline, public input,

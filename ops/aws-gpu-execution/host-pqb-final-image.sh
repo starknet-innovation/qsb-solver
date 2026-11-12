@@ -29,12 +29,23 @@ collect() {
   docker rm --force qsb-pqb-final > "$results/container-cleanup.log" 2>&1 || true
   printf '%s\n' "$status" > "$results/exit-code.txt"
   python3 - "$results" <<'PY'
-import gzip,hashlib,json,pathlib,sys
+import gzip,hashlib,json,os,pathlib,sys
 root=pathlib.Path(sys.argv[1])
+archive=root/'public-result.json.gz'
+temporary=root/'.public-result.json.gz.partial'
+if archive.exists() or temporary.exists():
+    raise FileExistsError('Native archive or partial already exists; reconcile rather than replace')
 files={str(p.relative_to(root)):p.read_text() for p in root.rglob('*') if p.is_file()}
 raw=gzip.compress(json.dumps(files).encode())
-(root/'public-result.json.gz').write_bytes(raw)
-print('QSB_PUBLIC_RESULT_META='+json.dumps(dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())))
+with temporary.open('xb') as stream:
+    stream.write(raw)
+    stream.flush()
+    os.fsync(stream.fileno())
+temporary.replace(archive)
+directory=os.open(root,os.O_RDONLY)
+try:os.fsync(directory)
+finally:os.close(directory)
+print('QSB_PUBLIC_RESULT_META='+json.dumps(dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())),flush=True)
 PY
   return "$status"
 }

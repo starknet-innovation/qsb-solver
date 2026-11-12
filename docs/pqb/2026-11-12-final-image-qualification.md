@@ -168,12 +168,16 @@ python3 scripts/check_pqb_final.py CLEAN_APP_CHECKOUT \
   276f2ae09d50ca44d46b035e45b6d0365802edcf \
   EVIDENCE_DIR/native/public-result.json.gz 70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce \
   EVIDENCE_DIR/release/descriptor-proposal.json NEW_CONSUMER_RECEIPT_DIR \
-  --build-artifacts BUILD_ARTIFACT_DIR
+  --build-artifacts BUILD_ARTIFACT_DIR \
+  --native-gate-checksums EVIDENCE_DIR/verification/native-gate-SHA256SUMS \
+  --native-gate-commit 4dff68d2eeeeaed7b437eb598f668d33a7f47205
 ```
 
 The native archive SHA-256 comes from this assessment's manifest and its independently
 collected host receipt. The consumer checker validates the archive/member inventories,
 loaded rootfs/config against the signed build, every stage's binding and original request,
-all 13 small-case verdicts before each unit, the largest production ranges, completion/timing
+the mounted gate against the reviewed Git inputs and signed build identities, all 13
+small-case identities, arguments, problems, hit sets and accounting before each unit,
+the largest production ranges, completion/timing
 and independent consumer derivation of every emitted hit. It never enrolls a release.
 Reproducing these CPU/provenance checks does not launch hardware or repeat GPU work.

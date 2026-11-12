@@ -7,7 +7,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from pqb_descriptor import evidence_bytes, sha, source
-from check_pqb_final import native_rows
+from check_pqb_final import native_rows, reviewed_gate
 from verify_pqb_build import verify_policy
 
 
@@ -29,12 +29,15 @@ class FinalEvidenceTests(unittest.TestCase):
         build={key:read('build/'+name) for key,name in (
             ('identity','oci-identity.json'),('config','image-config.json'),
             ('binding','binding.json'),('receipt','build-receipt.json'))}
+        build['assetHashes']={name:sha((root/'build'/name).read_bytes()) for name in ('binding.json','oci-identity.json')}
         self.assertEqual(sha((root/'build/image-manifest.json').read_bytes()),build['identity']['imageDigest'][7:])
         self.assertEqual(manifest['image'],build['identity'])
         self.assertEqual((root/'release/pqb-ranked-v2.json').read_bytes(),
                          source(manifest['imageSourceCommit'],'contracts/pqb-ranked-v2.json'))
         raw=evidence_bytes(root,'native/public-result.json.gz',entries['native/public-result.json.gz'])
-        rows=native_rows(raw,manifest['nativeArchive']['sha256'],proposal['solver'],build)
+        gate=reviewed_gate((root/'verification/native-gate-SHA256SUMS').read_bytes(),
+                           manifest['nativeQualificationHarnessCommit'],proposal['solver'],build)
+        rows=native_rows(raw,manifest['nativeArchive']['sha256'],proposal['solver'],build,gate)
         self.assertEqual([r['stage'] for r in rows],['pinning','round0','round1'])
         consumer=read('verification/final-consumer.json')
         self.assertEqual(consumer['status'],'passed')
