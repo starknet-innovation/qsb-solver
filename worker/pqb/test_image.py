@@ -40,7 +40,24 @@ for bad in (dict(req, kernelCommit='0' * 40), dict(req, seed='00'), dict(req, se
         pass
 out = h.handler({'input': req})            # no GPU here: the real binary must fail, uncredited
 assert out['status'] == 'failed' and out['checkpoint'] != 'range-complete' and out['candidates'] == [], out
-print(json.dumps({'solverCommit': b['solverCommit'], 'binarySha256': receipt['binarySha256']}))
+# Exercise the installed parser fix with simulated grinder output, keeping the real
+# installed binding, request validation and full assigned unit. This is not native work.
+from unittest.mock import patch
+from types import SimpleNamespace
+unit=h.work_range('pinning',0)
+line='@range '+json.dumps(dict(kind='pin',seq=unit['sequence'],seq_count=unit['sequenceCount'],
+    lt_start=unit['locktime'],lt_count=unit['locktimeCount'],zblocks=unit['count'],expected=unit['count'],
+    hits=0,der_filter=1,gate_hits=3,exact_zblocks=0,complete=True))+'\n'
+for duplicate in (True,False):
+    def simulated(command,*,cwd,stdout,**kwargs):
+        pathlib.Path(cwd,'hits.txt').write_text('')
+        stdout.write((line if duplicate else '')+('@batch {}\n'*220000)+line)
+        return SimpleNamespace(wait=lambda timeout:0,returncode=0)
+    with patch.object(h.subprocess,'Popen',simulated):
+        parsed=h.handler({'input':req})
+    assert parsed['status']==('failed' if duplicate else 'completed'),parsed
+print(json.dumps({'solverCommit': b['solverCommit'], 'binarySha256': receipt['binarySha256'],
+                  'installedWholeLogParserRegression':'passed; simulated grinder, >2 MiB log'}))
 '''
 
 

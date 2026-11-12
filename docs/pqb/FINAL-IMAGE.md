@@ -1,0 +1,87 @@
+# Final PQB image qualification and provenance
+
+This is a new assessment authorized on 12 November 2026, separate from the completed public
+solve. No prior campaign, deadline, reservation or automation is resumed. Publication of an
+app release, enrollment, deployment and transactions remain separate actions.
+
+## Build and provenance
+
+The `codex/pqb-qualify-*` branch push workflow builds the actual `worker/pqb/Dockerfile` AWS
+target, sm86, with its exact source commit. It exports an OCI archive with BuildKit provenance,
+verifies all blob hashes, imports that archive for offline worker/failure checks, records the
+actual installed binding/build receipt, config, packages and notices, and scans the exact
+archive. A GitHub-hosted runner signs both the archive/checksum assets and the actual OCI
+manifest digest. No registry credentials, image push, release, descriptor enrollment or app
+deployment are part of this workflow.
+Offline checks exercise the installed completion parser with a simulated grinder log larger
+than 2 MiB: an early duplicate completion must fail, while one completion passes the parser.
+The actual no-GPU binary failure remains a separate check; simulated logs are never native evidence.
+
+Before native work, download the successful exact-source push artifact; verify its GitHub
+attestations with the exact repository, signer workflow `.github/workflows/pqb-qualify.yml`,
+source branch/ref, source commit and `--deny-self-hosted-runners`. Verify archive/checksum
+and OCI subject digests, and the OCI subject name `ghcr.io/starknet-innovation/qsb-solver`.
+Retain the signed bundles and verification JSON. The digest of `image-manifest.json` is the
+publishable OCI index digest, not the Docker config digest. Signing this prospective subject
+does not assert that its image is available from GHCR. Later authorized publication must copy
+the qualified archive with all manifests and preserved digests, without rebuilding it, then
+verify registry-side provenance and the resulting digest.
+
+APT/Python inputs are mutable; record the actual packages/compiler/runtime. These are exact
+artifact identities, not a claim of bit-for-bit rebuild reproducibility. Keep all notices,
+MIT source attribution and material adaptation records. The CPU reference stays outside the
+image.
+
+## Native public plan and collection
+
+Use three sequential fresh 25-minute A10G sessions, one for each largest `pqb-ranked-v2` unit.
+Each session imports the same verified OCI archive; Docker's imported config digest must equal
+the attested image's config digest before compute. The mounted public gate contains no worker
+copy. `qualify_image.py` imports and validates the installed image's actual bound handler,
+partition and binary, and checks the committed contract vectors.
+
+Each stage first runs all 13 existing independent small hit-set cases, including boundary,
+multi-batch, DER-filter-positive and planted exceptional-point cases, with a 60-second
+preflight allowance. Test gates/flags are explicit in the committed expected cases only.
+The full unit uses the unmodified installed handler, production 24-bit gate, exact attempt 0,
+840-second worker timeout, unique candidates, independent hit derivation, batch/range counts,
+gate-count sanity and native A10G identity. Each largest-unit invocation must finish within
+the worker bound including CPU checking; the container has a 1,000-second outer bound.
+The host refuses compute with less than 1,100 seconds left. No timeout or unit-size override.
+
+Retain every small invocation's original problem, arguments, native stdout/stderr/hits;
+full-unit request/result/problem/native log/hits; exact installed binding/build receipt;
+GPU/driver, imported config, host setup/import logs, exit status, deadline, source, image and
+gate hashes. Results are durable before verification and packed even on host setup failure.
+Collect the original gzip JSON archive, verify its byte count/hash, then decode separately.
+All SSM requests, provider responses, instance/volume IDs and collection identities remain
+in the external campaign ledger. Do not replay a compute command or uncertain submission.
+
+Run local unit/negative checks before allocation. Use the committed/pushed execution controller,
+dedicated SSM-only IAM/SG, prearmed independent Scheduler/Lambda cleanup and guest shutdown
+sharing the fixed deadline. No other test GPUs may be active before each sequential session.
+The new operational reservation is **$10 total**, including up to $3 per native session and
+staging overhead; persist it before paid submission. This is a reservation, not provider billing.
+Check fresh pricing/quota/account/AMI/subnet and prior cleanup. Known capacity failures may
+only be followed after reconciliation and complete cleanup with a fresh session identity;
+unknown launch outcomes must never be retried. Never extend an armed deadline.
+
+Terminate promptly after success/failure and verify each recorded root volume is gone before
+the next session. Independently reconcile temporary IAM, SG, function, schedule and staging
+objects/bucket. Preserve all original receipts and fresh reconciliation separately. Cleanup
+uncertainty takes priority over new work.
+
+## Acceptance and applicability
+
+All three exact-image stages and offline negative/parser checks must pass. Re-run consumer
+contract/schema compatibility against the final identities. Record actual binary/source/flag
+differences before applying earlier native arithmetic and complete-public-solve evidence.
+The existing complete solve remains evidence for its own older image; this assessment measures
+final-image unit correctness and timing, not another full solve or matched speedup. Retain the
+zero-sighash, completeness, broader hardware, native re-pinning, served orchestration and
+wallet/consensus/miner limits. Failed/incomplete work remains in cost accounting.
+
+Finish with exact artifact/provenance/descriptor preparation, qualification receipts, a source
+applicability decision, known limits, estimated cost versus billing, independent cleanup and
+the remaining publication/enrollment decisions. No release is called published until the
+actual registry/release state has been verified.

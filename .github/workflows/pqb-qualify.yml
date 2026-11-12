@@ -1,0 +1,92 @@
+name: Build attested PQB qualification artifact
+on:
+  push:
+    branches: ['codex/pqb-qualify-*']
+permissions:
+  contents: read
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - name: Prepare native builder and OCI transport
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          sudo apt-get update
+          sudo apt-get install -y skopeo
+          mkdir pqb-qualified
+          skopeo --version > pqb-qualified/skopeo-version.txt
+          docker version > pqb-qualified/docker-version.txt
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
+      - name: Build exact PQB AWS image as an OCI archive
+        id: identity
+        run: |
+          docker buildx build --platform linux/amd64 --file worker/pqb/Dockerfile --target aws \
+            --build-arg CUDA_ARCH=86 --build-arg SOLVER_COMMIT="$GITHUB_SHA" \
+            --provenance=mode=max --metadata-file pqb-qualified/buildx-metadata.json \
+            --output type=oci,dest=pqb-qualified/image.oci.tar .
+          python3 scripts/pqb_oci.py pqb-qualified/image.oci.tar pqb-qualified
+          skopeo copy oci-archive:pqb-qualified/image.oci.tar docker-daemon:qsb-pqb:qualify
+          echo "digest=$(python3 -c 'import json; print(json.load(open("pqb-qualified/oci-identity.json"))["imageDigest"])')" >> "$GITHUB_OUTPUT"
+      - name: Check actual image offline and collect installed identities
+        run: |
+          python3 worker/pqb/test_image.py qsb-pqb:qualify | tee pqb-qualified/offline-check.json
+          docker inspect qsb-pqb:qualify > pqb-qualified/image.json
+          id=$(docker create qsb-pqb:qualify)
+          docker cp "$id:/opt/qsb-pqb/binding.json" pqb-qualified/binding.json
+          docker cp "$id:/opt/qsb-pqb/build-receipt.json" pqb-qualified/build-receipt.json
+          docker cp "$id:/opt/qsb-pqb/licenses" pqb-qualified/licenses
+          docker rm "$id"
+          python3 -c 'import json,os; assert json.load(open("pqb-qualified/binding.json"))["solverCommit"] == os.environ["GITHUB_SHA"]'
+          docker run --rm --network none --read-only --entrypoint sh qsb-pqb:qualify -c 'dpkg-query -W; python3 -m pip freeze --all' > pqb-qualified/packages.txt
+          printf '%s\n' "$GITHUB_SHA" > pqb-qualified/source-commit
+      - name: Scan the exact OCI archive
+        run: python3 scripts/image_scan.py oci-archive:pqb-qualified/image.oci.tar pqb-qualified/image-scan
+      - name: Bind all retained build assets
+        run: |
+          python3 - <<'PY'
+          import hashlib,pathlib
+          root=pathlib.Path('pqb-qualified')
+          files=sorted(p for p in root.rglob('*') if p.is_file())
+          with (root/'SHA256SUMS').open('x') as out:
+              for p in files:
+                  h=hashlib.file_digest(p.open('rb'),'sha256').hexdigest()
+                  out.write(h+'  '+str(p.relative_to(root))+'\n')
+          PY
+      - name: Attest the archive and retained asset checksums
+        id: archive-provenance
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-path: |
+            pqb-qualified/image.oci.tar
+            pqb-qualified/SHA256SUMS
+      - name: Attest the final OCI subject without publishing an image
+        id: oci-provenance
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-name: ghcr.io/starknet-innovation/qsb-solver
+          subject-digest: ${{ steps.identity.outputs.digest }}
+          push-to-registry: false
+      - name: Retain signed bundles
+        env:
+          ARCHIVE_BUNDLE: ${{ steps.archive-provenance.outputs.bundle-path }}
+          OCI_BUNDLE: ${{ steps.oci-provenance.outputs.bundle-path }}
+        run: |
+          cp "$ARCHIVE_BUNDLE" pqb-qualified/archive-provenance.jsonl
+          cp "$OCI_BUNDLE" pqb-qualified/oci-provenance.jsonl
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() }}
+        with:
+          name: pqb-qualified-sm86
+          path: pqb-qualified/
+          compression-level: 0
+          retention-days: 30
