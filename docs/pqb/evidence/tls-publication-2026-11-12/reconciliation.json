@@ -1,0 +1,29 @@
+{
+  "format": "qsb-pqb-independent-publication-reconciliation-v1",
+  "status": "passed",
+  "publicationRun": 43220125543,
+  "publicationCommit": "fe955d897f5ac1015fe6517de1b10e3a223f8bfb",
+  "buildRun": 43205074943,
+  "buildSource": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "buildRef": "refs/heads/codex/pqb-qualify-tls-20261112",
+  "imageDigest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+  "platformDigest": "sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68",
+  "configDigest": "sha256:63282eedd68f71d991a51281f8ff0e448c0778957991ca524a54f5f035de2afa",
+  "registryManifestEqualsSignedArchive": true,
+  "anonymousRegistryRead": true,
+  "originalBuildProvenanceVerifiedFrom": [
+    "registry Sigstore bundle",
+    "GitHub API"
+  ],
+  "signerPolicy": "Exact repository/workflow/source/ref/run; GitHub-hosted runner required",
+  "descriptorEqualsVerifiedProposal": true,
+  "contractEqualsBothRepositories": true,
+  "release": "https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0",
+  "downloadedReleaseAssetsMatchProviderDigests": true,
+  "splitArchivePartsMatchProviderDigests": true,
+  "archiveShaMatchesOriginalSignedBuild": true,
+  "freshNativeExecution": false,
+  "newPerformanceClaim": false,
+  "enrollmentHandoff": "Existing qsb-app PR #150",
+  "deployed": false
+}

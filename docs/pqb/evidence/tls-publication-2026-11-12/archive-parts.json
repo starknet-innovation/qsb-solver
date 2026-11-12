@@ -1,0 +1,15 @@
+{
+  "archiveSha256": "45758461af5beb61dfd94145cf7f1083e09c444c1748ee576196cf78f6dcdd21",
+  "parts": [
+    {
+      "file": "image.oci.tar.part-01",
+      "bytes": 1500000000,
+      "sha256": "ca7310a04778287ea82fbb0ce1f4df578dd1536d51eb75b908465a76c3fe8f07"
+    },
+    {
+      "file": "image.oci.tar.part-02",
+      "bytes": 715950336,
+      "sha256": "b30169129521091a7e2addfe8c42897208c8cb7333b1c209954ccf14cfc450ee"
+    }
+  ]
+}

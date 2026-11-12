@@ -1,26 +1,21 @@
-# Current TLS replacement review
+# Current TLS-fixed release
 
 See the [TLS replacement assessment](2026-11-12-tls-replacement.md) and its checksummed
-[decision package](evidence/tls-replacement-2026-11-12/decision.json). The candidate
+[decision package](evidence/tls-replacement-2026-11-12/decision.json). The [published release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0)
 from merged main retains native evidence only for the byte-identical compute stack;
-fresh TLS and S3 transport checks passed. No new GPU timing is claimed. Publication
-and registry verification are pending the dedicated hosted checks.
+fresh TLS/S3 checks and hosted qualification passed. Registry identity and original
+build provenance verify. No fresh native GPU execution or new timing is claimed.
+The descriptor handoff is in qsb-app PR #150; deployment remains separate.
 
-# PQB candidate assessment
+# Research and reference-image assessment
 
-Reviewed 12 November 2026. **Publication blocked:** the [Critical findings review](2026-11-12-critical-review.md) reproduced compromised-certificate acceptance in the qualified image's outbound S3 TLS client. A locally tested source fix needs a new qualified artifact.
-
- Disposition: **retain for review, HOLD**. No PQB release is published,
-enrolled or deployed. The component measurement, largest native units and 13 correctness cases
-passed their stated criteria. A [complete public synthetic transport solve](2026-11-11-public-transport-solve.md)
-then verified all three stages in 91 minutes 40 seconds at $20.73 estimated compute, including
-its builder. Exact artifact identities, limits and independently verified cleanup are retained
-in that report; the earlier receipts keep their original identities.
-The [final image assessment and qsb-app handoff](2026-11-12-final-image-qualification.md)
-qualify the parser-fixed image under its actual signed source/digest: all three largest native
-units, 13 small cases before each unit and the independent consumer replay passed. The
-checksummed HOLD descriptor and publication provenance are prepared; registry publication,
-enrollment and deployment remain separate. Earlier receipts retain their original identities.
+The earlier parser-fixed image `sha256:0fd37757…` remains blocked by its TLS
+trust-store behavior and is not published or enrolled. Its original native receipts
+keep their original source and image identities. The current release above fixes
+the transport in a separately signed artifact; applicability is established by
+complete filesystem comparison, not by relabeling those native receipts. The
+[complete public transport solve](2026-11-11-public-transport-solve.md) uses a third,
+older runtime and retains its independent cost and coverage limits.
 
 ## What this is
 

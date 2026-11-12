@@ -1,4 +1,4 @@
-# PQB candidate worker (HOLD)
+# PQB worker
 
 A separate worker for [PQB](https://github.com/fireblocks-labs/pqb) vaults. PQB is a different
 lock construction from QSB with different puzzles, so this is not a new version of the `ranked-v2`
@@ -43,8 +43,7 @@ parser-fixed artifact to verified signed build provenance, three fresh largest n
 13 correctness cases before each unit and the pinned consumer replay. Its HOLD descriptor and
 publication/adoption handoff retain those exact identities. The [Critical findings review](../../docs/pqb/2026-11-12-critical-review.md)
 blocks publication of that image on outbound TLS trust. The source now explicitly selects the
-updated system CA bundle, and offline image checks reject the compromised chains. This fix
-needs a new built/qualified artifact; no descriptor is enrolled.
+updated system CA bundle, and offline image checks reject the compromised chains. The [TLS-fixed replacement](../../docs/pqb/2026-11-12-tls-replacement.md) is now [published](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0). Its compute stack matches the retained native evidence byte for byte; fresh installed TLS and S3 transport checks passed. The digest and original signed build provenance verify from GHCR. No new GPU execution or performance measurement is claimed. The descriptor is handed off through existing qsb-app PR #150; enrollment does not select or deploy a solver. Local builds retain HOLD bindings and need their own assessment.
 
 ## Request and result
 

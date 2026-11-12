@@ -1,0 +1,26 @@
+{
+  "format": "qsb-pqb-tls-publication-v1",
+  "status": "verified",
+  "sourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+  "identity": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+    "platformDigest": "sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68",
+    "configDigest": "sha256:63282eedd68f71d991a51281f8ff0e448c0778957991ca524a54f5f035de2afa"
+  },
+  "originalBuildRun": 43205074943,
+  "buildSourceRef": "refs/heads/codex/pqb-qualify-tls-20261112",
+  "publicationCommit": "fe955d897f5ac1015fe6517de1b10e3a223f8bfb",
+  "publicationRun": "43220125543",
+  "qualification": "Retained native component evidence with complete byte/semantic applicability proof and fresh installed TLS/S3 transport tests",
+  "freshNativeExecution": false,
+  "newPerformanceClaim": false,
+  "originalNativeArchiveSha256": "70526ef7da4920820e888bbaae5baa72b543e6b827ad1ea111f48584deb189ce",
+  "releaseBlockers": [],
+  "registryDigestVerified": true,
+  "originalRegistryBuildProvenanceVerified": true,
+  "enrolled": false,
+  "deployed": false
+}

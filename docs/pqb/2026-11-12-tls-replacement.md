@@ -5,8 +5,8 @@ The assessed image was built from merged `main` commit
 Its OCI index is `sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e`.
 The [review package](evidence/tls-replacement-2026-11-12/decision.json) clears the
 supported-workload release blockers subject to the dedicated hosted publication checks.
-Publication remains pending verification of the resulting registry state. No image is
-called published until its actual registry digest and original build provenance verify.
+The [release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0) is published. Registry index, platform, config and
+original build provenance verify; see the [independent publication reconciliation](evidence/tls-publication-2026-11-12/reconciliation.json). The publication copied the signed archive without rebuilding.
 
 Nine fresh hardware requests were rejected before allocation: eight capacity
 rejections across A10G/L4 sizes and placements, and one Virginia quota-enforcement
@@ -64,3 +64,7 @@ charges were not queried. All launch roles, profiles, security groups, functions
 schedules and three staging buckets were independently reconciled absent; all
 reservations are released. Original timeout and failure receipts remain retained
 outside the public package, which excludes operator configuration and signed URLs.
+
+The build used mutable apt/pip package inputs; exact installed versions, binary
+hashes and compiler/runtime identities are retained. This release preserves the
+qualified archive, not a claim of bit-for-bit reproducibility from a later rebuild.
