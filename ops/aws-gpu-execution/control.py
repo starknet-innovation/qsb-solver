@@ -39,6 +39,28 @@ def save(path,state):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(state,indent=2)+'\n');tmp.replace(path)
 
 
+def cleanup_archive(directory):
+    """The cleanup function's ZIP, byte-for-byte the same on every call so it can be staged before arm."""
+    archive=Path(directory)/'cleanup.zip'
+    info=zipfile.ZipInfo('cleanup.py',date_time=(1980,1,1,0,0,0));info.external_attr=0o644<<16
+    with zipfile.ZipFile(archive,'w') as z: z.writestr(info,Path(__file__).with_name('cleanup.py').read_bytes())
+    return archive
+
+
+def function_code(archive,environ):
+    """The Code parameter exactly as it will be sent, so the persisted request is the request made.
+
+    The local CLI takes the ZIP inline. The MCP handoff corrupts inline ZIP bytes, so there the
+    archive must already be staged in S3 and the request names that object; CreateFunction's
+    CodeSha256 is then checked against the local archive either way."""
+    if not environ.get('QSB_AWS_MCP_RPC_DIR'):
+        return {'ZipFile':base64.b64encode(Path(archive).read_bytes()).decode()}
+    bucket,key=environ.get('QSB_CLEANUP_CODE_S3_BUCKET'),environ.get('QSB_CLEANUP_CODE_S3_KEY')
+    if not bucket or not key:
+        raise ValueError('MCP mode needs the staged cleanup archive: set QSB_CLEANUP_CODE_S3_BUCKET and QSB_CLEANUP_CODE_S3_KEY')
+    return {'S3Bucket':bucket,'S3Key':key}
+
+
 def policy(statements):
     return json.dumps({'Version':'2012-10-17','Statement':statements})
 
@@ -85,7 +107,9 @@ def main():
         aws('iam','create-role',RoleName=name+'-schedule',AssumeRolePolicyDocument=schedule_trust)
         aws('iam','put-role-policy',RoleName=name+'-schedule',PolicyName='benchmark-only',PolicyDocument=policy([
             {'Effect':'Allow','Action':'lambda:InvokeFunction','Resource':function_arn}]))
-        s.update(phase='prepared',functionArn=function_arn);save(path,s)
+        # The archive exists from here, with its hash, so an MCP operator can stage those exact bytes before arm.
+        archive=cleanup_archive(path.parent)
+        s.update(phase='prepared',functionArn=function_arn,cleanupCodeSha256=base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode());save(path,s)
     else:
         s=json.loads(path.read_text());name=s['name']
         if s.get('operatorConfig') != config:
@@ -97,13 +121,15 @@ def main():
         if args.mode=='arm':
             if s['phase']!='prepared': raise ValueError('Already armed or launched')
             # Start the fixed deadline before launch. Repeating arm is forbidden.
+            # Build the archive and settle how its code is delivered before the deadline starts: a
+            # missing staged object must not burn the one arm.
+            archive=cleanup_archive(path.parent)
+            code=function_code(archive,os.environ)
             deadline=datetime.now(timezone.utc)+timedelta(minutes=25)
             s.update(deadline=int(deadline.timestamp()),phase='arming');save(path,s)
-            archive=path.parent/'cleanup.zip'
-            with zipfile.ZipFile(archive,'w') as z: z.write(Path(__file__).with_name('cleanup.py'),'cleanup.py')
             actual=aws('lambda','create-function',FunctionName=name,Runtime='python3.12',
                 Role=f'arn:aws:iam::{ACCOUNT}:role/{name}-cleanup',Handler='cleanup.handler',Timeout=60,
-                Code={'ZipFile':base64.b64encode(archive.read_bytes()).decode()},
+                Code=code,
                 Environment={'Variables':{'RUN_TOKEN':s['token'],'DEADLINE':str(s['deadline'])}})
             if actual['CodeSha256']!=base64.b64encode(hashlib.sha256(archive.read_bytes()).digest()).decode(): raise ValueError('Lambda source mismatch')
             active_deadline=time.monotonic()+120

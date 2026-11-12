@@ -25,7 +25,7 @@ COMMIT = 'ef' * 20
 # Emulation cannot reach steady state in a two-second sample, so the dry run turns that requirement
 # off explicitly; test_a_run_without_steady_state_does_not_pass covers the default.
 FAST = {'QSB_MEASURE_SAMPLES': '1', 'QSB_MEASURE_SECONDS': '2', 'QSB_MEASURE_STRATA': '2',
-        'QSB_MEASURE_REQUIRE_STEADY': '0'}
+        'QSB_MEASURE_REQUIRE_STEADY': '0', 'QSB_MEASURE_ALLOW_EMULATION': '1'}
 
 
 def bundle_module():
@@ -214,6 +214,16 @@ class MeasureDryRunTest(unittest.TestCase):
             measure.run(fake, emu.problem('pin'), [])
         info = json.loads((measure.FAILURE_DIR / '00' / 'invocation.json').read_text())
         self.assertEqual(info['reason'], 'duplicate @range line')
+
+    def test_an_emulated_or_unnamed_device_does_not_pass_by_default(self):
+        bundle_module().prepare(self.artifact, self.bundle, commit=COMMIT)
+        result = Path(self.tmp.name) / 'result.json'
+        done = self.runner(result, correctness_only=True, QSB_MEASURE_ALLOW_EMULATION='0')
+        self.assertEqual(done.returncode, 1, done.stdout + done.stderr)
+        out = json.loads(result.read_text())
+        self.assertEqual((out['status'], out['correctnessPassed'], out['nativeDevice']), ('failed', True, False))
+        self.assertEqual(out['device']['device'], 'cpu-emulation')
+        self.assertIs(out['settings']['allowEmulation'], False)
 
     def test_expected_work_counts_are_computed_independently(self):
         spec = importlib.util.spec_from_file_location('run_measure_counts', MEASURE / 'run_measure.py')

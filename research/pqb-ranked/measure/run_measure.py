@@ -43,6 +43,9 @@ LAST = None                 # the most recent invocation: (binary, problem, args
 # A measurement needs a steady-state rate from every sample. Only the emulated dry run, which cannot
 # reach steady state in a short sample, turns this off; the result records the setting.
 REQUIRE_STEADY = os.environ.get('QSB_MEASURE_REQUIRE_STEADY', '1') != '0'
+# A result must name the device that produced it, and that device must be a GPU. Only the emulated
+# dry run accepts the CPU emulation build; the result records the setting.
+ALLOW_EMULATION = os.environ.get('QSB_MEASURE_ALLOW_EMULATION') == '1'
 MAX_KEPT_FAILURES = 20
 KEEP_BYTES = 400000
 
@@ -333,7 +336,7 @@ def main():
            'binaries': {n: sha256(bundle / n) for n in ('grind-ranked', 'grind-upstream')},
            'expectedSha256': sha256(bundle / 'expected.json'),
            'settings': {'samples': SAMPLES, 'seconds': SECONDS, 'strata': STRATA, 'skipBatches': SKIP_BATCHES,
-                        'requireSteady': REQUIRE_STEADY}}
+                        'requireSteady': REQUIRE_STEADY, 'allowEmulation': ALLOW_EMULATION}}
     for name, digest in expected['fixtures'].items():
         if sha256(bundle / 'fixtures' / name) != digest:
             sys.exit('fixture differs from expected.json: ' + name)
@@ -355,8 +358,13 @@ def main():
                           if len(v['samples']) != 2 * SAMPLES or any(not s.get('steady') for s in v['samples']))
         if out['timing'] is not None:
             out['stagesWithoutSteadyState'] = unsteady
-        accepted = out['correctnessPassed'] if args.correctness_only else (
-            out['correctnessPassed'] and timed and not (REQUIRE_STEADY and unsteady))
+        # the probe's single @setup record names the device; without it the result is unattributable
+        device = out['device'].get('device') if isinstance(out.get('device'), dict) else None
+        named = isinstance(device, str) and bool(device)
+        out['nativeDevice'] = named and device != 'cpu-emulation'
+        device_ok = named and (out['nativeDevice'] or ALLOW_EMULATION)
+        accepted = device_ok and (out['correctnessPassed'] if args.correctness_only else (
+            out['correctnessPassed'] and timed and not (REQUIRE_STEADY and unsteady)))
         out['status'] = 'passed' if accepted else 'failed'
     except Exception as e:                               # noqa: BLE001  a one-shot run must still report
         out.setdefault('correctnessPassed', False)

@@ -35,6 +35,25 @@ def function_exists(call,name):
         if not marker:return False
 
 
+NOT_FOUND=('NoSuchEntity','ResourceNotFoundException','RepositoryNotFoundException','NoSuchBucket','NotFound',
+           'does not exist','cannot be found','not found')
+def delete(call,service,operation,**params):
+    """A deletion that may already have happened: removal must be able to resume after a partial run."""
+    try:call(service,operation,**params)
+    except RuntimeError as error:
+        if not any(marker in str(error) for marker in NOT_FOUND):raise
+
+
+def job_definitions(call,name):
+    """Every ACTIVE revision of the campaign's job definition, whether or not the state recorded it."""
+    found,token=[],None
+    while True:
+        page=call('batch','describe-job-definitions',jobDefinitionName=name,status='ACTIVE',**({'nextToken':token} if token else {}))
+        found+=[d['jobDefinitionArn'] for d in page.get('jobDefinitions',[])]
+        token=page.get('nextToken')
+        if not token:return found
+
+
 def launch_template_ids(call,name,recorded=None):
     """The campaign's launch template as EC2 reports it by name, plus a recorded id it still knows."""
     found=[t['LaunchTemplateId'] for t in call('ec2','describe-launch-templates',Filters=[{'Name':'launch-template-name','Values':[name]}]).get('LaunchTemplates',[])]
@@ -183,24 +202,32 @@ def main():
             if call('batch','describe-job-queues',jobQueues=[queue])['jobQueues'] or call('batch','describe-compute-environments',computeEnvironments=[ce])['computeEnvironments']:raise ValueError('Batch resources remain')
             for volume in s.get('volumeIds',[]):
                 if call('ec2','describe-volumes',Filters=[{'Name':'volume-id','Values':[volume]}])['Volumes']:raise ValueError('Recorded volume remains')
-            if s.get('definition'):call('batch','deregister-job-definition',jobDefinition=s['definition'])
-            if call('scheduler','list-schedules',NamePrefix=name)['Schedules']:call('scheduler','delete-schedule',Name=name,GroupName='default')
-            if function_exists(call,name):call('lambda','delete-function',FunctionName=name)
+            # Each step tolerates a resource that is already gone, so a removal interrupted part-way can be
+            # rerun to the end. Job definitions are found by name: a registration whose response was lost
+            # is not in the state.
+            for definition in sorted(set(job_definitions(call,name)+([s['definition']] if s.get('definition') else []))):
+                delete(call,'batch','deregister-job-definition',jobDefinition=definition)
+            if call('scheduler','list-schedules',NamePrefix=name)['Schedules']:delete(call,'scheduler','delete-schedule',Name=name,GroupName='default')
+            if function_exists(call,name):delete(call,'lambda','delete-function',FunctionName=name)
             # A failed arm may have created the template without recording its id, or not created it:
             # look it up by its campaign name instead of trusting the state.
-            for template in launch_template_ids(call,name,s.get('launchTemplateId')):call('ec2','delete-launch-template',LaunchTemplateId=template)
-            call('iam','remove-role-from-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
-            call('iam','delete-instance-profile',InstanceProfileName=name)
-            call('iam','detach-role-policy',RoleName=name+'-host',PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role')
-            call('iam','delete-role',RoleName=name+'-host')
+            for template in launch_template_ids(call,name,s.get('launchTemplateId')):delete(call,'ec2','delete-launch-template',LaunchTemplateId=template)
+            delete(call,'iam','remove-role-from-instance-profile',InstanceProfileName=name,RoleName=name+'-host')
+            delete(call,'iam','delete-instance-profile',InstanceProfileName=name)
+            delete(call,'iam','detach-role-policy',RoleName=name+'-host',PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role')
+            delete(call,'iam','delete-role',RoleName=name+'-host')
             for suffix in ['task','execute','cleanup','schedule']:
-                call('iam','delete-role-policy',RoleName=name+'-'+suffix,PolicyName='validation-only');call('iam','delete-role',RoleName=name+'-'+suffix)
-            call('ec2','delete-security-group',GroupId=s['securityGroup'])
-            call('ecr','delete-repository',repositoryName=name,force=True)
+                delete(call,'iam','delete-role-policy',RoleName=name+'-'+suffix,PolicyName='validation-only');delete(call,'iam','delete-role',RoleName=name+'-'+suffix)
+            if s.get('securityGroup'):delete(call,'ec2','delete-security-group',GroupId=s['securityGroup'])
+            delete(call,'ecr','delete-repository',repositoryName=name,force=True)
             # Evidence objects and logs must already have been collected separately.
-            if call('s3','list-objects-v2',Bucket=name).get('Contents'):raise ValueError('Collect and remove staging/evidence objects first')
-            call('s3','delete-bucket',Bucket=name)
-            for group in ['/qsb-public-solve/'+name,'/aws/lambda/'+name]:call('logs','delete-log-group',logGroupName=group)
+            try:remaining=call('s3','list-objects-v2',Bucket=name).get('Contents')
+            except RuntimeError as error:
+                if 'NoSuchBucket' not in str(error):raise
+                remaining=None
+            if remaining:raise ValueError('Collect and remove staging/evidence objects first')
+            delete(call,'s3','delete-bucket',Bucket=name)
+            for group in ['/qsb-public-solve/'+name,'/aws/lambda/'+name]:delete(call,'logs','delete-log-group',logGroupName=group)
             s.update(phase='removed',removedAt=datetime.now(timezone.utc).isoformat());save(path,s)
     print(json.dumps(s,indent=2))
 

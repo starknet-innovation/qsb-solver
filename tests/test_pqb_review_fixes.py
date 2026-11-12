@@ -82,6 +82,89 @@ class LaunchTemplateLookupTest(unittest.TestCase):
         self.assertNotIn("LaunchTemplateId=s['launchTemplateId'])", text)
 
 
+class CleanupFunctionCodeTest(unittest.TestCase):
+    """The GPU controller's CreateFunction request is the request that is made, in either transport."""
+
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / 'ops/aws-gpu-execution'))
+        sys.path.insert(0, str(ROOT / 'ops/aws-gpu-benchmark'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'ops/aws-gpu-execution'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'ops/aws-gpu-benchmark'))
+        self.control = load('qsb_gpu_control_code', 'ops/aws-gpu-execution/control.py')
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+
+    def test_archive_is_the_same_bytes_every_time_and_holds_the_cleanup_source(self):
+        import zipfile
+        first = self.control.cleanup_archive(self.tmp.name).read_bytes()
+        os.utime(ROOT / 'ops/aws-gpu-execution/cleanup.py')                # a changed timestamp must not matter
+        second = self.control.cleanup_archive(self.tmp.name).read_bytes()
+        self.assertEqual(first, second)
+        with zipfile.ZipFile(Path(self.tmp.name) / 'cleanup.zip') as z:
+            self.assertEqual(z.namelist(), ['cleanup.py'])
+            self.assertEqual(z.read('cleanup.py'), (ROOT / 'ops/aws-gpu-execution/cleanup.py').read_bytes())
+
+    def test_cli_sends_the_zip_inline_and_mcp_names_the_staged_object(self):
+        import base64
+        archive = self.control.cleanup_archive(self.tmp.name)
+        self.assertEqual(self.control.function_code(archive, {}),
+                         {'ZipFile': base64.b64encode(archive.read_bytes()).decode()})
+        mcp = {'QSB_AWS_MCP_RPC_DIR': '/receipts', 'QSB_CLEANUP_CODE_S3_BUCKET': 'b', 'QSB_CLEANUP_CODE_S3_KEY': 'k/cleanup.zip'}
+        self.assertEqual(self.control.function_code(archive, mcp), {'S3Bucket': 'b', 'S3Key': 'k/cleanup.zip'})
+        for missing in ('QSB_CLEANUP_CODE_S3_BUCKET', 'QSB_CLEANUP_CODE_S3_KEY'):
+            with self.assertRaisesRegex(ValueError, 'staged cleanup archive'):
+                self.control.function_code(archive, {k: v for k, v in mcp.items() if k != missing})
+
+    def test_the_code_is_settled_before_the_deadline_starts(self):
+        text = (ROOT / 'ops/aws-gpu-execution/control.py').read_text()
+        arm = text.index("if args.mode=='arm':")
+        self.assertLess(text.index('code=function_code(archive,os.environ)', arm), text.index("phase='arming'", arm))
+        self.assertNotIn("Code={'ZipFile'", text[arm:])
+
+
+class ResumableRemovalTest(unittest.TestCase):
+    def setUp(self):
+        sys.path.insert(0, str(ROOT / 'ops/pqb-public-solve'))
+        self.addCleanup(sys.path.remove, str(ROOT / 'ops/pqb-public-solve'))
+        self.control = load('pqb_public_solve_control_rm', 'ops/pqb-public-solve/control.py')
+
+    def test_an_already_deleted_resource_does_not_stop_removal(self):
+        for message in ('An error occurred (NoSuchEntity) when calling the DeleteRole operation: The role cannot be found.',
+                        'RepositoryNotFoundException: The repository does not exist', 'NoSuchBucket',
+                        'InvalidGroup.NotFound: The security group does not exist',
+                        'ResourceNotFoundException: The specified log group does not exist.'):
+            def call(service, operation, **params):
+                raise RuntimeError(message)
+            self.control.delete(call, 'iam', 'delete-role', RoleName='x')      # tolerated
+
+    def test_any_other_failure_still_stops_it(self):
+        for message in ('DependencyViolation: resource has a dependent object', 'AccessDenied', 'Throttling: Rate exceeded'):
+            def call(service, operation, **params):
+                raise RuntimeError(message)
+            with self.assertRaises(RuntimeError):
+                self.control.delete(call, 'ec2', 'delete-security-group', GroupId='sg-1')
+
+    def test_unrecorded_job_definitions_are_found_by_name_across_pages(self):
+        seen = []
+
+        def call(service, operation, **params):
+            seen.append(params)
+            self.assertEqual((service, operation, params['jobDefinitionName'], params['status']),
+                             ('batch', 'describe-job-definitions', 'qsb-pqb-solve-0123abcd', 'ACTIVE'))
+            if 'nextToken' not in params:
+                return {'jobDefinitions': [{'jobDefinitionArn': 'arn:1'}], 'nextToken': 't'}
+            return {'jobDefinitions': [{'jobDefinitionArn': 'arn:2'}]}
+        self.assertEqual(self.control.job_definitions(call, 'qsb-pqb-solve-0123abcd'), ['arn:1', 'arn:2'])
+        self.assertEqual(len(seen), 2)
+
+    def test_remove_guards_every_deletion(self):
+        text = (ROOT / 'ops/pqb-public-solve/control.py').read_text()
+        remove = text[text.index("elif a.mode=='remove':"):text.index("phase='removed'")]
+        import re
+        unguarded = [m for m in re.findall(r"(?<!delete\()call\('[a-z0-9]+','(?:delete|deregister|remove|detach)[a-z-]+'", remove)]
+        self.assertEqual(unguarded, [])
+
+
 class DurableRequestTest(unittest.TestCase):
     def test_request_is_flushed_before_it_is_published(self):
         rpc = load('qsb_mcp_rpc_durable', 'ops/aws-gpu-execution/mcp_rpc.py')
@@ -147,9 +230,7 @@ class PublisherFailureTest(unittest.TestCase):
 
     def test_the_success_receipt_replaces_the_marker_atomically(self):
         text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()
-        write = text.index("final_receipt = output.with_suffix('.published.tmp')")
-        self.assertLess(write, text.index('os.fsync(stream.fileno())', write))
-        self.assertLess(text.index('os.fsync(stream.fileno())', write), text.index('final_receipt.replace(output)'))
+        self.assertIn("replace_durably(output, receipt, '.published.tmp')", text)
         # nothing writes the success receipt over the marker in place
         self.assertEqual(text.count('output.write_text('), 1)                  # only the started marker
 
@@ -160,6 +241,14 @@ class PublisherFailureTest(unittest.TestCase):
         self.assertTrue(lines[marker + 1].startswith('trap collect EXIT'))
         self.assertLess(text.index('collect() {'), text.index('mkdir "$results"'))
         self.assertLess(text.index('status=1'), text.index('mkdir "$results"'))
+
+    def test_the_failure_receipt_is_flushed_like_the_success_receipt(self):
+        text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()
+        body = text[text.index('def publish'):]
+        self.assertEqual(body.count('replace_durably(output, '), 2)            # success and failure
+        helper = text[text.index('def replace_durably'):text.index('def publish')]
+        self.assertLess(helper.index('os.fsync(stream.fileno())'), helper.index('temporary.replace(output)'))
+        self.assertLess(helper.index('temporary.replace(output)'), helper.index('os.fsync(directory_fd)'))
 
     def test_a_failure_after_the_push_started_is_marked_uncertain(self):
         self.sums()
