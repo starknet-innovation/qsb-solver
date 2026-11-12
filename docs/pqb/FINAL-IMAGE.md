@@ -35,8 +35,10 @@ image.
 ## Native public plan and collection
 
 Use three sequential fresh 25-minute A10G sessions, one for each largest `pqb-ranked-v2` unit.
-Each session imports the same verified OCI archive; Docker's imported config digest must equal
-the attested image's config digest before compute. The mounted public gate contains no worker
+Each session imports the same verified OCI archive; the actual rootfs diff IDs and every
+runtime config field must equal the attested image's configuration before compute. Docker's
+containerd store can report an index/manifest in `.Id`, so that field is retained separately
+and never mislabeled as a config digest. The mounted public gate contains no worker
 copy. `qualify_image.py` imports and validates the installed image's actual bound handler,
 partition and binary, and checks the committed contract vectors.
 
