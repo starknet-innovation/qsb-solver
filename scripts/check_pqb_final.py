@@ -126,7 +126,7 @@ for(const row of rows){
  const {output,range}=checkedOutput(raw,solver,job,raw.attempt);
  assert.equal(output.status,'completed');
  assert.throws(()=>checkedOutput({...raw,kernelCommit:'0'.repeat(40)},solver,job,raw.attempt));
- assert.throws(()=>checkedOutput({...raw,protocol:'qsb-v1'},solver,job,raw.attempt));
+ assert.throws(()=>checkedOutput({...raw,searchVersion:'ranked-v2'},solver,job,raw.attempt));
  assert.throws(()=>checkedOutput({...raw,workRange:{...raw.workRange,start:'1'}},solver,job,raw.attempt));
  const packet=parsePacket(row.packet),prob=problemFromPacket(packet,24);
  assert.equal(problemTxt(prob),row.problem);
