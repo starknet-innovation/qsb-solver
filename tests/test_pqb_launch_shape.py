@@ -38,5 +38,21 @@ class LaunchShapeTests(unittest.TestCase):
             with self.subTest(field=field),self.assertRaises(ValueError):
                 control.qualified_shape(Mock(return_value=dict(InstanceTypes=[shape])),'g5.4xlarge',64)
         call=Mock()
-        with self.assertRaises(ValueError):control.qualified_shape(call,'g5.12xlarge',64)
+        with self.assertRaises(ValueError):control.qualified_shape(call,'g5.48xlarge',192)
         call.assert_not_called()
+
+    def test_explicit_four_a10g_host_requires_its_full_quota_and_isolates_one_gpu(self):
+        shape=self.shape();shape.update(InstanceType='g5.12xlarge',
+            GpuInfo=dict(Gpus=[dict(Name='A10G',Count=4)]),VCpuInfo=dict(DefaultVCpus=48))
+        call=Mock(return_value=dict(InstanceTypes=[shape]))
+        self.assertEqual(control.qualified_shape(call,'g5.12xlarge',48),shape)
+        with self.assertRaisesRegex(ValueError,'Quota'):control.qualified_shape(call,'g5.12xlarge',47)
+        for count in (1,8):
+            wrong={**shape,'GpuInfo':dict(Gpus=[dict(Name='A10G',Count=count)])}
+            with self.subTest(count=count),self.assertRaises(ValueError):
+                control.qualified_shape(Mock(return_value=dict(InstanceTypes=[wrong])),'g5.12xlarge',64)
+        host=(ROOT/'ops/aws-gpu-execution/host-pqb-final-image.sh').read_text()
+        self.assertIn('--gpus device=0',host)
+        self.assertNotIn('--gpus all',host)
+        self.assertIn('gpu-inventory.txt',host)
+        self.assertIn('nvidia-smi --id=0',host)

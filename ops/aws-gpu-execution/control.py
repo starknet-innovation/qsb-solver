@@ -21,15 +21,17 @@ from source_identity import pushed_commit
 from cleanup_lookup import function_exists
 _ACTIVE_CONFIG = None
 SINGLE_A10G = ('g5.xlarge', 'g5.2xlarge', 'g5.4xlarge', 'g5.8xlarge', 'g5.16xlarge')
+A10G_QUALIFICATION_TYPES = (*SINGLE_A10G, 'g5.12xlarge')
 
 
 def qualified_shape(call, instance_type, quota):
-    if instance_type not in SINGLE_A10G:
-        raise ValueError('Only reviewed single-A10G sizes are supported')
+    if instance_type not in A10G_QUALIFICATION_TYPES:
+        raise ValueError('Only reviewed A10G qualification sizes are supported')
     shape = call('ec2', 'describe-instance-types', InstanceTypes=[instance_type])['InstanceTypes'][0]
     gpus = shape.get('GpuInfo', {}).get('Gpus', [])
+    allocated_gpus = 4 if instance_type == 'g5.12xlarge' else 1
     if (shape['InstanceType'] != instance_type or len(gpus) != 1 or gpus[0].get('Name') != 'A10G'
-            or gpus[0].get('Count') != 1 or 'x86_64' not in shape['ProcessorInfo']['SupportedArchitectures']):
+            or gpus[0].get('Count') != allocated_gpus or 'x86_64' not in shape['ProcessorInfo']['SupportedArchitectures']):
         raise ValueError('Unexpected native GPU/architecture')
     if quota < shape['VCpuInfo']['DefaultVCpus']:
         raise ValueError('Quota not effective for selected size')
@@ -118,7 +120,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['prepare','arm','launch','cleanup'])
     parser.add_argument('--state',type=Path,required=True)
-    parser.add_argument('--instance-type',choices=SINGLE_A10G)
+    parser.add_argument('--instance-type',choices=A10G_QUALIFICATION_TYPES)
     parser.add_argument('--session-minutes',type=int,choices=(25,60))
     parser.add_argument('--auto-default-subnet',action='store_true')
     args=parser.parse_args();path=args.state

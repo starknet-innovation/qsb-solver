@@ -4,6 +4,10 @@ The separately authorized [final PQB image assessment](../../docs/pqb/FINAL-IMAG
 explicit prepare-time single-A10G sizes and a 60-minute consolidated qualification session.
 Default duration remains 25 minutes; neither option resumes an old campaign or extends an
 armed deadline. Its exact image/harness/controller identities and cleanup are separate.
+An explicit `g5.12xlarge` capacity fallback allocates four A10Gs and requires all 48
+vCPUs of quota. Final-image qualification exposes only physical GPU 0 to the container
+and retains both the complete host GPU inventory and the selected GPU identity. Reserve
+and account for the entire host, including the three unexercised GPUs.
 
 This documents the controller shipped on `main`, with its original Ireland scope
 and 25-minute deadline. Later research-branch controllers and campaign permissions

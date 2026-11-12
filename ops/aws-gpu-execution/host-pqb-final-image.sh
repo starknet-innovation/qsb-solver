@@ -57,8 +57,10 @@ docker version > "$results/docker-version.txt"
 python3 "$bundle/pqb_import.py" "$bundle" "$results"
 [ "$((deadline-$(date -u +%s)))" -ge 1100 ]
 if [ "$stage" = all ]; then [ "$((deadline-$(date -u +%s)))" -ge 3200 ]; fi
-nvidia-smi --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader > "$results/gpu.txt"
-timeout --signal=TERM --kill-after=10s "$outer_seconds" docker run --name qsb-pqb-final --rm --gpus all \
+nvidia-smi --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader > "$results/gpu-inventory.txt"
+nvidia-smi --id=0 --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader > "$results/gpu.txt"
+# A larger host may allocate four A10Gs for capacity. Only physical device 0 is exposed.
+timeout --signal=TERM --kill-after=10s "$outer_seconds" docker run --name qsb-pqb-final --rm --gpus device=0 \
   --network none --read-only --cap-drop ALL --security-opt no-new-privileges \
   --tmpfs /tmp:rw,nosuid,nodev,size=256m \
   --mount "type=bind,src=$bundle/gate,dst=/gate,readonly" \

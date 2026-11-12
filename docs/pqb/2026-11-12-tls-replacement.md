@@ -48,3 +48,11 @@ Only the verified published descriptor may be copied verbatim into PR #150; pres
 all earlier descriptors and existing deployment/default selection.
 
 Build, qualification, publication and handoff results are pending in this initial plan.
+
+After the regional and explicit-zone single-GPU rejections, an explicit `g5.12xlarge`
+capacity fallback is permitted for this campaign: one active instance, four allocated
+A10Gs, only physical GPU 0 exposed to the qualification container, and all host GPUs
+retained in the inventory. The freshly verified Ireland rate is $6.33167/hour. The
+session reserves $8 within the campaign's $10 reservation; all earlier zero-instance
+reservations are released. The fixed 60-minute deadline and 840-second unit bounds
+remain unchanged. Costs include the complete host; no matched hardware speedup is claimed.
