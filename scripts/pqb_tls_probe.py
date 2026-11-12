@@ -17,6 +17,7 @@ from unittest.mock import patch
 
 
 def main():
+    sys.path.insert(0,'/opt/qsb-pqb')
     import aws_entrypoint
     from botocore.httpsession import create_urllib3_context
     fixtures=Path(sys.argv[1])
