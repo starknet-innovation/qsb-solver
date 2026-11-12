@@ -36,6 +36,16 @@ class CleanupTests(unittest.TestCase):
         self.assertFalse(any(o=='update-job-queue' for _,o,_ in calls))
         self.assertFalse(any(o=='delete-compute-environment' for _,o,_ in calls))
 
+    def test_invalid_disabled_queue_is_deleted_not_waited_on(self):
+        result,calls=self.run_step(queues=[{'state':'DISABLED','status':'INVALID'}],environments=[{'state':'DISABLED','status':'INVALID'}])
+        self.assertEqual(result['queueDeletionPending'],True)
+        self.assertTrue(any(o=='delete-job-queue' for _,o,_ in calls))
+
+    def test_transitional_queue_is_waited_on(self):
+        result,calls=self.run_step(queues=[{'state':'DISABLED','status':'UPDATING'}])
+        self.assertEqual(result['queueStatus'],'UPDATING')
+        self.assertFalse(any(o.startswith('delete') for _,o,_ in calls))
+
     def test_deleting_queue_does_not_delete_environment_early(self):
         result,calls=self.run_step(queues=[{'state':'DISABLED','status':'DELETING'}],environments=[{'state':'DISABLED','status':'VALID'}])
         self.assertFalse(result['done']);self.assertFalse(any(o=='delete-compute-environment' for _,o,_ in calls))

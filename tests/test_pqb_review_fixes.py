@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import types
+import subprocess
 import unittest
 from unittest import mock
 
@@ -312,7 +313,23 @@ class PublisherFailureTest(unittest.TestCase):
         marker = next(i for i, ln in enumerate(lines) if ln.startswith('mkdir "$results"'))
         self.assertTrue(lines[marker + 1].startswith('trap collect EXIT'))
         self.assertLess(text.index('collect() {'), text.index('mkdir "$results"'))
-        self.assertLess(text.index('status=1'), text.index('mkdir "$results"'))
+        # the receipt records the failing command's own status (e.g. 124 for a pull timeout), read on
+        # entry to the handler before Docker cleanup can replace it
+        body = lines[lines.index('collect() {') + 1]
+        self.assertTrue(body.strip().startswith('status=$?'))
+        self.assertNotIn('status=1', text)
+
+    def test_exit_trap_idiom_keeps_the_failing_status(self):
+        script = 'set -euo pipefail\ncollect() {\n  status=$?\n  true || true\n  echo "$status"\n}\n' \
+                 'trap collect EXIT\n(exit 124)\n'
+        done = subprocess.run(['bash', '-c', script], capture_output=True, text=True)
+        self.assertEqual((done.returncode, done.stdout), (124, '124\n'))
+
+    def test_export_keeps_only_the_selected_chain(self):
+        text = (ROOT / 'ops/pqb-public-solve/export-reference.ts').read_text()
+        self.assertNotIn('state.solutions.map(', text)
+        self.assertIn('findLast(', text)
+        self.assertIn('s.checked.candidate === chosen[keys[stage]]', text)
 
     def test_the_failure_receipt_is_flushed_like_the_success_receipt(self):
         text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()

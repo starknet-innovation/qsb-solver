@@ -16,8 +16,8 @@ cd "$bundle"
 [ "$(sha256sum SHA256SUMS | cut -d' ' -f1)" = "$bundle_sha" ]
 sha256sum -c SHA256SUMS
 [ -x "$bundle/worker/grind" ]
-status=1
 collect() {
+  status=$?                                 # the failing command's own status, before any cleanup
   # Killing a Docker client does not reliably stop its container.
   docker rm --force qsb-pqb-full-unit >/dev/null 2>&1 || true
   printf '%s\n' "$status" > "$results/exit-code.txt"

@@ -39,7 +39,9 @@ def stop(call, queue, environment, token):
         return receipt({'done': False, 'disabling': True})
     if queues:
         queue_state = queues[0]
-        if queue_state['status'] != 'VALID':
+        # INVALID is terminal: waiting on it would block every later step, so a disabled
+        # INVALID queue is deleted like a VALID one. Only transitional states are waited on.
+        if queue_state['status'] not in ('VALID', 'INVALID'):
             return receipt({'done': False, 'queueStatus': queue_state['status']})
         # AWS ignores an empty association update. DeleteJobQueue explicitly permits
         # associated environments after submissions are disabled; delete the CE later.
