@@ -33,8 +33,9 @@ def main():
         with patch.object(worker.subprocess,'Popen',simulated):response=worker.handler(request)
         if len(calls)!=1 or calls[0][0]!='/opt/qsb-pqb/grind':raise ValueError('Unexpected installed invocation')
         expected=copy.deepcopy(old);expected['kernelCommit']=expected_source
-        for value in (expected,response):value.pop('elapsedSeconds',None)
-        if response!=expected:raise ValueError('Installed wrapper changed response semantics')
+        compared=copy.deepcopy(response)
+        for value in (expected,compared):value.pop('elapsedSeconds',None)
+        if compared!=expected:raise ValueError('Installed wrapper changed response semantics')
         fixture='pin' if stage=='pinning' else stage
         rows.append(dict(stage=stage,response=response,problem=files[prefix+'work/P.txt'],
             packet=Path('/public-fixtures',fixture+'.packet.json').read_text(),command=calls[0]))
