@@ -1,0 +1,179 @@
+{
+  "format": "qsb-installed-s3-tls-v1",
+  "status": "passed",
+  "scope": "Check the installed S3 client's trust with public TLS handshakes only.\n\nRun inside the assessed image with public certificate fixtures mounted read-only.\nNo credentials, HTTP requests or AWS API calls. Independent unverified handshakes\nobserve public leaf bytes only; the installed-client trust check always verifies.\n",
+  "sourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "binding": {
+    "cudaArchitecture": "86",
+    "files": {
+      "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+      "pqb_handler.py": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f",
+      "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+    },
+    "format": "qsb-pqb-candidate-v1",
+    "solverCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+    "status": "HOLD"
+  },
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "entrypointSha256": "05407fe9a6c20bfd7aa31c590cf61e40f0ea63cbbf78aa9e1f6ff738f5552f29",
+  "caPath": "/etc/ssl/certs/ca-certificates.crt",
+  "caSha256": "e05a523d99de77c6b1f2c7b7c3af502c8378f29e6e8484358ec55f96b0972ad6",
+  "results": [
+    {
+      "host": "www.python.org",
+      "expectedLeafSha256": null,
+      "status": "accepted",
+      "leafSha256": "a162964cfe4209e308f700e88028757eb83d227b2bb35f67f186a6e70e1e201a",
+      "protocol": "TLSv1.3",
+      "seconds": 0.10203100000001086
+    },
+    {
+      "host": "s3.eu-west-1.amazonaws.com",
+      "expectedLeafSha256": null,
+      "status": "accepted",
+      "leafSha256": "58edf2799df33b08d7f79770e0368829aa5ad0447138805a55091aac24a71809",
+      "protocol": "TLSv1.3",
+      "seconds": 0.11285375099998873
+    },
+    {
+      "host": "dv-g3b-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "7e02622ab6d745c1edb4b431bb1c551e667305c3dd3eb0c7cc6dfdb523807424",
+      "observedLeafBeforeSha256": "7e02622ab6d745c1edb4b431bb1c551e667305c3dd3eb0c7cc6dfdb523807424",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "7e02622ab6d745c1edb4b431bb1c551e667305c3dd3eb0c7cc6dfdb523807424",
+      "seconds": 0.5213000840000177
+    },
+    {
+      "host": "dv-g3b-aaa-noct-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "5510ecf5764dee8dfe9468ae2d7323da21fcd5530889906540a2f8725c6f74db",
+      "observedLeafBeforeSha256": "5510ecf5764dee8dfe9468ae2d7323da21fcd5530889906540a2f8725c6f74db",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "5510ecf5764dee8dfe9468ae2d7323da21fcd5530889906540a2f8725c6f74db",
+      "seconds": 0.5231038759999933
+    },
+    {
+      "host": "dv-g3b-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "9dcb21b1841d75313b3c888f4bb9cc01f8f51379a76fbaa241ca492b668839e7",
+      "observedLeafBeforeSha256": "9dcb21b1841d75313b3c888f4bb9cc01f8f51379a76fbaa241ca492b668839e7",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "9dcb21b1841d75313b3c888f4bb9cc01f8f51379a76fbaa241ca492b668839e7",
+      "seconds": 0.48346633399995653
+    },
+    {
+      "host": "dv-g3b-noct-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "0cbfe22b824385823fd3bf4be4d131e8901342933a7feef1cf8b3110b8e44a70",
+      "observedLeafBeforeSha256": "0cbfe22b824385823fd3bf4be4d131e8901342933a7feef1cf8b3110b8e44a70",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "0cbfe22b824385823fd3bf4be4d131e8901342933a7feef1cf8b3110b8e44a70",
+      "seconds": 0.47741220899996506
+    },
+    {
+      "host": "dv-g3c-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "9200d153c3cac272cc06bf68f9ea163fc24659fc3331e77668236fe00645ae52",
+      "observedLeafBeforeSha256": "9200d153c3cac272cc06bf68f9ea163fc24659fc3331e77668236fe00645ae52",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "9200d153c3cac272cc06bf68f9ea163fc24659fc3331e77668236fe00645ae52",
+      "seconds": 0.47199766699998236
+    },
+    {
+      "host": "dv-g3c-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "346cdd962e97189b59aee5526d1ae8fa714bb1a64094dfa67bef768ee93f36b5",
+      "observedLeafBeforeSha256": "346cdd962e97189b59aee5526d1ae8fa714bb1a64094dfa67bef768ee93f36b5",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "346cdd962e97189b59aee5526d1ae8fa714bb1a64094dfa67bef768ee93f36b5",
+      "seconds": 0.4678471670000022
+    },
+    {
+      "host": "ev-g3b-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "bc88231a840e54cced148da48806169e8d0b1c0a96267a427aeccda9d10e6145",
+      "observedLeafBeforeSha256": "bc88231a840e54cced148da48806169e8d0b1c0a96267a427aeccda9d10e6145",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "bc88231a840e54cced148da48806169e8d0b1c0a96267a427aeccda9d10e6145",
+      "seconds": 0.8901572919999694
+    },
+    {
+      "host": "ev-g3b-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "66374ae64962c437bd815a2aae546c76e30c2eafac8335192c8e517c15a246ed",
+      "observedLeafBeforeSha256": "66374ae64962c437bd815a2aae546c76e30c2eafac8335192c8e517c15a246ed",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "66374ae64962c437bd815a2aae546c76e30c2eafac8335192c8e517c15a246ed",
+      "seconds": 0.48392491699996754
+    },
+    {
+      "host": "ev-g3c-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "bcd6ab59ea95fd520bfe7709679b1f682abbd79c77367e84e25415b91de37753",
+      "observedLeafBeforeSha256": "bcd6ab59ea95fd520bfe7709679b1f682abbd79c77367e84e25415b91de37753",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "bcd6ab59ea95fd520bfe7709679b1f682abbd79c77367e84e25415b91de37753",
+      "seconds": 0.47030429199998025
+    },
+    {
+      "host": "ev-g3c-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "ccd80467f9cac38f115dcb6e4f57e4d74f5efa519814ea934aeb3be53b83a191",
+      "observedLeafBeforeSha256": "ccd80467f9cac38f115dcb6e4f57e4d74f5efa519814ea934aeb3be53b83a191",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "ccd80467f9cac38f115dcb6e4f57e4d74f5efa519814ea934aeb3be53b83a191",
+      "seconds": 0.9183284590000085
+    },
+    {
+      "host": "ov-g3b-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "21f57f83631a93c98e867050075746b3361e0433c9e0e969462852476784f6f0",
+      "observedLeafBeforeSha256": "21f57f83631a93c98e867050075746b3361e0433c9e0e969462852476784f6f0",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "21f57f83631a93c98e867050075746b3361e0433c9e0e969462852476784f6f0",
+      "seconds": 0.49003958299999795
+    },
+    {
+      "host": "ov-g3b-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "f3c3c15bc7edf2b3ebdc922af112f2a0c414eb509901099ef0488c0942e77efe",
+      "observedLeafBeforeSha256": "f3c3c15bc7edf2b3ebdc922af112f2a0c414eb509901099ef0488c0942e77efe",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "f3c3c15bc7edf2b3ebdc922af112f2a0c414eb509901099ef0488c0942e77efe",
+      "seconds": 0.8978427920000058
+    },
+    {
+      "host": "ov-g3c-aaa-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "59cf0386b56bc2414a0c06241ea9e25e01a9c93bac7a596648747f9d0ded4906",
+      "observedLeafBeforeSha256": "59cf0386b56bc2414a0c06241ea9e25e01a9c93bac7a596648747f9d0ded4906",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "59cf0386b56bc2414a0c06241ea9e25e01a9c93bac7a596648747f9d0ded4906",
+      "seconds": 0.895110375999991
+    },
+    {
+      "host": "ov-g3c-emudhra.we-have-a-problem.com",
+      "expectedLeafSha256": "4314941cf242a4ea4149aa7e9cdf77a15de2771a79984b809fc04443fea013c8",
+      "observedLeafBeforeSha256": "4314941cf242a4ea4149aa7e9cdf77a15de2771a79984b809fc04443fea013c8",
+      "status": "certificate-rejected",
+      "verifyCode": 20,
+      "verifyMessage": "unable to get local issuer certificate",
+      "observedLeafAfterSha256": "4314941cf242a4ea4149aa7e9cdf77a15de2771a79984b809fc04443fea013c8",
+      "seconds": 0.4773015410000312
+    }
+  ]
+}

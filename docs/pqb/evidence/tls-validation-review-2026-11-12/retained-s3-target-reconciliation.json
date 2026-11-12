@@ -1,0 +1,42 @@
+{
+  "format": "qsb-pqb-retained-s3-target-reconciliation-v1",
+  "status": "passed",
+  "target": {
+    "bucket": "qsb-pqb-tls-550984cfdaa8-uk",
+    "region": "eu-west-2",
+    "key": "tls-transport-proof/401e3a8622b745efa5056e6f2cbe2962.json",
+    "host": "qsb-pqb-tls-550984cfdaa8-uk.s3.eu-west-2.amazonaws.com",
+    "validated": true
+  },
+  "originalReceiptSha256": "49901308c4c135401f1223efc3d8854b4950ef6462a78d902c1cb9c6addbc67a",
+  "originalPrivateSpecSha256": "6a5c561cc9e8a1a2e0ed000e501c9495d5c898a2be2c595f65f05b2f7898f8f0",
+  "originalReceiptUnchanged": true,
+  "originalObjectHead": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "object": {
+        "AcceptRanges": "bytes",
+        "LastModified": "2026-11-12T12:26:05+00:00",
+        "ContentLength": 177,
+        "ETag": "\"1abffcb97992cf12bdcc274224c82466\"",
+        "ContentType": "application/json",
+        "ServerSideEncryption": "AES256",
+        "Metadata": {}
+      }
+    },
+    "api_calls": [
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      }
+    ]
+  },
+  "probeHarnessCommit": "19e4431005a96893b8e3b668521cfca43f276870",
+  "probeHarnessSha256": "a5a5c33fd9124a3c69cd58cd81bf61cfd64d1d845f29cbe8217aeb4353cd43ed",
+  "scope": "Both original signed request URLs are bound offline to their actual regional S3 bucket/key and signing scope. The original real PUT/GET/412 receipt and independently collected AWS HeadObject are preserved.",
+  "freshS3Requests": false,
+  "freshNativeExecution": false,
+  "temporaryResourcesAlreadyDeleted": true
+}

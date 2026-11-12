@@ -68,3 +68,11 @@ outside the public package, which excludes operator configuration and signed URL
 The build used mutable apt/pip package inputs; exact installed versions, binary
 hashes and compiler/runtime identities are retained. This release preserves the
 qualified archive, not a claim of bit-for-bit reproducibility from a later rebuild.
+
+The [tooling review supplement](evidence/tls-validation-review-2026-11-12/README.md)
+binds all 14 live rejections to the pinned leaf certificates observed before and
+after each strict trust check, reconciles the original S3 URL targets, and records
+an anonymous full-layer registry readback. All checks passed. Existing image and
+release assets remain unchanged. Push runs now verify that existing publication
+read-only; future first-publication mode stages its upload until byte/provenance
+checks and release creation succeed. It refuses to overwrite an existing release.

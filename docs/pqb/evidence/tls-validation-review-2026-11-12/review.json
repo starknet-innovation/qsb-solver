@@ -1,0 +1,30 @@
+{
+  "format": "qsb-pqb-tooling-review-followup-v1",
+  "status": "passed",
+  "image": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+  "imageChanged": false,
+  "releasedAssetsChanged": false,
+  "freshNativeExecution": false,
+  "liveLeafChecks": {
+    "badHosts": 14,
+    "validControls": 2,
+    "observationsPerBadHost": 2,
+    "matched": true
+  },
+  "originalS3TargetReconciled": true,
+  "anonymousFullRegistryLayerReadback": "passed",
+  "firstLayerReceiptWrapper": "Failed to preserve exit status because a shell reserved variable was assigned; original output retained privately and complete bounded readback rerun successfully with Python",
+  "historyIndependentTests": "Six relevant tests pass in a copied source directory with no .git; the final added release guard is covered separately",
+  "publicationGuard": "Push runs verify the existing release read-only; explicit first-publication path refuses an existing release, stages registry upload and waits for byte/provenance checks and release creation before adding final convenience tag",
+  "newPublicationPathReexecuted": false,
+  "limits": [
+    "Tooling-only follow-up; no image rebuild, release overwrite or new GPU run",
+    "Original published assets and prior receipts remain immutable",
+    "Live leaf observations are credential-free unverified handshakes used only for public-byte identity; actual client trust checks always verify"
+  ],
+  "sourceTests": {
+    "total": 245,
+    "passed": 244,
+    "skipped": 1
+  }
+}
