@@ -1,5 +1,10 @@
 # One-shot optimized A10G gate
 
+The separately authorized [final PQB image assessment](../../docs/pqb/FINAL-IMAGE.md) adds
+explicit prepare-time single-A10G sizes and a 60-minute consolidated qualification session.
+Default duration remains 25 minutes; neither option resumes an old campaign or extends an
+armed deadline. Its exact image/harness/controller identities and cleanup are separate.
+
 This documents the controller shipped on `main`, with its original Ireland scope
 and 25-minute deadline. Later research-branch controllers and campaign permissions
 do not change this implementation. The recorded gate is historical; do not restart

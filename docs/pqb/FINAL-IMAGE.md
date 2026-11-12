@@ -34,7 +34,11 @@ image.
 
 ## Native public plan and collection
 
-Use three sequential fresh 25-minute A10G sessions, one for each largest `pqb-ranked-v2` unit.
+Use one fresh **60-minute** single-A10G session for all three largest `pqb-ranked-v2` units.
+Capacity rejections and the retained host import failure motivated consolidation before any
+new session was armed; no earlier deadline is extended. `--session-minutes 60` is frozen at
+prepare. The controller's existing 25-minute single-unit mode remains available for separately
+authorized future assessments. Record the new source and bundle identities before launch.
 If xlarge capacity is unavailable, a fresh session may use the controller's explicit
 `--instance-type` at prepare: single-A10G G5 sizes through `g5.16xlarge`. The controller checks
 the provider's actual GPU/CPU description and effective quota before submission. Verify fresh
@@ -57,8 +61,11 @@ preflight allowance. Test gates/flags are explicit in the committed expected cas
 The full unit uses the unmodified installed handler, production 24-bit gate, exact attempt 0,
 840-second worker timeout, unique candidates, independent hit derivation, batch/range counts,
 gate-count sanity and native A10G identity. Each largest-unit invocation must finish within
-the worker bound including CPU checking; the container has a 1,000-second outer bound.
-The host refuses compute with less than 1,100 seconds left. No timeout or unit-size override.
+the worker bound including CPU checking. Single-unit mode has a 1,000-second container bound.
+The host refuses the three-unit container with less than 3,200 seconds left; its outer bound is
+3,100 seconds. Each unit still has the unmodified 840-second worker limit, and the runner
+requires at least 1,100 seconds before starting each next unit. Any failed unit or lost margin
+stops subsequent work without credit. No worker timeout or unit-size override.
 
 Retain every small invocation's original problem, arguments, native stdout/stderr/hits;
 full-unit request/result/problem/native log/hits; exact installed binding/build receipt;
@@ -71,7 +78,7 @@ in the external campaign ledger. Do not replay a compute command or uncertain su
 Run local unit/negative checks before allocation. Use the committed/pushed execution controller,
 dedicated SSM-only IAM/SG, prearmed independent Scheduler/Lambda cleanup and guest shutdown
 sharing the fixed deadline. No other test GPUs may be active before each sequential session.
-The new operational reservation is **$10 total**, including up to $3 per native session and
+The new operational reservation is **$10 total**, including up to $3 for the consolidated session and
 staging overhead; persist it before paid submission. This is a reservation, not provider billing.
 Check fresh pricing/quota/account/AMI/subnet and prior cleanup. Known capacity failures may
 only be followed after reconciliation and complete cleanup with a fresh session identity;

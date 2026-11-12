@@ -94,9 +94,10 @@ def main():
     parser.add_argument('mode',choices=['prepare','arm','launch','cleanup'])
     parser.add_argument('--state',type=Path,required=True)
     parser.add_argument('--instance-type',choices=SINGLE_A10G)
+    parser.add_argument('--session-minutes',type=int,choices=(25,60))
     args=parser.parse_args();path=args.state
-    if args.instance_type is not None and args.mode != 'prepare':
-        parser.error('--instance-type is recorded at prepare only')
+    if (args.instance_type is not None or args.session_minutes is not None) and args.mode != 'prepare':
+        parser.error('Session size and duration are recorded at prepare only')
     config=load_config()
     _ACTIVE_CONFIG=dict(config)
     ACCOUNT,REGION,AMI,SUBNET,VPC=(config[k] for k in ('account','region','ami','subnet','vpc'))
@@ -109,7 +110,7 @@ def main():
         if path.exists(): raise ValueError('Existing experiment: reconcile state')
         token=str(uuid.uuid4());name='qsb-bench-'+token[:8]
         s={'token':token,'name':name,'controllerCommit':commit,'phase':'preparing','operatorConfig':config,
-           'instanceType':args.instance_type or 'g5.xlarge'}
+           'instanceType':args.instance_type or 'g5.xlarge','sessionMinutes':args.session_minutes or 25}
         path.parent.mkdir(parents=True,exist_ok=True);save(path,s)
         role(name+'-host','ec2.amazonaws.com',(ROOT/'ops/aws-gpu-benchmark/instance-policy.json').read_text())
         aws('iam','create-instance-profile',InstanceProfileName=name)
@@ -143,7 +144,7 @@ def main():
             # missing staged object must not burn the one arm.
             archive=cleanup_archive(path.parent)
             code=function_code(archive,os.environ)
-            deadline=datetime.now(timezone.utc)+timedelta(minutes=25)
+            deadline=datetime.now(timezone.utc)+timedelta(minutes=s.get('sessionMinutes',25))
             s.update(deadline=int(deadline.timestamp()),phase='arming');save(path,s)
             actual=aws('lambda','create-function',FunctionName=name,Runtime='python3.12',
                 Role=f'arn:aws:iam::{ACCOUNT}:role/{name}-cleanup',Handler='cleanup.handler',Timeout=60,
@@ -168,7 +169,7 @@ def main():
             s.update(phase='armed',schedule=expected);save(path,s)
         elif args.mode=='launch':
             if s['phase']!='armed': raise ValueError('Launch intent exists or cleanup unarmed')
-            if s['deadline']-time.time()<20*60: raise ValueError('Insufficient time before deadline')
+            if s['deadline']-time.time()<(s.get('sessionMinutes',25)-5)*60: raise ValueError('Insufficient time before deadline')
             quota=aws('service-quotas','get-service-quota',ServiceCode='ec2',QuotaCode='L-DB2E81BA')['Quota']['Value']
             instance_type=s.get('instanceType','g5.xlarge')
             s['hardware']=qualified_shape(aws,instance_type,quota);save(path,s)
@@ -182,10 +183,13 @@ def main():
             if groups[0]['IpPermissions']: raise ValueError('Ingress forbidden')
             # Guest timer shares the prearmed deadline, even if boot is delayed.
             start=datetime.fromtimestamp(s['deadline'],timezone.utc)-timedelta(minutes=55)
+            user_data=boot_script(start)
+            if s.get('sessionMinutes',25)==60:
+                user_data=user_data.replace('/sbin/shutdown -h +55','/sbin/shutdown -h +60')
             request={'ImageId':AMI,'InstanceType':instance_type,'MinCount':1,'MaxCount':1,'ClientToken':s['token'],
                 'SubnetId':SUBNET,'SecurityGroupIds':[s['securityGroup']], 'IamInstanceProfile':{'Name':name},
                 'InstanceInitiatedShutdownBehavior':'terminate','DisableApiTermination':False,
-                'MetadataOptions':{'HttpTokens':'required','HttpPutResponseHopLimit':1},'UserData':boot_script(start),
+                'MetadataOptions':{'HttpTokens':'required','HttpPutResponseHopLimit':1},'UserData':user_data,
                 'BlockDeviceMappings':[{'DeviceName':image['RootDeviceName'],'Ebs':{'VolumeSize':80,'VolumeType':'gp3','Encrypted':True,'DeleteOnTermination':True}}],
                 'TagSpecifications':[{'ResourceType':'instance','Tags':[{'Key':'Name','Value':name},{'Key':'QsbBenchmarkToken','Value':s['token']},{'Key':'SourceCommit','Value':commit}]}]}
             s.update(phase='launch-intent',request=request);save(path,s)
