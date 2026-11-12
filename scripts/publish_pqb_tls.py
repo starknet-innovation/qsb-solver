@@ -1,5 +1,5 @@
 """One-shot publication of reviewed TLS replacement; copies an attested archive, never builds."""
-import argparse,hashlib,json,os,pathlib,shutil,subprocess,sys
+import argparse,hashlib,json,os,pathlib,shutil,subprocess,sys,re,tarfile
 from verify_pqb_build import verify,verify_policy,WORKFLOW
 from compare_pqb_runtime import assess
 ROOT=pathlib.Path(__file__).resolve().parents[1]
@@ -19,9 +19,41 @@ def save(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
 def capture(p,*args):
  r=run(*args,capture_output=True);p.write_bytes(r.stdout);return r.stdout
 
-def verify_published(work):
+def verify_archive_parts(work,parts,expected):
+    if parts['archiveSha256']!=expected or not parts['parts']:raise ValueError('Archive differs from signed build')
+    names=[row['file'] for row in parts['parts']]
+    if len(names)!=len(set(names)) or any(not re.fullmatch(r'image\.oci\.tar\.part-\d{2}',name) for name in names):
+        raise ValueError('Unsafe or duplicate archive part')
+    if {p.name for p in work.glob('image.oci.tar.part-*')}!=set(names):raise ValueError('Archive part inventory differs')
+    whole=hashlib.sha256()
+    for row in parts['parts']:
+        p=work/row['file']
+        if p.is_symlink() or not p.is_file() or type(row['bytes']) is not int or row['bytes']<1 or p.stat().st_size!=row['bytes']:
+            raise ValueError('Archive part size/type differs')
+        digest=hashlib.sha256()
+        with p.open('rb') as stream:
+            for chunk in iter(lambda:stream.read(1024*1024),b''):digest.update(chunk);whole.update(chunk)
+        if digest.hexdigest()!=row['sha256']:raise ValueError('Archive part hash differs')
+    if whole.hexdigest()!=expected:raise ValueError('Reassembled archive differs from signed build')
+
+
+def final_tag(work,repair=False):
+    command=['skopeo','inspect','--raw','docker://'+IMAGE+':'+TAG]
+    found=subprocess.run(command,capture_output=True)
+    if found.returncode==0:
+        if 'sha256:'+hashlib.sha256(found.stdout).hexdigest()!=DIGEST:raise ValueError('Final tag points elsewhere; refuse overwrite')
+        return
+    missing=any(message in found.stderr.lower() for message in [b'manifest unknown',b'manifest_unknown',b'name unknown',b'name_unknown'])
+    if not missing:found.check_returncode()
+    if not repair:raise ValueError('Final tag missing; explicit --finalize-published is required')
+    run('skopeo','copy','--all','--preserve-digests','docker://'+IMAGE+'@'+DIGEST,'docker://'+IMAGE+':'+TAG)
+    if 'sha256:'+hashlib.sha256(capture(work/'final-tag.json',*command)).hexdigest()!=DIGEST:
+        raise ValueError('Final convenience tag differs')
+
+
+def verify_published(work,repair=False):
     work=work.resolve();work.mkdir(exist_ok=False)
-    run('gh','release','download',TAG,'--repo',REPO,'--pattern','solver.json','--pattern','publication.json','--pattern','pqb-ranked-v2.json','--dir',work)
+    run('gh','release','download',TAG,'--repo',REPO,'--pattern','solver.json','--pattern','publication.json','--pattern','pqb-ranked-v2.json','--pattern','archive-parts.json','--pattern','qualification-evidence.tar.gz','--pattern','image.oci.tar.part-*','--dir',work)
     expected=json.loads((EVIDENCE/'verified-build/descriptor-proposal.json').read_bytes())['solver']
     if json.loads((work/'solver.json').read_bytes())!=expected:raise ValueError('Published descriptor differs')
     if (work/'pqb-ranked-v2.json').read_bytes()!=(EVIDENCE/'verified-build/contract.json').read_bytes():raise ValueError('Published contract differs')
@@ -29,6 +61,20 @@ def verify_published(work):
     # Verify the retained source manifest itself, as well as the registry subject.
     verified=capture(work/'source-manifest-verification.json','gh','attestation','verify',EVIDENCE/'build/image-manifest.json',*policy)
     verify_policy(json.loads(verified),NEW,REF,RUN)
+    verified=capture(work/'source-checksums-verification.json','gh','attestation','verify',EVIDENCE/'build/SHA256SUMS',*policy)
+    verify_policy(json.loads(verified),NEW,REF,RUN)
+    sums=dict((name,digest) for digest,name in (line.split('  ',1) for line in (EVIDENCE/'build/SHA256SUMS').read_text().splitlines()))
+    baseline=json.loads((EVIDENCE.parent/'tls-publication-2026-11-12/release-metadata.json').read_bytes())
+    assets={asset['name']:asset for asset in baseline['assets']}
+    for name in ['archive-parts.json','qualification-evidence.tar.gz']:
+        path=work/name
+        if path.stat().st_size!=assets[name]['size'] or 'sha256:'+sha(path)!=assets[name]['digest']:
+            raise ValueError('Retained release asset differs: '+name)
+    parts=json.loads((work/'archive-parts.json').read_bytes())
+    verify_archive_parts(work,parts,sums['image.oci.tar'])
+    with tarfile.open(work/'qualification-evidence.tar.gz','r:gz') as archive:
+        if archive.extractfile('./build/SHA256SUMS').read()!=(EVIDENCE/'build/SHA256SUMS').read_bytes():
+            raise ValueError('Retained qualification archive differs from signed build')
     identity=json.loads((EVIDENCE/'build/oci-identity.json').read_bytes())
     fetched={}
     for name,digest,flags in [('index',DIGEST,['--raw']),('platform',identity['platformDigest'],['--raw']),('config',identity['platformDigest'],['--config','--raw'])]:
@@ -46,7 +92,8 @@ def verify_published(work):
     publication=json.loads((work/'publication.json').read_bytes())
     if publication['sourceCommit']!=NEW or publication['image']!=IMAGE+'@'+DIGEST or publication['originalBuildRun']!=RUN:
         raise ValueError('Publication metadata differs')
-    save(work/'verification.json',dict(status='passed',image=IMAGE+'@'+DIGEST,mode='read-only-existing-publication',freshNativeExecution=False))
+    final_tag(work,repair=repair)
+    save(work/'verification.json',dict(status='passed',image=IMAGE+'@'+DIGEST,mode='explicit-finalization' if repair else 'read-only-existing-publication',retainedArchivePartsVerified=True,archiveSha256=sums['image.oci.tar'],archivePartCount=len(parts['parts']),retainedQualificationAssetVerified=True,qualificationEvidenceSha256=sha(work/'qualification-evidence.tar.gz'),finalTagVerified=True,originalBuildRun=RUN,sourceCommit=NEW,freshNativeExecution=False))
     print(json.dumps(dict(status='verified-existing-publication',image=IMAGE+'@'+DIGEST)))
 
 
@@ -134,12 +181,12 @@ def main(work):
  if latest['object']['sha']!=os.environ['GITHUB_SHA']:raise ValueError('Controller branch advanced before release creation')
  run('gh','release','create',TAG,'--repo',REPO,'--target',NEW,'--prerelease','--title','PQB sm86 TLS-fixed worker v0.1.0','--notes-file',notes,*assets)
  # The final convenience tag appears only after byte/provenance checks and release creation.
- run('skopeo','copy','--all','--preserve-digests','docker://'+IMAGE+'@'+DIGEST,'docker://'+IMAGE+':'+TAG)
- if capture(work/'final-tag.json','skopeo','inspect','--raw','docker://'+IMAGE+':'+TAG)!=(work/'candidate/image-manifest.json').read_bytes():
-  raise ValueError('Final convenience tag differs')
+ final_tag(work,repair=True)
  print(json.dumps(dict(status='published-and-provenance-verified',image=IMAGE+'@'+DIGEST,tag=TAG,freshNativeExecution=False)))
 
 if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('work',type=pathlib.Path)
- action=p.add_mutually_exclusive_group(required=True);action.add_argument('--publish',action='store_true');action.add_argument('--verify-published',action='store_true')
- a=p.parse_args();(main if a.publish else verify_published)(a.work)
+ action=p.add_mutually_exclusive_group(required=True);action.add_argument('--publish',action='store_true');action.add_argument('--verify-published',action='store_true');action.add_argument('--finalize-published',action='store_true')
+ a=p.parse_args()
+ if a.publish:main(a.work)
+ else:verify_published(a.work,repair=a.finalize_published)

@@ -5,9 +5,9 @@ import unittest
 import tempfile
 from unittest.mock import patch
 import subprocess
-import publish_pqb_tls
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
+import publish_pqb_tls
 from pqb_tls_probe import accepted_evidence
 from pqb_s3_transport_probe import validate_targets
 
@@ -42,4 +42,46 @@ class TransportEvidenceTests(unittest.TestCase):
              patch.object(publish_pqb_tls,'run') as mutate:
             with self.assertRaisesRegex(ValueError,'already exists'):
                 publish_pqb_tls.main(Path(tmp)/'attempt')
+            mutate.assert_not_called()
+
+    def test_retained_archive_parts_require_complete_bytes_and_signed_whole_hash(self):
+        import hashlib,json
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);chunks=[b'abc',b'def'];expected=hashlib.sha256(b''.join(chunks)).hexdigest()
+            rows=[]
+            for i,data in enumerate(chunks,1):
+                name=f'image.oci.tar.part-{i:02d}';(root/name).write_bytes(data)
+                rows.append(dict(file=name,bytes=len(data),sha256=hashlib.sha256(data).hexdigest()))
+            parts=dict(archiveSha256=expected,parts=rows)
+            publish_pqb_tls.verify_archive_parts(root,parts,expected)
+            (root/rows[0]['file']).write_bytes(b'xbc')
+            with self.assertRaises(ValueError):publish_pqb_tls.verify_archive_parts(root,parts,expected)
+            (root/rows[0]['file']).write_bytes(chunks[0])
+            for changed in [dict(archiveSha256='0'*64,parts=rows),dict(archiveSha256=expected,parts=rows[:1]),
+                            dict(archiveSha256=expected,parts=[rows[0],rows[0]]),
+                            dict(archiveSha256=expected,parts=[{**rows[0],'file':'../outside'},rows[1]])]:
+                with self.assertRaises(ValueError):publish_pqb_tls.verify_archive_parts(root,changed,expected)
+            (root/rows[1]['file']).unlink()
+            with self.assertRaises(ValueError):publish_pqb_tls.verify_archive_parts(root,parts,expected)
+
+    def test_final_tag_is_idempotent_and_only_explicitly_repairs_a_missing_tag(self):
+        import hashlib
+        payload=b'qualified-index';digest='sha256:'+hashlib.sha256(payload).hexdigest()
+        with tempfile.TemporaryDirectory() as tmp, patch.object(publish_pqb_tls,'DIGEST',digest), \
+             patch.object(publish_pqb_tls,'run') as mutate, \
+             patch.object(publish_pqb_tls,'capture',return_value=payload):
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],0,payload,b'')):
+                publish_pqb_tls.final_tag(Path(tmp),repair=True)
+            mutate.assert_not_called()
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],0,b'other',b'')):
+                with self.assertRaisesRegex(ValueError,'refuse overwrite'):publish_pqb_tls.final_tag(Path(tmp),repair=True)
+            mutate.assert_not_called()
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],1,b'',b'manifest unknown')):
+                with self.assertRaisesRegex(ValueError,'finalize-published'):publish_pqb_tls.final_tag(Path(tmp))
+                mutate.assert_not_called()
+                publish_pqb_tls.final_tag(Path(tmp),repair=True)
+                mutate.assert_called_once()
+            mutate.reset_mock()
+            with patch.object(publish_pqb_tls.subprocess,'run',return_value=subprocess.CompletedProcess([],1,b'',b'connection failed')):
+                with self.assertRaises(subprocess.CalledProcessError):publish_pqb_tls.final_tag(Path(tmp),repair=True)
             mutate.assert_not_called()

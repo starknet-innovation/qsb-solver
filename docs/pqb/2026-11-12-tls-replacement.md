@@ -76,3 +76,11 @@ an anonymous full-layer registry readback. All checks passed. Existing image and
 release assets remain unchanged. Push runs now verify that existing publication
 read-only; future first-publication mode stages its upload until byte/provenance
 checks and release creation succeed. It refuses to overwrite an existing release.
+
+Read-only publication verification downloads the retained archive parts, checks each
+size and hash, and hashes their concatenated bytes against the original build's
+attestation-verified `SHA256SUMS`. It also checks the qualification archive against
+its retained release hash and original signed checksum bytes, and verifies the
+final convenience tag. An explicit `--finalize-published` operation can restore a
+missing tag only after those checks; it refuses to overwrite a tag pointing
+elsewhere. Ordinary push verification never repairs or republishes anything.

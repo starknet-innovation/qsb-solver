@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: Verify the existing release or publish only if it does not exist
+        description: Verify, first-publish, or explicitly repair a missing final registry tag
         type: choice
-        options: [verify, publish]
+        options: [verify, publish, finalize]
         default: verify
 concurrency:
   group: pqb-tls-publication-${{ github.ref }}
@@ -41,7 +41,7 @@ jobs:
           go install oras.land/oras/cmd/oras@v1.3.0
           echo "$HOME/go/bin" >> "$GITHUB_PATH"
       - name: Authenticate publication transport
-        if: env.PUBLICATION_ACTION == 'publish'
+        if: env.PUBLICATION_ACTION == 'publish' || env.PUBLICATION_ACTION == 'finalize'
         env:
           REGISTRY_TOKEN: ${{ github.token }}
         run: |
@@ -51,6 +51,8 @@ jobs:
         run: |
           if [ "$PUBLICATION_ACTION" = publish ]; then
             python3 scripts/publish_pqb_tls.py --publish "$RUNNER_TEMP/pqb-publish"
+          elif [ "$PUBLICATION_ACTION" = finalize ]; then
+            python3 scripts/publish_pqb_tls.py --finalize-published "$RUNNER_TEMP/pqb-publish"
           else
             python3 scripts/publish_pqb_tls.py --verify-published "$RUNNER_TEMP/pqb-publish"
           fi
@@ -60,6 +62,8 @@ jobs:
           name: pqb-tls-publication-receipt
           path: |
             ${{ runner.temp }}/pqb-publish/verification.json
+            ${{ runner.temp }}/pqb-publish/source-*-verification.json
+            ${{ runner.temp }}/pqb-publish/archive-parts.json
             ${{ runner.temp }}/pqb-publish/oci-*-verification.json
             ${{ runner.temp }}/pqb-publish/release/publication.json
             ${{ runner.temp }}/pqb-publish/release/oci-*-verification.json
