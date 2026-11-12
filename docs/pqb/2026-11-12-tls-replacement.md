@@ -18,6 +18,15 @@ Ireland `g5.2xlarge`, at the verified $1.35296 per hour; each session reserves u
 Failed or uncertain work is retained and reconciled before any new session. No old
 campaign, deadline or reservation is resumed.
 
+Ireland rejected fresh `g5.2xlarge` and `g5.16xlarge` launches for capacity; both
+identities were reconciled with no instance and their temporary resources removed.
+Virginia now has effective eight-vCPU G quota, no active GPU instances, and a verified
+regional copy of the same Amazon-owned AMI release. The execution controller explicitly
+allows `us-east-1` with focused region/shape tests; each Virginia session uses a fresh
+external configuration, regional staging bucket, reservation, token and deadline.
+Its `g5.2xlarge` price is $1.212/hour. This controller change does not rebuild or alter
+the assessed image from `main`.
+
 Qualification imports the exact attestation-verified archive, checks both normalized
 runtime configurations, and runs 13 native small cases before each of the three largest
 production units. The installed parser/failure and 16-chain TLS regressions must pass.
