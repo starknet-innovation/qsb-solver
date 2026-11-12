@@ -1,0 +1,61 @@
+{
+  "format": "qsb-pqb-release-review-assets-v1",
+  "status": "HOLD",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 12688,
+      "sha256": "d3caa85f4aeb5783bf61bf0bedbe078b8b82b2d488c95018e42b55301bc6c4b9"
+    },
+    {
+      "path": "consumer-compatibility.json",
+      "bytes": 2448,
+      "sha256": "0c88af3d77b127cc0dca650cdc2198ecf5c6b2d89d6889b0cdebdeb2803338d4"
+    },
+    {
+      "path": "consumer-tests.log",
+      "bytes": 268,
+      "sha256": "a6716c96e795d53dcab5fd4b38ba35a396a24829545bf7ebdfd4d2a5cffe8f18"
+    },
+    {
+      "path": "controller-self-test.log",
+      "bytes": 347,
+      "sha256": "bd6e5a09831d9d590c4289d46f2a1bd638a446313d689940a12f9da7d6aa52b7"
+    },
+    {
+      "path": "descriptor-compatibility.json",
+      "bytes": 1173,
+      "sha256": "5809be89b75382c915220b92d02d4929ab5515ccf3b49db03ba3eddddbdd6b1f"
+    },
+    {
+      "path": "descriptor-proposal.json",
+      "bytes": 2752,
+      "sha256": "09671ff7eee903f9cc032bbed2e7595450fa3e6387a2e58c8fbbfb2ce6e20c8e"
+    },
+    {
+      "path": "descriptor-tests.log",
+      "bytes": 696,
+      "sha256": "57e16340408d90fac7952c0ae4cdb976f1df3cc169bf0d844be55f92b25da588"
+    },
+    {
+      "path": "export-self-test.log",
+      "bytes": 101,
+      "sha256": "6dea73a7165423f796d31c0230e98cc04c7c4cc8115ec48f99427e32c181d24f"
+    },
+    {
+      "path": "local-checks.json",
+      "bytes": 3440,
+      "sha256": "ca9c41aab98ac0dff9350974a0eedc7740c100e04d80eb6046c4165ce024e44e"
+    },
+    {
+      "path": "python-tests.log",
+      "bytes": 27346,
+      "sha256": "88520b9d474b36fb17b3a83c0dd39135ff2a6bfd7ba278bb70e427b84dae59bf"
+    },
+    {
+      "path": "source-comparison.json",
+      "bytes": 29959,
+      "sha256": "7853e54c0e2c990102fcdc2098a20b40e8a844252ad314db6b74e84e1565b1fa"
+    }
+  ]
+}

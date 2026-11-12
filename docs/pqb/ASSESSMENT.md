@@ -1,11 +1,13 @@
 # PQB candidate assessment
 
-Assessed 11 November 2026. Disposition: **retain for review, HOLD**. No PQB release is published,
+Reviewed 12 November 2026. Disposition: **retain for review, HOLD**. No PQB release is published,
 enrolled or deployed. The component measurement, largest native units and 13 correctness cases
 passed their stated criteria. A [complete public synthetic transport solve](2026-11-11-public-transport-solve.md)
 then verified all three stages in 91 minutes 40 seconds at $20.73 estimated compute, including
 its builder. Exact artifact identities, limits and independently verified cleanup are retained
 in that report; the earlier receipts keep their original identities.
+The [release/adoption review and qsb-app handoff](release-review-2026-11-12/README.md)
+provide a source-bound descriptor proposal and the remaining artifact/publication gates.
 
 ## What this is
 
@@ -254,10 +256,12 @@ cancelled jobs were never refunded inside the solve. See the full report and evi
 
 ## Next evidence gaps, in order
 
-1. Review the full-unit, supplemental and completed public transport receipts, including their
-   source/runtime applicability and the provisional consumer contract. The full public solve is
-   complete; its candidate remains HOLD for review.
-2. Prepare an explicitly authorized PQB release/descriptor handoff. Served coordinator,
+1. Qualify a final image incorporating the reviewed whole-log completion parser. The
+   [completed release/adoption review](release-review-2026-11-12/README.md) binds the measured
+   image separately from newer source and prepares a HOLD descriptor and consumer handoff.
+   The public solve and its cleanup are complete; do not restart them.
+2. Prepare the dedicated PQB provenance/publication path and final release assets for separate
+   publication and enrollment decisions. Served coordinator,
    wallet/consensus/miner validation and release enrollment remain separate from this public
    transport assessment. The actual zero-sighash branch still lacks its own planted test.
 3. Broader hardware/host and workload sampling before relying on a latency/cost distribution.

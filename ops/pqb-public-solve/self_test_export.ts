@@ -1,0 +1,21 @@
+// Public completed checkpoint only; no provider, signing or transaction submission.
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { selectedRecords } from './reference-records';
+const [checkpoint, publicInput, originalExport] = process.argv.slice(2).map(p => JSON.parse(readFileSync(p, 'utf8')));
+const expected = originalExport.records;
+assert.equal(expected.length, 3);
+assert.deepEqual(selectedRecords(checkpoint, publicInput), expected);
+const repinned = structuredClone(checkpoint);
+repinned.solutions.unshift(...checkpoint.solutions.map((s: any) => ({...s, checked: {...s.checked, candidate: 'abandoned'}, jobId:'abandoned'})));
+assert.deepEqual(selectedRecords(repinned, publicInput), expected);
+const empty = structuredClone(repinned);delete empty.job.solution;
+assert.deepEqual(selectedRecords(empty, publicInput), []);
+const partial = structuredClone(repinned);
+delete partial.job.solution.pqb.round0;delete partial.job.solution.pqb.round1;
+assert.deepEqual(selectedRecords(partial, publicInput), expected.slice(0, 1));
+const missing = structuredClone(repinned);missing.solutions = [];
+assert.throws(() => selectedRecords(missing, publicInput), /missing from retained history/);
+const gap = structuredClone(repinned);delete gap.job.solution.pqb.round0;
+assert.throws(() => selectedRecords(gap, publicInput), /Incomplete selected solution chain/);
+console.log('Current-chain export, abandoned epochs, partial chain and missing-history cases passed; no AWS calls');

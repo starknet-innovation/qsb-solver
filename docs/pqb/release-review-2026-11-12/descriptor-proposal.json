@@ -1,0 +1,54 @@
+{
+  "format": "qsb-pqb-descriptor-proposal-v1",
+  "status": "HOLD",
+  "imageReferenceStatus": "prospective-unpublished",
+  "publicationVerified": false,
+  "enrollmentApproved": false,
+  "solver": {
+    "schemaVersion": 3,
+    "id": "pqb-ranked-v2-4bfd8f1f7011-4212bcf06999",
+    "protocol": "pqb-v1",
+    "generatorCommit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+    "searchVersion": "pqb-ranked-v2",
+    "searchContract": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+    "solverRepository": "https://github.com/starknet-innovation/qsb-solver",
+    "solverCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+    "kernelCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+    "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5"
+  },
+  "binding": {
+    "target": "aws-sm86",
+    "evidenceManifestSha256": "8676ef35189fb5a49f8de8ae6762e91575f16441201a30435bcb65225a512d18",
+    "evidenceFilesChecked": 79,
+    "contractFileSha256": "eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1",
+    "imageSourceCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+    "reviewedSourceCommit": "b0ea0147eb6680b9e16e1a69129307ebe2f0339b",
+    "amd64ManifestDigest": "sha256:8f942ed252394c25bad8f378ac547b90e2773e73fe1fd44a36eb6af8387a9de0",
+    "privateValidationImage": "905846953990.dkr.ecr.eu-west-1.amazonaws.com/qsb-pqb-solve-726c33ad@sha256:4212bcf06999da2b8084247c17d3fc0e2786e46cf356cb17e7ea971809e190c5",
+    "sourceLockSha256": "ac4ddc059a7fa8409dd9fa9a15ea754527bf61ce243f03cea311d99d20be5e2f",
+    "files": {
+      "grind": "0e811c59de2d36f66142a6f65393c55a64e0e37c7eb40df4251f86b713ef3d82",
+      "pqb_handler.py": "ea5a9275485099d8edf86fbd67fd8d4bf7bed931e51caf78715bd25927ecb1a9",
+      "pqb_ranges.py": "7109b332e705744028de647624493526e11ec75aa1b6732b68057bb9ecd2297a"
+    },
+    "runtimeInputDrift": [
+      {
+        "path": "worker/pqb/build.py",
+        "imageSourceSha256": "5723b79213f38f0962e74c8cea3da45b19434e348391e2efea60804e46492f97",
+        "reviewedSourceSha256": "f4a486c7831a560a4bcaf05c9c0e5bc67aa69ef34478c754a0150dc0be0839de"
+      },
+      {
+        "path": "worker/pqb/pqb_handler.py",
+        "imageSourceSha256": "ea5a9275485099d8edf86fbd67fd8d4bf7bed931e51caf78715bd25927ecb1a9",
+        "reviewedSourceSha256": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f"
+      }
+    ]
+  },
+  "remainingGates": [
+    "refresh-image-with-reviewed-parser-fix",
+    "qualify-exact-new-image-and-review-evidence-applicability",
+    "authorized-publication-and-verified-build-provenance",
+    "regenerate-descriptor-from-published-artifact",
+    "separate-explicit-app-enrollment-and-deployment-review"
+  ]
+}

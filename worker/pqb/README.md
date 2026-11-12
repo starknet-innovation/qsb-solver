@@ -38,6 +38,9 @@ shared hardened Batch command. Offline CI executes that path under `setpriv`; th
 stages through real private Batch/S3 transport with the pinned consumer and upstream native
 libsecp256k1 checker. Its [development harness](../../ops/pqb-public-solve/README.md) remains
 separate from an enrolled release or the served application coordinator.
+The [release/adoption review](../../docs/pqb/release-review-2026-11-12/README.md) binds the
+measured private image to a HOLD descriptor proposal and gives the qsb-app handoff. A final
+image must include the reviewed completion-parser fix before publication/adoption review.
 
 ## Request and result
 

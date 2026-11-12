@@ -42,9 +42,11 @@ class CleanupTests(unittest.TestCase):
         self.assertTrue(any(o=='delete-job-queue' for _,o,_ in calls))
 
     def test_transitional_queue_is_waited_on(self):
-        result,calls=self.run_step(queues=[{'state':'DISABLED','status':'UPDATING'}])
-        self.assertEqual(result['queueStatus'],'UPDATING')
-        self.assertFalse(any(o.startswith('delete') for _,o,_ in calls))
+        for status in ('CREATING','UPDATING','DELETING'):
+            with self.subTest(status=status):
+                result,calls=self.run_step(queues=[{'state':'DISABLED','status':status}])
+                self.assertEqual(result['queueStatus'],status)
+                self.assertFalse(any(o.startswith('delete') for _,o,_ in calls))
 
     def test_deleting_queue_does_not_delete_environment_early(self):
         result,calls=self.run_step(queues=[{'state':'DISABLED','status':'DELETING'}],environments=[{'state':'DISABLED','status':'VALID'}])

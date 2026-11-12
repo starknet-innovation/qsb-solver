@@ -328,8 +328,8 @@ class PublisherFailureTest(unittest.TestCase):
     def test_export_keeps_only_the_selected_chain(self):
         text = (ROOT / 'ops/pqb-public-solve/export-reference.ts').read_text()
         self.assertNotIn('state.solutions.map(', text)
-        self.assertIn('findLast(', text)
-        self.assertIn('s.checked.candidate === chosen[keys[stage]]', text)
+        self.assertIn('selectedRecords(state, input)', text)
+        self.assertTrue((ROOT / 'ops/pqb-public-solve/self_test_export.ts').is_file())
 
     def test_the_failure_receipt_is_flushed_like_the_success_receipt(self):
         text = (ROOT / 'ops/pqb-public-solve/publish_private.py').read_text()

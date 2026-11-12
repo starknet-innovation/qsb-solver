@@ -1,0 +1,3 @@
+{"event":"submitted","stage":"pinning","attempt":0,"jobId":"00000000-0000-4000-8000-000000000001","reservedSeconds":900}
+{"event":"submitted","stage":"pinning","attempt":0,"jobId":"00000000-0000-4000-8000-000000000001","reservedSeconds":900}
+Controller failure/identity/reservation/one-shot and known-preflight handover cases passed; no AWS calls

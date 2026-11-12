@@ -17,6 +17,8 @@ const result=await build({entryPoints:['ops/pqb-public-solve/main.ts'],bundle:tr
  outfile:out+'/controller.cjs',alias:{consumer:app},define:{'import.meta.env':'undefined'},metafile:true});
 await build({entryPoints:['ops/pqb-public-solve/self_test.ts'],bundle:true,platform:'node',format:'cjs',
  outfile:out+'/self-test.cjs',alias:{consumer:app},define:{'import.meta.env':'undefined'}});
+await build({entryPoints:['ops/pqb-public-solve/self_test_export.ts'],bundle:true,platform:'node',format:'cjs',
+ outfile:out+'/self-test-export.cjs',alias:{consumer:app},define:{'import.meta.env':'undefined'}});
 const reference=await build({entryPoints:['ops/pqb-public-solve/export-reference.ts'],bundle:true,platform:'node',format:'cjs',
  outfile:out+'/export-reference.cjs',alias:{consumer:app},define:{'import.meta.env':'undefined'},metafile:true});
 const referenceInputs=Object.fromEntries(Object.keys(reference.metafile.inputs).sort().map(p=>[p,createHash('sha256').update(readFileSync(p)).digest('hex')]));

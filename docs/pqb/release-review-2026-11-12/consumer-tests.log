@@ -1,0 +1,9 @@
+
+ RUN  v4.1.12 /Users/adrienlacombe/.codex/experiments/pqb-public-solve-20261111/consumer-fixed
+
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  08:33:36
+   Duration  3.35s (transform 643ms, setup 90ms, import 1.18s, tests 3.85s, environment 0ms)
+

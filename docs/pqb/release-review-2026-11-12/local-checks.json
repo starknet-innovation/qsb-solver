@@ -1,0 +1,62 @@
+{
+  "format": "qsb-pqb-release-local-review-v1",
+  "status": "passed",
+  "checkedAt": "2026-11-12T07:43:40.341659+00:00",
+  "reviewedBaseCommit": "b0ea0147eb6680b9e16e1a69129307ebe2f0339b",
+  "sourceFiles": {
+    "scripts/pqb_descriptor.py": "85249836ae33f5b4b6a15d4eaae153673da4bf4a97b10021f8a3a14622380fd5",
+    "scripts/check_pqb_release.py": "4bffafbf0ddfde84ff3c4e6154c1b59563b1d24f04cbbf54ce293fcbd5130426",
+    "tests/test_pqb_descriptor.py": "81119e3530eee47f23898733e3adc5b97c3587872cc9289af72d40e369380a36",
+    "tests/test_pqb_full_unit_host.py": "fec4e43ccea9da6a45b8c214b40bec1f5c757cff5f48b3d25c52a4455062527f",
+    "tests/test_pqb_public_solve.py": "183fc32127269a3886bc3325680d08efa8808956cae189b6563e7038721b707d",
+    ".github/workflows/ci.yml": "c1bfda4e868c28faeea181144069c7c21022d1a776d188a6447cb3c58000de17",
+    "ops/aws-gpu-execution/host-pqb-full-unit.sh": "13bba6ad0824dfaa4b321d10f306bb4d617f9d7110e6bf411cc1858e76521e6d",
+    "ops/pqb-public-solve/build.mjs": "62030a12c0c857688b1516c53549bb7a9f73ba79176183064ca6d2c8f49c6c64",
+    "ops/pqb-public-solve/cleanup.py": "e9f6a0b52c0a6f5af7355f156f45bfd9ce34be8cc923329295a068b5835f1dc1",
+    "ops/pqb-public-solve/export-reference.ts": "3e10dc93081bbd298613f7ba852fa301d44838f03659a3550dc9f1cdfa748831",
+    "ops/pqb-public-solve/reference-records.ts": "4bbeb357fa5169fe1e57ecc7dce4a3b4a81badbc0fbcef8aed937d189c423501",
+    "ops/pqb-public-solve/self_test_export.ts": "07afa9a2e4be4ccdccb1e68aa4edd58653a931b040e89022bb91be96cc8e9623",
+    "ops/pqb-public-solve/controller.ts": "17368e415e718a6b2f5d65e6fc52d3993e85a989104e5d331fbdce5757bf3945",
+    "ops/pqb-public-solve/self_test.ts": "bd042c2fb212c287d2c139235ce36819df27bbfa25fff32fff844625b91826c8",
+    "tests/test_pqb_review_fixes.py": "38a75c8e773134beccfcda4bef61a6a55ff3273e14544006af79bc7a84fb3b3b"
+  },
+  "pythonSuite": {
+    "total": 206,
+    "passed": 205,
+    "skipped": 1,
+    "command": "python3 -m unittest discover -s tests -v"
+  },
+  "consumerTests": {
+    "passed": 15,
+    "rangeComparisons": 350
+  },
+  "nativeResultEnvelopeCompatibility": {
+    "completed": 118,
+    "candidates": 16
+  },
+  "controller": {
+    "status": "passed",
+    "provider": "simulated",
+    "paidSubmissions": 0,
+    "bundleSha256": "334c5ec226912eaf099fb7910e36bde066b78f2f869ebf364a63bc8429c0ef51",
+    "referenceExportSha256": "216d5de109cea8a9a94a985849f9e75da4f26074c84a951d128e913fb8e5d01b",
+    "buildReceiptSha256": "04dce4f77e65110ec1fc395a9b13141b37c2998e961d09d1ffc7ea566a9c9283",
+    "selfTestSha256": "e1e07c084a26109035f0f5a62ab60988081708f4e44a42d4442eeefd5015d437",
+    "exportSelfTestSha256": "d7acb73ee5056baeb8181118222475c8e74aba56f76f0cc45cbf3d65b9182316"
+  },
+  "retainedImageArchive": {
+    "status": "fresh-sha256-verified",
+    "bytes": 2210919793,
+    "sha256": "114ec543d414d2eb69875208f506ce395232082911916f6ca6a04ed133f8e229",
+    "registryAvailabilityVerified": false
+  },
+  "initialInvocationFailures": [
+    "Controller self-test invoked without QSB_NETWORK; failed before simulated provider",
+    "Controller self-test invoked without public input argument; failed before simulated provider"
+  ],
+  "limits": [
+    "Local CPU/simulated checks only; no new GPU execution, publication, enrollment, deployment or billing query",
+    "Original image/solve receipts remain unchanged"
+  ],
+  "validationOrder": "Full suite, plus descriptor-focused rerun after the inventory-only change"
+}

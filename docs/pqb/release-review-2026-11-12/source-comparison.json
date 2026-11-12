@@ -1,0 +1,692 @@
+{
+  "format": "qsb-pqb-release-source-comparison-v1",
+  "imageSourceCommit": "4bfd8f1f7011331979f33b60bb8c6e379227ca16",
+  "reviewedCommit": "b0ea0147eb6680b9e16e1a69129307ebe2f0339b",
+  "method": "Local complete Git trees: git diff --no-renames --name-status; SHA-256 of actual blob bytes",
+  "files": [
+    {
+      "status": "M",
+      "path": ".github/workflows/ci.yml",
+      "imageSourceSha256": "167eadd3b6a7022e9fe8f2f08dada064c81561bd8be86f6e64cf70eb2b4c7379",
+      "reviewedSourceSha256": "61a661726d218c62f44899145b889a26e8af9c73db208cb248c56f5ead841e02"
+    },
+    {
+      "status": "M",
+      "path": "README.md",
+      "imageSourceSha256": "4c43a0fa80b6de3bddf9b14026502e9a865e80722565acb7db5bd06b25c862ea",
+      "reviewedSourceSha256": "768ff0bb341dceae574725223afdcd1983b8f2033fa8973b7a987fe7e90a4101"
+    },
+    {
+      "status": "M",
+      "path": "docs/README.md",
+      "imageSourceSha256": "03b0fc52bc3ab57c495fb8f518be5701feb70fe553ecb6a0bf67489983364f19",
+      "reviewedSourceSha256": "4856ae127547de0ca0975d85f192d48e2961684d0120ecafb509e0d7ef681146"
+    },
+    {
+      "status": "M",
+      "path": "docs/pqb/2026-11-11-correctness-consumer-validation.md",
+      "imageSourceSha256": "afdd6204c4a302afa7abb6a7fd530325370b916e09983351f78ec363b87bdc54",
+      "reviewedSourceSha256": "d18562b467f9bda7189f44f5d1be1a82a64d968e703e93dd46aaa468d75e81e3"
+    },
+    {
+      "status": "M",
+      "path": "docs/pqb/2026-11-11-full-unit-validation.md",
+      "imageSourceSha256": "de26b2e0b35d97e7478ce74ea65033b51a6cb7dfb58917c107d48268143704e5",
+      "reviewedSourceSha256": "da226c121cce78fd14dcd13f690701c4253cddaadbc055aa60478129076f554f"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/2026-11-11-public-transport-solve.md",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "34481881299372f52f500becc36ed2bf30eadbe28c7282b9d0d22dff0944a2ec"
+    },
+    {
+      "status": "M",
+      "path": "docs/pqb/ASSESSMENT.md",
+      "imageSourceSha256": "2a2ad66b5f0f33f5807d1fec55f6a6743585906a19421ba24d6704d850b7a1eb",
+      "reviewedSourceSha256": "56e9cd78b9d689f63cc4efbe0c056e16362254dc7e9016493a92ebf7f6c17d02"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/README.md",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "c390fd586124fc15ae9a079a9233f940c4f4c0ba956ea3d2895b99623c946099"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/campaign.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "3bbdd0b9734f491d1f9ecbd069b41bc774bea97f4cef6d67f6f24f4f27a0de8a"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-emitted-check-fullsha-1794434154758.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "419591d5341c170d1e4d271e43fc943c1b51d895c0b1d70fcc8cf17e11067d49"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-emitted-check-runs-1794433907327.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "eeaede18ba00772f256afff97115293a33963a6f5cac643b9cf4c7b291200d03"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-final-code-run.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "2b475dc2be7d8f43f7df82d1d099d29df42fe1d9f129878e71a0032131eca3c7"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-initial-jobs-final.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "a3639d5092b27c07828448ac6796676e0c6d2a2b7df12018c069e63893221af8"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-initial-run-final.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "c11e8f5f32febf6960236223859553869cdbb8a895b1a798c9400773784e558b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-pqb-final-log.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8fa661daa3ebcd1a64578715928e7ceb187aff02f9b125d54319c88ad32a4c71"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-reference-tools-jobs-final.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "04f768beaae66765ca1a064504ec886a42471df608a7e7ff8bc78027801adb9d"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/ci-reference-tools-runs-1794432651266.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "780819f298a99dfc6b5945897acad39c860f616f1511a856e50ab60b2ba518a3"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/cloudwatch.tar.gz",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "1a7d189a682de4805c6177dc308c73342379e9802831d490a2cf8ec75d94c642"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/completion-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "484b8124360ec3ae5001982d7dabd0387565f041c4e2d609c882a8bf6632973e"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-handover-completion.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "66df2e39daa1841f82cc51a4bc822774533d6406f9be18aeaf04c3895391b767"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-handover-intent.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "cf223832484248ca03cb7542950d3f714d59eb2383e6b8fa758d3be1b4f9c7a6"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-policy-fixed/build-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "714a09c75775023fcfff5be5fe78a0a48b48e38912dab57f94702deedac58a1b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-policy-restored/build-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "c6ea3c83763ec212c353a143bb765da583716a149ad8570940f34940bb6674bf"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-records.tar.gz",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "4071ef46e61d7df2c6b49abf9dab9b62ca54229c366a83c47958ec8b4610d69a"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-reference-check/build-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "975b0ea1fb46d816c44d330ffb5341041a92a823937260a81e8b35980607ea22"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/controller-tested-v2/build-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "2925ccbd2fa6d79b2319da8e5a1fd579f1b526cc573c8c4c4af819d97e701f6e"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/final-audit.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8f21187e01806cc4b417da2f22c685bcd0f0707a09a315bcb9077951ced7e535"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/final-tests.log",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "30594b350f847c7c803c25f23bf639dc959369e3d235763758a5d8c7f2de8d74"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/final_audit.py",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e714fe4b7ade6f28efdef7dde1a5f11980e25f176b6834121ba7d7240743a320"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/instance-history.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "65c0c7fae8853b4321bc193f9d641ab396f9878d45a089f943fb1019a87cf22b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/jobs-snapshot-143.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "29097c4444c0709cecb6cf6c4e400bc829321cbe2265fd53b4306331e207ec42"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/manifest.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8676ef35189fb5a49f8de8ae6762e91575f16441201a30435bcb65225a512d18"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/operator-rpc-file-hashes.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "0625f44641c1d8e0ff6214281ea89b69aa68ca71068418438aa53066aed0199f"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/package-verification.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "83870382881fc414e67110ce5f2a0c47d73b69badaec203b1d627b0e5e899312"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/package_review.py",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "5b250f3affb7019c42db26f3faf6fbdbc76f1a84a18cced42ee851f742315fd3"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/policy-restoration-handover.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "60b698e3f08797b294033273b1871361f382a97f1f13f0a0364e08ec0d6705ac"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/price-ami.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "45743a0698ebdc26b207a6fb4d13e7160f014fd428d9c27e5fe04c585bb17a72"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/private-image.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8e25e78423bd59adc88c4a2d08991a87d9e8fcf0638b3dc0995fb9bca946823b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/provider-receipts.tar.gz",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "645a3169815d5e6c7df5102108120670f3e6e2562732374dbfd2b8b9b91f69f5"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/public-input.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "38f2cd198ac14cbf24483dd48fec3b27028e076475efdabdcb17e8dbc1347d4c"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public-result.b64",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "0dd56babe72752b8bd0cb52ceafe7520fb652fc99c23c3f5cb15514762c7e730"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public-result.json.gz",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "6a0be156717937a9c31fb616b14cc0643b0d3ada5400e3f10283a27aae419c8e"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public/SHA256SUMS",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "fdd625b623dae7bee384e5c64b22f3718dc8f0fe2dda87fdc762c6db88cbe6af"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public/binding.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "204a22fb26c5e0477f28fe52e3cca7be498add3042d1e506e5c1e0418a8d7d48"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public/build-receipt.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "5d1e163f5a7af046a9642f6618fdd04ea47f9ba37f8748ac9dff5722ecb7c59f"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public/image.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "edd05ac8b7bc3a935b080458420f9424ff4bf132d6863ebdc60796529d4ce925"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/public/pqb-image-scan/image-scan.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e52c656273787632077e9741eed8c98bf20de0c7ad13ff855e2b48c9c9b3104d"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/reconciliation-final.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8ca83f6f29d4ae189b6a5ba5c2b02d1d69e442ce24d0199c142019663df78092"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/ssm-command.sh",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "f95f2c5bb7ae228437e0bf73fc387a1221ab0127555b466aac24ecdb3ea1ee45"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/publisher/ssm-intent.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "b813e5917557dabe0f054210103e5dee12ea1cf09b9b20706abb95b1074a4c6b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/reconciliation-final.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "4d92f1c5d72cf59dfdf678b58afdf42c1f4a4f960e704f038e7496e4a8462ab7"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/reference-native-requirements.txt",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "4f782405bc28af4fb77b15b31ef1ec97f19dd6e35a0a9e86cfa3b5968b38821c"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/reference-native-runtime.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e503ac45aca201cee2b5946ea6d97c2612946073efc4af5e0c37b015fa553f8f"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/reference-shim-runtime.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "6cd0a4d349d3e091bca4469bd4c9f716da42bd8f62b7dc2a9aad0d80ee52ffe6"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/s3-objects.tar.gz",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "32f39d9d26525ba34f16fee629a4e6f7a7f17d45e7007c39aa4cb99bd98c3f22"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/solve-config.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "4e10fb80d99409bfd38145790bbb8f8bb0c315f2c279b19137b0141e5118ea22"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/staging-deletion-intent.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "10aa4997f537c90382659bc4411a776dc8bee98da3eb11ad2d9ab60be24de94d"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/state.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e794f05460d9b9821916e865ef16ec72a0b93ed4adc762e22287436e8b4f16ef"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-1-result.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "eec32467923f4d2b8083568556715466c77c83dd5d71598234d9dab3d52b685b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-1-wire-binding.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e5567611f75d73081323c2034ee419b8379d9906b6f884d588b505379f6c5fd4"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-1.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "5238ce24ff62a0020dc47adc4fb57f38fecbe68936e737465e08efafa298bded"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-2-result.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "71427dac0c8d78138e9e57b43b3e682f4d7fc65e29565562c95d46fa83c84361"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-2-wire-binding.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "ed22316d9a51b65e26a09c3ec126c3d231a88b52d23052c576f52e06dccc1f48"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-2.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8130e2d3156d43f2dd9d6208ac6adc97457fd168ff7b69afe9bec263c02ee519"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-3-native-result.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "b32943162ffeeb41c6761a7451078e39327a14c7f32fca5cea634db1c6c99c77"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-accepted-3.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "2d1437aeb1540e0cf80e0b3c9999ff66846b81f39ddee9165e4696284ba8865f"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-first-wave-emitted-check.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "14d86bab83d8ec012fe70e893f3bacf4bed6416a8c07283fb781e4bcaa8c3a35"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-accepted-2-result.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "8725e36aaafd9e7e678c3a33f0458601532922bc6ae5004caebaf1d1fabeed88"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-final-pinning.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "f5269e5aba7f978608901af898812b1b09a805c64b0299aa27636a49c8ffd3b0"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-final-round1.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "7c1cc91be89faa2d5f074fad5029674570601a107fa59caaf615551792e8f1b0"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-final-round2.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "7e75a705a13f48547eb8a58641fb40ed7e5a50f488f6cd8b6905226a840adc0e"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-pinning-emitted-current.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "772b3fe3425b0d9fcaa5f375cfb9f0a413ecab4f39d05dfcf122f48f37a314f1"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-round1-emitted-current.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "dbd35be9944341e7d3ce8b4408864a9c36c024c4e1b46549ac583bcb0ce2f5aa"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-native-round2-emitted-current.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "389cb5d7c1c14d0425357bb77ee42b73725782abab0f56832f12882e4d9fff5a"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-pinning-all-emitted.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "7b1c9cafada40a3a028a895f6d10eaa95546d0a0df99919b8ab5a968f9c11cc9"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-pinning-compatibility.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "894148014ec75e26378194b9ef562f445c83ba685d294b7cd6ec09a7dfaf183d"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-pinning-emitted-audit.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "4fa45d6f2af1512de49d8b42954c7d7e32026dcc2768e423cd0d709783d99656"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-pinning-input.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "0016eb77c43ba69f2c4879012fad1a2421cfe9f568496ab26ffc537edcc168cf"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round1-compatibility.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "01cbedad8bc9f4d7bb31a99a245fc41fe095f155b1d9e42059f75e4c52b33e29"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round1-emitted-current.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "9e0eb9a0ef4a000113d785cc3af4717f4c84676106ff0bda793dd4e05cc4c03b"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round1-final-emitted-audit.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "87a7d4be1324a29aee0ab0ad401cb343c35939ea76ed22e02fc73cb26278c104"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round1-first-wave-emitted.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "91352b46a03c4b6170e2bec44ad80d5dafebc4a144846cec945499083be87ecc"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round1-input.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "e281168009bf248c93dc2adb2cead6bcfa87c4c812ef747d7a85196b7fa5bf27"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round2-compatibility.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "fa1ccd60076b4a9e0d8bc7dcedddcfde53c5f9f6ff8222aebdbe50aa0d1ae102"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round2-first-wave-emitted.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "fe46d712e2858f7edb9cd03441d8ad011866b54cc2ec5b88c451c8d2853950c2"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round2-initial-emitted.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "43681708db584a2639f7bf642ad31c581c263be48be97de87294560c1e4d8845"
+    },
+    {
+      "status": "A",
+      "path": "docs/pqb/evidence/public-transport-2026-11-11/upstream-round2-input.json",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "0f96ad218f9c387e8b7d71a4720def809b6d886158b25b88cf0b2b8ee176458b"
+    },
+    {
+      "status": "M",
+      "path": "ops/aws-gpu-execution/README.md",
+      "imageSourceSha256": "51a6cf25cc5c68bc1b932f31d0afba4429064dd7bc066c6afa4acb8afa8d5a67",
+      "reviewedSourceSha256": "d1b8707a15b3bd89cc4ae82ddeba0efc3973d39ec18430833c3c7e571d583e72"
+    },
+    {
+      "status": "M",
+      "path": "ops/aws-gpu-execution/control.py",
+      "imageSourceSha256": "29465ffc393c8ae0483c4db33d41a0da22a57182273381603ede00fb56cc7cae",
+      "reviewedSourceSha256": "6506b5e3ee316098a8ec0463a6782c6ddc3872376c3c61f2557aa10b48e80f6f"
+    },
+    {
+      "status": "M",
+      "path": "ops/aws-gpu-execution/host-pqb-full-unit.sh",
+      "imageSourceSha256": "64dada9e53b720c33c0fd3d92c5aafacc9929e3906d5c0dcf907aa2ea6c23baa",
+      "reviewedSourceSha256": "13bba6ad0824dfaa4b321d10f306bb4d617f9d7110e6bf411cc1858e76521e6d"
+    },
+    {
+      "status": "M",
+      "path": "ops/aws-gpu-execution/mcp_rpc.py",
+      "imageSourceSha256": "12b17eaeeb30b4b131dbfac7e9cedc70b76cfd5d51c69614015a51f109e49ecb",
+      "reviewedSourceSha256": "eb06c8a21b942af0198391445b81e3b7825eb7fcf890f3b2a8e6f40d9eeb2f06"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/README.md",
+      "imageSourceSha256": "131e3facb69e6734839d7afdc73f00b33fa50959974862f0235dd0fe436d7b93",
+      "reviewedSourceSha256": "7595a99785dcbe1e261ab78b3e0ac9eb0edec570d1782ede0ce6c50d5770ca43"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/build.mjs",
+      "imageSourceSha256": "8ac795a05053a6315c81ca775dba3911bea6c76484d1ebd6c802fe8e314105cc",
+      "reviewedSourceSha256": "100e0d754251b55c0ed8ef533b89fb71ff459a109510cd7a5274efba27c8d69b"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/cleanup.py",
+      "imageSourceSha256": "2ac50d9d80b14bae9610db321b5d219a91469202a5c8ae9028d03db6f0cc1edf",
+      "reviewedSourceSha256": "e9f6a0b52c0a6f5af7355f156f45bfd9ce34be8cc923329295a068b5835f1dc1"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/consumer-lock.json",
+      "imageSourceSha256": "b04fe352c0c1e5bb3b0019ed433b1e9c385655070a755d81004b5207982df729",
+      "reviewedSourceSha256": "bafd293bc7f0c87059dc2c396476c1f76ca2a5fbbf3cc1de25c2a281edec431f"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/control.py",
+      "imageSourceSha256": "be4bea104d8b15e76d57741e8bbb66378cc552deee927c3ddd35623bfecabd71",
+      "reviewedSourceSha256": "d1747d0dd3755bc41fc4753fe6e3aed023114b193fbe249e812b7fc6e7e9385d"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/controller.ts",
+      "imageSourceSha256": "75cc59a498cf35d970a3e3139b156a4ac9aaf4fd51d7500c405d1599add01dbb",
+      "reviewedSourceSha256": "17368e415e718a6b2f5d65e6fc52d3993e85a989104e5d331fbdce5757bf3945"
+    },
+    {
+      "status": "A",
+      "path": "ops/pqb-public-solve/crosscheck-emitted.py",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "332821bdd8b543910f67f78061ca5bb87a3943ea37e68d860c0b670e47e1c7f3"
+    },
+    {
+      "status": "A",
+      "path": "ops/pqb-public-solve/crosscheck.py",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "ea3b57fdf7882b8a2036f24627a41d56d386b424a02e7cc1c4629d92fe5c4582"
+    },
+    {
+      "status": "A",
+      "path": "ops/pqb-public-solve/export-reference.ts",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "0f89df9155148c1d5f76878b6a1df44b03a99104849a782576fe4d9f0155d4b6"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/main.ts",
+      "imageSourceSha256": "a5fa715a117c954eada3ad37aa8729862a6588ee875cdaab34c80d4ecdb575f9",
+      "reviewedSourceSha256": "f2dd1832aec03c73824a2053f4c55fdf453b85f733042ed14d644d25c0e9b1ef"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/publish_private.py",
+      "imageSourceSha256": "f53492b0e31650ff1f6f7ddeb37aeffa972108df260fb670d704e4eef2e4194b",
+      "reviewedSourceSha256": "864c0e20f29d4b42f96cfb1d3b58764f0e06479220533493d0608028fe338680"
+    },
+    {
+      "status": "M",
+      "path": "ops/pqb-public-solve/self_test.ts",
+      "imageSourceSha256": "34cb3ae69941153bc875c5d0976f3540965d4130d6bded838c7a1eaa0814728c",
+      "reviewedSourceSha256": "bd042c2fb212c287d2c139235ce36819df27bbfa25fff32fff844625b91826c8"
+    },
+    {
+      "status": "M",
+      "path": "research/pqb-ranked/measure/run_full_unit.py",
+      "imageSourceSha256": "af5cd7f81ce750c886dfa0bf7e2bf2f9d377713897873f312b341715927bcb67",
+      "reviewedSourceSha256": "120aad8502d816b20c1406a31803ba4c630998123c0e2e6742423ce4d66855e1"
+    },
+    {
+      "status": "M",
+      "path": "research/pqb-ranked/measure/run_measure.py",
+      "imageSourceSha256": "ab435a30eaca2279bf5dc221ac22b6a19227a18515e886b1a622610b57b35cfa",
+      "reviewedSourceSha256": "e243614b3ec20c4ad9545a37b3536a762f34d8273ce2025f1fb33672afa01af3"
+    },
+    {
+      "status": "M",
+      "path": "scripts/prepare_pqb_measure_bundle.py",
+      "imageSourceSha256": "bf739721b49aca0c079c222ed639493db73206d0d41f576a78b91c8b03ae438d",
+      "reviewedSourceSha256": "5489138bbeced838f5d6c83545952946a2b5c40d80e82b1e61ea9fb892766ef3"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_pqb_full_unit.py",
+      "imageSourceSha256": "bd923588b891fd6cfaae66573f616753075a520bd8ed50d11a100dfc235ad646",
+      "reviewedSourceSha256": "b5f8e468e72a615daf7ab8c4c7e3179623d7c5ce2a3ef0ff530992b8e427466f"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_pqb_handler.py",
+      "imageSourceSha256": "65a50efc300c6b3a6eb0438e042711109fc1acd62a940622e322212b0732ecb0",
+      "reviewedSourceSha256": "54bd9d440cdbed19aad7cadc56d7bac9be51315b0e9987825685c8e637c65f1d"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_pqb_measure.py",
+      "imageSourceSha256": "3af8763226a5cb1daa8e02d9aac4b8e4bca3809b5ca2286e559ef1f50da420b8",
+      "reviewedSourceSha256": "ee2d97bfb11072302e5cfba870904bb67b794e61dff949aab0ff1125063f9a9c"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_pqb_public_solve.py",
+      "imageSourceSha256": "86f4d7636c6bdd5efc68b5872cb210a44eac9dd43ba86679ae7cb49439184235",
+      "reviewedSourceSha256": "93e63826d98bb9078ab77db25d57737c106a61ffe120b17a9596253143f9ac9e"
+    },
+    {
+      "status": "A",
+      "path": "tests/test_pqb_review_fixes.py",
+      "imageSourceSha256": null,
+      "reviewedSourceSha256": "a0468c97a9bdf7d23aba69eed4e8108f789503f27fa99c2b29192efde5f643a6"
+    },
+    {
+      "status": "M",
+      "path": "worker/pqb/README.md",
+      "imageSourceSha256": "be94f8dced39db62a76b042e9b9985967f4208b5641949dc85650336432789cd",
+      "reviewedSourceSha256": "33aa36b1b92b02eeeb5dea722215dd186f38a1c6e8b46b0a7d2ab98e5bfe103c"
+    },
+    {
+      "status": "M",
+      "path": "worker/pqb/build.py",
+      "imageSourceSha256": "5723b79213f38f0962e74c8cea3da45b19434e348391e2efea60804e46492f97",
+      "reviewedSourceSha256": "f4a486c7831a560a4bcaf05c9c0e5bc67aa69ef34478c754a0150dc0be0839de"
+    },
+    {
+      "status": "M",
+      "path": "worker/pqb/pqb_handler.py",
+      "imageSourceSha256": "ea5a9275485099d8edf86fbd67fd8d4bf7bed931e51caf78715bd25927ecb1a9",
+      "reviewedSourceSha256": "9363f3ff3c0469db520e88a7e2575ca94d4012b2f01ccc5e98acff55901b712f"
+    }
+  ]
+}
