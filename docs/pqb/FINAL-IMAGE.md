@@ -42,7 +42,7 @@ authorized future assessments. Record the new source and bundle identities befor
 If xlarge capacity is unavailable, a fresh session may use the controller's explicit
 `--instance-type` at prepare: single-A10G G5 sizes through `g5.16xlarge`. The controller checks
 the provider's actual GPU/CPU description and effective quota before submission. Verify fresh
-pricing against the $3 session reservation first. Preserve and clean up failed sessions before
+pricing against the recorded session reservation first. Preserve and clean up failed sessions before
 choosing a new size; no armed deadline or request is edited or retried. The image/partition
 remain the same; different CPU resources are recorded and are not a matched performance claim.
 Each session imports the same verified OCI archive; the actual rootfs diff IDs and every
@@ -78,7 +78,7 @@ in the external campaign ledger. Do not replay a compute command or uncertain su
 Run local unit/negative checks before allocation. Use the committed/pushed execution controller,
 dedicated SSM-only IAM/SG, prearmed independent Scheduler/Lambda cleanup and guest shutdown
 sharing the fixed deadline. No other test GPUs may be active before each sequential session.
-The new operational reservation is **$10 total**, including up to $3 for the consolidated session and
+The operational reservation is **$10 total**, including up to $5 for the consolidated session and
 staging overhead; persist it before paid submission. This is a reservation, not provider billing.
 Check fresh pricing/quota/account/AMI/subnet and prior cleanup. Known capacity failures may
 only be followed after reconciliation and complete cleanup with a fresh session identity;
