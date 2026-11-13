@@ -53,3 +53,30 @@ PY
 ```
 
 No cloud execution or paid work is needed to inspect or check this package.
+
+The exact independent CPU validator is retained as
+`independent-native-crosscheck.py`; its bytes match `validatorSha256` in the CPU
+receipt. To reproduce its CPU checks, prepare a clean upstream checkout at the
+receipt's `upstreamCommit` and an environment with coincurve 21.0.0 plus that
+upstream project's dependencies. Reconstruct a normalized public audit outside
+this directory (unit labels replace provider IDs):
+
+```sh
+python3 - <<'PY'
+import json, pathlib
+p = pathlib.Path('.')
+u = json.loads((p / 'native-units.json').read_text())
+a = json.loads((p / 'consumer-audit.json').read_text())
+a['checked'] = [dict(r['consumerCheck'], jobId=r['unit']) for r in u if 'consumerCheck' in r]
+output = pathlib.Path('/tmp/pqb-serving-public-audit.json')
+with output.open('x') as f:
+    json.dump(a, f)
+print(output)
+PY
+python3 independent-native-crosscheck.py /path/to/pinned/upstream \
+  /tmp/pqb-serving-public-audit.json /tmp/pqb-serving-public-cpu-replay.json
+```
+
+Use fresh output names. This offline replay checks the retained packets and all
+emitted hits; it neither executes a GPU nor grants additional native work credit.
+Its audit hash/unit labels differ from the original private audit by construction.
