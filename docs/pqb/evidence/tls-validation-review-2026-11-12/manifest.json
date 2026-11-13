@@ -1,0 +1,55 @@
+{
+  "format": "qsb-pqb-tooling-review-evidence-inventory-v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1158,
+      "sha256": "c2b072fc27a9fe52196244da5486d653c214e5097098be230202479484061abc"
+    },
+    {
+      "path": "focused-transport-tests.txt",
+      "bytes": 1112,
+      "sha256": "1ce355fbd1a85e7a2f30e88881ad35d837f6139a5379e5b02e266b6aae765735"
+    },
+    {
+      "path": "live-installed-tls-bound-leaves.json",
+      "bytes": 9242,
+      "sha256": "1a1fa500cf6526a38e8ff416799d2f3ca2739ec79788ef94136c78f566732984"
+    },
+    {
+      "path": "live-installed-tls-bound-leaves.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "no-git-tests.txt",
+      "bytes": 1176,
+      "sha256": "67c45095c62f90c84d69b6c06ae4cfaadc1c2b2582b8fd667bcd37ec4689bac9"
+    },
+    {
+      "path": "registry-layer-validation.json",
+      "bytes": 369,
+      "sha256": "0fa718ce745eff5f731db15294e1f637fa386a6ea5dccb12ee64e12c545474ca"
+    },
+    {
+      "path": "retained-s3-target-reconciliation.json",
+      "bytes": 1593,
+      "sha256": "1c501b006c7a10fd7f262c1bc1c2c750d00e4ef8461596ffd84270e9661f55b8"
+    },
+    {
+      "path": "review.json",
+      "bytes": 1513,
+      "sha256": "44df9dc159bca8bbb502827516d864f53385b45f885d33eddd023ff8817eafa2"
+    },
+    {
+      "path": "source-tests-244.txt",
+      "bytes": 33585,
+      "sha256": "e161fc3df8b3be569265ca1d0173882985766115b5986f264dbd7179a3d69641"
+    },
+    {
+      "path": "source-tests-245.txt",
+      "bytes": 33733,
+      "sha256": "4abb73ddb40c6359d4fb2b5438266e2d7604f0a2eaab55595bd149042eb47be7"
+    }
+  ]
+}

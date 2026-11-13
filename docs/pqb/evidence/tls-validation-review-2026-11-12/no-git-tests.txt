@@ -1,0 +1,11 @@
+test_cache_code_and_source_cannot_hide_behind_timestamp_normalization (test_pqb_runtime_equivalence.RuntimeEquivalenceTests.test_cache_code_and_source_cannot_hide_behind_timestamp_normalization) ... ok
+test_changed_compute_loader_permissions_or_inventory_fail (test_pqb_runtime_equivalence.RuntimeEquivalenceTests.test_changed_compute_loader_permissions_or_inventory_fail) ... ok
+test_complete_real_inventory_and_timestamp_cache_payloads (test_pqb_runtime_equivalence.RuntimeEquivalenceTests.test_complete_real_inventory_and_timestamp_cache_payloads) ... ok
+test_only_reviewed_ca_keyword_can_change_transport_semantics (test_pqb_runtime_equivalence.RuntimeEquivalenceTests.test_only_reviewed_ca_keyword_can_change_transport_semantics) ... ok
+test_rejection_requires_both_live_leaf_observations (test_pqb_transport_evidence.TransportEvidenceTests.test_rejection_requires_both_live_leaf_observations) ... ok
+test_urls_bind_both_operations_to_region_bucket_and_key (test_pqb_transport_evidence.TransportEvidenceTests.test_urls_bind_both_operations_to_region_bucket_and_key) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.313s
+
+OK

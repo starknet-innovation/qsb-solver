@@ -1,0 +1,26 @@
+{
+  "hourlyComputeUsd": 1.123,
+  "estimatedComputeUsd": 18.726025,
+  "conservativeObservationComputeUpperUsd": 22.44190722222222,
+  "priorStoppedCampaignComputeUpperUsd": 3.6462584212193336,
+  "allCurrentAttemptsComputeUpperUsd": 26.088165643441553,
+  "providerBillingQueried": false,
+  "limits": [
+    "Estimate includes cold startup, idle, successful, canceled and cleanup host time",
+    "Excludes EBS, IPv4, ECR, S3, Lambda, DynamoDB, Step Functions, logging and network charges",
+    "Termination state transitions and observation bounds are not provider billing"
+  ],
+  "privateCostReceiptSha256": "8d42535bb9b3266ef5fbc28315950f0dac83fa33e5816e2385705957cae07b8f",
+  "independentCleanupSha256": "886fc263b6dc0b0a5b22b3e6e17625419fe2395db84abf4ea1e1c7e02b29250e",
+  "independentCleanupChecks": 321,
+  "verified": true,
+  "recordedHosts": 20,
+  "recordedVolumes": 20,
+  "reservationUsd": 200,
+  "reservationStatus": "released",
+  "retainedResources": [
+    "Immutable registry mirror",
+    "Pre-existing default network; no network edits"
+  ],
+  "agedHostReconciliation": "One older terminated host aged out of describe results; sealed terminal receipt plus fresh exact-ID absence reconciled independently. Other 19 were observed terminated; all 20 recorded volumes absent."
+}

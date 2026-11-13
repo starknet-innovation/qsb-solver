@@ -1,0 +1,14 @@
+{
+  "format": "qsb-pqb-registry-layer-readback-v1",
+  "command": [
+    "crane",
+    "validate",
+    "--remote",
+    "ghcr.io/starknet-innovation/qsb-solver@sha256:9aa22b922b9dbee81177ae8f622a33673c8ca92574560c9814d9cfb783f71d68"
+  ],
+  "returnCode": 0,
+  "status": "passed",
+  "anonymous": true,
+  "elapsedSeconds": 58.10352301597595,
+  "freshNativeExecution": false
+}

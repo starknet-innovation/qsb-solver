@@ -1,0 +1,290 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/nvidia/cuda@12.8.1-devel-ubuntu22.04?digest=sha256:6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "6617a625f4090c76c545a0e7d63f2e441718ef9af7f4efe7dd1242a29e289fd7"
+        }
+      },
+      {
+        "uri": "pkg:docker/nvidia/cuda@12.8.1-runtime-ubuntu22.04?digest=sha256:fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd\u0026platform=linux%2Famd64",
+        "digest": {
+          "sha256": "fcbbd60a5ad3db3a1c7375bf14546b369b54064c513224310b2026df50c7a9bd"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "build-arg:CUDA_ARCH": "86",
+          "build-arg:SOLVER_COMMIT": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+          "target": "aws"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ],
+        "root": {
+          "configSource": {
+            "path": "Dockerfile"
+          },
+          "request": {
+            "args": {
+              "build-arg:CUDA_ARCH": "86",
+              "build-arg:SOLVER_COMMIT": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+              "target": "aws",
+              "vcs:localdir:context": ".",
+              "vcs:localdir:dockerfile": "worker/pqb",
+              "vcs:revision": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+              "vcs:source": "https://github.com/starknet-innovation/qsb-solver"
+            }
+          }
+        },
+        "compatibilityVersion": 30
+      },
+      "environment": {
+        "dockerfileVersion": "1.28.0",
+        "github_actor": "adrienlacombe",
+        "github_actor_id": "6303520",
+        "github_event_name": "push",
+        "github_event_payload": {
+          "after": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+          "base_ref": "refs/heads/main",
+          "before": "0000000000000000000000000000000000000000",
+          "commits": [],
+          "compare": "https://github.com/starknet-innovation/qsb-solver/compare/codex/pqb-qualify-tls-20261112",
+          "created": true,
+          "deleted": false,
+          "enterprise": {
+            "avatar_url": "https://avatars.githubusercontent.com/b/698039?v=4",
+            "created_at": "2026-07-27T06:51:34Z",
+            "description": "Starknet Foundation, supporting the growth, research, development, and decentralized governance of the Starknet ecosystem.",
+            "html_url": "https://github.com/enterprises/starknet-foundation",
+            "id": 698039,
+            "name": "Starknet Fdn Enterprise",
+            "node_id": "E_kgDOAAqmtw",
+            "slug": "starknet-foundation",
+            "updated_at": "2026-10-26T16:34:09Z",
+            "website_url": "starknet.org"
+          },
+          "forced": false,
+          "head_commit": {
+            "author": {
+              "email": "6303520+adrienlacombe@users.noreply.github.com",
+              "name": "Adrien Lacombe",
+              "username": "adrienlacombe"
+            },
+            "committer": {
+              "email": "noreply@github.com",
+              "name": "GitHub",
+              "username": "web-flow"
+            },
+            "distinct": true,
+            "id": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+            "message": "Add a HOLD PQB candidate worker with exhaustive ranked sweeps (#18)\n\n* Add a HOLD PQB candidate worker with exhaustive ranked sweeps\n\nPQB (fireblocks-labs/pqb) is a different lock from QSB with different\npuzzles, so this is a separate worker and contract, not a change to the\nranked-v2 worker or to any published image.\n\n- vendor/pqb: PQB's CUDA grinder at eccdd09, byte for byte, with its\n  licence, notices and provenance hashes.\n- research/pqb-ranked: an adaptation of grind.cu that walks a stated\n  range exhaustively instead of drawing at random, fails closed when a\n  range is not fully accounted for, and reports only gate hits with the\n  shape of a DER signature. The SHA-256 and curve arithmetic are\n  upstream's.\n- contracts/pqb-ranked-v1.json and worker/pqb: range contract, handler,\n  file binding, Dockerfile and offline image check.\n- docs/pqb/ASSESSMENT.md: evidence, deviations, limits and next gaps.\n\nEvidence is CPU emulation only: complete hit sets equal an independent\nenumeration, and pqb's own checker reproduced every hit in a local run.\nThere is no native GPU run, no timing and no amd64 image build yet. The\nmodelled saving (12.1 to 8.3 RTX 4090-hours) assumes the ranked sweep\nruns at upstream's trial rate, which is unmeasured.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Handle exceptional curve cases exactly in the PQB grinder; add an AWS cost estimate\n\nThe device formulas cannot add equal or opposite points or represent\ninfinity. Every such case puts a zero factor into one of a thread's two\nbatched inversions, so ec_comb now tests both products, reports a thread\nthat has one and emits nothing for it, and the host recomputes its\nz-blocks with complete affine formulas. Previously such a thread's\npoints were silently spoiled.\n\nTested under CPU emulation: with every thread forced through the host\npath the hit sets equal the reference on all three stages, and a menu\npoint planted equal to a z-block's sighash point is reported and handled\nexactly. No native GPU evidence; the speed effect is unmeasured.\n\nThe assessment gains a desk estimate of AWS cost per spend. It is not a\nmeasurement: only the L40S speed is measured (by pqb), the A10G and L4\nspeeds are assumed, and prices are aggregator snapshots.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Prepare a native measurement run for the ranked PQB grinder\n\nPreparation only: nothing is launched and nothing here authorizes a\nlaunch.\n\n- research/pqb-ranked/measure: 11 correctness cases with hit sets from\n  the independent reference (multi-batch ranges, the DER-shape filter, a\n  planted exceptional point) and a one-shot runner that checks them and\n  then times upstream's random search against the ranked walk,\n  interleaved per stage. Timing is skipped if correctness fails.\n- worker/pqb/Dockerfile gains a `measure` stage that compiles upstream's\n  unmodified grinder with the same compiler and flags; CI uploads both\n  binaries and checks the ranked one is the worker image's.\n- scripts/prepare_pqb_measure_bundle.py and\n  ops/aws-gpu-execution/host-pqb-measure.sh: the hash-verified bundle\n  and the isolated host invocation.\n- tests/test_pqb_measure.py dry-runs all of it on emulated binaries.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Do not require steady-state rates in the emulated measurement dry run\n\nA slow emulation host may complete too few batches per process in the\nshort dry run for a steady-state rate. Check whole-process rates there\ninstead; the runner is unchanged.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Allow London in the GPU controller's operator config; record refused launches\n\nEvery eu-west-1 zone refused a g5.xlarge for capacity on 11 November.\nThe operator config now accepts eu-west-2 as well as eu-west-1, as the\nresearch controller branch already did; nothing else in the controller\nis region-specific. The measurement notes record the three refused\nlaunches: no instance, no measurement, no GPU time.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Record the London capacity refusals in the PQB measurement notes\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Record the native A10G measurement of the ranked PQB grinder\n\nOne g5.xlarge in eu-west-1b on 11 November 2026, public synthetic\nfixtures, CI-built binaries of 266f4a0.\n\n- Correctness: all 11 cases returned exactly the reference's hit sets on\n  the GPU, including multi-batch ranges, the DER-shape filter and a\n  planted exceptional point.\n- Timing: the ranked walk ran at 1.004 to 1.014 times upstream's random\n  search in steady state, three alternating samples per stage.\n- A10G rates 2.49 / 2.73 / 2.01 G trials/s, about 0.42 of pqb's\n  published RTX 4090 rates. The cost table now uses the measured speed:\n  about $22 per spend on-demand in eu-west-1 with exhaustive sweeps.\n- Round-0 units take up to 21 minutes on this card, longer than the\n  application's 900-second job timeout; the provisional unit size must\n  shrink before a contract freeze.\n\nSeven launches were refused for capacity before this one; none\nallocated an instance. Estimated compute about $0.13. Cleanup verified,\nwith one irregularity described in the record. Component measurement:\nno full solve, no whole-spend time, not a bill.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Resize PQB work units to fit a 900-second job limit (pqb-ranked-v2)\n\nAt the A10G rates measured on 11 November, pqb-ranked-v1's round-0\nunits took up to 21 minutes, longer than the application's job timeout.\n\npqb-ranked-v2: pinning units of 14 nSequence values (divides the usable\nvalues exactly), round-0 units of 3 * 2^27 prefixes, round-1 units of\n2^30 prefixes. The largest unit of each stage is 486 s, 502 s and 486 s\nat the measured rates. This is a sizing choice from one host's rates;\nno full unit has been run.\n\nThe partition changed, so the search version changed. v1 was\nprovisional and never published or enrolled; its contract file is\nreplaced.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Fix the PQB review findings\n\n- grind.cu: range bounds are checked before any sum, so a huge count\n  cannot wrap past the check; range options must be unsigned decimals\n  and need the option that turns ranked mode on; QG_FUSE=0 is refused\n  at compile time, since the unfused kernel would hash the stale point\n  slots of a thread the exceptional path skipped. No kernel or\n  range-walk code changed.\n- run_measure.py: any error in the timing phase is recorded and the\n  result is always written; the last stratum can no longer run past the\n  prefix space.\n- Dockerfile: the measure stage is no longer last, so a build without\n  --target gives the worker.\n- CI: the artifact records the branch head, not the merge commit of a\n  pull_request run.\n- Worker timeout 840 s, under a 900-second job limit.\n- The emulation build cache refuses a temp directory it does not own.\n- Docs: the unranked path is not upstream's binary; the native A10G\n  result applies to the new binary by review, not by measurement.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: artifact binding, assessment cost summary, timeout race\n\n- CI records the commit that was actually checked out and built\n  (GITHUB_SHA) and the event name. On a pull_request run that is the\n  merge commit, so the bundle script refuses that artifact and says to\n  use the push run's. The previous change labelled merge-tree binaries\n  with the head SHA.\n- The assessment's cost-and-cleanup summary reports the paid A10G\n  session, its estimated cost (not provider billing) and the irregular\n  but verified cleanup, instead of saying no hardware was used.\n- The handler tolerates a grinder that exits between the timeout and\n  the signal, and still returns an uncredited 'interrupted' result.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Prepare bound PQB full-unit validation and correct evidence status\n\n* Require push artifacts for full-unit native validation\n\n* Address review: enforce the kernel's slot spacing; bound the cross-check's locktime\n\n- The round kernel handles at most three deletion boundaries per\n  64-byte block, which needs boundaries 22 bytes apart. The handler and\n  the grinder's host check allowed 12 (upstream's check, weaker than\n  its kernel), so a crafted table could be hashed wrongly and still be\n  reported complete. Both now require 22; PQB's own table has exactly 22.\n- pqb_crosscheck.py also checks a pinning hit's nSequence and nLockTime\n  against the requested range, not only the whole-sequence nonce span.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: filtered cases that must emit; keep failed invocations\n\n- expected.json gains two DER-filtered pinning cases whose expected set\n  holds a shaped candidate (compressed and uncompressed encodings),\n  computed by the reference. The only filtered case so far expected no\n  candidate, so a build that counted gate hits but dropped every\n  filtered candidate would have passed. The 11 November native run did\n  not include these; the docs now say so.\n- run_measure keeps a failed invocation's problem, arguments and whole\n  stdout, stderr and hits under failed-invocations/ beside the result;\n  the full-unit runner does the same for its preflight, and the\n  measurement host script collects nested files.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: keep wrong-answer artifacts, require steady state, reject duplicate events\n\n- run_measure keeps an invocation's problem, arguments, stdout, stderr\n  and hits when it exits 0 with a result that is not the expected one,\n  not only on a timeout or non-zero exit.\n- A run no longer passes unless every upstream and ranked sample reached\n  steady state. The emulated dry run, which cannot, turns the\n  requirement off explicitly and the result records it.\n- A second @setup, @range or @done line fails the invocation instead of\n  replacing the first; a malformed event line fails it too.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: do not credit a unit whose candidates repeat\n\nThe handler checked candidate count, capacity and syntax but not\nuniqueness, so a grinder that wrote one hit twice with a matching count\nwas credited as range-complete, while the full-unit acceptance path\nrejects duplicates. Each trial is visited once; a repeated line now\nfails the unit.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Record native PQB full-unit receipts and evidence limits\n\n* Clarify executed and skipped local test counts\n\n* Retain PQB setup failures and add correctness-only native validation\n\n* Add pinned consumer CPU compatibility validation\n\n* Record native filter validation, consumer compatibility and PQB image scan\n\n* Prepare bounded public PQB solve through the real Batch consumer transport\n\n* Bind mineable consumer policy and retain the known preflight without resubmission\n\n* Restore pinned upstream policy and recheck known pinning jobs on handover\n\n* Prepare independent upstream checks for real public solve hits\n\n* Audit emitted public hits and negative CPU decisions against upstream\n\n* Bind upstream checks to the pinned native curve backend\n\n* Delete disabled Batch queues without an ignored empty association update\n\n* Record the complete public PQB transport solve and verified cleanup\n\n* Address review: checksum artifact identity, paginate cleanup check, durable handoff, publisher failure receipt\n\n- CI adds source-commit and source-event to the artifact's SHA256SUMS,\n  and the bundle script requires the list to name exactly the five\n  files and checks each. A swapped or mixed-in identity file no longer\n  passes.\n- The public-solve controller follows NextMarker when checking for its\n  cleanup function, instead of trusting the first 50 results.\n- The MCP handoff flushes the request file and its directory entry\n  before the request can be dispatched.\n- The private publisher records a terminal failed receipt, with the\n  stage reached and whether the registry state is uncertain, when\n  anything fails after its one-shot marker.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: atomic receipt, retried cancellation, whole-log scan, earlier trap, full report checks\n\n- The private publisher writes its success receipt to a temporary file,\n  flushes it and replaces the marker, so a crash cannot leave a\n  truncated receipt for a published image.\n- The public-solve controller keeps cancellation intent and confirmation\n  apart: a cancel the provider rejected is retried on the next pass and\n  in the failure path instead of being skipped.\n- The worker handler scans the whole log for completion lines, so a\n  second one more than a megabyte back is still counted.\n- The full-unit host script arms its collection trap with the one-shot\n  marker, before the metadata writes.\n- A correctness case also requires the completion report to count the\n  hits written and to name the range and filter it was given, as the\n  worker's range_report does.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: push artifacts only, checked timing samples, atomic result, removal after a failed arm\n\n- The measurement bundle requires a push-run artifact, as the full-unit\n  bundler does: a pull_request artifact is refused even with its merge\n  commit checked out.\n- A ranked timing sample must name the range and filter it was asked\n  for, report the z-block count this script computes for that range,\n  and count the hit lines it wrote. A stale or different workload is no\n  longer accepted as the sample.\n- The runner replaces its result file whole (temporary file, flush,\n  rename, directory flush).\n- The public-solve controller's remove step looks the launch template\n  up by campaign name, so a campaign whose arm failed before recording\n  the template id can still be removed.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: resumable removal, durable failure receipt, device record, exact Lambda request\n\n- public-solve remove: every deletion tolerates a resource that is\n  already gone, so an interrupted removal can be rerun to the end, and\n  job definitions are found by name so a registration whose response\n  was lost is still deregistered.\n- The private publisher's failure receipt is flushed and renamed like\n  its success receipt.\n- A measurement result passes only if its probe named the device, and\n  only a GPU counts; the emulated dry run allows the CPU build\n  explicitly and the result records it.\n- GPU controller: the cleanup archive is byte-stable and written at\n  prepare. In MCP mode arm requires the staged S3 object and persists\n  that exact CreateFunction request, settled before the deadline\n  starts; the CLI path still sends the ZIP inline.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: more removal discovery, durable markers, gate-hit check, bound baseline, staged archive\n\n- public-solve remove finds an unrecorded security group by campaign\n  name and VPC.\n- Full-unit receipts and the private publisher's one-shot marker are\n  flushed to disk (file and directory); the marker is created\n  exclusively before anything else.\n- The public-solve controller refuses to credit a completed unit whose\n  24-bit gate-hit count does not fit the unit's size (trials computed\n  from the checked range; 6 sigma + 6, as in the full-unit harness).\n  The self-test's fixtures report a consistent count. Not run: the\n  self-test needs the pinned consumer checkout.\n- build.py checks the upstream grinder against the lock before the\n  measure stage compiles it as the timing baseline.\n- The public-solve cleanup archive is byte-stable, written with its\n  hash at prepare, and rebuilt and checked before arm changes phase.\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Address review: delete INVALID queues, record the failing status, export only the selected chain\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Prepare PQB HOLD descriptor and consumer adoption handoff\n\n* Address review: bind replay archive and members to the manifest, refuse linked evidence\n\nCo-Authored-By: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e\n\n* Build attested PQB OCI artifact and qualify installed final image\n\n* Verify imported PQB runtime independently of Docker store IDs\n\n* Test imported PQB rootfs and runtime configuration checks\n\n* Allow quota-checked single-A10G G5 sizes in fresh sessions\n\n* Use the host Docker client for final OCI qualification imports\n\n* Consolidate final PQB units under a fresh fixed session deadline\n\n* Record capacity fallback reservation within the final-image campaign\n\n* Allow guarded regional placement in fresh GPU qualification sessions\n\n* Verify final PQB build provenance and native consumer receipts\n\n* Bind retained PQB notices and offline runtime to signed build\n\n* Check the actual PQB response search-version discriminator\n\n* Retain qualified final PQB image provenance, native results and closeout\n\n* Block PQB publication on reproduced TLS trust issue and prepare remediation\n\n* Close six PQB source review findings and bind retained qualification evidence\n\n---------\n\nCo-authored-by: Claude Fable 5.2 \u003cnoreply@anthropic.com\u003e",
+            "timestamp": "2026-11-12T10:57:22Z",
+            "tree_id": "7b519b9b0422fa562d2bcbde51f79ac3912dfd40",
+            "url": "https://github.com/starknet-innovation/qsb-solver/commit/cfd99e3844698f59679e4c15cf567db2976b9ffc"
+          },
+          "organization": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/258895906?v=4",
+            "description": "Innovation Arm of SNF",
+            "events_url": "https://api.github.com/orgs/starknet-innovation/events",
+            "hooks_url": "https://api.github.com/orgs/starknet-innovation/hooks",
+            "id": 258895906,
+            "issues_url": "https://api.github.com/orgs/starknet-innovation/issues",
+            "login": "starknet-innovation",
+            "members_url": "https://api.github.com/orgs/starknet-innovation/members{/member}",
+            "node_id": "O_kgDOD25wIg",
+            "public_members_url": "https://api.github.com/orgs/starknet-innovation/public_members{/member}",
+            "repos_url": "https://api.github.com/orgs/starknet-innovation/repos",
+            "url": "https://api.github.com/orgs/starknet-innovation"
+          },
+          "pusher": {
+            "email": "6303520+adrienlacombe@users.noreply.github.com",
+            "name": "adrienlacombe"
+          },
+          "ref": "refs/heads/codex/pqb-qualify-tls-20261112",
+          "repository": {
+            "allow_forking": true,
+            "archive_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/{archive_format}{/ref}",
+            "archived": false,
+            "assignees_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/assignees{/user}",
+            "blobs_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/blobs{/sha}",
+            "branches_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/branches{/branch}",
+            "clone_url": "https://github.com/starknet-innovation/qsb-solver.git",
+            "collaborators_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/collaborators{/collaborator}",
+            "comments_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/comments{/number}",
+            "commits_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/commits{/sha}",
+            "compare_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/compare/{base}...{head}",
+            "contents_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/contents/{+path}",
+            "contributors_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/contributors",
+            "created_at": 1790324509,
+            "custom_properties": {},
+            "default_branch": "main",
+            "deployments_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/deployments",
+            "description": null,
+            "disabled": false,
+            "downloads_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/downloads",
+            "events_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/events",
+            "fork": false,
+            "forks": 0,
+            "forks_count": 0,
+            "forks_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/forks",
+            "full_name": "starknet-innovation/qsb-solver",
+            "git_commits_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/commits{/sha}",
+            "git_refs_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/refs{/sha}",
+            "git_tags_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/tags{/sha}",
+            "git_url": "git://github.com/starknet-innovation/qsb-solver.git",
+            "has_discussions": false,
+            "has_downloads": true,
+            "has_issues": true,
+            "has_pages": false,
+            "has_projects": true,
+            "has_pull_requests": true,
+            "has_wiki": true,
+            "homepage": null,
+            "hooks_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/hooks",
+            "html_url": "https://github.com/starknet-innovation/qsb-solver",
+            "id": 1387093742,
+            "is_template": false,
+            "issue_comment_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues/comments{/number}",
+            "issue_events_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues/events{/number}",
+            "issues_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/issues{/number}",
+            "keys_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/keys{/key_id}",
+            "labels_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/labels{/name}",
+            "language": "Cuda",
+            "languages_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/languages",
+            "license": null,
+            "master_branch": "main",
+            "merges_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/merges",
+            "milestones_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/milestones{/number}",
+            "mirror_url": null,
+            "name": "qsb-solver",
+            "node_id": "R_kgDOUq1e7g",
+            "notifications_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/notifications{?since,all,participating}",
+            "open_issues": 0,
+            "open_issues_count": 0,
+            "organization": "starknet-innovation",
+            "owner": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/258895906?v=4",
+              "email": null,
+              "events_url": "https://api.github.com/users/starknet-innovation/events{/privacy}",
+              "followers_url": "https://api.github.com/users/starknet-innovation/followers",
+              "following_url": "https://api.github.com/users/starknet-innovation/following{/other_user}",
+              "gists_url": "https://api.github.com/users/starknet-innovation/gists{/gist_id}",
+              "gravatar_id": "",
+              "html_url": "https://github.com/starknet-innovation",
+              "id": 258895906,
+              "login": "starknet-innovation",
+              "name": "starknet-innovation",
+              "node_id": "O_kgDOD25wIg",
+              "organizations_url": "https://api.github.com/users/starknet-innovation/orgs",
+              "received_events_url": "https://api.github.com/users/starknet-innovation/received_events",
+              "repos_url": "https://api.github.com/users/starknet-innovation/repos",
+              "site_admin": false,
+              "starred_url": "https://api.github.com/users/starknet-innovation/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/starknet-innovation/subscriptions",
+              "type": "Organization",
+              "url": "https://api.github.com/users/starknet-innovation",
+              "user_view_type": "public"
+            },
+            "private": false,
+            "pull_request_creation_policy": "all",
+            "pulls_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/pulls{/number}",
+            "pushed_at": 1794481120,
+            "releases_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/releases{/id}",
+            "size": 10268,
+            "ssh_url": "git@github.com:starknet-innovation/qsb-solver.git",
+            "stargazers": 0,
+            "stargazers_count": 0,
+            "stargazers_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/stargazers",
+            "statuses_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/statuses/{sha}",
+            "subscribers_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/subscribers",
+            "subscription_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/subscription",
+            "svn_url": "https://github.com/starknet-innovation/qsb-solver",
+            "tags_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/tags",
+            "teams_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/teams",
+            "topics": [],
+            "trees_url": "https://api.github.com/repos/starknet-innovation/qsb-solver/git/trees{/sha}",
+            "updated_at": "2026-11-10T08:55:59Z",
+            "url": "https://api.github.com/repos/starknet-innovation/qsb-solver",
+            "visibility": "public",
+            "watchers": 0,
+            "watchers_count": 0,
+            "web_commit_signoff_required": false
+          },
+          "sender": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/6303520?v=4",
+            "events_url": "https://api.github.com/users/adrienlacombe/events{/privacy}",
+            "followers_url": "https://api.github.com/users/adrienlacombe/followers",
+            "following_url": "https://api.github.com/users/adrienlacombe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/adrienlacombe/gists{/gist_id}",
+            "gravatar_id": "",
+            "html_url": "https://github.com/adrienlacombe",
+            "id": 6303520,
+            "login": "adrienlacombe",
+            "node_id": "MDQ6VXNlcjYzMDM1MjA=",
+            "organizations_url": "https://api.github.com/users/adrienlacombe/orgs",
+            "received_events_url": "https://api.github.com/users/adrienlacombe/received_events",
+            "repos_url": "https://api.github.com/users/adrienlacombe/repos",
+            "site_admin": false,
+            "starred_url": "https://api.github.com/users/adrienlacombe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/adrienlacombe/subscriptions",
+            "type": "User",
+            "url": "https://api.github.com/users/adrienlacombe",
+            "user_view_type": "public"
+          }
+        },
+        "github_job": "image",
+        "github_ref": "refs/heads/codex/pqb-qualify-tls-20261112",
+        "github_ref_name": "codex/pqb-qualify-tls-20261112",
+        "github_ref_protected": "false",
+        "github_ref_type": "branch",
+        "github_repository": "starknet-innovation/qsb-solver",
+        "github_repository_id": "1387093742",
+        "github_repository_owner": "starknet-innovation",
+        "github_repository_owner_id": "258895906",
+        "github_run_attempt": "1",
+        "github_run_id": "43205074943",
+        "github_run_number": "2",
+        "github_runner_arch": "X64",
+        "github_runner_environment": "github-hosted",
+        "github_runner_image_os": "ubuntu24",
+        "github_runner_image_version": "20261101.360.1",
+        "github_runner_name": "GitHub Actions 1000160100",
+        "github_runner_os": "Linux",
+        "github_runner_tracking_id": "github_1353b87a-256d-4557-89dd-2f68a7ff229e",
+        "github_server_url": "https://github.com",
+        "github_triggering_actor": "adrienlacombe",
+        "github_workflow": "Build attested PQB qualification artifact",
+        "github_workflow_ref": "starknet-innovation/qsb-solver/.github/workflows/pqb-qualify.yml@refs/heads/codex/pqb-qualify-tls-20261112",
+        "github_workflow_sha": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+        "platform": "linux/amd64"
+      }
+    }
+  },
+  "buildx.build.ref": "builder-ac002bc8-9730-4f0f-8bb7-30a6d612c264/builder-ac002bc8-9730-4f0f-8bb7-30a6d612c2640/ifrzxm8hn14aozwgyg5p3q96c",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+    "size": 856,
+    "annotations": {
+      "org.opencontainers.image.created": "2026-11-12T11:03:54Z"
+    }
+  },
+  "containerimage.digest": "sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e"
+}

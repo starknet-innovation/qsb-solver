@@ -1,10 +1,20 @@
 # Documentation and verified release status
 
-Checked 2 October 2026. This page describes the solver `main` documentation and
-its published combined releases. Research branches and their experiment receipts
+Combined-release status was checked 2 October 2026; PQB status was checked 13 November 2026. This page describes the published artifacts and their distinct evidence. Research branches and their experiment receipts
 must be assessed separately; their code is not automatically included in this image.
 AWS Batch is the only transport built or published; the Runpod transport was retired
 on 1 October 2026 and its earlier releases remain immutable records.
+
+## PQB release and serving assessment
+
+The [TLS-fixed PQB release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0)
+is published and enrolled through merged qsb-app PR #150. The [fresh serving assessment](pqb/2026-11-13-serving-validation.md)
+passed an isolated Ireland A10G preflight and complete public synthetic solve through
+the actual Step Functions/coordinator/Batch consumer, independent CPU checks and
+thirteen offline Core component checks. All campaign resources are independently
+cleaned up and its reservation released. The public evidence records native source,
+checker source, exact artifact hashes, cost estimates and scope. Production still
+selects Config A; app-account PQB deployment/runtime verification remains separate.
 
 ## Published and enrolled artifacts
 
@@ -68,11 +78,11 @@ artifact-specific applicability assessment.
 - [Standalone optimized subset](../worker/optimized/README.md): a separate build target, not the complete published image.
 - [A10G method record](promotion/A10G-PERFORMANCE.md): retained preparation methodology for the completed September gate.
 - [AWS controller on main](../ops/aws-gpu-execution/README.md): historical scoped controller, not a standing launch authorization.
-- [PQB candidate assessment](pqb/ASSESSMENT.md): a separate HOLD worker for PQB vaults; not part of any published image.
+- [PQB candidate assessment](pqb/ASSESSMENT.md): a separate worker for PQB vaults, with a [published TLS-fixed release](pqb/2026-11-12-tls-replacement.md) and explicit component applicability limits.
 - [PQB A10G measurement, 11 November](pqb/2026-11-11-a10g-measurement.md): native correctness cases and matched timing of that candidate.
 - [PQB full-unit validation](pqb/2026-11-11-full-unit-validation.md): all three largest native units, with exact source identities and retained receipts.
 - [PQB supplemental validation](pqb/2026-11-11-correctness-consumer-validation.md): 13 native correctness cases, pinned consumer CPU compatibility, PQB image scan and verified cleanup.
-- [Complete public PQB transport solve](pqb/2026-11-11-public-transport-solve.md): three production-predicate stages through actual consumer Batch/S3 modules, independent CPU/native libsecp256k1 checks, cost accounting and verified cleanup; candidate remains HOLD.
+- [Complete public PQB transport solve](pqb/2026-11-11-public-transport-solve.md): three production-predicate stages through actual consumer Batch/S3 modules, independent CPU/native libsecp256k1 checks, cost accounting and verified cleanup; that older runtime retains its original identity.
 - [Licensing](../LICENSES.md): upstream notices and redistribution scope.
 
 ## Historical records

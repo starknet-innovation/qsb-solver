@@ -1,0 +1,12 @@
+{
+  "originalLogSha256": "1d23fe627e382dd59a2ee9fe4f17209fb298a81f227e5bf686e7b00448010d15",
+  "originalPositiveCheckSha256": "8e227a0cd45c81a5fd97cdbf2bbe6f7361b040c3f02a3ebb9fe53325f98b2754",
+  "originalNativeSourceCommit": "16a842a11811b0ecc036ee9b15291360275d755e",
+  "validationSourceCommit": "a3b28bfea190bf606cebed4dd7e73bfb69654d28",
+  "cause": "The mutation locator incorrectly required one long DER signature; the valid witness contains two.",
+  "correction": "Locate final signature/key stack pair and bind HASH160 to lock; mutate only final S byte.",
+  "applicationArtifactsChanged": false,
+  "transactionChanged": false,
+  "gpuRerun": false,
+  "result": "One positive and twelve negative Core checks passed on the retained identical transaction"
+}

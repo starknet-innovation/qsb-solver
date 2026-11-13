@@ -1,0 +1,74 @@
+name: Publish reviewed TLS-fixed PQB archive
+on:
+  push:
+    branches: ['codex/pqb-publish-equivalence-20261112']
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Verify, first-publish, or explicitly repair a missing final registry tag
+        type: choice
+        options: [verify, publish, finalize]
+        default: verify
+concurrency:
+  group: pqb-tls-publication-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      packages: write
+      actions: read
+      attestations: read
+    env:
+      PUBLICATION_ACTION: ${{ github.event_name == 'workflow_dispatch' && inputs.action || 'verify' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Source checks
+        run: python3 -m unittest discover -s tests -v
+      - name: Prepare archive transport and signed-bundle attachment tools
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          sudo apt-get update
+          sudo apt-get install -y skopeo
+          go install oras.land/oras/cmd/oras@v1.3.0
+          echo "$HOME/go/bin" >> "$GITHUB_PATH"
+      - name: Authenticate publication transport
+        if: env.PUBLICATION_ACTION == 'publish' || env.PUBLICATION_ACTION == 'finalize'
+        env:
+          REGISTRY_TOKEN: ${{ github.token }}
+        run: |
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          printf '%s' "$REGISTRY_TOKEN" | skopeo login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Recheck exact artifacts, qualify by applicability, publish and verify original provenance
+        run: |
+          if [ "$PUBLICATION_ACTION" = publish ]; then
+            python3 scripts/publish_pqb_tls.py --publish "$RUNNER_TEMP/pqb-publish"
+          elif [ "$PUBLICATION_ACTION" = finalize ]; then
+            python3 scripts/publish_pqb_tls.py --finalize-published "$RUNNER_TEMP/pqb-publish"
+          else
+            python3 scripts/publish_pqb_tls.py --verify-published "$RUNNER_TEMP/pqb-publish"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() && !cancelled() }}
+        with:
+          name: pqb-tls-publication-receipt
+          path: |
+            ${{ runner.temp }}/pqb-publish/verification.json
+            ${{ runner.temp }}/pqb-publish/source-*-verification.json
+            ${{ runner.temp }}/pqb-publish/git-release-tag-*.json
+            ${{ runner.temp }}/pqb-publish/archive-parts.json
+            ${{ runner.temp }}/pqb-publish/oci-*-verification.json
+            ${{ runner.temp }}/pqb-publish/release/publication.json
+            ${{ runner.temp }}/pqb-publish/release/oci-*-verification.json
+            ${{ runner.temp }}/pqb-publish/fresh-scan/image-scan.json
+            ${{ runner.temp }}/pqb-publish/equivalence/applicability.json
+            ${{ runner.temp }}/pqb-publish/qualification-evidence.tar.gz
+          retention-days: 30

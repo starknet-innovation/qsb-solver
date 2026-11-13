@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "stages": [
+    {
+      "stage": "pinning",
+      "candidates": 0,
+      "consumerChecks": {
+        "checked": 0,
+        "fullSolutions": 0,
+        "canonicalRechecks": 0,
+        "bestIsFull": false,
+        "bestDerBytes": 0
+      }
+    },
+    {
+      "stage": "round0",
+      "candidates": 0,
+      "consumerChecks": {
+        "checked": 0,
+        "fullSolutions": 0,
+        "canonicalRechecks": 0,
+        "bestIsFull": false,
+        "bestDerBytes": 0
+      }
+    },
+    {
+      "stage": "round1",
+      "candidates": 1,
+      "consumerChecks": {
+        "checked": 1,
+        "fullSolutions": 0,
+        "canonicalRechecks": 1,
+        "bestIsFull": false,
+        "bestDerBytes": 3
+      }
+    }
+  ],
+  "simulatedGrinder": true,
+  "freshNativeExecution": false,
+  "scope": "Actual installed-wrapper metadata compatibility and independent CPU checks of retained hit fixtures",
+  "computeSubmitted": false,
+  "enrolled": false,
+  "creditGranted": false,
+  "format": "qsb-pqb-wrapper-consumer-replay-v1",
+  "consumerCommit": "2bea83316fb66fb0fab0c30e7ae8206086059ffb"
+}

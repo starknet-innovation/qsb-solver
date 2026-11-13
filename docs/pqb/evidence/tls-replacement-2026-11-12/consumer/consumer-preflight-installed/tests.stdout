@@ -1,0 +1,9 @@
+
+ RUN  v4.1.12 /Users/adrienlacombe/.codex/worktrees/4d7a/qsb-app-release-handoff
+
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  12:10:13
+   Duration  3.71s (transform 590ms, setup 87ms, import 1.31s, tests 4.12s, environment 0ms)
+

@@ -1,0 +1,21 @@
+test_pqb_transport_evidence (unittest.loader._FailedTest.test_pqb_transport_evidence) ... ERROR
+
+======================================================================
+ERROR: test_pqb_transport_evidence (unittest.loader._FailedTest.test_pqb_transport_evidence)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_pqb_transport_evidence
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "/Users/adrienlacombe/.codex/worktrees/4d7a/qsb-solver-tls-equivalence/tests/test_pqb_transport_evidence.py", line 8, in <module>
+    import publish_pqb_tls
+ModuleNotFoundError: No module named 'publish_pqb_tls'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
