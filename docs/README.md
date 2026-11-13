@@ -1,10 +1,20 @@
 # Documentation and verified release status
 
-Checked 2 October 2026. This page describes the solver `main` documentation and
-its published combined releases. Research branches and their experiment receipts
+Combined-release status was checked 2 October 2026; PQB status was checked 13 November 2026. This page describes the published artifacts and their distinct evidence. Research branches and their experiment receipts
 must be assessed separately; their code is not automatically included in this image.
 AWS Batch is the only transport built or published; the Runpod transport was retired
 on 1 October 2026 and its earlier releases remain immutable records.
+
+## PQB release and serving assessment
+
+The [TLS-fixed PQB release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0)
+is published and enrolled through merged qsb-app PR #150. The [fresh serving assessment](pqb/2026-11-13-serving-validation.md)
+passed an isolated Ireland A10G preflight and complete public synthetic solve through
+the actual Step Functions/coordinator/Batch consumer, independent CPU checks and
+thirteen offline Core component checks. All campaign resources are independently
+cleaned up and its reservation released. The public evidence records native source,
+checker source, exact artifact hashes, cost estimates and scope. Production still
+selects Config A; app-account PQB deployment/runtime verification remains separate.
 
 ## Published and enrolled artifacts
 

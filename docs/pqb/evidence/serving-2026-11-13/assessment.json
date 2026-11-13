@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "passed": true,
+  "producerSourceCommit": "cfd99e3844698f59679e4c15cf567db2976b9ffc",
+  "nativeConsumerSourceCommit": "16a842a11811b0ecc036ee9b15291360275d755e",
+  "offlineValidationSourceCommit": "a3b28bfea190bf606cebed4dd7e73bfb69654d28",
+  "descriptorId": "pqb-ranked-v2-cfd99e384469-edce7a14b554",
+  "canonicalImage": "ghcr.io/starknet-innovation/qsb-solver@sha256:edce7a14b5548a079f8ebf1e866c533cb14573328cf739a6647b150cca08756e",
+  "searchContract": "5217daa6415b83dcce2d85159130df4994ab0e9bb67910c7bdf00e5804f4ee71",
+  "apiArtifactSha256": "1d23ffc6f4545fd3d1b330e0a0be6b3d5ef694a6deb03bb6dba48dd1d0ee9c35",
+  "coordinatorSha256": "59816f3a0c21e2b2c4f0cf8f0aaa4eb4252a8bf5e31a7b1e866a9b8fc6b7eff2",
+  "sealedPrivateCollectionSha256": "edea187a0bfc67cc6422cca3685636c7d2b2299a8afd49e84aa4634f3aead45d",
+  "independentCleanupSha256": "886fc263b6dc0b0a5b22b3e6e17625419fe2395db84abf4ea1e1c7e02b29250e",
+  "hardware": {
+    "region": "eu-west-1",
+    "instanceType": "g5.xlarge",
+    "gpu": "A10G",
+    "driver": "580.178.04",
+    "peakConcurrentHosts": 16,
+    "allocatedHosts": 20
+  },
+  "timings": [
+    {
+      "phase": "solve",
+      "status": "SUCCEEDED",
+      "startUtc": "2026-11-13T13:48:30.998000+00:00",
+      "stopUtc": "2026-11-13T14:54:24.612000+00:00",
+      "workflowWallSeconds": 3953.614
+    },
+    {
+      "phase": "preflight",
+      "status": "SUCCEEDED",
+      "startUtc": "2026-11-13T13:33:46.475000+00:00",
+      "stopUtc": "2026-11-13T13:47:28.554000+00:00",
+      "workflowWallSeconds": 822.079
+    }
+  ],
+  "fullSolveSubmitted": 147,
+  "fullSolveCompleted": 108,
+  "fullSolveCanceled": 39,
+  "stages": {
+    "pinning": {
+      "SUCCEEDED": 23,
+      "FAILED": 15
+    },
+    "round1": {
+      "SUCCEEDED": 46,
+      "FAILED": 14
+    },
+    "round2": {
+      "SUCCEEDED": 39,
+      "FAILED": 10
+    }
+  },
+  "preflightCompleted": 1,
+  "auditedSuccessfulUnits": 109,
+  "emittedCandidates": 15,
+  "fullSolutions": 3,
+  "simulatedGrinder": false,
+  "broadcast": false,
+  "fundedOutputs": false,
+  "productionPqbSelected": false,
+  "coreChecks": 13,
+  "limits": [
+    "One public synthetic solve, not a matched benchmark or latency distribution",
+    "Does not prove complete domain enumeration",
+    "Isolated SNF account, not production app-account IAM/runtime qualification",
+    "Public OP_TRUE helper: no helper wallet signature",
+    "No chain/UTXO or miner acceptance",
+    "No broadcast",
+    "Legacy input scripts do not commit previous-output amounts; chain and exact-spend checks remain required"
+  ]
+}

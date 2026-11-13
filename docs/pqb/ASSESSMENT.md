@@ -4,8 +4,13 @@ See the [TLS replacement assessment](2026-11-12-tls-replacement.md) and its chec
 [decision package](evidence/tls-replacement-2026-11-12/decision.json). The [published release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0)
 from merged main retains native evidence only for the byte-identical compute stack;
 fresh TLS/S3 checks and hosted qualification passed. Registry identity and original
-build provenance verify. No fresh native GPU execution or new timing is claimed.
-The descriptor handoff is in qsb-app PR #150; deployment remains separate.
+build provenance verify. A [fresh isolated consumer-workflow assessment](2026-11-13-serving-validation.md)
+passed the A10G preflight, complete public synthetic solve, sealed 109-unit audit,
+independent native CPU checks and all thirteen offline Core checks. Its native
+consumer and corrected offline-checker commits are recorded separately. Temporary
+resources are independently cleaned up and reservations released. The descriptor
+is enrolled through merged qsb-app PR #150; production still selects Config A.
+The isolated SNF Ireland result does not qualify production-account deployment.
 
 # Research and reference-image assessment
 
@@ -213,16 +218,22 @@ costs. The later public transport solve cost $20.43 estimated Batch compute plus
 builder, including allocated startup/cancellation/collection time. One synthetic result does
 not establish a production cost distribution or another GPU's cost.
 
-## What qsb-app would need
+## Consumer adoption and remaining deployment gate
 
-Consumer adoption requires PQB vault/problem construction, an independent CPU verifier for
-candidates and transaction meaning, a coordinator that pins, runs round0 then round1 and
-re-pins when a whole round is empty, plus matching contract vectors tested in both repositories.
-These are proposed in [qsb-app PR #150](https://github.com/starknet-innovation/qsb-app/pull/150).
-The supplemental CPU assessment pins its tested commit and matching vectors. The later public
-solve used consumer `276f2ae`, whose tree equals that original `81c060d` tree, and exercised
-actual Batch/S3/CPU modules with development orchestration. Its report records the remaining
-served-application and release gaps. The worker keeps no verifier, wallet or key material.
+Merged [qsb-app PR #150](https://github.com/starknet-innovation/qsb-app/pull/150)
+provides PQB vault/problem construction, independent CPU candidate and transaction
+verification, three-stage coordination and matching contract vectors. The
+[fresh isolated serving assessment](2026-11-13-serving-validation.md) exercises
+the actual Step Functions/Batch/S3 path with the enrolled TLS-fixed image and
+retains a separately identified thirteen-check offline Core result. The worker
+keeps no verifier, wallet or key material.
+
+Production continues to select Config A. The isolated SNF account's IAM, queue and
+hardware evidence does not qualify the production London account's PQB runtime.
+That deployment-specific verification and explicit selection review remain open;
+chain/UTXO and miner acceptance, wallet signatures and broadcast are outside the
+public synthetic assessment. Its compute estimate and cleanup receipts are in the
+[current report](2026-11-13-serving-validation.md#cost-cleanup-and-handoff).
 
 ## Cost and cleanup
 
