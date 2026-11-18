@@ -34,8 +34,7 @@ and prepares three interleaved baseline/candidate subrange pairs per stage.
 The approved 60-minute single-A10G session in Ireland received a definitive EC2 capacity
 rejection on its only launch request. No GPU was allocated. The compute estimate is $0;
 staging and API charges have not been reconciled to billing. Independent checks verified
-cleanup and the $10 reservation was released. Native correctness, full-unit timings and
-matched performance remain pending. The [qualification receipt](evidence/adoption-2026-11-18/qualification.json)
+cleanup and the $10 reservation was released. The [qualification receipt](evidence/adoption-2026-11-18/qualification.json)
 records the exact image, binary and campaign identities. All release and measurement
 records below describe earlier artifacts.
 
@@ -43,6 +42,34 @@ A separately authorized [London session](evidence/adoption-2026-11-18/london-ses
 used the same verified artifact and input bundle. EC2 rejected its single on-demand
 A10G launch for insufficient capacity. Independent checks confirmed cleanup and release
 of the fresh $10 reservation. No native work ran.
+
+### November 18 native qualification
+
+On a Northern Virginia `g5.2xlarge` with one A10G, the verified image passed all 14
+independent public cases before each full unit. These include the 21-byte gap.
+qsb-app at `d89fb644` replayed all three completed outputs and independently verified
+the single emitted candidate. The candidate was a partial match. The
+[consumer receipt](evidence/adoption-2026-11-18/virginia/consumer.json) binds the
+three stages to the original [native results](evidence/adoption-2026-11-18/virginia/native.json.gz).
+
+| Worker stage | Largest assigned range (trials) | Job seconds | Median paired process speedup |
+| --- | ---: | ---: | ---: |
+| Pinning | 1,209,600,000,000 | 491.19 | 1.000× |
+| Round 0 | 1,371,226,605,888 | 506.96 | 1.002× |
+| Round 1 | 978,095,986,624 | 491.75 | 1.012× |
+
+The speedups use separate matched subranges, with three interleaved pairs per stage
+on the same GPU in the candidate runtime. Each pair agreed on counts and emitted hits.
+The [sample summary](evidence/adoption-2026-11-18/virginia/matched-comparison.json)
+and [raw timing archive](evidence/adoption-2026-11-18/virginia/timing.tar.gz) retain
+all 18 samples. Subrange process timings include startup. The samples do not establish
+a reduction in complete-solve latency or cost.
+
+Keep the candidate on HOLD for release review. The CUDA update supports the reviewed
+upstream spacing change and passed native qualification. Publication, enrollment
+and a served full solve with this digest remain outstanding.
+The [campaign closeout](evidence/adoption-2026-11-18/virginia/campaign.json)
+covers the failed attempt, bundle permission correction, cost estimate and cleanup.
 
 # November 12 TLS-fixed release
 

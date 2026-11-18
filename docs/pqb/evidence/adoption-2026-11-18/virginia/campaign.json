@@ -1,0 +1,107 @@
+{
+  "format": "qsb-pqb-a10g-retry-closeout-v1",
+  "decision": "HOLD for publication and enrollment review",
+  "image": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:bcc69b5d33ac7ddbabd5a8822081acef275c02cf0232f93bd04fab0865a16f78",
+    "platformDigest": "sha256:bac292c25253064e3cf65a82d4ae08f71f713254b992bb4a69d27b8f1bc7ea28",
+    "configDigest": "sha256:f49d0bd97c4230371061d9ade15b6c2741e16c4d21029150e1879b16aa02bf32"
+  },
+  "controllerCommit": "e757861df29dc81c1a67d2565a9afa1b73fc7ae3",
+  "capUsd": 10,
+  "reservationRemainingUsd": 0,
+  "conservativeCampaignAllowanceUsedUsd": 2.9664,
+  "estimatedComputeUpperUsd": 0.9417,
+  "providerBillingReconciled": false,
+  "method": "Launch through independently observed cleanup, rounded up. Ancillary services excluded from compute estimate. Campaign allowance includes headroom for these services.",
+  "attempts": [
+    {
+      "region": "eu-west-1",
+      "instanceType": "g5.16xlarge",
+      "outcome": "capacity-rejected",
+      "allocated": false,
+      "cleanup": {
+        "instances": [],
+        "volumes": [],
+        "roles": [],
+        "securityGroups": [],
+        "scheduleAbsent": true,
+        "lambdaAbsent": true,
+        "profileAbsent": true
+      },
+      "bucketDeleted": true,
+      "cleanupReceiptSha256": "ee8bbfbdd277a7871d781a413e3fb7fd216fc958a267cc72ef76a69c5bed3485",
+      "bucketReceiptSha256": "1ce7b0cf5790d8f7caf0762b76e53502eb0934e50d375d17164be8fd72f53c16",
+      "rateUsdPerHour": 4.57237,
+      "estimatedComputeUpperUsd": 0
+    },
+    {
+      "region": "us-east-1",
+      "instanceType": "g5.2xlarge",
+      "outcome": "allocated-incomplete",
+      "allocated": true,
+      "cleanup": {
+        "instances": [
+          "terminated"
+        ],
+        "volumes": [],
+        "roles": [],
+        "securityGroups": [],
+        "scheduleAbsent": true,
+        "lambdaAbsent": true,
+        "profileAbsent": true
+      },
+      "bucketDeleted": true,
+      "cleanupReceiptSha256": "c45d237db0c75506d70f42798f798ccc2af1b642f1d7babc0627e19af43c6d74",
+      "bucketReceiptSha256": "2a4781ed5bbe86594bb6424d16ecead7398154d45f84481f2a099cbc8ed88394",
+      "rateUsdPerHour": 1.212,
+      "estimatedComputeUpperUsd": 0.2017,
+      "launchUtc": "2026-11-18T10:30:21+00:00",
+      "cleanupObservedUtc": "2026-11-18T10:40:19.430786+00:00",
+      "upperSeconds": 599,
+      "nativeSha256": "4382af8ee90674d4f68ad44012579c32121ca54f4e39000e6f6f2e681fdf949a"
+    },
+    {
+      "region": "us-east-1",
+      "instanceType": "g5.2xlarge",
+      "outcome": "collected",
+      "allocated": true,
+      "cleanup": {
+        "instances": [
+          "terminated"
+        ],
+        "volumes": [],
+        "roles": [],
+        "securityGroups": [],
+        "scheduleAbsent": true,
+        "lambdaAbsent": true,
+        "profileAbsent": true
+      },
+      "bucketDeleted": true,
+      "cleanupReceiptSha256": "c45d237db0c75506d70f42798f798ccc2af1b642f1d7babc0627e19af43c6d74",
+      "bucketReceiptSha256": "d2bd1d645857e87532cacd8836424380e6e0f143a80af1896bc5cb06ec3cd7a4",
+      "rateUsdPerHour": 1.212,
+      "estimatedComputeUpperUsd": 0.74,
+      "launchUtc": "2026-11-18T10:42:11+00:00",
+      "cleanupObservedUtc": "2026-11-18T11:18:48.324032+00:00",
+      "upperSeconds": 2198,
+      "nativeSha256": "2b808caacdb4a8122942a032459cd2ef05411cddd2317aa81e35d945c7762aa3"
+    }
+  ],
+  "firstVirginiaFailure": "Image imported. Unprivileged checksum read failed before the grinder ran.",
+  "transportFix": {
+    "change": "Normalized public archive ownership and read/execute modes; compared every member name and payload before launch.",
+    "originalArchive": "5323818a9b0ced160578bca733920a05562a14ef5881bc0ab911dad5d23f4bd4",
+    "correctedArchive": "f584aef7f5cd3fb740a16086d68c5998347a9d140856585b0d3e5c0b90e756dc",
+    "bundleInventory": "482d9c32ce7c60838182a6e02b004a6c9326cdbbedc62a51ae093b8ed6abacbf"
+  },
+  "receiptHashes": {
+    "build-time-proposal.json": "cf505cc7c0cc62e6d1a1e29d75b261c10d568a4a5d15d31137267cf1e024d560",
+    "consumer.json": "611171ec88faa8819e2a70468a427f559fc98093598b8d4caf98b864a25ad2b6",
+    "gate.SHA256SUMS": "a2a8b92b2bf253c7828f651646a2f557f0232d5ab4a064e90326a8e0a65c603c",
+    "matched-comparison.json": "9a5e9ac55192010333335afc586d22fba9eaf484993e0c43aede9053185c5d8d",
+    "native.json.gz": "2b808caacdb4a8122942a032459cd2ef05411cddd2317aa81e35d945c7762aa3",
+    "timing.tar.gz": "bcf91e66785f164f5afde97afe93e7cdfc73c5985c4107c12d1adf83381d1b63"
+  }
+}

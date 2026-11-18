@@ -1,0 +1,72 @@
+{
+  "format": "qsb-pqb-final-consumer-v1",
+  "status": "passed",
+  "consumerCommit": "d89fb64400a23042e1715b0313db4f2c91c56e91",
+  "consumerTree": "83d737fc97bddc91603d5f6699a5f9496fc529a4",
+  "archiveSha256": "2b808caacdb4a8122942a032459cd2ef05411cddd2317aa81e35d945c7762aa3",
+  "proposalSha256": "cf505cc7c0cc62e6d1a1e29d75b261c10d568a4a5d15d31137267cf1e024d560",
+  "harnessSha256": "5f0e6e9f2e81cf58c9e53662fee423cca135d1b38837ef2be665425f381180db",
+  "typescriptSha256": "b0ed466d12f1df363863814c480c63842b116a37216dc1bbb3fc5997a08e9e94",
+  "nativeGateSha256": "a2a8b92b2bf253c7828f651646a2f557f0232d5ab4a064e90326a8e0a65c603c",
+  "nativeGateCommit": "69f2b427f2f1e0d2c882263fe0b6cb8bea90b3b2",
+  "buildMetadataSha256": {
+    "SHA256SUMS": "0aaa15d973ba3624c40dd22cc118eda7f2f9f71060e66132e8c9827c1bfe2047",
+    "oci-identity.json": "b6cf778efdbbc3f2c6c7756565d0afd6f23985e8c12b63b941933faa6a3cd9e4",
+    "image-config.json": "f49d0bd97c4230371061d9ade15b6c2741e16c4d21029150e1879b16aa02bf32",
+    "binding.json": "9e112e2a6bcbcb8d204a7b7be9dbd27ff5c56f8ceac10ea6d1c988792dfdfd34",
+    "build-receipt.json": "01881be20c3deca4e4618504d052b393800ec4c0cfdde091455718fd58829a46"
+  },
+  "consumerLockSha256": "8b3da947198c455ef23a35f85d8987207244ef9a0e1f4faa0ab190627f1c9407",
+  "schema": 3,
+  "stages": [
+    {
+      "stage": "pinning",
+      "attempt": 0,
+      "candidates": 0,
+      "consumerChecks": {
+        "checked": 0,
+        "fullSolutions": 0,
+        "canonicalRechecks": 0,
+        "bestIsFull": false,
+        "bestDerBytes": 0
+      },
+      "workerSeconds": 491.160165514,
+      "jobSeconds": 491.19117056000005
+    },
+    {
+      "stage": "round0",
+      "attempt": 0,
+      "candidates": 0,
+      "consumerChecks": {
+        "checked": 0,
+        "fullSolutions": 0,
+        "canonicalRechecks": 0,
+        "bestIsFull": false,
+        "bestDerBytes": 0
+      },
+      "workerSeconds": 506.93364889199995,
+      "jobSeconds": 506.9584900630001
+    },
+    {
+      "stage": "round1",
+      "attempt": 0,
+      "candidates": 1,
+      "consumerChecks": {
+        "checked": 1,
+        "fullSolutions": 0,
+        "canonicalRechecks": 1,
+        "bestIsFull": false,
+        "bestDerBytes": 3
+      },
+      "workerSeconds": 491.71367822,
+      "jobSeconds": 491.75453413900004
+    }
+  ],
+  "enrolled": false,
+  "publicationVerified": false,
+  "scope": "Fresh exact-image native envelopes and CPU cryptographic checks",
+  "limits": [
+    "No new complete solve, served Step Functions, wallet, consensus, miner or broadcast test",
+    "Six-sigma gate sanity checked separately; served consumer only enforces accounting bounds"
+  ]
+}
