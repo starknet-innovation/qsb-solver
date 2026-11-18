@@ -29,8 +29,15 @@ class OperatorConfigTests(unittest.TestCase):
             self.path.write_text(json.dumps(dict(self.value,region=region)))
             with self.assertRaises(ValueError):m.load_config()
     def test_other_region_unknown_field_and_bad_id_rejected(self):
-        for value in (dict(self.value,region='us-east-1'),dict(self.value,token='no'),dict(self.value,account='wrong')):
+        for value in (dict(self.value,region='us-west-2'),dict(self.value,token='no'),dict(self.value,account='wrong')):
             self.path.write_text(json.dumps(value))
+            with self.assertRaises(ValueError):m.load_config()
+    def test_virginia_is_explicitly_supported_without_widening_other_regions(self):
+        value=dict(self.value,region='us-east-1')
+        self.path.write_text(json.dumps(value))
+        self.assertEqual(m.load_config(),value)
+        for region in ('us-east-2','us-east-11','xus-east-1'):
+            self.path.write_text(json.dumps(dict(self.value,region=region)))
             with self.assertRaises(ValueError):m.load_config()
     def test_duplicate_key_rejected(self):
         self.path.write_text('{"account":"123456789012","account":"123456789012"}')
