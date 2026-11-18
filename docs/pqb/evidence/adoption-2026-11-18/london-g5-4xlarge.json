@@ -1,0 +1,36 @@
+{
+  "status": "HOLD-native-capacity-rejected",
+  "imageDigest": "sha256:bcc69b5d33ac7ddbabd5a8822081acef275c02cf0232f93bd04fab0865a16f78",
+  "region": "eu-west-2",
+  "instanceType": "g5.4xlarge",
+  "hourlyComputeUsd": 2.06148,
+  "sessionMinutes": 60,
+  "deadlineUtc": "2026-11-18T11:16:58+00:00",
+  "approvedUsd": 10,
+  "reservedUsdAfterCloseout": 0,
+  "launchRequests": 1,
+  "sdkRetries": 0,
+  "providerResponse": "InsufficientInstanceCapacity",
+  "allocatedInstances": 0,
+  "nativeInvocations": 0,
+  "estimatedEc2ComputeUsd": 0,
+  "providerBillingReconciled": false,
+  "stagingBucketDeleted": true,
+  "unknownSubmissions": 0,
+  "independentCleanup": {
+    "instances": [],
+    "volumes": [],
+    "roles": [],
+    "securityGroups": [],
+    "scheduleAbsent": true,
+    "lambdaAbsent": true,
+    "profileAbsent": true
+  },
+  "receiptsSha256": {
+    "launch-1794997024273750000.log": "4e09352146d4d5a447137cdf3d56f17db8bbb7f22adbace5e62d05ac124f6880",
+    "launch-intent.json": "480e350b250f5b24037a356a230d104924a693dfdd93edd8557a1b42eb55b331",
+    "inputs.json": "d1913998fa31a591c30d198825c3f99d261bb38ac9b16617710d4faa98582de0",
+    "independent-cleanup.json": "ee8bbfbdd277a7871d781a413e3fb7fd216fc958a267cc72ef76a69c5bed3485",
+    "bucket-cleanup.json": "1ce7b0cf5790d8f7caf0762b76e53502eb0934e50d375d17164be8fd72f53c16"
+  }
+}
