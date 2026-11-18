@@ -15,6 +15,16 @@ in the vendored baseline. The app-facing worker retains one assigned range per r
 deterministic pinning, DER filtering, exact host recomputation for exceptional points and
 the `pqb-ranked-v2` partition. Hit-file errors fail the request before completion.
 
+Local verification used worker commit `4c3e8da59654b67acc001d8b9c4031946f01cca9` and
+Apple clang 21.0.0 on arm64. The ranked CPU-emulation binary had SHA-256
+`680cd4687b80f12a7bb82609f0bba760838e95ae00c37332adb245d8ec2afdfb`.
+The full Python suite ran 250 tests, with 249 passes and one Linux-only test skipped.
+The 21-byte spacing case compared the entire emitted hit set with the independent reference.
+The consumer check at qsb-app `d89fb64400a23042e1715b0313db4f2c91c56e91` matched 350
+ranges, accepted the three public stage fixtures, and passed 18 consumer tests.
+Contract SHA-256 was `eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1`.
+All runs used local compute and created no cloud resources.
+
 Native correctness, whole-unit timings, and a qualified image digest for this candidate
 are pending. All release and measurement records below describe earlier artifacts.
 
