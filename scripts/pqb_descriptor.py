@@ -11,6 +11,9 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
+# qsb-app src/pqb-core/provenance.json identifies the vault/problem generator for pqb-v1.
+# The independently versioned CUDA import is recorded in the signed build receipt.
+PQB_GENERATOR_COMMIT = 'eccdd09772edf14ab37fc63992b0626ad7ff2221'
 RUNTIME_INPUTS = (
     'worker/pqb/Dockerfile', 'worker/pqb/build.py', 'worker/pqb/bind.py',
     'worker/pqb/pqb_handler.py', 'worker/pqb/pqb_ranges.py',
@@ -148,7 +151,7 @@ def prepare(evidence, review_commit):
     contract = source(commit, 'contracts/pqb-ranked-v2.json')
     contract_digest = contract_hash(contract, source(commit, 'worker/pqb/pqb_ranges.py'))
     solver = dict(schemaVersion=3, id='pqb-ranked-v2-' + commit[:12] + '-' + digest[7:19],
-                  protocol='pqb-v1', generatorCommit=lock['upstream']['commit'], searchVersion='pqb-ranked-v2',
+                  protocol='pqb-v1', generatorCommit=PQB_GENERATOR_COMMIT, searchVersion='pqb-ranked-v2',
                   searchContract=contract_digest, solverRepository='https://github.com/starknet-innovation/qsb-solver',
                   solverCommit=commit, kernelCommit=commit,
                   image='ghcr.io/starknet-innovation/qsb-solver@' + digest)

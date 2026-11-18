@@ -3,7 +3,7 @@ import argparse,hashlib,json,pathlib,subprocess,sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from pqb_oci import inspect
-from pqb_descriptor import source,contract_hash,sha
+from pqb_descriptor import PQB_GENERATOR_COMMIT,source,contract_hash,sha
 from pqb_import import verify_runtime
 WORKFLOW='starknet-innovation/qsb-solver/.github/workflows/pqb-qualify.yml'
 
@@ -93,7 +93,7 @@ def verify(artifact,out,commit,ref,run_id):
     if not scan['passed'] or scan['blocking']:raise ValueError('Image scan policy failed')
     contract=source(COMMIT,'contracts/pqb-ranked-v2.json')
     solver=dict(schemaVersion=3,id='pqb-ranked-v2-'+COMMIT[:12]+'-'+identity['imageDigest'][7:19],
-        protocol='pqb-v1',generatorCommit=lock['upstream']['commit'],searchVersion='pqb-ranked-v2',
+        protocol='pqb-v1',generatorCommit=PQB_GENERATOR_COMMIT,searchVersion='pqb-ranked-v2',
         searchContract=contract_hash(contract,source(COMMIT,'worker/pqb/pqb_ranges.py')),
         solverRepository='https://github.com/starknet-innovation/qsb-solver',solverCommit=COMMIT,kernelCommit=COMMIT,
         image='ghcr.io/starknet-innovation/qsb-solver@'+identity['imageDigest'])
