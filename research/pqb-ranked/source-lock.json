@@ -3,12 +3,12 @@
  "status": "HOLD",
  "upstream": {
   "repository": "https://github.com/fireblocks-labs/pqb",
-  "commit": "eccdd09772edf14ab37fc63992b0626ad7ff2221",
+  "commit": "82c7cba684899e5a069f5f1baf4931c59111d345",
   "adaptedFrom": "grinder/grind.cu",
-  "adaptedFromSha256": "9bcff50c6a3600b15c4d81e96ea8118f4243dac92f14b9df68959ec691770fd5"
+  "adaptedFromSha256": "06ef837013dad6e3d6dce0e5368d8e20209041ec58dbc99ceeb6e521040bc865"
  },
  "sources": {
-  "research/pqb-ranked/grind.cu": "217d9fe86d49ada9d8abb9ee88010f6fcf9762897a26494c3d1ad37223327622",
+  "research/pqb-ranked/grind.cu": "cbe9fd561cccfbd180a89cd0c5c39879c35511bead5015cdc820f63d119c8627",
   "vendor/pqb/grinder/common.cuh": "0cdfc8649cdbe100e0ea200b107afb7dcda7ea560ef785da74f8df04537d6a56",
   "vendor/pqb/grinder/ptx_field.cuh": "0c32f347784aec4c353288f0fa9ab293cb99e21051758aa719d25cafe06bd2ff"
  },
@@ -21,11 +21,6 @@
    "-I",
    "vendor/pqb/grinder"
   ],
-  "upstreamFlags": [
-   "-O3",
-   "-std=c++17",
-   "-arch=native"
-  ],
-  "note": "Upstream compiles on the rented box with -arch=native and CUDA 12.6.3; this recipe fixes the architecture and uses the repository's pinned 12.8.1 toolchain. Upstream rate measurements do not describe this build."
+  "note": "The worker compiles the adapted source for one explicit architecture. Upstream distributes a multi-architecture CUDA 12.6 binary."
  }
 }

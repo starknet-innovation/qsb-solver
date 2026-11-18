@@ -2,7 +2,7 @@
 
 `grind.cu` is an adaptation of `grinder/grind.cu` from
 [fireblocks-labs/pqb](https://github.com/fireblocks-labs/pqb) at
-`eccdd09772edf14ab37fc63992b0626ad7ff2221` (MIT, Copyright (c) 2026 Fireblocks Ltd.). The
+`82c7cba684899e5a069f5f1baf4931c59111d345` (MIT, Copyright (c) 2026 Fireblocks Ltd.). The
 unchanged upstream files, licence and notices are under [vendor/pqb](../../vendor/pqb); this
 build includes `common.cuh` and `ptx_field.cuh` from there. `source-lock.json` binds the bytes.
 It is **not** the upstream grinder and upstream's measurements do not describe it.

@@ -1,9 +1,11 @@
 // FOR SECURITY RESEARCH ONLY — NOT FOR PRODUCTION USE
 // CUDA grinder (see README.md). Per batch, on one of two non-blocking CUDA streams (two batches in flight):
 //   zgen_pin : (pin) one thread per z-block over a precomputed midstate
-//   zpre     : (round) persistent lanes: a uniform (t-1)-prefix per item, a full sweep of its
-//              completions; emits each subset's midstate after its boundary block (nz decided on
-//              the GPU: budget <= nz < budget + ZSLACK, read by later kernels from ctr[2])
+//   zpre     : (round) persistent lanes: a (t-1)-prefix per item, a full sweep of its
+//              completions; emits each subset's midstate after its boundary block. With --queue
+//              the prefixes are consecutive lexicographic ranks [base, base + nitems), every one
+//              exactly once (the host sums their completions, so nz is exact); without it, each
+//              is drawn uniformly at random (nz decided on the GPU: budget <= nz < budget + ZSLACK)
 //   ztail    : (round) persistent lanes hash each subset's tail (region T) + the outer SHA-256
 //   ec_comb  : one thread per ZB z-blocks: W = z*B (16-bit comb, 64 MiB table, Jacobian mixed
 //              adds), Z's batch-inverted -> affine W, then prefix products of the menu
@@ -13,6 +15,9 @@
 //   hash_pts : (QG_FUSE=0 only) one thread per (point, encoding): SHA-256 -> gate -> hits
 //
 //   grind --problem P.json --hits hits.txt --seconds S     (reads P.txt next to P.json)
+//         [--queue Q.txt --done D.txt]   round stages: search exactly the prefix-rank ranges listed
+//                                        in Q ("lo hi" per line, appended while it runs), skip
+//                                        what D records as done, append each finished batch to D
 //
 // The three PQB track shapes are template instances (nvcc compiles once, before the problem is
 // known). Profiling: prints @setup/@batch/@done; -DQG_STAGE=k cuts after stage k and skips the
@@ -28,6 +33,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <deque>
 #include <vector>
 #include <unistd.h>
 #include "common.cuh"
@@ -64,7 +70,10 @@ static const uint ZB = QG_ZB;                      // z-blocks per ec thread (on
 #endif
 static const uint LANES = QG_LANES;                // round: persistent zpre / ztail lanes
 static const uint ZSLACK = 128;                    // round: a batch may overrun its budget by < c_max
-static const uint HIT_CAP = 1u << 20;
+#ifndef QG_HIT_CAP
+#define QG_HIT_CAP (1u << 20)                      // -DQG_HIT_CAP=k: tests the @lost path
+#endif
+static const uint HIT_CAP = QG_HIT_CAP;
 
 // ------------------------------------------------------------------------------ backend shim
 #if defined(__CUDACC__) && !defined(QG_EMU)
@@ -92,6 +101,10 @@ QG_FI uint qg_rotl(uint x, uint n) { return (x << n) | (x >> (32 - n)); }
 struct Hit { uint a, b, c, d; };                   // c = j | recid<<8 | enc<<16 | lvl<<24
 QG_CMEM ge c_cpts[64];                             // C[j][recid] at j * npts + recid
 QG_CMEM uint c_gate[2];                            // gate_bits, tag
+// Deterministic rounds (--queue): binomial coefficients C(a, b) for unranking a (t-1)-prefix.
+#define QG_BN 129                                  // a <= 128: up to 129 live slots
+#define QG_BK 10                                   // b <= 9: t <= 10
+QG_CMEM qg_u64 c_binom[QG_BN * QG_BK];
 
 // ------------------------------------------------------------------------------ group law
 QG_FI gej gej_add_ge(gej p, ge q) {                // p (Jacobian, not infinity) + q (affine), p != +-q
@@ -292,7 +305,7 @@ QG_FI void stream_block(uint *w, const uint *rw, uint rwn, uint o, const uint *s
     }
     const uint *src = rw + k0 * rwn + (o >> 2);
 #pragma unroll
-    for (int i = 0; i < 16; i++) {                    // <= 3 boundaries per block (>= 22 B apart)
+    for (int i = 0; i < 16; i++) {                    // <= 3 boundaries per block (>= 21 B apart: host check)
         uint p = o + 4 * i;
         uint k = ((nb <= p) ? 1u : 0u) + ((n2 <= p) ? 1u : 0u) + ((n3 <= p) ? 1u : 0u);
         uint cut = (nb - p - 1 < 3u) ? nb - p : (n2 - p - 1 < 3u) ? n2 - p : (n3 - p - 1 < 3u) ? n3 - p : 4u;
@@ -303,8 +316,8 @@ QG_FI void stream_block(uint *w, const uint *rw, uint rwn, uint o, const uint *s
 }
 
 template <int T>
-KERNEL zpre(qg_u64 seed, uint budget, RoundGeo g, uint *zbuf, uint4 *zinfo, uint *ctr,
-            const uint *rw, const uint *soff, const uint *mids) {
+KERNEL zpre(qg_u64 seed, uint budget, qg_u64 base, uint nitems, RoundGeo g, uint *zbuf,
+            uint4 *zinfo, uint *ctr, const uint *rw, const uint *soff, const uint *mids) {
     uint sk[T];
     uint px = 0, py = 0, c = 0, k = 0, zs = 0, cb = 0, nsl = 0, il = 0;
     shst A = SHA_IV;
@@ -312,26 +325,39 @@ KERNEL zpre(qg_u64 seed, uint budget, RoundGeo g, uint *zbuf, uint4 *zinfo, uint
     for (;;) {
         if (need) {
             uint item = atom_add(&ctr[0], 1u);
-            qg_u64 rs = seed ^ ((qg_u64)item * 0xD6E8FEB86659FD93ull);
-            qg_u64 a = splitmix(rs), b = splitmix(rs);
-            uint4 x = make_uint4((uint)a, (uint)(a >> 32), (uint)b, (uint)(b >> 32) | 1u);
             uint idx[T - 1];
-            for (int i = 0; i < T - 1; i++) {         // uniform (t-1)-subset of [0, n-1): c >= 1
-                uint v; bool ok;
-                do {
-                    v = qg_mulhi(xoshiro(x), g.nslots - 1);
-                    ok = true;
-                    for (int j = 0; j < i; j++) ok = ok && (idx[j] != v);
-                } while (!ok);
-                idx[i] = v;
+            if (nitems) {                             // deterministic: prefix rank base + item
+                if (item >= nitems) break;
+                qg_u64 rank = base + item;            // lexicographic (t-1)-subset of [0, n-1)
+                uint xs = 0, rem = T - 1, o = 0, N = g.nslots - 1;
+                while (rem) {
+                    qg_u64 cnt = c_binom[(N - xs - 1) * QG_BK + (rem - 1)];
+                    if (rank < cnt) { idx[o++] = xs; rem--; } else rank -= cnt;
+                    xs++;
+                }
+            } else {
+                qg_u64 rs = seed ^ ((qg_u64)item * 0xD6E8FEB86659FD93ull);
+                qg_u64 a = splitmix(rs), b = splitmix(rs);
+                uint4 x = make_uint4((uint)a, (uint)(a >> 32), (uint)b, (uint)(b >> 32) | 1u);
+                for (int i = 0; i < T - 1; i++) {     // uniform (t-1)-subset of [0, n-1): c >= 1
+                    uint v; bool ok;
+                    do {
+                        v = qg_mulhi(xoshiro(x), g.nslots - 1);
+                        ok = true;
+                        for (int j = 0; j < i; j++) ok = ok && (idx[j] != v);
+                    } while (!ok);
+                    idx[i] = v;
+                }
+                for (int i = 1; i < T - 1; i++)
+                    for (int j = i; j > 0 && idx[j - 1] > idx[j]; j--) { uint t = idx[j]; idx[j] = idx[j - 1]; idx[j - 1] = t; }
             }
-            for (int i = 1; i < T - 1; i++)
-                for (int j = i; j > 0 && idx[j - 1] > idx[j]; j--) { uint t = idx[j]; idx[j] = idx[j - 1]; idx[j - 1] = t; }
             il = idx[T - 2];
             c = g.nslots - 1 - il;
             zs = atom_add(&ctr[1], c);
-            if (zs >= budget) break;
-            atom_max(&ctr[2], zs + c);
+            if (!nitems) {                            // random: the budget decides; deterministic:
+                if (zs >= budget) break;              // the host set ctr[2] to the exact total
+                atom_max(&ctr[2], zs + c);
+            }
             px = 0; py = 0;
 #pragma unroll
             for (int i = 0; i < T - 1; i++) {
@@ -767,11 +793,49 @@ struct Slot {
 #endif
     uint nz = 0;
     double t0 = 0;
+    qg_u64 lo = 0, hi = 0;                         // deterministic round batch: prefix ranks [lo, hi)
 };
+
+// ------------------------------------------------------------------------------ deterministic rounds
+// A round's (t-1)-prefixes of [0, n-1), numbered in lexicographic order (pqb.grind.unrank_subset
+// with n - 1 and t - 1). Prefix p covers its completions il+1 .. n-1, so the prefixes partition
+// the round's t-subsets and visiting every rank once visits every subset once.
+struct Range { qg_u64 lo, hi; };
+
+static void unrank_host(qg_u64 rank, uint N, uint k, const std::vector<qg_u64> &C, uint *idx) {
+    uint x = 0, rem = k, o = 0;
+    while (rem) {
+        qg_u64 cnt = C[(N - x - 1) * QG_BK + (rem - 1)];
+        if (rank < cnt) { idx[o++] = x; rem--; } else rank -= cnt;
+        x++;
+    }
+}
+
+static void next_subset(uint N, uint k, uint *idx) {   // lexicographic successor (caller bounds it)
+    int i = (int)k - 1;
+    while (i >= 0 && idx[i] == N - k + (uint)i) i--;
+    if (i < 0) return;
+    idx[i]++;
+    for (uint j = (uint)i + 1; j < k; j++) idx[j] = idx[j - 1] + 1;
+}
+
+// `r` minus every range in `done` (sorted by lo, may overlap), appended to `out` in order.
+static void subtract(Range r, std::vector<Range> done, std::deque<Range> &out) {
+    std::sort(done.begin(), done.end(), [](const Range &a, const Range &b) { return a.lo < b.lo; });
+    qg_u64 at = r.lo;
+    for (const Range &d : done) {
+        if (d.hi <= at || d.lo >= r.hi) continue;
+        if (d.lo > at) out.push_back({at, std::min(d.lo, r.hi)});
+        at = std::max(at, d.hi);
+        if (at >= r.hi) return;
+    }
+    if (at < r.hi) out.push_back({at, r.hi});
+}
 
 template <int K, int NP, int NE, int H, int T>
 static int grind(const Problem &P, const std::string &hitsPath, double seconds,
-                 std::chrono::steady_clock::time_point t0) {
+                 std::chrono::steady_clock::time_point t0, const std::string &queuePath,
+                 const std::string &donePath) {
     auto elapsed = [&] { return std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count(); };
     constexpr bool ROUND = T > 0;
     const uint PPZ = K * NP, NPAIR = PPZ / 2;
@@ -810,7 +874,11 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     } else {
         int slen = P.slot_len;
         for (size_t i = 1; i < P.slot_offs.size(); i++)
-            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 12) { fprintf(stderr, "slots too close\n"); return 4; }
+            // stream_block() merges at most 3 deletion boundaries strictly inside a 64-byte block,
+            // so consecutive boundaries in the deleted stream must be >= 21 B apart (3 * 21 = 63).
+            // PQB v1's pick2 table spaces its 10-byte dummy signatures 31 B apart: a 21-byte
+            // gap, exactly the bound (stride-3 had 32 B, 1 B of slack).
+            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 21) { fprintf(stderr, "slots too close\n"); return 4; }
         size_t L = pre.size(), Lm = L - (size_t)T * slen;
         nblk = (uint)((Lm + 9 + 63) / 64);
         std::vector<uint8_t> E(pre);
@@ -836,6 +904,84 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         if (!ur || fread(&seed, sizeof seed, 1, ur) != 1) { fprintf(stderr, "no /dev/urandom\n"); return 4; }
         fclose(ur);
     }
+
+    // ---- deterministic rounds: the work list
+    const bool DET = ROUND && !queuePath.empty();
+    const uint DN = ROUND ? (uint)P.n_slots - 1 : 0, DK = ROUND ? (uint)T - 1 : 0;
+    std::vector<qg_u64> binom;
+    qg_u64 ptot = 0;
+    std::vector<Range> done_r;
+    std::deque<Range> todo;
+    long qoff = 0;
+    FILE *donef = nullptr;
+    if (DET) {
+        if (P.n_slots - 1 >= QG_BN || T - 1 >= QG_BK || T < 2) { fprintf(stderr, "deterministic mode: shape out of range\n"); return 4; }
+        binom.assign((size_t)QG_BN * QG_BK, 0);
+        for (uint a = 0; a < QG_BN; a++) {
+            binom[a * QG_BK] = 1;
+            for (uint b = 1; b < QG_BK && b <= a; b++)
+                binom[a * QG_BK + b] = binom[(a - 1) * QG_BK + b - 1] + (b < a ? binom[(a - 1) * QG_BK + b] : 0);
+        }
+        TO_SYMBOL(c_binom, binom.data(), binom.size() * sizeof(qg_u64));
+        ptot = binom[DN * QG_BK + DK];
+        if (!donePath.empty()) {
+            if (FILE *df = fopen(donePath.c_str(), "r")) {
+                unsigned long long a, b;
+                while (fscanf(df, "%llu %llu", &a, &b) == 2) if (a < b && b <= ptot) done_r.push_back({a, b});
+                fclose(df);
+            }
+            donef = fopen(donePath.c_str(), "a");
+            if (!donef) { fprintf(stderr, "cannot append to %s\n", donePath.c_str()); return 2; }
+        }
+        printf("@space {\"prefixes\": %llu}\n", (unsigned long long)ptot);
+    }
+    // New "lo hi" lines appended to the queue since the last read; whole lines only.
+    auto read_queue = [&]() {
+        FILE *qf = fopen(queuePath.c_str(), "r");
+        if (!qf) return;
+        if (fseek(qf, qoff, SEEK_SET) == 0) {
+            char line[128];
+            while (fgets(line, sizeof line, qf)) {
+                size_t n = strlen(line);
+                if (!n || line[n - 1] != '\n') {
+                    if (n + 1 < sizeof line) break;          // a line still being written
+                    qoff += (long)n;                         // an over-long line: not ours, skip it
+                    fprintf(stderr, "queue: ignoring an over-long line\n");
+                    int ch;
+                    while ((ch = fgetc(qf)) != EOF) { qoff++; if (ch == '\n') break; }
+                    continue;
+                }
+                qoff += (long)n;
+                unsigned long long a, b;
+                if (sscanf(line, "%llu %llu", &a, &b) != 2 || !(a < b) || b > ptot) {
+                    fprintf(stderr, "queue: ignoring bad range %s", line);
+                    continue;
+                }
+                subtract({a, b}, done_r, todo);
+            }
+        }
+        fclose(qf);
+    };
+    // The next batch: consecutive prefixes from the front range until their completions reach
+    // `target` z-blocks. Overshoot < c_max <= n - 1 < ZSLACK, so it always fits the buffers.
+    auto take = [&](uint target, qg_u64 &lo, qg_u64 &hi, uint &nzx) -> bool {
+        while (!todo.empty() && todo.front().lo >= todo.front().hi) todo.pop_front();
+        if (todo.empty()) read_queue();
+        while (!todo.empty() && todo.front().lo >= todo.front().hi) todo.pop_front();
+        if (todo.empty()) return false;
+        Range &r = todo.front();
+        uint idx[QG_BK];
+        unrank_host(r.lo, DN, DK, binom, idx);
+        qg_u64 rk = r.lo;
+        uint sum = 0;
+        while (rk < r.hi && sum < target) {
+            sum += DN - idx[DK ? DK - 1 : 0];      // DK = 0 only in the pin instance, never run
+            rk++;
+            if (rk < r.hi) next_subset(DN, DK, idx);
+        }
+        lo = r.lo; hi = rk; nzx = sum; r.lo = rk;
+        return true;
+    };
 
     mark("host-pre");
     // ---- device buffers (QG_NSLOT slots in flight)
@@ -919,10 +1065,16 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     int nbatches = 0;
     const int TPB = QG_TPB;
 
-    auto submit = [&](Slot &s) {
+    auto submit = [&](Slot &s) -> bool {
         s.nz = nz;
-        LAUNCH(set_ctr, 1, 32, s.st, s.count, s.ctr, ROUND ? 0u : nz);
-        const uint cap = ROUND ? nz + ZSLACK : nz;          // round: the GPU decides nz <= cap
+        uint cap = ROUND ? nz + ZSLACK : nz;                // round: the GPU decides nz <= cap
+        uint ctr2 = ROUND ? 0u : nz;
+        if (DET) {                                          // deterministic: the host decides nz
+            uint nzx = 0;
+            if (!take(nz, s.lo, s.hi, nzx)) return false;
+            s.nz = cap = ctr2 = nzx;
+        }
+        LAUNCH(set_ctr, 1, 32, s.st, s.count, s.ctr, ctr2);
 #if defined(__CUDACC__) && !defined(QG_EMU)
         CK(cudaEventRecord(s.e0, s.st));
 #endif
@@ -934,7 +1086,8 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
             LAUNCH(zgen_pin, nz, TPB, s.st, pp, s.zbuf, s.zinfo, nz);
         } else {
             seed = seed * 6364136223846793005ull + 1442695040888963407ull;
-            LAUNCH(zpre<T>, LANES, 64, s.st, seed, nz, geo, s.zbuf, s.zinfo, s.ctr, rwd, soffd, midd);
+            LAUNCH(zpre<T>, LANES, 64, s.st, seed, nz, DET ? s.lo : 0ull, DET ? (uint)(s.hi - s.lo) : 0u,
+                   geo, s.zbuf, s.zinfo, s.ctr, rwd, soffd, midd);
             LAUNCH(ztail<T>, LANES, 64, s.st, geo, s.zbuf, s.zinfo, s.ctr, rwd);
         }
         uint nth = (cap + ZB - 1) / ZB;
@@ -946,6 +1099,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
 #if defined(__CUDACC__) && !defined(QG_EMU)
         CK(cudaEventRecord(s.e1, s.st));
 #endif
+        return true;
     };
     auto finish = [&](Slot &s) -> int {
 #if defined(__CUDACC__) && !defined(QG_EMU)
@@ -963,11 +1117,14 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         uint n = s.hcount[0];
         s.nz = s.hcount[4 + 2];                     // round: accepted z-blocks (>= budget)
         double wall = now - last_done;
-        printf("@batch {\"z\": %u, \"gpu_ms\": %.3f, \"wall_ms\": %.3f, \"hits\": %u}\n", s.nz, gpu * 1e3, wall * 1e3, n);
+        const uint nhits = n;
         last_done = now;
         nbatches++;
         zblocks += s.nz;
-        if (n > HIT_CAP) { fprintf(stderr, "warning: hit buffer overflow, %u lost\n", n - HIT_CAP); n = HIT_CAP; }
+        // A batch whose hits did not all reach the hits file is *lost*: it gets an @lost line
+        // instead of @batch and no done record, so a controller never credits it as searched.
+        const char *lost = nullptr;
+        if (n > HIT_CAP) { fprintf(stderr, "warning: hit buffer overflow, %u lost\n", n - HIT_CAP); n = HIT_CAP; lost = "overflow"; }
         if (QG_STAGE >= 99 && n) {
             d2h_async(s.hhits, s.hits, (size_t)n * sizeof(Hit), s.st);
 #if defined(__CUDACC__) && !defined(QG_EMU)
@@ -983,8 +1140,25 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
                     fprintf(out, " %u %u %u %u\n", j, rid, enc, lvl);
                 }
             }
-            fflush(out);
+            if (fflush(out) != 0 || ferror(out)) {
+                if (!lost) fprintf(stderr, "error: cannot write %s: batch lost\n", hitsPath.c_str());
+                lost = lost ? lost : "write";
+                clearerr(out);
+            }
         }
+        // The @batch line (and the done record) only after the batch's hits are on disk, so a
+        // range a controller credits as searched can never have lost its hits to a crash.
+        if (lost) {
+            printf("@lost {\"why\": \"%s\", \"z\": %u, \"hits\": %u, \"lo\": %llu, \"hi\": %llu}\n",
+                   lost, s.nz, nhits, (unsigned long long)(DET ? s.lo : 0), (unsigned long long)(DET ? s.hi : 0));
+        } else if (DET) {
+            printf("@batch {\"z\": %u, \"gpu_ms\": %.3f, \"wall_ms\": %.3f, \"hits\": %u, \"lo\": %llu, \"hi\": %llu}\n",
+                   s.nz, gpu * 1e3, wall * 1e3, nhits, (unsigned long long)s.lo, (unsigned long long)s.hi);
+            if (donef) { fprintf(donef, "%llu %llu\n", (unsigned long long)s.lo, (unsigned long long)s.hi); fflush(donef); }
+        } else {
+            printf("@batch {\"z\": %u, \"gpu_ms\": %.3f, \"wall_ms\": %.3f, \"hits\": %u}\n", s.nz, gpu * 1e3, wall * 1e3, nhits);
+        }
+        fflush(stdout);
         if (nbatches == 1) { t_ref = now; z_ref = zblocks; }
         else if (zblocks - z_ref >= 65536) {
             per_z = (now - t_ref) / (double)(zblocks - z_ref);
@@ -1001,19 +1175,36 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         return true;
     };
     bool live[QG_NSLOT];
-    for (int i = 0; i < QG_NSLOT; i++) { submit(slots[i]); live[i] = true; }
-    int cur = 0, nlive = QG_NSLOT;
-    while (nlive) {
+    int cur = 0, nlive = 0;
+    for (int i = 0; i < QG_NSLOT; i++) { live[i] = submit(slots[i]); nlive += live[i]; }
+    for (;;) {
+        if (!nlive) {                               // deterministic and out of work: wait for more
+            if (!DET || elapsed() > seconds - 0.6) break;
+            std::this_thread::sleep_for(std::chrono::milliseconds(250));
+            for (int i = 0; i < QG_NSLOT; i++)
+                if (fit(elapsed()) && submit(slots[i])) { live[i] = true; nlive++; }
+            if (nlive) {                            // the wait is not work: keep it out of the
+                last_done = elapsed();              // next @batch wall time and the batch sizing
+                t_ref = last_done; z_ref = zblocks;
+            }
+            continue;
+        }
         Slot &s = slots[cur];
+        double now = 0, other = 0;
         if (live[cur]) {
             if (int rc = finish(s)) return rc;
             live[cur] = false; nlive--;
-            double now = elapsed(), other = 0;      // the in-flight batches run until ~now + their durations
-            for (int i = 0; i < QG_NSLOT; i++) if (live[i]) other += slots[i].nz * per_z;
-            if (fit(now + other)) { submit(s); live[cur] = true; nlive++; }
+        } else if (!DET) {
+            cur = (cur + 1) % QG_NSLOT;
+            continue;
         }
+        now = elapsed();                            // the in-flight batches run until ~now + their durations
+        for (int i = 0; i < QG_NSLOT; i++) if (live[i]) other += slots[i].nz * per_z;
+        // deterministic: a slot left idle by an empty queue takes new work as soon as it comes
+        if (fit(now + other) && submit(s)) { live[cur] = true; nlive++; }
         cur = (cur + 1) % QG_NSLOT;
     }
+    if (donef) fclose(donef);
     fclose(out);
     printf("@done {\"zblocks\": %llu, \"elapsed_s\": %.3f}\n", (unsigned long long)zblocks, elapsed());
     fflush(stdout);
@@ -1022,13 +1213,15 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
 
 int main(int argc, const char **argv) {
     auto t0 = std::chrono::steady_clock::now();
-    std::string probPath, hitsPath;
+    std::string probPath, hitsPath, queuePath, donePath;
     double seconds = 10;
     for (int i = 1; i + 1 < argc; i += 2) {
         std::string k = argv[i];
         if (k == "--problem") probPath = argv[i + 1];
         else if (k == "--hits") hitsPath = argv[i + 1];
         else if (k == "--seconds") seconds = atof(argv[i + 1]);
+        else if (k == "--queue") queuePath = argv[i + 1];
+        else if (k == "--done") donePath = argv[i + 1];
     }
 #if defined(__CUDACC__) && !defined(QG_EMU)
     // One hardware work queue per stream in flight (default 8): each connection costs ~25-30 ms
@@ -1040,11 +1233,11 @@ int main(int argc, const char **argv) {
     if (P.gate_bits < 1 || P.gate_bits > 32 || P.pre.empty()) { fprintf(stderr, "bad problem\n"); return 2; }
     // The PQB track shapes (pqb's gpu.problem_from_packet). A new shape needs one more instance here.
     if (P.kind == "pin" && P.K == 12 && P.npts == 2 && P.nenc == 3 && P.H == 1)
-        return grind<12, 2, 3, 1, 0>(P, hitsPath, seconds, t0);
+        return grind<12, 2, 3, 1, 0>(P, hitsPath, seconds, t0, queuePath, donePath);
     if (P.kind == "round" && P.K == 16 && P.npts == 4 && P.nenc == 3 && P.H == 1 && P.t == 8)
-        return grind<16, 4, 3, 1, 8>(P, hitsPath, seconds, t0);
+        return grind<16, 4, 3, 1, 8>(P, hitsPath, seconds, t0, queuePath, donePath);
     if (P.kind == "round" && P.K == 16 && P.npts == 4 && P.nenc == 1 && P.H == 1 && P.t == 9)
-        return grind<16, 4, 1, 1, 9>(P, hitsPath, seconds, t0);
+        return grind<16, 4, 1, 1, 9>(P, hitsPath, seconds, t0, queuePath, donePath);
     fprintf(stderr, "no kernel instance for track %s (K=%d npts=%d nenc=%d H=%d t=%d)\n",
             P.track.c_str(), P.K, P.npts, P.nenc, P.H, P.t);
     return 2;

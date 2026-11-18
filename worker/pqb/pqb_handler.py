@@ -116,8 +116,8 @@ def parse_problem(raw, stage):
         if fields.get('t') != t or fields.get('n_slots') != n or len(slots) != n or not length:
             raise ValueError('Problem does not have the stage table')
         # The kernel handles at most three deletion boundaries per 64-byte block: after deletion,
-        # consecutive boundaries must be at least 22 bytes apart (four 21 apart fit in one block).
-        if any(b < a + length + 22 for a, b in zip(slots, slots[1:])) or slots[-1] + length > size:
+        # only offsets 1 through 63 are interior. Four boundaries spaced 21 apart span 63 bytes.
+        if any(b < a + length + 21 for a, b in zip(slots, slots[1:])) or slots[-1] + length > size:
             raise ValueError('Invalid slot offsets')
     return fields
 

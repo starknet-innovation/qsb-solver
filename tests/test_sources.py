@@ -35,7 +35,7 @@ class SourceTests(unittest.TestCase):
     def test_pqb_import(self):
         base=ROOT/'vendor/pqb'
         p=json.loads((base/'provenance.json').read_text())
-        self.assertEqual(p['commit'],'eccdd09772edf14ab37fc63992b0626ad7ff2221')
+        self.assertEqual(p['commit'],'82c7cba684899e5a069f5f1baf4931c59111d345')
         actual={str(x.relative_to(base)) for x in base.rglob('*') if x.is_file() and x.name!='provenance.json'}
         self.assertEqual(actual,set(p['files']))
         for n,h in p['files'].items(): self.assertEqual(hashlib.sha256((base/n).read_bytes()).hexdigest(),h,n)

@@ -6,7 +6,7 @@
 //     range instead of random draws, ending in an @range completion line;
 //   * --der-filter 1 (ranked mode only): gate hits are counted, and only those that also have the
 //     shape of a 32-byte StrictDER signature (der_shape, a necessary condition) are reported.
-//     This is the one change inside a kernel: the few instructions after a digest passes the gate;
+//     This filter runs after a digest passes the gate;
 //   * exceptional curve cases: ec_comb detects a zero factor in either batched inversion (a point
 //     at infinity, or an addition of equal or opposite points), reports the thread, and the host
 //     recomputes its z-blocks with complete formulas (exact_block). Upstream would silently spoil
@@ -15,7 +15,7 @@
 //     differs from the range's size, instead of warning and going on.
 //   * QG_FUSE=0 is refused at compile time (see the #error below).
 //   * round problems whose table slots are closer than the kernel's three-boundaries-per-block
-//     limit allows are refused (upstream's host check is weaker than its kernel).
+//     limit allows are refused using the upstream 21-byte bound.
 // Without a ranked flag the search is still upstream's random draws under --seconds, but it is not
 // the upstream binary: exceptional threads are detected and recomputed there too, and unknown or
 // malformed options are refused rather than ignored.
@@ -124,6 +124,10 @@ QG_FI bool fe_is0(fe a) {
     a = fe_norm(a);
     return (a.v0 | a.v1 | a.v2 | a.v3 | a.v4 | a.v5 | a.v6 | a.v7) == 0u;
 }
+
+// The worker accepts up to 256 slots and its compiled round shapes use at most 8 prefix indices.
+constexpr uint QG_BN = 256, QG_BK = 9;
+QG_CMEM qg_u64 c_binom[QG_BN * QG_BK];
 
 // ------------------------------------------------------------------------------ group law
 QG_FI gej gej_add_ge(gej p, ge q) {                // p (Jacobian, not infinity) + q (affine), p != +-q
@@ -348,7 +352,7 @@ QG_FI void stream_block(uint *w, const uint *rw, uint rwn, uint o, const uint *s
     }
     const uint *src = rw + k0 * rwn + (o >> 2);
 #pragma unroll
-    for (int i = 0; i < 16; i++) {                    // <= 3 boundaries per block (>= 22 B apart)
+    for (int i = 0; i < 16; i++) {                    // <= 3 boundaries per block (>= 21 B apart)
         uint p = o + 4 * i;
         uint k = ((nb <= p) ? 1u : 0u) + ((n2 <= p) ? 1u : 0u) + ((n3 <= p) ? 1u : 0u);
         uint cut = (nb - p - 1 < 3u) ? nb - p : (n2 - p - 1 < 3u) ? n2 - p : (n3 - p - 1 < 3u) ? n3 - p : 4u;
@@ -359,8 +363,8 @@ QG_FI void stream_block(uint *w, const uint *rw, uint rwn, uint o, const uint *s
 }
 
 template <int T>
-KERNEL zpre(qg_u64 seed, uint budget, RoundGeo g, uint *zbuf, uint4 *zinfo, uint *ctr,
-            const uint *rw, const uint *soff, const uint *mids, const uint4 *items, uint nitems) {
+KERNEL zpre(qg_u64 seed, uint budget, qg_u64 base, uint nitems, RoundGeo g, uint *zbuf,
+            uint4 *zinfo, uint *ctr, const uint *rw, const uint *soff, const uint *mids) {
     uint sk[T];
     uint px = 0, py = 0, c = 0, k = 0, zs = 0, cb = 0, nsl = 0, il = 0;
     shst A = SHA_IV;
@@ -369,21 +373,20 @@ KERNEL zpre(qg_u64 seed, uint budget, RoundGeo g, uint *zbuf, uint4 *zinfo, uint
         if (need) {
             uint item = atom_add(&ctr[0], 1u);
             uint idx[T - 1];
-            if (items) {
-                // ranked: the host lists this batch's prefixes (sorted indices, one byte each over
-                // x, y) and each one's first z-block slot (z). Nothing is drawn and nothing is
-                // dropped: ctr[2] already holds the batch's exact z-block count.
+            if (nitems) {                             // deterministic: prefix rank base + item
                 if (item >= nitems) break;
-                uint4 it = items[item];
-                for (int i = 0; i < T - 1; i++) idx[i] = ((i < 4 ? it.x : it.y) >> (8 * (i & 3))) & 0xFFu;
-                il = idx[T - 2];
-                c = g.nslots - 1 - il;
-                zs = it.z;
+                qg_u64 rank = base + item;            // lexicographic (t-1)-subset of [0, n-1)
+                uint xs = 0, rem = T - 1, o = 0, N = g.nslots - 1;
+                while (rem) {
+                    qg_u64 cnt = c_binom[(N - xs - 1) * QG_BK + (rem - 1)];
+                    if (rank < cnt) { idx[o++] = xs; rem--; } else rank -= cnt;
+                    xs++;
+                }
             } else {
                 qg_u64 rs = seed ^ ((qg_u64)item * 0xD6E8FEB86659FD93ull);
                 qg_u64 a = splitmix(rs), b = splitmix(rs);
                 uint4 x = make_uint4((uint)a, (uint)(a >> 32), (uint)b, (uint)(b >> 32) | 1u);
-                for (int i = 0; i < T - 1; i++) {         // uniform (t-1)-subset of [0, n-1): c >= 1
+                for (int i = 0; i < T - 1; i++) {     // uniform (t-1)-subset of [0, n-1): c >= 1
                     uint v; bool ok;
                     do {
                         v = qg_mulhi(xoshiro(x), g.nslots - 1);
@@ -394,10 +397,12 @@ KERNEL zpre(qg_u64 seed, uint budget, RoundGeo g, uint *zbuf, uint4 *zinfo, uint
                 }
                 for (int i = 1; i < T - 1; i++)
                     for (int j = i; j > 0 && idx[j - 1] > idx[j]; j--) { uint t = idx[j]; idx[j] = idx[j - 1]; idx[j - 1] = t; }
-                il = idx[T - 2];
-                c = g.nslots - 1 - il;
-                zs = atom_add(&ctr[1], c);
-                if (zs >= budget) break;
+            }
+            il = idx[T - 2];
+            c = g.nslots - 1 - il;
+            zs = atom_add(&ctr[1], c);
+            if (!nitems) {                            // random: the budget decides; deterministic:
+                if (zs >= budget) break;              // the host set ctr[2] to the exact total
                 atom_max(&ctr[2], zs + c);
             }
             px = 0; py = 0;
@@ -674,7 +679,6 @@ static void h2d(void *d, const void *h, size_t n) { CK(cudaMemcpy(d, h, n, cudaM
 static void d2h(void *h, const void *d, size_t n) { CK(cudaMemcpy(h, d, n, cudaMemcpyDeviceToHost)); }
 static void *halloc(size_t n) { void *p = nullptr; CK(cudaMallocHost(&p, n)); return p; }
 static void d2h_async(void *h, const void *d, size_t n, qstream st) { CK(cudaMemcpyAsync(h, d, n, cudaMemcpyDeviceToHost, st)); }
-static void h2d_async(void *d, const void *h, size_t n, qstream st) { CK(cudaMemcpyAsync(d, h, n, cudaMemcpyHostToDevice, st)); }
 static void dzero_async(void *d, size_t n, qstream st) { CK(cudaMemsetAsync(d, 0, n, st)); }
 #define LAUNCH(k, n, tpb, st, ...) do { size_t n_ = (n); if (n_) { k<<<(unsigned)((n_ + (tpb) - 1) / (tpb)), (tpb), 0, (st)>>>(__VA_ARGS__); CK(cudaGetLastError()); } } while (0)
 #define TO_SYMBOL(sym, src, n) CK(cudaMemcpyToSymbol(sym, src, n))
@@ -685,7 +689,6 @@ static void h2d(void *d, const void *h, size_t n) { memcpy(d, h, n); }
 static void d2h(void *h, const void *d, size_t n) { memcpy(h, d, n); }
 static void *halloc(size_t n) { return dalloc(n); }
 static void d2h_async(void *h, const void *d, size_t n, qstream) { memcpy(h, d, n); }
-static void h2d_async(void *d, const void *h, size_t n, qstream) { memcpy(d, h, n); }
 static void dzero_async(void *d, size_t n, qstream) { memset(d, 0, n); }
 template <typename F> static void emu_for(size_t n, F f) {
     unsigned nt = std::max(1u, std::thread::hardware_concurrency());
@@ -986,7 +989,6 @@ static uint64_t subset_rank_of_prefix(uint64_t prefix_rank, uint n, uint t) {
 // ------------------------------------------------------------------------------ the grind loop
 struct Slot {
     uint *zbuf, *count, *ctr;
-    uint4 *items, *hitems;                          // ranked rounds: this batch's prefixes
     uint *exc;                                      // exceptional ec threads of this batch
     uint4 *zinfo, *pts;
     fe *scratch;
@@ -1041,11 +1043,11 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     } else {
         int slen = P.slot_len;
         for (size_t i = 1; i < P.slot_offs.size(); i++)
-            // qsb-solver: stream_block handles at most three deletion boundaries per 64-byte block, so
-            // boundaries (slot starts less the deleted bytes before them) must be at least 22 bytes
-            // apart: four of them 21 apart would fit in one block. Upstream checks 12 here, which is
-            // weaker than its kernel supports; PQB's own table has 22.
-            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 22) { fprintf(stderr, "slots too close\n"); return 4; }
+            // stream_block() merges at most 3 deletion boundaries strictly inside a 64-byte block,
+            // so consecutive boundaries in the deleted stream must be >= 21 B apart (3 * 21 = 63).
+            // PQB v1's pick2 table spaces its 10-byte dummy signatures 31 B apart: a 21-byte
+            // gap, exactly the bound (stride-3 had 32 B, 1 B of slack).
+            if (P.slot_offs[i] < P.slot_offs[i - 1] + (uint32_t)slen + 21) { fprintf(stderr, "slots too close\n"); return 4; }
         size_t L = pre.size(), Lm = L - (size_t)T * slen;
         nblk = (uint)((Lm + 9 + 63) / 64);
         std::vector<uint8_t> E(pre);
@@ -1099,6 +1101,11 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
             r_first = subset_rank_of_prefix(R.prefix_start, (uint)P.n_slots, T);
             r_expect = subset_rank_of_prefix(R.prefix_start + R.prefix_count, (uint)P.n_slots, T) - r_first;
             unrank_lex(R.prefix_start, (uint)P.n_slots - 1, T - 1, r_pfx);
+            std::vector<qg_u64> coefficients(P.n_slots * QG_BK);
+            for (int n = 0; n < P.n_slots; ++n)
+                for (int k = 0; k < T - 1; ++k)
+                    coefficients[n * QG_BK + k] = binom(n, k);
+            TO_SYMBOL(c_binom, coefficients.data(), coefficients.size() * sizeof(qg_u64));
             r_left = R.prefix_count;
         }
     }
@@ -1123,11 +1130,6 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         s.count = (uint *)dalloc(32);
         s.ctr = s.count + 4;
         s.exc = (uint *)dalloc((size_t)EXC_CAP * 4);
-        s.items = nullptr; s.hitems = nullptr;
-        if (ROUND && R.on) {
-            s.items = (uint4 *)dalloc((size_t)NZ_CAP * sizeof(uint4));
-            s.hitems = (uint4 *)halloc((size_t)NZ_CAP * sizeof(uint4));
-        }
         s.hits = (Hit *)dalloc((size_t)HIT_CAP * sizeof(Hit));
         s.hhits = (Hit *)malloc((size_t)HIT_CAP * sizeof(Hit));      // pageable: 32 MB pinned cost ~40 ms of setup + teardown
         s.hcount = (uint *)halloc(32);
@@ -1196,6 +1198,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
     auto more = [&]() -> bool { return ROUND ? r_left > 0 : r_done_seq < R.seq_count; };
     auto submit = [&](Slot &s) {
         uint bz = nz, nitems = 0;                    // this batch's z-blocks (upstream: nz)
+        const uint64_t base = R.on && ROUND ? R.prefix_start + (R.prefix_count - r_left) : 0;
         if (R.on) {
             if constexpr (!ROUND) {
                 bz = (uint)std::min<uint64_t>(nz, R.lt_count - r_done_lt);
@@ -1205,15 +1208,12 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
                 while (r_left) {
                     uint c = (uint)P.n_slots - 1 - r_pfx[T - 2];
                     if (nitems && sum + c > nz) break;
-                    uint px = 0, py = 0;
-                    for (int i = 0; i < T - 1; i++) { if (i < 4) px |= r_pfx[i] << (8 * i); else py |= r_pfx[i] << (8 * (i - 4)); }
-                    s.hitems[nitems++] = make_uint4(px, py, sum, 0u);
+                    ++nitems;
                     sum += c;
                     r_left--;
                     if (r_left && !next_lex(r_pfx, (uint)P.n_slots - 1, T - 1)) { fprintf(stderr, "prefix walk ended early\n"); exit(7); }
                 }
                 bz = sum;
-                h2d_async(s.items, s.hitems, (size_t)nitems * sizeof(uint4), s.st);
             }
         }
         s.nz = bz;
@@ -1236,8 +1236,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
             LAUNCH(zgen_pin, bz, TPB, s.st, pp, s.zbuf, s.zinfo, bz);
         } else {
             seed = seed * 6364136223846793005ull + 1442695040888963407ull;
-            LAUNCH(zpre<T>, LANES, 64, s.st, seed, bz, geo, s.zbuf, s.zinfo, s.ctr, rwd, soffd, midd,
-                   (const uint4 *)s.items, nitems);
+            LAUNCH(zpre<T>, LANES, 64, s.st, seed, bz, base, nitems, geo, s.zbuf, s.zinfo, s.ctr, rwd, soffd, midd);
             LAUNCH(ztail<T>, LANES, 64, s.st, geo, s.zbuf, s.zinfo, s.ctr, rwd);
         }
         uint nth = (cap + ZB - 1) / ZB;
@@ -1264,6 +1263,12 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         CK(cudaStreamSynchronize(s.st));
 #endif
         uint n = s.hcount[0];
+        // Ranked rounds reserve one output slot per completion in ctr[1].
+        // Compare device reservations to the host plan before crediting this batch.
+        if (ROUND && R.on && s.hcount[4 + 1] != s.nz) {
+            fprintf(stderr, "round batch reserved %u z-blocks, expected %u\n", s.hcount[4 + 1], s.nz);
+            return 7;
+        }
         s.nz = s.hcount[4 + 2];                     // round: accepted z-blocks (>= budget)
         double wall = now - last_done;
         printf("@batch {\"z\": %u, \"gpu_ms\": %.3f, \"wall_ms\": %.3f, \"hits\": %u}\n", s.nz, gpu * 1e3, wall * 1e3, n);
@@ -1310,7 +1315,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
                     fprintf(out, " %u %u %u %u\n", j, rid, enc, lvl);
                 }
             }
-            fflush(out);
+            if (fflush(out) || ferror(out)) { perror("writing hits"); return 6; }
         }
         if (nbatches == 1) { t_ref = now; z_ref = zblocks; }
         else if (zblocks - z_ref >= 65536) {
@@ -1344,7 +1349,7 @@ static int grind(const Problem &P, const std::string &hitsPath, double seconds,
         }
         cur = (cur + 1) % QG_NSLOT;
     }
-    fclose(out);
+    if (fclose(out)) { perror("closing hits"); return 6; }
     if (R.on) {
         // The range is complete only if every z-block of it was generated and none of its hits lost.
         bool ok = zblocks == r_expect && !more();

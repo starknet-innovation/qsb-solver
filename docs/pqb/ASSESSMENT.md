@@ -1,4 +1,24 @@
-# Current TLS-fixed release
+# November 18 source candidate (HOLD)
+
+The CUDA baseline and its notices now come from Fireblocks PQB commit
+`82c7cba684899e5a069f5f1baf4931c59111d345`. On November 18 we compared the complete local
+Git trees against the previous import `eccdd09772edf14ab37fc63992b0626ad7ff2221`.
+The [import manifest](../../vendor/pqb/provenance.json) identifies the selected files.
+The arithmetic headers match the previous import. Upstream also added a Metal backend and
+a precompiled CUDA binary. This worker builds the reviewed CUDA source.
+
+The adapted round kernel now derives each prefix from its lexicographic rank on the GPU.
+The host supplies a base and count per batch and computes the expected number of subsets.
+The kernel and request parser accept a 21-byte gap after deletion, including the spacing
+used by upstream pick2. Upstream's appendable work queue and batch ledger remain available
+in the vendored baseline. The app-facing worker retains one assigned range per request,
+deterministic pinning, DER filtering, exact host recomputation for exceptional points and
+the `pqb-ranked-v2` partition. Hit-file errors fail the request before completion.
+
+Native correctness, whole-unit timings, and a qualified image digest for this candidate
+are pending. All release and measurement records below describe earlier artifacts.
+
+# November 12 TLS-fixed release
 
 See the [TLS replacement assessment](2026-11-12-tls-replacement.md) and its checksummed
 [decision package](evidence/tls-replacement-2026-11-12/decision.json). The [published release](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.1.0)

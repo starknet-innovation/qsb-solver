@@ -174,10 +174,27 @@ class RankedEmulationTest(unittest.TestCase):
                 self.assertNotEqual(code, 0, log)
                 self.assertIsNone(report(log))
 
+    def test_round_hits_at_minimum_slot_spacing(self):
+        raw = emu.problem('round0')
+        prob = reference.load(emu.FIXTURES / 'round0.txt')
+        # Place consecutive deletion boundaries at offsets 1, 22, 43, 64
+        # relative to a SHA block, including its right edge.
+        for index, original in enumerate(prob['slot_offs']):
+            offset = 385 + index * (prob['slot_len'] + 21)
+            raw = raw.replace(f'slot {index} {original}\n'.encode(), f'slot {index} {offset}\n'.encode())
+            prob['slot_offs'][index] = offset
+        subsets = reference.round_subsets_at(prob, 0, 3)
+        expected = reference.round_hits(prob, subsets)
+        code, log, hits = emu.run(BINARY, raw, ['--prefix-start', 0, '--prefix-count', 3], SMALL_BATCHES)
+        self.assertEqual(code, 0, log)
+        self.assertEqual(report(log)['zblocks'], len(subsets))
+        self.assertTrue(expected)
+        self.assertEqual(hits, expected)
+
     def test_slots_closer_than_the_kernel_supports_are_refused(self):
         raw = emu.problem('round0')
         self.assertEqual(raw.count(b'slot 1 406\n'), 1)
-        code, log, _ = emu.run(BINARY, raw.replace(b'slot 1 406\n', b'slot 1 405\n'), ['--prefix-start', 0, '--prefix-count', 1])
+        code, log, _ = emu.run(BINARY, raw.replace(b'slot 1 406\n', b'slot 1 404\n'), ['--prefix-start', 0, '--prefix-count', 1])
         self.assertNotEqual(code, 0, log)
         self.assertIsNone(report(log))
 
