@@ -25,8 +25,19 @@ ranges, accepted the three public stage fixtures, and passed 18 consumer tests.
 Contract SHA-256 was `eaae48fd867e9783c247e6bb9f33ba24011298d354d0a7d93e5f65904ce8ffb1`.
 All runs used local compute and created no cloud resources.
 
-Native correctness, whole-unit timings, and a qualified image digest for this candidate
-are pending. All release and measurement records below describe earlier artifacts.
+The [hosted build](https://github.com/starknet-innovation/qsb-solver/actions/runs/44280016361)
+passed. Local verification bound the OCI archive, asset checksums and prospective image
+digest to the exact hosted workflow and source. The scan reported zero blocking findings
+and ten unfixed critical matches. The separate native gate adds the minimum-spacing case
+and prepares three interleaved baseline/candidate subrange pairs per stage.
+
+The approved 60-minute single-A10G session in Ireland received a definitive EC2 capacity
+rejection on its only launch request. No GPU was allocated. The compute estimate is $0;
+staging and API charges have not been reconciled to billing. Independent checks verified
+cleanup and the $10 reservation was released. Native correctness, full-unit timings and
+matched performance remain pending. The [qualification receipt](evidence/adoption-2026-11-18/qualification.json)
+records the exact image, binary and campaign identities. All release and measurement
+records below describe earlier artifacts.
 
 # November 12 TLS-fixed release
 

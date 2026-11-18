@@ -1,0 +1,62 @@
+{
+  "status": "HOLD-native-capacity-rejected",
+  "upstream": "82c7cba684899e5a069f5f1baf4931c59111d345",
+  "artifact": {
+    "created_at": "2026-11-18T10:01:25Z",
+    "digest": "sha256:05b85ac4c18ec1611d9246b4cfe00e0aadb8f68a1c54b8d03bb2b3a4ebafd451",
+    "expires_at": "2026-12-18T10:01:08Z",
+    "id": 14417286567
+  },
+  "workflowRun": 44280016361,
+  "solverCommit": "80d306ec74b0c5f5a8bd95a2c94ab047bafd2a28",
+  "gateCommit": "69f2b427f2f1e0d2c882263fe0b6cb8bea90b3b2",
+  "identity": {
+    "format": "qsb-pqb-oci-identity-v1",
+    "status": "HOLD",
+    "imageDigest": "sha256:bcc69b5d33ac7ddbabd5a8822081acef275c02cf0232f93bd04fab0865a16f78",
+    "platformDigest": "sha256:bac292c25253064e3cf65a82d4ae08f71f713254b992bb4a69d27b8f1bc7ea28",
+    "configDigest": "sha256:f49d0bd97c4230371061d9ade15b6c2741e16c4d21029150e1879b16aa02bf32"
+  },
+  "grinderSha256": "c41083a84dd82e9b93778bbc77e6e2c133dd90a0e1327dad239ac14d2b254e07",
+  "archiveSha256": "a490824df9cde12774ab3b2c341dcf078866e085d5f31eae7d49db692e6ede11",
+  "signedAssetsSha256": "0aaa15d973ba3624c40dd22cc118eda7f2f9f71060e66132e8c9827c1bfe2047",
+  "verifiedSubjects": [
+    "signed archive",
+    "signed asset checksums",
+    "signed prospective OCI subject"
+  ],
+  "scanBlocking": 0,
+  "scanUnfixedCritical": 10,
+  "session": {
+    "region": "eu-west-1",
+    "instanceType": "g5.2xlarge",
+    "deadline": "2026-11-18T11:07:53+00:00",
+    "approvedUsd": 10,
+    "launchRequests": 1,
+    "sdkRetries": 0,
+    "providerResponse": "InsufficientInstanceCapacity",
+    "instancesAllocated": 0,
+    "nativeInvocations": 0,
+    "estimatedEc2ComputeUsd": 0,
+    "reservationReleased": true,
+    "billingReconciled": false,
+    "stagingDeleted": true,
+    "independentCleanup": {
+      "instances": [],
+      "volumes": [],
+      "roles": [],
+      "securityGroups": [],
+      "scheduleAbsent": true,
+      "lambdaAbsent": true,
+      "profileAbsent": true
+    }
+  },
+  "receiptHashes": {
+    "inputs.json": "d1913998fa31a591c30d198825c3f99d261bb38ac9b16617710d4faa98582de0",
+    "independent-cleanup.json": "ee8bbfbdd277a7871d781a413e3fb7fd216fc958a267cc72ef76a69c5bed3485",
+    "bucket-cleanup.json": "1ce7b0cf5790d8f7caf0762b76e53502eb0934e50d375d17164be8fd72f53c16",
+    "budget-closeout.json": "0d6b8c07b02ccb7ba4dc23675735fcc636d6072c24916075cdd5f60f25fa17a8",
+    "launch-1794996477946101000.log": "4e09352146d4d5a447137cdf3d56f17db8bbb7f22adbace5e62d05ac124f6880",
+    "verified-build.json": "dec8f3e17e9676df9982c140047f2931a4dbcd713d961c10985634fe2e21db15"
+  }
+}
