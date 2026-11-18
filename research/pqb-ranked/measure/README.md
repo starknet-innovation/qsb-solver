@@ -77,3 +77,15 @@ launched and the run completed. Details, cost and cleanup are in the record.
   [13-case correctness-only campaign](../../../docs/pqb/2026-11-11-correctness-consumer-validation.md)
   retained and hash-verified its archive, then independently verified complete cleanup. It
   collected no timing samples and does not replace the original matched measurement.
+
+For the November 18 adoption candidate, the native reference inventory adds
+`round0-gap21` (303 z-blocks and eight independently derived hits at the minimum
+supported spacing). Historical 13-case receipts use their original gate commit.
+
+After the three full candidate units, `host-pqb-ranked-comparison.sh` can run
+three matched pairs per stage in the same candidate runtime. It binds the
+previous release's extracted binary by SHA-256. Each pair uses identical public
+input, range and filter, alternates execution order across pairs, checks
+completion and emitted candidates, and retains full logs and timings. These
+samples measure grinder subprocess time and post-startup batches on subranges.
+The whole-unit handler measurements come separately from final-image qualification.

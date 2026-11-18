@@ -109,7 +109,7 @@ class MeasureDryRunTest(unittest.TestCase):
         self.assertEqual((out['mode'], out['status'], out['correctnessPassed']), ('correctness-only', 'passed', True))
         self.assertIsNone(out['timing'])
         self.assertNotIn('stagesWithoutSteadyState', out)
-        self.assertEqual(len(out['correctness']), 13)
+        self.assertEqual(len(out['correctness']), 14)
         self.assertEqual(sum(c['hits'] for c in out['correctness'] if 'filter-emits' in c['label']), 2)
         self.assertNotEqual(self.runner(result, correctness_only=True).returncode, 0)
 
@@ -136,7 +136,7 @@ class MeasureDryRunTest(unittest.TestCase):
         self.assertEqual((out['status'], out['correctnessPassed']), ('passed', True))
         self.assertIs(out['settings']['requireSteady'], False)
         self.assertEqual(out['binaries']['grind-ranked'], sha256(self.artifact / 'grind-ranked'))
-        self.assertEqual(len(out['correctness']), 13)
+        self.assertEqual(len(out['correctness']), 14)
         self.assertFalse((result.parent / 'failed-invocations').exists())   # nothing failed, nothing kept
         for stage in ('pin', 'round0', 'round1'):
             summary = out['timing'][stage]['summary']
@@ -231,7 +231,7 @@ class MeasureDryRunTest(unittest.TestCase):
         spec.loader.exec_module(measure)
         expected = json.loads((MEASURE / 'expected.json').read_text())
         for case in expected['cases']:                       # the reference's own counts, for every case
-            stage = 'pin' if '--pin-seq' in case['args'] else case['problem'].split('.')[0]
+            stage = Path(case['problem']).stem.split('-')[0]
             self.assertEqual(measure.expected_zblocks(stage, case['args']), case['zblocks'], case['label'])
         self.assertEqual(measure.report_identity(['--prefix-start', 5, '--prefix-count', 9, '--der-filter', 1]),
                          {'der_filter': 1, 'kind': 'round', 'prefix_start': 5, 'prefix_count': 9})

@@ -31,8 +31,14 @@ def reviewed_gate(checksums, commit, solver, build):
                   'contract.json':'contracts/pqb-ranked-v2.json'})
     expected_raw=source(commit,paths['expected.json'])
     expected=json.loads(expected_raw,object_pairs_hook=unique)
-    if expected.get('format')!='qsb-pqb-measure-expected-v1' or len(expected['cases'])!=13 \
-            or len({c['label'] for c in expected['cases']})!=13:
+    labels = {c['label'] for c in expected['cases']}
+    lock = json.loads(source(solver['solverCommit'], 'research/pqb-ranked/source-lock.json'))
+    historical = lock['upstream']['commit'] == 'eccdd09772edf14ab37fc63992b0626ad7ff2221'
+    required_count = 13 if historical else 14
+    if not historical and 'round0-gap21' not in labels:
+        raise ValueError('Missing minimum-spacing native case')
+    if expected.get('format')!='qsb-pqb-measure-expected-v1' or len(expected['cases'])!=required_count \
+            or len(labels)!=required_count:
         raise ValueError('Reviewed correctness case inventory differs')
     for name in expected['fixtures']:
         if Path(name).name!=name:

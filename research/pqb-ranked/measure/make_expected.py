@@ -82,6 +82,16 @@ def main():
         rnd(name + '-first', name, 0, 10)
         rnd(name + '-last', name, total - 300, 300)
         rnd(name + '-interior-batches', name, total // 3, 40 if name == 'round0' else 150, SMALL)
+    # Exercise the pick2 minimum spacing with four consecutive deletions straddling
+    # a SHA block edge. Reuse only the public fixture's preimage and curve points.
+    lines = (FIXTURES / 'round0.txt').read_text().splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith('slot '):
+            idx = int(line.split()[1])
+            lines[i] = f'slot {idx} {385 + 31 * idx}'
+    (FIXTURES / 'round0-gap21.txt').write_text('\n'.join(lines) + '\n')
+    rnd('round0-gap21', 'round0-gap21', 0, 3, SMALL)
+    assert cases[-1]['hits'], 'the minimum-spacing case must emit candidates'
     files = {f.name: hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(FIXTURES.glob('*.txt'))}
     out = {'format': 'qsb-pqb-measure-expected-v1', 'fixtures': files, 'cases': cases}
     (HERE / 'expected.json').write_text(json.dumps(out, indent=1) + '\n')
