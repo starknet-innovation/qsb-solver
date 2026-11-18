@@ -39,6 +39,11 @@ matched performance remain pending. The [qualification receipt](evidence/adoptio
 records the exact image, binary and campaign identities. All release and measurement
 records below describe earlier artifacts.
 
+A separately authorized [London session](evidence/adoption-2026-11-18/london-session.json)
+used the same verified artifact and input bundle. EC2 rejected its single on-demand
+A10G launch for insufficient capacity. Independent checks confirmed cleanup and release
+of the fresh $10 reservation. No native work ran.
+
 # November 12 TLS-fixed release
 
 See the [TLS replacement assessment](2026-11-12-tls-replacement.md) and its checksummed
