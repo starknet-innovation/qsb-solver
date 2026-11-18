@@ -1,4 +1,4 @@
-# November 18 source candidate (HOLD)
+# November 18 PQB sm86 v0.2.0 release
 
 The CUDA baseline and its notices now come from Fireblocks PQB commit
 `82c7cba684899e5a069f5f1baf4931c59111d345`. On November 18 we compared the complete local
@@ -65,9 +65,21 @@ and [raw timing archive](evidence/adoption-2026-11-18/virginia/timing.tar.gz) re
 all 18 samples. Subrange process timings include startup. The samples do not establish
 a reduction in complete-solve latency or cost.
 
-Keep the candidate on HOLD for release review. The CUDA update supports the reviewed
-upstream spacing change and passed native qualification. Publication, enrollment
-and a served full solve with this digest remain outstanding.
+The [v0.2.0 prerelease](https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.2.0)
+publishes the signed qualification archive. The release tag resolves to the original solver source.
+An [independent readback](evidence/adoption-2026-11-18/virginia/publication-readback.json)
+verified all 30 registry blobs anonymously, the original provenance from GHCR and GitHub,
+and every release asset, including both parts of the signed archive. The installed S3
+client passed the 16 compromised-chain regressions. The [release scan](evidence/adoption-2026-11-18/virginia/release-scan.json)
+reported zero blocking findings. Its ten unfixed Critical package matches cover the
+compromised certificates (four), a Python TLS server callback (four) and a Cyrus SASL
+SRP server mechanism (two). The supported worker uses an outbound S3 client. It runs
+neither server. These findings remain disclosed for the shipped packages.
+
+The [qsb-app replay](evidence/adoption-2026-11-18/virginia/release-review-consumer.json)
+passed on consumer commit `5874874e`. [qsb-app PR #167](https://github.com/starknet-innovation/qsb-app/pull/167)
+enrolled the verbatim release descriptor in main at `72f7d67a`. A complete served solve on this digest remains
+unmeasured. The prior PQB release is `pqb-aws-sm86-v0.1.0`.
 The [campaign closeout](evidence/adoption-2026-11-18/virginia/campaign.json)
 covers the failed attempt, bundle permission correction, cost estimate and cleanup.
 

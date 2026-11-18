@@ -8,7 +8,7 @@ worker and shares no binary with it. Status, evidence and limits:
 It solves one unit of one stage per request (`pinning`, `round0`, `round1`) under the
 [`pqb-ranked-v2`](../../contracts/pqb-ranked-v2.json) range contract, on a compiled copy of
 [research/pqb-ranked/grind.cu](../../research/pqb-ranked/grind.cu): PQB's CUDA grinder at
-`82c7cba`, adapted to complete one assigned range per request. The source candidate is on HOLD pending fresh native qualification. The native receipts below describe earlier artifacts.
+`82c7cba`, adapted to complete one assigned range per request. The [published sm86 v0.2.0 release](../../docs/pqb/ASSESSMENT.md) passed native A10G qualification and qsb-app CPU replay. The native receipts below describe earlier artifacts.
 
 ```sh
 python3 -m unittest tests.test_pqb_contract tests.test_pqb_handler tests.test_pqb_ranked_emulation -v

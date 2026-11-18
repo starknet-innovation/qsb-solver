@@ -1,0 +1,11 @@
+{
+  "release": "https://github.com/starknet-innovation/qsb-solver/releases/tag/pqb-aws-sm86-v0.2.0",
+  "tag": "pqb-aws-sm86-v0.2.0",
+  "image": "ghcr.io/starknet-innovation/qsb-solver@sha256:bcc69b5d33ac7ddbabd5a8822081acef275c02cf0232f93bd04fab0865a16f78",
+  "solverSha256": "f5dca0d1aa7cca79d3d486a5defd44da923592db6507394ff648755cec2e51f2",
+  "verifiedRegistryBlobs": 30,
+  "signedArchiveSha256": "a490824df9cde12774ab3b2c341dcf078866e085d5f31eae7d49db692e6ede11",
+  "allReleaseAssetsVerified": true,
+  "originalBuildRun": 44280016361,
+  "qualificationEvidenceSha256": "90809c42ca8733a726e47b5d554ddfde87a5338bbaedde786c4dea52911fbf62"
+}

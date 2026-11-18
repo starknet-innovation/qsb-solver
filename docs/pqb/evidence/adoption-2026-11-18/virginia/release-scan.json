@@ -1,0 +1,164 @@
+{
+  "source": {
+    "userInput": "/home/runner/work/_temp/pqb-publish/metadata/build/image.oci.tar",
+    "imageID": "sha256:f49d0bd97c4230371061d9ade15b6c2741e16c4d21029150e1879b16aa02bf32",
+    "manifestDigest": "sha256:bac292c25253064e3cf65a82d4ae08f71f713254b992bb4a69d27b8f1bc7ea28",
+    "repoDigests": []
+  },
+  "scanner": {
+    "name": "grype",
+    "version": "0.119.0",
+    "dbBuilt": "2026-11-18T06:21:08Z"
+  },
+  "policy": "fail on Critical with a fix available; severity is the worst of the matched and related records",
+  "counts": {
+    "Negligible": {
+      "total": 0,
+      "fixable": 0
+    },
+    "Low": {
+      "total": 31,
+      "fixable": 0
+    },
+    "Medium": {
+      "total": 230,
+      "fixable": 0
+    },
+    "High": {
+      "total": 120,
+      "fixable": 0
+    },
+    "Critical": {
+      "total": 10,
+      "fixable": 0
+    },
+    "Unknown": {
+      "total": 0,
+      "fixable": 0
+    }
+  },
+  "blocking": [],
+  "unfixedCritical": [
+    {
+      "id": "CVE-2026-115557",
+      "package": "libpython3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "libpython3.10-stdlib",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "python3.10",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-115557",
+      "package": "python3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-115557@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "libpython3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "libpython3.10-stdlib",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "python3.10",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-19445",
+      "package": "python3.10-minimal",
+      "version": "3.10.12-1~22.04.18",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-19445@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-129483",
+      "package": "libsasl2-2",
+      "version": "2.1.27+dfsg2-3ubuntu1.2",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-129483@nvd:cpe": "Critical"
+      }
+    },
+    {
+      "id": "CVE-2026-129483",
+      "package": "libsasl2-modules-db",
+      "version": "2.1.27+dfsg2-3ubuntu1.2",
+      "type": "deb",
+      "fixState": "not-fixed",
+      "fixVersions": [],
+      "matchedSeverity": "Medium",
+      "relatedSeverity": {
+        "CVE-2026-129483@nvd:cpe": "Critical"
+      }
+    }
+  ],
+  "passed": true
+}
